@@ -31,7 +31,10 @@ make
 make install
 npm update -g
 
-npm install pm2 -g
+npm install -g pm2
+npm install -g bower
+npm install -g grunt-cli
+npm install -g brunch
 
 # apache
 # apt-get install -y apache2 apache2-threaded-dev
