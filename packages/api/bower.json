@@ -1,0 +1,18 @@
+{
+  "name": "ha-data",
+  "version": "0.0.0",
+  "homepage": "https://github.com/hyperaudio-dev/ha-data",
+  "authors": [
+    "Laurian Gridinoc <laurian@gridinoc.name>"
+  ],
+  "description": "data.hyperaud.io",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
