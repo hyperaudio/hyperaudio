@@ -1,6 +1,12 @@
 {
-  "name": "application-name",
-  "version": "0.0.1",
+  "name": "ha-data",
+  "version": "0.0.0",
+  "homepage": "https://github.com/hyperaudio-dev/ha-data",
+  "authors": [
+    "Laurian Gridinoc <laurian@gridinoc.name>"
+  ],
+  "description": "data.hyperaud.io",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "start": "node app.js"
