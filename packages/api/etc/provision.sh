@@ -6,11 +6,16 @@ export DEBIAN_FRONTEND=noninteractive
 apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
 echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" > /etc/apt/sources.list.d/10gen.list
 
+add-apt-repository ppa:keithw/mosh
+
 apt-get update
 apt-get -y upgrade
 
 # essentials
 apt-get install -y git tree vim
+
+# mosh
+apt-get install -y mosh
 
 # JVM
 apt-get install -y openjdk-7-jdk
@@ -37,31 +42,31 @@ npm install -g grunt-cli
 npm install -g brunch
 
 # apache
-# apt-get install -y apache2 apache2-threaded-dev
+apt-get install -y apache2 apache2-threaded-dev
 
 # mod_h264
-# cd /opt
-# wget http://h264.code-shop.com/download/apache_mod_h264_streaming-2.2.7.tar.gz
-# tar -zxvf apache_mod_h264_streaming-2.2.7.tar.gz
-# cd /opt/mod_h264_streaming-2.2.7
-# ./configure --with-apxs=`which apxs2`
-# make
-# make install
+cd /opt
+wget http://h264.code-shop.com/download/apache_mod_h264_streaming-2.2.7.tar.gz
+tar -zxvf apache_mod_h264_streaming-2.2.7.tar.gz
+cd /opt/mod_h264_streaming-2.2.7
+./configure --with-apxs=`which apxs2`
+make
+make install
 
 # vhost
-# cd /etc/apache2/sites-enabled/
-# ln -sf /vagrant/etc/VirtualHost.conf 000-default
+cd /etc/apache2/sites-enabled/
+ln -sf /vagrant/etc/VirtualHost.conf 000-default
 
 # apache modules
-# cd /etc/apache2/mods-enabled
-# ln -s ../mods-available/rewrite.load
-# ln -s ../mods-available/headers.load 
+cd /etc/apache2/mods-enabled
+ln -s ../mods-available/rewrite.load
+ln -s ../mods-available/headers.load 
 
 # www root
-# mount --bind /vagrant/media /var/www
+mount --bind /vagrant/media /var/www
 
 # restart apache
-# /etc/init.d/apache2 restart
+/etc/init.d/apache2 restart
 
 # start node app
 # cd /vagrant
