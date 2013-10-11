@@ -41,8 +41,12 @@ npm install -g bower
 npm install -g grunt-cli
 npm install -g brunch
 
-# apache
-apt-get install -y apache2 apache2-threaded-dev
+# beanstalkd
+apt-get install -y beanstalkd
+
+# apache + LAMP
+apt-get install -y apache2 apache2-threaded-dev lamp-server^
+apt-get install php5 php5-gd php5-mysql php5-curl php5-cli php5-cgi php5-dev
 
 # mod_h264
 cd /opt
@@ -65,10 +69,11 @@ ln -s ../mods-available/headers.load
 # www root
 mount --bind /vagrant/media /var/www
 
+
 # restart apache
 /etc/init.d/apache2 restart
 
 # start node app
-# cd /vagrant
-# npm install
-# pm2 start app.js 
+cd /vagrant
+npm install
+pm2 start app.js 
