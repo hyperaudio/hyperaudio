@@ -9,6 +9,8 @@ var user = require('./routes/user');
 var http = require('http');
 var path = require('path');
 
+var passport = require('passport');
+
 var app = express();
 
 // all environments
@@ -19,8 +21,12 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('your secret here'));
+app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
 app.use(express.session());
+
+app.use(passport.initialize());
+app.use(passport.session());
+    
 app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use(express.static(path.join(__dirname, 'public')));
