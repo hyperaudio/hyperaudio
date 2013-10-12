@@ -1,0 +1,3 @@
+[submodule "UI"]
+	path = UI
+	url = git@github.com:hyperaudio-dev/ha-dash.git
