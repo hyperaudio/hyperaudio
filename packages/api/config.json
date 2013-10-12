@@ -1,0 +1,4 @@
+{
+    "version": "v1",
+    "database": "mongodb://localhost/ha-data-01"
+}

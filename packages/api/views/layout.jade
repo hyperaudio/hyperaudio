@@ -3,5 +3,22 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js')
+    script(src='//login.persona.org/include.js')
   body
+    - if (!user)
+        ul
+          li
+            a(href="/") Home  
+          li
+            a(href="/login") Log In
+    - else
+      ul
+        li
+          a(href="/") Home
+        li
+          a(href="/account") Account
+        li
+          a(href="/logout") Log Out
+  
     block content
