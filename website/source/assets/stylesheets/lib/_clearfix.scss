@@ -1,7 +1,7 @@
-/**
- * Based on the micro clearfix hack, doesn't use overflow: hidden.
- * http://nicolasgallagher.com/micro-clearfix-hack/
- */
+/* Clearfix Mixin based on the micro clearfix hack
+  http://nicolasgallagher.com/micro-clearfix-hack/
+----------------------------------------------- */
+
 @mixin clearfix {
   /* For modern browsers */
   &:before,

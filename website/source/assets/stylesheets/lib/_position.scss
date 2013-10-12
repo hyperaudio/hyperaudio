@@ -1,3 +1,6 @@
+/* Positionining Mixin
+----------------------------------------------- */
+
 @mixin position($position: relative) {
   position: $position;
 }
