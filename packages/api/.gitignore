@@ -2,3 +2,6 @@
 node_modules/
 
 public/stylesheets/style.css
+ha-data.csr
+ha-data.key
+settings.json
