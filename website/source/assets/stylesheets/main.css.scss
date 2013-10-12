@@ -38,12 +38,24 @@
 
 /* Import Components
 ------------------------------------------- */
+@import "components/endorsement";
+@import "components/feature";
+@import "components/functionality";
+@import "components/pitch";
+@import "components/supporter";
 
 /* Import Combos
 ------------------------------------------- */
+@import "combos/endorsements";
+@import "combos/features";
+@import "combos/footer";
+@import "combos/header";
+@import "combos/functionalities";
+@import "combos/supporters";
 
 /* Import Layout Styles
 ------------------------------------------- */
+@import "layout";
 
 /* Import Extensions
 ------------------------------------------- */
