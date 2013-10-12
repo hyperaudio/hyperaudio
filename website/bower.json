@@ -1,0 +1,21 @@
+{
+  "name": "Hyperaudio",
+  "version": "1.0.0",
+  "homepage": "http://hyperaud.io",
+  "authors": [
+    "piotrf.pl"
+  ],
+  "description": "Hyperaudio Ecosystem",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "normalize-scss": "~2.1.2"
+  }
+}

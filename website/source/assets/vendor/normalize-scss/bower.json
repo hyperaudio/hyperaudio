@@ -1,0 +1,12 @@
+{
+    "name": "normalize.scss",
+    "version": "2.1.2",
+    "author": ["Nicolas Gallagher", "Bo-Yi Wu"],
+    "main": ["_normalize.scss"],
+    "ignore": [
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "component.json",
+        "test.html"
+    ]
+}
