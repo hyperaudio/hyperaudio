@@ -1,2 +1,70 @@
 /* Playground
 ------------------------------------------- */
+header {
+  background: #2F353E;
+  padding-top: $space-l;
+  padding-bottom: $space-l;
+  color: $bright;
+}
+header a {
+  color: $bright;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+.header-brandmark {
+  float: left;
+  font-size: $font-l;
+  margin-right: $space-l;
+}
+.header-nav {
+  list-style: none;
+}
+.header-nav-item {
+  display: inline-block;
+  font-size: $font-s;
+  margin-right: $space-m;
+}
+.header-nav-item.header-login {
+  float: right;
+}
+
+.lt_container-heading {
+  text-align: center;
+}
+.functionalities {
+  background: #2F353E;
+}
+
+.pitch {
+  @include grid-span(12, 0, 12);
+  color: $bright;
+  padding: $space-l;
+}
+.pitch-heading {
+  font-size: $font-h;
+  font-family: $secondary-font;
+  font-weight: normal;
+  line-height: $lheight-m;
+}
+
+.lt_container {
+  @include clearfix;
+  //  @include background-grid;
+  margin: 0 auto;
+  min-height: 100%;
+  max-width: 960px;
+}
+
+.endorsement {
+  @include grid-span(4, 0, 12);
+}
+.supporters {
+  padding: $space-l;
+  display: block;
+  text-align: center;
+}
+.supporter {
+  display: inline-block;
+  padding: $space-l;
+  font-size: 10rem;
+}

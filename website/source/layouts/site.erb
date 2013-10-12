@@ -14,26 +14,24 @@
   </head>
 
   <body class="tpl_site <%= page_classes %>">
-    <header class="lt_header">
-      <h1 class="header-brandmark"><a href="#"><i class="ha-logo">Hyperaudio</i></a>, Transcript powered Media</h1>
-      <nav>
-        <ul class="header-nav">
-          <li><a href="#">Tour</a></li>
-          <li><a href="#">Case Studies</a></li>
-          <li><a href="#">Try it</a></li>
-          <li><a href="#">Sign up</a></li>
-          <li><a href="#">Log in</a></li>
-        </ul>
-      </nav>
+    <header class="header">
+      <div class="lt_container">
+        <h1 class="header-brandmark"><a href="#"><%= image_tag 'inserts/logo-hyperaudio.png', :height => "32" %>Hyperaudio</i></a></h1>
+        <nav>
+          <ul class="header-nav">
+            <li class="header-nav-item"><a href="#">Tour</a></li>
+            <li class="header-nav-item"><a href="#">Case Studies</a></li>
+            <li class="header-nav-item"><a href="#">Try it</a></li>
+            <li class="header-nav-item"><a href="#" class="altered">Sign up</a></li>
+            <li class="header-nav-item header-login"><a href="#" class="button">Log in</a></li>
+          </ul>
+        </nav>
+      </div>
     </header>
     <%= yield %>
-    <div class="lt_footer">
-      <footer>
-        <div class="lt_footer-disclaimer">
-          <p>Hyperaudio Incorporated is a nonprofit established in Rhode Island, USA. All software we produce is Open Source.</p>
-        </div>
-
-        <div class="lt_footer-navigation">
+    <footer class="footer">
+      <div class="lt_container">
+        <div class="footer-navigation">
           <nav>
             <ul class="navigation">
               <li class="navigation-item"><a href="#">Tour</a></li>
@@ -47,11 +45,13 @@
             </ul>
           </nav>
         </div>
-
-        <div class="lt_footer-imprint">
-          <p class="">&copy; Copyright 2012 - 2013 Hyperaudio Incorporated. All rights reserved.</p>
+        <div class="footer-imprint">
+          <p class="">&copy; 2012–2013 Hyperaudio Inc, a non-profit established in Rhode Island, USA. All rights reserved. All software we produce is Open Source.</p>
         </div>
-      </footer>
-    </div>
+        <div class="footer-disclaimer">
+          <p></p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
