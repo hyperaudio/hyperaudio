@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  form(action="/auth/browserid", method="post", style="display:none;")
+  form(action="/auth/browserid", method="post", style="display:none;", id="persona")
     input(type="text", name="assertion")
 
   img(src="//developer.mozilla.org/files/3969/plain_sign_in_blue.png", id="browserid")
@@ -10,10 +10,24 @@ block content
     $("#browserid").click(function(){
       navigator.id.get(function(assertion) {
         if (assertion) {
-          $("input").val(assertion);
-          $("form").submit();
+          $("form#persona input").val(assertion);
+          $("form#persona").submit();
         } else {
           location.reload();
         }
       });
     });
+    
+  hr
+  
+  form(action="/login",method="post")
+      div
+          label Username
+          input(type="text", name="username")
+  
+      div
+          label Password
+          input(type="password", name="password")
+  
+      div
+          input.btn(type="submit", value="Log In")

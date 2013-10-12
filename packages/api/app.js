@@ -44,31 +44,50 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-// var Account = require('./models/account');
 
-// passport.use(new LocalStrategy(Account.authenticate()));
-// passport.serializeUser(Account.serializeUser());
-// passport.deserializeUser(Account.deserializeUser());
+var Account = require('./models/account');
 
-passport.serializeUser(function(user, done) {
-  done(null, user.email);
-});
+mongoose.connect(nconf.get('database'));
 
-passport.deserializeUser(function(email, done) {
-  done(null, { email: email });
-});
+
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
 
 passport.use(new PersonaStrategy({
-    audience: 'http://10.0.54.74:3000/'
+    audience: 'http://10.0.54.74:3000/',
+    checkAudience: false
   },
   function(email, done) {
-    process.nextTick(function () {
-      return done(null, { email: email })
-    });
+      var account;
+      Account.findByUsername(email, function(err, result){
+        if (err) {
+            console.log(err);
+        }
+        if (!result) {
+          account = new Account({
+                username : email,
+                email: email
+            });
+            
+          Account.register(account,
+            "masterpassword", //fixme
+            function(err, account) {
+              if (err) {
+                  console.log(err);
+              }
+          });
+        } else {
+          account = result;
+        }
+        
+        return done(null, account);
+      });
+
   }
 ));
 
-// mongoose.connect(nconf.get('database'));
 
 
 app.get('/', routes.index);
@@ -82,6 +101,10 @@ app.get('/login', function(req, res){
   res.render('login', { user: req.user });
 });
 
+app.post('/login', passport.authenticate('local'), function(req, res) {
+    res.redirect('/');
+});
+
 app.post('/auth/browserid', passport.authenticate('persona', { failureRedirect: '/login' }), function(req, res) {
     res.redirect('/');
 });
@@ -90,6 +113,25 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+app.get('/register', function(req, res) {
+    res.render('register', {});
+});
+
+app.post('/register', function(req, res) {
+    Account.register(new Account(
+        {
+            username : req.body.username
+        }),
+        req.body.password,
+        function(err, account) {
+          if (err) {
+              return res.render('register', { account : account });
+          }
+          res.redirect('/');
+        });
+});
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
