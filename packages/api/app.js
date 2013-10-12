@@ -12,6 +12,8 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var PersonaStrategy = require('passport-persona').Strategy;
 
+var generatePassword = require('password-generator');
+
 nconf.argv()
     .env()
     .file({ file: 'config.json' });
@@ -60,31 +62,28 @@ passport.use(new PersonaStrategy({
     checkAudience: false
   },
   function(email, done) {
-      var account;
       Account.findByUsername(email, function(err, result){
         if (err) {
             console.log(err);
         }
-        if (!result) {
-          account = new Account({
+        if (result) {
+          return done(null, result);
+        } else {
+          var password = generatePassword();
+          console.log("password " + password);
+          Account.register(new Account({
                 username : email,
                 email: email
-            });
-            
-          Account.register(account,
-            "masterpassword", //fixme
+            }),
+            password, 
             function(err, account) {
               if (err) {
                   console.log(err);
               }
+              return done(null, account);
           });
-        } else {
-          account = result;
-        }
-        
-        return done(null, account);
+        }         
       });
-
   }
 ));
 
