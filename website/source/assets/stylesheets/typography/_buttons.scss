@@ -1,0 +1,9 @@
+/* Buttons
+----------------------------------------------- */
+
+.button {
+  @include border-radius($radius-m);
+  display: inline-block;
+  padding: $space-xs $space-m;
+  background: $mono-heavy;
+}

@@ -1,0 +1,17 @@
+/* Links
+----------------------------------------------- */
+
+a {
+  text-decoration: none;
+  &:focus,
+  &:hover {
+
+  }
+  &:active {
+
+  }
+  &.altered {
+    border-bottom: 1px solid $bright;
+    display: inline-block;
+  }
+}
