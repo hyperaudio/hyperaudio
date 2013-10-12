@@ -16,7 +16,7 @@ var generatePassword = require('password-generator');
 
 nconf.argv()
     .env()
-    .file({ file: 'config.json' });
+    .file({ file: 'settings.json' });
 
 var app = express();
 
