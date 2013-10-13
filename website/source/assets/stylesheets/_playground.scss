@@ -1,2 +1,15 @@
 /* Playground
 ------------------------------------------- */
+
+.branded {
+  background: $brand-color;
+  a {
+    color: $bright;
+  }
+}
+
+.tpl_eco {
+}
+.homefold {
+  padding-bottom: 0;
+}

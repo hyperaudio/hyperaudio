@@ -1,0 +1,13 @@
+/* Supporter
+----------------------------------------------- */
+
+.supporter {
+  color: $mono-mid;
+  font-size: 10rem;
+  padding: $space-s;
+  margin: 0 $space-l;
+  border: none !important;
+  &:hover {
+    color: $mono-strong;
+  }
+}

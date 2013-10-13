@@ -1,0 +1,68 @@
+/* Functionality
+----------------------------------------------- */
+
+.functionality {
+  @include clearfix;
+  position: relative;
+  // background: $flare-heavy;
+  @include border-top-radius($radius-s);
+}
+
+.functionality-heading {
+  font-size: $font-xl;
+  margin-top: $space-m;
+}
+.functionality-description {
+  @include position-top-left(20px,20px);
+  width: 200px;
+  z-index: 50;
+}
+.functionality-detail,
+.functionality-call {
+  margin: $space-l 0 0;
+}
+.functionality-text {
+  font-size: $font-l;
+  padding: 0;
+  margin-top: 0;
+  line-height: $lheight-m;
+}
+.functionality-detail {
+  color: $mono-mid;
+  font-size: $font-s;
+  line-height: $font-l;
+  color: $flare-strong;
+}
+.functionality-call {
+}
+.functionality-figure {
+  max-height: 400px;
+  overflow: hidden;
+}
+.functionality-image-container {
+  @include border-top-radius($radius-s);
+  line-height: 0;
+  overflow: hidden;
+  position: relative;
+  &:after {
+    @include position-top-right(0,0);
+    @include position-bottom-left(0,0);
+    @include border-radius($radius-s);
+    border: 1px solid $shadow-light;
+    content: " ";
+    display: block;
+  }
+}
+.functionality-image {
+  @include box-sizing(border-box);
+  line-height: 0;
+  width: 100%;
+}
+
+
+.functionality-description {
+  @include grid-span(4,1,12, $output-style: 'isolation');
+}
+.functionality-figure {
+  @include grid-span(7,6,12, $output-style: 'isolation');
+}

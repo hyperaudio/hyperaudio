@@ -1,0 +1,23 @@
+/* Footer
+----------------------------------------------- */
+
+.footer {
+  padding: $space-h 0;
+}
+.footer-imprint {
+  // @include grid-span(4,9,12, $output-style: 'isolation');
+  margin-top: $space-h;
+  font-size: $font-xs;
+  text-align: center;
+  color: $mono-weak;
+  p {
+    margin: 0;
+  }
+}
+
+.footer-brand-area {
+  @include grid-span(4,1,12, $output-style: 'isolation');
+}
+.footer-navigation {
+  @include grid-span(8,5,12, $output-style: 'isolation');
+}

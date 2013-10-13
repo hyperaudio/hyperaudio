@@ -1,0 +1,22 @@
+/* Links
+----------------------------------------------- */
+
+a {
+  border-bottom: 1px solid transparent;
+  color: $brand-color;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  &:focus,
+  &:hover {
+    border-bottom-color: $brand-color;
+  }
+  &:active {
+
+  }
+  &.altered {
+    font-weight: bold;
+  }
+}
