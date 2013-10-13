@@ -2,8 +2,24 @@
 ----------------------------------------------- */
 
 .button {
-  @include border-radius($radius-m);
+  @include border-radius($radius-s);
+  background: $alt-color;
+  color: $bright;
+  border: none !important;
   display: inline-block;
+  font-weight: bold;
   padding: $space-xs $space-m;
-  background: $mono-heavy;
+  &:hover {
+    background: #2C3E50;
+  }
+}
+
+.button.block {
+  display: block;
+  text-align: center;
+}
+
+.button.large {
+  padding: $space-m;
+  text-align: center;
 }

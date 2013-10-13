@@ -1,11 +1,8 @@
 /* Singularity Grid System Definitions
 ----------------------------------------------- */
 
-$grids: 3;
-$grids: add-grid(6 at 400px);
-$grids: add-grid(9 at 500px);
-$grids: add-grid(12 at 760px);
-$gutters: .2;
+$grids: 12;
+$gutters: 0;
 $output: 'float';
 $include-border-box: true;
 
@@ -16,25 +13,30 @@ $include-border-box: true;
 $dark              : #000;
 $bright            : #fff;
 
+$heavy             : #111;
 $mono-heavy        : #111;
 $mono-strong       : #333;
 $mono-mid          : #666;
-$mono-weak         : #ccc;
-$mono-light        : #eee;
+$mono-weak         : #999;
+$mono-light        : #ccc;
+$light             : #eee;
 
 // Rainbow
+
+$brand-color       : #16A085;
+$alt-color         : #34495E;
 
 // Shadows
 $shadow-heavy      : rgba(0,0,0,0.9);
 $shadow-strong     : rgba(0,0,0,0.7);
-$shadow-medium     : rgba(0,0,0,0.5);
+$shadow-mid        : rgba(0,0,0,0.5);
 $shadow-weak       : rgba(0,0,0,0.2);
-$shadow-light      : rgba(0,0,0,0.1);
+$shadow-light      : rgba(0,0,0,0.05);
 
 // Flares
 $flare-heavy       : rgba(255,255,255,0.9);
 $flare-strong      : rgba(255,255,255,0.7);
-$flare-medium      : rgba(255,255,255,0.5);
+$flare-mid        : rgba(255,255,255,0.5);
 $flare-weak        : rgba(255,255,255,0.2);
 $flare-light       : rgba(255,255,255,0.1);
 
@@ -43,30 +45,31 @@ $flare-light       : rgba(255,255,255,0.1);
 html { font-size: 62.5%; }
 
 // Font Families
-$primary-font      : 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$primary-font      : 'Merriweather Sans', sans-serif;
 $secondary-font    : 'Exo', sans-serif;
 
 // Font Sizes
-$font-h            : 4.4rem;
+$font-h            : 3.6rem;
 
-$font-xl           : 2.2rem;
+$font-xl           : 2.8rem;
 $font-l            : 1.8rem;
 $font-m            : 1.4rem;
 $font-s            : 1.2rem;
-$font-xs           : 1.0rem;
+$font-xs           : 1.1rem;
 
 // Line Heights
 $lheight-xl        : 2.4em;
-// $lheight-l         : 2.0em;
+$lheight-l         : 2.0em;
 $lheight-m         : 1.6em;
-// $lheight-s         : 1.4em;
-$lheight-xs        : 1.2em;
+$lheight-s         : 1.2em;
+$lheight-xs        : 1.0em;
 
 /* Spaces
 ----------------------------------------------- */
-$space-xxl         : 10rem;
-$space-xl          : 6.0rem;
-$space-l           : 2.0rem;
+$space-h           : 8.0rem;
+
+$space-xl          : 4.0rem;
+$space-l           : 2.5rem;
 $space-m           : 1.0rem;
 $space-s           : 0.5rem;
 $space-xs          : 0.2rem;
@@ -76,7 +79,7 @@ $space-xs          : 0.2rem;
 $radius-absolute   : 100rem;
 $radius-l          : 0.8rem;
 $radius-m          : 0.6rem;
-$radius-s          : 0.4rem;
+$radius-s          : 0.3rem;
 
 /* Default definitions
 ----------------------------------------------- */

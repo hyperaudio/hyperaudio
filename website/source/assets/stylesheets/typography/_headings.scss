@@ -1,6 +1,19 @@
 /* Headings
 ----------------------------------------------- */
 
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-family: $secondary-font;
+}
+
+.section-heading {
+  font-size: $font-h;
+  margin-bottom: $space-xl;
+  text-align: center;
+  line-height: $lheight-m;
+  text-transform: capitalize;
+}
+
 .heading-xl,
 .heading-xl,
 .heading-xl {
@@ -9,7 +22,12 @@
 }
 
 .heading-xl {
-
+  font-size: $font-xl;
+  margin-bottom: $space-xl;
+  text-align: center;
+  line-height: $lheight-m;
+  text-transform: capitalize;
+  font-weight: bold;
 }
 .heading-l {
 

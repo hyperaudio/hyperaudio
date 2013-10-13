@@ -7,6 +7,7 @@ gem "middleman", "~>3.1.5"
 # Live-reloading plugin
 gem "middleman-livereload", "~> 3.1.0"
 
+# Singularity.gs
 gem "singularitygs", "~>1.1.2"
 
 # For faster file watcher updates on Windows:

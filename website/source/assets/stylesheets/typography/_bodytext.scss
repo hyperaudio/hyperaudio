@@ -4,3 +4,12 @@
 // Text Selection
 // ::selection { background: $blue-light; }      /* Safari */
 // ::-moz-selection { background: $blue-light; } /* Firefox */
+
+blockquote {
+  padding: 0;
+  margin: 0;
+}
+
+abbr[title] {
+  border: none;
+}

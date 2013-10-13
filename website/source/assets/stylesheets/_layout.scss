@@ -1,2 +1,21 @@
 /* Layout
 ------------------------------------------- */
+
+.section {
+  @include clearfix;
+  padding: $space-h 0;
+  position: relative;
+}
+
+.container {
+  @include clearfix;
+  // @include background-grid;
+  margin: 0 auto;
+  min-height: 100%;
+  max-width: 960px;
+}
+
+.section > .container,
+.footer > .container {
+  max-width: 820px;
+}

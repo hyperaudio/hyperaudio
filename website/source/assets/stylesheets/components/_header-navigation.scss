@@ -1,0 +1,16 @@
+.header-navigation {
+  list-style: none;
+  margin-top: $space-s;
+}
+.header-navigation-item {
+  display: inline-block;
+  font-size: $font-s;
+  margin-left: $space-l;
+  text-transform: uppercase;
+}
+.header-navigation-item.active {
+  opacity: 0.75;
+}
+.header-navigation-item a:hover {
+  border-bottom-color: $bright;
+}
