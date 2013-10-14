@@ -11,6 +11,7 @@
 .functionality-heading {
   font-size: $font-xl;
   margin-top: $space-m;
+  margin-bottom: $space-l;
 }
 .functionality-description {
   @include position-top-left(20px,20px);
