@@ -49,6 +49,7 @@ app.use(passport.session());
 app.use(app.router);
 
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
+app.use(express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
