@@ -69,7 +69,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 passport.use(new PersonaStrategy({
-    audience: 'https://10.0.54.74:443/',
+    audience: 'https://data.hyperaud.io/',
     checkAudience: false
   },
   function(email, done) {
