@@ -67,7 +67,7 @@ ln -s ../mods-available/rewrite.load
 ln -s ../mods-available/headers.load 
 
 # www root
-mount --bind /vagrant/media /var/www
+# mount --bind /vagrant/media /var/www
 
 
 # restart apache
