@@ -1,5 +1,7 @@
 var nconf = require('nconf');
+var fs = require('fs');
 
+var spdy = require('spdy');
 var express = require('express');
 var routes = require('./routes');
 // var user = require('./routes/user');
@@ -17,11 +19,19 @@ var generatePassword = require('password-generator');
 nconf.argv()
     .env()
     .file({ file: 'settings.json' });
+    
+var options = {
+  key: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.key'),
+  cert: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.crt'),
+  ca: fs.readFileSync(__dirname + '/keys/PositiveSSLCA2.crt'),
+  // SPDY-specific options
+  windowSize: 1024, // Server's window size
+};    
 
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 443);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -58,7 +68,7 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 passport.use(new PersonaStrategy({
-    audience: 'http://10.0.54.74:3000/',
+    audience: 'https://10.0.54.74:443/',
     checkAudience: false
   },
   function(email, done) {
@@ -138,7 +148,11 @@ app.post('/register', function(req, res) {
 });
 
 
-http.createServer(app).listen(app.get('port'), function(){
+// http.createServer(app).listen(app.get('port'), function(){
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
+
+var server = spdy.createServer(options, app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
 

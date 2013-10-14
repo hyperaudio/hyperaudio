@@ -5,3 +5,9 @@ public/stylesheets/style.css
 ha-data.csr
 ha-data.key
 settings.json
+
+keys/data_hyperaud_io.key
+
+keys/data_hyperaud_io.csr
+
+keys/data_hyperaud_io.crt

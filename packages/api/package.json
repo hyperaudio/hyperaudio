@@ -12,6 +12,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "spdy": "*",
     "express": "3.4.0",
     "jade": "*",
     "less-middleware": "*",
