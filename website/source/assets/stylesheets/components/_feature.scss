@@ -53,18 +53,14 @@
 
 .feature.odd {
   .feature-description {
-    @include grid-span(4,1,12, $output-style: 'isolation');
   }
   .feature-figure {
-    @include grid-span(7,6,12, $output-style: 'isolation');
   }
 }
 
 .feature.even {
   .feature-description {
-    @include grid-span(4,9,12, $output-style: 'isolation');
   }
   .feature-figure {
-    @include grid-span(7,1,12, $output-style: 'isolation');
   }
 }

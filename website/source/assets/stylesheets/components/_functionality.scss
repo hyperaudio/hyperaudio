@@ -4,7 +4,6 @@
 .functionality {
   @include clearfix;
   position: relative;
-  // background: $flare-heavy;
   @include border-top-radius($radius-s);
 }
 
@@ -60,10 +59,7 @@
   width: 100%;
 }
 
-
 .functionality-description {
-  @include grid-span(4,1,12, $output-style: 'isolation');
 }
 .functionality-figure {
-  @include grid-span(7,6,12, $output-style: 'isolation');
 }

@@ -9,7 +9,6 @@
   }
 }
 .endorsement {
-  @include grid-span(4, 1, 12, $gutter: 0);
 }
 .endorsement-quote {
   font-style: italic;
