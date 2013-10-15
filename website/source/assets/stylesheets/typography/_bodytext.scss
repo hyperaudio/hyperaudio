@@ -2,8 +2,8 @@
 ----------------------------------------------- */
 
 // Text Selection
-// ::selection { background: $blue-light; }      /* Safari */
-// ::-moz-selection { background: $blue-light; } /* Firefox */
+::selection { background: $brand-color; }      /* Safari */
+::-moz-selection { background: $brand-color; } /* Firefox */
 
 blockquote {
   padding: 0;
