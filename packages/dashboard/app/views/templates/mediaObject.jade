@@ -11,11 +11,14 @@ td
 
 td
   - if (type == 'video')
-    span.glyphicon.glyphicon-film
+    a.mediaMD.btn.btn-default.btn-xs(xdata-toggle="modal", href="#metadataPreview")
+      span.glyphicon.glyphicon-film
   - else if (type == 'audio')
-    span.glyphicon.glyphicon-volume-up
+    a.mediaMD.btn.btn-default.btn-xs(xdata-toggle="modal", href="#metadataPreview")
+      span.glyphicon.glyphicon-volume-up
   - else
-    span.glyphicon.glyphicon-question-sign
+    a.mediaMD.btn.btn-default.btn-xs(xdata-toggle="modal", href="#metadataPreview")
+      span.glyphicon.glyphicon-question-sign
 
 td
   - var magnitude = Math.floor(Math.log(meta.size) / Math.log(1024));

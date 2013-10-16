@@ -32,8 +32,8 @@ module.exports = View.extend({
   		
   		var el = view.render().el;
   		$mediaObjects.append(el);
-      $(el)
-        .data('view', view)
+  		
+      $(el).data('view', view)
         .data('model', mediaObject)
         .find('a.mediaLabel').editable({
           type: 'text',
@@ -43,6 +43,7 @@ module.exports = View.extend({
               mediaObject.save(null, { silent: true });
             }
         });
+        
         $(el).find('.mediaDesc').editable({
           type: 'text',
           title: 'Edit description',
@@ -51,8 +52,16 @@ module.exports = View.extend({
               mediaObject.save(null, { silent: true });
             }
         });  
+        
+        $(el).find('a.mediaMD').click(function(evt) {
+          evt.preventDefault();
+          $('#metadataPreview .modal-body').empty().append('<pre class="meta"></pre><pre class="probe"></pre>');
+          $('#metadataPreview .modal-body').find('.meta').text(JSON.stringify(mediaObject.get('meta'), null, " "));
+          $('#metadataPreview .modal-body').find('.probe').text(JSON.stringify(mediaObject.get('probe'), null, " "));
+          $('#metadataPreview').modal('show')
+        });
       
-  	});
+  	});//each
   	
   	return this;
   }
