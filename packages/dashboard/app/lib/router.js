@@ -37,8 +37,34 @@ module.exports = Backbone.Router.extend({
       .fail(function() {
         alert( "Login Error" );
       });
-      
     });
+    
+    $('#persona').on('submit', function(evt) {
+      evt.preventDefault();
+      $.post( window.API + '/auth/browserid', {
+        assertion: $("form#persona input").val()
+      })
+      .done(function() {
+        application.whoami(function() {
+          application.router.navigate("#", {trigger: true});
+        });
+      })
+      .fail(function() {
+        alert( "Login Error (persona)" );
+      });
+    });
+    
+    $("#browserid").click(function(){
+      navigator.id.get(function(assertion) {
+        if (assertion) {
+          $("form#persona input").val(assertion);
+          $("form#persona").submit();
+        } else {
+          location.reload();
+        }
+      });
+    });
+    
   },
   
   logout: function() {
