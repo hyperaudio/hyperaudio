@@ -20,7 +20,7 @@ process.on('message', function(m) {
       //ffprobe
       probe(filePath, function(err, probeData) {
           console.log(probeData);
-          process.send(probeData);
+          // process.send(probeData);
           
           //screenshot
           try{
@@ -31,16 +31,18 @@ process.on('message', function(m) {
                 timemarks: [ '50%', '75%' ],
                 filename: '%b_screenshot_%w_%i'
               }, 
-              path.join(__dirname, 'media/'), 
+              path.join(__dirname, 'media/' + m.owner  + '/'), 
               function(err, filenames) {
                 console.log(filenames);
                 console.log('screenshots were saved');
                 
+                probeData.screenshots = filenames;
+                process.send(probeData);
                 process.disconnect();
               }); 
           } catch (err) {
             console.log(err);
-            process.disconnect();
+            // process.disconnect();
           }         
       });
     });
