@@ -1,0 +1,23 @@
+td
+  a.btn.btn-default.btn-xs(data-toggle="modal", href="#modalPreview")
+    span.glyphicon.glyphicon-play
+
+  span 
+  
+  a.mixLabel(href='#{meta.url}') #{label}
+
+td
+  span.mixDesc=desc
+
+td=type
+  //- - if (type == 'video')
+  //-   span.glyphicon.glyphicon-film
+  //- - else if (type == 'audio')
+  //-   span.glyphicon.glyphicon-volume-up
+  //- - else
+  //-   span.glyphicon.glyphicon-question-sign
+
+td ?
+
+
+td ?

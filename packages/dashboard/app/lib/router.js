@@ -132,6 +132,56 @@ module.exports = Backbone.Router.extend({
   
   mixes: function() {
     $('#main').html(application.mixesView.render().el);
+    
+    var MixObject = require('models/mixObject');
+    var MixObjects = require('models/mixObjects');
+
+    var MixObjectsView = require('views/mixObjects_view');
+
+    var mixObjects = new MixObjects();
+    
+    var mixObjectsView = new MixObjectsView({
+      el: $('#mixObjects'),
+      collection: mixObjects
+    });
+    
+    mixObjects.comparator = function(model) {
+      return parseInt(model.get('sort'));
+    };
+
+
+    mixObjects.fetch({reset: true});
+    
+    $('#upload').click(function(){
+      filepicker.pick({
+        services: ["COMPUTER", "VIDEO", "WEBCAM", "URL", "DROPBOX", "GOOGLE_DRIVE", "FACEBOOK", "GITHUB"]
+      },
+      function(InkBlob){
+        // console.log(InkBlob.url);
+        console.log(InkBlob);
+        mixObjects.create({
+          '_id': null,  
+          label: InkBlob.filename,
+          desc: "",
+          type: InkBlob.mimetype.split('/')[0],
+          sort: 999,
+          owner: null,
+          meta: {
+            filename: InkBlob.filename,
+            mimetype: InkBlob.mimetype,
+            size: InkBlob.size,
+            url: InkBlob.url,
+            key: InkBlob.key
+          }
+        }); //FIXME sort
+        
+        mixObjects.trigger('reset');
+      },
+      function(err){
+        //ERR
+        console.log(err);
+      });
+    });
   }  
   
 });
