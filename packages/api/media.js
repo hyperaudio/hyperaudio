@@ -66,16 +66,10 @@ module.exports = function (app, nconf) {
         var p = cp.fork(__dirname + '/probe.js');
         p.send({
           id: mediaObject._id, 
-          url: mediaObject.meta.url
+          url: mediaObject.meta.url,
+          owner: mediaObject.owner
         });
-        p.on('message', function(m){
-          
-          // MediaObject.findById(mediaObject._id, function(err, _mediaObject) {            
-          //   _mediaObject.meta.probed = true;
-          //   _mediaObject.meta.probe = m;
-          //   _mediaObject.save(function(err){});
-          // });
-          
+        p.on('message', function(m){          
           var query = { _id: mediaObject._id };
           MediaObject.findOneAndUpdate(query, { probe: m }, function(err, model) {
             console.log(err, model);
