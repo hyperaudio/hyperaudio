@@ -2,6 +2,7 @@
 window.API = (document.location.host == '10.0.54.74')?'https://10.0.54.74':'https://data.hyperaud.io';
 // window.API = 'https://data.hyperaud.io';
 
+window.user = null;
 
 $.fn.editable.defaults.mode = 'inline';
 
@@ -17,6 +18,7 @@ Application = {
 
     var LoginView = require('views/login_view');
     var RegisterView = require('views/register_view');
+    var SettingsView = require('views/settings_view');
 
     var MediaView = require('views/media_view');
     var TranscriptsView = require('views/transcripts_view');
@@ -28,6 +30,7 @@ Application = {
 
     this.loginView = new LoginView();
     this.registerView = new RegisterView();
+    this.settingsView = new SettingsView();
 
     this.mediaView = new MediaView();
     this.transcriptsView = new TranscriptsView();
@@ -37,21 +40,20 @@ Application = {
     
     if (typeof Object.freeze === 'function') Object.freeze(this);
   },
-  
-  user: null,
-  
-  whoami: function() {
+    
+  whoami: function(callback) {
     $.get(window.API + '/whoami', function(whoami) {
       console.log(whoami);
       if (whoami.user) {
-        this.user = whoami.user;
+        window.user = whoami.user;
         $('body').removeClass('anonymous').addClass('user');
-        $('#userName').text(this.user.username);
+        $('#userName').text(window.user.username);
       } else {
-        this.user = null;
+        window.user = null;
         $('body').removeClass('user').addClass('anonymous');
         $('#userName').text('Account');
       }
+      if (callback) callback();
     });
   }
 }

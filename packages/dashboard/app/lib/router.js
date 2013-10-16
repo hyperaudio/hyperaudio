@@ -4,22 +4,75 @@ module.exports = Backbone.Router.extend({
   routes: {
     '': 'home',
     'login': 'login',
+    'logout': 'logout',
+    'settings': 'settings',
     'register': 'register',
     'media': 'media',
     'transcripts': 'transcripts',
     'mixes': 'mixes' 
   },
 
+  settings: function() {
+    $('#main').html(application.settingsView.render().el);
+  },
+  
   home: function() {
     $('#main').html(application.homeView.render().el);
   },
   
   login: function() {
     $('#main').html(application.loginView.render().el);
+    
+    $('#loginForm').on('submit', function(evt) {
+      evt.preventDefault();
+      $.post( window.API + '/login', {
+        username: $('#username').val(),
+        password: $('#password').val()
+      })
+      .done(function() {
+        application.whoami(function() {
+          application.router.navigate("#", {trigger: true});
+        });
+      })
+      .fail(function() {
+        alert( "Login Error" );
+      });
+      
+    });
+  },
+  
+  logout: function() {
+    $.get( window.API + '/logout', function() {
+      application.whoami(function() {
+        application.router.navigate("#", {trigger: true});
+      });
+    });
   },
   
   register: function() {
     $('#main').html(application.registerView.render().el);
+    
+    $('#registerForm').on('submit', function(evt) {
+      evt.preventDefault();
+      $.post( window.API + '/register', {
+        username: $('#username').val(),
+        password: $('#password').val()
+      })
+      .done(function() {
+        application.whoami(function() {
+          if (window.user) {
+            application.router.navigate("#", {trigger: true});
+          } else {
+            application.router.navigate("#login", {trigger: true});
+          }
+        });
+      })
+      .fail(function() {
+        alert( "Registration Error" );
+      });
+      
+    });
+    
   },
   
   media: function() {

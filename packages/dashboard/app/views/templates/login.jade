@@ -1,10 +1,10 @@
 #content
   h1 Login
   
-  form(action="/auth/browserid", method="post", style="display:none;", id="persona")
-    input(type="text", name="assertion")
+  //- form#persona(action="/auth/browserid", method="post", style="display:none;")
+  //-   input(type="text", name="assertion")
 
-  img(src="//developer.mozilla.org/files/3969/plain_sign_in_blue.png", id="browserid")
+  //- img(src="//developer.mozilla.org/files/3969/plain_sign_in_blue.png", id="browserid")
   
   script
     $("#browserid").click(function(){
@@ -20,14 +20,14 @@
     
   hr
   
-  form(action="/login", method="post")
+  form#loginForm(action="/login", method="post")
       div.form-group
         label Username
-        input.form-control(type="text", name="username")
+        input.form-control#username(type="text", name="username")
   
       div.form-group
         label Password
-        input.form-control(type="password", name="password")
+        input.form-control#password(type="password", name="password")
   
       div.form-group
         div
