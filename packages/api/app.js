@@ -197,6 +197,7 @@ app.post('/register', function(req, res) {
 
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
+require('./mixes')(app, nconf);
 
 
 // http.createServer(app).listen(app.get('port'), function(){
