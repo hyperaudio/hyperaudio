@@ -13,7 +13,49 @@
   <script src="javascripts/app.js"></script>
   <script>require('initialize');</script>
 </head>
-<body>
+<body class="anonymous">
+  
+  <header class="navbar navbar-inverse navbar-static-top" role="navigation">
+    <div class="container">
+    <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">hyperaud.io</a>
+      </div>
 
+      <div class="collapse navbar-collapse navbar-ex1-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Media</a></li>
+          <li><a href="#">Transcripts</a></li>
+          <li><a href="#">Mixes</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span id="userName">Account</span> <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li class="anonymous"><a href="#login">Login</a></li>
+              <li class="anonymous"><a href="#">Register</a></li>
+              <li class="user"><a href="#">Settings</a></li>
+              <li class="user"><a href="#">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+      </div>
+  </header>
+  
+  <div class="container">
+    <div id="main">
+    </div>    
+  </div>
+  
+  <footer role="contentinfo">
+    <div class="container">
+      <!-- <p><small>&copy; 2013 hyperaud.io</small></p> -->
+    </div>
+  </footer>
 </body>
 </html>

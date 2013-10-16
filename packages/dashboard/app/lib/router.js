@@ -2,10 +2,14 @@ var application = require('application');
 
 module.exports = Backbone.Router.extend({
   routes: {
-    '': 'home'
+    '': 'home',
+    'login': 'login'
   },
 
   home: function() {
-    $('body').html(application.homeView.render().el);
+    $('#main').html(application.homeView.render().el);
+  },
+  
+  login: function() {
   }
 });
