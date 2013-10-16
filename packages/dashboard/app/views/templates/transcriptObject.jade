@@ -1,0 +1,31 @@
+td
+  a.btn.btn-default.btn-xs(data-toggle="modal", href="#modalPreview")
+    span.glyphicon.glyphicon-play
+
+  span 
+  
+  a.transLabel(href='#{meta.url}') #{label}
+
+td
+  span.transDesc=desc
+
+td=type
+  //- - if (type == 'video')
+  //-   span.glyphicon.glyphicon-film
+  //- - else if (type == 'audio')
+  //-   span.glyphicon.glyphicon-volume-up
+  //- - else
+  //-   span.glyphicon.glyphicon-question-sign
+
+td
+  - var magnitude = Math.floor(Math.log(meta.size) / Math.log(1024));
+  - var size = (meta.size/Math.pow(1024, magnitude)).toFixed(2);
+  - var unit = "B";
+  - if (magnitude == 1) unit = "K";
+  - if (magnitude == 2) unit = "M";
+  - if (magnitude == 3) unit = "G";
+  span #{size}
+  small.unit #{unit}
+
+td=meta.mimetype
+

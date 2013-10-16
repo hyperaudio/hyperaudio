@@ -78,6 +78,56 @@ module.exports = Backbone.Router.extend({
   
   transcripts: function() {
     $('#main').html(application.transcriptsView.render().el);
+    
+    var TranscriptObject = require('models/transcriptObject');
+    var TranscriptObjects = require('models/transcriptObjects');
+
+    var TranscriptObjectsView = require('views/transcriptObjects_view');
+
+    var transcriptObjects = new TranscriptObjects();
+    
+    var transcriptObjectsView = new TranscriptObjectsView({
+      el: $('#transcriptObjects'),
+      collection: transcriptObjects
+    });
+    
+    transcriptObjects.comparator = function(model) {
+      return parseInt(model.get('sort'));
+    };
+
+
+    transcriptObjects.fetch({reset: true});
+    
+    $('#upload').click(function(){
+      filepicker.pick({
+        services: ["COMPUTER", "VIDEO", "WEBCAM", "URL", "DROPBOX", "GOOGLE_DRIVE", "FACEBOOK", "GITHUB"]
+      },
+      function(InkBlob){
+        // console.log(InkBlob.url);
+        console.log(InkBlob);
+        transcriptObjects.create({
+          '_id': null,  
+          label: InkBlob.filename,
+          desc: "",
+          type: InkBlob.mimetype.split('/')[0],
+          sort: 999,
+          owner: null,
+          meta: {
+            filename: InkBlob.filename,
+            mimetype: InkBlob.mimetype,
+            size: InkBlob.size,
+            url: InkBlob.url,
+            key: InkBlob.key
+          }
+        }); //FIXME sort
+        
+        transcriptObjects.trigger('reset');
+      },
+      function(err){
+        //ERR
+        console.log(err);
+      });
+    });
   },
   
   mixes: function() {
