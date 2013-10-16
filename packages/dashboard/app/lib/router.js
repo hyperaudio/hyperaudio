@@ -24,6 +24,12 @@ module.exports = Backbone.Router.extend({
   
   media: function() {
     $('#main').html(application.mediaView.render().el);
+    
+    $('#upload').click(function(){
+      filepicker.pick(function(InkBlob){
+        console.log(InkBlob.url);
+      });
+    });
   },
   
   transcripts: function() {

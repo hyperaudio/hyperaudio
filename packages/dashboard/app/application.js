@@ -4,6 +4,9 @@ Application = {
   API: 'https://10.0.54.74',
   
   initialize: function() {
+    
+    filepicker.setKey('A8RudJZ9NTTC8MTn61ia7z');
+    
     var HomeView = require('views/home_view');
 
     var LoginView = require('views/login_view');
