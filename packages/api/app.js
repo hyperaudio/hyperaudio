@@ -28,6 +28,14 @@ var options = {
   windowSize: 1024, // Server's window size
 };    
 
+
+//CORS middleware
+var allowCrossDomain = function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+}
+
 var app = express();
 
 // all environments
@@ -45,11 +53,12 @@ app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
 app.use(express.session());
 app.use(passport.initialize());
 app.use(passport.session());
-    
+  
+app.use(allowCrossDomain);  
 app.use(app.router);
 
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use(express.static(path.join(__dirname, 'UI/public')));
+app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
@@ -99,15 +108,23 @@ passport.use(new PersonaStrategy({
 ));
 
 
-app.all('/', function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    next();
-});
+// app.all('/', function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
+//     next();
+// });
 
 app.get('/', routes.index);
 // app.get('/users', user.list);
+
+app.get('/whoami', function(req, res){
+  if (req.isAuthenticated()) {
+    res.json({user: req.user});
+  } else {
+    res.json({user: null});
+  }
+});
 
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { user: req.user });
@@ -147,6 +164,9 @@ app.post('/register', function(req, res) {
           res.redirect('/');
         });
 });
+
+
+require('./media')(app, nconf);
 
 
 // http.createServer(app).listen(app.get('port'), function(){
