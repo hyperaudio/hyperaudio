@@ -30,12 +30,22 @@ module.exports = View.extend({
   			collection: collection
   		});
   		
-  		$mediaObjects.append(view.render().el);
-        $(view.render().el)
+  		var el = view.render().el;
+  		$mediaObjects.append(el);
+      $(el)
         .data('view', view)
-        .data('model', mediaObject);
+        .data('model', mediaObject)
+        .find('a.mediaLabel').editable({
+          type: 'text',
+          title: 'Edit label',
+            success: function(response, newValue) {
+              mediaObject.set('label', newValue, {silent: true});
+              mediaObject.save(null, { silent: true });
+            }
+        });  
+      
   	});
-
+  	
   	return this;
   }
 

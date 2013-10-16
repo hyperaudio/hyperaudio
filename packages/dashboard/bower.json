@@ -11,6 +11,7 @@
   "dependencies": {
     "console-polyfill": "*",
     "jquery": "*",
-    "bootstrap": "*"
+    "bootstrap": "*",
+    "codemirror": "*"
   }
 }
