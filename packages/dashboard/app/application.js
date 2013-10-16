@@ -1,7 +1,10 @@
+
+// window.API = 'https://10.0.54.74';
+window.API = 'https://data.hyperaud.io';
+
+
 // Application bootstrapper.
 Application = {
-  
-  API: 'https://10.0.54.74',
   
   initialize: function() {
     
@@ -35,7 +38,7 @@ Application = {
   user: null,
   
   whoami: function() {
-    $.get(this.API + '/whoami', function(whoami) {
+    $.get(window.API + '/whoami', function(whoami) {
       console.log(whoami);
       if (whoami.user) {
         this.user = whoami.user;
