@@ -1,7 +1,20 @@
 td
   a.mediaLabel(href='#{meta.url}') #{label}
-td=desc
+
+td
+  span.mediaDesc=desc
+
 td=type
-td=meta.size
+
+td
+  - var magnitude = Math.floor(Math.log(meta.size) / Math.log(1024));
+  - var size = (meta.size/Math.pow(1024, magnitude)).toFixed(2);
+  - var unit = "B";
+  - if (magnitude == 1) unit = "K";
+  - if (magnitude == 2) unit = "M";
+  - if (magnitude == 3) unit = "G";
+  span #{size}
+  small.unit #{unit}
+
 td=meta.mimetype
 

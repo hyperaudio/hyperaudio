@@ -42,6 +42,14 @@ module.exports = View.extend({
               mediaObject.set('label', newValue, {silent: true});
               mediaObject.save(null, { silent: true });
             }
+        });
+        $(el).find('.mediaDesc').editable({
+          type: 'text',
+          title: 'Edit description',
+            success: function(response, newValue) {
+              mediaObject.set('desc', newValue, {silent: true});
+              mediaObject.save(null, { silent: true });
+            }
         });  
       
   	});
