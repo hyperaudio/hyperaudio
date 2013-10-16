@@ -33,7 +33,7 @@ module.exports = Backbone.Router.extend({
     var mediaObjects = new MediaObjects();
     
     var mediaObjectsView = new MediaObjectsView({
-      el: $('#foo'),
+      el: $('#mediaObjects'),
       collection: mediaObjects
     });
     
