@@ -11,3 +11,7 @@ keys/data_hyperaud_io.key
 keys/data_hyperaud_io.csr
 
 keys/data_hyperaud_io.crt
+
+media/*.mp3
+media/*.mp4
+media/*.jpg

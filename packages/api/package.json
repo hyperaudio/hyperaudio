@@ -25,6 +25,7 @@
     "passport-persona": "*",
     "password-generator": "*",
     "fivebeans": "*",
-    "node-ffprobe": "*"
+    "node-ffprobe": "*",
+    "fluent-ffmpeg": "*"
   }
 }

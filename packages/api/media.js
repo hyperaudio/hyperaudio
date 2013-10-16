@@ -2,6 +2,7 @@ var https = require('https');
 var fs = require('fs');
 var path = require('path');
 var probe = require('node-ffprobe');
+var cp = require('child_process');
 
 var passport = require('passport');
 var MediaObject = require('./models/mediaObject');
@@ -55,37 +56,32 @@ module.exports = function (app, nconf) {
 
         console.log(mediaObject);
 
-        // mediaObject.save(function(err) {
-        //             if (!err) {
-        //                 console.log("created");
-        //             }
-        //         });
+        mediaObject.save(function(err) {
+            if (!err) {
+                console.log("created");
+            }
+        });
         
-        // download
-        console.log("downloading " + req.body.meta.url);
-        var request = https.get(req.body.meta.url, function(response) { 
-          var filePath = path.join(__dirname, 'media/' + response.headers['x-file-name']);
+        // download and probe
+        var p = cp.fork(__dirname + '/probe.js');
+        p.send({
+          id: mediaObject._id, 
+          url: mediaObject.meta.url
+        });
+        p.on('message', function(m){
           
-          var file = fs.createWriteStream(filePath);
-          response.pipe(file);
+          // MediaObject.findById(mediaObject._id, function(err, _mediaObject) {            
+          //   _mediaObject.meta.probed = true;
+          //   _mediaObject.meta.probe = m;
+          //   _mediaObject.save(function(err){});
+          // });
           
-          response.on("end", function() {
-            probe(filePath, function(err, probeData) {
-                console.log(probeData);
-                
-                // MediaObject.findById(mediaObject._id, function(err, newMediaObject) {
-                  mediaObject.meta.probed = true;
-                  mediaObject.meta.probe = JSON.parse(JSON.stringify(probeData));
-                  mediaObject.save(function(err){
-                    console.log(mediaObject);
-                    console.log(err);
-                  });
-                // });
-            });
+          var query = { _id: mediaObject._id };
+          MediaObject.findOneAndUpdate(query, { probe: m }, function(err, model) {
+            console.log(err, model);
           });
           
         });
-        // download
         
         return res.send(mediaObject);
     });
