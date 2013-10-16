@@ -1,3 +1,8 @@
+var https = require('https');
+var fs = require('fs');
+var path = require('path');
+var probe = require('node-ffprobe');
+
 var passport = require('passport');
 var MediaObject = require('./models/mediaObject');
 
@@ -50,11 +55,38 @@ module.exports = function (app, nconf) {
 
         console.log(mediaObject);
 
-        mediaObject.save(function(err) {
-            if (!err) {
-                return console.log("created");
-            }
+        // mediaObject.save(function(err) {
+        //             if (!err) {
+        //                 console.log("created");
+        //             }
+        //         });
+        
+        // download
+        console.log("downloading " + req.body.meta.url);
+        var request = https.get(req.body.meta.url, function(response) { 
+          var filePath = path.join(__dirname, 'media/' + response.headers['x-file-name']);
+          
+          var file = fs.createWriteStream(filePath);
+          response.pipe(file);
+          
+          response.on("end", function() {
+            probe(filePath, function(err, probeData) {
+                console.log(probeData);
+                
+                // MediaObject.findById(mediaObject._id, function(err, newMediaObject) {
+                  mediaObject.meta.probed = true;
+                  mediaObject.meta.probe = JSON.parse(JSON.stringify(probeData));
+                  mediaObject.save(function(err){
+                    console.log(mediaObject);
+                    console.log(err);
+                  });
+                // });
+            });
+          });
+          
         });
+        // download
+        
         return res.send(mediaObject);
     });
 
