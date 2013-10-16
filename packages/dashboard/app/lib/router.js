@@ -136,7 +136,7 @@ module.exports = Backbone.Router.extend({
           desc: "",
           type: InkBlob.mimetype.split('/')[0],
           sort: 999,
-          owner: null,
+          owner: window.user.username,
           meta: {
             filename: InkBlob.filename,
             mimetype: InkBlob.mimetype,
@@ -190,7 +190,7 @@ module.exports = Backbone.Router.extend({
           desc: "",
           type: InkBlob.mimetype.split('/')[0],
           sort: 999,
-          owner: null,
+          owner: window.user.username,
           meta: {
             filename: InkBlob.filename,
             mimetype: InkBlob.mimetype,
@@ -244,7 +244,7 @@ module.exports = Backbone.Router.extend({
           desc: "",
           type: InkBlob.mimetype.split('/')[0],
           sort: 999,
-          owner: null,
+          owner: window.user.username,
           meta: {
             filename: InkBlob.filename,
             mimetype: InkBlob.mimetype,

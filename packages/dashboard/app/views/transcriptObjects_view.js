@@ -33,23 +33,26 @@ module.exports = View.extend({
   		$transcriptObjects.append(el);
       $(el)
         .data('view', view)
-        .data('model', transcriptObject)
-        .find('a.transLabel').editable({
-          type: 'text',
-          title: 'Edit label',
-            success: function(response, newValue) {
-              transcriptObject.set('label', newValue, {silent: true});
-              transcriptObject.save(null, { silent: true });
-            }
-        });
-        $(el).find('.transDesc').editable({
-          type: 'text',
-          title: 'Edit description',
-            success: function(response, newValue) {
-              transcriptObject.set('desc', newValue, {silent: true});
-              transcriptObject.save(null, { silent: true });
-            }
-        });  
+        .data('model', transcriptObject);
+        
+        if (window.user) {
+          $(el).find('a.transLabel').editable({
+            type: 'text',
+            title: 'Edit label',
+              success: function(response, newValue) {
+                transcriptObject.set('label', newValue, {silent: true});
+                transcriptObject.save(null, { silent: true });
+              }
+          });
+          $(el).find('.transDesc').editable({
+            type: 'text',
+            title: 'Edit description',
+              success: function(response, newValue) {
+                transcriptObject.set('desc', newValue, {silent: true});
+                transcriptObject.save(null, { silent: true });
+              }
+          });  
+        }
       
   	});
   	

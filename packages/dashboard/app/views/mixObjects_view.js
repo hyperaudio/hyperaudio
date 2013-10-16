@@ -33,23 +33,26 @@ module.exports = View.extend({
   		$mixObjects.append(el);
       $(el)
         .data('view', view)
-        .data('model', mixObject)
-        .find('a.mixLabel').editable({
-          type: 'text',
-          title: 'Edit label',
-            success: function(response, newValue) {
-              mixObject.set('label', newValue, {silent: true});
-              mixObject.save(null, { silent: true });
-            }
-        });
-        $(el).find('.mixDesc').editable({
-          type: 'text',
-          title: 'Edit description',
-            success: function(response, newValue) {
-              mixObject.set('desc', newValue, {silent: true});
-              mixObject.save(null, { silent: true });
-            }
-        });  
+        .data('model', mixObject);
+        
+        if (window.user) {
+          $(el).find('a.mixLabel').editable({
+            type: 'text',
+            title: 'Edit label',
+              success: function(response, newValue) {
+                mixObject.set('label', newValue, {silent: true});
+                mixObject.save(null, { silent: true });
+              }
+          });
+          $(el).find('.mixDesc').editable({
+            type: 'text',
+            title: 'Edit description',
+              success: function(response, newValue) {
+                mixObject.set('desc', newValue, {silent: true});
+                mixObject.save(null, { silent: true });
+              }
+          });  
+        }
       
   	});
   	

@@ -34,24 +34,28 @@ module.exports = View.extend({
   		$mediaObjects.append(el);
   		
       $(el).data('view', view)
-        .data('model', mediaObject)
-        .find('a.mediaLabel').editable({
-          type: 'text',
-          title: 'Edit label',
-            success: function(response, newValue) {
-              mediaObject.set('label', newValue, {silent: true});
-              mediaObject.save(null, { silent: true });
-            }
-        });
+        .data('model', mediaObject);
         
-        $(el).find('.mediaDesc').editable({
-          type: 'text',
-          title: 'Edit description',
-            success: function(response, newValue) {
-              mediaObject.set('desc', newValue, {silent: true});
-              mediaObject.save(null, { silent: true });
-            }
-        });  
+        
+        if (window.user) {
+          $(el).find('a.mediaLabel').editable({
+            type: 'text',
+            title: 'Edit label',
+              success: function(response, newValue) {
+                mediaObject.set('label', newValue, {silent: true});
+                mediaObject.save(null, { silent: true });
+              }
+          });
+        
+          $(el).find('.mediaDesc').editable({
+            type: 'text',
+            title: 'Edit description',
+              success: function(response, newValue) {
+                mediaObject.set('desc', newValue, {silent: true});
+                mediaObject.save(null, { silent: true });
+              }
+          });  
+        }
         
         $(el).find('a.mediaMD').click(function(evt) {
           evt.preventDefault();
