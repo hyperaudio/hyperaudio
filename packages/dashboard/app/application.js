@@ -1,5 +1,5 @@
 
-window.API = 'https://10.0.54.74';
+window.API = (document.location.host == '10.0.54.74')?'https://10.0.54.74':'https://data.hyperaud.io';
 // window.API = 'https://data.hyperaud.io';
 
 
