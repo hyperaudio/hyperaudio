@@ -1,12 +1,21 @@
-/* Singularity Grid System Definitions
+/* Singularity + Breakpoint Grid System Definitions
 ----------------------------------------------- */
 
 // Import necessary mixins
 @import "singularitygs";
 @import "breakpoint";
 
+// Define Breakpoints
+$default           : 1px;    // just to remember that the default is mobile!
+$low-rez           : 400px;  // and above
+$mid-rez           : 768;    // and above
+$high-rez          : 1024px; // and above
+$hd-rez            : 1440px; // and above
+
+// Define Grid
 $grids: 3;
-$grids: add-grid(12 at 960px);
+$grids: add-grid(6 at $low-rez);
+$grids: add-grid(12 at $mid-rez);
 $gutters: 0;
 $output: 'float';
 
