@@ -10,30 +10,32 @@
 
   <body class="tpl_site <%= page_classes %>">
     <header class="header branded">
-      <div class="container">
-
-        <h1 class="header-brandmark lt_header-brandmark">
-          <a href="#" class="brandmark">
-            <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
-            <span class="brandmark-label">Hyperaudio</span>
-          </a>
-        </h1>
-
-        <ul class="header-navigation lt_header-navigation">
-          <li class="header-navigation-item"><a href="#">Tour</a></li>
-          <li class="header-navigation-item"><a href="#">Case Studies</a></li>
-          <li class="header-navigation-item"><a href="#">Try it</a></li>
-          <li class="header-navigation-item"><a href="#" class="altered">Sign up</a></li>
-          <li class="header-navigation-item header-login"><a href="#" class="button">Log in</a></li>
-        </ul>
+      <div class="container row">
+        <div class="small-12 large-3 columns">
+          <h1 class="header-brandmark">
+            <a href="#" class="brandmark">
+              <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+        <div class="small-12 large-9 columns">
+          <ul class="header-navigation lt_header-navigation">
+            <li class="header-navigation-item"><a href="#">Tour</a></li>
+            <li class="header-navigation-item"><a href="#">Case Studies</a></li>
+            <li class="header-navigation-item"><a href="#">Try it</a></li>
+            <li class="header-navigation-item"><a href="#" class="altered">Sign up</a></li>
+            <li class="header-navigation-item header-login"><a href="#" class="button">Log in</a></li>
+          </ul>
+        </div>
 
       </div>
     </header>
     <%= yield %>
     <footer class="footer">
-      <div class="container">
-        <div class="footer-navigation lt_footer-navigation">
-          <ul class="footer-nav-list">
+      <div class="container row">
+        <div class="small-12 large-9 push-3 columns">
+          <ul class="footer-navigation">
             <li class="footer-navigation-item"><a href="#">Tour</a></li>
             <li class="footer-navigation-item"><a href="#">Blog</a></li>
             <li class="footer-navigation-item"><a href="#"><abbr title="Frequently Asked Questions">FAQ</abbr></a></li>
@@ -42,15 +44,17 @@
             <li class="footer-navigation-item"><a href="#">Twitter</a></li>
           </ul>
         </div>
-        <h1 class="footer-brandmark lt_footer-brandmark">
-          <a href="#" class="brandmark">
-            <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
-            <span class="brandmark-label">Hyperaudio</span>
-          </a>
-        </h1>
+        <div class="small-12 large-3 pull-9 columns">
+          <h1 class="footer-brandmark">
+            <a href="#" class="brandmark">
+              <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
       </div>
       <div class="container">
-        <div class="footer-imprint lt_footer-imprint">
+        <div class="footer-imprint">
           <p>Hyperaudio <abbr title="Incorporated">Inc</abbr>. is a non-profit producing Open Source software, established in Rhode Island, USA.</p>
           <p>&copy; 2012–2013 Hyperaudio Incorporated. All rights reserved.</p>
           <p><a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a></p>

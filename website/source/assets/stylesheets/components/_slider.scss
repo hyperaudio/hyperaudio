@@ -29,8 +29,8 @@
 }
 
 .slider-pager {
-  @include position-bottom-right(0,0);
-  @include position-bottom-left(0,0);
+  @include position-top-right(-$space-xl,0);
+  @include position-top-left(-$space-xl,0);
   clear: both;
   width: 100%;
   text-align: center;
@@ -38,13 +38,13 @@
 }
 .slider-page {
   @include border-radius($radius-absolute);
-  background: $brand-color;
+  background: $bright;
   cursor: pointer;
   display: inline-block;
-  height: 16px;
+  height: 10px;
   margin: 0 $space-s;
   opacity: 0.5;
-  width: 16px;
+  width: 10px;
   &.active,
   &:hover {
     opacity: 1;

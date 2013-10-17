@@ -79,10 +79,6 @@ GEM
       ffi (>= 0.5.0)
     ruby18_source_location (0.2)
     sass (3.2.12)
-    singularitygs (1.1.2)
-      breakpoint (>= 2.0.1)
-      compass (>= 0.12.2)
-      sass (>= 3.2.1)
     sprockets (2.10.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -98,6 +94,8 @@ GEM
     uglifier (2.1.2)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    zurb-foundation (4.3.2)
+      sass (>= 3.2.0)
 
 PLATFORMS
   ruby
@@ -107,5 +105,5 @@ DEPENDENCIES
   middleman (~> 3.1.5)
   middleman-livereload (~> 3.1.0)
   ruby18_source_location
-  singularitygs (~> 1.1.2)
   wdm (~> 0.1.0)
+  zurb-foundation (~> 4.3.2)

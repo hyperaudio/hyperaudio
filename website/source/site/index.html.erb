@@ -11,8 +11,13 @@ title: Site
     <div class="slider">
       <div class="slides functionalities lt_functionalities">
         <div class="slide">
-          <div class="functionality lt_functionality">
-            <div class="functionality-description">
+          <div class="functionality row">
+            <div class="functionality-figure columns small-12 large-8 push-4">
+              <figure class="functionality-image-container">
+                <%= image_tag 'tmp/placeholder.png', :class => "functionality-image" %>
+              </figure>
+            </div>
+            <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Navigate</h2>
               <div class="functionality-text">
                 <p>Skim through media quickly and intuitively.</p>
@@ -22,16 +27,16 @@ title: Site
 <!--               <p class="functionality-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
               <a href="#" class="functionality-call button block large">Sign Up</a>
             </div>
-            <div class="functionality-figure">
+          </div>
+        </div>
+        <div class="slide">
+          <div class="functionality">
+            <div class="functionality-figure columns small-12 large-8 push-4">
               <figure class="functionality-image-container">
                 <%= image_tag 'tmp/placeholder.png', :class => "functionality-image" %>
               </figure>
             </div>
-          </div>
-        </div>
-        <div class="slide">
-          <div class="functionality lt_functionality">
-            <div class="functionality-description">
+            <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Search</h2>
               <div class="functionality-text">
                 <p>Search transcripts to locate points of interest.</p>
@@ -41,16 +46,16 @@ title: Site
               <!-- <p class="functionality-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
               <a href="#" class="functionality-call button block large">Sign Up</a>
             </div>
-            <div class="functionality-figure">
+          </div>
+        </div>
+        <div class="slide">
+          <div class="functionality">
+            <div class="functionality-figure columns small-12 large-8 push-4">
               <figure class="functionality-image-container">
                 <%= image_tag 'tmp/placeholder.png', :class => "functionality-image" %>
               </figure>
             </div>
-          </div>
-        </div>
-        <div class="slide">
-          <div class="functionality lt_functionality">
-            <div class="functionality-description">
+            <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Edit</h2>
               <div class="functionality-text">
                 <p>Assemble content as simply as you would a document.</p>
@@ -59,11 +64,6 @@ title: Site
               </div>
               <!-- <p class="functionality-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
               <a href="#" class="functionality-call button block large">Sign Up</a>
-            </div>
-            <div class="functionality-figure">
-              <figure class="functionality-image-container">
-                <%= image_tag 'tmp/placeholder.png', :class => "functionality-image" %>
-              </figure>
             </div>
           </div>
         </div>
@@ -77,8 +77,8 @@ title: Site
 
 <section class="features section">
   <div class="container">
-    <div class="feature lt_feature odd">
-      <div class="feature-description">
+    <div class="feature row">
+      <div class="feature-description columns large-4 small-12">
         <h2 class="feature-heading">Shareable</h2>
         <div class="feature-text">
           <p>Highlight or bookmark notable passages of audio and video.</p>
@@ -87,14 +87,14 @@ title: Site
         <!-- <p class="feature-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
         <a href="#" class="feature-call button large">Learn more</a>
       </div>
-      <div class="feature-figure">
+      <div class="feature-figure large-8 small-12 columns">
         <figure class="feature-image-container">
           <%= image_tag 'tmp/placeholder.png', :class => "feature-image" %>
         </figure>
       </div>
     </div>
-    <div class="feature lt_feature even">
-      <div class="feature-description">
+    <div class="feature">
+      <div class="feature-description large-4 small-12 columns push-8">
         <h2 class="feature-heading">Accesible</h2>
         <div class="feature-text">
           <p>Watch words highlight exactly as they are spoken.</p>
@@ -103,7 +103,7 @@ title: Site
         <!-- <p class="feature-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
         <a href="#" class="feature-call button large">Learn more</a>
       </div>
-      <div class="feature-figure">
+      <div class="feature-figure pull-4 small-12 large-8 columns">
         <figure class="feature-image-container">
           <%= image_tag 'tmp/placeholder.png', :class => "feature-image" %>
         </figure>
@@ -112,37 +112,33 @@ title: Site
   </div>
 </section>
 
+<hr class="separator" />
+
 <section class="characteristics section">
-  <div class="container">
-    <div class="characteristic lt_characteristic">
-      <div class="characteristic-description">
-        <h2 class="characteristic-heading">Responsive</h2>
-        <div class="characteristic-text">
-          <p>At home, in the office or on the move.</p>
-          <p>Web-based Hyperaudio responds to your device.</p>
-        </div>
-        <!-- <p class="characteristic-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
-      </div>
+  <div class="container row">
+    <div class="characteristic large-6 small-6 columns">
+      <h2 class="characteristic-heading">Responsive</h2>
       <div class="characteristic-figure">
         <figure class="characteristic-image-container">
           <%= image_tag 'tmp/placeholder.png', :class => "characteristic-image" %>
         </figure>
+      </div>
+      <div class="characteristic-text">
+        <p>At home, in the office or on the move.</p>
+        <p>Web-based Hyperaudio responds to your device.</p>
       </div>
       <a href="#" class="characteristic-call button large">Learn more</a>
     </div>
-    <div class="characteristic lt_characteristic">
-      <div class="characteristic-description">
-        <h2 class="characteristic-heading">Extensible</h2>
-        <div class="characteristic-text">
-          <p>Create your own Hyperaudio applications using our clientside libraries and APIs.</p>
-          <p>Install the Hyperaudio ecosystem on your servers.</p>
-        </div>
-        <!-- <p class="characteristic-detail">When, while the lovely valley teems with vapour around me, and the meridian sun strikes the upper surface of the impenetrable foliage of my trees, and but a few stray.</p> -->
-      </div>
+    <div class="characteristic large-6 small-6 columns">
+      <h2 class="characteristic-heading">Extensible</h2>
       <div class="characteristic-figure">
         <figure class="characteristic-image-container">
           <%= image_tag 'tmp/placeholder.png', :class => "characteristic-image" %>
         </figure>
+      </div>
+      <div class="characteristic-text">
+        <p>Create your own Hyperaudio applications using our clientside libraries and APIs.</p>
+        <p>Install the Hyperaudio ecosystem on your servers.</p>
       </div>
       <a href="#" class="characteristic-call button large">Learn more</a>
     </div>
@@ -152,17 +148,17 @@ title: Site
 <hr class="separator" />
 
 <section class="section endorsements">
-  <div class="container">
-    <h1 class="heading-xl">Praised by experts. Supported by organizations.</h1>
-    <div class="endorsement lt_endorsement">
+  <h1 class="heading-xl">Praised by experts. Supported by organizations.</h1>
+  <div class="container row">
+    <div class="endorsement small-12 large-4 columns">
       <blockquote class="endorsement-quote">Hyperaudio Pad attains something like the holy grail of web media. It gives web media producers the same copy, cut paste functionality that writers have enjoyed for years.</blockquote>
       <cite class="endorsement-author">Ben Moskowitz <span class="endorsement-author-title">Mozilla and new media professor at NYU Interactive Telecommunications Program</span></cite>
     </div>
-    <div class="endorsement lt_endorsement">
+    <div class="endorsement small-12 large-4 columns">
       <blockquote class="endorsement-quote">Everybody at the BBC Research &amp; Development I have talked to about Hyperaudio is excited by its potential and its current standing.</blockquote>
       <cite class="endorsement-author">Ian Forrester <span class="endorsement-author-title">Senior firestarter at BBC R&amp;D, emergent technology expert</span></cite>
     </div>
-    <div class="endorsement lt_endorsement">
+    <div class="endorsement small-12 large-4 columns">
       <blockquote class="endorsement-quote">By introducing interactive, word level timed, transcripts to videos our our online community can take full advantage of these videos and create their own mashups to share.</blockquote>
       <cite class="endorsement-author">Mohammed El-Haddad <span class="endorsement-author-title">Interactive Journalist Al Jazeera English</span></cite>
     </div>

@@ -5,11 +5,9 @@
 
 // Header
 .lt_header-navigation {
-  @include isolation-span(2, 2, $grid: 3);
   text-align: right;
 }
 .lt_header-brandmark {
-  @include isolation-span(1, 1, $grid: 3);
 }
 
 // Body
@@ -19,64 +17,37 @@
   margin-bottom: $space-h;
 }
 .lt_functionality {
-  .functionality-description,
-  .functionality-figure {
-    @include box-sizing('border-box');
-    padding: $space-m $space-m 0;
-  }
-  .functionality-description {
-    @include isolation-span(1, 1);
-  }
-  .functionality-figure {
-    @include isolation-span(2, 2);
-    max-height: 350px;
-  }
 }
 
 .lt_feature {
   .feature-description,
   .feature-figure {
-    @include box-sizing('border-box');
-    padding: 0 $space-m;
   }
   .feature-figure {
-    max-height: 350px;
   }
   &.odd {
     .feature-description {
-      @include isolation-span(1, 1);
     }
     .feature-figure {
-      @include isolation-span(2, 2);
     }
   }
   &.even {
     .feature-description {
-      @include isolation-span(1, 3);
     }
     .feature-figure {
-      @include isolation-span(2, 1);
     }
   }
 }
 .lt_characteristic {
-  @include grid-span(1, 1, 2);
-  @include box-sizing('border-box');
-  padding: $space-m $space-m 0;
 }
 .lt_endorsement {
-  @include grid-span(1, 1);
-  @include box-sizing('border-box');
-  padding: $space-m $space-m 0;
 }
 
 // Footer
 .lt_footer-navigation {
-  @include isolation-span(2, 2, $grid: 3);
+  text-align: right;
 }
 .lt_footer-brandmark {
-  @include isolation-span(1, 1, $grid: 3);
 }
 .lt_footer-imprint {
-
 }

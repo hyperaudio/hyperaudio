@@ -2,11 +2,7 @@
 ----------------------------------------------- */
 
 .characteristic {
-  @include clearfix;
   text-align: center;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 
 .characteristic-heading {

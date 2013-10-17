@@ -4,21 +4,21 @@
 ------------------------------------------- */
 @import "compass";
 @import "compass/layout/sticky-footer";
-@import "singularitygs";
+@import "normalize";
+@import "foundation/components/global";
+@import "foundation/components/grid";
 @import "breakpoint";
 
 /* Import Bower-driven Vendor Modules
 ------------------------------------------- */
-@import "../vendor/normalize-scss/normalize";
 
 /* Import Other External Assets
 ------------------------------------------- */
-// @import url(http://fonts.googleapis.com/css?family=Exo:500,500italic|Merriweather+Sans:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Exo:500,500italic|Merriweather+Sans:400,700,400italic,700italic);
 @import "../fonts/hyperaudio/style.css";
 
 /* Import Hyperaudio Library Mixins
 ------------------------------------------- */
-@import "lib/clearfix";
 @import "lib/hidetext";
 @import "lib/position";
 

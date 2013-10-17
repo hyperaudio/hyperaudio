@@ -3,6 +3,10 @@
 
 /* ---------- Generic Properties ---------- */
 
+// * {
+//   @include box-sizing('border-box');
+// }
+
 .section {
   @include clearfix;
   padding: $space-h 0;
@@ -11,7 +15,6 @@
 
 .container {
   @include clearfix;
-  // @include background-grid;
   margin: 0 auto;
   min-height: 100%;
   max-width: 960px;

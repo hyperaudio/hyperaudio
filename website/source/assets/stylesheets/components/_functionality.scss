@@ -34,11 +34,10 @@
 .functionality-figure {
 }
 .functionality-image-container {
-  @include border-top-radius($radius-s);
+  @include border-radius($radius-s);
   line-height: 0;
   overflow: hidden;
   position: relative;
-  max-height: 350px;
   &:after {
     @include position-top-right(0,0);
     @include position-bottom-left(0,0);
