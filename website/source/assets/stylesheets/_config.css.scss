@@ -1,10 +1,14 @@
 /* Singularity Grid System Definitions
 ----------------------------------------------- */
 
-$grids: 12;
+// Import necessary mixins
+@import "singularitygs";
+@import "breakpoint";
+
+$grids: 3;
+$grids: add-grid(12 at 960px);
 $gutters: 0;
 $output: 'float';
-$include-border-box: true;
 
 /* Colour Palette
 ----------------------------------------------- */
@@ -36,7 +40,7 @@ $shadow-light      : rgba(0,0,0,0.05);
 // Flares
 $flare-heavy       : rgba(255,255,255,0.9);
 $flare-strong      : rgba(255,255,255,0.7);
-$flare-mid        : rgba(255,255,255,0.5);
+$flare-mid         : rgba(255,255,255,0.5);
 $flare-weak        : rgba(255,255,255,0.2);
 $flare-light       : rgba(255,255,255,0.1);
 

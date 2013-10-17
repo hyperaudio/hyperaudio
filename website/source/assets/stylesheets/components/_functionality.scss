@@ -3,7 +3,6 @@
 
 .functionality {
   @include clearfix;
-  position: relative;
   @include border-top-radius($radius-s);
 }
 
@@ -13,9 +12,6 @@
   margin-bottom: $space-l;
 }
 .functionality-description {
-  @include position-top-left(20px,20px);
-  width: 200px;
-  z-index: 50;
 }
 .functionality-detail,
 .functionality-call {
@@ -36,14 +32,13 @@
 .functionality-call {
 }
 .functionality-figure {
-  max-height: 400px;
-  overflow: hidden;
 }
 .functionality-image-container {
   @include border-top-radius($radius-s);
   line-height: 0;
   overflow: hidden;
   position: relative;
+  max-height: 350px;
   &:after {
     @include position-top-right(0,0);
     @include position-bottom-left(0,0);

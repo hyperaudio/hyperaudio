@@ -1,16 +1,20 @@
+/* Brandmark
+----------------------------------------------- */
+
 .brandmark {
-  display: inline-block;
-  height: 40px;
   border: none !important;
+  display: inline-block;
+  font-size: 0;
+  height: 40px;
 }
 .brandmark-symbol {
-  margin-right: $space-m;
-  height: 40px;
   float: left;
+  height: 40px;
+  margin-right: $space-m;
 }
 .brandmark-label {
-  font-size: $font-l;
   font-family: $secondary-font;
-  line-height: 40px;
+  font-size: $font-l;
   font-weight: bold;
+  line-height: 40px;
 }

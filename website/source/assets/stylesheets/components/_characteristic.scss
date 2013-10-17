@@ -1,42 +1,43 @@
-/* Feature
+/* Characteristics
 ----------------------------------------------- */
 
-.feature {
+.characteristic {
   @include clearfix;
-  margin-bottom: $space-h;
+  text-align: center;
   &:last-child {
     margin-bottom: 0;
   }
 }
 
-.feature-heading {
+.characteristic-heading {
   font-size: $font-xl;
   margin-top: $space-m;
 }
-.feature-text,
-.feature-detail {
+.characteristic-text,
+.characteristic-detail {
   margin: $space-l 0 0;
 }
-.feature-text {
+.characteristic-text {
   font-size: $font-l;
   line-height: $lheight-m;
 }
-.feature-detail {
+.characteristic-detail {
   color: $mono-mid;
   font-size: $font-s;
   line-height: $font-l;
 }
-.feature-call {
+.characteristic-call {
 
 }
-.feature-figure {
+.characteristic-figure {
+  margin-bottom: $space-l;
 }
-.feature-image-container {
+.characteristic-image-container {
+  max-height: 300px;
   @include border-radius($radius-s);
   line-height: 0;
   overflow: hidden;
   position: relative;
-  max-height: 350px;
   &:after {
     @include position-top-right(0,0);
     @include position-bottom-left(0,0);
@@ -46,8 +47,22 @@
     display: block;
   }
 }
-.feature-image {
+.characteristic-image {
   @include box-sizing(border-box);
   line-height: 0;
   width: 100%;
+}
+
+.characteristic.odd {
+  .characteristic-description {
+  }
+  .characteristic-figure {
+  }
+}
+
+.characteristic.even {
+  .characteristic-description {
+  }
+  .characteristic-figure {
+  }
 }
