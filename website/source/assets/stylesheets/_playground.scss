@@ -3,7 +3,21 @@
 
 .branded {
   background: $brand-color;
+  color: $bright;
   a {
     color: $bright;
+  }
+  .button {
+    color: $bright;
+    border-color: $bright;
+    &:hover {
+      color: $brand-color !important;
+      background: $bright;
+    }
+  }
+  .button.primary {
+    border-color: $bright;
+    color: $brand-color;
+    background: $bright;
   }
 }

@@ -21,6 +21,9 @@ input[type="submit"].button,
 }
 
 .button.primary {
+  border-color: $alt-color;
+  color: $bright;
+  background: $alt-color;
 }
 
 .button.block {
