@@ -9,7 +9,7 @@ $dark              : #000;
 $bright            : #fff;
 
 $heavy             : #111;
-$mono-heavy        : #111;
+$mono-heavy        : #333;
 $mono-strong       : #545454;
 $mono-mid          : #666;
 $mono-weak         : #999;
@@ -57,9 +57,9 @@ $font-xs           : 1.1rem;
 // Line Heights
 $lheight-xl        : 2.4em;
 $lheight-l         : 2.0em;
-$lheight-m         : 1.6em;
-$lheight-s         : 1.2em;
-$lheight-xs        : 1.0em;
+$lheight-m         : 1.8em;
+$lheight-s         : 1.5em;
+$lheight-xs        : 1.2em;
 
 /* Spaces
 ----------------------------------------------- */
@@ -81,7 +81,7 @@ $radius-s          : 0.3rem;
 /* Default definitions
 ----------------------------------------------- */
 $dflt-background  : $bright;
-$dflt-color       : $mono-strong;
+$dflt-color       : $mono-heavy;
 $dflt-font        : $primary-font;
 $dflt-font-size   : $font-m;
 $dflt-line-height : $lheight-m;

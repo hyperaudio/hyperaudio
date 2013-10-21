@@ -2,23 +2,24 @@
 ----------------------------------------------- */
 
 .characteristics {
+
 }
+
 .characteristic {
-  text-align: center;
-  margin: 0 $space-l;
-  padding: $space-m;
+
 }
 
 .characteristic-heading {
   font-size: $font-xl;
   margin-bottom: $space-l;
+  text-align: center;
 }
 .characteristic-text,
 .characteristic-detail {
   margin: $space-l 0 0;
 }
 .characteristic-text {
-  min-height: 6.6rem;
+  min-height: 10rem;
   text-align: left;
 }
 .characteristic-detail {
@@ -51,18 +52,4 @@
   @include box-sizing(border-box);
   line-height: 0;
   width: 100%;
-}
-
-.characteristic.odd {
-  .characteristic-description {
-  }
-  .characteristic-figure {
-  }
-}
-
-.characteristic.even {
-  .characteristic-description {
-  }
-  .characteristic-figure {
-  }
 }
