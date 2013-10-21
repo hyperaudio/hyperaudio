@@ -1,6 +1,7 @@
 .slider {
   display: block;
   height: auto;
+  @include clearfix;
   list-style: none;
 }
 .slide {
@@ -29,10 +30,8 @@
 }
 
 .slider-pager {
-  @include position-top-right(-$space-xl,0);
-  @include position-top-left(-$space-xl,0);
+  @include position-bottom-right(0,-60px);
   clear: both;
-  width: 100%;
   text-align: center;
   z-index: 1000;
 }

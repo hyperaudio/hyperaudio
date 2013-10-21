@@ -4,6 +4,10 @@
 @import "config";
 
 // Header
+.lt_header {
+  padding-top: $space-xl;
+  padding-bottom: $space-xl;
+}
 .lt_header-navigation {
   text-align: right;
 }
@@ -12,11 +16,17 @@
 
 // Body
 .lt_homefold {
+  padding-top: 0;
+  padding-bottom: 0;
+  .lt_pitch {
+    padding-top: $space-xl;
+  }
 }
 .lt_pitch {
   margin-bottom: $space-h;
 }
-.lt_functionality {
+.lt_functionalities {
+  // margin-top: $space-h;
 }
 
 .lt_feature {

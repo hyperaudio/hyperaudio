@@ -1,0 +1,54 @@
+/* Article
+----------------------------------------------- */
+
+.article {
+  position: relative;
+}
+.article-heading {
+  font-size: $font-m;
+  color: $mono-weak;
+  text-align: center;
+}
+.article-title {
+  font-size: $font-h;
+}
+.article-date {
+  font-style: italic;
+  color: $mono-weak;
+  font-size: $font-m;
+}
+.article {
+  .article-title {
+    text-align: center;
+    margin: $space-m;
+  }
+}
+
+
+.article-body {
+  blockquote {
+    margin: $space-l;
+    padding-left: $space-l;
+    font-style: italic;
+    border-left: $space-s solid $light;
+  }
+  ul,
+  ol {
+    margin: $space-l;
+  }
+  p {
+    text-indent: $space-l;
+  }
+}
+
+
+.article.excerpt {
+  .article-title {
+    text-align: center;
+  }
+  .article-date {
+    text-align: center;
+    margin-bottom: $space-xl;
+    display: block;
+  }
+}

@@ -3,15 +3,21 @@
 
 .button {
   @include border-radius($radius-s);
-  background: $alt-color;
-  color: $bright;
+  background: $light;
+  color: $alt-color;
   border: none !important;
   display: inline-block;
   font-weight: bold;
   padding: $space-xs $space-m;
   &:hover {
     background: #2C3E50;
+    color: $bright;
   }
+}
+
+.button.primary {
+  background: $alt-color;
+  color: $bright;
 }
 
 .button.block {

@@ -1,21 +1,25 @@
 /* Characteristics
 ----------------------------------------------- */
 
+.characteristics {
+}
 .characteristic {
   text-align: center;
+  margin: 0 $space-l;
+  padding: $space-m;
 }
 
 .characteristic-heading {
   font-size: $font-xl;
-  margin-top: $space-m;
+  margin-bottom: $space-l;
 }
 .characteristic-text,
 .characteristic-detail {
   margin: $space-l 0 0;
 }
 .characteristic-text {
-  font-size: $font-l;
-  line-height: $lheight-m;
+  min-height: 6.6rem;
+  text-align: left;
 }
 .characteristic-detail {
   color: $mono-mid;
@@ -29,9 +33,9 @@
   margin-bottom: $space-l;
 }
 .characteristic-image-container {
-  max-height: 300px;
   @include border-radius($radius-s);
   line-height: 0;
+  max-height: 300px;
   overflow: hidden;
   position: relative;
   &:after {

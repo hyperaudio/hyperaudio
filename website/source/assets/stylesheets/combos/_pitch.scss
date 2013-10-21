@@ -1,10 +1,22 @@
+/* Pitch
+----------------------------------------------- */
+
 .pitch {
   text-align: center;
 }
 .pitch-heading {
-  margin-bottom: $space-l;
   font-size: $font-h;
 }
 .pitch-text {
   font-weight: normal;
+  margin-top: $space-l;
+}
+
+.pitch.compact {
+  .pitch-text {
+    margin-bottom: $space-l;
+    margin-top: 0;
+    font-size: $font-m;
+    color: $mono-weak;
+  }
 }

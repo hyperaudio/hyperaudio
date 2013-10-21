@@ -11,8 +11,10 @@
 .endorsement {
 }
 .endorsement-quote {
+  display: block;
   font-style: italic;
   margin-bottom: $space-l;
+  min-height: 11rem;
 }
 .endorsement-author {
   color: $mono-weak;
