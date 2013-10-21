@@ -29,14 +29,13 @@
 /* Import Base Styles
 ------------------------------------------- */
 @import "base/body";
+@import "base/headings";
+@import "base/links";
+@import "base/lists";
 
-/* Import Typography
+/* Basic Elements
 ------------------------------------------- */
-@import "typography/bodytext";
-@import "typography/buttons";
-@import "typography/links";
-@import "typography/lists";
-@import "typography/headings";
+@import "elements/buttons";
 
 /* Import Components
 ------------------------------------------- */
