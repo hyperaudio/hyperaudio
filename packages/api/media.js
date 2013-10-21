@@ -84,11 +84,12 @@ module.exports = function(app, nconf) {
     });
 
     // download and probe
+    console.log('forking ' + __dirname + '/probe.js')
     var p = cp.fork(__dirname + '/probe.js');
     p.send({
-      id: mediaObject._id,
+      // id: mediaObject._id,
       url: mediaObject.meta.url,
-      owner: mediaObject.owner
+      owner: owner
     });
     p.on('message', function(m) {
       var query = {
