@@ -37,15 +37,18 @@
 }
 .slider-page {
   @include border-radius($radius-absolute);
-  background: $bright;
+  background: $alt-color;
   cursor: pointer;
   display: inline-block;
   height: 10px;
-  margin: 0 $space-s;
-  opacity: 0.5;
+  margin: 2px $space-s;
   width: 10px;
-  &.active,
-  &:hover {
-    opacity: 1;
-  }
+}
+.slider-page.active {
+  @include border-radius($radius-absolute);
+  background: transparent;
+  border: 1px solid $alt-color;
+  height: 14px;
+  margin: 0 $space-s;
+  width: 14px;
 }
