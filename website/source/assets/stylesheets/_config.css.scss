@@ -8,20 +8,20 @@
 $dark              : #000;
 $bright            : #fff;
 
-$heavy             : #111;
-$mono-heavy        : #333;
-$mono-strong       : #545454;
-$mono-mid          : #666;
-$mono-weak         : #999;
-$mono-light        : #ccc;
-$light             : #eee;
+$heavy             : rgba(0,0,0,0.88);
+$mono-heavy        : rgba(0,0,0,0.77);
+$mono-strong       : rgba(0,0,0,0.70);
+$mono-mid          : rgba(0,0,0,0.55);
+$mono-weak         : rgba(0,0,0,0.35);
+$mono-light        : rgba(0,0,0,0.20);
+$light             : rgba(0,0,0,0.10);
 
 // Rainbow
 
-$brand-color       : #F39C12;
-// $brand-color       : #4899C8;
-$brand-color-light : #FDECD2;
-$alt-color         : #2C3E50;
+$brand-color       : rgba(243,156,18,1);
+$brand-color-light : rgba(243,156,18,0.3);
+$alt-color         : rgba(44,62,80,1);
+$alt-color-light   : rgba(44,62,80,0.3);
 
 // Shadows
 $shadow-heavy      : rgba(0,0,0,0.9);
