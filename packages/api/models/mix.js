@@ -7,7 +7,8 @@ var Mix = new mongoose.Schema({
     type: String,
     sort: { type: Number },
     owner: String,
-    meta: Schema.Types.Mixed
+    meta: Schema.Types.Mixed,
+    content: String
 });
 
 module.exports = mongoose.model('Mixes', Mix);
