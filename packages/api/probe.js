@@ -9,7 +9,9 @@ process.on('message', function(m) {
 
   console.log("downloading " + m.url);
   var request = https.get(m.url, function(response) {
-    fs.mkdirSync(path.join(__dirname, 'media/' + m.owner + '/'));
+    try{
+      fs.mkdirSync(path.join(__dirname, 'media/' + m.owner + '/'));
+    } catch (FIXME) {}
     var filePath = path.join(__dirname, 'media/' + m.owner + '/' + response.headers['x-file-name']);
 
     var file = fs.createWriteStream(filePath);
