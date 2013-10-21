@@ -100,7 +100,7 @@ module.exports = function(app, nconf) {
     if (transcript.meta.filename && transcript.meta.key) {
       var p = cp.fork(__dirname + '/fileDownload.js');
       p.send({
-        id: transcript.meta.filename,
+        filename: transcript.meta.filename,
         url: transcript.meta.url,
         owner: transcript.owner
       });
