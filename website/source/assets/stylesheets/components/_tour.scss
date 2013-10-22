@@ -1,0 +1,21 @@
+/* Tour
+----------------------------------------------- */
+
+.tour-items {
+  margin-top: $space-xl;
+}
+
+.tour-item {
+  margin-top: $space-xl;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.tour-item-heading {
+  font-size: $font-xl;
+}
+
+.tour-item-text {
+
+}
