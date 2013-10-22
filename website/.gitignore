@@ -17,3 +17,6 @@
 .DS_Store
 
 TODO
+
+# Ignore config.rb containing FTP login info
+config.rb
