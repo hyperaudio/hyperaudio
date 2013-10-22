@@ -4,7 +4,7 @@ $( '.slider' ).cycle({
   log: false,
   next: '.slider-next',
   prev: '.slider-prev',
-  pager: '.slider-pager',
+  pager: '.slider-pages',
   pagerActiveClass: 'active',
   pagerTemplate: '<li class="slider-page"></li>',
   pauseOnHover: true,
