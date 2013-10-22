@@ -7,15 +7,6 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $secondary-font;
   line-height: $lheight-s;
 }
-
-.section-heading {
-  font-size: $font-h;
-  margin-bottom: $space-xl;
-  text-align: center;
-  line-height: $lheight-m;
-  text-transform: capitalize;
-}
-
 .heading-xl,
 .heading-xl,
 .heading-xl {
@@ -25,7 +16,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .heading-xl {
   font-size: $font-xl;
-  margin-bottom: $space-xl;
+  margin-bottom: $space-h;
   text-align: center;
   line-height: $lheight-m;
   text-transform: capitalize;

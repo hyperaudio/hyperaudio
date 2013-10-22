@@ -6,5 +6,8 @@
   border-style: solid;
   border-width: 1px 0 0;
   border-color: $alt-color-light;
-  width: 820px;
+  width: 790px;
+  &.alt {
+    border-style: dotted;
+  }
 }

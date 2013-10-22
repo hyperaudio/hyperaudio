@@ -9,24 +9,20 @@
 .functionality-heading {
   font-size: $font-xl;
   margin-top: $space-m;
-  margin-bottom: $space-l;
+  margin-bottom: $space-m;
 }
 .functionality-description {
 }
 .functionality-detail {
-  margin: $space-l 0 0;
 }
 .functionality-text {
   line-height: $lheight-m;
-  margin-top: $space-l;
-  font-size: $font-l;
+  font-size: $font-m;
   margin-bottom: $space-l;
 }
 .functionality-detail {
   color: $mono-mid;
   color: $flare-strong;
-  font-size: $font-s;
-  line-height: $font-l;
 }
 .functionality-call {
   margin-top: $space-m;

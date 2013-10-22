@@ -2,6 +2,7 @@
 ----------------------------------------------- */
 
 .characteristics {
+  margin-top: $space-xl;
 }
 .characteristic {
   margin-top: $space-xl;
@@ -10,21 +11,19 @@
   }
 }
 .characteristic-heading {
-  font-size: $font-l;
-}
-.characteristic-detail {
-  margin: $space-l 0 0;
+  font-size: $font-s;
+  margin-bottom: $space-m;
+  // text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: $mono-mid;
 }
 .characteristic-text {
-  margin-top: 0;
+  font-size: $font-xs;
+  margin: 0;
 }
 .characteristic-detail {
   color: $mono-mid;
-  font-size: $font-s;
-  line-height: $font-l;
-}
-.characteristic-call {
-  margin-top: $space-l;
 }
 .characteristic-figure {
 }

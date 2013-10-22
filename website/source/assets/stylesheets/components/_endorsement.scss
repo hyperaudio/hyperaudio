@@ -2,19 +2,19 @@
 ----------------------------------------------- */
 
 .endorsements {
+}
+.endorsement {
   @include clearfix;
   margin-bottom: $space-xl;
   &:last-child {
     margin-bottom: 0;
   }
 }
-.endorsement {
-}
 .endorsement-quote {
   display: block;
   font-style: italic;
   margin-bottom: $space-l;
-  min-height: 13rem;
+  min-height: 10rem;
 }
 .endorsement-author {
   color: $mono-weak;

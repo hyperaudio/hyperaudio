@@ -1,41 +1,46 @@
 /* Feature
 ----------------------------------------------- */
 
+.features {
+  margin-bottom: $space-xl;
+}
 .feature {
   @include clearfix;
-  margin-bottom: $space-h;
+  @include border-radius($radius-s);
+  // background: $alt-color-light;
   &:last-child {
     margin-bottom: 0;
   }
 }
-
 .feature-heading {
-  font-size: $font-xl;
-  margin-top: $space-m;
+  font-size: $font-m;
+  margin-bottom: $space-m;
+  // text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: $mono-mid;
 }
-.feature-text,
 .feature-detail {
   margin: $space-l 0 0;
 }
 .feature-text {
+  font-size: $font-m;
   line-height: $lheight-m;
-}
-.feature-detail {
-  color: $mono-mid;
-  font-size: $font-s;
-  line-height: $font-l;
+  margin-bottom: 0;
 }
 .feature-call {
-
+  font-size: $font-s;
+  font-weight: normal;
 }
 .feature-figure {
+  margin-bottom: $space-l;
 }
 .feature-image-container {
   @include border-radius($radius-s);
   line-height: 0;
+  max-height: 350px;
   overflow: hidden;
   position: relative;
-  max-height: 350px;
   &:after {
     @include position-top-right(0,0);
     @include position-bottom-left(0,0);

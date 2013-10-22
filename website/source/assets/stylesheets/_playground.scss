@@ -13,10 +13,11 @@
   }
   .button {
     color: $bright;
-    border-color: $bright;
+    border-color: $brand-color-light;
     &:hover {
       color: $brand-color !important;
       background: $bright;
+      border-color: $bright;
     }
   }
   .button.primary {
