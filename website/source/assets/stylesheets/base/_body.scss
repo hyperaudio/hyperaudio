@@ -10,8 +10,8 @@ body {
 }
 
 // Text Selection
-::selection { background: $brand-color-light; }      /* Safari */
-::-moz-selection { background: $brand-color-light; } /* Firefox */
+::selection { background: $alt-color-light; }      /* Safari */
+::-moz-selection { background: $alt-color-light; } /* Firefox */
 
 blockquote {
   padding: 0;
