@@ -11,6 +11,9 @@ input[type="submit"].button,
   display: inline-block;
   font-weight: bold;
   padding: $space-s $space-m;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
   &:hover {
     background: #2C3E50;
     color: $bright !important;

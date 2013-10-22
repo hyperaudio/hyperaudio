@@ -4,6 +4,9 @@
 .text-input {
   @include border-radius($radius-s);
   border: 1px solid $mono-weak;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
   &.large {
     padding: $space-m;
 
