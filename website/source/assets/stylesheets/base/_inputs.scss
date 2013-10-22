@@ -1,0 +1,18 @@
+/* Inputs
+----------------------------------------------- */
+
+.text-input {
+  @include border-radius($radius-s);
+  border: 1px solid $mono-weak;
+  &.large {
+    padding: $space-m;
+
+  }
+  &.block {
+    width: 100%;
+    @include box-sizing(border-box);
+  }
+  &.centered {
+    text-align: center;
+  }
+}

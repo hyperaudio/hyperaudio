@@ -1,0 +1,27 @@
+/* Forms
+----------------------------------------------- */
+
+.form {
+
+}
+.form-component {
+  margin-top: $space-m;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+.form-component.actions {
+  text-align: center;
+  margin-top: $space-xl;
+}
+.form-label {
+  font-weight: bold;
+  display: block;
+}
+.form-input {
+
+}
+.form-note {
+  font-size: $font-xs;
+  color: $mono-weak;
+}
