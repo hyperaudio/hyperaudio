@@ -6,6 +6,7 @@ var express = require('express');
 var routes = require('./routes');
 // var user = require('./routes/user');
 var http = require('http');
+var httpProxy = require('http-proxy');
 var path = require('path');
 
 var mongoose = require('mongoose');
@@ -89,6 +90,9 @@ app.use(app.router);
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
 app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+var mediaProxy = httpProxy.createServer(80, 'localhost');
+app.use('/proxy', mediaProxy);
 
 // development only
 if ('development' == app.get('env')) {
@@ -198,6 +202,8 @@ app.post('/register', function(req, res) {
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
 require('./mixes')(app, nconf);
+
+app.use(express.static(path.join(__dirname, 'media')));
 
 
 // http.createServer(app).listen(app.get('port'), function(){

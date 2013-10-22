@@ -26,6 +26,7 @@
     "password-generator": "*",
     "fivebeans": "*",
     "node-ffprobe": "*",
-    "fluent-ffmpeg": "*"
+    "fluent-ffmpeg": "*",
+    "http-proxy": "*"
   }
 }
