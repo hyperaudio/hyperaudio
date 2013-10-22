@@ -13,31 +13,34 @@
   @include border-radius($radius-absolute);
   background: $flare-weak;
   cursor: pointer;
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  margin-top: -20px;
+  height: 20px;
+  display: inline-block;
+  width: 20px;
+  line-height: 20px;
+  position: relative;
+  top: -2px;
   text-align: center;
   &:hover {
     background: $flare-mid;
   }
 }
 .slider-prev {
-  @include position-top-left(50%,-60px)
 }
 .slider-next {
-  @include position-top-right(50%,-60px)
 }
 
 .slider-pager {
-  @include position-bottom-right(0,-60px);
-  clear: both;
   text-align: center;
-  z-index: 1000;
+  margin-top: $space-xl;
+}
+.slider-pages {
+  display: inline-block;
+  text-align: center;
+  margin: 0 $space-xl;
 }
 .slider-page {
   @include border-radius($radius-absolute);
-  background: $alt-color;
+  background: $bright;
   cursor: pointer;
   display: inline-block;
   height: 10px;
@@ -47,7 +50,7 @@
 .slider-page.active {
   @include border-radius($radius-absolute);
   background: transparent;
-  border: 1px solid $alt-color;
+  border: 1px solid $bright;
   height: 14px;
   margin: 0 $space-s;
   width: 14px;

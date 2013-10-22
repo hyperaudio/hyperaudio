@@ -12,16 +12,13 @@
   margin-bottom: $space-l;
 }
 .functionality-description {
-  padding-top: $space-xl;
 }
 .functionality-detail {
   margin: $space-l 0 0;
 }
 .functionality-text {
+  margin-top: $space-l;
   font-size: $font-l;
-  padding: 0;
-  margin-top: 0;
-  line-height: $lheight-m;
 }
 .functionality-detail {
   color: $mono-mid;
@@ -30,6 +27,7 @@
   color: $flare-strong;
 }
 .functionality-call {
+  margin-top: $space-l;
 }
 .functionality-figure {
 }
