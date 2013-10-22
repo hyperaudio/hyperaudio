@@ -32,26 +32,15 @@
   line-height: 0;
   overflow: hidden;
   position: relative;
-  &:after {
-    @include position-top-right(0,0);
-    @include position-bottom-left(0,0);
-    @include border-radius($radius-s);
-    border: 1px solid $shadow-light;
-    content: " ";
-    display: block;
-  }
+  // &:after {
+  //   @include position-top-right(0,0);
+  //   @include position-bottom-left(0,0);
+  //   @include border-radius($radius-s);
+  //   border: 1px solid $shadow-light;
+  //   content: " ";
+  //   display: block;
+  // }
 }
 .characteristic-image {
   line-height: 0;
-}
-
-
-//
-
-.characteristic.compact {
-  .characteristic-image-container {
-    float: right;
-    width: 50%;
-    margin: 0 0 $space-xs $space-m;
-  }
 }

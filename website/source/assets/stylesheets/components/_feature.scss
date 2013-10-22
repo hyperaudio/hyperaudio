@@ -14,8 +14,8 @@
 }
 .feature-heading {
   font-size: $font-l;
-  margin-top: $space-m;
-  margin-bottom: $space-xl;
+  margin-top: $space-l;
+  margin-bottom: $space-l;
 }
 .feature-detail {
   margin: $space-l 0 0;
@@ -52,4 +52,15 @@
   @include box-sizing(border-box);
   line-height: 0;
   width: 100%;
+}
+
+.feature.odd {
+  .feature-image-container {
+    margin-right: $space-l;
+  }
+}
+.feature.even {
+  .feature-image-container {
+    margin-left: $space-l;
+  }
 }

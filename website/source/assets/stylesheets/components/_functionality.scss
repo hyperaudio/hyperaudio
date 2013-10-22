@@ -30,7 +30,8 @@
 .functionality-figure {
 }
 .functionality-image-container {
-  @include border-radius($radius-s);
+  @include border-top-radius($radius-s);
+  background: $bright;
   line-height: 0;
   overflow: hidden;
   position: relative;
