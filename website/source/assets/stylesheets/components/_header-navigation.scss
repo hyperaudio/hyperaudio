@@ -5,11 +5,14 @@
 .header-navigation-item {
   display: inline-block;
   font-size: $font-s;
-  margin-left: $space-l;
+  margin-left: $space-xl;
   text-transform: uppercase;
 }
 .header-navigation-item.active {
   opacity: 0.75;
+}
+.header-navigation-item a {
+  letter-spacing: 0.1em;
 }
 .header-navigation-item a:hover {
   border-bottom-color: $bright;

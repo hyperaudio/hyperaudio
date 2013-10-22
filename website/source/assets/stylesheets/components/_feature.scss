@@ -7,18 +7,15 @@
 .feature {
   @include clearfix;
   @include border-radius($radius-s);
-  // background: $alt-color-light;
+  margin-bottom: $space-xl;
   &:last-child {
     margin-bottom: 0;
   }
 }
 .feature-heading {
-  font-size: $font-m;
-  margin-bottom: $space-m;
-  // text-align: center;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: $mono-mid;
+  font-size: $font-l;
+  margin-top: $space-m;
+  margin-bottom: $space-xl;
 }
 .feature-detail {
   margin: $space-l 0 0;
@@ -31,6 +28,7 @@
 .feature-call {
   font-size: $font-s;
   font-weight: normal;
+  margin-top: $space-xl;
 }
 .feature-figure {
   margin-bottom: $space-l;

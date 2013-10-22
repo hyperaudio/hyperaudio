@@ -44,3 +44,14 @@
 .characteristic-image {
   line-height: 0;
 }
+
+
+//
+
+.characteristic.compact {
+  .characteristic-image-container {
+    float: right;
+    width: 50%;
+    margin: 0 0 $space-xs $space-m;
+  }
+}

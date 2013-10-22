@@ -5,5 +5,9 @@
   text-align: center;
 }
 .call-heading {
-  // font-size: $font
+  font-size: $font-xl;
+}
+.call-text {
+  font-weight: normal;
+  margin-top: $space-m;
 }

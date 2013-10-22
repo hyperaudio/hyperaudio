@@ -43,12 +43,13 @@
 }
 .slider-page {
   @include border-radius($radius-absolute);
+  @include box-shadow(0 1px 1px $shadow-weak);
   background: $bright;
   cursor: pointer;
   clear: both;
   display: inline-block;
   height: 10px;
-  margin: 5px 0;
+  margin: 3px 0;
   width: 10px;
 }
 .slider-page.active {
@@ -56,6 +57,6 @@
   background: transparent;
   border: 1px solid $bright;
   height: 12px;
-  margin: 4px 0;
+  margin: 2px 0;
   width: 12px;
 }

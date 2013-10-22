@@ -5,10 +5,6 @@
 }
 .endorsement {
   @include clearfix;
-  margin-bottom: $space-xl;
-  &:last-child {
-    margin-bottom: 0;
-  }
 }
 .endorsement-quote {
   display: block;
