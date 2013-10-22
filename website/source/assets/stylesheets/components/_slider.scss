@@ -8,43 +8,47 @@
 
 }
 
-.slider-prev,
-.slider-next {
-  @include border-radius($radius-absolute);
-  background: $flare-weak;
-  cursor: pointer;
-  height: 20px;
-  display: inline-block;
-  width: 20px;
-  line-height: 20px;
-  position: relative;
-  top: -2px;
-  text-align: center;
-  &:hover {
-    background: $flare-mid;
-  }
-}
-.slider-prev {
-}
-.slider-next {
-}
+// .slider-prev,
+// .slider-next {
+//   @include border-radius($radius-absolute);
+//   background: $flare-weak;
+//   cursor: pointer;
+//   height: 20px;
+//   display: inline-block;
+//   clear: both;
+//   width: 20px;
+//   line-height: 20px;
+//   position: relative;
+//   top: -2px;
+//   text-align: center;
+//   &:hover {
+//     background: $flare-mid;
+//   }
+// }
+// .slider-prev {
+// }
+// .slider-next {
+// }
 
 .slider-pager {
   text-align: center;
   margin-top: $space-xl;
+  width: 14px;
+  @include position-top-right(50%,-20px);
+  margin-top: -30px;
 }
 .slider-pages {
-  display: inline-block;
+  display: block;
   text-align: center;
-  margin: 0 $space-xl;
 }
 .slider-page {
   @include border-radius($radius-absolute);
   background: $bright;
   cursor: pointer;
+  clear: both;
   display: inline-block;
   height: 10px;
-  margin: 2px $space-s;
+  margin: 5px 0;
   width: 10px;
 }
 .slider-page.active {
@@ -52,6 +56,6 @@
   background: transparent;
   border: 1px solid $bright;
   height: 14px;
-  margin: 0 $space-s;
+  margin: 3px 0;
   width: 14px;
 }

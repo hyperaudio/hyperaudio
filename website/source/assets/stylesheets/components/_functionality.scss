@@ -17,17 +17,19 @@
   margin: $space-l 0 0;
 }
 .functionality-text {
+  line-height: $lheight-m;
   margin-top: $space-l;
   font-size: $font-l;
+  margin-bottom: $space-l;
 }
 .functionality-detail {
   color: $mono-mid;
+  color: $flare-strong;
   font-size: $font-s;
   line-height: $font-l;
-  color: $flare-strong;
 }
 .functionality-call {
-  margin-top: $space-l;
+  margin-top: $space-m;
 }
 .functionality-figure {
 }
