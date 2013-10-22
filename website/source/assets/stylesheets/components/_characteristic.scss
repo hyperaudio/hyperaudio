@@ -2,16 +2,13 @@
 ----------------------------------------------- */
 
 .characteristics {
-
 }
-
 .characteristic {
   margin-top: $space-xl;
   &:first-child {
     margin-top: 0;
   }
 }
-
 .characteristic-heading {
   font-size: $font-l;
 }
@@ -30,12 +27,10 @@
   margin-top: $space-l;
 }
 .characteristic-figure {
-  margin: 0 auto $space-l;
 }
 .characteristic-image-container {
   @include border-radius($radius-s);
   line-height: 0;
-  max-height: 300px;
   overflow: hidden;
   position: relative;
   &:after {
@@ -48,7 +43,5 @@
   }
 }
 .characteristic-image {
-  @include box-sizing(border-box);
   line-height: 0;
-  width: 100%;
 }
