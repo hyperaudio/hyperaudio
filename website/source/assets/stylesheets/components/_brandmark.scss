@@ -8,6 +8,8 @@
   height: 40px;
 }
 .brandmark-symbol {
+  background: $bright;
+  @include border-radius($radius-m);
   float: left;
   height: 40px;
   margin-right: $space-m;

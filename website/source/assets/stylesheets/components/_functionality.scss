@@ -33,6 +33,7 @@
   @include border-top-radius($radius-s);
   background: $bright;
   line-height: 0;
+  margin-left: $space-l;
   overflow: hidden;
   position: relative;
   &:after {
