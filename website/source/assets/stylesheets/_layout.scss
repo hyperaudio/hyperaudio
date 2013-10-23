@@ -1,6 +1,10 @@
 /* Layout Generic
 ------------------------------------------- */
 
+.row {
+  max-width: 960px;
+}
+
 /* ---------- Generic Properties ---------- */
 
 // * {
@@ -22,5 +26,5 @@
 
 .section > .container,
 .footer > .container {
-  max-width: 820px;
+  max-width: 880px;
 }
