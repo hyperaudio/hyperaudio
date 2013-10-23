@@ -23,12 +23,20 @@ GEM
     execjs (1.4.0)
       multi_json (~> 1.0)
     ffi (1.9.0)
+    fspath (2.0.5)
     fssm (0.2.10)
     haml (4.0.3)
       tilt
     hike (1.2.3)
     http_parser.rb (0.5.3)
     i18n (0.6.5)
+    image_optim (0.8.1)
+      fspath (~> 2.0.3)
+      image_size (~> 1.1.2)
+      in_threads (~> 1.1.1)
+      progress (~> 2.4.0)
+    image_size (1.1.3)
+    in_threads (1.1.2)
     kramdown (1.1.0)
     listen (1.2.3)
       rb-fsevent (>= 0.9.3)
@@ -58,6 +66,9 @@ GEM
       middleman-core (>= 3.0.0)
       net-sftp
       ptools
+    middleman-imageoptim (0.0.4)
+      image_optim (~> 0.8.0)
+      middleman-core (>= 3.0)
     middleman-livereload (3.1.0)
       em-websocket (>= 0.2.0)
       middleman-core (>= 3.0.2)
@@ -74,6 +85,7 @@ GEM
     net-sftp (2.1.2)
       net-ssh (>= 2.6.5)
     net-ssh (2.7.0)
+    progress (2.4.0)
     ptools (1.2.2)
     rack (1.5.2)
     rack-livereload (0.3.15)
@@ -112,6 +124,7 @@ DEPENDENCIES
   breakpoint (~> 2.0.7)
   middleman (~> 3.1.5)
   middleman-deploy
+  middleman-imageoptim (~> 0.0.4)
   middleman-livereload (~> 3.1.0)
   ruby18_source_location
   wdm (~> 0.1.0)

@@ -11,6 +11,9 @@ gem "middleman-livereload", "~> 3.1.0"
 gem "breakpoint", "~>2.0.7"
 gem "zurb-foundation", "~>4.3.2"
 
+# Image optim
+gem "middleman-imageoptim", "~> 0.0.4"
+
 # Deploy gem
 gem "middleman-deploy"
 

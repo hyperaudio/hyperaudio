@@ -9,6 +9,10 @@ Hyperaudio Ecosystem
 
     $ npm install -g bower
 
+## Make sure you have advpng, pngout, OptiPng, PNGCrush
+
+Otherwise comment out :image_optim bits from your config.rb file
+
 ## Lastly
     $ cd project_dir
     $ bundle install
