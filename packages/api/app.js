@@ -52,7 +52,13 @@ app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
 
-app.use(express.session());
+app.use(express.session({
+  secret: "xaifeeK0Xoo1Oghahfu8WeeShooqueeG",
+  cookie: {
+    httpOnly: true, 
+    secure: false},
+}));
+  
 app.use(passport.initialize());
 app.use(passport.session());
 
