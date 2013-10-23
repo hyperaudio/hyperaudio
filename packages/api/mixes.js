@@ -103,7 +103,7 @@ module.exports = function(app, nconf) {
     });
     
     // download if needed
-    if (mix.meta.filename && mix.meta.key) {
+    if (mix.meta && mix.meta.filename && mix.meta.key) {
       var p = cp.fork(__dirname + '/fileDownload.js');
       p.send({
         filename: mix.meta.filename, 
