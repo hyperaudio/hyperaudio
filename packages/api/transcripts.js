@@ -48,7 +48,7 @@ module.exports = function(app, nconf) {
       transcript.meta = req.body.meta;
       transcript.media = req.body.media;
       
-      if (req.params.media._id) {
+      if (req.params.media && req.params.media._id) {
         transcript.media = req.params.media._id;
       } else {
         transcript.media = req.body.media;
