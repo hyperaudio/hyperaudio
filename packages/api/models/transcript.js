@@ -9,7 +9,7 @@ var Transcript = new mongoose.Schema({
     owner: String,
     meta: Schema.Types.Mixed,
     content: String,
-    media: String
+    media: { type: Schema.Types.ObjectId, ref: 'Media' }
 });
 
 module.exports = mongoose.model('Transcripts', Transcript);

@@ -21,7 +21,8 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/:user?/transcripts/:id', function(req, res) {
-    return Transcript.findById(req.params.id, function(err, transcript) {
+    return Transcript.findById(req.params.id).populate('media').exec(
+    /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
         try {
           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
