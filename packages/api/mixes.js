@@ -30,6 +30,10 @@ module.exports = function(app, nconf) {
         } catch (ignored) {}
         return res.send(mix);
       }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
     });
   });
 

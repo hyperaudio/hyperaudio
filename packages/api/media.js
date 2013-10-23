@@ -28,6 +28,10 @@ module.exports = function(app, nconf) {
       if (!err) {
         return res.send(mediaObject);
       }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
     });
   });
 

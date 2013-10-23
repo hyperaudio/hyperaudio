@@ -8,7 +8,8 @@ var Transcript = new mongoose.Schema({
     sort: { type: Number },
     owner: String,
     meta: Schema.Types.Mixed,
-    content: String
+    content: String,
+    media: String
 });
 
 module.exports = mongoose.model('Transcripts', Transcript);

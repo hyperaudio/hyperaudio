@@ -29,6 +29,10 @@ module.exports = function(app, nconf) {
         } catch (ignored) {}
         return res.send(transcript);
       }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
     });
   });
 
@@ -41,6 +45,7 @@ module.exports = function(app, nconf) {
       transcript.sort = req.body.sort;
       // transcript.owner = req.body.owner;
       transcript.meta = req.body.meta;
+      transcript.media = req.body.media;
       
       if (req.params.user) {
         transcript.owner = req.params.user;
@@ -93,7 +98,8 @@ module.exports = function(app, nconf) {
       sort: req.body.sort,
       owner: req.body.owner,
       meta: req.body.meta,
-      content: content
+      content: content,
+      media: req.body.media
     });
 
     // download if needed
