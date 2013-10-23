@@ -10,6 +10,9 @@
   }
   a {
     color: $bright;
+    &.active {
+      border-bottom-color: $bright;
+    }
   }
   .button {
     color: $bright;
