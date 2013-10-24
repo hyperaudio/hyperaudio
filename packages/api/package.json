@@ -27,6 +27,7 @@
     "fivebeans": "*",
     "node-ffprobe": "*",
     "fluent-ffmpeg": "*",
-    "http-proxy": "*"
+    "http-proxy": "*",
+    "clarinet": "*"
   }
 }
