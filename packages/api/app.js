@@ -33,6 +33,7 @@ var options = {
 //CORS middleware
 var allowCrossDomain = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Credentials", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   res.header('Access-Control-Allow-Methods', 'OPTIONS, POST, GET, PUT, DELETE');
   next();
@@ -64,6 +65,7 @@ app.use(passport.session());
 
 //http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
 app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Credentials", "*");
     var oneof = false;
     if(req.headers.origin) {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
