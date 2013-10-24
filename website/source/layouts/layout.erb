@@ -3,14 +3,58 @@
   <head>
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width">
     <title><%= current_page.data.title || "Hyperaudio" %></title>
-    <%= stylesheet_link_tag "main" %>
+    <%= stylesheet_link_tag "main", "layout-site" %>
     <%= javascript_include_tag  "main" %>
   </head>
 
-  <body class="tpl_eco <%= page_classes %>">
+  <body class="tpl_site <%= page_classes %>">
+    <header class="header lt_header branded">
+      <div class="container row">
+        <div class="small-12 large-3 columns">
+          <h1 class="header-brandmark">
+            <a href="/site" class="brandmark">
+              <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+        <div class="small-12 large-9 columns">
+          <ul class="header-navigation lt_header-navigation">
+            <li class="header-navigation-item"><%= link 'Tour', 'tour' %></li>
+            <li class="header-navigation-item"><%= link 'Blog', 'blog' %></li>
+            <!-- <li class="header-navigation-item"><a href="#">Case Studies</a></li> -->
+            <!-- <li class="header-navigation-item"><a href="#">Try it</a></li> -->
+            <li class="header-navigation-item"><%= link 'Sign up', '/site/signup.html', :class => "altered" %></li>
+            <li class="header-navigation-item"><%= link_to 'Log in', '/site/signup.html', :class => "button small" %></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
     <%= yield %>
     <footer class="footer">
+      <div class="container row">
+        <div class="small-12 large-9 push-3 columns">
+          <ul class="footer-navigation">
+            <li class="footer-navigation-item"><%= link 'Tour', 'tour/' %></li>
+            <li class="footer-navigation-item"><%= link 'Blog', 'blog/' %></li>
+            <!-- <li class="footer-navigation-item"><a href="#"><abbr title="Frequently Asked Questions">FAQ</abbr></a></li> -->
+            <li class="footer-navigation-item"><a href="mailto:mark@hyperaud.io">Contact</a></li>
+            <li class="footer-navigation-item"><a href="https://groups.google.com/forum/#!forum/hyperaudio">Community</a></li>
+            <li class="footer-navigation-item"><a href="https://twitter.com/hyperaud_io">Twitter</a></li>
+          </ul>
+        </div>
+        <div class="small-12 large-3 pull-9 columns">
+          <h1 class="footer-brandmark">
+            <a href="/" class="brandmark">
+              <%= image_tag 'inserts/logo-hyperaudio.png', :class => "brandmark-symbol" %>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+      </div>
       <div class="container">
         <div class="footer-imprint">
           <p>Hyperaudio <abbr title="Incorporated">Inc</abbr>. is a non-profit producing Open Source software, established in Rhode Island, USA.</p>

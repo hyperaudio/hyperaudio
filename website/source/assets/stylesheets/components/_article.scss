@@ -4,6 +4,9 @@
 .article {
   position: relative;
 }
+.article-head {
+  margin-bottom: $space-xl;
+}
 .article-heading {
   font-size: $font-m;
   color: $mono-weak;
@@ -12,7 +15,16 @@
 .article-title {
   font-size: $font-xl;
 }
+.article-meta {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  color: $mono-weak;
+  font-size: $font-s;
+}
 .article-date {
+}
+.article-author {
   font-style: italic;
   color: $mono-weak;
   font-size: $font-s;
@@ -23,7 +35,6 @@
     margin: $space-m;
   }
 }
-
 
 .article-body {
   line-height: $lheight-l;
@@ -38,10 +49,26 @@
     margin: $space-l;
   }
   p {
-    text-indent: $space-l;
+  }
+  a {
+    white-space: pre-line;
+  }
+  figure {
+    border: 1px solid $light;
+    margin-bottom: $space-l;
+    > a {
+      border: none !important;
+      padding: 0;
+      line-height: 0;
+    }
+    figcaption {
+      font-size: $font-xs;
+      line-height: $lheight-m;
+      padding: $space-m;
+      color: $mono-mid;
+    }
   }
 }
-
 
 .article.excerpt {
   .article-title {

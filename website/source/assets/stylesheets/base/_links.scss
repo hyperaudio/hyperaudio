@@ -16,6 +16,6 @@ a {
     border-bottom: 1px solid $brand-color;
   }
   &.altered {
-    font-weight: bold;
+    font-weight: bold !important;
   }
 }
