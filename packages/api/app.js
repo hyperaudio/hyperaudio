@@ -212,8 +212,8 @@ require('./mixes')(app, nconf);
 app.use(express.static(path.join(__dirname, 'media')));
 
 
-http.createServer(app).listen(81, function(){
-  console.log('Express server listening on port ' + 81);
+http.createServer(app).listen(80, function(){
+  console.log('Express server listening on port ' + 80);
 });
 
 var server = spdy.createServer(options, app).listen(app.get('port'), function(){

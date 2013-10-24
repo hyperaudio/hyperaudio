@@ -65,6 +65,10 @@ make install
 cd /etc/apache2/sites-enabled/
 ln -sf /vagrant/etc/VirtualHost.conf 000-default
 
+# ports
+cd /etc/apache2/
+ln -sf /vagrant/etc/ports.conf 
+
 # apache modules
 cd /etc/apache2/mods-enabled
 ln -s ../mods-available/rewrite.load
