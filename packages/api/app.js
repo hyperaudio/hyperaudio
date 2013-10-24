@@ -208,6 +208,7 @@ app.post('/register', function(req, res) {
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
 require('./mixes')(app, nconf);
+require('./subscribers')(app, nconf);
 
 app.use(express.static(path.join(__dirname, 'media')));
 
