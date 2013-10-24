@@ -4,7 +4,7 @@
 .form {
 }
 .form-component {
-  margin-top: $space-m;
+  margin-top: $space-xl;
   &:first-child {
     margin-top: 0;
   }
@@ -17,10 +17,24 @@
   font-weight: bold;
   display: block;
 }
+.form-label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: $space-s;
+  &.centered {
+    text-align: center;
+  }
+}
 .form-input {
 
 }
 .form-note {
   font-size: $font-xs;
   color: $mono-weak;
+}
+.form-alert {
+  color: $brand-color;
+  font-weight: bold;
+  text-align: center;
+  display: block;
 }
