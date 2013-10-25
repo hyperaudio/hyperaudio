@@ -51,8 +51,10 @@ module.exports = View.extend({
                 transcriptObject.set('desc', newValue, {silent: true});
                 transcriptObject.save(null, { silent: true });
               }
-          });  
+          });
+            
         }
+        
       
   	});
   	
