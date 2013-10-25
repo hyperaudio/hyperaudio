@@ -37,6 +37,7 @@
 }
 
 .article-body {
+  font-size: $font-m;
   line-height: $lheight-l;
   blockquote {
     margin: $space-l;
@@ -62,7 +63,7 @@
       line-height: 0;
     }
     figcaption {
-      font-size: $font-xs;
+      font-size: $font-s;
       line-height: $lheight-m;
       padding: $space-m;
       color: $mono-mid;
