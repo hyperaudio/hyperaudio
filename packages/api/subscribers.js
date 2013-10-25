@@ -18,7 +18,7 @@ module.exports = function(app, nconf) {
       }
     });
 
-    return res.redirect('http://kli.org');
+    return res.redirect('http://hyperaud.io/thanks/');
   });
 
 };
