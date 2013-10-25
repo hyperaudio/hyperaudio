@@ -36,22 +36,10 @@
   margin-left: $space-l;
   overflow: hidden;
   position: relative;
-  &:after {
-    @include position-top-right(0,0);
-    @include position-bottom-left(0,0);
-    @include border-radius($radius-s);
-    border: 1px solid $shadow-light;
-    content: " ";
-    display: block;
-  }
+
 }
 .functionality-image {
   @include box-sizing(border-box);
   line-height: 0;
   width: 100%;
-}
-
-.functionality-description {
-}
-.functionality-figure {
 }

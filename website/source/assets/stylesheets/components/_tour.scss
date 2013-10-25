@@ -13,10 +13,19 @@
 }
 
 .tour-item-heading {
-  font-size: $font-xl;
+  font-size: $font-l;
+  text-align: center;
+  margin-bottom: $space-l;
 }
 
+.tour-image {
+  margin-top: $space-m;
+}
 .tour-item-text {
   font-size: $font-m;
   line-height: $lheight-m;
+  &:first-child {
+    padding-top: 0;
+    margin-top: 0;
+  }
 }
