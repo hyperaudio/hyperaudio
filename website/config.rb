@@ -15,6 +15,7 @@ end
 # Site pages:
 page "blog/*", :layout => :site
 page "signup/*", :layout => :site
+page "terms-of-service/*", :layout => :site
 page "tour/*", :layout => :site
 page "index.html", :layout => :site
 

@@ -9,6 +9,7 @@
 
 # Ignore the build directory
 /build
+/onlinebuild
 
 # Ignore Sass' cache
 /.sass-cache
