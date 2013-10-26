@@ -13,12 +13,3 @@
     margin: 0;
   }
 }
-
-.footer-brandmark {
-  .brandmark-symbol {
-    background: $brand-color;
-    @include border-radius($radius-m);
-    width: 40px;
-    height: 40px;
-  }
-}

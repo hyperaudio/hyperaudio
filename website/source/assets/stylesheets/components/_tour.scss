@@ -17,9 +17,12 @@
   text-align: center;
   margin-bottom: $space-l;
 }
-
+.tour-figure {
+  border: 1px solid $alt-color-light;
+  overflow: hidden;
+  @include border-radius($radius-s);
+}
 .tour-image {
-  margin-top: $space-m;
 }
 .tour-item-text {
   font-size: $font-m;
