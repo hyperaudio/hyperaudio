@@ -58,6 +58,8 @@ module.exports = View.extend({
           } else {
             $('#modalPreview .modal-body').empty().append('<audio controls autoplay src="http://data.hyperaud.io/' + mediaObject.get('owner') + '/' + mediaObject.get('meta').filename + '"></audio>');
           }
+          $('#createTranscript').attr('href', 'http://hyperaud.io/maker/?m=' + mediaObject.get('_id'));
+          $('#convertTranscript').attr('href', 'http://hyperaud.io/converter/?m=' + mediaObject.get('_id'));
           $('#modalPreview')
             .modal('show')
             .on('hide.bs.modal', function() {
