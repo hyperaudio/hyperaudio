@@ -43,7 +43,7 @@ module.exports = View.extend({
         .data('model', mediaObject);
         
         $(el).find('a.mediaMD').click(function(evt) {
-          evt.preventDefault();
+          evt.preventDefault();          
           $('#metadataPreview .modal-body').empty().append('<pre class="meta"></pre><pre class="probe"></pre>');
           $('#metadataPreview .modal-body').find('.meta').text(JSON.stringify(mediaObject.get('meta'), null, " "));
           $('#metadataPreview .modal-body').find('.probe').text(JSON.stringify(mediaObject.get('probe'), null, " "));
@@ -52,6 +52,7 @@ module.exports = View.extend({
         
         $(el).find('a.mediaPreview').click(function(evt) {
           evt.preventDefault();
+          $('#modalPreview .modal-title').text(mediaObject.get('label'));
           if (mediaObject.get('type') == 'video') {
             $('#modalPreview .modal-body').empty().append('<video controls autoplay src="http://data.hyperaud.io/' + mediaObject.get('owner') + '/' + mediaObject.get('meta').filename + '"></video>');
           } else {
