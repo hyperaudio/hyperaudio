@@ -79,7 +79,7 @@ module.exports = View.extend({
       function(InkBlob){
         // console.log(InkBlob.url);
         console.log(InkBlob);
-        mediaObjects.create({
+        collection.create({
           '_id': null,  
           label: InkBlob.filename,
           desc: "",
@@ -95,7 +95,7 @@ module.exports = View.extend({
           }
         }); //FIXME sort
         
-        mediaObjects.trigger('reset');
+        collection.trigger('reset');
       },
       function(err){
         //ERR
