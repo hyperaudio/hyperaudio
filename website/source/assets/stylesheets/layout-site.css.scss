@@ -11,8 +11,6 @@
 .lt_header-navigation {
   text-align: right;
 }
-.lt_header-brandmark {
-}
 
 // Body
 .lt_homefold {
@@ -22,39 +20,8 @@
 .lt_pitch {
   margin-bottom: $space-h;
 }
-.lt_functionalities {
-  // margin-top: $space-h;
-}
-
-.lt_feature {
-  .feature-description,
-  .feature-figure {
-  }
-  .feature-figure {
-  }
-  &.odd {
-    .feature-description {
-    }
-    .feature-figure {
-    }
-  }
-  &.even {
-    .feature-description {
-    }
-    .feature-figure {
-    }
-  }
-}
-.lt_characteristic {
-}
-.lt_endorsement {
-}
 
 // Footer
 .lt_footer-navigation {
   text-align: right;
-}
-.lt_footer-brandmark {
-}
-.lt_footer-imprint {
 }
