@@ -49,6 +49,20 @@ module.exports = View.extend({
           $('#metadataPreview .modal-body').find('.probe').text(JSON.stringify(mediaObject.get('probe'), null, " "));
           $('#metadataPreview').modal('show')
         });
+        
+        $(el).find('a.mediaPreview').click(function(evt) {
+          evt.preventDefault();
+          if (mediaObject.get('type') == 'video') {
+            $('#modalPreview .modal-body').empty().append('<video controls autoplay src="http://data.hyperaud.io/' + mediaObject.get('owner') + '/' + mediaObject.get('meta').filename + '"></video>');
+          } else {
+            $('#modalPreview .modal-body').empty().append('<audio controls autoplay src="http://data.hyperaud.io/' + mediaObject.get('owner') + '/' + mediaObject.get('meta').filename + '"></audio>');
+          }
+          $('#modalPreview')
+            .modal('show')
+            .on('hide.bs.modal', function() {
+              $('#modalPreview .modal-body').empty();
+            });
+        });
       
   	});//each
   	
