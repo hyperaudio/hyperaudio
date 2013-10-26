@@ -16,13 +16,14 @@ module.exports = View.extend({
   },
 
   render: function() {
-  	var $mediaObjects,
+  	var $mediaObjects, $mediaObjectsU,
   		collection = this.collection;
   		
     collection.sort();
 
   	$(this.el).html(this.template({})); 	
   	$mediaObjects = $('#mediaObjectsW').empty();
+  	$mediaObjectsU = $('#mediaObjectsWU').empty();
 
   	collection.each(function (mediaObject) {
   		var view = new MediaObjectView({
@@ -31,31 +32,15 @@ module.exports = View.extend({
   		});
   		
   		var el = view.render().el;
-  		$mediaObjects.append(el);
+  		
+  		if (window.user && window.user.username == mediaObject.get('owner')) {
+  		  $mediaObjectsU.append(el);
+  		} else {
+  		  $mediaObjects.append(el);
+  		}
   		
       $(el).data('view', view)
         .data('model', mediaObject);
-        
-        
-        if (window.user) {
-          $(el).find('a.mediaLabel').editable({
-            type: 'text',
-            title: 'Edit label',
-              success: function(response, newValue) {
-                mediaObject.set('label', newValue, {silent: true});
-                mediaObject.save(null, { silent: true });
-              }
-          });
-        
-          $(el).find('.mediaDesc').editable({
-            type: 'text',
-            title: 'Edit description',
-              success: function(response, newValue) {
-                mediaObject.set('desc', newValue, {silent: true});
-                mediaObject.save(null, { silent: true });
-              }
-          });  
-        }
         
         $(el).find('a.mediaMD').click(function(evt) {
           evt.preventDefault();
@@ -66,6 +51,57 @@ module.exports = View.extend({
         });
       
   	});//each
+  	
+  	if (window.user) {
+      $mediaObjectsU.find('a.mediaLabel').editable({
+        type: 'text',
+        title: 'Edit label',
+          success: function(response, newValue) {
+            mediaObject.set('label', newValue, {silent: true});
+            mediaObject.save(null, { silent: true });
+          }
+      });
+    
+      $mediaObjectsU.find('.mediaDesc').editable({
+        type: 'text',
+        title: 'Edit description',
+          success: function(response, newValue) {
+            mediaObject.set('desc', newValue, {silent: true});
+            mediaObject.save(null, { silent: true });
+          }
+      });  
+    }
+  	
+  	$('#upload').click(function(){
+      filepicker.pick({
+        services: ["COMPUTER", "VIDEO", "WEBCAM", "URL", "DROPBOX", "GOOGLE_DRIVE", "FACEBOOK", "GITHUB"]
+      },
+      function(InkBlob){
+        // console.log(InkBlob.url);
+        console.log(InkBlob);
+        mediaObjects.create({
+          '_id': null,  
+          label: InkBlob.filename,
+          desc: "",
+          type: InkBlob.mimetype.split('/')[0],
+          sort: 999,
+          owner: window.user.username,
+          meta: {
+            filename: InkBlob.filename,
+            mimetype: InkBlob.mimetype,
+            size: InkBlob.size,
+            url: InkBlob.url,
+            key: InkBlob.key
+          }
+        }); //FIXME sort
+        
+        mediaObjects.trigger('reset');
+      },
+      function(err){
+        //ERR
+        console.log(err);
+      });
+    });
   	
   	return this;
   }

@@ -27,8 +27,9 @@ td
   - if (magnitude == 1) unit = "K";
   - if (magnitude == 2) unit = "M";
   - if (magnitude == 3) unit = "G";
-  span #{size}
-  small.unit #{unit}
+  - if (!isNaN(size))
+    span #{size}
+    small.unit #{unit}
 
 td=meta.mimetype
 
