@@ -136,7 +136,7 @@ module.exports = function(app, nconf) {
     });
 
     // download if needed
-    if (transcript.meta.filename && transcript.meta.key) {
+    if (transcript.meta && transcript.meta.filename && transcript.meta.key) {
       var p = cp.fork(__dirname + '/fileDownload.js');
       p.send({
         filename: transcript.meta.filename,
