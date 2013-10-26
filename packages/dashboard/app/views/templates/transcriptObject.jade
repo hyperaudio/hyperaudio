@@ -17,15 +17,23 @@ td=type
   //- - else
   //-   span.glyphicon.glyphicon-question-sign
 
-td
-  - var magnitude = Math.floor(Math.log(meta.size) / Math.log(1024));
-  - var size = (meta.size/Math.pow(1024, magnitude)).toFixed(2);
-  - var unit = "B";
-  - if (magnitude == 1) unit = "K";
-  - if (magnitude == 2) unit = "M";
-  - if (magnitude == 3) unit = "G";
-  span #{size}
-  small.unit #{unit}
+//- td
+//-   - var magnitude = Math.floor(Math.log(meta.size) / Math.log(1024));
+//-   - var size = (meta.size/Math.pow(1024, magnitude)).toFixed(2);
+//-   - var unit = "B";
+//-   - if (magnitude == 1) unit = "K";
+//-   - if (magnitude == 2) unit = "M";
+//-   - if (magnitude == 3) unit = "G";
+//-   - if (!isNaN(size))
+//-     span #{size}
+//-     small.unit #{unit}
 
-td=meta.mimetype
+//- td=meta.mimetype
+
+td
+  - if (type == 'text')
+    button.btn.btn-warning.btn-xs Align
+  - if (type == 'html')
+    button.btn.btn-info.btn-xs Clean
+    
 
