@@ -231,36 +231,36 @@ module.exports = Backbone.Router.extend({
 
     mixObjects.fetch({reset: true});
     
-    $('#upload').click(function(){
-      filepicker.pick({
-        services: ["COMPUTER", "VIDEO", "WEBCAM", "URL", "DROPBOX", "GOOGLE_DRIVE", "FACEBOOK", "GITHUB"]
-      },
-      function(InkBlob){
-        // console.log(InkBlob.url);
-        console.log(InkBlob);
-        mixObjects.create({
-          '_id': null,  
-          label: InkBlob.filename,
-          desc: "",
-          type: InkBlob.mimetype.split('/')[0],
-          sort: 999,
-          owner: window.user.username,
-          meta: {
-            filename: InkBlob.filename,
-            mimetype: InkBlob.mimetype,
-            size: InkBlob.size,
-            url: InkBlob.url,
-            key: InkBlob.key
-          }
-        }); //FIXME sort
-        
-        mixObjects.trigger('reset');
-      },
-      function(err){
-        //ERR
-        console.log(err);
-      });
-    });
+    // $('#upload').click(function(){
+    //       filepicker.pick({
+    //         services: ["COMPUTER", "VIDEO", "WEBCAM", "URL", "DROPBOX", "GOOGLE_DRIVE", "FACEBOOK", "GITHUB"]
+    //       },
+    //       function(InkBlob){
+    //         // console.log(InkBlob.url);
+    //         console.log(InkBlob);
+    //         mixObjects.create({
+    //           '_id': null,  
+    //           label: InkBlob.filename,
+    //           desc: "",
+    //           type: InkBlob.mimetype.split('/')[0],
+    //           sort: 999,
+    //           owner: window.user.username,
+    //           meta: {
+    //             filename: InkBlob.filename,
+    //             mimetype: InkBlob.mimetype,
+    //             size: InkBlob.size,
+    //             url: InkBlob.url,
+    //             key: InkBlob.key
+    //           }
+    //         }); //FIXME sort
+    //         
+    //         mixObjects.trigger('reset');
+    //       },
+    //       function(err){
+    //         //ERR
+    //         console.log(err);
+    //       });
+    //     });
   }  
   
 });
