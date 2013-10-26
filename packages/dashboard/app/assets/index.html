@@ -22,7 +22,10 @@
   <script src="js/hyperaudio.transcript.js"></script>
   <script src="js/utility.xhr.js"></script> -->
   
-  <script>require('initialize');</script>
+  <script>
+    if (document.location.href.indexOf('https://') == 0) document.location = document.location.href.replace('https:', 'http:');
+    require('initialize');
+  </script>
 </head>
 <body class="anonymous">
   
