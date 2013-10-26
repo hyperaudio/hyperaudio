@@ -5,7 +5,13 @@ var path = require('path');
 var cp = require('child_process');
 
 var passport = require('passport');
+
+var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
+
 var MediaObject = require('./models/mediaObject');
+var Transcript = require('./models/transcript');
+
 
 module.exports = function(app, nconf) {
 
@@ -32,6 +38,26 @@ module.exports = function(app, nconf) {
       res.status(404);
       res.send({ error: 'Not found' });
       return;
+    });
+  });
+  
+  app.get('/:user?/media/:id/transcripts', function(req, res) {
+    // var query = {
+    //   // media: ObjectId.fromString(req.params.id)
+    //   'Media._id': req.params.id
+    // };
+    // return Transcript.find(query, function(err, transcripts) {
+    //   return res.send(transcripts);
+    // });
+    return Transcript.find(function(err, transcripts) {
+      var ret = [];
+      
+      for(var i = 0; i < transcripts.length; i++) {
+        if (transcripts[i].media == req.params.id) {
+          ret.push(transcripts[i]);
+        }
+      }
+      return res.send(ret);
     });
   });
 
