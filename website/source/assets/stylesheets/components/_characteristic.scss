@@ -2,21 +2,17 @@
 ----------------------------------------------- */
 
 .characteristics {
-  margin-top: $space-xl;
 }
 .characteristic {
   margin-top: $space-xl;
-  &:first-child {
-    margin-top: 0;
-  }
 }
 .characteristic-heading {
+  color: $mono-mid;
   font-size: $font-s;
-  margin-bottom: $space-m;
   // text-align: center;
   letter-spacing: 0.2em;
+  margin-bottom: $space-m;
   text-transform: uppercase;
-  color: $mono-mid;
 }
 .characteristic-text {
   font-size: $font-xs;
@@ -32,15 +28,19 @@
   line-height: 0;
   overflow: hidden;
   position: relative;
-  // &:after {
-  //   @include position-top-right(0,0);
-  //   @include position-bottom-left(0,0);
-  //   @include border-radius($radius-s);
-  //   border: 1px solid $shadow-light;
-  //   content: " ";
-  //   display: block;
-  // }
 }
 .characteristic-image {
   line-height: 0;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

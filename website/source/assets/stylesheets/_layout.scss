@@ -7,16 +7,6 @@
 
 /* ---------- Generic Properties ---------- */
 
-// * {
-//   @include box-sizing('border-box');
-// }
-
-.section {
-  @include clearfix;
-  padding: $space-h 0;
-  position: relative;
-}
-
 .container {
   @include clearfix;
   margin: 0 auto;

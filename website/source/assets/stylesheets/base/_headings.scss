@@ -2,10 +2,10 @@
 ----------------------------------------------- */
 
 h1, h2, h3, h4, h5, h6 {
-  margin: 0;
   color: $alt-color;
   font-family: $secondary-font;
   line-height: $lheight-s;
+  margin: 0;
 }
 .heading-xl,
 .heading-xl,
@@ -16,11 +16,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .heading-xl {
   font-size: $font-xl;
+  font-weight: bold;
+  line-height: $lheight-m;
   margin-bottom: $space-h;
   text-align: center;
-  line-height: $lheight-m;
   text-transform: capitalize;
-  font-weight: bold;
 }
 .heading-l {
 

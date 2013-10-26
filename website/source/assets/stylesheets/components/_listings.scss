@@ -7,53 +7,43 @@
 .listing-item {
   @include clearfix;
   list-style: none;
-  padding-top: $space-xl;
-  padding-bottom: $space-xl;
+    padding-top: $space-m;
+    padding-bottom: $space-m;
   &:first-child {
     border-top: 0;
     padding-top: 0;
   }
 }
 .listing-title {
-  display: block;
-  text-align: center;
-  font-size: $font-l;
+  font-size: $font-m;
+  text-align: left;
+  display: inline;
 }
 .listing-meta {
-  text-align: center;
   display: block;
-  margin: $space-m 0 $space-l;
+  color: $mono-weak;
+  float: left;
+  margin-top: $space-s;
+  margin-bottom: 0;
+  min-width: 150px;
+  padding-top: $space-xs;
+  text-align: left;
 }
 
-// Ordered vs. Unordered
+/* Queries
+----------------------------------------------- */
 
-.listing.ordered {
-  .listing-item {
-  }
-}
-.listing.unordered {
-  .listing-item {
-  }
-}
-
-// Compact
-
-.listing.compact {
-  .listing-item {
-    padding-top: $space-m;
-    padding-bottom: $space-m;
-  }
+@media #{$small} {
   .listing-title {
+    font-size: $font-l;
+    text-align: center;
     display: inline-block;
   }
-  .listing-meta {
-    color: $mono-weak;
-    float: left;
-    min-width: 150px;
-    text-align: left;
-    padding-top: $space-xs;
-    margin-top: $space-s;
-    margin-bottom: 0;
-  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }
 

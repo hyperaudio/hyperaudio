@@ -5,14 +5,14 @@ title: Home
 <section class="section branded lt_homefold">
   <div class="container">
     <div class="row">
+      <hgroup class="pitch lt_pitch">
+        <h1 class="pitch-heading">Transcript powered Audio and Video.</h1>
+        <h2 class="pitch-text">Navigate, Search and Edit media like never before.</h2>
+      </hgroup>
       <div class="large-10 large-offset-1 small-12">
-        <hgroup class="pitch lt_pitch">
-          <h1 class="pitch-heading">Transcript powered Audio and Video</h1>
-          <h2 class="pitch-text">Navigate, Search and Edit media like never before.</h2>
-        </hgroup>
       </div>
     </div>
-    <div class="slider">
+    <div class="slider lt_slider">
       <div class="slides functionalities lt_functionalities">
         <div class="slide">
           <div class="functionality row">
@@ -23,9 +23,8 @@ title: Home
             </div>
             <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Navigate</h2>
-              <div class="functionality-text">
-                <p>Skim through media quickly and intuitively. <br/>Click on text to be taken directly to the good stuff.</p>
-              </div>
+              <p class="functionality-text">Skim through media quickly and intuitively.</p>
+              <p class="functionality-text">Click on text to be taken directly to the good stuff.</p>
               <%= link_to 'Sign up', '/signup/', :class => "functionality-call large button block" %>
               <%= link_to 'Learn more', '/tour/', :class => "functionality-call button block" %>
             </div>
@@ -40,9 +39,8 @@ title: Home
             </div>
             <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Search</h2>
-              <div class="functionality-text">
-                <p>Search transcripts to locate points of interest. <br/>Expose audio and video content to search engines.</p>
-              </div>
+              <p class="functionality-text">Search transcripts to locate points of interest.</p>
+              <p class="functionality-text">Expose audio and video content to search engines.</p>
               <%= link_to 'Sign up', '/signup/', :class => "functionality-call large button block" %>
               <%= link_to 'Learn more', '/tour/', :class => "functionality-call button block" %>
             </div>
@@ -57,9 +55,8 @@ title: Home
             </div>
             <div class="functionality-description columns small-12 large-4 pull-8">
               <h2 class="functionality-heading">Edit</h2>
-              <div class="functionality-text">
-                <p>Assemble content as simply as you would a document. <br/>Use hyperaudio to rapidly build audio visual pieces.</p>
-              </div>
+              <p class="functionality-text">Assemble content as simply as you would a document.</p>
+              <p class="functionality-text">Use hyperaudio to rapidly build audio visual pieces.</p>
               <%= link_to 'Sign up', '/signup/', :class => "functionality-call large button block" %>
               <%= link_to 'Learn more', '/tour/', :class => "functionality-call button block" %>
             </div>
@@ -77,7 +74,7 @@ title: Home
 
 <section class="section">
   <div class="container">
-    <hgroup class="section-head">
+    <hgroup class="section-head lt_section-head">
       <h1 class="section-head-heading">A complete set of web tools for remixing media.</h1>
     </hgroup>
     <div class="features">
@@ -91,7 +88,7 @@ title: Home
           <h2 class="feature-heading">Shareable</h2>
           <p class="feature-text">Highlight or bookmark notable passages of audio and video.</p>
           <p class="feature-text">Share content on social networks or wherever you want.</p>
-          <%= link_to 'Learn more', '/tour/', :class => "feature-call button large" %>
+          <%= link_to 'Learn more', '/tour/', :class => "feature-call button large block" %>
         </div>
       </div>
       <div class="feature row even">
@@ -104,7 +101,7 @@ title: Home
           <h2 class="feature-heading">Accessible</h2>
           <p class="feature-text">Watch words highlight exactly as they are spoken.</p>
           <p class="feature-text">Open up your media to deaf and the hard of hearing.</p>
-          <%= link_to 'Learn more', '/tour/', :class => "feature-call button large" %>
+          <%= link_to 'Learn more', '/tour/', :class => "feature-call button large block" %>
         </div>
       </div>
     </div>

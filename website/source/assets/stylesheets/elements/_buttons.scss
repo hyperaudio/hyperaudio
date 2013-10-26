@@ -64,3 +64,15 @@ input[type="submit"].button {
   font-size: $font-xs;
   padding: $space-xs $space-m;
 }
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

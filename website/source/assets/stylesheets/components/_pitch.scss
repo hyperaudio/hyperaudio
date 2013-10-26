@@ -5,9 +5,27 @@
   text-align: center;
 }
 .pitch-heading {
-  font-size: $font-h;
+  display: inline;
+  font-size: $font-m;
 }
 .pitch-text {
   font-weight: normal;
-  margin-top: $space-m;
+  display: inline;
+  font-size: $font-m;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .pitch-heading {
+    display: block;
+    font-size: $font-h;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

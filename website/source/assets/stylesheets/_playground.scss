@@ -3,8 +3,8 @@
 
 .branded {
   background: $brand-color;
-  text-shadow: 0 1px 1px $shadow-weak;
   color: $bright;
+  text-shadow: 0 1px 1px $shadow-weak;
   h1, h2, h3, h4, h5 {
     color: $bright;
   }
@@ -15,17 +15,17 @@
     }
   }
   .button {
-    color: $bright;
     border-color: $brand-color-light;
+    color: $bright;
     &:hover {
-      color: $brand-color !important;
       background: $bright;
       border-color: $bright;
+      color: $brand-color !important;
     }
   }
   .button.primary {
+    background: $bright;
     border-color: $bright;
     color: $brand-color;
-    background: $bright;
   }
 }

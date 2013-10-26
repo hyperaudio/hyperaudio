@@ -1,11 +1,36 @@
+/* Section Head
+----------------------------------------------- */
+
 .section-head {
-  text-align: center;
   margin-bottom: $space-xl;
+  text-align: center;
 }
 .section-head-heading {
-  font-size: $font-xl;
+  font-size: $font-l;
+  padding: 0 $space-s;
 }
 .section-head-text {
   font-weight: normal;
   margin-top: $space-m;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .section-head-heading {
+    font-size: $font-xl;
+    margin-bottom: 0;
+    padding: 0;
+  }
+  .section-head-text {
+    font-weight: normal;
+    margin-top: $space-m;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

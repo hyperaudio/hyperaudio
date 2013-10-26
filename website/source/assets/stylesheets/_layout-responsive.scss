@@ -1,0 +1,62 @@
+/* Site Layout Responsive
+------------------------------------------- */
+
+.tpl_site {
+
+  .section {
+    @include clearfix;
+    padding: $space-xl 0;
+    position: relative;
+  }
+  .lt_section-head {
+    margin-bottom: $space-m;
+  }
+  .lt_homefold {
+    padding-top: 0;
+  }
+  .lt_header {
+    padding: $space-xl 0;
+  }
+  .lt_header-brandmark {
+    min-height: 80px;
+  }
+  .lt_slider {
+    margin-top: $space-l;
+  }
+
+  @media #{$small} {
+
+    .lt_header {
+      padding: $space-xl 0;
+    }
+    .lt_header-brandmark {
+      min-height: 0;
+    }
+    .section {
+      @include clearfix;
+      padding: $space-h 0;
+      position: relative;
+    }
+    .lt_section-head {
+      margin-bottom: $space-xl;
+    }
+    .lt_homefold {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .lt_pitch {
+      margin-bottom: $space-h;
+    }
+    .lt_slider {
+      margin-top: 0;
+    }
+
+  }
+
+  @media #{$medium} {
+  }
+
+  @media #{$large} {
+  }
+
+}

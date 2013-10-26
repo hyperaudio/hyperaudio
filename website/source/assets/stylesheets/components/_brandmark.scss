@@ -3,20 +3,33 @@
 
 .brandmark {
   border: none !important;
-  display: inline-block;
+  display: block;
   font-size: 0;
   height: 40px;
+  text-align: center;
 }
 .brandmark-symbol {
-  background: $bright;
   @include border-radius($radius-m);
-  float: left;
+  background: $bright;
   height: 40px;
-  margin-right: $space-m;
 }
 .brandmark-label {
+  display: inline;
   font-family: $secondary-font;
   font-size: $font-m;
   font-weight: bold;
   line-height: 40px;
+  margin-left: $space-m;
+}
+
+@media #{$small} {
+  .brandmark {
+    text-align: left;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

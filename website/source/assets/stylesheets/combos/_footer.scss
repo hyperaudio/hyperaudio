@@ -2,14 +2,35 @@
 ----------------------------------------------- */
 
 .footer {
-  padding: $space-h 0;
+  padding: $space-xl 0 0;
+}
+.footer-brandmark {
+  margin-top: $space-xl;
 }
 .footer-imprint {
-  margin-top: $space-h;
-  font-size: $font-xs;
-  text-align: center;
   color: $mono-weak;
+  font-size: $font-xs;
+  margin: $space-xl $space-s;
+  text-align: center;
   p {
     margin: 0;
   }
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .footer {
+    padding: $space-h 0;
+  }
+  .footer-brandmark {
+    margin-top: 0;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

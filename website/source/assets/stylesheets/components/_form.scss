@@ -10,16 +10,16 @@
   }
 }
 .form-component.actions {
-  text-align: center;
   margin-top: $space-xl;
+  text-align: center;
 }
 .form-label {
-  font-weight: bold;
   display: block;
+  font-weight: bold;
 }
 .form-label {
-  font-weight: bold;
   display: block;
+  font-weight: bold;
   margin-bottom: $space-s;
   &.centered {
     text-align: center;
@@ -29,12 +29,12 @@
 
 }
 .form-note {
-  font-size: $font-xs;
   color: $mono-weak;
+  font-size: $font-xs;
 }
 .form-alert {
   color: $brand-color;
+  display: block;
   font-weight: bold;
   text-align: center;
-  display: block;
 }

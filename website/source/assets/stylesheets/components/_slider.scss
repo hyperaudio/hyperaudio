@@ -1,41 +1,19 @@
+/* Slider
+----------------------------------------------- */
+
 .slider {
+  @include clearfix;
   display: block;
   height: auto;
-  @include clearfix;
   list-style: none;
 }
-.slide {
-
-}
-
-// .slider-prev,
-// .slider-next {
-//   @include border-radius($radius-absolute);
-//   background: $flare-weak;
-//   cursor: pointer;
-//   height: 20px;
-//   display: inline-block;
-//   clear: both;
-//   width: 20px;
-//   line-height: 20px;
-//   position: relative;
-//   top: -2px;
-//   text-align: center;
-//   &:hover {
-//     background: $flare-mid;
-//   }
-// }
-// .slider-prev {
-// }
-// .slider-next {
-// }
-
 .slider-pager {
-  text-align: center;
-  margin-top: $space-xl;
-  width: 14px;
   @include position-top-right(50%,-20px);
+  display: none;
+  margin-top: $space-xl;
   margin-top: -30px;
+  text-align: center;
+  width: 14px;
 }
 .slider-pages {
   display: block;
@@ -45,8 +23,8 @@
   @include border-radius($radius-absolute);
   @include box-shadow(0 1px 1px $shadow-weak);
   background: $bright;
-  cursor: pointer;
   clear: both;
+  cursor: pointer;
   display: inline-block;
   height: 10px;
   margin: 3px 0;
@@ -59,4 +37,19 @@
   height: 12px;
   margin: 2px 0;
   width: 12px;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .slider-pager {
+    display: block;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

@@ -1,12 +1,12 @@
 .footer-navigation {
   list-style: none;
-  text-align: right;
   margin-top: $space-s;
+  text-align: center;
 }
 .footer-navigation-item {
   display: inline-block;
   font-size: $font-xs;
-  margin-left: $space-l;
+  margin: 0 $space-s;
   text-transform: uppercase;
 }
 .footer-navigation-item.active {
@@ -14,4 +14,25 @@
 }
 .footer-navigation-item a {
   letter-spacing: 0.1em;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .footer-navigation {
+    text-align: right;
+  }
+  .footer-navigation-item {
+    display: inline-block;
+    font-size: $font-s;
+    margin-left: $space-l;
+    text-transform: uppercase;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

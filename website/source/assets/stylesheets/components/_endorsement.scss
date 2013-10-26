@@ -5,12 +5,15 @@
 }
 .endorsement {
   @include clearfix;
+  margin-top: $space-xl;
+  &:first-child {
+    margin-top: 0;
+  }
 }
 .endorsement-quote {
   display: block;
   font-style: italic;
-  margin-bottom: $space-l;
-  min-height: 10rem;
+  margin-bottom: $space-m;
 }
 .endorsement-author {
   color: $mono-weak;
@@ -23,4 +26,25 @@
 .endorsement-author-title {
   display: block;
   font-weight: normal;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .endorsement {
+    margin-top: 0;
+  }
+  .endorsement-quote {
+    display: block;
+    font-style: italic;
+    margin-bottom: $space-l;
+    min-height: 10rem;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

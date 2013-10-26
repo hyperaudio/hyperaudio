@@ -2,7 +2,6 @@
 ----------------------------------------------- */
 
 .tour-items {
-  margin-top: $space-xl;
 }
 
 .tour-item {
@@ -13,22 +12,51 @@
 }
 
 .tour-item-heading {
-  font-size: $font-l;
+  font-size: $font-m;
+  margin-bottom: $space-m;
   text-align: center;
-  margin-bottom: $space-l;
 }
 .tour-figure {
-  border: 1px solid $alt-color-light;
-  overflow: hidden;
   @include border-radius($radius-s);
+  border: 1px solid $alt-color-light;
+  margin-bottom: $space-m;
+  overflow: hidden;
 }
 .tour-image {
 }
 .tour-item-text {
-  font-size: $font-m;
-  line-height: $lheight-m;
+  font-size: $font-s;
+  display: inline;
   &:first-child {
-    padding-top: 0;
     margin-top: 0;
+    padding-top: 0;
   }
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .tour-item-heading {
+    font-size: $font-l;
+    margin-bottom: $space-l;
+    text-align: center;
+  }
+  .tour-figure {
+    margin-bottom: 0;
+  }
+  .tour-item-text {
+    font-size: $font-m;
+    line-height: $lheight-m;
+    &:first-child {
+      margin-top: 0;
+      padding-top: 0;
+    }
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
 }

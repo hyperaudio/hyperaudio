@@ -12,8 +12,8 @@
 
   }
   &.block {
-    width: 100%;
     @include box-sizing(border-box);
+    width: 100%;
   }
   &.centered {
     text-align: center;
