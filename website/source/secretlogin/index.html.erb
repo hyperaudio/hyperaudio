@@ -5,23 +5,26 @@ title: Log In
 <section class="section">
   <div class="container">
     <hgroup class="section-head">
-      <h1 class="section-head-heading">Log in</h1>
+      <h1 class="section-head-heading">
+        Log in
+      </h1>
     </hgroup>
     <div class="row">
       <div class="large-8 small-12 columns large-offset-2">
-        <form class="form">
+        <form id="loginForm" class="form">
           <div class="form-component">
             <label for="username" class="form-label centered">Username</label>
-            <input type="text" name="username" class="form-input text-input block large centered" placeholder="your@email.com"/>
-            <p class="form-alert">Wrong username.</p>
+            <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="username"> <!--<p style="display:none" class="form-alert">Wrong username.</p>-->
           </div>
           <div class="form-component">
             <label for="password" class="form-label centered">Password</label>
-            <input type="password" name="password" class="form-input text-input block large centered" />
-            <p class="form-alert">Wrong password.</p>
+            <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
+            <p id="error" style="display:none" class="form-alert">
+              Wrong username or password.
+            </p>
           </div>
           <div class="form-component actions">
-            <button class="button large primary">Log In</button>
+            <input type="submit" class="button large primary" value="Log In" />
           </div>
         </form>
       </div>
@@ -30,3 +33,28 @@ title: Log In
 </section>
 
 <hr class="separator" />
+
+<script>
+  $('#loginForm').on('submit', function(evt) {
+        evt.preventDefault();
+        $('#error').hide();
+        $.ajax( 'http://data.hyperaud.io/login', {
+        type: "POST",
+        data: {
+          username: $('#username').val(),
+          password: $('#password').val()
+        },
+        success: function() {
+          //alert(1);
+          document.location  = "http://hyperaud.io/dashboard/";
+        },
+        error: function() {
+          //alert(0);
+          $('#error').show();
+        },
+        xhrFields: {
+          withCredentials: true
+        },
+        crossDomain: true});
+  });
+</script>

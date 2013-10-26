@@ -17,6 +17,7 @@ page "blog/*", :layout => :site
 page "signup/*", :layout => :site
 page "terms-of-service/*", :layout => :site
 page "tour/*", :layout => :site
+page "thanks/*", :layout => :site
 page "index.html", :layout => :site
 
 page "secretlogin/*", :layout => :site
