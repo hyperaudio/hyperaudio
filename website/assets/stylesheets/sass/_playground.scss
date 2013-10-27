@@ -1,0 +1,31 @@
+/* Playground
+------------------------------------------- */
+
+.branded {
+  background: $brand-color;
+  color: $bright;
+  text-shadow: 0 1px 1px $shadow-weak;
+  h1, h2, h3, h4, h5 {
+    color: $bright;
+  }
+  a {
+    color: $bright;
+    &.active {
+      border-bottom-color: $bright;
+    }
+  }
+  .button {
+    border-color: $brand-color-light;
+    color: $bright;
+    &:hover {
+      background: $bright;
+      border-color: $bright;
+      color: $brand-color !important;
+    }
+  }
+  .button.primary {
+    background: $bright;
+    border-color: $bright;
+    color: $brand-color;
+  }
+}

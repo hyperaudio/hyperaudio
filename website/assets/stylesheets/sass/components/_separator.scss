@@ -1,0 +1,16 @@
+/* Pitch
+----------------------------------------------- */
+
+.separator {
+  border-color: $alt-color-light;
+  border-style: solid;
+  border-width: 1px 0 0;
+  margin: 0 auto;
+  max-width: 860px;
+  &.alt {
+    border-style: dotted;
+  }
+  &.silent {
+    border-color: transparent;
+  }
+}

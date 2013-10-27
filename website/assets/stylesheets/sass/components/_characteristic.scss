@@ -1,0 +1,46 @@
+/* Characteristics
+----------------------------------------------- */
+
+.characteristics {
+}
+.characteristic {
+  margin-top: $space-xl;
+}
+.characteristic-heading {
+  color: $mono-mid;
+  font-size: $font-s;
+  // text-align: center;
+  letter-spacing: 0.2em;
+  margin-bottom: $space-m;
+  text-transform: uppercase;
+}
+.characteristic-text {
+  font-size: $font-xs;
+  margin: 0;
+}
+.characteristic-detail {
+  color: $mono-mid;
+}
+.characteristic-figure {
+}
+.characteristic-image-container {
+  @include border-radius($radius-s);
+  line-height: 0;
+  overflow: hidden;
+  position: relative;
+}
+.characteristic-image {
+  line-height: 0;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

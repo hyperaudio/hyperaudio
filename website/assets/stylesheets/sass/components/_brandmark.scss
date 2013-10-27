@@ -1,0 +1,35 @@
+/* Brandmark
+----------------------------------------------- */
+
+.brandmark {
+  border: none !important;
+  display: block;
+  font-size: 0;
+  height: 40px;
+  text-align: center;
+}
+.brandmark-symbol {
+  @include border-radius($radius-m);
+  background: $bright;
+  height: 40px;
+}
+.brandmark-label {
+  display: inline;
+  font-family: $secondary-font;
+  font-size: $font-m;
+  font-weight: bold;
+  line-height: 40px;
+  margin-left: $space-m;
+}
+
+@media #{$small} {
+  .brandmark {
+    text-align: left;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

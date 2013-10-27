@@ -1,40 +1,25 @@
-###
-# Compass
-###
+# Require any additional compass plugins here.
 
-# Change Compass configuration
-compass_config do |config|
-  config.output_style = :compact
-end
+# Set this to the root of your project when deployed:
+http_path = "/"
+css_dir = "assets/stylesheets/css"
+sass_dir = "assets/stylesheets/sass"
+add_import_path "assets/"
+images_dir = "assets/images"
+javascripts_dir = "assets/javasscripts"
 
-###
-# Page options, layouts, aliases and proxies
-###
+# You can select your preferred output style here (can be overridden via the command line):
+# output_style = :expanded or :nested or :compact or :compressed
+output_style = :compressed
 
-# Per-page layout changes:
-page "styleguide/*", :layout => :styleguide
-page "site/*", :layout => :site
-page "apps/*", :layout => :apps
+# To enable relative paths to assets via compass helper functions. Uncomment:
+relative_assets = true
 
-###
-# Load Path
-###
+# To disable debugging comments that display the original location of your selectors. Uncomment:
+line_comments = false
 
-set :css_dir, 'assets/stylesheets'
-set :js_dir, 'assets/javascripts'
-set :images_dir, 'assets/images'
-set :fonts_dir, 'assets/fonts'
-sprockets.append_path 'assets/vendor'
-
-# Automatic image dimensions on image_tag helper
-# activate :automatic_image_sizes
-
-# Reload the browser automatically whenever files change
-activate :livereload
-
-# Build-specific configuration
-configure :build do
-  activate :minify_css
-  activate :minify_javascript
-  # activate :relative_assets
-end
+# If you prefer the indented syntax, you might want to regenerate this
+# project again passing --syntax sass, or you can uncomment this:
+# preferred_syntax = :sass
+# and then run:
+# sass-convert -R --from scss --to sass sass scss && rm -rf sass && mv scss sass

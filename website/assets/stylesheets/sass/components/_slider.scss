@@ -1,0 +1,55 @@
+/* Slider
+----------------------------------------------- */
+
+.slider {
+  @include clearfix;
+  display: block;
+  height: auto;
+  list-style: none;
+}
+.slider-pager {
+  @include position-top-right(50%,-20px);
+  display: none;
+  margin-top: $space-xl;
+  margin-top: -30px;
+  text-align: center;
+  width: 14px;
+}
+.slider-pages {
+  display: block;
+  text-align: center;
+}
+.slider-page {
+  @include border-radius($radius-absolute);
+  @include box-shadow(0 1px 1px $shadow-weak);
+  background: $bright;
+  clear: both;
+  cursor: pointer;
+  display: inline-block;
+  height: 10px;
+  margin: 3px 0;
+  width: 10px;
+}
+.slider-page.active {
+  @include border-radius($radius-absolute);
+  background: transparent;
+  border: 1px solid $bright;
+  height: 12px;
+  margin: 2px 0;
+  width: 12px;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .slider-pager {
+    display: block;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

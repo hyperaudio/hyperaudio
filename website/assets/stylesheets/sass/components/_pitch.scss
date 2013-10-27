@@ -1,0 +1,36 @@
+/* Pitch
+----------------------------------------------- */
+
+.pitch {
+  text-align: center;
+}
+.pitch-heading {
+  display: inline;
+  font-size: $font-m;
+}
+.pitch-text {
+  font-weight: normal;
+  display: inline;
+  font-size: $font-m;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .pitch-heading {
+    display: block;
+    font-size: $font-h;
+  }
+  .pitch-text {
+    font-weight: normal;
+    display: inline;
+    font-size: $font-l;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

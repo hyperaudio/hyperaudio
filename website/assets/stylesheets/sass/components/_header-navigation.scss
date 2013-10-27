@@ -1,0 +1,39 @@
+.header-navigation {
+  list-style: none;
+  text-align: center;
+}
+.header-navigation-item {
+  display: inline-block;
+  font-size: $font-s;
+  margin: 0 $space-s;
+  text-transform: uppercase;
+}
+.header-navigation-item.active {
+  opacity: 0.75;
+}
+.header-navigation-item a {
+  letter-spacing: 0.1em;
+}
+.header-navigation-item a:hover {
+  border-bottom-color: $bright;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .header-navigation {
+    margin-top: $space-s;
+    text-align: right;
+  }
+  .header-navigation-item {
+    margin-left: $space-l;
+    padding: $space-xs;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

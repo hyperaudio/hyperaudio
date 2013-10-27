@@ -1,26 +1,18 @@
 Hyperaudio Ecosystem
 =======
 
-## Install Middleman
+# If editing SCSS files and managing vendor assets with Bower:
 
-    $ gem install middleman
+Just run a local server on the root of this repo.
 
-## Install Bower
-
+    $ gem install compass
     $ npm install -g bower
-
-## Lastly
     $ cd project_dir
-    $ bundle install
     $ bower install
-    $ middleman
+    $ compass watch
 
-Load http://localhost:4567 in the browser.
+Open the thing in the browser.
 
-----
+# Alternatively
 
-## Ecosystem Includes
-
-* Styleguide: http://localhost:4567/styleguide
-* Site: http://localhost:4567/site
-* Apps: http://localhost:4567apps
+Just run a local server on the root of this repo and open the thing in the browser.

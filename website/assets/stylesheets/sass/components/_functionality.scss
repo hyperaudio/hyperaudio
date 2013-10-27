@@ -1,0 +1,67 @@
+/* Functionality
+----------------------------------------------- */
+
+.functionality {
+  @include clearfix;
+  @include border-top-radius($radius-s);
+}
+
+.functionality-heading {
+  display: none;
+  font-size: $font-m;
+  margin-top: $space-m;
+  margin-bottom: $space-m;
+}
+.functionality-text {
+  display: inline;
+  font-size: $font-s;
+}
+.functionality-detail {
+  color: $mono-mid;
+  color: $flare-strong;
+}
+.functionality-call {
+  margin-top: $space-m;
+}
+.functionality-image-container {
+  @include border-top-radius($radius-s);
+  background: $bright;
+  line-height: 0;
+  margin-bottom: $space-m;
+  overflow: hidden;
+  position: relative;
+}
+.functionality-image {
+  @include box-sizing(border-box);
+  line-height: 0;
+  width: 100%;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .functionality-heading {
+    display: block;
+    font-size: $font-xl;
+    line-height: $lheight-xs;
+    margin-top: $space-m;
+  }
+  .functionality-text {
+    display: block;
+    font-size: $font-m;
+  }
+  .functionality-image-container {
+    @include border-top-radius($radius-s);
+    background: $bright;
+    line-height: 0;
+    margin-bottom: 0;
+    margin-left: $space-l;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

@@ -1,0 +1,40 @@
+/* Forms
+----------------------------------------------- */
+
+.form {
+}
+.form-component {
+  margin-top: $space-xl;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+.form-component.actions {
+  margin-top: $space-xl;
+  text-align: center;
+}
+.form-label {
+  display: block;
+  font-weight: bold;
+}
+.form-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: $space-s;
+  &.centered {
+    text-align: center;
+  }
+}
+.form-input {
+
+}
+.form-note {
+  color: $mono-weak;
+  font-size: $font-xs;
+}
+.form-alert {
+  color: $brand-color;
+  display: block;
+  font-weight: bold;
+  text-align: center;
+}

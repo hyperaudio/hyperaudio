@@ -1,0 +1,96 @@
+/* Article
+----------------------------------------------- */
+
+.article {
+  position: relative;
+}
+.article-head {
+  margin-bottom: $space-xl;
+}
+.article-heading {
+  color: $mono-weak;
+  font-size: $font-m;
+  text-align: center;
+}
+.article-title {
+  font-size: $font-xl;
+}
+.article-meta {
+  color: $mono-weak;
+  display: block;
+  font-size: $font-s;
+  font-style: italic;
+  text-align: center;
+}
+.article-date {
+}
+.article-author {
+  color: $mono-weak;
+  font-size: $font-s;
+  font-style: italic;
+}
+.article {
+  .article-title {
+    margin: $space-m;
+    text-align: center;
+  }
+}
+
+.article-body {
+  font-size: $font-s;
+  line-height: $lheight-m;
+  blockquote {
+    border-left: $space-s solid $light;
+    font-style: italic;
+    margin: $space-l;
+    padding-left: $space-l;
+  }
+  ul,
+  ol {
+    margin: $space-l;
+  }
+  p {
+  }
+  a {
+    white-space: pre-line;
+  }
+  figure {
+    border: 1px solid $light;
+    margin-bottom: $space-l;
+    > a {
+      border: none !important;
+      line-height: 0;
+      padding: 0;
+    }
+    figcaption {
+      color: $mono-mid;
+      font-size: $font-s;
+      line-height: $lheight-m;
+      padding: $space-m;
+    }
+  }
+}
+
+.article.excerpt {
+  .article-title {
+    text-align: center;
+  }
+  .article-date {
+    display: block;
+    margin-bottom: $space-xl;
+    text-align: center;
+  }
+}
+
+@media #{$small} {
+  .article-body {
+    font-size: $font-m;
+    line-height: $lheight-l;
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

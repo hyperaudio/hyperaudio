@@ -1,0 +1,20 @@
+/* Layout Generic
+------------------------------------------- */
+
+.row {
+  max-width: 960px;
+}
+
+/* ---------- Generic Properties ---------- */
+
+.container {
+  @include clearfix;
+  margin: 0 auto;
+  min-height: 100%;
+  max-width: 960px;
+}
+
+.section > .container,
+.footer > .container {
+  max-width: 880px;
+}

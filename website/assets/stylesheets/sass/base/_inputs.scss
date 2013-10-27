@@ -1,0 +1,21 @@
+/* Inputs
+----------------------------------------------- */
+
+.text-input {
+  @include border-radius($radius-s);
+  border: 1px solid $mono-weak;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  &.large {
+    padding: $space-m;
+
+  }
+  &.block {
+    @include box-sizing(border-box);
+    width: 100%;
+  }
+  &.centered {
+    text-align: center;
+  }
+}

@@ -1,0 +1,78 @@
+/* Buttons
+----------------------------------------------- */
+
+a.button,
+button.button,
+.button {
+  @include border-radius($radius-s);
+  border: 1px solid $alt-color-light;
+  color: $alt-color;
+  display: inline-block;
+  font-weight: bold;
+  padding: $space-s $space-m;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  &:hover {
+    background: #2C3E50;
+    color: $bright !important;
+    text-shadow: none !important;
+  }
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+input[type="submit"].button {
+  @include border-radius($radius-s);
+  border: 1px solid $alt-color-light;
+  color: $bright;
+  display: inline-block;
+  font-weight: bold;
+  padding: $space-s $space-m;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  &:hover {
+    background: #2C3E50;
+    color: $bright !important;
+    text-shadow: none !important;
+  }
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.button.primary {
+  background: $alt-color;
+  border-color: $alt-color;
+  color: $bright;
+  text-shadow: none;
+}
+
+.button.block {
+  display: block;
+  text-align: center;
+}
+
+.button.large {
+  padding: $space-m $space-l !important;
+  text-align: center;
+}
+
+.button.small {
+  font-size: $font-xs;
+  padding: $space-xs $space-m;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

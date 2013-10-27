@@ -1,0 +1,42 @@
+/* Footer
+----------------------------------------------- */
+
+.footer {
+  padding: $space-xl 0 0;
+}
+.footer-brandmark {
+  margin-top: $space-xl;
+}
+.footer-imprint {
+  color: $mono-weak;
+  font-size: $font-xs;
+  margin: $space-xl $space-s;
+  text-align: center;
+  p {
+    margin: 0;
+    display: inline;
+  }
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small} {
+  .footer {
+    padding: $space-h 0;
+  }
+  .footer-brandmark {
+    margin-top: 0;
+  }
+  .footer-imprint {
+    p {
+      display: block;
+    }
+  }
+}
+
+@media #{$medium} {
+}
+
+@media #{$large} {
+}

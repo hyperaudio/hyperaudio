@@ -1,0 +1,88 @@
+/* Singularity + Breakpoint Grid System Definitions
+----------------------------------------------- */
+
+/* Colour Palette
+----------------------------------------------- */
+
+// Shades of Grey
+$dark              : #000;
+$bright            : #fff;
+
+$heavy             : rgba(0,0,0,0.88);
+$mono-heavy        : rgba(0,0,0,0.77);
+$mono-strong       : rgba(0,0,0,0.66);
+$mono-mid          : rgba(0,0,0,0.55);
+$mono-weak         : rgba(0,0,0,0.35);
+$mono-light        : rgba(0,0,0,0.20);
+$light             : rgba(0,0,0,0.04);
+
+// Rainbow
+
+$brand-color       : rgba(243,156,18,1);
+$brand-color-light : #F6B958;
+$brand-color-xlight: rgba(243,156,18,0.05);
+$alt-color         : rgba(44,62,80,1);
+$alt-color-light   : rgba(44,62,80,0.1);
+
+// Shadows
+$shadow-heavy      : rgba(0,0,0,0.9);
+$shadow-strong     : rgba(0,0,0,0.7);
+$shadow-mid        : rgba(0,0,0,0.5);
+$shadow-weak       : rgba(0,0,0,0.2);
+$shadow-light      : rgba(0,0,0,0.05);
+
+// Flares
+$flare-heavy       : rgba(255,255,255,0.9);
+$flare-strong      : rgba(255,255,255,0.7);
+$flare-mid         : rgba(255,255,255,0.5);
+$flare-weak        : rgba(255,255,255,0.2);
+$flare-light       : rgba(255,255,255,0.1);
+
+/* Typography
+----------------------------------------------- */
+html { font-size: 62.5%; }
+
+// Font Families
+$primary-font      : 'Merriweather Sans', sans-serif;
+$secondary-font    : 'Exo', sans-serif;
+
+// Font Sizes
+$font-h            : 4rem;
+
+$font-xl           : 3.2rem;
+$font-l            : 2.5rem;
+$font-m            : 1.4rem;
+$font-s            : 1.3rem;
+$font-xs           : 1.1rem;
+
+// Line Heights
+$lheight-xl        : 2.4em;
+$lheight-l         : 1.8em;
+$lheight-m         : 1.6em;
+$lheight-s         : 1.4em;
+$lheight-xs        : 1.2em;
+
+/* Spaces
+----------------------------------------------- */
+$space-h           : 8.0rem;
+
+$space-xl          : 4.0rem;
+$space-l           : 2.0rem;
+$space-m           : 1.0rem;
+$space-s           : 0.5rem;
+$space-xs          : 0.2rem;
+
+/* Border Radii
+----------------------------------------------- */
+$radius-absolute   : 100rem;
+$radius-l          : 0.8rem;
+$radius-m          : 0.6rem;
+$radius-s          : 0.3rem;
+
+/* Default definitions
+----------------------------------------------- */
+$dflt-background  : $bright;
+$dflt-color       : $mono-strong;
+$dflt-font        : $primary-font;
+$dflt-font-size   : $font-s;
+$dflt-line-height : $lheight-m;

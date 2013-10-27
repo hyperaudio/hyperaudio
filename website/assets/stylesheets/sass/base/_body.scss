@@ -1,0 +1,23 @@
+/* Body
+----------------------------------------------- */
+
+body {
+  background: $dflt-background;
+  color: $dflt-color;
+  font-family: $dflt-font;
+  font-size: $dflt-font-size;
+  line-height: $dflt-line-height;
+}
+
+// Text Selection
+::selection { background: $alt-color-light; }      /* Safari */
+::-moz-selection { background: $alt-color-light; } /* Firefox */
+
+blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+abbr[title] {
+  border: none;
+}
