@@ -7,14 +7,8 @@
 # Ignore bundler config
 /.bundle
 
-# Ignore the build directory
-/build
-/onlinebuild
-
 # Ignore Sass' cache
 /.sass-cache
 
 # Ignore .DS_store file
 .DS_Store
-
-TODO

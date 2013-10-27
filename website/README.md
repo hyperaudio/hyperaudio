@@ -1,45 +1,18 @@
 Hyperaudio Ecosystem
 =======
 
-## Install Middleman
+# If editing SCSS files and managing vendor assets with Bower:
 
-    $ gem install middleman
+Just run a local server on the root of this repo.
 
-## Install Bower
-
+    $ gem install compass
     $ npm install -g bower
-
-## Lastly
     $ cd project_dir
-    $ bundle install
     $ bower install
-    $ middleman
+    $ compass watch
 
-Load http://localhost:4567 in the browser.
+Open the thing in the browser.
 
-----
+# Alternatively
 
-## Build
-Make sure you have advpng, pngout, OptiPng, PNGCrush. Otherwise comment out :image_optim bits from your config.rb file. Then:
-
-    $ cd project_dir
-    $ middleman build
-
-----
-
-## Deploy via FTP
-Open your config.rb, uncomment and edit the following bit:
-
-    # activate :deploy do |deploy|
-    #   deploy.build_before = true # default: false
-    #   deploy.method   = :ftp
-    #   deploy.host     = "host"
-    #   deploy.path     = "path"
-    #   deploy.user     = "username"
-    #   deploy.password = "password"
-    # end
-
-Then:
-
-    $ cd project_dir
-    $ middleman deploy
+Just run a local server on the root of this repo and open the thing in the browser.
