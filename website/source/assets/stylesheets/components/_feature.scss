@@ -28,8 +28,6 @@
   font-size: $font-s;
   margin-top: $space-m;
 }
-.feature-figure {
-}
 .feature-image-container {
   @include border-radius($radius-s);
   border: 1px solid $alt-color-light;

@@ -5,10 +5,10 @@ title: Home
 <section class="section branded lt_homefold">
   <div class="container">
     <div class="row">
-      <hgroup class="pitch lt_pitch">
+      <div class="pitch lt_pitch">
         <h1 class="pitch-heading">Transcript powered Audio and Video.</h1>
         <h2 class="pitch-text">Navigate, Search and Edit media like never before.</h2>
-      </hgroup>
+      </div>
       <div class="large-10 large-offset-1 small-12">
       </div>
     </div>
@@ -16,7 +16,7 @@ title: Home
       <div class="slides functionalities lt_functionalities">
         <div class="slide">
           <div class="functionality row">
-            <div class="functionality-figure columns small-12 large-8 push-4">
+            <div class="columns small-12 large-8 push-4">
               <figure class="functionality-image-container">
                 <%= image_tag 'inserts/home-slide-navigate@2x.png', :class => "functionality-image" %>
               </figure>
@@ -32,7 +32,7 @@ title: Home
         </div>
         <div class="slide">
           <div class="functionality row">
-            <div class="functionality-figure columns small-12 large-8 push-4">
+            <div class="columns small-12 large-8 push-4">
               <figure class="functionality-image-container">
                 <%= image_tag 'inserts/home-slide-search@2x.png', :class => "functionality-image" %>
               </figure>
@@ -48,7 +48,7 @@ title: Home
         </div>
         <div class="slide">
           <div class="functionality row">
-            <div class="functionality-figure columns small-12 large-8 push-4">
+            <div class="columns small-12 large-8 push-4">
               <figure class="functionality-image-container">
                 <%= image_tag 'inserts/home-slide-edit@2x.png', :class => "functionality-image" %>
               </figure>
@@ -74,12 +74,18 @@ title: Home
 
 <section class="section">
   <div class="container">
-    <hgroup class="section-head lt_section-head">
-      <h1 class="section-head-heading">A complete set of web tools for remixing media.</h1>
-    </hgroup>
+
+    <div class="section-head">
+      <div class="row">
+        <div class="small-10 small-offset-1 columns">
+          <h1 class="section-head-heading">A complete set of web tools for remixing media.</h1>
+        </div>
+      </div>
+    </div>
+
     <div class="features">
       <div class="feature row odd">
-        <div class="feature-figure large-8 small-12 columns">
+        <div class="large-8 small-12 columns">
           <figure class="feature-image-container">
             <%= image_tag 'inserts/home-slide-share@2x.png', :class => "feature-image" %>
           </figure>
@@ -92,7 +98,7 @@ title: Home
         </div>
       </div>
       <div class="feature row even">
-        <div class="feature-figure large-8 small-12 columns push-4">
+        <div class="large-8 small-12 columns push-4">
           <figure class="feature-image-container">
             <%= image_tag 'inserts/home-slide-accessible@2x.png', :class => "feature-image" %>
           </figure>
@@ -114,7 +120,7 @@ title: Home
           <h2 class="characteristic-heading">Responsive</h2>
           <div class="row">
             <div class="large-7 small-6 columns">
-              <p class="characteristic-text">At home, in the office or on the move. Web-based Hyperaudio responds to your device. <%= link_to 'Learn more &raquo;', '/tour/', :class => "characteristic-call" %></p>
+              <p class="characteristic-text">At home, in the office or on the move. Web-based Hyperaudio responds to your device. <%= link_to 'Learn more &rarr;', '/tour/', :class => "characteristic-call" %></p>
             </div>
             <div class="large-5 small-6 columns">
               <div class="characteristic-figure">
@@ -131,7 +137,7 @@ title: Home
           <h2 class="characteristic-heading">Extensible</h2>
           <div class="row">
             <div class="large-7 small-6 columns">
-              <p class="characteristic-text">Create your own Hyperaudio applications using our clientside libraries and APIs. Install the Hyperaudio ecosystem on your servers. <%= link_to 'Learn more &raquo;', '/tour/', :class => "characteristic-call" %></p>
+              <p class="characteristic-text">Create your own Hyperaudio applications using our clientside libraries and APIs. Install the Hyperaudio ecosystem on your servers. <%= link_to 'Learn more &rarr;', '/tour/', :class => "characteristic-call" %></p>
             </div>
             <div class="large-5 small-6 columns">
               <div class="characteristic-figure">
@@ -151,9 +157,9 @@ title: Home
 
 <section class="section endorsements">
   <div class="container">
-    <hgroup class="section-head">
+    <div class="section-head">
       <h1 class="section-head-heading">Praised by experts. Supported by organizations.</h1>
-    </hgroup>
+    </div>
     <div class="row endorsements">
       <div class="endorsement small-12 large-4 columns">
         <blockquote class="endorsement-quote">Hyperaudio Pad attains something like the holy grail of web media. It gives web media producers the same copy, cut paste functionality that writers have enjoyed for years.</blockquote>
@@ -182,9 +188,9 @@ title: Home
 
 <section class="section">
   <div class="container">
-    <hgroup class="call">
+    <div class="call">
       <h1 class="call-heading"><%= link_to 'Sign up', '/signup/' %> and give Hyperaudio a whirl.</h1>
-    </hgroup>
+    </div>
   </div>
 </section>
 

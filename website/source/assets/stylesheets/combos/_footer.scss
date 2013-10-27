@@ -14,6 +14,7 @@
   text-align: center;
   p {
     margin: 0;
+    display: inline;
   }
 }
 
@@ -26,6 +27,11 @@
   }
   .footer-brandmark {
     margin-top: 0;
+  }
+  .footer-imprint {
+    p {
+      display: block;
+    }
   }
 }
 

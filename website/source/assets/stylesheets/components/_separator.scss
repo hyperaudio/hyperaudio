@@ -10,4 +10,7 @@
   &.alt {
     border-style: dotted;
   }
+  &.silent {
+    border-color: transparent;
+  }
 }

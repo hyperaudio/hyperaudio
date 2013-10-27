@@ -22,6 +22,11 @@
     display: block;
     font-size: $font-h;
   }
+  .pitch-text {
+    font-weight: normal;
+    display: inline;
+    font-size: $font-l;
+  }
 }
 
 @media #{$medium} {
