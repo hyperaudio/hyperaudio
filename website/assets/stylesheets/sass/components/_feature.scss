@@ -28,7 +28,7 @@
   font-size: $font-s;
   margin-top: $space-m;
 }
-.feature-image-container {
+.feature-figure {
   @include border-radius($radius-s);
   border: 1px solid $alt-color-light;
   line-height: 0;
@@ -68,12 +68,12 @@
     margin-top: $space-l;
   }
   .feature.odd {
-    .feature-image-container {
+    .feature-figure {
       margin-right: $space-l;
     }
   }
   .feature.even {
-    .feature-image-container {
+    .feature-figure {
       margin-left: $space-l;
     }
   }

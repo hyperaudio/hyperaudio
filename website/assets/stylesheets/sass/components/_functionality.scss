@@ -23,7 +23,7 @@
 .functionality-call {
   margin-top: $space-m;
 }
-.functionality-image-container {
+.functionality-figure {
   @include border-top-radius($radius-s);
   background: $bright;
   line-height: 0;
@@ -51,7 +51,7 @@
     display: block;
     font-size: $font-m;
   }
-  .functionality-image-container {
+  .functionality-figure {
     @include border-top-radius($radius-s);
     background: $bright;
     line-height: 0;

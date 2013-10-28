@@ -15,15 +15,13 @@
   text-transform: uppercase;
 }
 .characteristic-text {
-  font-size: $font-xs;
+  font-size: $font-s;
   margin: 0;
 }
 .characteristic-detail {
   color: $mono-mid;
 }
 .characteristic-figure {
-}
-.characteristic-image-container {
   @include border-radius($radius-s);
   line-height: 0;
   overflow: hidden;
