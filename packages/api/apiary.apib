@@ -74,13 +74,53 @@ In this version check `/whoami` afterwards to see if registered (and logged in) 
             (some html)
 
 
-## Transcripts Collecton [/transcripts]
+## Transcripts Collecton [/{user}/transcripts]
++ Parameters
+    + user (optional) ... username
+    
 ### List all Transcripts [GET]
 Shows all transcripts.
 
 + Response 200 (application/json)
         
-        TODO
+        [
+          {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "ts-clapper-march-13.htm",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": null,
+            "__v": 0
+          },
+          {
+            "_id": "5265be16ddb17fae06000002",
+            "label": "ts-clapper-responds.htm",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc605b1746d605000002",
+            "meta": {
+              "filename": "ts-clapper-responds.htm",
+              "mimetype": "text/html",
+              "size": 2461,
+              "url": "https://www.filepicker.io/api/file/WXm8dAq7Tw209CxZnY7g",
+              "key": "2JDtDZO0QQGEW4gS5tjY_ts-clapper-responds.htm"
+            },
+            "content": null,
+            "__v": 0
+          }
+        ]
 
 ### Create Transcript [POST]
 The `_id` is the MongoDB ObjectId, generated at creation time.
@@ -93,27 +133,161 @@ The `_id` is the MongoDB ObjectId, generated at creation time.
 
         TODO
         
-## Transcript [/transcript/{id}]
+## Transcript [/{user}/transcript/{id}]
 A single Transcript object with all the details.
 
 + Parameters
     + id (required) ... transcript id = MongoDB ObjectId
+    + user (optional) ... when provided it filters the collection
     
 ### Retrieve Transcript [GET]
-
+The `content` field is populated with the content of the `/{owner}/{meta.filename}`
+The `media` field is expanded with the content of the corresponding Media object.
 + Response 200 (application/json)
         
-        TODO
+        
+        {
+          "_id": "5265bdf9ddb17fae06000001",
+          "label": "ts-clapper-march-13.htm",
+          "desc": "",
+          "type": "html",
+          "sort": 999,
+          "owner": "gridinoc",
+          "media": {
+            "__v": 0,
+            "_id": "5265bc2a5b1746d605000001",
+            "desc": "",
+            "label": "clapper-march-13.mp4",
+            "meta": {
+              "filename": "clapper-march-13.mp4",
+              "mimetype": "video/mp4",
+              "url": "https://www.filepicker.io/api/file/kX2sn40pReSEUbqIqXZ2"
+            },
+            "owner": "gridinoc",
+            "probe": {
+              "metadata": {
+                "encoder": "Lavf54.49.102",
+                "title": "Capitol Hill Hearings : CSPAN : March 13, 2013 1:00am-6:00am EDT - http://archive.org/details/CSPAN_20130313_050000_Capitol_Hill_Hearings",
+                "compatible_brands": "isomiso2avc1mp41",
+                "minor_version": 512,
+                "major_brand": "isom"
+              },
+              "format": {
+                "bit_rate": 788985,
+                "size": 3290766,
+                "duration": 33.367075,
+                "start_time": 0,
+                "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                "nb_streams": 2
+              },
+              "streams": [
+                {
+                  "TAG:language": "und",
+                  "nb_frames": 1000,
+                  "duration": 33.366667,
+                  "start_time": 0,
+                  "time_base": "1/30000",
+                  "avg_frame_rate": "30000/1001",
+                  "r_frame_rate": "30000/1001",
+                  "level": 30,
+                  "pix_fmt": "yuv420p",
+                  "display_aspect_ratio": "4:3",
+                  "sample_aspect_ratio": "1:1",
+                  "has_b_frames": 0,
+                  "height": 480,
+                  "width": 640,
+                  "codec_tag": "0x31637661",
+                  "codec_tag_string": "avc1",
+                  "codec_time_base": "1001/60000",
+                  "codec_type": "video",
+                  "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                  "codec_name": "h264"
+                },
+                {
+                  "TAG:language": "und",
+                  "nb_frames": 1437,
+                  "duration": 33.367075,
+                  "start_time": 0,
+                  "time_base": "1/44100",
+                  "avg_frame_rate": "0/0",
+                  "r_frame_rate": "0/0",
+                  "bits_per_sample": 0,
+                  "channels": 2,
+                  "sample_rate": 44100,
+                  "codec_tag": "0x6134706d",
+                  "codec_tag_string": "mp4a",
+                  "codec_time_base": "1/44100",
+                  "codec_type": "audio",
+                  "codec_long_name": "Advanced Audio Coding",
+                  "codec_name": "aac"
+                }
+              ],
+              "probe_time": 76,
+              "file": "/srv/ha-data/media/gridinoc/clapper-march-13.mp4",
+              "fileext": ".mp4",
+              "filepath": "/srv/ha-data/media/gridinoc",
+              "filename": "clapper-march-13.mp4"
+            },
+            "sort": 999,
+            "type": "video"
+          },
+          "meta": {
+            "filename": "ts-clapper-march-13.htm",
+            "mimetype": "text/html",
+            "size": 2016,
+            "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+            "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+          },
+          "content": "<article>\n\t<header></header>\n\t<section>\n\t\t<header></header>\n<p><a data-m=\"396\">I </a><a data-m=\"557\">don't </a><a data-m=\"718\">really </a><a data-m=\"1579\">know </a><a data-m=\"1940\">what </a><a data-m=\"2353\">a </a><a data-m=\"2766\">dosier </a><a data-m=\"3179\">is </a><a data-m=\"3592\">in </a><a data-m=\"4130\">this </a><a data-m=\"4669\">context, </a><a data-m=\"5207\">so </a><a data-m=\"5499\">what </a><a data-m=\"5790\">I </a><a data-m=\"6082\">wanted </a><a data-m=\"6374\">to </a><a data-m=\"6665\">see </a><a data-m=\"6957\">is </a><a data-m=\"7180\">if </a><a data-m=\"7402\">you </a><a data-m=\"7625\">could </a><a data-m=\"7847\">give </a><a data-m=\"8070\">me </a><a data-m=\"8292\">a </a><a data-m=\"8515\">yes </a><a data-m=\"8737\">or </a><a data-m=\"8960\">no </a><a data-m=\"9182\">answer </a><a data-m=\"9405\">to </a><a data-m=\"9768\">the </a><a data-m=\"10131\">question </a><a data-m=\"10494\">does </a><a data-m=\"10855\">the </a><a data-m=\"11217\">NSA </a><a data-m=\"11578\">collect </a><a data-m=\"11939\">any </a><a data-m=\"12430\">type </a><a data-m=\"12921\">of </a><a data-m=\"13412\">data </a><a data-m=\"13902\">at </a><a data-m=\"14393\">all </a><a data-m=\"14884\">on </a><a data-m=\"15289\">millions </a><a data-m=\"15695\">or </a><a data-m=\"16100\">hundreds </a><a data-m=\"16517\">of </a><a data-m=\"16935\">millions </a><a data-m=\"17352\">of </a><a data-m=\"17576\">Americans?</a> </p><p><a data-m=\"19400\">No </a><a data-m=\"19800\">sir.</a> </p><p><a data-m=\"21318\">It </a><a data-m=\"21500\">does </a><a data-m=\"21700\">not?</a> </p><p><a data-m=\"23600\">Not </a><a data-m=\"23800\">wittingly. </a><a data-m=\"24500\">There </a><a data-m=\"26294\">are </a><a data-m=\"26565\">cases </a><a data-m=\"26837\">where </a><a data-m=\"27109\">they </a><a data-m=\"27380\">could </a><a data-m=\"27652\">inadvertently </a><a data-m=\"28612\">perhaps </a><a data-m=\"29572\">... </a><a data-m=\"30533\">collect </a><a data-m=\"31493\">but </a><a data-m=\"31961\">not </a><a data-m=\"32430\">... </a><a data-m=\"32899\">wittingly.</a> </p>\n\t\t<footer></footer>\n\t</section>\n\t</footer></footer>\n</article>",
+          "__v": 0
+        }
 
 
 ### Update Transcript [PUT]
+The `media` field contains the ObjectId of a media object. Populate it to link a transcript to a media file.
+The `content` will be stored in the database, and if a `meta.filename` is provided, also written to that file (`/{owner}/{meta.filename}`)
 + Request (application/json)
 
-        TODO
+        {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": "...",
+            "__v": 0
+        }
 
-+ Response 201 (application/json)
++ Response 200 (application/json)
 
-        TODO
+        {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": "...",
+            "__v": 0
+        }
         
 ### Delete Transcript [DELETE]
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
@@ -141,11 +315,12 @@ The `_id` is the MongoDB ObjectId, generated at creation time.
 
         TODO
         
-## Mix [/mixes/{id}]
+## Mix [/{user}/mixes/{id}]
 A single Mix object with all the details.
 
 + Parameters
     + id (required) ... mix id = MongoDB ObjectId
+    + user (optional) 
     
 ### Retrieve Mix [GET]
 
@@ -171,7 +346,10 @@ This deleted the database entry not the actual files (that exist on filepicker.i
 
 
 
-## Media Collection [/media]
+## Media Collection [/{user}/media]
++ Parameters
+    + user (optional) ... when provided filters the collection
+    
 ### List all Media [GET]
 
 Shows all media files with all details.
@@ -310,11 +488,12 @@ The `_id` is the MongoDB ObjectId, generated at creation time. A separate proces
             "_id": "527169d1e584f7a52f00001e"
         }
 
-## Media [/media/{id}]
+## Media [/{user}/media/{id}]
 A single Media object with all the details. A newly created media object might not have the `probe` field yet (updated by spawned process that downloads the video and uses ffprobe to analyse it)
 
 + Parameters
     + id (required) ... media id = MongoDB ObjectId
+    + user (optional) 
 
 ### Retrieve a single Media object [GET]
 
@@ -400,11 +579,41 @@ A single Media object with all the details. A newly created media object might n
 ### Update a Media object [PUT]
 + Request (application/json)
 
-        TODO
+        {
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+              "filename": "01.Xxyyxx-AboutYou.mp3",
+              "mimetype": "audio/mpeg",
+              "size": 10343280,
+              "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+              "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
+        }
 
 + Response 201 (application/json)
 
-        TODO
+        {
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+              "filename": "01.Xxyyxx-AboutYou.mp3",
+              "mimetype": "audio/mpeg",
+              "size": 10343280,
+              "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+              "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
+        }
 
 ### Remove a Media object [DELETE]
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
