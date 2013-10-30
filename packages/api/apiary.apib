@@ -74,6 +74,102 @@ In this version check `/whoami` afterwards to see if registered (and logged in) 
             (some html)
 
 
+## Transcripts Collecton [/transcripts]
+### List all Transcripts [GET]
+Shows all transcripts.
+
++ Response 200 (application/json)
+        
+        TODO
+
+### Create Transcript [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time.
+
++ Request (application/json)
+
+        TODO
+        
++ Response 200 (application/json)
+
+        TODO
+        
+## Transcript [/transcript/{id}]
+A single Transcript object with all the details.
+
++ Parameters
+    + id (required) ... transcript id = MongoDB ObjectId
+    
+### Retrieve Transcript [GET]
+
++ Response 200 (application/json)
+        
+        TODO
+
+
+### Update Transcript [PUT]
++ Request (application/json)
+
+        TODO
+
++ Response 201 (application/json)
+
+        TODO
+        
+### Delete Transcript [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
++ Response 204
+
+
+
+## Mixes Collecton [/mixes]
+
+### List all Mixes [GET]
+Shows all mixes.
+
++ Response 200 (application/json)
+        
+        TODO
+
+### Create Mix [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time. 
+
++ Request (application/json)
+
+        TODO
+        
++ Response 200 (application/json)
+
+        TODO
+        
+## Mix [/mixes/{id}]
+A single Mix object with all the details.
+
++ Parameters
+    + id (required) ... mix id = MongoDB ObjectId
+    
+### Retrieve Mix [GET]
+
++ Response 200 (application/json)
+        
+        TODO
+
+
+### Update Mix [PUT]
++ Request (application/json)
+
+        TODO
+
++ Response 201 (application/json)
+
+        TODO
+        
+### Delete Mix [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
++ Response 204
+
+
+
+
 
 ## Media Collection [/media]
 ### List all Media [GET]
@@ -174,8 +270,6 @@ Shows all media files with all details.
             "__v": 0
         }]
 
-
-
 ### Create a Media object [POST]
 The `_id` is the MongoDB ObjectId, generated at creation time. A separate process is spawned for downloading the file from filepicker.io and subsequently analysed with ffprobe.
 
@@ -215,7 +309,6 @@ The `_id` is the MongoDB ObjectId, generated at creation time. A separate proces
             },
             "_id": "527169d1e584f7a52f00001e"
         }
-
 
 ## Media [/media/{id}]
 A single Media object with all the details. A newly created media object might not have the `probe` field yet (updated by spawned process that downloads the video and uses ffprobe to analyse it)
@@ -307,12 +400,11 @@ A single Media object with all the details. A newly created media object might n
 ### Update a Media object [PUT]
 + Request (application/json)
 
-        { "title": "Buy cheese and bread for breakfast." }
+        TODO
 
 + Response 201 (application/json)
 
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
+        TODO
 
 ### Remove a Media object [DELETE]
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
