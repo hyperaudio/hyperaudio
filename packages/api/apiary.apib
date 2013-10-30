@@ -1,23 +1,201 @@
 FORMAT: 1A
-HOST: http://www.google.com
+HOST: http://data.hyperaud.io
 
 # Hyperaudio v0
-Notes API is a *short texts saving* service similar to its physical paper presence on your table.
+This is the bottom-up version created for MozFest 2013.
 
-# Group Notes
-Notes related resources of the **Notes API**
 
-## Notes Collection [/notes]
-### List all Notes [GET]
+## Media Collection [/media]
+### List all Media [GET]
+
+Shows all media files with all details.
+
 + Response 200 (application/json)
 
         [{
-          "id": 1, "title": "Jogging in park"
+            "__v": 0,
+            "_id": "5265bc605b1746d605000002",
+            "desc": "",
+            "label": "clapper-responds.mp4",
+            "meta": {
+                "filename": "clapper-responds.mp4",
+                "mimetype": "video/mp4",
+                "url": "https://www.filepicker.io/api/file/OzwI9S4WRteoqRXxxS85"
+            },
+            "owner": "gridinoc",
+            "probe": {
+                "metadata": {
+                    "encoder": "Lavf54.49.102",
+                    "title": "Martin Bashir : MSNBCW : June 11, 2013 1:00pm-2:01pm PDT - http://archive.org/details/MSNBCW_20130611_200000_Martin_Bashir",
+                    "compatible_brands": "isomiso2avc1mp41",
+                    "minor_version": 512,
+                    "major_brand": "isom"
+                },
+                "format": {
+                    "bit_rate": 847385,
+                    "size": 3534345,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                    "nb_streams": 2
+                },
+                "streams": [{
+                    "TAG:language": "und",
+                    "nb_frames": 1000,
+                    "duration": 33.366667,
+                    "start_time": 0,
+                    "time_base": "1/30000",
+                    "avg_frame_rate": "30000/1001",
+                    "r_frame_rate": "30000/1001",
+                    "level": 30,
+                    "pix_fmt": "yuv420p",
+                    "display_aspect_ratio": "16:9",
+                    "sample_aspect_ratio": "1:1",
+                    "has_b_frames": 0,
+                    "height": 360,
+                    "width": 640,
+                    "codec_tag": "0x31637661",
+                    "codec_tag_string": "avc1",
+                    "codec_time_base": "1001/60000",
+                    "codec_type": "video",
+                    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                    "codec_name": "h264"
+                }, {
+                    "TAG:language": "und",
+                    "nb_frames": 1437,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "time_base": "1/44100",
+                    "avg_frame_rate": "0/0",
+                    "r_frame_rate": "0/0",
+                    "bits_per_sample": 0,
+                    "channels": 2,
+                    "sample_rate": 44100,
+                    "codec_tag": "0x6134706d",
+                    "codec_tag_string": "mp4a",
+                    "codec_time_base": "1/44100",
+                    "codec_type": "audio",
+                    "codec_long_name": "Advanced Audio Coding",
+                    "codec_name": "aac"
+                }],
+                "probe_time": 89,
+                "file": "/srv/ha-data/media/gridinoc/clapper-responds.mp4",
+                "fileext": ".mp4",
+                "filepath": "/srv/ha-data/media/gridinoc",
+                "filename": "clapper-responds.mp4"
+            },
+            "sort": 999,
+            "type": "video"
         }, {
-          "id": 2, "title": "Pick-up posters from post-office"
+            "label": "01.Xxyyxx-AboutYou.mp3",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+                "filename": "01.Xxyyxx-AboutYou.mp3",
+                "mimetype": "audio/mpeg",
+                "size": 10343280,
+                "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+                "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
         }]
 
-### Create a Note [POST]
+
+
+
+
+## Media [/media/{id}]
+A single Media object with all the details.
+
++ Parameters
+    + id (required) ... media id = MongoDB ObjectId
+
+### Retrieve a single Media object [GET]
+
++ Response 200 (application/json)
+
+        {
+            "__v": 0,
+            "_id": "5265bc7b5b1746d605000003",
+            "desc": "",
+            "label": "obama-responds.mp4",
+            "meta": {
+                "filename": "obama-responds.mp4",
+                "mimetype": "video/mp4",
+                "url": "https://www.filepicker.io/api/file/CK5of7uFSiu6VGuIepyZ"
+            },
+            "owner": "gridinoc",
+            "probe": {
+                "metadata": {
+                    "encoder": "Lavf54.49.102",
+                    "title": "Around the World : CNNW : June 7, 2013 9:00am-10:01am PDT - http://archive.org/details/CNNW_20130607_160000_Around_the_World",
+                    "compatible_brands": "isomiso2avc1mp41",
+                    "minor_version": 512,
+                    "major_brand": "isom"
+                },
+                "format": {
+                    "bit_rate": 809477,
+                    "size": 3376236,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                    "nb_streams": 2
+                },
+                "streams": [{
+                    "TAG:language": "und",
+                    "nb_frames": 1000,
+                    "duration": 33.366667,
+                    "start_time": 0,
+                    "time_base": "1/30000",
+                    "avg_frame_rate": "30000/1001",
+                    "r_frame_rate": "30000/1001",
+                    "level": 30,
+                    "pix_fmt": "yuv420p",
+                    "display_aspect_ratio": "16:9",
+                    "sample_aspect_ratio": "1:1",
+                    "has_b_frames": 0,
+                    "height": 360,
+                    "width": 640,
+                    "codec_tag": "0x31637661",
+                    "codec_tag_string": "avc1",
+                    "codec_time_base": "1001/60000",
+                    "codec_type": "video",
+                    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                    "codec_name": "h264"
+                }, {
+                    "TAG:language": "und",
+                    "nb_frames": 1437,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "time_base": "1/44100",
+                    "avg_frame_rate": "0/0",
+                    "r_frame_rate": "0/0",
+                    "bits_per_sample": 0,
+                    "channels": 2,
+                    "sample_rate": 44100,
+                    "codec_tag": "0x6134706d",
+                    "codec_tag_string": "mp4a",
+                    "codec_time_base": "1/44100",
+                    "codec_type": "audio",
+                    "codec_long_name": "Advanced Audio Coding",
+                    "codec_name": "aac"
+                }],
+                "probe_time": 89,
+                "file": "/srv/ha-data/media/gridinoc/obama-responds.mp4",
+                "fileext": ".mp4",
+                "filepath": "/srv/ha-data/media/gridinoc",
+                "filename": "obama-responds.mp4"
+            },
+            "sort": 999,
+            "type": "video"
+        }
+
+### Update a Media object [PUT]
 + Request (application/json)
 
         { "title": "Buy cheese and bread for breakfast." }
@@ -26,22 +204,17 @@ Notes related resources of the **Notes API**
 
         { "id": 3, "title": "Buy cheese and bread for breakfast." }
 
-## Note [/notes/{id}]
-A single Note object with all its details
+### Create a Media object [POST]
++ Request (application/json)
 
-+ Parameters
-    + id (required, number, `1`) ... Numeric `id` of the Note to perform action with. Has example value.
+        { "title": "Buy cheese and bread for breakfast." }
 
-### Retrieve a Note [GET]
-+ Response 200 (application/json)
++ Response 201 (application/json)
 
-    + Header
+        { "id": 3, "title": "Buy cheese and bread for breakfast." }
 
-            X-My-Header: The Value
 
-    + Body
 
-            { "id": 2, "title": "Pick-up posters from post-office" }
-
-### Remove a Note [DELETE]
+### Remove a Media object [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
 + Response 204
