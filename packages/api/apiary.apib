@@ -302,7 +302,28 @@ Shows all mixes.
 
 + Response 200 (application/json)
         
-        TODO
+        [
+          {
+            "label": "Switcheroo",
+            "desc": "Testing initial save system",
+            "type": "beta",
+            "sort": 999,
+            "owner": "gridinoc",
+            "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+            "_id": "526b24b9ef1a5b6e2b000012",
+            "__v": 0
+          },
+          {
+            "__v": 0,
+            "_id": "526aecd3ef1a5b6e2b000009",
+            "content": "<article><section class=\"item effect\" data-effect=\"title\"><form onsubmit=\"return false\"><label>Title: <span class=\"value\">2</span>s</label><input type=\"text\" value=\"Smooth Operator\" onchange=\"this.setAttribute('value', this.value);\"><input type=\"range\" value=\"2\" min=\"0.5\" max=\"5\" step=\"0.1\" onchange=\"this.setAttribute('value', this.value); this.parentNode.querySelector('span').innerHTML = this.value;\"></form></section><section class=\"item\" data-id=\"5265be2dddb17fae06000003\" data-mp4=\"http://data.hyperaud.io/gridinoc/obama-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/obama-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"3354\">nobody </a><a data-m=\"3600\">is </a><a data-m=\"4000\">listening </a><a data-m=\"4500\">to </a><a data-m=\"4700\">your </a><a data-m=\"4900\">telephone </a><a data-m=\"5200\">calls </a></p><div class=\"actions\"></div></section><section class=\"item effect\" data-effect=\"title\"><form onsubmit=\"return false\"><label>Title: <span class=\"value\">1</span>s</label><input type=\"text\" value=\"Honest Guv!\" onchange=\"this.setAttribute('value', this.value);\"><input type=\"range\" value=\"1\" min=\"0.5\" max=\"5\" step=\"0.1\" onchange=\"this.setAttribute('value', this.value); this.parentNode.querySelector('span').innerHTML = this.value;\"></form></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+            "desc": "Testing initial save system",
+            "label": "The Smooth Operator",
+            "owner": "tester",
+            "sort": 999,
+            "type": "beta"
+          }
+        ]
 
 ### Create Mix [POST]
 The `_id` is the MongoDB ObjectId, generated at creation time. 
@@ -326,17 +347,44 @@ A single Mix object with all the details.
 
 + Response 200 (application/json)
         
-        TODO
+        {
+          "label": "Switcheroo",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
 
 
 ### Update Mix [PUT]
 + Request (application/json)
 
-        TODO
+        {
+          "label": "NEW LABEL",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
 
 + Response 201 (application/json)
 
-        TODO
+        {
+          "label": "NEW LABEL",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
         
 ### Delete Mix [DELETE]
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
