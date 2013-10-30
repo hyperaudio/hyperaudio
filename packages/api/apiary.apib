@@ -4,6 +4,76 @@ HOST: http://data.hyperaud.io
 # Hyperaudio v0
 This is the bottom-up version created for MozFest 2013.
 
+## User details [/whoami]
+
+### Check for existing user session [GET]
+Note: both responses are actually 200.
+
++ Response 404 (application/json)
+
+        {
+            "user": null
+        }
+
++ Response 200 (application/json)
+
+        {
+            "user": {
+                "salt": "e92...f77",
+                "hash": "bc8...3bd3137",
+                "username": "gridinoc",
+                "_id": "5258af31bed1bc3e66000001",
+                "__v": 0
+            }
+        }
+
+## Sign in [/login]
+### [POST]
+
++ Request (application/x-www-form-urlencoded)
+    
+        username=gridinoc&password=test
+
++ Response 302
+    + Headers
+    
+            Location: /
+
+    + Body
+            
+            EMPTY
+
++ Response 401
+    
+            EMPTY
+
+
+## Sign out [/logout]
+### [GET]
+
++ Response 302
+    + Headers
+    
+            Location: /
+
+    + Body
+            
+            EMPTY
+
+
+## Register [/register]
+In this version check `/whoami` afterwards to see if registered (and logged in) as it fails silently if the account already exists.
+### [POST]
+
++ Request (application/x-www-form-urlencoded)
+    
+        username=gridinoc&password=test
+
++ Response 200
+            
+            (some html)
+
+
 
 ## Media Collection [/media]
 ### List all Media [GET]
@@ -106,10 +176,49 @@ Shows all media files with all details.
 
 
 
+### Create a Media object [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time. A separate process is spawned for downloading the file from filepicker.io and subsequently analysed with ffprobe.
+
++ Request (application/json)
+
+        {
+            "_id": null,
+            "label": "Prometheus Vitamin Screen.mp4",
+            "desc": "",
+            "type": "video",
+            "sort": 999,
+            "owner": "gridinoc",
+            "meta": {
+                "filename": "Prometheus Vitamin Screen.mp4",
+                "mimetype": "video/mp4",
+                "size": 1886310,
+                "url": "https://www.filepicker.io/api/file/UDPSqCmfSN6F9CPiPOYS",
+                "key": "F0fEH3TRF6VprmZmMZ59_Prometheus Vitamin Screen.mp4"
+            }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "label": "Prometheus Vitamin Screen.mp4",
+            "desc": "",
+            "type": "video",
+            "sort": 999,
+            "owner": "gridinoc",
+            "meta": {
+                "key": "F0fEH3TRF6VprmZmMZ59_Prometheus Vitamin Screen.mp4",
+                "url": "https://www.filepicker.io/api/file/UDPSqCmfSN6F9CPiPOYS",
+                "size": 1886310,
+                "mimetype": "video/mp4",
+                "filename": "Prometheus Vitamin Screen.mp4"
+            },
+            "_id": "527169d1e584f7a52f00001e"
+        }
 
 
 ## Media [/media/{id}]
-A single Media object with all the details.
+A single Media object with all the details. A newly created media object might not have the `probe` field yet (updated by spawned process that downloads the video and uses ffprobe to analyse it)
 
 + Parameters
     + id (required) ... media id = MongoDB ObjectId
@@ -203,16 +312,6 @@ A single Media object with all the details.
 + Response 201 (application/json)
 
         { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
-### Create a Media object [POST]
-+ Request (application/json)
-
-        { "title": "Buy cheese and bread for breakfast." }
-
-+ Response 201 (application/json)
-
-        { "id": 3, "title": "Buy cheese and bread for breakfast." }
-
 
 
 ### Remove a Media object [DELETE]
