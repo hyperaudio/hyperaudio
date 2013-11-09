@@ -1,5 +1,7 @@
 $(document).ready(function() {
 
+  // Enable Home Page Slider
+
   $('.slider').cycle({
     autoHeight: 'calc',
     slides: '.slides > div',
@@ -16,7 +18,7 @@ $(document).ready(function() {
     timeout: 5000
   });
 
-  // Email obfuscation
+  // Obfuscate ...@hyperaud.io Email Addresses
 
   var emailize;
   $.fn.email = function() {
