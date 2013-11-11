@@ -1,0 +1,668 @@
+FORMAT: 1A
+HOST: http://data.hyperaud.io
+
+# Hyperaudio v0
+This is the bottom-up version created for MozFest 2013.
+
+## User details [/whoami]
+
+### Check for existing user session [GET]
+Note: both responses are actually 200.
+
++ Response 404 (application/json)
+
+        {
+            "user": null
+        }
+
++ Response 200 (application/json)
+
+        {
+            "user": {
+                "salt": "e92...f77",
+                "hash": "bc8...3bd3137",
+                "username": "gridinoc",
+                "_id": "5258af31bed1bc3e66000001",
+                "__v": 0
+            }
+        }
+
+## Sign in [/login]
+### [POST]
+
++ Request (application/x-www-form-urlencoded)
+    
+        username=gridinoc&password=test
+
++ Response 302
+    + Headers
+    
+            Location: /
+
+    + Body
+            
+            EMPTY
+
++ Response 401
+    
+            EMPTY
+
+
+## Sign out [/logout]
+### [GET]
+
++ Response 302
+    + Headers
+    
+            Location: /
+
+    + Body
+            
+            EMPTY
+
+
+## Register [/register]
+In this version check `/whoami` afterwards to see if registered (and logged in) as it fails silently if the account already exists.
+### [POST]
+
++ Request (application/x-www-form-urlencoded)
+    
+        username=gridinoc&password=test
+
++ Response 200
+            
+            (some html)
+
+
+## Transcripts Collecton [/{user}/transcripts]
++ Parameters
+    + user (optional) ... username
+    
+### List all Transcripts [GET]
+Shows all transcripts.
+
++ Response 200 (application/json)
+        
+        [
+          {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "ts-clapper-march-13.htm",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": null,
+            "__v": 0
+          },
+          {
+            "_id": "5265be16ddb17fae06000002",
+            "label": "ts-clapper-responds.htm",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc605b1746d605000002",
+            "meta": {
+              "filename": "ts-clapper-responds.htm",
+              "mimetype": "text/html",
+              "size": 2461,
+              "url": "https://www.filepicker.io/api/file/WXm8dAq7Tw209CxZnY7g",
+              "key": "2JDtDZO0QQGEW4gS5tjY_ts-clapper-responds.htm"
+            },
+            "content": null,
+            "__v": 0
+          }
+        ]
+
+### Create Transcript [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time.
+
++ Request (application/json)
+
+        TODO
+        
++ Response 200 (application/json)
+
+        TODO
+        
+## Transcript [/{user}/transcript/{id}]
+A single Transcript object with all the details.
+
++ Parameters
+    + id (required) ... transcript id = MongoDB ObjectId
+    + user (optional) ... when provided it filters the collection
+    
+### Retrieve Transcript [GET]
+The `content` field is populated with the content of the `/{owner}/{meta.filename}`
+The `media` field is expanded with the content of the corresponding Media object.
++ Response 200 (application/json)
+        
+        
+        {
+          "_id": "5265bdf9ddb17fae06000001",
+          "label": "ts-clapper-march-13.htm",
+          "desc": "",
+          "type": "html",
+          "sort": 999,
+          "owner": "gridinoc",
+          "media": {
+            "__v": 0,
+            "_id": "5265bc2a5b1746d605000001",
+            "desc": "",
+            "label": "clapper-march-13.mp4",
+            "meta": {
+              "filename": "clapper-march-13.mp4",
+              "mimetype": "video/mp4",
+              "url": "https://www.filepicker.io/api/file/kX2sn40pReSEUbqIqXZ2"
+            },
+            "owner": "gridinoc",
+            "probe": {
+              "metadata": {
+                "encoder": "Lavf54.49.102",
+                "title": "Capitol Hill Hearings : CSPAN : March 13, 2013 1:00am-6:00am EDT - http://archive.org/details/CSPAN_20130313_050000_Capitol_Hill_Hearings",
+                "compatible_brands": "isomiso2avc1mp41",
+                "minor_version": 512,
+                "major_brand": "isom"
+              },
+              "format": {
+                "bit_rate": 788985,
+                "size": 3290766,
+                "duration": 33.367075,
+                "start_time": 0,
+                "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                "nb_streams": 2
+              },
+              "streams": [
+                {
+                  "TAG:language": "und",
+                  "nb_frames": 1000,
+                  "duration": 33.366667,
+                  "start_time": 0,
+                  "time_base": "1/30000",
+                  "avg_frame_rate": "30000/1001",
+                  "r_frame_rate": "30000/1001",
+                  "level": 30,
+                  "pix_fmt": "yuv420p",
+                  "display_aspect_ratio": "4:3",
+                  "sample_aspect_ratio": "1:1",
+                  "has_b_frames": 0,
+                  "height": 480,
+                  "width": 640,
+                  "codec_tag": "0x31637661",
+                  "codec_tag_string": "avc1",
+                  "codec_time_base": "1001/60000",
+                  "codec_type": "video",
+                  "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                  "codec_name": "h264"
+                },
+                {
+                  "TAG:language": "und",
+                  "nb_frames": 1437,
+                  "duration": 33.367075,
+                  "start_time": 0,
+                  "time_base": "1/44100",
+                  "avg_frame_rate": "0/0",
+                  "r_frame_rate": "0/0",
+                  "bits_per_sample": 0,
+                  "channels": 2,
+                  "sample_rate": 44100,
+                  "codec_tag": "0x6134706d",
+                  "codec_tag_string": "mp4a",
+                  "codec_time_base": "1/44100",
+                  "codec_type": "audio",
+                  "codec_long_name": "Advanced Audio Coding",
+                  "codec_name": "aac"
+                }
+              ],
+              "probe_time": 76,
+              "file": "/srv/ha-data/media/gridinoc/clapper-march-13.mp4",
+              "fileext": ".mp4",
+              "filepath": "/srv/ha-data/media/gridinoc",
+              "filename": "clapper-march-13.mp4"
+            },
+            "sort": 999,
+            "type": "video"
+          },
+          "meta": {
+            "filename": "ts-clapper-march-13.htm",
+            "mimetype": "text/html",
+            "size": 2016,
+            "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+            "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+          },
+          "content": "<article>\n\t<header></header>\n\t<section>\n\t\t<header></header>\n<p><a data-m=\"396\">I </a><a data-m=\"557\">don't </a><a data-m=\"718\">really </a><a data-m=\"1579\">know </a><a data-m=\"1940\">what </a><a data-m=\"2353\">a </a><a data-m=\"2766\">dosier </a><a data-m=\"3179\">is </a><a data-m=\"3592\">in </a><a data-m=\"4130\">this </a><a data-m=\"4669\">context, </a><a data-m=\"5207\">so </a><a data-m=\"5499\">what </a><a data-m=\"5790\">I </a><a data-m=\"6082\">wanted </a><a data-m=\"6374\">to </a><a data-m=\"6665\">see </a><a data-m=\"6957\">is </a><a data-m=\"7180\">if </a><a data-m=\"7402\">you </a><a data-m=\"7625\">could </a><a data-m=\"7847\">give </a><a data-m=\"8070\">me </a><a data-m=\"8292\">a </a><a data-m=\"8515\">yes </a><a data-m=\"8737\">or </a><a data-m=\"8960\">no </a><a data-m=\"9182\">answer </a><a data-m=\"9405\">to </a><a data-m=\"9768\">the </a><a data-m=\"10131\">question </a><a data-m=\"10494\">does </a><a data-m=\"10855\">the </a><a data-m=\"11217\">NSA </a><a data-m=\"11578\">collect </a><a data-m=\"11939\">any </a><a data-m=\"12430\">type </a><a data-m=\"12921\">of </a><a data-m=\"13412\">data </a><a data-m=\"13902\">at </a><a data-m=\"14393\">all </a><a data-m=\"14884\">on </a><a data-m=\"15289\">millions </a><a data-m=\"15695\">or </a><a data-m=\"16100\">hundreds </a><a data-m=\"16517\">of </a><a data-m=\"16935\">millions </a><a data-m=\"17352\">of </a><a data-m=\"17576\">Americans?</a> </p><p><a data-m=\"19400\">No </a><a data-m=\"19800\">sir.</a> </p><p><a data-m=\"21318\">It </a><a data-m=\"21500\">does </a><a data-m=\"21700\">not?</a> </p><p><a data-m=\"23600\">Not </a><a data-m=\"23800\">wittingly. </a><a data-m=\"24500\">There </a><a data-m=\"26294\">are </a><a data-m=\"26565\">cases </a><a data-m=\"26837\">where </a><a data-m=\"27109\">they </a><a data-m=\"27380\">could </a><a data-m=\"27652\">inadvertently </a><a data-m=\"28612\">perhaps </a><a data-m=\"29572\">... </a><a data-m=\"30533\">collect </a><a data-m=\"31493\">but </a><a data-m=\"31961\">not </a><a data-m=\"32430\">... </a><a data-m=\"32899\">wittingly.</a> </p>\n\t\t<footer></footer>\n\t</section>\n\t</footer></footer>\n</article>",
+          "__v": 0
+        }
+
+
+### Update Transcript [PUT]
+The `media` field contains the ObjectId of a media object. Populate it to link a transcript to a media file.
+The `content` will be stored in the database, and if a `meta.filename` is provided, also written to that file (`/{owner}/{meta.filename}`)
++ Request (application/json)
+
+        {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": "...",
+            "__v": 0
+        }
+
++ Response 200 (application/json)
+
+        {
+            "_id": "5265bdf9ddb17fae06000001",
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "html",
+            "sort": 999,
+            "owner": "gridinoc",
+            "media": "5265bc2a5b1746d605000001",
+            "meta": {
+              "filename": "ts-clapper-march-13.htm",
+              "mimetype": "text/html",
+              "size": 2016,
+              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
+              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            },
+            "content": "...",
+            "__v": 0
+        }
+        
+### Delete Transcript [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
++ Response 204
+
+
+
+## Mixes Collecton [/mixes]
+
+### List all Mixes [GET]
+Shows all mixes.
+
++ Response 200 (application/json)
+        
+        [
+          {
+            "label": "Switcheroo",
+            "desc": "Testing initial save system",
+            "type": "beta",
+            "sort": 999,
+            "owner": "gridinoc",
+            "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+            "_id": "526b24b9ef1a5b6e2b000012",
+            "__v": 0
+          },
+          {
+            "__v": 0,
+            "_id": "526aecd3ef1a5b6e2b000009",
+            "content": "<article><section class=\"item effect\" data-effect=\"title\"><form onsubmit=\"return false\"><label>Title: <span class=\"value\">2</span>s</label><input type=\"text\" value=\"Smooth Operator\" onchange=\"this.setAttribute('value', this.value);\"><input type=\"range\" value=\"2\" min=\"0.5\" max=\"5\" step=\"0.1\" onchange=\"this.setAttribute('value', this.value); this.parentNode.querySelector('span').innerHTML = this.value;\"></form></section><section class=\"item\" data-id=\"5265be2dddb17fae06000003\" data-mp4=\"http://data.hyperaud.io/gridinoc/obama-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/obama-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"3354\">nobody </a><a data-m=\"3600\">is </a><a data-m=\"4000\">listening </a><a data-m=\"4500\">to </a><a data-m=\"4700\">your </a><a data-m=\"4900\">telephone </a><a data-m=\"5200\">calls </a></p><div class=\"actions\"></div></section><section class=\"item effect\" data-effect=\"title\"><form onsubmit=\"return false\"><label>Title: <span class=\"value\">1</span>s</label><input type=\"text\" value=\"Honest Guv!\" onchange=\"this.setAttribute('value', this.value);\"><input type=\"range\" value=\"1\" min=\"0.5\" max=\"5\" step=\"0.1\" onchange=\"this.setAttribute('value', this.value); this.parentNode.querySelector('span').innerHTML = this.value;\"></form></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+            "desc": "Testing initial save system",
+            "label": "The Smooth Operator",
+            "owner": "tester",
+            "sort": 999,
+            "type": "beta"
+          }
+        ]
+
+### Create Mix [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time. 
+
++ Request (application/json)
+
+        TODO
+        
++ Response 200 (application/json)
+
+        TODO
+        
+## Mix [/{user}/mixes/{id}]
+A single Mix object with all the details.
+
++ Parameters
+    + id (required) ... mix id = MongoDB ObjectId
+    + user (optional) 
+    
+### Retrieve Mix [GET]
+
++ Response 200 (application/json)
+        
+        {
+          "label": "Switcheroo",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
+
+
+### Update Mix [PUT]
++ Request (application/json)
+
+        {
+          "label": "NEW LABEL",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
+
++ Response 201 (application/json)
+
+        {
+          "label": "NEW LABEL",
+          "desc": "Testing initial save system",
+          "type": "beta",
+          "sort": 999,
+          "owner": "gridinoc",
+          "content": "<article><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"18500\">Professor </a><a data-m=\"19491\">Dyson </a><a data-m=\"19790\">I </a><a data-m=\"20088\">would </a><a data-m=\"20387\">hope </a><a data-m=\"20686\">being </a><a data-m=\"20942\">asked </a><a data-m=\"21197\">if </a><a data-m=\"21453\">you </a><a data-m=\"21677\">beat </a><a data-m=\"21900\">your </a><a data-m=\"22124\">wife </a><a data-m=\"22347\">does </a><a data-m=\"22735\">require </a><a data-m=\"23123\">a </a><a data-m=\"23511\">very </a><a data-m=\"23898\">clear </a><a data-m=\"24286\">answer </a></p><div class=\"actions\"></div></section><section class=\"item\" data-id=\"5265be16ddb17fae06000002\" data-mp4=\"http://data.hyperaud.io/gridinoc/clapper-responds.mp4\" data-webm=\"http://data.hyperaud.io/gridinoc/clapper-responds.webm\" data-unit=\"0.001\"><p><a data-m=\"11931\">I </a><a data-m=\"12339\">responded </a><a data-m=\"12746\">in </a><a data-m=\"12941\">what </a><a data-m=\"13136\">I </a><a data-m=\"13332\">thought </a><a data-m=\"13527\">was </a><a data-m=\"13722\">the </a><a data-m=\"14561\">most </a><a data-m=\"15001\">truthful </a><a data-m=\"15640\">or </a><a data-m=\"16056\">least </a><a data-m=\"16472\">untruthful </a><a data-m=\"16887\">manner </a></p><div class=\"actions\"></div></section></article>",
+          "_id": "526b24b9ef1a5b6e2b000012",
+          "__v": 0
+        }
+        
+### Delete Mix [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
++ Response 204
+
+
+
+
+
+## Media Collection [/{user}/media]
++ Parameters
+    + user (optional) ... when provided filters the collection
+    
+### List all Media [GET]
+
+Shows all media files with all details.
+
++ Response 200 (application/json)
+
+        [{
+            "__v": 0,
+            "_id": "5265bc605b1746d605000002",
+            "desc": "",
+            "label": "clapper-responds.mp4",
+            "meta": {
+                "filename": "clapper-responds.mp4",
+                "mimetype": "video/mp4",
+                "url": "https://www.filepicker.io/api/file/OzwI9S4WRteoqRXxxS85"
+            },
+            "owner": "gridinoc",
+            "probe": {
+                "metadata": {
+                    "encoder": "Lavf54.49.102",
+                    "title": "Martin Bashir : MSNBCW : June 11, 2013 1:00pm-2:01pm PDT - http://archive.org/details/MSNBCW_20130611_200000_Martin_Bashir",
+                    "compatible_brands": "isomiso2avc1mp41",
+                    "minor_version": 512,
+                    "major_brand": "isom"
+                },
+                "format": {
+                    "bit_rate": 847385,
+                    "size": 3534345,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                    "nb_streams": 2
+                },
+                "streams": [{
+                    "TAG:language": "und",
+                    "nb_frames": 1000,
+                    "duration": 33.366667,
+                    "start_time": 0,
+                    "time_base": "1/30000",
+                    "avg_frame_rate": "30000/1001",
+                    "r_frame_rate": "30000/1001",
+                    "level": 30,
+                    "pix_fmt": "yuv420p",
+                    "display_aspect_ratio": "16:9",
+                    "sample_aspect_ratio": "1:1",
+                    "has_b_frames": 0,
+                    "height": 360,
+                    "width": 640,
+                    "codec_tag": "0x31637661",
+                    "codec_tag_string": "avc1",
+                    "codec_time_base": "1001/60000",
+                    "codec_type": "video",
+                    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                    "codec_name": "h264"
+                }, {
+                    "TAG:language": "und",
+                    "nb_frames": 1437,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "time_base": "1/44100",
+                    "avg_frame_rate": "0/0",
+                    "r_frame_rate": "0/0",
+                    "bits_per_sample": 0,
+                    "channels": 2,
+                    "sample_rate": 44100,
+                    "codec_tag": "0x6134706d",
+                    "codec_tag_string": "mp4a",
+                    "codec_time_base": "1/44100",
+                    "codec_type": "audio",
+                    "codec_long_name": "Advanced Audio Coding",
+                    "codec_name": "aac"
+                }],
+                "probe_time": 89,
+                "file": "/srv/ha-data/media/gridinoc/clapper-responds.mp4",
+                "fileext": ".mp4",
+                "filepath": "/srv/ha-data/media/gridinoc",
+                "filename": "clapper-responds.mp4"
+            },
+            "sort": 999,
+            "type": "video"
+        }, {
+            "label": "01.Xxyyxx-AboutYou.mp3",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+                "filename": "01.Xxyyxx-AboutYou.mp3",
+                "mimetype": "audio/mpeg",
+                "size": 10343280,
+                "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+                "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
+        }]
+
+### Create a Media object [POST]
+The `_id` is the MongoDB ObjectId, generated at creation time. A separate process is spawned for downloading the file from filepicker.io and subsequently analysed with ffprobe.
+
++ Request (application/json)
+
+        {
+            "_id": null,
+            "label": "Prometheus Vitamin Screen.mp4",
+            "desc": "",
+            "type": "video",
+            "sort": 999,
+            "owner": "gridinoc",
+            "meta": {
+                "filename": "Prometheus Vitamin Screen.mp4",
+                "mimetype": "video/mp4",
+                "size": 1886310,
+                "url": "https://www.filepicker.io/api/file/UDPSqCmfSN6F9CPiPOYS",
+                "key": "F0fEH3TRF6VprmZmMZ59_Prometheus Vitamin Screen.mp4"
+            }
+        }
+
+
++ Response 200 (application/json)
+
+        {
+            "label": "Prometheus Vitamin Screen.mp4",
+            "desc": "",
+            "type": "video",
+            "sort": 999,
+            "owner": "gridinoc",
+            "meta": {
+                "key": "F0fEH3TRF6VprmZmMZ59_Prometheus Vitamin Screen.mp4",
+                "url": "https://www.filepicker.io/api/file/UDPSqCmfSN6F9CPiPOYS",
+                "size": 1886310,
+                "mimetype": "video/mp4",
+                "filename": "Prometheus Vitamin Screen.mp4"
+            },
+            "_id": "527169d1e584f7a52f00001e"
+        }
+
+## Media [/{user}/media/{id}]
+A single Media object with all the details. A newly created media object might not have the `probe` field yet (updated by spawned process that downloads the video and uses ffprobe to analyse it)
+
++ Parameters
+    + id (required) ... media id = MongoDB ObjectId
+    + user (optional) 
+
+### Retrieve a single Media object [GET]
+
++ Response 200 (application/json)
+
+        {
+            "__v": 0,
+            "_id": "5265bc7b5b1746d605000003",
+            "desc": "",
+            "label": "obama-responds.mp4",
+            "meta": {
+                "filename": "obama-responds.mp4",
+                "mimetype": "video/mp4",
+                "url": "https://www.filepicker.io/api/file/CK5of7uFSiu6VGuIepyZ"
+            },
+            "owner": "gridinoc",
+            "probe": {
+                "metadata": {
+                    "encoder": "Lavf54.49.102",
+                    "title": "Around the World : CNNW : June 7, 2013 9:00am-10:01am PDT - http://archive.org/details/CNNW_20130607_160000_Around_the_World",
+                    "compatible_brands": "isomiso2avc1mp41",
+                    "minor_version": 512,
+                    "major_brand": "isom"
+                },
+                "format": {
+                    "bit_rate": 809477,
+                    "size": 3376236,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                    "nb_streams": 2
+                },
+                "streams": [{
+                    "TAG:language": "und",
+                    "nb_frames": 1000,
+                    "duration": 33.366667,
+                    "start_time": 0,
+                    "time_base": "1/30000",
+                    "avg_frame_rate": "30000/1001",
+                    "r_frame_rate": "30000/1001",
+                    "level": 30,
+                    "pix_fmt": "yuv420p",
+                    "display_aspect_ratio": "16:9",
+                    "sample_aspect_ratio": "1:1",
+                    "has_b_frames": 0,
+                    "height": 360,
+                    "width": 640,
+                    "codec_tag": "0x31637661",
+                    "codec_tag_string": "avc1",
+                    "codec_time_base": "1001/60000",
+                    "codec_type": "video",
+                    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                    "codec_name": "h264"
+                }, {
+                    "TAG:language": "und",
+                    "nb_frames": 1437,
+                    "duration": 33.367075,
+                    "start_time": 0,
+                    "time_base": "1/44100",
+                    "avg_frame_rate": "0/0",
+                    "r_frame_rate": "0/0",
+                    "bits_per_sample": 0,
+                    "channels": 2,
+                    "sample_rate": 44100,
+                    "codec_tag": "0x6134706d",
+                    "codec_tag_string": "mp4a",
+                    "codec_time_base": "1/44100",
+                    "codec_type": "audio",
+                    "codec_long_name": "Advanced Audio Coding",
+                    "codec_name": "aac"
+                }],
+                "probe_time": 89,
+                "file": "/srv/ha-data/media/gridinoc/obama-responds.mp4",
+                "fileext": ".mp4",
+                "filepath": "/srv/ha-data/media/gridinoc",
+                "filename": "obama-responds.mp4"
+            },
+            "sort": 999,
+            "type": "video"
+        }
+
+### Update a Media object [PUT]
++ Request (application/json)
+
+        {
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+              "filename": "01.Xxyyxx-AboutYou.mp3",
+              "mimetype": "audio/mpeg",
+              "size": 10343280,
+              "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+              "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
+        }
+
++ Response 201 (application/json)
+
+        {
+            "label": "NEW LABEL",
+            "desc": "",
+            "type": "audio",
+            "sort": 999,
+            "owner": "bgmusic",
+            "meta": {
+              "filename": "01.Xxyyxx-AboutYou.mp3",
+              "mimetype": "audio/mpeg",
+              "size": 10343280,
+              "url": "https://www.filepicker.io/api/file/sgP6dbbfRqq7bWnXsaqp",
+              "key": "2BSE3isRQ2IjEZP7zUgQ_01.Xxyyxx-AboutYou.mp3"
+            },
+            "_id": "5269c132eb5967902300000b",
+            "__v": 0
+        }
+
+### Remove a Media object [DELETE]
+This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
++ Response 204
