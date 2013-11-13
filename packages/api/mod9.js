@@ -1,7 +1,5 @@
 var querystring = require('querystring');
 var http = require('http');
-// var clarinet = require("clarinet");
-// var parser = clarinet.parser();
 
 process.on('message', function(m) {
   
