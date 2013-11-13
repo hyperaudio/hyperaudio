@@ -76,7 +76,9 @@ module.exports = function(app, nconf) {
       });
     });
   });
+  
 
+  // FIXME better location? think web-calculus, also allow setting text now?
   app.post('/:user?/transcripts/:id', function(req, res) {
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
@@ -86,13 +88,14 @@ module.exports = function(app, nconf) {
         p.send({
           audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
           text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
-        });
+        });		
+		
         p.on('message', function(m) {
           var query = {
             _id: transcript._id
           };
           Transcript.findOneAndUpdate(query, {
-            alignments: m
+            alignments: m //using this for now even for updates, client must poll GET this transcript
           }, function(err, tr) {
             console.log(err, tr);
           });
