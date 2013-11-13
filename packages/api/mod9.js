@@ -15,7 +15,7 @@ process.on('message', function(m) {
         text: m.text,
         mode: 'stream',
         skip: 'True',
-        prune: -500
+        prune: 0
       }),
       headers: {
        'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
