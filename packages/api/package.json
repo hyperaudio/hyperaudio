@@ -26,6 +26,8 @@
     "fivebeans": "*",
     "node-ffprobe": "*",
     "fluent-ffmpeg": "*",
-    "http-proxy": "*"
+    "http-proxy": "*",
+    "winston": "~0.7.2",
+    "winston-papertrail": "~0.1.4"
   }
 }
