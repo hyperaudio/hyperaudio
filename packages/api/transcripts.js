@@ -150,13 +150,23 @@ module.exports = function(app, nconf) {
 
 			  
 			  hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+			  
 
 	          Transcript.findOneAndUpdate(query, {
 	            alignments: m,
 				type: "html",
-				content: hypertranscript
+				content: hypertranscript,
+				meta: {
+					filename: req.params.id + '.html'
+				}
 	          }, function(err, tr) {
 	            console.log(err, tr);
+				
+  	          try {
+  	            var filePath = path.join(__dirname, 'media/' + tr.owner + '/' + tr.meta.filename);
+  	            fs.writeFileSync(filePath, tr.content);
+  	          } catch (ignored) {}
+			  
 	          });		  	
 		  } else {
 	          Transcript.findOneAndUpdate(query, {
