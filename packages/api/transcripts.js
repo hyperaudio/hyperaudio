@@ -108,7 +108,8 @@ module.exports = function(app, nconf) {
         var p = cp.fork(__dirname + '/mod9.js');
         p.send({
           audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
-          text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
+          // text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
+          text: 'http://data.hyperaud.io/' + transcript.owner + '/transcripts/' + req.params.id + '/text'
         });		
 		
         p.on('message', function(m) {
