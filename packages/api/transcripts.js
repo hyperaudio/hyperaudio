@@ -3,6 +3,7 @@ var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
+var url = require('url');
 
 module.exports = function(app, nconf) {
 
@@ -37,6 +38,25 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/:user?/transcripts/:id/text', function(req, res) {
+    return Transcript.findById(req.params.id).populate('media').exec(
+    /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
+      if (!err) {
+        try {
+          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+          transcript.content = fs.readFileSync(filePath);
+        } catch (ignored) {}
+        // return res.send(transcript);
+		res.header("Content-Type", "text/plain");
+		return res.send(transcript.content);
+      }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
+    });
+  });
+  
   app.put('/:user?/transcripts/:id', function(req, res) {
     return Transcript.findById(req.params.id, function(err, transcript) {
 
@@ -79,6 +99,7 @@ module.exports = function(app, nconf) {
   
 
   // FIXME better location? think web-calculus, also allow setting text now?
+  // pass media url
   app.post('/:user?/transcripts/:id', function(req, res) {
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
@@ -126,7 +147,7 @@ module.exports = function(app, nconf) {
         fs.writeFileSync(filePath, req.body.content);
       } catch (ignored) {}
     }
-    
+	    
     transcript = new Transcript({
       label: req.body.label,
       desc: req.body.desc,
