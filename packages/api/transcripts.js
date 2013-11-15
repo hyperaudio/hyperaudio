@@ -113,8 +113,11 @@ module.exports = function(app, nconf) {
         });		
 		
         p.on('message', function(m) {
+		  console.log("RECV? ");
+		  console.log(m);
+		  console.log("RECV! ");
           var query = {
-            _id: transcript._id
+            _id: req.params.id
           };
           Transcript.findOneAndUpdate(query, {
             alignments: m //using this for now even for updates, client must poll GET this transcript
