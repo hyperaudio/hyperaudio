@@ -19,7 +19,7 @@ var logger = new winston.Logger({
 process.on('message', function(m) {
   
   console.log(m);
-  logger.info(m);
+  // logger.info(m);
   
   var options = {
       host: 'mod9.184.73.157.200.xip.io',
@@ -37,14 +37,14 @@ process.on('message', function(m) {
   };
 
   console.log(options);
-  logger.info(options);
+  // logger.info(options);
 
   request = http.get(options, function(res){
       var result = [];
       var part = "";
       res.on('data', function(data) {
           console.log('DATA ' + data);
-		  logger.info(data);
+		  // logger.info(data);
   	      try{
   	        data = part + data;
           	result.push([process.hrtime(), JSON.parse(data)]);
@@ -52,15 +52,15 @@ process.on('message', function(m) {
           	part = "";
   	      } catch (err) {
   	        console.log('err skipping');
-			logger.warn(err);
-			logger.warn('SKIP');
+			// logger.warn(err);
+			// logger.warn('SKIP');
   	        part += data;
   	      }
       });
       res.on('end', function() {
           console.log('END');
           console.log(JSON.stringify(result));
-		  logger.info('END');
+		  // logger.info('END');
           process.send(result);
           process.disconnect();
       })
