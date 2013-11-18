@@ -27,6 +27,7 @@
     "node-ffprobe": "*",
     "fluent-ffmpeg": "*",
     "http-proxy": "*",
-    "clarinet": "*"
+    "winston": "~0.7.2",
+    "winston-papertrail": "~0.1.4"
   }
 }

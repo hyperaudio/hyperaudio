@@ -3,6 +3,7 @@ var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
 var cp = require('child_process');
+var url = require('url');
 
 module.exports = function(app, nconf) {
 
@@ -37,6 +38,44 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/:user?/transcripts/:id/text', function(req, res) {
+    return Transcript.findById(req.params.id).populate('media').exec(
+    /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
+      if (!err) {
+        try {
+          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+          transcript.content = fs.readFileSync(filePath);
+        } catch (ignored) {}
+        // return res.send(transcript);
+		res.header("Content-Type", "text/plain");
+		return res.send(transcript.content);
+      }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
+    });
+  });
+  
+  app.get('/:user?/transcripts/:id/html', function(req, res) {
+    return Transcript.findById(req.params.id).populate('media').exec(
+    /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
+      if (!err) {
+        try {
+          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+          transcript.content = fs.readFileSync(filePath);
+        } catch (ignored) {}
+        // return res.send(transcript);
+		res.header("Content-Type", "text/html");
+		return res.send(transcript.content);
+      }
+      
+      res.status(404);
+      res.send({ error: 'Not found' });
+      return;
+    });
+  });
+  
   app.put('/:user?/transcripts/:id', function(req, res) {
     return Transcript.findById(req.params.id, function(err, transcript) {
 
@@ -76,7 +115,10 @@ module.exports = function(app, nconf) {
       });
     });
   });
+  
 
+  // FIXME better location? think web-calculus, also allow setting text now?
+  // pass media url
   app.post('/:user?/transcripts/:id', function(req, res) {
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
@@ -85,17 +127,55 @@ module.exports = function(app, nconf) {
         var p = cp.fork(__dirname + '/mod9.js');
         p.send({
           audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
-          text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
-        });
+          // text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
+          text: 'http://data.hyperaud.io/' + transcript.owner + '/transcripts/' + req.params.id + '/text'
+        });		
+		
         p.on('message', function(m) {
+		  // console.log("RECV? ");
+		  // console.log(m);
+		  // console.log("RECV! ");
           var query = {
-            _id: transcript._id
+            _id: req.params.id
           };
-          Transcript.findOneAndUpdate(query, {
-            alignments: m
-          }, function(err, tr) {
-            console.log(err, tr);
-          });
+		  
+		  if (m[m.length - 1][1].alignment) {
+			  var hypertranscript = "<article><header></header><section><header></header><p>";
+			  
+			  var al = m[m.length - 1][1].alignment;
+			  
+			  for (var i = 0; i < al.length; i++) {
+			  	hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+			  }
+
+			  
+			  hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+			  
+
+	          Transcript.findOneAndUpdate(query, {
+	            alignments: m,
+				type: "html",
+				content: hypertranscript,
+				meta: {
+					filename: req.params.id + '.html'
+				}
+	          }, function(err, tr) {
+	            console.log(err, tr);
+				
+  	          try {
+  	            var filePath = path.join(__dirname, 'media/' + tr.owner + '/' + tr.meta.filename);
+  	            fs.writeFileSync(filePath, tr.content);
+  	          } catch (ignored) {}
+			  
+	          });		  	
+		  } else {
+	          Transcript.findOneAndUpdate(query, {
+	            alignments: m //using this for now even for updates, client must poll GET this transcript
+	          }, function(err, tr) {
+	            console.log(err, tr);
+	          });
+		  }
+		  
         });
       }
       
@@ -123,7 +203,7 @@ module.exports = function(app, nconf) {
         fs.writeFileSync(filePath, req.body.content);
       } catch (ignored) {}
     }
-    
+	    
     transcript = new Transcript({
       label: req.body.label,
       desc: req.body.desc,
