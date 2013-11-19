@@ -1,7 +1,7 @@
 var nconf = require('nconf');
 var fs = require('fs');
 
-var spdy = require('spdy');
+// var spdy = require('spdy');
 var express = require('express');
 var routes = require('./routes');
 // var user = require('./routes/user');
@@ -21,13 +21,13 @@ nconf.argv()
     .env()
     .file({ file: 'settings.json' });
     
-var options = {
-  key: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.key'),
-  cert: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.crt'),
-  ca: fs.readFileSync(__dirname + '/keys/PositiveSSLCA2.crt'),
-  // SPDY-specific options
-  windowSize: 1024, // Server's window size
-};    
+// var options = {
+//   key: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.key'),
+//   cert: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.crt'),
+//   ca: fs.readFileSync(__dirname + '/keys/PositiveSSLCA2.crt'),
+//   // SPDY-specific options
+//   windowSize: 1024, // Server's window size
+// };    
 
 
 //CORS middleware
@@ -219,9 +219,9 @@ http.createServer(app).listen(80, function(){
   console.log('Express server listening on port ' + 80);
 });
 
-var server = spdy.createServer(options, app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
-});
+// var server = spdy.createServer(options, app).listen(app.get('port'), function(){
+//   console.log('Express server listening on port ' + app.get('port'));
+// });
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
