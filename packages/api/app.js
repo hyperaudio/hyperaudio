@@ -96,7 +96,7 @@ app.use(function(req, res, next) {
 app.use(app.router);
 
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
-app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
+// app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 var mediaProxy = httpProxy.createServer(80, 'localhost');
