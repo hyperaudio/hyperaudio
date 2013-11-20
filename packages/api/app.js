@@ -1,10 +1,8 @@
 var nconf = require('nconf');
 var fs = require('fs');
 
-// var spdy = require('spdy');
 var express = require('express');
 var routes = require('./routes');
-// var user = require('./routes/user');
 var http = require('http');
 var httpProxy = require('http-proxy');
 var path = require('path');
@@ -21,24 +19,6 @@ nconf.argv()
     .env()
     .file({ file: 'settings.json' });
     
-// var options = {
-//   key: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.key'),
-//   cert: fs.readFileSync(__dirname + '/keys/data_hyperaud_io.crt'),
-//   ca: fs.readFileSync(__dirname + '/keys/PositiveSSLCA2.crt'),
-//   // SPDY-specific options
-//   windowSize: 1024, // Server's window size
-// };    
-
-
-//CORS middleware
-// var allowCrossDomain = function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Credentials", "true");
-//   res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//   res.header('Access-Control-Allow-Methods', 'OPTIONS, POST, GET, PUT, DELETE');
-//   next();
-// }
-
 var app = express();
 
 // all environments
@@ -63,7 +43,7 @@ app.use(express.session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
+//http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Credentials", "true");
     var oneof = false;
@@ -149,15 +129,7 @@ passport.use(new PersonaStrategy({
 ));
 
 
-// app.all('/', function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//     res.header('Access-Control-Allow-Methods', 'GET, OPTIONS');
-//     next();
-// });
-
 app.get('/', routes.index);
-// app.get('/users', user.list);
 
 app.get('/whoami', function(req, res){
   if (req.isAuthenticated()) {
@@ -218,10 +190,6 @@ app.use(express.static(path.join(__dirname, 'media')));
 http.createServer(app).listen(80, function(){
   console.log('Express server listening on port ' + 80);
 });
-
-// var server = spdy.createServer(options, app).listen(app.get('port'), function(){
-//   console.log('Express server listening on port ' + app.get('port'));
-// });
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
