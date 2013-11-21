@@ -119,7 +119,7 @@ module.exports = function(app, nconf) {
 
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
-  app.post('/:user?/transcripts/:id', function(req, res) {
+  app.post('/:user?/transcripts/:id/align', function(req, res) {
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
       if (transcript.type == 'text' && transcript.media) {
