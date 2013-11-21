@@ -1,7 +1,6 @@
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
-// var probe = require('node-ffprobe');
 var cp = require('child_process');
 
 var passport = require('passport');
@@ -42,13 +41,6 @@ module.exports = function(app, nconf) {
   });
   
   app.get('/:user?/media/:id/transcripts', function(req, res) {
-    // var query = {
-    //   // media: ObjectId.fromString(req.params.id)
-    //   'Media._id': req.params.id
-    // };
-    // return Transcript.find(query, function(err, transcripts) {
-    //   return res.send(transcripts);
-    // });
     return Transcript.find(function(err, transcripts) {
       var ret = [];
       
