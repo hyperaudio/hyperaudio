@@ -1,0 +1,86 @@
+@charset "utf-8";
+
+/* Import Gem-based Base Frameworks
+------------------------------------------- */
+@import "compass";
+@import "vendor/foundation/scss/normalize";
+@import "vendor/foundation/scss/foundation/components/global";
+@import "vendor/foundation/scss/foundation/components/grid";
+
+/* Import Bower-driven Vendor Modules
+------------------------------------------- */
+
+/* Import Other External Assets
+------------------------------------------- */
+@import url(http://fonts.googleapis.com/css?family=Exo:500,700,500italic|Merriweather+Sans:400,700,400italic,700italic);
+
+/* Import Hyperaudio Library Mixins
+------------------------------------------- */
+@import "lib/hidetext";
+@import "lib/position";
+
+/* Import Site Config
+------------------------------------------- */
+@import "config";
+
+/* Styleguide Styles
+------------------------------------------- */
+
+// Navigation
+.sg-nav {
+  list-style: decimal;
+}
+.sg-nav-item {
+
+}
+.sg-nav-link {
+  border-bottom: 1px solid $light !important;
+  display: block;
+  padding: $space-m 0;
+  margin-left: $space-s;
+  &.active {
+    color: $mono-strong;
+  }
+}
+
+// Module
+.sg-mod {
+  margin-bottom: $space-xl;
+}
+.sg-mod-heading {
+  border-bottom: 1px solid $light;
+  font-weight: bold;
+  font-size: $font-l;
+  line-height: $lheight-m;
+}
+.sg-mod-intro {
+  p, ul, ol {
+    margin-bottom: $space-l;
+    padding: 0;
+  }
+  p, li {
+    font-size: $font-s;
+    line-height: $lheight-m;
+  }
+  p {
+
+  }
+  ul {
+
+  }
+  ol {
+
+  }
+  li {
+    margin-left: $space-l - $space-xs;
+  }
+}
+.sg-mod-canvas {
+  background: image-url("backgrounds/sg-grid.png") repeat;
+  border: 1px solid $light;
+  padding: $space-xl;
+  * {
+    margin: 0;
+    padding: 0;
+  }
+}
