@@ -34,10 +34,10 @@
 
 }
 .sg-nav-link {
-  border-bottom: 1px solid $light !important;
   display: block;
-  padding: $space-m 0;
   margin-left: $space-s;
+  padding: $space-m 0;
+  border-bottom: 1px solid $light !important;
   &.active {
     color: $mono-strong;
   }
@@ -48,6 +48,8 @@
   margin-bottom: $space-xl;
 }
 .sg-mod-heading {
+  margin-top: 0;
+  padding: 0;
   border-bottom: 1px solid $light;
   font-weight: bold;
   font-size: $font-l;
@@ -76,9 +78,9 @@
   }
 }
 .sg-mod-canvas {
-  background: image-url("backgrounds/sg-grid.png") repeat;
-  border: 1px solid $light;
   padding: $space-l;
+  border: 1px solid $light;
+  background: image-url("backgrounds/sg-grid.png") repeat;
   * {
     margin: 0;
     padding: 0;
