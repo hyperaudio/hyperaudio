@@ -54,12 +54,32 @@
           </div>
           <div class="large-9 small-12 columns">
             <div class="sg-mod">
-              <h2 class="sg-mod-heading">Title.</h2>
+              <h2 class="sg-mod-heading">Headings.</h2>
               <div class="sg-mod-intro">
-
+                <p>Headings depend on classes. This way a <code>span</code> can easily look like a heading if only it has the right class applied.</p>
+                <p>That said, <code>h1-h5</code> use SASS @extends to suck on heading classes so placing a raw <code>h1</code> anywhere will have the same effect as placing a <code>h1.heading-xl</code>. Heading class index is the following:</p>
+                <ul>
+                  <li><code>.heading-xl</code></li>
+                  <li><code>.heading-l</code></li>
+                  <li><code>.heading-m</code></li>
+                  <li><code>.heading-s</code></li>
+                  <li><code>.heading-xs</code></li>
+                </ul>
               </div>
               <div class="sg-mod-canvas">
-
+                <h1 class="heading-xl">This is a heading</h1>
+              </div>
+              <div class="sg-mod-canvas">
+                <p class="heading-l">This is a heading</p>
+              </div>
+              <div class="sg-mod-canvas">
+                <span class="heading-m">This is a heading</span>
+              </div>
+              <div class="sg-mod-canvas">
+                <span class="heading-s">This is a heading</span>
+              </div>
+              <div class="sg-mod-canvas">
+                <span class="heading-xs">This is a heading</span>
               </div>
             </div>
           </div>

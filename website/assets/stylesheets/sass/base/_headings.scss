@@ -1,36 +1,52 @@
 /* Headings
 ----------------------------------------------- */
 
-h1, h2, h3, h4, h5, h6 {
-  color: $alt-color;
+.heading-xl,
+.heading-l,
+.heading-m,
+.heading-s,
+.heading-xs {
+  display: block;
   font-family: $secondary-font;
   line-height: $lheight-s;
-  margin: 0;
-}
-.heading-xl,
-.heading-xl,
-.heading-xl {
-  font-family: $secondary-font;
-  font-weight: normal;
 }
 
 .heading-xl {
+  color: $alt-color;
   font-size: $font-xl;
   font-weight: bold;
   line-height: $lheight-m;
-  margin-bottom: $space-h;
-  text-align: center;
   text-transform: capitalize;
 }
 .heading-l {
-
+  color: $alt-color;
+  font-size: $font-l;
+  font-weight: bold;
+  line-height: $lheight-m;
 }
 .heading-m {
-
+  color: $mono-mid;
+  font-size: $font-m;
+  font-weight: bold;
+  line-height: $lheight-s;
 }
 .heading-s {
-
+  color: $mono-mid;
+  font-size: $font-s;
+  font-weight: bold;
+  line-height: $lheight-s;
 }
 .heading-xs {
-
+  color: $mono-mid;
+  font-size: $font-xs;
+  font-weight: bold;
+  letter-spacing: 1px;
+  line-height: $lheight-s;
+  text-transform: uppercase;
 }
+
+h1 { @extend .heading-xl; }
+h2 { @extend .heading-l; }
+h3 { @extend .heading-m; }
+h4 { @extend .heading-s; }
+h5 { @extend .heading-xs; }
