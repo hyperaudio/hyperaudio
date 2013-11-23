@@ -1,9 +1,6 @@
 /* Footer
 ----------------------------------------------- */
 
-.footer {
-  padding: $space-xl 0 0;
-}
 .footer-brandmark {
   margin-top: $space-xl;
 }
@@ -22,9 +19,6 @@
 ----------------------------------------------- */
 
 @media #{$small} {
-  .footer {
-    padding: $space-h 0;
-  }
   .footer-brandmark {
     margin-top: 0;
   }

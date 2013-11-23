@@ -23,6 +23,9 @@
   .lt_slider {
     margin-top: $space-l;
   }
+  .lt_footer {
+    padding: $space-xl 0 0;
+  }
 
   @media #{$small} {
 
@@ -49,6 +52,9 @@
     }
     .lt_slider {
       margin-top: 0;
+    }
+    .lt_footer {
+      padding: $space-h 0;
     }
 
   }

@@ -18,6 +18,6 @@
   "dependencies": {
     "jquery": "2.0.3",
     "jquery.cycle2.js": "https://raw.github.com/malsup/malsup.github.com/master/jquery.cycle2.js",
-    "foundation": "~4.3.2"
+    "foundation": "~5.0.2"
   }
 }

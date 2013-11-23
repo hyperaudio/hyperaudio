@@ -3,9 +3,6 @@
 /* Import Gem-based Base Frameworks
 ------------------------------------------- */
 @import "compass";
-@import "vendor/foundation/scss/normalize";
-@import "vendor/foundation/scss/foundation/components/global";
-@import "vendor/foundation/scss/foundation/components/grid";
 
 /* Import Bower-driven Vendor Modules
 ------------------------------------------- */
@@ -26,10 +23,14 @@
 /* Styleguide Styles
 ------------------------------------------- */
 
+.sg-container {
+  padding: 0 $space-m;
+}
+
 // Navigation
 .sg-nav {
   list-style: decimal;
-  position: fixed;
+  margin-bottom: $space-xl;
 }
 .sg-nav-item {
 
