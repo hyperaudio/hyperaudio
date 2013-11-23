@@ -1,9 +1,10 @@
 /* Links
 ----------------------------------------------- */
 
-a {
+.link {
   border-bottom: 1px solid transparent;
   color: $brand-color;
+  cursor: pointer;
   display: inline-block;
   text-decoration: none;
   -webkit-transition: all 0.3s;
@@ -18,4 +19,8 @@ a {
   &.altered {
     font-weight: bold !important;
   }
+}
+
+a {
+  @extend .link
 }
