@@ -54,6 +54,39 @@
           </div>
           <div class="large-9 small-12 columns">
             <div class="sg-mod">
+              <h2 class="sg-mod-heading">Typefaces.</h2>
+              <div class="sg-mod-intro">
+                <p>Hyperaudio body text is set in Merriweather Sans, whereas Exo is used for headings. Both fonts are served by Google WebFonts.</p>
+                <p>Font families with their fallbacks are defined in <code>_config.scss</code>. Please use those variables instead of raw values (good: <code>font-family: $primary-font</code> bad: <code>font-family: 'Merriweather Sans', sans-serif;</code>)</p>
+                <pre>
+// Font Families
+$primary-font      : 'Merriweather Sans', sans-serif;
+$secondary-font    : 'Exo', sans-serif;
+                </pre>
+              </div>
+            <div class="sg-mod">
+              <h2 class="sg-mod-heading">Type variables.</h2>
+              <div class="sg-mod-intro">
+                <p>A set of font-size and line-height variables have been provided in order to keep those values consistent throughout the UI. Avoid specifying values of those properties in raw numbers, use following instead:</p>
+                <pre>
+// Font Sizes
+$font-h            : 4rem;
+$font-xl           : 2.9rem;
+$font-l            : 2.5rem;
+$font-m            : 1.4rem;
+$font-s            : 1.3rem;
+$font-xs           : 1.1rem;
+
+// Line Heights
+$lheight-xl        : 2.4em;
+$lheight-l         : 1.8em;
+$lheight-m         : 1.6em;
+$lheight-s         : 1.4em;
+$lheight-xs        : 1.2em;
+                </pre>
+              </div>
+            </div>
+            <div class="sg-mod">
               <h2 class="sg-mod-heading">Headings.</h2>
               <div class="sg-mod-intro">
                 <p>Headings depend on classes. This way a <code>span</code> can easily look like a heading if only it has the right class applied.</p>
