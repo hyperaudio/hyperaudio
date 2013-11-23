@@ -45,6 +45,7 @@
 
 // Module
 .sg-mod {
+  position: relative;
   margin-bottom: $space-xl;
 }
 .sg-mod-heading {
@@ -54,6 +55,17 @@
   font-weight: bold;
   font-size: $font-l;
   line-height: $lheight-m;
+  .sg-mod-class {
+    @include border-radius($radius-s);
+    @include position-top-right($space-s, 0);
+    padding: $space-s $space-m;
+    border: 1px solid $light;
+    background: $bright;
+    color: $mono-mid;
+    font-size: $font-s;
+    font-family: monospace;
+    line-height: $lheight-xs;
+  }
 }
 .sg-mod-intro {
   p, ul, ol {
@@ -85,13 +97,14 @@
       width: 11px;
     }
     &::-webkit-scrollbar-thumb {
-      border-radius: 8px;
       border: 2px solid white; /* should match background, can't be transparent */
+      border-radius: 8px;
       background-color: rgba(0, 0, 0, .5);
     }
   }
 }
 .sg-mod-canvas {
+  margin-top: $space-m;
   padding: $space-l;
   border: 1px solid $light;
   background: image-url("backgrounds/sg-grid.png") repeat;

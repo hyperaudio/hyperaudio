@@ -3,32 +3,15 @@
 
 a.button,
 button.button,
-.button {
+.button,
+input[type="submit"] {
   @include border-radius($radius-s);
+  background: transparent;
   border: 1px solid $alt-color-light;
   color: $alt-color;
   display: inline-block;
   font-weight: bold;
-  padding: $space-s $space-m;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
-  &:hover {
-    background: #2C3E50;
-    color: $bright !important;
-    text-shadow: none !important;
-  }
-  &:active {
-    opacity: 0.7;
-  }
-}
-
-input[type="submit"].button {
-  @include border-radius($radius-s);
-  border: 1px solid $alt-color-light;
-  color: $bright;
-  display: inline-block;
-  font-weight: bold;
+  line-height: $lheight-m;
   padding: $space-s $space-m;
   -webkit-transition: all 0.3s;
   -moz-transition: all 0.3s;
@@ -51,8 +34,10 @@ input[type="submit"].button {
 }
 
 .button.block {
-  display: block;
+  @include box-sizing(border-box);
+  display: block !important;
   text-align: center;
+  width: 100%;
 }
 
 .button.large {
