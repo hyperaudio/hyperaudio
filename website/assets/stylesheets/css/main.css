@@ -2254,27 +2254,44 @@ h5 {
 
 /* Inputs
 ----------------------------------------------- */
-.text-input {
+.text-input, input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
   -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
   -ms-border-radius: 0.3rem;
   -o-border-radius: 0.3rem;
   border-radius: 0.3rem;
+  background: white;
   border: 1px solid rgba(0, 0, 0, 0.35);
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 1.1rem;
+  padding: 0.5rem;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
 }
-.text-input.large {
+.text-input.large, input.large[type="text"],
+input.large[type="password"],
+input.large[type="email"],
+textarea.large {
   padding: 1rem;
+  font-size: 1.4rem;
 }
-.text-input.block {
+.text-input.block, input.block[type="text"],
+input.block[type="password"],
+input.block[type="email"],
+textarea.block {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   width: 100%;
 }
-.text-input.centered {
+.text-input.centered, input.centered[type="text"],
+input.centered[type="password"],
+input.centered[type="email"],
+textarea.centered {
   text-align: center;
 }
 

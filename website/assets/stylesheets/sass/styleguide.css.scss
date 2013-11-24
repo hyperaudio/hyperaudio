@@ -126,12 +126,25 @@
   }
 }
 .sg-mod-canvas {
-  margin-top: $space-m;
+  margin-top: $space-l;
   padding: $space-l;
   border: 1px solid $light;
   background: image-url("backgrounds/sg-grid.png") repeat;
+  position: relative;
   // * {
   //   margin: 0;
   //   padding: 0;
   // }
+}
+.sg-mod-canvas-note {
+  @include position-top-left(-($space-m), $space-l);
+  @include border-radius($radius-s);
+  background: $bright;
+  border: 1px solid $light;
+  color: $mono-mid;
+  font-family: $primary-font;
+  font-size: $font-xs;
+  font-weight: normal;
+  line-height: $lheight-s;
+  padding: $space-xs $space-s;
 }

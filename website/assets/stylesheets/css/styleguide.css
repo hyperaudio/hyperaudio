@@ -135,8 +135,28 @@ html {
 }
 
 .sg-mod-canvas {
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: url('../../images/backgrounds/sg-grid.png?1385152527') repeat;
+  position: relative;
+}
+
+.sg-mod-canvas-note {
+  position: absolute;
+  top: -1rem;
+  left: 2rem;
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  -ms-border-radius: 0.3rem;
+  -o-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+  background: white;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.55);
+  font-family: "Merriweather Sans", sans-serif;
+  font-size: 1.1rem;
+  font-weight: normal;
+  line-height: 1.4em;
+  padding: 0.2rem 0.5rem;
 }

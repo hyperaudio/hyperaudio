@@ -3,13 +3,17 @@
 
 .text-input {
   @include border-radius($radius-s);
+  background: $bright;
   border: 1px solid $mono-weak;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
+  font-family: $primary-font;
+  font-size: $font-xs;
+  padding: $space-s;
+  -webkit-transition: all 0.5s;
+  -moz-transition: all 0.5s;
+  transition: all 0.5s;
   &.large {
     padding: $space-m;
-
+    font-size: $font-m;
   }
   &.block {
     @include box-sizing(border-box);
@@ -18,4 +22,11 @@
   &.centered {
     text-align: center;
   }
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+  @extend .text-input
 }
