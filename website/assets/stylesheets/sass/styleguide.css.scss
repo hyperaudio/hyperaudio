@@ -81,6 +81,16 @@
   p {
 
   }
+  pre {
+    @include border-radius($radius-s);
+    padding: $space-xs $space-s;
+    border: 1px solid $light;
+    background: $bright;
+    color: $mono-mid;
+    font-size: $font-m;
+    font-family: monospace;
+    line-height: $lheight-m;
+  }
   ul {
 
   }
@@ -103,6 +113,16 @@
       border-radius: 8px;
       background-color: rgba(0, 0, 0, .5);
     }
+  }
+  code {
+    @include border-radius($radius-s);
+    padding: $space-xs $space-s;
+    border: 1px solid $light;
+    background: $bright;
+    color: $mono-mid;
+    font-size: $font-s;
+    font-family: monospace;
+    line-height: $lheight-xs;
   }
 }
 .sg-mod-canvas {

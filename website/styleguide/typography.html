@@ -58,10 +58,8 @@
               <div class="sg-mod-intro">
                 <p>Hyperaudio body text is set in Merriweather Sans, whereas Exo is used for headings. Both fonts are served by Google WebFonts.</p>
                 <pre>
-// Font Families
 $primary-font      : 'Merriweather Sans', sans-serif;
-$secondary-font    : 'Exo', sans-serif;
-                </pre>
+$secondary-font    : 'Exo', sans-serif;</pre>
                 <p>Font families with their fallbacks are defined in <code>_config.scss</code>. Please use those variables instead of raw values.</p>
                 <p>Bad:</p>
                 <pre>font-family: 'Merriweather Sans', sans-serif;</pre>
@@ -78,7 +76,7 @@ $secondary-font    : 'Exo', sans-serif;
               <h2 class="sg-mod-heading">Type variables.</h2>
               <div class="sg-mod-intro">
                 <p>A set of font-size and line-height variables have been provided in order to keep those values consistent throughout the UI. Avoid specifying values of those properties in raw numbers, use following instead:</p>
-                <pre class="prettyprint">
+                <pre>
 // Font Sizes
 $font-h            : 4rem;
 $font-xl           : 2.9rem;
@@ -92,8 +90,15 @@ $lheight-xl        : 2.4em;
 $lheight-l         : 1.8em;
 $lheight-m         : 1.6em;
 $lheight-s         : 1.4em;
-$lheight-xs        : 1.2em;
-                </pre>
+$lheight-xs        : 1.2em;</pre>
+                <p>Bad:</p>
+                <pre>
+font-size: 2.9rem;
+line-height: 1.4em;</pre>
+                <p>Good:</p>
+                <pre>
+font-size: $font-xl;
+line-height: $lheight-s;</pre>
               </div>
             </div>
 
@@ -111,8 +116,7 @@ $lheight-xs        : 1.2em;
 .heading-l
 .heading-m
 .heading-s
-.heading-xs
-                </pre>
+.heading-xs</pre>
               </div>
               <div class="sg-mod-canvas">
                 <h1 class="heading-xl">This is a heading</h1>

@@ -69,7 +69,7 @@
             <div class="sg-mod">
               <h2 class="sg-mod-heading">Dependecies.</h2>
               <div class="sg-mod-intro">
-                <p>Hyperaudio UI architecture depends principally on <a href="http://compass-style.org/">Compass</a> for stylesheet automation and compilation. <a href="http://bower.io/">Bower</a> instead is used to manage vendor frameworks (<a href="http://foundation.zurb.com/">Foundation 4</a>), libraries (<a href="http://jquery.com">jQuery</a>) and other plugins (<a href="http://jquery.malsup.com/cycle2/">jquery.cycle2.js</a>).</p>
+                <p>Hyperaudio UI architecture depends principally on <a href="http://compass-style.org/">Compass</a> for stylesheet automation and compilation. <a href="http://bower.io/">Bower</a> instead is used to manage vendor frameworks (<a href="http://foundation.zurb.com/">Foundation</a>), libraries (<a href="http://jquery.com">jQuery</a>) and other plugins (<a href="http://jquery.malsup.com/cycle2/">jquery.cycle2.js</a>).</p>
               </div>
             </div>
 
@@ -97,6 +97,20 @@ $ compass watch</pre>
               <h2 class="sg-mod-heading">Stylesheet architecture.</h2>
               <div class="sg-mod-intro">
                 <p>Whenever any style changes are required, enter project directory, follow instructions found above (Running the thing) and make necessary edits in the <code>/assets/stylesheets/sass</code> directory. CSS files will automagically be compiled and minimized.</p> <!-- extend -->
+              </div>
+            </div>
+
+            <!-- ##### ##### ##### #####
+                 ##### ##### ##### #####
+                 ##### ##### ##### ##### -->
+
+            <div class="sg-mod">
+              <h2 class="sg-mod-heading">Site vs. Apps.</h2>
+              <div class="sg-mod-intro">
+                <p>Site’s and apps’ <code>body</code> use context classes for any differentiations when needed:</p>
+                <pre>
+body.tpl_site
+body.tpl_app</pre>
               </div>
             </div>
 
