@@ -29,11 +29,15 @@
 
 // Navigation
 .sg-nav {
+  color: $mono-light;
   list-style: decimal;
   margin-bottom: $space-xl;
 }
 .sg-nav-item {
 
+}
+.sg-nav-separator {
+  border-bottom: 1px solid $light;
 }
 .sg-nav-link {
   display: block;
@@ -112,6 +116,19 @@
       border: 2px solid white; /* should match background, can't be transparent */
       border-radius: 8px;
       background-color: rgba(0, 0, 0, .5);
+    }
+  }
+  figure {
+    @include border-radius($radius-s);
+    border: 1px solid $light;
+    background: $bright;
+    font-family: monospace;
+    line-height: $lheight-xs;
+    margin-top: $space-l;
+    padding: $space-l;
+    text-align: center;
+    img {
+      display: inline-block;
     }
   }
   code {

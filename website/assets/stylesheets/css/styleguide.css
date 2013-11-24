@@ -34,8 +34,13 @@ html {
 }
 
 .sg-nav {
+  color: rgba(0, 0, 0, 0.2);
   list-style: decimal;
   margin-bottom: 4rem;
+}
+
+.sg-nav-separator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .sg-nav-link {
@@ -118,6 +123,23 @@ html {
   /* should match background, can't be transparent */
   border-radius: 8px;
   background-color: rgba(0, 0, 0, 0.5);
+}
+.sg-mod-intro figure {
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  -ms-border-radius: 0.3rem;
+  -o-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: white;
+  font-family: monospace;
+  line-height: 1.2em;
+  margin-top: 2rem;
+  padding: 2rem;
+  text-align: center;
+}
+.sg-mod-intro figure img {
+  display: inline-block;
 }
 .sg-mod-intro code {
   -webkit-border-radius: 0.3rem;
