@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width">
-    <title>Hyperaudio Styleguide</title>
+    <title>Hyperaudio Styleguide | Typography</title>
     <link href="../assets/stylesheets/css/styleguide.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="../assets/fonts/hyperaudio/style.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="../assets/stylesheets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
@@ -57,12 +57,16 @@
               <h2 class="sg-mod-heading">Typefaces.</h2>
               <div class="sg-mod-intro">
                 <p>Hyperaudio body text is set in Merriweather Sans, whereas Exo is used for headings. Both fonts are served by Google WebFonts.</p>
-                <p>Font families with their fallbacks are defined in <code>_config.scss</code>. Please use those variables instead of raw values (good: <code>font-family: $primary-font</code> bad: <code>font-family: 'Merriweather Sans', sans-serif;</code>)</p>
                 <pre>
 // Font Families
 $primary-font      : 'Merriweather Sans', sans-serif;
 $secondary-font    : 'Exo', sans-serif;
                 </pre>
+                <p>Font families with their fallbacks are defined in <code>_config.scss</code>. Please use those variables instead of raw values.</p>
+                <p>Bad:</p>
+                <pre>font-family: 'Merriweather Sans', sans-serif;</pre>
+                <p>Good:
+                <pre>font-family: $primary-font</pre>
               </div>
             </div>
 
