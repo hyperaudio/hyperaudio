@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width">
-    <title>Hyperaudio Styleguide | Grid</title>
+    <title>Hyperaudio Styleguide | Combos</title>
     <link href="../assets/stylesheets/css/styleguide.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="../assets/fonts/hyperaudio/style.css" media="screen" rel="stylesheet" type="text/css" />
     <link href="../assets/stylesheets/css/main.css" media="screen" rel="stylesheet" type="text/css" />
+    <link href="../assets/fonts/hyperaudio/style.css" media="screen" rel="stylesheet" type="text/css" />
 
     <link href="../assets/images/inserts/favicon.ico" rel="icon" type="image/x-icon" >
 
@@ -42,22 +42,66 @@
           <div class="large-3 medium-3 small-12 columns">
             <ol class="sg-nav">
               <li class="sg-nav-item"><a class="sg-nav-link" href="index.html">Intro</a></li>
-              <li class="sg-nav-item"><a class="sg-nav-link active" href="grid.html">Grid</a></li>
+              <li class="sg-nav-item"><a class="sg-nav-link" href="grid.html">Grid</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="typography.html">Typography</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="links-and-buttons.html">Links and Buttons</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="icons.html">Icons</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="forms.html">Forms</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="components.html">Components</a></li>
               <li class="sg-nav-item"><a class="sg-nav-link" href="combos.html">Combos</a></li>
-              <li class="sg-nav-item"><a class="sg-nav-link" href="extensions.html">Extensions</a></li>
+              <li class="sg-nav-item"><a class="sg-nav-link active" href="extensions.html">Extensions</a></li>
             </ol>
           </div>
           <div class="large-9 medium-9 small-12 columns">
             <div class="sg-mod">
-              <h2 class="sg-mod-heading">Grid System.</h2>
+              <h2 class="sg-mod-heading">Brand Modifier.</h2>
               <div class="sg-mod-intro">
-                <p>Hyperaudio uses <a href="http://foundation.zurb.com/">Foundation</a> for laying out elements. Please refer to the <a href="http://foundation.zurb.com/docs/components/grid.html">documentation</a> on vendor website:</p>
-                <iframe src="http://foundation.zurb.com/docs/components/grid.html" height="600" width="100%" ></iframe>
+                <p><code>.branded</code> is a modifier class that can be applied to container elements wrapping components or combos. What it does is apply brand background color and invert/adjust colours of elements within.</p>
+                <p>Below you’ll find header combo with and without <code>.branded</code> class applied to clearly see the difference.</p>
+              </div>
+              <div class="sg-mod-canvas">
+                <header class="header">
+                  <div class="container row">
+                    <div class="small-12 large-3 medium-3 columns">
+                      <h1 class="header-brandmark">
+                        <a href="/" class="brandmark">
+                          <img class="brandmark-symbol" src="../assets/images/inserts/logo-hyperaudio@2x.png" />
+                          <span class="brandmark-label">Hyperaudio</span>
+                        </a>
+                      </h1>
+                    </div>
+                    <div class="small-12 large-9 medium-9 columns">
+                      <ul class="header-navigation header-navigation">
+                        <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
+                        <li class="header-navigation-item"><a href="/blog/">Blog</a></li>
+                        <li class="header-navigation-item"><a class="altered" href="/signup/">Sign up</a></li>
+                        <li class="header-navigation-item"><a class="button small" href="/signup/">Log in</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </header>
+              </div>
+              <div class="sg-mod-canvas">
+                <header class="header branded">
+                  <div class="container row">
+                    <div class="small-12 large-3 medium-3 columns">
+                      <h1 class="header-brandmark">
+                        <a href="/" class="brandmark">
+                          <img class="brandmark-symbol" src="../assets/images/inserts/logo-hyperaudio@2x.png" />
+                          <span class="brandmark-label">Hyperaudio</span>
+                        </a>
+                      </h1>
+                    </div>
+                    <div class="small-12 large-9 medium-9 columns">
+                      <ul class="header-navigation header-navigation">
+                        <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
+                        <li class="header-navigation-item"><a href="/blog/">Blog</a></li>
+                        <li class="header-navigation-item"><a class="altered" href="/signup/">Sign up</a></li>
+                        <li class="header-navigation-item"><a class="button small" href="/signup/">Log in</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </header>
               </div>
             </div>
 
@@ -65,25 +109,6 @@
                  ##### ##### ##### #####
                  ##### ##### ##### ##### -->
 
-            <div class="sg-mod">
-              <h2 class="sg-mod-heading">Spaces.</h2>
-              <div class="sg-mod-intro">
-                <p>A set of spacing variables is in place to keep paddings and margins consistent throughout the Hyperaudio interaface. Whenever adjusting elements&rsquo; box model, please use the following values defined in the <code>_config.scss</code> file:</p>
-                <pre>
-$space-h
-$space-xl
-$space-l
-$space-m
-$space-s
-$space-xs</pre> <!-- extend -->
-                <p>Bad:</p>
-                <pre>
-.element { padding: 5px }</pre>
-                <p>Good:</p>
-                <pre>
-.element { padding: $space-s }</pre>
-              </div>
-            </div>
           </div>
         </div>
       </div>
