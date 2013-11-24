@@ -14,10 +14,7 @@
   .lt_homefold {
     padding-top: 0;
   }
-  .lt_header {
-    padding: $space-xl 0;
-  }
-  .lt_header-brandmark {
+  .header-brandmark {
     min-height: 80px;
   }
   .lt_slider {
@@ -29,10 +26,7 @@
 
   @media #{$small} {
 
-    .lt_header {
-      padding: $space-xl 0;
-    }
-    .lt_header-brandmark {
+    .header-brandmark {
       min-height: 0;
     }
     .section {

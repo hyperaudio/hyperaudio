@@ -1,3 +1,12 @@
+/* Header
+----------------------------------------------- */
+
+header {
+  padding: $space-xl 0;
+}
+
+// Header navigation
+
 .header-navigation {
   list-style: none;
   text-align: center;
@@ -5,7 +14,7 @@
 .header-navigation-item {
   display: inline-block;
   font-size: $font-s;
-  margin: 0 $space-s;
+  margin: 0 0 0 $space-s;
   text-transform: uppercase;
 }
 .header-navigation-item.active {
@@ -28,7 +37,7 @@
   }
   .header-navigation-item {
     margin-left: $space-l;
-    padding: $space-xs;
+    padding: $space-xs 0;
   }
 }
 
