@@ -523,7 +523,7 @@ select {
   width: 100%;
 }
 
-.row {
+.row, .form-component.horizontal {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -532,25 +532,30 @@ select {
   max-width: 62.5rem;
   *zoom: 1;
 }
-.row:before, .row:after {
+.row:before, .form-component.horizontal:before, .row:after, .form-component.horizontal:after {
   content: " ";
   display: table;
 }
-.row:after {
+.row:after, .form-component.horizontal:after {
   clear: both;
 }
-.row.collapse > .column,
-.row.collapse > .columns {
+.row.collapse > .column, .collapse.form-component.horizontal > .column,
+.row.collapse > .columns,
+.collapse.form-component.horizontal > .columns,
+.form-component.horizontal .row.collapse > .form-label-wrapper,
+.collapse.form-component.horizontal > .form-label-wrapper,
+.form-component.horizontal .row.collapse > .form-input-wrapper,
+.collapse.form-component.horizontal > .form-input-wrapper {
   position: relative;
   padding-left: 0;
   padding-right: 0;
   float: left;
 }
-.row.collapse .row {
+.row.collapse .row, .collapse.form-component.horizontal .row, .row.collapse .form-component.horizontal, .collapse.form-component.horizontal .form-component.horizontal {
   margin-left: 0;
   margin-right: 0;
 }
-.row .row {
+.row .row, .form-component.horizontal .row, .row .form-component.horizontal, .form-component.horizontal .form-component.horizontal {
   width: auto;
   margin-left: -0.9375rem;
   margin-right: -0.9375rem;
@@ -559,29 +564,31 @@ select {
   max-width: none;
   *zoom: 1;
 }
-.row .row:before, .row .row:after {
+.row .row:before, .form-component.horizontal .row:before, .row .form-component.horizontal:before, .form-component.horizontal .form-component.horizontal:before, .row .row:after, .form-component.horizontal .row:after, .row .form-component.horizontal:after, .form-component.horizontal .form-component.horizontal:after {
   content: " ";
   display: table;
 }
-.row .row:after {
+.row .row:after, .form-component.horizontal .row:after, .row .form-component.horizontal:after, .form-component.horizontal .form-component.horizontal:after {
   clear: both;
 }
-.row .row.collapse {
+.row .row.collapse, .form-component.horizontal .row.collapse, .row .collapse.form-component.horizontal, .form-component.horizontal .collapse.form-component.horizontal {
   width: auto;
   margin: 0;
   max-width: none;
   *zoom: 1;
 }
-.row .row.collapse:before, .row .row.collapse:after {
+.row .row.collapse:before, .form-component.horizontal .row.collapse:before, .row .collapse.form-component.horizontal:before, .form-component.horizontal .collapse.form-component.horizontal:before, .row .row.collapse:after, .form-component.horizontal .row.collapse:after, .row .collapse.form-component.horizontal:after, .form-component.horizontal .collapse.form-component.horizontal:after {
   content: " ";
   display: table;
 }
-.row .row.collapse:after {
+.row .row.collapse:after, .form-component.horizontal .row.collapse:after, .row .collapse.form-component.horizontal:after, .form-component.horizontal .collapse.form-component.horizontal:after {
   clear: both;
 }
 
 .column,
-.columns {
+.columns,
+.form-component.horizontal .form-label-wrapper,
+.form-component.horizontal .form-input-wrapper {
   position: relative;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
@@ -723,7 +730,9 @@ select {
   }
 
   .column,
-  .columns {
+  .columns,
+  .form-component.horizontal .form-label-wrapper,
+  .form-component.horizontal .form-input-wrapper {
     position: relative;
     padding-left: 0.9375rem;
     padding-right: 0.9375rem;
@@ -735,7 +744,7 @@ select {
     width: 8.33333%;
   }
 
-  .small-2 {
+  .small-2, .form-component.horizontal .form-label-wrapper {
     position: relative;
     width: 16.66667%;
   }
@@ -775,7 +784,7 @@ select {
     width: 75%;
   }
 
-  .small-10 {
+  .small-10, .form-component.horizontal .form-input-wrapper {
     position: relative;
     width: 83.33333%;
   }
@@ -854,7 +863,9 @@ select {
   }
 
   .column.small-centered,
-  .columns.small-centered {
+  .columns.small-centered,
+  .form-component.horizontal .small-centered.form-label-wrapper,
+  .form-component.horizontal .small-centered.form-input-wrapper {
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -862,14 +873,18 @@ select {
   }
 
   .column.small-uncentered,
-  .columns.small-uncentered {
+  .columns.small-uncentered,
+  .form-component.horizontal .small-uncentered.form-label-wrapper,
+  .form-component.horizontal .small-uncentered.form-input-wrapper {
     margin-left: 0;
     margin-right: 0;
     float: left !important;
   }
 
   .column.small-uncentered.opposite,
-  .columns.small-uncentered.opposite {
+  .columns.small-uncentered.opposite,
+  .form-component.horizontal .small-uncentered.opposite.form-label-wrapper,
+  .form-component.horizontal .small-uncentered.opposite.form-input-wrapper {
     float: right !important;
   }
 }
@@ -1007,7 +1022,9 @@ select {
   }
 
   .column,
-  .columns {
+  .columns,
+  .form-component.horizontal .form-label-wrapper,
+  .form-component.horizontal .form-input-wrapper {
     position: relative;
     padding-left: 0.9375rem;
     padding-right: 0.9375rem;
@@ -1138,7 +1155,9 @@ select {
   }
 
   .column.medium-centered,
-  .columns.medium-centered {
+  .columns.medium-centered,
+  .form-component.horizontal .medium-centered.form-label-wrapper,
+  .form-component.horizontal .medium-centered.form-input-wrapper {
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -1146,14 +1165,18 @@ select {
   }
 
   .column.medium-uncentered,
-  .columns.medium-uncentered {
+  .columns.medium-uncentered,
+  .form-component.horizontal .medium-uncentered.form-label-wrapper,
+  .form-component.horizontal .medium-uncentered.form-input-wrapper {
     margin-left: 0;
     margin-right: 0;
     float: left !important;
   }
 
   .column.medium-uncentered.opposite,
-  .columns.medium-uncentered.opposite {
+  .columns.medium-uncentered.opposite,
+  .form-component.horizontal .medium-uncentered.opposite.form-label-wrapper,
+  .form-component.horizontal .medium-uncentered.opposite.form-input-wrapper {
     float: right !important;
   }
 
@@ -1423,7 +1446,9 @@ select {
   }
 
   .column,
-  .columns {
+  .columns,
+  .form-component.horizontal .form-label-wrapper,
+  .form-component.horizontal .form-input-wrapper {
     position: relative;
     padding-left: 0.9375rem;
     padding-right: 0.9375rem;
@@ -1554,7 +1579,9 @@ select {
   }
 
   .column.large-centered,
-  .columns.large-centered {
+  .columns.large-centered,
+  .form-component.horizontal .large-centered.form-label-wrapper,
+  .form-component.horizontal .large-centered.form-input-wrapper {
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -1562,14 +1589,18 @@ select {
   }
 
   .column.large-uncentered,
-  .columns.large-uncentered {
+  .columns.large-uncentered,
+  .form-component.horizontal .large-uncentered.form-label-wrapper,
+  .form-component.horizontal .large-uncentered.form-input-wrapper {
     margin-left: 0;
     margin-right: 0;
     float: left !important;
   }
 
   .column.large-uncentered.opposite,
-  .columns.large-uncentered.opposite {
+  .columns.large-uncentered.opposite,
+  .form-component.horizontal .large-uncentered.opposite.form-label-wrapper,
+  .form-component.horizontal .large-uncentered.opposite.form-input-wrapper {
     float: right !important;
   }
 }
@@ -1707,7 +1738,9 @@ select {
   }
 
   .column,
-  .columns {
+  .columns,
+  .form-component.horizontal .form-label-wrapper,
+  .form-component.horizontal .form-input-wrapper {
     position: relative;
     padding-left: 0.9375rem;
     padding-right: 0.9375rem;
@@ -1838,7 +1871,9 @@ select {
   }
 
   .column.xlarge-centered,
-  .columns.xlarge-centered {
+  .columns.xlarge-centered,
+  .form-component.horizontal .xlarge-centered.form-label-wrapper,
+  .form-component.horizontal .xlarge-centered.form-input-wrapper {
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -1846,14 +1881,18 @@ select {
   }
 
   .column.xlarge-uncentered,
-  .columns.xlarge-uncentered {
+  .columns.xlarge-uncentered,
+  .form-component.horizontal .xlarge-uncentered.form-label-wrapper,
+  .form-component.horizontal .xlarge-uncentered.form-input-wrapper {
     margin-left: 0;
     margin-right: 0;
     float: left !important;
   }
 
   .column.xlarge-uncentered.opposite,
-  .columns.xlarge-uncentered.opposite {
+  .columns.xlarge-uncentered.opposite,
+  .form-component.horizontal .xlarge-uncentered.opposite.form-label-wrapper,
+  .form-component.horizontal .xlarge-uncentered.opposite.form-input-wrapper {
     float: right !important;
   }
 }
@@ -1991,7 +2030,9 @@ select {
   }
 
   .column,
-  .columns {
+  .columns,
+  .form-component.horizontal .form-label-wrapper,
+  .form-component.horizontal .form-input-wrapper {
     position: relative;
     padding-left: 0.9375rem;
     padding-right: 0.9375rem;
@@ -2122,7 +2163,9 @@ select {
   }
 
   .column.xxlarge-centered,
-  .columns.xxlarge-centered {
+  .columns.xxlarge-centered,
+  .form-component.horizontal .xxlarge-centered.form-label-wrapper,
+  .form-component.horizontal .xxlarge-centered.form-input-wrapper {
     position: relative;
     margin-left: auto;
     margin-right: auto;
@@ -2130,14 +2173,18 @@ select {
   }
 
   .column.xxlarge-uncentered,
-  .columns.xxlarge-uncentered {
+  .columns.xxlarge-uncentered,
+  .form-component.horizontal .xxlarge-uncentered.form-label-wrapper,
+  .form-component.horizontal .xxlarge-uncentered.form-input-wrapper {
     margin-left: 0;
     margin-right: 0;
     float: left !important;
   }
 
   .column.xxlarge-uncentered.opposite,
-  .columns.xxlarge-uncentered.opposite {
+  .columns.xxlarge-uncentered.opposite,
+  .form-component.horizontal .xxlarge-uncentered.opposite.form-label-wrapper,
+  .form-component.horizontal .xxlarge-uncentered.opposite.form-input-wrapper {
     float: right !important;
   }
 }
@@ -2739,25 +2786,20 @@ input[type="submit"]:active {
 }
 /* Forms
 ----------------------------------------------- */
-.form-component {
+.form .form-component {
   margin-top: 4rem;
 }
-.form-component:first-child {
+.form .form-component:first-child {
   margin-top: 0;
 }
-
-.form-component.actions {
+.form .form-component.actions {
   margin-top: 4rem;
   text-align: center;
 }
 
 .form-label {
   display: block;
-  font-weight: bold;
-}
-
-.form-label {
-  display: block;
+  font-size: 1.1rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -2775,6 +2817,11 @@ input[type="submit"]:active {
   display: block;
   font-weight: bold;
   text-align: center;
+}
+
+.form-component.horizontal .form-label {
+  position: relative;
+  top: 2px;
 }
 
 /* Functionality
@@ -3301,7 +3348,7 @@ header {
 ------------------------------------------- */
 /* Layout Generic
 ------------------------------------------- */
-.row {
+.row, .form-component.horizontal {
   max-width: 960px;
 }
 

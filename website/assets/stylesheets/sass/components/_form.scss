@@ -2,28 +2,32 @@
 ----------------------------------------------- */
 
 .form {
-}
-.form-component {
-  margin-top: $space-xl;
-  &:first-child {
-    margin-top: 0;
+  .form-component {
+    margin-top: $space-xl;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  .form-component.actions {
+    margin-top: $space-xl;
+    text-align: center;
   }
 }
-.form-component.actions {
-  margin-top: $space-xl;
-  text-align: center;
+
+.form-label-wrapper {
+
 }
 .form-label {
   display: block;
-  font-weight: bold;
-}
-.form-label {
-  display: block;
+  font-size: $font-xs;
   font-weight: bold;
   margin-bottom: $space-s;
   &.centered {
     text-align: center;
   }
+}
+.form-input-wrapper {
+
 }
 .form-input {
 
@@ -37,4 +41,22 @@
   display: block;
   font-weight: bold;
   text-align: center;
+}
+
+// Form component - horizontal
+
+.form-component.horizontal {
+  @extend .row;
+  .form-label-wrapper {
+    @extend .small-2;
+    @extend .columns;
+  }
+  .form-label {
+    position: relative;
+    top: 2px;
+  }
+  .form-input-wrapper {
+    @extend .small-10;
+    @extend .columns;
+  }
 }
