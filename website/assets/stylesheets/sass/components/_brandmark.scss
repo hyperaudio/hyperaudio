@@ -9,9 +9,17 @@
   text-align: center;
 }
 .brandmark-symbol {
-  @include border-radius($radius-m);
+  @include border-radius($radius-s);
+  @include box-shadow(0 1px 1px $shadow-light);
   background: $bright;
+  display: inline-block;
   height: 40px;
+  width: 40px;
+  text-align: center;
+  padding: 0 $space-xs;
+  img {
+    height: 30px;
+  }
 }
 .brandmark-label {
   display: inline;

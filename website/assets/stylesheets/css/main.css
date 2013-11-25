@@ -2490,13 +2490,23 @@ input[type="submit"]:active {
 }
 
 .brandmark-symbol {
-  -webkit-border-radius: 0.6rem;
-  -moz-border-radius: 0.6rem;
-  -ms-border-radius: 0.6rem;
-  -o-border-radius: 0.6rem;
-  border-radius: 0.6rem;
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  -ms-border-radius: 0.3rem;
+  -o-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   background: white;
+  display: inline-block;
   height: 40px;
+  width: 40px;
+  text-align: center;
+  padding: 0 0.2rem;
+}
+.brandmark-symbol img {
+  height: 30px;
 }
 
 .brandmark-label {
