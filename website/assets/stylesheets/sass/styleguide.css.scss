@@ -148,10 +148,6 @@
   border: 1px solid $light;
   background: image-url("backgrounds/sg-grid.png") repeat;
   position: relative;
-  // * {
-  //   margin: 0;
-  //   padding: 0;
-  // }
 }
 .sg-mod-canvas-note {
   @include position-top-left(-($space-m), $space-l);
