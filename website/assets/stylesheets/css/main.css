@@ -2499,14 +2499,15 @@ input[type="submit"]:active {
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   background: white;
-  display: inline-block;
+  float: left;
+  padding: 0.5rem 0.2rem;
+  text-align: center;
   height: 40px;
   width: 40px;
-  text-align: center;
-  padding: 0 0.2rem;
 }
 .brandmark-symbol img {
   height: 30px;
+  vertical-align: baseline;
 }
 
 .brandmark-label {

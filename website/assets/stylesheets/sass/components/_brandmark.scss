@@ -12,13 +12,14 @@
   @include border-radius($radius-s);
   @include box-shadow(0 1px 1px $shadow-light);
   background: $bright;
-  display: inline-block;
+  float: left;
+  padding: $space-s $space-xs;
+  text-align: center;
   height: 40px;
   width: 40px;
-  text-align: center;
-  padding: 0 $space-xs;
   img {
     height: 30px;
+    vertical-align: baseline;
   }
 }
 .brandmark-label {
