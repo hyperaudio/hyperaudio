@@ -37,4 +37,8 @@ $(document).ready(function() {
 
   $('a.email').email()
 
+  // Speed up touch tap response time
+
+  document.addEventListener("touchstart", function(){}, true)
+
 });
