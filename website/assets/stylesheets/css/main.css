@@ -2350,9 +2350,6 @@ textarea.centered {
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
 }
 .link:focus, a:focus, .link:hover, a:hover, .link.active, a.active, .link:active, a:active {
   border-bottom: 1px solid #f39c12;
