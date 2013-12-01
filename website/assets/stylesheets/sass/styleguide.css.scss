@@ -127,6 +127,9 @@
     margin-top: $space-l;
     padding: $space-l;
     text-align: center;
+    &.inverted {
+      background: $shadow-mid;
+    }
     img {
       display: inline-block;
     }

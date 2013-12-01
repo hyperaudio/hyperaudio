@@ -138,6 +138,9 @@ html {
   padding: 2rem;
   text-align: center;
 }
+.sg-mod-intro figure.inverted {
+  background: rgba(0, 0, 0, 0.5);
+}
 .sg-mod-intro figure img {
   display: inline-block;
 }
