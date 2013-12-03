@@ -7,8 +7,8 @@
     margin-bottom: $space-xl;
   }
   .separator.silent {
-    margin-top: $space-s;
-    margin-bottom: $space-s;
+    margin-top: $space-xl;
+    margin-bottom: $space-xl;
   }
 }
 .tour-item {
@@ -97,6 +97,16 @@
 }
 
 @media #{$medium} {
+  .tour-items {
+    .separator {
+      margin-top: $space-h;
+      margin-bottom: $space-h;
+    }
+    .separator.silent {
+      margin-top: $space-xl;
+      margin-bottom: $space-xl;
+    }
+  }
 }
 
 @media #{$large} {

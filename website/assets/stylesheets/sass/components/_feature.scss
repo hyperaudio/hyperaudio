@@ -2,12 +2,12 @@
 ----------------------------------------------- */
 
 .features {
-  margin-bottom: $space-xl;
+  margin-bottom: $space-h;
 }
 .feature {
   @include clearfix;
   @include border-radius($radius-s);
-  margin-bottom: $space-xl;
+  margin-bottom: $space-h;
   &:last-child {
     margin-bottom: 0;
   }

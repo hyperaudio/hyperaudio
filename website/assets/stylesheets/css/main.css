@@ -2278,7 +2278,7 @@ h5 {
 
 .heading-m, h3 {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: bold;
   line-height: 1.4em;
 }
@@ -2292,7 +2292,7 @@ h5 {
 
 .heading-xs, h5 {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   letter-spacing: 1px;
   line-height: 1.4em;
@@ -2313,7 +2313,7 @@ textarea {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.35);
   font-family: "Merriweather Sans", sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   padding: 0.5rem;
   -webkit-transition: all 0.5s;
   -moz-transition: all 0.5s;
@@ -2324,7 +2324,7 @@ input.large[type="password"],
 input.large[type="email"],
 textarea.large {
   padding: 1rem;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 .text-input.block, input.block[type="text"],
 input.block[type="password"],
@@ -2428,7 +2428,7 @@ input[type="submit"]:active {
 }
 
 .button.small {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   padding: 0.2rem 1rem;
 }
 
@@ -2448,7 +2448,7 @@ input[type="submit"]:active {
 
 .article-heading {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-align: center;
 }
 
@@ -2519,7 +2519,7 @@ input[type="submit"]:active {
 
 @media only screen and (min-width: 40.063em) {
   .article-body {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1.8em;
   }
 }
@@ -2557,7 +2557,7 @@ input[type="submit"]:active {
 .brandmark-label {
   display: inline;
   font-family: "Exo", sans-serif;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: bold;
   line-height: 40px;
   margin-left: 1rem;
@@ -2618,7 +2618,7 @@ input[type="submit"]:active {
 .endorsement-author {
   color: rgba(0, 0, 0, 0.35);
   display: inline-block;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-style: normal;
   font-weight: bold;
   line-height: 1.6em;
@@ -2646,7 +2646,7 @@ input[type="submit"]:active {
 /* Feature
 ----------------------------------------------- */
 .features {
-  margin-bottom: 4rem;
+  margin-bottom: 8rem;
 }
 
 .feature {
@@ -2656,7 +2656,7 @@ input[type="submit"]:active {
   -ms-border-radius: 0.3rem;
   -o-border-radius: 0.3rem;
   border-radius: 0.3rem;
-  margin-bottom: 4rem;
+  margin-bottom: 8rem;
 }
 .feature:before, .feature:after {
   content: " ";
@@ -2670,7 +2670,7 @@ input[type="submit"]:active {
 }
 
 .feature-heading {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-bottom: 0.5rem;
 }
 
@@ -2726,7 +2726,7 @@ input[type="submit"]:active {
 
   .feature-text {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1.6em;
     margin-bottom: 0;
   }
@@ -2754,7 +2754,7 @@ input[type="submit"]:active {
 
 .footer-navigation-item {
   display: inline-block;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 0 0.5rem;
   text-transform: uppercase;
 }
@@ -2796,7 +2796,7 @@ input[type="submit"]:active {
 
 .form-label {
   display: block;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -2806,7 +2806,7 @@ input[type="submit"]:active {
 
 .form-note {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .form-alert {
@@ -2842,7 +2842,7 @@ input[type="submit"]:active {
 
 .functionality-heading {
   display: none;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
@@ -2895,7 +2895,7 @@ input[type="submit"]:active {
 
   .functionality-text {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
   }
 
   .functionality-figure {
@@ -2932,7 +2932,7 @@ input[type="submit"]:active {
 }
 
 .listing-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   text-align: left;
   display: inline;
 }
@@ -2965,13 +2965,13 @@ input[type="submit"]:active {
 
 .pitch-heading {
   display: inline;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 .pitch-text {
   font-weight: normal;
   display: inline;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 /* Queries
@@ -3145,7 +3145,7 @@ input[type="submit"]:active {
 /* Characteristics
 ----------------------------------------------- */
 .characteristic {
-  margin-top: 4rem;
+  margin-top: 8rem;
 }
 
 .characteristic-heading {
@@ -3190,7 +3190,7 @@ input[type="submit"]:active {
 
 .footer-imprint {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   margin: 4rem 0.5rem;
   text-align: center;
 }
@@ -3260,8 +3260,8 @@ header {
   margin-bottom: 4rem;
 }
 .tour-items .separator.silent {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
 }
 
 .tour-item-heading {
@@ -3286,7 +3286,7 @@ header {
 }
 
 .tour-item-text {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   display: inline;
 }
 .tour-item-text:first-child {
@@ -3321,7 +3321,7 @@ header {
 
   .tour-item-text {
     display: block;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     line-height: 1.6em;
   }
   .tour-item-text:first-child {
@@ -3339,6 +3339,16 @@ header {
 
   .tour-item.even .tour-figure {
     margin-right: 2rem;
+  }
+}
+@media only screen and (min-width: 40.063em) {
+  .tour-items .separator {
+    margin-top: 8rem;
+    margin-bottom: 8rem;
+  }
+  .tour-items .separator.silent {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
   }
 }
 /* Import Layout Styles
