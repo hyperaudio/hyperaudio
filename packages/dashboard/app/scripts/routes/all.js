@@ -8,8 +8,8 @@ haDash.Routers = haDash.Routers || {};
     haDash.Routers.Router = Backbone.Router.extend({
         routes: {
             '': 'dashboard',
-            'mixes': 'mixes',
-            'media': 'media'
+            'mixes/': 'mixes',
+            'media/': 'media'
         },
         
         dashboard: function() {
