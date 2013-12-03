@@ -11,7 +11,8 @@ haDash.Routers = haDash.Routers || {};
 			'mixes/': 'mixes',
 			'media/': 'media',
 			'signin/': 'signin',
-			'signout/': 'signout'
+			'signout/': 'signout',
+			'signup/': 'signup'
 		},
 
 		dashboard: function() {
@@ -48,6 +49,10 @@ haDash.Routers = haDash.Routers || {};
 				}
 			});
 
+		},
+		
+		signup: function() {
+			haDash.signupView = new haDash.Views.SignupView({});
 		}
 
 	});
