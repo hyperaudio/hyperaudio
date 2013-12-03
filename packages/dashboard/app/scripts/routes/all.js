@@ -7,13 +7,25 @@ haDash.Routers = haDash.Routers || {};
 
     haDash.Routers.Router = Backbone.Router.extend({
         routes: {
-            '': 'mix'
+            '': 'dashboard',
+            'mixes': 'mixes',
+            'media': 'media'
         },
         
-        mix: function() {
-            alert(1);
-            // $('#mix').html(
-            console.log(haDash.mixView.render().el);
+        dashboard: function() {
+            console.log('Dashboard N/A');
+            //TODO redirect to /
+        },
+        
+        mixes: function() {
+            console.log('mixes');
+            haDash.mixView = new haDash.Views.MixesView({
+                collection: new haDash.Collections.MixCollection()
+            });
+        },
+        
+        media: function() {
+            console.log('media');
         }
         
     });

@@ -2,7 +2,7 @@
 
 
 window.haDash = {
-    API: (document.location.host == '10.0.54.74')?'http://10.0.54.74':'http://data.hyperaud.io',
+    API: (document.location.host == '10.0.54.74')?'http://10.0.54.74':'http://data.hyperaud.io', //FIXME
     Models: {},
     Collections: {},
     Views: {},
@@ -10,11 +10,9 @@ window.haDash = {
     init: function () {
         'use strict';
         
-        this.mixView = new this.Views.MixesView({
-            collection: new this.Collections.MixCollection()
-        });
-        
         this.router = new this.Routers.Router();        
+        
+        Backbone.history.start({pushState: true});
     }
 };
 
