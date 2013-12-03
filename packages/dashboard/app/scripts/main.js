@@ -34,8 +34,10 @@ window.haDash = {
 
 				if (whoami.user) {
 					window.haDash.user = whoami.user;
+					$('body').removeClass('anonymous').addClass('user');
 				} else {
 					window.haDash.user = null;
+					$('body').removeClass('user').addClass('anonymous');
 				}
 
 				if (callback) callback();

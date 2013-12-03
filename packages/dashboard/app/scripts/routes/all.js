@@ -9,7 +9,9 @@ haDash.Routers = haDash.Routers || {};
 		routes: {
 			'': 'dashboard',
 			'mixes/': 'mixes',
-			'media/': 'media'
+			'media/': 'media',
+			'signin/': 'signin',
+			'signout/': 'signout'
 		},
 
 		dashboard: function() {
@@ -26,6 +28,26 @@ haDash.Routers = haDash.Routers || {};
 
 		media: function() {
 			console.log('media');
+		},
+		
+		signin: function() {
+			haDash.signinView = new haDash.Views.SigninView({});
+		},
+		
+		signout: function() {
+			
+			$.ajax({
+				url: haDash.API + '/logout',
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function() {
+  			      haDash.whoami(function() {
+  			        haDash.router.navigate("mixes/", {trigger: true});
+  			      });
+				}
+			});
+
 		}
 
 	});

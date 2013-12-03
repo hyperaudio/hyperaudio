@@ -8,3 +8,14 @@
     text-align: center;
 }
 
+body.anonymous {
+  .user {
+    display: none;
+  }
+}
+
+body.user {
+  .anonymous {
+    display: none;
+  }
+}
