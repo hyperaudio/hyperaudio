@@ -14,8 +14,8 @@ haDash.Views = haDash.Views || {};
         initialize: function () {
             this.render();
 
-            this.listenTo(this.collection, 'add', this.addTodoItem);
-            this.listenTo(this.collection, 'reset', this.addAllTodoItems);
+            this.listenTo(this.collection, 'add', this.addItem);
+            this.listenTo(this.collection, 'reset', this.addAllItems);
 
             this.collection.fetch();
         },
@@ -26,12 +26,12 @@ haDash.Views = haDash.Views || {};
             return this;
         },
         
-        addTodoItem: function (todo) {
+        addItem: function (todo) {
             var view = new haDash.Views.MixView({ model: todo });
             this.$('ul').append(view.render().el);
         },
         
-        addAllTodoItems: function () {
+        addAllItems: function () {
             this.collection.each(this.addTodoItem, this);
         }
     });
