@@ -7,7 +7,11 @@ haDash.Collections = haDash.Collections || {};
 
     haDash.Collections.MixCollection = Backbone.Collection.extend({
 
-        model: haDash.Models.MixModel
+        model: haDash.Models.MixModel,
+        
+        url:  function() {
+            return haDash.API + '/mixes';
+        }
 
     });
 
