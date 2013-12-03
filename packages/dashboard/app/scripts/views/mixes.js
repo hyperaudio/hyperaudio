@@ -26,15 +26,15 @@ haDash.Views = haDash.Views || {};
 			return this;
 		},
 
-		addItem: function(todo) {
+		addItem: function(item) {
 			var view = new haDash.Views.MixView({
-				model: todo
+				model: item
 			});
 			this.$('tbody').append(view.render().el);
 		},
 
 		addAllItems: function() {
-			this.collection.each(this.addTodoItem, this);
+			this.collection.each(this.addItem, this);
 		}
 	});
 
