@@ -2,24 +2,24 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+	'use strict';
 
-    haDash.Views.MixView = Backbone.View.extend({
-        
-        tagName: 'tr',
+	haDash.Views.MixView = Backbone.View.extend({
 
-        template: JST['app/scripts/templates/mix.ejs'],
-        
-        initialize: function () {
-            this.listenTo(this.model, 'change', this.render);
-        },
+		tagName: 'tr',
 
-        render: function () {
-            this.$el.html(this.template(this.model.toJSON()));
+		template: JST['app/scripts/templates/mix.ejs'],
 
-            return this;
-        }
-    });
+		initialize: function() {
+			this.listenTo(this.model, 'change', this.render);
+		},
+
+		render: function() {
+			this.$el.html(this.template(this.model.toJSON()));
+
+			return this;
+		}
+	});
 
 })();

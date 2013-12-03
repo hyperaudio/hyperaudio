@@ -2,17 +2,17 @@
 
 haDash.Collections = haDash.Collections || {};
 
-(function () {
-    'use strict';
+(function() {
+	'use strict';
 
-    haDash.Collections.MixCollection = Backbone.Collection.extend({
+	haDash.Collections.MixCollection = Backbone.Collection.extend({
 
-        model: haDash.Models.MixModel,
-        
-        url:  function() {
-            return haDash.API + '/mixes';
-        }
+		model: haDash.Models.MixModel,
 
-    });
+		url: function() {
+			return haDash.API + '/mixes';
+		}
+
+	});
 
 })();

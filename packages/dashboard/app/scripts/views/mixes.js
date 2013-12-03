@@ -2,38 +2,40 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+	'use strict';
 
-    haDash.Views.MixesView = Backbone.View.extend({
-        
-        el: '#main',
+	haDash.Views.MixesView = Backbone.View.extend({
 
-        template: JST['app/scripts/templates/mixes.ejs'],
-        
-        initialize: function () {
-            this.render();
+		el: '#main',
 
-            this.listenTo(this.collection, 'add', this.addItem);
-            this.listenTo(this.collection, 'reset', this.addAllItems);
+		template: JST['app/scripts/templates/mixes.ejs'],
 
-            this.collection.fetch();
-        },
+		initialize: function() {
+			this.render();
 
-        render: function () {
-            this.$el.html(this.template());
+			this.listenTo(this.collection, 'add', this.addItem);
+			this.listenTo(this.collection, 'reset', this.addAllItems);
 
-            return this;
-        },
-        
-        addItem: function (todo) {
-            var view = new haDash.Views.MixView({ model: todo });
-            this.$('tbody').append(view.render().el);
-        },
-        
-        addAllItems: function () {
-            this.collection.each(this.addTodoItem, this);
-        }
-    });
+			this.collection.fetch();
+		},
+
+		render: function() {
+			this.$el.html(this.template());
+
+			return this;
+		},
+
+		addItem: function(todo) {
+			var view = new haDash.Views.MixView({
+				model: todo
+			});
+			this.$('tbody').append(view.render().el);
+		},
+
+		addAllItems: function() {
+			this.collection.each(this.addTodoItem, this);
+		}
+	});
 
 })();
