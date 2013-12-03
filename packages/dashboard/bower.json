@@ -6,9 +6,7 @@
     "backbone": "~1.0.0",
     "modernizr": "~2.6.2",
     "jquery": "2.0.3",
-    "foundation": "~5.0.2",
-    "picturefill": "~1.2.1",
-    "ha-style": "git@github.com:hyperaudio-dev/website.git"
+    "picturefill": "~1.2.1"
   },
   "devDependencies": {}
 }
