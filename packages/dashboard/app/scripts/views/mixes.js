@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MixesView = Backbone.View.extend({
         
-        el: '#mixes',
+        el: '#main',
 
         template: JST['app/scripts/templates/mixes.ejs'],
         
@@ -28,7 +28,7 @@ haDash.Views = haDash.Views || {};
         
         addItem: function (todo) {
             var view = new haDash.Views.MixView({ model: todo });
-            this.$('ul').append(view.render().el);
+            this.$('tbody').append(view.render().el);
         },
         
         addAllItems: function () {

@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MixView = Backbone.View.extend({
         
-        tagName: 'li',
+        tagName: 'tr',
 
         template: JST['app/scripts/templates/mix.ejs'],
         
