@@ -1,14 +1,26 @@
-<form>
-<fieldset>
-    <legend>Sign In</legend>
-	
-    <label for="username" class="form-label">Username:</label>
-    <input id="username" name="username" type="text" class="form-input text-input">
-
-    <label for="password" class="form-label">Password:</label>
-    <input id="password" name="password" type="password" class="form-input text-input">
-	
-	<input id="signin" type="submit" class="button clear" value="Sign In">
-	
-</fieldset>
-</form>
+<hgroup class="section-head">
+  <h1 class="section-head-heading">
+    Sign In
+  </h1>
+</hgroup>
+<div class="row">
+  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">
+    <form id="loginForm" class="form">
+      <div class="form-component">
+        <label for="username" class="form-label centered">Username</label>
+        <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="Username"> 
+		<!--<p style="display:none" class="form-alert">Wrong username.</p>-->
+      </div>
+      <div class="form-component">
+        <label for="password" class="form-label centered">Password</label>
+        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
+        <!--<p id="error" style="display:none" class="form-alert">
+          Wrong username or password.
+        </p>-->
+      </div>
+      <div class="form-component actions">
+        <input id="signin" type="submit" class="button large primary" value="Sign In">
+      </div>
+    </form>
+  </div>
+</div>
