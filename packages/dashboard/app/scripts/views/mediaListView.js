@@ -5,11 +5,11 @@ haDash.Views = haDash.Views || {};
 (function () {
     'use strict';
 
-    haDash.Views.MedialistView = Backbone.View.extend({
+    haDash.Views.MediaListView = Backbone.View.extend({
 		
 		el: '#main',
 
-        template: JST['app/scripts/templates/medialist.ejs'],
+        template: JST['app/scripts/templates/mediaList.ejs'],
 		
 		initialize: function() {
 			this.render();

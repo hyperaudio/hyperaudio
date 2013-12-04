@@ -5,7 +5,7 @@ haDash.Views = haDash.Views || {};
 (function () {
     'use strict';
 
-    haDash.Views.SigninView = Backbone.View.extend({
+    haDash.Views.SignInView = Backbone.View.extend({
 		
 		el: '#main',
 

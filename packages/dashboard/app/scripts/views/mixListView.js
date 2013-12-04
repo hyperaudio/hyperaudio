@@ -5,11 +5,11 @@ haDash.Views = haDash.Views || {};
 (function() {
 	'use strict';
 
-	haDash.Views.MixesView = Backbone.View.extend({
+	haDash.Views.MixListView = Backbone.View.extend({
 
 		el: '#main',
 
-		template: JST['app/scripts/templates/mixes.ejs'],
+		template: JST['app/scripts/templates/mixList.ejs'],
 
 		initialize: function() {
 			this.render();

@@ -22,20 +22,20 @@ haDash.Routers = haDash.Routers || {};
 
 		mixes: function() {
 			console.log('mixes');
-			haDash.mixView = new haDash.Views.MixesView({
+			haDash.mixListView = new haDash.Views.MixListView({
 				collection: new haDash.Collections.MixCollection()
 			});
 		},
 
 		media: function() {
 			console.log('media');
-			haDash.medialistView = new haDash.Views.MedialistView({
+			haDash.mediaListView = new haDash.Views.MediaListView({
 				collection: new haDash.Collections.MediaCollection()
 			});
 		},
 		
 		signin: function() {
-			haDash.signinView = new haDash.Views.SigninView({});
+			haDash.signInView = new haDash.Views.SignInView({});
 		},
 		
 		signout: function() {
@@ -55,7 +55,7 @@ haDash.Routers = haDash.Routers || {};
 		},
 		
 		signup: function() {
-			haDash.signupView = new haDash.Views.SignupView({});
+			haDash.signUpView = new haDash.Views.SignUpView({});
 		}
 
 	});
