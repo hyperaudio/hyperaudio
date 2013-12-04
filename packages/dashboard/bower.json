@@ -1,16 +1,12 @@
 {
   "name": "ha-dash",
-  "version": "0.0.1",
-  
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "components"
-  ],
-  
+  "version": "0.0.2",
   "dependencies": {
-    "console-polyfill": "*",
-    "jquery": "*",
-    "bootstrap": "*"
-  }
+    "underscore": "~1.4.3",
+    "backbone": "~1.0.0",
+    "modernizr": "~2.6.2",
+    "jquery": "2.0.3",
+    "picturefill": "~1.2.1"
+  },
+  "devDependencies": {}
 }

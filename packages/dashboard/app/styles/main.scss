@@ -1,0 +1,21 @@
+
+.browsehappy {
+    padding: .2em !important;
+    margin: 0;
+    background: #333;
+    color: #fff;
+    padding: 0.2em 0;
+    text-align: center;
+}
+
+body.anonymous {
+  .user {
+    display: none;
+  }
+}
+
+body.user {
+  .anonymous {
+    display: none;
+  }
+}
