@@ -10,9 +10,9 @@ haDash.Routers = haDash.Routers || {};
 			'': 'dashboard',
 			'mixes/': 'mixes',
 			'media/': 'media',
-			'signin/': 'signin',
+			'secret-signin/': 'signin',
 			'signout/': 'signout',
-			'signup/': 'signup'
+			'secret-signup/': 'signup'
 		},
 
 		dashboard: function() {
