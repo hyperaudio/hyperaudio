@@ -7,7 +7,11 @@ haDash.Collections = haDash.Collections || {};
 
     haDash.Collections.MediaCollection = Backbone.Collection.extend({
 
-        model: haDash.Models.MediaModel
+        model: haDash.Models.MediaModel,
+		
+		url: function() {
+			return haDash.API + '/media';
+		}
 
     });
 

@@ -29,6 +29,9 @@ haDash.Routers = haDash.Routers || {};
 
 		media: function() {
 			console.log('media');
+			haDash.medialistView = new haDash.Views.MedialistView({
+				collection: new haDash.Collections.MediaCollection()
+			});
 		},
 		
 		signin: function() {
