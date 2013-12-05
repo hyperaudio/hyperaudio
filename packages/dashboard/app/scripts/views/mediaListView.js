@@ -22,12 +22,14 @@ haDash.Views = haDash.Views || {};
 
 		render: function() {
 			this.$el.html(this.template());
-
+			// this.afterRender();
 			return this;
 		},
+		
+		// afterRender: function() {},
 
 		addItem: function(item) {
-			var view = new haDash.Views.MixView({
+			var view = new haDash.Views.MediaView({
 				model: item
 			});
 			this.$('tbody').append(view.render().el);

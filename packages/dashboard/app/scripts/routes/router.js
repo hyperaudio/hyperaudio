@@ -32,6 +32,8 @@ haDash.Routers = haDash.Routers || {};
 			haDash.mediaListView = new haDash.Views.MediaListView({
 				collection: new haDash.Collections.MediaCollection()
 			});
+			
+			setTimeout(fixTooltips, 500);//FIXME			
 		},
 		
 		signin: function() {
