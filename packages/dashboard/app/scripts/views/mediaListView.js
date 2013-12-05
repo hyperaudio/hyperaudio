@@ -32,7 +32,12 @@ haDash.Views = haDash.Views || {};
 			var view = new haDash.Views.MediaView({
 				model: item
 			});
-			this.$('tbody').append(view.render().el);
+			
+			if (haDash.user && haDash.user.username == item.get('owner')) {
+				this.$('tbody.your').append(view.render().el);
+			} else {
+				this.$('tbody.other').append(view.render().el);
+			}
 		},
 
 		addAllItems: function() {
