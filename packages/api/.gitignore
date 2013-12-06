@@ -3,7 +3,3 @@ node_modules/
 
 public/stylesheets/style.css
 settings.json
-
-media/**/*.mp3
-media/**/*.mp4
-media/**/*.jpg
