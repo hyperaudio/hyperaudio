@@ -97,8 +97,8 @@ module.exports = function(app, nconf) {
       // sort: req.body.sort,
       owner: owner,
       meta: req.body.meta,
-      source = req.body.source,
-      transcripts = req.body.transcripts
+      source: req.body.source,
+      transcripts: req.body.transcripts
     });
 
     console.log(mediaObject);
