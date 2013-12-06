@@ -2,7 +2,7 @@ var passport = require('passport');
 var Mix = require('./models/mix');
 var fs = require('fs');
 var path = require('path');
-var cp = require('child_process');
+// var cp = require('child_process');
 
 
 module.exports = function(app, nconf) {
@@ -103,14 +103,14 @@ module.exports = function(app, nconf) {
     });
     
     // download if needed
-    if (mix.meta && mix.meta.filename && mix.meta.key) {
-      var p = cp.fork(__dirname + '/fileDownload.js');
-      p.send({
-        filename: mix.meta.filename, 
-        url: mix.meta.url,
-        owner: mix.owner
-      });
-    }
+    // if (mix.meta && mix.meta.filename && mix.meta.key) {
+//       var p = cp.fork(__dirname + '/fileDownload.js');
+//       p.send({
+//         filename: mix.meta.filename, 
+//         url: mix.meta.url,
+//         owner: mix.owner
+//       });
+//     }
 
     console.log(mix);
 

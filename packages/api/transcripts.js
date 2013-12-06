@@ -2,7 +2,7 @@ var passport = require('passport');
 var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
-var cp = require('child_process');
+// var cp = require('child_process');
 var url = require('url');
 
 module.exports = function(app, nconf) {
@@ -216,14 +216,14 @@ module.exports = function(app, nconf) {
     });
 
     // download if needed
-    if (transcript.meta && transcript.meta.filename && transcript.meta.key) {
-      var p = cp.fork(__dirname + '/fileDownload.js');
-      p.send({
-        filename: transcript.meta.filename,
-        url: transcript.meta.url,
-        owner: transcript.owner
-      });
-    }
+    // if (transcript.meta && transcript.meta.filename && transcript.meta.key) {
+//       var p = cp.fork(__dirname + '/fileDownload.js');
+//       p.send({
+//         filename: transcript.meta.filename,
+//         url: transcript.meta.url,
+//         owner: transcript.owner
+//       });
+//     }
 
     console.log(transcript);
 
