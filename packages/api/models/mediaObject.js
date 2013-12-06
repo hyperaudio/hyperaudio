@@ -10,7 +10,7 @@ var MediaObject = new mongoose.Schema({
     meta: Schema.Types.Mixed,
     // probe: Schema.Types.Mixed,
 	source: Schema.Types.Mixed,
-	transcripts : [{ type: Schema.Types.ObjectId, ref: 'Transcript' }]
+	transcripts : [{ type: Schema.Types.ObjectId, ref: 'Transcripts' }]
 }, { versionKey: false });
 
 module.exports = mongoose.model('Media', MediaObject);
