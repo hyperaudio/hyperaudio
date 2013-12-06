@@ -63,7 +63,7 @@ module.exports = function(app, nconf) {
       // mediaObject.owner = req.body.owner;
       mediaObject.meta = req.body.meta;
       mediaObject.source = req.body.source;
-      mediaObject.transcripts = req.body.transcripts;
+      // mediaObject.transcripts = req.body.transcripts;
       
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -97,8 +97,8 @@ module.exports = function(app, nconf) {
       // sort: req.body.sort,
       owner: owner,
       meta: req.body.meta,
-      source: req.body.source,
-      transcripts: req.body.transcripts
+      source: req.body.source//,
+      // transcripts: req.body.transcripts
     });
 
     console.log(mediaObject);
