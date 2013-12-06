@@ -4,7 +4,7 @@ var fs = require('fs');
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
-var httpProxy = require('http-proxy');
+// var httpProxy = require('http-proxy');
 var path = require('path');
 
 var mongoose = require('mongoose');
@@ -79,8 +79,8 @@ app.use(require('less-middleware')({ src: __dirname + '/public' }));
 // app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-var mediaProxy = httpProxy.createServer(80, 'localhost');
-app.use('/proxy', mediaProxy);
+// var mediaProxy = httpProxy.createServer(80, 'localhost');
+// app.use('/proxy', mediaProxy);
 
 // development only
 if ('development' == app.get('env')) {
@@ -98,35 +98,35 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 
-passport.use(new PersonaStrategy({
-    audience: 'https://data.hyperaud.io/',
-    checkAudience: false
-  },
-  function(email, done) {
-      Account.findByUsername(email, function(err, result){
-        if (err) {
-            console.log(err);
-        }
-        if (result) {
-          return done(null, result);
-        } else {
-          var password = generatePassword();
-          console.log("password " + password);
-          Account.register(new Account({
-                username : email,
-                email: email
-            }),
-            password, 
-            function(err, account) {
-              if (err) {
-                  console.log(err);
-              }
-              return done(null, account);
-          });
-        }         
-      });
-  }
-));
+// passport.use(new PersonaStrategy({
+//     audience: 'https://data.hyperaud.io/',
+//     checkAudience: false
+//   },
+//   function(email, done) {
+//       Account.findByUsername(email, function(err, result){
+//         if (err) {
+//             console.log(err);
+//         }
+//         if (result) {
+//           return done(null, result);
+//         } else {
+//           var password = generatePassword();
+//           console.log("password " + password);
+//           Account.register(new Account({
+//                 username : email,
+//                 email: email
+//             }),
+//             password, 
+//             function(err, account) {
+//               if (err) {
+//                   console.log(err);
+//               }
+//               return done(null, account);
+//           });
+//         }         
+//       });
+//   }
+// ));
 
 
 app.get('/', routes.index);
@@ -151,9 +151,9 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
     res.redirect('/');
 });
 
-app.post('/auth/browserid', passport.authenticate('persona', { failureRedirect: '/login' }), function(req, res) {
-    res.redirect('/');
-});
+// app.post('/auth/browserid', passport.authenticate('persona', { failureRedirect: '/login' }), function(req, res) {
+//     res.redirect('/');
+// });
 
 app.get('/logout', function(req, res){
   req.logout();
@@ -182,9 +182,10 @@ app.post('/register', function(req, res) {
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
 require('./mixes')(app, nconf);
+
 require('./subscribers')(app, nconf);
 
-app.use(express.static(path.join(__dirname, 'media')));
+// app.use(express.static(path.join(__dirname, 'media')));
 
 
 http.createServer(app).listen(80, function(){
