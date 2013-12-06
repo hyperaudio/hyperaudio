@@ -39,7 +39,7 @@ module.exports = function(app, nconf) {
       mix.label = req.body.label;
       mix.desc = req.body.desc;
       mix.type = req.body.type;
-      mix.sort = req.body.sort;
+      // mix.sort = req.body.sort;
 
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -83,7 +83,7 @@ module.exports = function(app, nconf) {
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
-      sort: req.body.sort,
+      // sort: req.body.sort,
       owner: owner,
       meta: req.body.meta,
       content: content
