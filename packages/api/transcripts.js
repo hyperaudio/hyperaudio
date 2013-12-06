@@ -67,7 +67,7 @@ module.exports = function(app, nconf) {
       transcript.label = req.body.label;
       transcript.desc = req.body.desc;
       transcript.type = req.body.type;
-      transcript.sort = req.body.sort;
+      // transcript.sort = req.body.sort;
       // transcript.owner = req.body.owner;
       transcript.meta = req.body.meta;
       transcript.media = req.body.media;
@@ -185,7 +185,7 @@ module.exports = function(app, nconf) {
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
-      sort: req.body.sort,
+      // sort: req.body.sort,
       owner: req.body.owner,
       meta: req.body.meta,
       content: content,
