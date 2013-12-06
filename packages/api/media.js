@@ -26,9 +26,9 @@ module.exports = function(app, nconf) {
       return res.send(mediaObjects);
     });
   });
-
+  
   app.get('/:user?/media/:id', function(req, res) {
-    return MediaObject.findById(req.params.id, function(err, mediaObject) {
+    return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
       }
