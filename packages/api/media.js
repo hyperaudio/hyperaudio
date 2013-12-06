@@ -39,6 +39,7 @@ module.exports = function(app, nconf) {
     });
   });
   
+  // FIXME OBSOLETE?
   app.get('/:user?/media/:id/transcripts', function(req, res) {
     return Transcript.find(function(err, transcripts) {
       var ret = [];
@@ -58,9 +59,11 @@ module.exports = function(app, nconf) {
       mediaObject.label = req.body.label;
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
-      mediaObject.sort = req.body.sort;
+      // mediaObject.sort = req.body.sort;
       // mediaObject.owner = req.body.owner;
       mediaObject.meta = req.body.meta;
+      mediaObject.source = req.body.source;
+      mediaObject.transcripts = req.body.transcripts;
       
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -91,9 +94,11 @@ module.exports = function(app, nconf) {
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
-      sort: req.body.sort,
+      // sort: req.body.sort,
       owner: owner,
-      meta: req.body.meta
+      meta: req.body.meta,
+      source = req.body.source,
+      transcripts = req.body.transcripts
     });
 
     console.log(mediaObject);
