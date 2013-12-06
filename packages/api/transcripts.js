@@ -2,7 +2,6 @@ var passport = require('passport');
 var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
-// var cp = require('child_process');
 var url = require('url');
 
 module.exports = function(app, nconf) {
@@ -25,10 +24,6 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        // try {
-//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-//           transcript.content = fs.readFileSync(filePath);
-//         } catch (ignored) {}
         return res.send(transcript);
       }
       
@@ -42,11 +37,6 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        // try {
-//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-//           transcript.content = fs.readFileSync(filePath);
-//         } catch (ignored) {}
-        // return res.send(transcript);
 		res.header("Content-Type", "text/plain");
 		return res.send(transcript.content);
       }
@@ -61,11 +51,6 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        // try {
-//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-//           transcript.content = fs.readFileSync(filePath);
-//         } catch (ignored) {}
-        // return res.send(transcript);
 		res.header("Content-Type", "text/html");
 		return res.send(transcript.content);
       }
@@ -101,10 +86,6 @@ module.exports = function(app, nconf) {
       
       if (req.body.content) {
         transcript.content = req.body.content;
-        // try {
-//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-//           fs.writeFileSync(filePath, req.body.content);
-//         } catch (ignored) {}
       }
 
       return transcript.save(function(err) {
@@ -198,10 +179,6 @@ module.exports = function(app, nconf) {
 
     if (req.body.content) {
       content = req.body.content;
-      // try {
-//         var filePath = path.join(__dirname, 'media/' + req.body.owner + '/' + req.body.meta.filename);
-//         fs.writeFileSync(filePath, req.body.content);
-//       } catch (ignored) {}
     }
 	    
     transcript = new Transcript({
@@ -216,14 +193,6 @@ module.exports = function(app, nconf) {
     });
 
     // download if needed
-    // if (transcript.meta && transcript.meta.filename && transcript.meta.key) {
-//       var p = cp.fork(__dirname + '/fileDownload.js');
-//       p.send({
-//         filename: transcript.meta.filename,
-//         url: transcript.meta.url,
-//         owner: transcript.owner
-//       });
-//     }
 
     console.log(transcript);
 
