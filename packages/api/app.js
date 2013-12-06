@@ -11,9 +11,9 @@ var mongoose = require('mongoose');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var PersonaStrategy = require('passport-persona').Strategy;
+// var PersonaStrategy = require('passport-persona').Strategy;
 
-var generatePassword = require('password-generator');
+// var generatePassword = require('password-generator');
 
 nconf.argv()
     .env()
