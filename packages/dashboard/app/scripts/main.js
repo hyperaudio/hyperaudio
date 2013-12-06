@@ -2,7 +2,7 @@
 
 
 window.haDash = {
-	API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://data.hyperaud.io', //FIXME
+	API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io', //FIXME?
 	Models: {},
 	Collections: {},
 	Views: {},
