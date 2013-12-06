@@ -9,6 +9,6 @@ var Mix = new mongoose.Schema({
     owner: String,
     meta: Schema.Types.Mixed,
     content: String
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('Mixes', Mix);

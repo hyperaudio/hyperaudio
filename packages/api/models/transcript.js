@@ -11,6 +11,6 @@ var Transcript = new mongoose.Schema({
     content: String,
     media: { type: Schema.Types.ObjectId, ref: 'Media' }//,
 	// alignments: Schema.Types.Mixed
-});
+}, { versionKey: false });
 
 module.exports = mongoose.model('Transcripts', Transcript);
