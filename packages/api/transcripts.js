@@ -25,10 +25,10 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        try {
-          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-          transcript.content = fs.readFileSync(filePath);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+//           transcript.content = fs.readFileSync(filePath);
+//         } catch (ignored) {}
         return res.send(transcript);
       }
       
@@ -42,10 +42,10 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        try {
-          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-          transcript.content = fs.readFileSync(filePath);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+//           transcript.content = fs.readFileSync(filePath);
+//         } catch (ignored) {}
         // return res.send(transcript);
 		res.header("Content-Type", "text/plain");
 		return res.send(transcript.content);
@@ -61,10 +61,10 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
-        try {
-          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-          transcript.content = fs.readFileSync(filePath);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+//           transcript.content = fs.readFileSync(filePath);
+//         } catch (ignored) {}
         // return res.send(transcript);
 		res.header("Content-Type", "text/html");
 		return res.send(transcript.content);
@@ -101,10 +101,10 @@ module.exports = function(app, nconf) {
       
       if (req.body.content) {
         transcript.content = req.body.content;
-        try {
-          var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
-          fs.writeFileSync(filePath, req.body.content);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + transcript.owner + '/' + transcript.meta.filename);
+//           fs.writeFileSync(filePath, req.body.content);
+//         } catch (ignored) {}
       }
 
       return transcript.save(function(err) {
@@ -119,69 +119,69 @@ module.exports = function(app, nconf) {
 
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
-  app.post('/:user?/transcripts/:id/align', function(req, res) {
-    return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
-      
-      if (transcript.type == 'text' && transcript.media) {
-        console.log('forking ' + __dirname + '/mod9.js')
-        var p = cp.fork(__dirname + '/mod9.js');
-        p.send({
-          audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
-          // text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
-          text: 'http://data.hyperaud.io/' + transcript.owner + '/transcripts/' + req.params.id + '/text'
-        });		
-		
-        p.on('message', function(m) {
-		  // console.log("RECV? ");
-		  // console.log(m);
-		  // console.log("RECV! ");
-          var query = {
-            _id: req.params.id
-          };
-		  
-		  if (m[m.length - 1][1].alignment) {
-			  var hypertranscript = "<article><header></header><section><header></header><p>";
-			  
-			  var al = m[m.length - 1][1].alignment;
-			  
-			  for (var i = 0; i < al.length; i++) {
-			  	hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
-			  }
-
-			  
-			  hypertranscript += "</p><footer></footer></section></footer></footer></article>";
-			  
-
-	          Transcript.findOneAndUpdate(query, {
-	            alignments: m,
-				type: "html",
-				content: hypertranscript,
-				meta: {
-					filename: req.params.id + '.html'
-				}
-	          }, function(err, tr) {
-	            console.log(err, tr);
-				
-  	          try {
-  	            var filePath = path.join(__dirname, 'media/' + tr.owner + '/' + tr.meta.filename);
-  	            fs.writeFileSync(filePath, tr.content);
-  	          } catch (ignored) {}
-			  
-	          });		  	
-		  } else {
-	          Transcript.findOneAndUpdate(query, {
-	            alignments: m //using this for now even for updates, client must poll GET this transcript
-	          }, function(err, tr) {
-	            console.log(err, tr);
-	          });
-		  }
-		  
-        });
-      }
-      
-      return res.send(transcript);
-    });
-  });
+  // app.post('/:user?/transcripts/:id/align', function(req, res) {
+  //   return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
+  //     
+  //     if (transcript.type == 'text' && transcript.media) {
+  //       console.log('forking ' + __dirname + '/mod9.js')
+  //       var p = cp.fork(__dirname + '/mod9.js');
+  //       p.send({
+  //         audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
+  //         // text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
+  //         text: 'http://data.hyperaud.io/' + transcript.owner + '/transcripts/' + req.params.id + '/text'
+  //       });		
+  // 		
+  //       p.on('message', function(m) {
+  // 		  // console.log("RECV? ");
+  // 		  // console.log(m);
+  // 		  // console.log("RECV! ");
+  //         var query = {
+  //           _id: req.params.id
+  //         };
+  // 		  
+  // 		  if (m[m.length - 1][1].alignment) {
+  // 			  var hypertranscript = "<article><header></header><section><header></header><p>";
+  // 			  
+  // 			  var al = m[m.length - 1][1].alignment;
+  // 			  
+  // 			  for (var i = 0; i < al.length; i++) {
+  // 			  	hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+  // 			  }
+  // 
+  // 			  
+  // 			  hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+  // 			  
+  // 
+  // 	          Transcript.findOneAndUpdate(query, {
+  // 	            alignments: m,
+  // 				type: "html",
+  // 				content: hypertranscript,
+  // 				meta: {
+  // 					filename: req.params.id + '.html'
+  // 				}
+  // 	          }, function(err, tr) {
+  // 	            console.log(err, tr);
+  // 				
+  // 	          try {
+  // 	            var filePath = path.join(__dirname, 'media/' + tr.owner + '/' + tr.meta.filename);
+  // 	            fs.writeFileSync(filePath, tr.content);
+  // 	          } catch (ignored) {}
+  // 			  
+  // 	          });		  	
+  // 		  } else {
+  // 	          Transcript.findOneAndUpdate(query, {
+  // 	            alignments: m //using this for now even for updates, client must poll GET this transcript
+  // 	          }, function(err, tr) {
+  // 	            console.log(err, tr);
+  // 	          });
+  // 		  }
+  // 		  
+  //       });
+  //     }
+  //     
+  //     return res.send(transcript);
+  //   });
+  // });
   
   app.post('/:user?/transcripts', function(req, res) {
 
@@ -198,10 +198,10 @@ module.exports = function(app, nconf) {
 
     if (req.body.content) {
       content = req.body.content;
-      try {
-        var filePath = path.join(__dirname, 'media/' + req.body.owner + '/' + req.body.meta.filename);
-        fs.writeFileSync(filePath, req.body.content);
-      } catch (ignored) {}
+      // try {
+//         var filePath = path.join(__dirname, 'media/' + req.body.owner + '/' + req.body.meta.filename);
+//         fs.writeFileSync(filePath, req.body.content);
+//       } catch (ignored) {}
     }
 	    
     transcript = new Transcript({
