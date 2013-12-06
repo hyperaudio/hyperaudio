@@ -8,7 +8,8 @@ var MediaObject = new mongoose.Schema({
     sort: { type: Number },
     owner: String,
     meta: Schema.Types.Mixed,
-    probe: Schema.Types.Mixed
+    probe: Schema.Types.Mixed,
+	resources: Schema.Types.Mixed
 });
 
 module.exports = mongoose.model('Media', MediaObject);
