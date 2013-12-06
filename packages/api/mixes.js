@@ -24,10 +24,10 @@ module.exports = function(app, nconf) {
   app.get('/:user?/mixes/:id', function(req, res) {
     return Mix.findById(req.params.id, function(err, mix) {
       if (!err) {
-        try {
-          var filePath = path.join(__dirname, 'media/' + mix.owner + '/' + mix.meta.filename);
-          mix.content = fs.readFileSync(filePath);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + mix.owner + '/' + mix.meta.filename);
+//           mix.content = fs.readFileSync(filePath);
+//         } catch (ignored) {}
         return res.send(mix);
       }
       
@@ -56,10 +56,10 @@ module.exports = function(app, nconf) {
 
       if (req.body.content) {
         mix.content = req.body.content;
-        try {
-          var filePath = path.join(__dirname, 'media/' + mix.owner + '/' + mix.meta.filename);
-          fs.writeFileSync(filePath, req.body.content);
-        } catch (ignored) {}
+        // try {
+//           var filePath = path.join(__dirname, 'media/' + mix.owner + '/' + mix.meta.filename);
+//           fs.writeFileSync(filePath, req.body.content);
+//         } catch (ignored) {}
       }
 
       return mix.save(function(err) {
@@ -86,10 +86,10 @@ module.exports = function(app, nconf) {
 
     if (req.body.content) {
       content = req.body.content;
-      try {
-        var filePath = path.join(__dirname, 'media/' + req.body.owner + '/' + req.body.meta.filename);
-        fs.writeFileSync(filePath, req.body.content);
-      } catch (ignored) {}
+      // try {
+//         var filePath = path.join(__dirname, 'media/' + req.body.owner + '/' + req.body.meta.filename);
+//         fs.writeFileSync(filePath, req.body.content);
+//       } catch (ignored) {}
     }
 
     mix = new Mix({
