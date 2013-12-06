@@ -1,7 +1,7 @@
 var https = require('https');
 var fs = require('fs');
 var path = require('path');
-var cp = require('child_process');
+// var cp = require('child_process');
 
 var passport = require('passport');
 
@@ -106,23 +106,23 @@ module.exports = function(app, nconf) {
     });
 
     // download and probe
-    console.log('forking ' + __dirname + '/probe.js')
-    var p = cp.fork(__dirname + '/probe.js');
-    p.send({
-      // id: mediaObject._id,
-      url: mediaObject.meta.url,
-      owner: owner
-    });
-    p.on('message', function(m) {
-      var query = {
-        _id: mediaObject._id
-      };
-      MediaObject.findOneAndUpdate(query, {
-        probe: m
-      }, function(err, model) {
-        console.log(err, model);
-      });
-    });
+    // console.log('forking ' + __dirname + '/probe.js')
+//     var p = cp.fork(__dirname + '/probe.js');
+//     p.send({
+//       // id: mediaObject._id,
+//       url: mediaObject.meta.url,
+//       owner: owner
+//     });
+//     p.on('message', function(m) {
+//       var query = {
+//         _id: mediaObject._id
+//       };
+//       MediaObject.findOneAndUpdate(query, {
+//         probe: m
+//       }, function(err, model) {
+//         console.log(err, model);
+//       });
+//     });
 
     return res.send(mediaObject);
   });

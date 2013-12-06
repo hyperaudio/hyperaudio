@@ -1,3 +1,5 @@
+//FIXME use beanstalkd
+
 var querystring = require('querystring');
 var http = require('http');
 var winston = require('winston');
