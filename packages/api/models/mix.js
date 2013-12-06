@@ -8,7 +8,14 @@ var Mix = new mongoose.Schema({
     // sort: { type: Number },
     owner: String,
     meta: Schema.Types.Mixed,
+	created: { type: Date, default: Date.now },
+	modified: { type: Date, default: Date.now },
     content: String
 }, { versionKey: false });
+
+Mix.pre('save', function (next) {
+	this.modified = new Date();
+    next();
+});
 
 module.exports = mongoose.model('Mixes', Mix);

@@ -8,9 +8,16 @@ var Transcript = new mongoose.Schema({
     // sort: { type: Number },
     owner: String,
     meta: Schema.Types.Mixed,
+	created: { type: Date, default: Date.now },
+	modified: { type: Date, default: Date.now },
     content: String,
     media: { type: Schema.Types.ObjectId, ref: 'Media' }//,
 	// alignments: Schema.Types.Mixed
 }, { versionKey: false });
+
+Transcript.pre('save', function (next) {
+	this.modified = new Date();
+    next();
+});
 
 module.exports = mongoose.model('Transcripts', Transcript);
