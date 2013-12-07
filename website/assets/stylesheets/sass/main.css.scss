@@ -7,7 +7,13 @@
 /* Import Bower-driven Vendor Modules
 ------------------------------------------- */
 @import "vendor/foundation/scss/normalize";
-@import "vendor/foundation/scss/foundation";
+
+@import "vendor/foundation/scss/foundation/components/global";
+@import "vendor/foundation/scss/foundation/components/grid";
+//@import "vendor/foundation/scss/foundation";
+@import "vendor/foundation/scss/foundation/components/reveal";
+@import "vendor/foundation/scss/foundation/components/tables";
+@import "vendor/foundation/scss/foundation/components/tooltips";
 
 /* Import Other External Assets
 ------------------------------------------- */
