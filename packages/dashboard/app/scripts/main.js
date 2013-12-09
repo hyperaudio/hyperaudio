@@ -55,7 +55,7 @@ $(document).ready(function() {
 	$(document).foundation();
 });
 
-function fixTooltips() {
+function applyTooltips() {
 	$(document).foundation({
 	  tooltips: {
 	    selector : '.has-tip',

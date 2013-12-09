@@ -33,7 +33,7 @@ haDash.Routers = haDash.Routers || {};
 				collection: new haDash.Collections.MediaCollection()
 			});
 			
-			// setTimeout(fixTooltips, 500);//FIXME			
+			setTimeout(applyTooltips, 500);//FIXME			
 		},
 		
 		signin: function() {
