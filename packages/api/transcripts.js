@@ -199,7 +199,7 @@ module.exports = function(app, nconf) {
 
     transcript.save(function(err) {
       if (!err) {
-        return console.log("created");
+        console.log("created");
 		
 		// fix media
 		return console.log("looking for media " + req.body.media);
