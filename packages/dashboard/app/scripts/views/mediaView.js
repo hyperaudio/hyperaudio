@@ -27,11 +27,11 @@ haDash.Views = haDash.Views || {};
 		
 		preview: function() {
 			var model = this.model;
-			var view = new haDash.Views.MediaPreviewView({
+			model.fetch();
+
+			new haDash.Views.MediaPreviewView({
 				model: model
-			});
-			view.render();
-			console.log(view);
+			}).render();
 		}
 
     });
