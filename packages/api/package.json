@@ -29,6 +29,7 @@
     "fluent-ffmpeg": "*",
     "http-proxy": "*",
     "winston": "~0.7.2",
-    "winston-papertrail": "~0.1.4"
+    "winston-papertrail": "~0.1.4",
+	"irc": "~0.3.6"
   }
 }

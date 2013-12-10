@@ -21,6 +21,25 @@ nconf.argv()
     
 var app = express();
 
+
+//// flag on irc the restart
+var irc = require('irc');
+
+var client = new irc.Client('irc.freenode.net', 'hyperapibot', {
+    // channels: ['#hyperaudio'],
+    port: 6667,
+    autoConnect: false
+});
+
+client.join('#hyperaudio', function() {
+	client.say('#hyperaudio', "API restarted, everybody was logged out, muahahahahaha");
+	client.part('#hyperaudio');
+	client.disconnect();	
+});
+
+//// irc
+
+
 // all environments
 app.set('port', process.env.PORT || 443);
 
