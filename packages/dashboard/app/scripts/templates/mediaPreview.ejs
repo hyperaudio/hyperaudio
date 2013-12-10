@@ -1,0 +1,18 @@
+<h2><%= label %></h2>
+<video controls>
+	<% for(s in source) {%>
+	   <source src="<%= source[s].url %>" type="<%= source[s].type %>">
+	<% } %>
+</video>
+<p class="lead"><%= desc %></p>
+
+<ul>
+	<% for(var i = 0; i < transcripts.length; i++) { %>
+   		<li><%= transcripts[i] %></li>
+	<% } %>
+</ul>
+
+<button class="button primary">Create Transcript</button>
+<button class="button primary">Convert Transcript</button>
+
+<a class="close-reveal-modal">&#215;</a>
