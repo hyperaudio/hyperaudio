@@ -17,6 +17,14 @@
   .button {
     border-color: $brand-color-light;
     color: $bright;
+    &:active,
+    &.active {
+      background: $bright;
+      color: $brand-color;
+      border-color: $bright;
+      text-shadow: none;
+    }
+    &.active:hover,
     &:hover {
       background: $bright;
       border-color: $bright;

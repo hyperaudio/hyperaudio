@@ -16,6 +16,9 @@
   &:active {
     border-bottom: 1px solid $brand-color;
   }
+  &:active {
+    opacity: 0.7
+  }
   &.altered {
     font-weight: bold !important;
   }

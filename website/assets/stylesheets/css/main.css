@@ -2557,6 +2557,9 @@ textarea.centered {
 .link:focus, a:focus, .link:hover, a:hover, .link.active, a.active, .link:active, a:active {
   border-bottom: 1px solid #f39c12;
 }
+.link:active, a:active {
+  opacity: 0.7;
+}
 .link.altered, a.altered {
   font-weight: bold !important;
 }
@@ -2607,6 +2610,12 @@ button.button:active,
 .button:active,
 input[type="submit"]:active {
   opacity: 0.7;
+}
+a.button.active,
+button.button.active,
+.button.active,
+input[type="submit"].active {
+  border-bottom: 1px solid rgba(44, 62, 80, 0.1);
 }
 
 .button.primary {
@@ -3433,6 +3442,7 @@ header {
 }
 
 .header-navigation-item.active {
+  border: inherit;
   opacity: 0.75;
 }
 
@@ -3670,7 +3680,13 @@ header {
   border-color: #f6b958;
   color: white;
 }
-.branded .button:hover {
+.branded .button:active, .branded .button.active {
+  background: white;
+  color: #f39c12;
+  border-color: white;
+  text-shadow: none;
+}
+.branded .button.active:hover, .branded .button:hover {
   background: white;
   border-color: white;
   color: #f39c12 !important;

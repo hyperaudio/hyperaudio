@@ -18,6 +18,7 @@ header {
   text-transform: uppercase;
 }
 .header-navigation-item.active {
+  border: inherit;
   opacity: 0.75;
 }
 .header-navigation-item a {

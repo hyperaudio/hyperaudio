@@ -22,7 +22,10 @@ input[type="submit"] {
     text-shadow: none !important;
   }
   &:active {
-    opacity: 0.7;
+    opacity: 0.7
+  }
+  &.active {
+    border-bottom: 1px solid $alt-color-light;
   }
 }
 
