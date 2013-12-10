@@ -148,7 +148,8 @@ app.get('/login', function(req, res){
 });
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
-    res.redirect('/');
+    // res.redirect('/');
+    res.json({user: req.user});
 });
 
 // app.post('/auth/browserid', passport.authenticate('persona', { failureRedirect: '/login' }), function(req, res) {
@@ -157,7 +158,8 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 
 app.get('/logout', function(req, res){
   req.logout();
-  res.redirect('/');
+  // res.redirect('/');
+  res.json({user: null});
 });
 
 app.get('/register', function(req, res) {
@@ -174,7 +176,11 @@ app.post('/register', function(req, res) {
           if (err) {
               return res.render('register', { account : account });
           }
-          res.redirect('/');
+		  if (req.isAuthenticated()) {
+		    res.json({user: req.user});
+		  } else {
+		    res.json({user: null});
+		  }
         });
 });
 
