@@ -203,6 +203,8 @@ module.exports = function(app, nconf) {
 		
 		// fix media
 		MediaObject.findById(req.body.media).exec(function(err, mediaObject) {
+  		  console.log(err);
+		  console.log(mediaObject);
 	      if (!err) {
 			  for (var i = 0; i < mediaObject.transcripts.length; i++) {
 				  if (mediaObject.transcripts[i] == transcript._id) {
@@ -211,7 +213,11 @@ module.exports = function(app, nconf) {
 			  }
 			  
 			  mediaObject.transcripts.push(transcript._id);
-			  mediaObject.save(function(err) {});
+			  mediaObject.save(function(err) {
+			  	console.log(err);
+			  });
+			  
+			  console.log(mediaObject);
 	      }      
 		});
 		// fix media
