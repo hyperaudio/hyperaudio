@@ -202,7 +202,7 @@ module.exports = function(app, nconf) {
         return console.log("created");
 		
 		// fix media
-		MediaObject.findById(req.params.id).exec(function(err, mediaObject) {
+		MediaObject.findById(req.body.media).exec(function(err, mediaObject) {
 	      if (!err) {
 			  for (var i = 0; i < mediaObject.transcripts.length; i++) {
 				  if (mediaObject.transcripts[i] == transcript._id) {
