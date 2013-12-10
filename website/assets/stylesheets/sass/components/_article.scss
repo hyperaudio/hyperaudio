@@ -14,6 +14,9 @@
 }
 .article-title {
   font-size: $font-xl;
+  margin: 0 $space-m $space-l;
+  text-align: center;
+  text-transform: none;
 }
 .article-meta {
   color: $mono-weak;
@@ -28,12 +31,6 @@
   color: $mono-weak;
   font-size: $font-s;
   font-style: italic;
-}
-.article {
-  .article-title {
-    margin: $space-m;
-    text-align: center;
-  }
 }
 
 .article-body {
@@ -68,6 +65,10 @@
       line-height: $lheight-m;
       padding: $space-m;
     }
+  }
+  h2 {
+    @extend .heading-m;
+    margin-bottom: $space-l;
   }
 }
 

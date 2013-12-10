@@ -2452,6 +2452,7 @@ abbr[title] {
 h2,
 .heading-m,
 h3,
+.article-body h2,
 .heading-s,
 h4,
 .heading-xs,
@@ -2478,7 +2479,7 @@ h5 {
   line-height: 1.6em;
 }
 
-.heading-m, h3 {
+.heading-m, h3, .article-body h2 {
   color: rgba(0, 0, 0, 0.55);
   font-size: 1.5rem;
   font-weight: bold;
@@ -2656,6 +2657,9 @@ input[type="submit"]:active {
 
 .article-title {
   font-size: 2.9rem;
+  margin: 0 1rem 2rem;
+  text-align: center;
+  text-transform: none;
 }
 
 .article-meta {
@@ -2670,11 +2674,6 @@ input[type="submit"]:active {
   color: rgba(0, 0, 0, 0.35);
   font-size: 1.3rem;
   font-style: italic;
-}
-
-.article .article-title {
-  margin: 1rem;
-  text-align: center;
 }
 
 .article-body {
@@ -2708,6 +2707,9 @@ input[type="submit"]:active {
   font-size: 1.3rem;
   line-height: 1.6em;
   padding: 1rem;
+}
+.article-body h2 {
+  margin-bottom: 2rem;
 }
 
 .article.excerpt .article-title {
