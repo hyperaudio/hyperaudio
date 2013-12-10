@@ -202,6 +202,7 @@ module.exports = function(app, nconf) {
         return console.log("created");
 		
 		// fix media
+		return console.log("looking for media " + req.body.media);
 		MediaObject.findById(req.body.media).exec(function(err, mediaObject) {
   		  console.log(err);
 		  console.log(mediaObject);
