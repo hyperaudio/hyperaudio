@@ -19,6 +19,19 @@ haDash.Views = haDash.Views || {};
 			this.$el.html(this.template(this.model.toJSON()));
 
 			return this;
+		},
+		
+		events: {
+			'click .label': 'preview'
+		},
+		
+		preview: function() {
+			var model = this.model;
+			var view = new haDash.Views.MediaPreviewView({
+				model: model
+			});
+			view.render();
+			console.log(view);
 		}
 
     });
