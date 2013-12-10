@@ -7,14 +7,14 @@
   cursor: pointer;
   display: inline-block;
   text-decoration: none;
-  // -webkit-transition: all 0.3s;
-  // -moz-transition: all 0.3s;
-  // transition: all 0.3s;
   &:focus,
   &:hover,
   &.active,
   &:active {
     border-bottom: 1px solid $brand-color;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
   }
   &:active {
     opacity: 0.7

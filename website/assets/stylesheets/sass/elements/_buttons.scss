@@ -13,16 +13,19 @@ input[type="submit"] {
   font-weight: bold;
   line-height: $lheight-m;
   padding: $space-s $space-m;
-  -webkit-transition: all 0.3s;
-  -moz-transition: all 0.3s;
-  transition: all 0.3s;
   &:hover {
     background: #2C3E50;
     color: $bright !important;
     text-shadow: none !important;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
   }
   &:active {
-    opacity: 0.7
+    opacity: 0.7;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
   }
   &.active {
     border-bottom: 1px solid $alt-color-light;

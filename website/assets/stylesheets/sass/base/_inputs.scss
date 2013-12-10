@@ -8,9 +8,6 @@
   font-family: $primary-font;
   font-size: $font-xs;
   padding: $space-s;
-  -webkit-transition: all 0.5s;
-  -moz-transition: all 0.5s;
-  transition: all 0.5s;
   &.large {
     padding: $space-m;
     font-size: $font-m;
@@ -21,6 +18,13 @@
   }
   &.centered {
     text-align: center;
+  }
+  &:focus,
+  &:hover,
+  &:active {
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
   }
 }
 
