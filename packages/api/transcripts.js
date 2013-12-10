@@ -1,4 +1,5 @@
 var passport = require('passport');
+var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
@@ -199,6 +200,21 @@ module.exports = function(app, nconf) {
     transcript.save(function(err) {
       if (!err) {
         return console.log("created");
+		
+		// fix media
+		MediaObject.findById(req.params.id).exec(function(err, mediaObject) {
+	      if (!err) {
+			  for (var i = 0; i < mediaObject.transcripts.length; i++) {
+				  if (mediaObject.transcripts[i] == transcript._id) {
+					  return
+				  }
+			  }
+			  
+			  mediaObject.transcripts.push(transcript._id);
+			  mediaObject.save(function(err) {});
+	      }      
+		});
+		// fix media
       }
     });
     return res.send(transcript);
