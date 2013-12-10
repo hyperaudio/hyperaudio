@@ -6,13 +6,13 @@
 </video>
 <p class="lead"><%= desc %></p>
 
-<ul>
+<ol>
 	<% for(var i = 0; i < transcripts.length; i++) { %>
    		<li><%= transcripts[i].label %></li>
 	<% } %>
-</ul>
+</ol>
 
-<button class="button primary">Create Transcript</button>
-<button class="button primary">Convert Transcript</button>
+<a class="button primary" target="_new" href="http://hyperaud.io/maker/?m=<%= _id%>">Create Transcript</a>
+<a class="button primary" target="_new" href="http://hyperaud.io/converter/?m=<%= _id%>">Convert Transcript</a>
 
 <a class="close-reveal-modal">&#215;</a>
