@@ -22,24 +22,24 @@ haDash.Routers = haDash.Routers || {};
 
 		mixes: function() {
 			// console.log('mixes');
-			haDash.whoami(function(){
+			// haDash.whoami(function(){
 				haDash.mixListView = new haDash.Views.MixListView({
 					collection: new haDash.Collections.MixCollection()
 				});
-			});
+			// });
 		},
 
 		media: function() {
 			// console.log('media');
 			
-			haDash.whoami(function(){
+			// haDash.whoami(function(){
 				
 				haDash.mediaListView = new haDash.Views.MediaListView({
 					collection: new haDash.Collections.MediaCollection()
 				});
 			
 				// setTimeout(applyTooltips, 500);//FIXME			
-			});
+			// });
 			
 		},
 		

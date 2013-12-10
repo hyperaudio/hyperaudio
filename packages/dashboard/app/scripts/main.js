@@ -18,6 +18,34 @@ window.haDash = {
 		});
 
 		this.whoami();
+		
+		// FUGLY
+		$('a.media').click(function(e){
+			e.preventDefault();
+			haDash.router.navigate('media/', {trigger: true});
+		});
+
+		$('a.mixes').click(function(e){
+			e.preventDefault();
+			haDash.router.navigate('mixes/', {trigger: true});
+		});
+		
+		$('a.logout').click(function(e){
+			e.preventDefault();
+			haDash.router.navigate('signout/', {trigger: true});
+		});
+		
+		$('a.register').click(function(e){
+			e.preventDefault();
+			haDash.router.navigate('secret-signup/', {trigger: true});
+		});
+		
+		$('a.login').click(function(e){
+			e.preventDefault();
+			haDash.router.navigate('secret-signin/', {trigger: true});
+		});
+		
+
 	},
 
 	user: null,
