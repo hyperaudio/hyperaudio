@@ -42,6 +42,16 @@ haDash.Views = haDash.Views || {};
 
 		addAllItems: function() {
 			this.collection.each(this.addItem, this);
+		},
+		
+		events: {
+			'click #addMedia': 'addMedia'
+		},
+		
+		addMedia: function() {
+			new haDash.Views.AddMediaView({
+				model: new haDash.Models.MediaModel()
+			}).render();
 		}
 
     });
