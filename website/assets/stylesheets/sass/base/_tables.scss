@@ -1,0 +1,84 @@
+/* Tables
+----------------------------------------------- */
+
+table {
+  border: none;
+  table-layout: fixed;
+  width: 100%;
+  caption {
+    color: $mono-mid;
+    font-size: $font-m;
+    font-weight: bold;
+    line-height: $lheight-s;
+    margin-bottom: $space-s;
+    text-align: left;
+  }
+  .span1 {
+    width: 10%;
+  }
+  .span2 {
+    width: 20%;
+  }
+  .span3 {
+    width: 30%;
+  }
+  .span4 {
+    width: 40%;
+  }
+  .span5 {
+    width: 50%;
+  }
+}
+tbody,
+thead,
+tfoot {
+  border: none;
+}
+tr {
+  border: none;
+}
+td,
+th {
+  border-bottom: 1px solid $mono-light;
+  font-size: $font-xs;
+  line-height: $lheight-s;
+  padding: $space-m;
+  text-align: left;
+  vertical-align: top;
+  &:first-child {
+    padding-left: 0;
+  }
+  &:last-child {
+    padding-right: 0;
+  }
+}
+td {
+}
+thead,
+tfoot {
+  tr {
+  }
+  th,
+  td {
+    font-size: $font-t;
+    font-weight: bold;
+  }
+}
+thead
+  tr {
+  }
+  th {
+  }
+tbody {
+  tr {
+  }
+  td {
+  }
+}
+tfoot {
+  tr {
+  }
+  td {
+    border: none;
+  }
+}

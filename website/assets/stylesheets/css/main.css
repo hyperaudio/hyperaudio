@@ -2272,43 +2272,6 @@ select {
     background: #fff !important;
   }
 }
-table {
-  background: white;
-  margin-bottom: 1.25rem;
-  border: solid 1px #dddddd;
-}
-table thead,
-table tfoot {
-  background: whitesmoke;
-  font-weight: bold;
-}
-table thead tr th,
-table thead tr td,
-table tfoot tr th,
-table tfoot tr td {
-  padding: 0.5rem 0.625rem 0.625rem;
-  font-size: 0.875rem;
-  color: #222222;
-  text-align: left;
-}
-table tr th,
-table tr td {
-  padding: 0.5625rem 0.625rem;
-  font-size: 0.875rem;
-  color: #222222;
-}
-table tr.even, table tr.alt, table tr:nth-of-type(even) {
-  background: #f9f9f9;
-}
-table thead tr th,
-table tfoot tr th,
-table tbody tr td,
-table tr td,
-table tfoot tr td {
-  display: table-cell;
-  line-height: 1.125rem;
-}
-
 /* Tooltips */
 .has-tip {
   border-bottom: dotted 1px #cccccc;
@@ -2585,6 +2548,77 @@ ol,
 dl {
   margin: 0;
   padding: 0;
+}
+
+/* Tables
+----------------------------------------------- */
+table {
+  border: none;
+  table-layout: fixed;
+  width: 100%;
+}
+table caption {
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.4em;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+table .span1 {
+  width: 10%;
+}
+table .span2 {
+  width: 20%;
+}
+table .span3 {
+  width: 30%;
+}
+table .span4 {
+  width: 40%;
+}
+table .span5 {
+  width: 50%;
+}
+
+tbody,
+thead,
+tfoot {
+  border: none;
+}
+
+tr {
+  border: none;
+}
+
+td,
+th {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  font-size: 1.2rem;
+  line-height: 1.4em;
+  padding: 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+td:first-child,
+th:first-child {
+  padding-left: 0;
+}
+td:last-child,
+th:last-child {
+  padding-right: 0;
+}
+
+thead th,
+thead td,
+tfoot th,
+tfoot td {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+tfoot td {
+  border: none;
 }
 
 /* Basic Elements

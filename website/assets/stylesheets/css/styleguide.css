@@ -29,6 +29,10 @@ html {
 ----------------------------------------------- */
 /* Styleguide Styles
 ------------------------------------------- */
+.tpl_sg > section {
+  padding: 8rem 0;
+}
+
 .sg-container {
   padding: 0 1rem;
 }

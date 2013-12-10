@@ -23,6 +23,10 @@
 /* Styleguide Styles
 ------------------------------------------- */
 
+.tpl_sg > section {
+  padding: $space-h 0;
+}
+
 .sg-container {
   padding: 0 $space-m;
 }
