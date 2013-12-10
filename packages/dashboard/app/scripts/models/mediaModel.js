@@ -13,7 +13,7 @@ haDash.Models = haDash.Models || {};
 				return {
 					label: "Empty",
 					desc: "no content",
-					type: "text",
+					type: "video",
 					// sort: 0,
 					owner: null,
 					meta: {},
