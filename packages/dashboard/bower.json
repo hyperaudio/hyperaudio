@@ -6,6 +6,7 @@
     "backbone": "~1.0.0",
     "modernizr": "~2.6.2",
     "jquery": "2.0.3",
+	"uri.js": "*",
 	"foundation": "~5.0.2",
     "picturefill": "~1.2.1"
   },
