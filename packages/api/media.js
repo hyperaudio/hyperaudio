@@ -18,6 +18,7 @@ client.connect(function(err) {
 
 	client.use("download", function(err, tubename) {
 		if (err) throw err;
+		console.log('using tube ' + tubename);
 	});
 });
 
