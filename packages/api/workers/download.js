@@ -4,7 +4,7 @@ var path = require('path');
 
 module.exports = function() {
     function DownloadHandler() {
-        this.type = 'emitkeys';
+        this.type = 'media';
     }
 
 	DownloadHandler.prototype.work = function(payload, callback) {
