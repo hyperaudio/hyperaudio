@@ -1,0 +1,12 @@
+[
+	{
+		"name"       : "api",
+		"script"     : "./app.js",
+		"instances"  : "1",
+		"port"       : 80
+	},
+	{
+		"name" : "download",
+		"script" : "./runner-download.js"
+	}
+]
