@@ -1,20 +1,35 @@
 /* Layout Generic
 ------------------------------------------- */
 
-.row {
-  max-width: 960px;
+@media #{$medium} {
+  .row {
+    max-width: 960px;
+  }
+  .container {
+    @include clearfix;
+    margin: 0 auto;
+    min-height: 100%;
+    max-width: 960px;
+  }
+
+  .section > .container,
+  .footer > .container {
+    max-width: 880px;
+  }
 }
 
-/* ---------- Generic Properties ---------- */
-
-.container {
-  @include clearfix;
-  margin: 0 auto;
-  min-height: 100%;
-  max-width: 960px;
-}
-
-.section > .container,
-.footer > .container {
-  max-width: 880px;
+@media #{$large} {
+  body {
+    font-size: 140%;
+  }
+  .row {
+    max-width: 1200px;
+  }
+  .container {
+    max-width: 1200px;
+  }
+  .section > .container,
+  .footer > .container {
+    max-width: 1100px;
+  }
 }
