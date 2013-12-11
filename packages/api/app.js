@@ -41,7 +41,7 @@ var app = express();
 
 
 // all environments
-app.set('port', process.env.PORT || 443);
+app.set('port', process.env.PORT || 3000);
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -213,8 +213,8 @@ require('./subscribers')(app, nconf);
 // app.use(express.static(path.join(__dirname, 'media')));
 
 
-http.createServer(app).listen(80, function(){
-  console.log('Express server listening on port ' + 80);
+http.createServer(app).listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
 
 function ensureAuthenticated(req, res, next) {
