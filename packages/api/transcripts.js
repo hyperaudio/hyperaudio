@@ -9,10 +9,6 @@ var fivebeans = require('fivebeans');
 var client = new fivebeans.client('127.0.0.1', 11300);
 client.connect(function(err) {
 	if (err) throw err;
-
-	client.use("transcribe", function(err, tubename) {
-		if (err) throw err;
-	});
 });
 
 
@@ -116,11 +112,16 @@ module.exports = function(app, nconf) {
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
       if (transcript.type == 'text' && transcript.media) {
-	  	client.put(1, 0, 0, JSON.stringify(['align', {
-	  		type: "transcript",
-	  		payload: transcript
-	  	}]), function(err, jobid) {
+		  
+	  	client.use("transcribe", function(err, tubename) {
 	  		if (err) throw err;
+		  	client.put(1, 0, 0, JSON.stringify(['align', {
+		  		type: "transcript",
+		  		payload: transcript
+		  	}]), function(err, jobid) {
+		  		if (err) throw err;
+		  	});
+			
 	  	});
       }
       

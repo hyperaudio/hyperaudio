@@ -118,7 +118,6 @@ module.exports = function(app, nconf) {
     // download and probe (probe is next in queue from download)
 	client.use("download", function(err, tubename) {
 		if (err) throw err;
-		console.log('using tube ' + tubename);
 		
 		client.put(1, 0, 0, JSON.stringify(['download', {
 			type: "media",
