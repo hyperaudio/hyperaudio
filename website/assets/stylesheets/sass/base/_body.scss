@@ -9,11 +9,18 @@ body {
   line-height: $dflt-line-height;
 }
 
+a, abbr, code, li, ol, p, span, ul {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+}
+
 // Text Selection
 ::selection { background: $alt-color-light; }      /* Safari */
 ::-moz-selection { background: $alt-color-light; } /* Firefox */
 
 blockquote {
+  border: none;
   margin: 0;
   padding: 0;
 }

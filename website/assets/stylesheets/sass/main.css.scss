@@ -1,11 +1,11 @@
 @charset "utf-8";
 
 /* Import Gem-based Base Frameworks
-------------------------------------------- */
+----------------------------------------------- */
 @import "compass";
 
 /* Import Bower-driven Vendor Modules
-------------------------------------------- */
+----------------------------------------------- */
 @import "vendor/foundation/scss/normalize";
 
 @import "vendor/foundation/scss/foundation/components/global";
@@ -16,20 +16,20 @@
 @import "vendor/foundation/scss/foundation/components/tooltips";
 
 /* Import Other External Assets
-------------------------------------------- */
+----------------------------------------------- */
 @import url(http://fonts.googleapis.com/css?family=Exo:500,700,500italic|Merriweather+Sans:400,700,400italic,700italic);
 
 /* Import Hyperaudio Library Mixins
-------------------------------------------- */
+----------------------------------------------- */
 @import "lib/hidetext";
 @import "lib/position";
 
 /* Import Site Config
-------------------------------------------- */
+----------------------------------------------- */
 @import "config";
 
 /* Import Base Styles
-------------------------------------------- */
+----------------------------------------------- */
 @import "base/body";
 @import "base/headings";
 @import "base/inputs";
@@ -38,11 +38,11 @@
 @import "base/tables";
 
 /* Basic Elements
-------------------------------------------- */
+----------------------------------------------- */
 @import "elements/buttons";
 
 /* Import Components
-------------------------------------------- */
+----------------------------------------------- */
 @import "components/article";
 @import "components/brandmark";
 @import "components/call";
@@ -59,20 +59,20 @@
 @import "components/supporter";
 
 /* Import Combos
-------------------------------------------- */
+----------------------------------------------- */
 @import "combos/characteristic";
 @import "combos/footer";
 @import "combos/header";
 @import "combos/tour";
 
 /* Import Layout Styles
-------------------------------------------- */
+----------------------------------------------- */
 @import "layout";
 @import "layout-responsive";
 
 /* Import Extensions
-------------------------------------------- */
+----------------------------------------------- */
 
 /* Import Playground
-------------------------------------------- */
+----------------------------------------------- */
 @import "playground";

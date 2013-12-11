@@ -1,11 +1,16 @@
 /* Links
 ----------------------------------------------- */
 
-.link {
-  border-bottom: 1px solid transparent;
+.link,
+.link:hover,
+.link:active {
   color: $brand-color;
   cursor: pointer;
   display: inline-block;
+}
+
+.link {
+  border-bottom: 1px solid transparent;
   text-decoration: none;
   &:focus,
   &:hover,

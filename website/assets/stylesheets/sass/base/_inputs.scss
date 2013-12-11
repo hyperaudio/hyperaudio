@@ -5,6 +5,7 @@
   @include border-radius($radius-s);
   background: $bright;
   border: 1px solid $mono-weak;
+  display: inline-block;
   font-family: $primary-font;
   font-size: $font-xs;
   padding: $space-s;

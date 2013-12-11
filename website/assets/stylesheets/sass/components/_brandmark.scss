@@ -1,12 +1,13 @@
 /* Brandmark
 ----------------------------------------------- */
 
-.brandmark {
+.brandmark,
+.brandmark:hover,
+.brandmark:active {
   border: none !important;
   display: block;
   font-size: 0;
   height: 40px;
-  text-align: center;
 }
 .brandmark-symbol {
   @include border-radius($radius-s);
