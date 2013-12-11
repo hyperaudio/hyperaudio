@@ -5,6 +5,17 @@ var fs = require('fs');
 var path = require('path');
 var url = require('url');
 
+var fivebeans = require('fivebeans');
+var client = new fivebeans.client('127.0.0.1', 11300);
+client.connect(function(err) {
+	if (err) throw err;
+
+	client.use("transcribe", function(err, tubename) {
+		if (err) throw err;
+	});
+});
+
+
 module.exports = function(app, nconf) {
 
   app.get('/:user?/transcripts', function(req, res) {
@@ -101,69 +112,21 @@ module.exports = function(app, nconf) {
 
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
-  // app.post('/:user?/transcripts/:id/align', function(req, res) {
-  //   return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
-  //     
-  //     if (transcript.type == 'text' && transcript.media) {
-  //       console.log('forking ' + __dirname + '/mod9.js')
-  //       var p = cp.fork(__dirname + '/mod9.js');
-  //       p.send({
-  //         audio: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.media.meta.filename,
-  //         // text: 'http://data.hyperaud.io/' + transcript.owner + '/' + transcript.meta.filename
-  //         text: 'http://data.hyperaud.io/' + transcript.owner + '/transcripts/' + req.params.id + '/text'
-  //       });		
-  // 		
-  //       p.on('message', function(m) {
-  // 		  // console.log("RECV? ");
-  // 		  // console.log(m);
-  // 		  // console.log("RECV! ");
-  //         var query = {
-  //           _id: req.params.id
-  //         };
-  // 		  
-  // 		  if (m[m.length - 1][1].alignment) {
-  // 			  var hypertranscript = "<article><header></header><section><header></header><p>";
-  // 			  
-  // 			  var al = m[m.length - 1][1].alignment;
-  // 			  
-  // 			  for (var i = 0; i < al.length; i++) {
-  // 			  	hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
-  // 			  }
-  // 
-  // 			  
-  // 			  hypertranscript += "</p><footer></footer></section></footer></footer></article>";
-  // 			  
-  // 
-  // 	          Transcript.findOneAndUpdate(query, {
-  // 	            alignments: m,
-  // 				type: "html",
-  // 				content: hypertranscript,
-  // 				meta: {
-  // 					filename: req.params.id + '.html'
-  // 				}
-  // 	          }, function(err, tr) {
-  // 	            console.log(err, tr);
-  // 				
-  // 	          try {
-  // 	            var filePath = path.join(__dirname, 'media/' + tr.owner + '/' + tr.meta.filename);
-  // 	            fs.writeFileSync(filePath, tr.content);
-  // 	          } catch (ignored) {}
-  // 			  
-  // 	          });		  	
-  // 		  } else {
-  // 	          Transcript.findOneAndUpdate(query, {
-  // 	            alignments: m //using this for now even for updates, client must poll GET this transcript
-  // 	          }, function(err, tr) {
-  // 	            console.log(err, tr);
-  // 	          });
-  // 		  }
-  // 		  
-  //       });
-  //     }
-  //     
-  //     return res.send(transcript);
-  //   });
-  // });
+  app.post('/:user?/transcripts/:id/align', function(req, res) {
+    return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
+      
+      if (transcript.type == 'text' && transcript.media) {
+	  	client.put(1, 0, 0, JSON.stringify(['align', {
+	  		type: "transcript",
+	  		payload: transcript
+	  	}]), function(err, jobid) {
+	  		if (err) throw err;
+	  	});
+      }
+      
+      return res.send(transcript);
+    });
+  });
   
   app.post('/:user?/transcripts', function(req, res) {
 

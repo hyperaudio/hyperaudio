@@ -4,7 +4,6 @@ var path = require('path');
 
 var passport = require('passport');
 
-var fivebeans = require('fivebeans');
 
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
@@ -12,6 +11,7 @@ var ObjectId = mongoose.Types.ObjectId;
 var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 
+var fivebeans = require('fivebeans');
 var client = new fivebeans.client('127.0.0.1', 11300);
 client.connect(function(err) {
 	if (err) throw err;
