@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Exo:500,700,500italic|Merriweather+Sans:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Exo+2:500,500italic,700|Merriweather+Sans:400,400italic,700italic,700);
 /* Import Gem-based Base Frameworks
 ------------------------------------------- */
 /* Import Bower-driven Vendor Modules
@@ -167,7 +167,7 @@ html {
   margin-top: 2rem;
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  background: url('../../images/backgrounds/sg-grid.png?1385152527') repeat;
+  background: url('../../images/backgrounds/sg-grid.png?1386149330') repeat;
   position: relative;
 }
 

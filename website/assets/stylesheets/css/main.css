@@ -1,9 +1,9 @@
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
-@import url(http://fonts.googleapis.com/css?family=Exo:500,700,500italic|Merriweather+Sans:400,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Exo+2:500,500italic,700|Merriweather+Sans:400,400italic,700italic,700);
 /* Import Gem-based Base Frameworks
-------------------------------------------- */
+----------------------------------------------- */
 /* Import Bower-driven Vendor Modules
-------------------------------------------- */
+----------------------------------------------- */
 /*! normalize.css v2.1.2 | MIT License | git.io/normalize */
 /* ==========================================================================
    HTML5 display definitions
@@ -2354,15 +2354,15 @@ select {
   }
 }
 /* Import Other External Assets
-------------------------------------------- */
+----------------------------------------------- */
 /* Import Hyperaudio Library Mixins
-------------------------------------------- */
+----------------------------------------------- */
 /* Hide Text Mixin
 ----------------------------------------------- */
 /* Positionining Mixin
 ----------------------------------------------- */
 /* Import Site Config
-------------------------------------------- */
+----------------------------------------------- */
 /* Colour Palette
 ----------------------------------------------- */
 /* Typography
@@ -2378,7 +2378,7 @@ html {
 /* Default definitions
 ----------------------------------------------- */
 /* Import Base Styles
-------------------------------------------- */
+----------------------------------------------- */
 /* Body
 ----------------------------------------------- */
 body {
@@ -2387,6 +2387,12 @@ body {
   font-family: "Merriweather Sans", sans-serif;
   font-size: 1.3rem;
   line-height: 1.6em;
+}
+
+a, abbr, code, li, ol, p, span, ul {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 ::selection {
@@ -2400,6 +2406,7 @@ body {
 
 /* Firefox */
 blockquote {
+  border: none;
   margin: 0;
   padding: 0;
 }
@@ -2421,7 +2428,7 @@ h4,
 .heading-xs,
 h5 {
   display: block;
-  font-family: "Exo", sans-serif;
+  font-family: "Exo 2", sans-serif;
   line-height: 1.4em;
   padding: 0;
   margin: 0;
@@ -2478,6 +2485,7 @@ textarea {
   border-radius: 0.3rem;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.35);
+  display: inline-block;
   font-family: "Merriweather Sans", sans-serif;
   font-size: 1.2rem;
   padding: 0.5rem;
@@ -2507,11 +2515,18 @@ textarea.centered {
 
 /* Links
 ----------------------------------------------- */
-.link, a {
-  border-bottom: 1px solid transparent;
+.link, a,
+.link:hover,
+a:hover,
+.link:active,
+a:active {
   color: #f39c12;
   cursor: pointer;
   display: inline-block;
+}
+
+.link, a {
+  border-bottom: 1px solid transparent;
   text-decoration: none;
 }
 .link:focus, a:focus, .link:hover, a:hover, .link.active, a.active, .link:active, a:active {
@@ -2605,7 +2620,7 @@ tfoot td {
 }
 
 /* Basic Elements
-------------------------------------------- */
+----------------------------------------------- */
 /* Buttons
 ----------------------------------------------- */
 a.button,
@@ -2675,7 +2690,7 @@ input[type="submit"].active {
 /* Queries
 ----------------------------------------------- */
 /* Import Components
-------------------------------------------- */
+----------------------------------------------- */
 /* Article
 ----------------------------------------------- */
 .article {
@@ -2766,12 +2781,13 @@ input[type="submit"].active {
 }
 /* Brandmark
 ----------------------------------------------- */
-.brandmark {
+.brandmark,
+.brandmark:hover,
+.brandmark:active {
   border: none !important;
   display: block;
   font-size: 0;
   height: 40px;
-  text-align: center;
 }
 
 .brandmark-symbol {
@@ -2797,7 +2813,7 @@ input[type="submit"].active {
 
 .brandmark-label {
   display: inline;
-  font-family: "Exo", sans-serif;
+  font-family: "Exo 2", sans-serif;
   font-size: 1.5rem;
   font-weight: bold;
   line-height: 40px;
@@ -3382,7 +3398,7 @@ input[type="submit"].active {
   }
 }
 /* Import Combos
-------------------------------------------- */
+----------------------------------------------- */
 /* Characteristics
 ----------------------------------------------- */
 .characteristic {
@@ -3594,33 +3610,51 @@ header {
   }
 }
 /* Import Layout Styles
-------------------------------------------- */
+----------------------------------------------- */
 /* Layout Generic
 ------------------------------------------- */
-.row, .form-component.horizontal {
-  max-width: 960px;
-}
+@media only screen and (min-width: 40.063em) {
+  .row, .form-component.horizontal {
+    max-width: 960px;
+  }
 
-/* ---------- Generic Properties ---------- */
-.container {
-  *zoom: 1;
-  margin: 0 auto;
-  min-height: 100%;
-  max-width: 960px;
-}
-.container:before, .container:after {
-  content: " ";
-  display: table;
-}
-.container:after {
-  clear: both;
-}
+  .container {
+    *zoom: 1;
+    margin: 0 auto;
+    min-height: 100%;
+    max-width: 960px;
+  }
+  .container:before, .container:after {
+    content: " ";
+    display: table;
+  }
+  .container:after {
+    clear: both;
+  }
 
-.section > .container,
-.footer > .container {
-  max-width: 880px;
+  .section > .container,
+  .footer > .container {
+    max-width: 880px;
+  }
 }
+@media only screen and (min-width: 64.063em) {
+  body {
+    font-size: 140%;
+  }
 
+  .row, .form-component.horizontal {
+    max-width: 1200px;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  .section > .container,
+  .footer > .container {
+    max-width: 1100px;
+  }
+}
 /* Site Layout Responsive
 ------------------------------------------- */
 .tpl_site .section {
@@ -3685,9 +3719,9 @@ header {
 }
 
 /* Import Extensions
-------------------------------------------- */
+----------------------------------------------- */
 /* Import Playground
-------------------------------------------- */
+----------------------------------------------- */
 /* Playground
 ------------------------------------------- */
 .branded {
