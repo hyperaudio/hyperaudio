@@ -3190,6 +3190,7 @@ input[type="submit"].active {
 
 .listing-title {
   font-size: 1.5rem;
+  line-height: 2.5rem;
   text-align: left;
   display: inline;
 }
@@ -3223,6 +3224,7 @@ input[type="submit"].active {
 .pitch-heading {
   display: inline;
   font-size: 1.5rem;
+  line-height: 1.2em;
 }
 
 .pitch-text {
@@ -3259,6 +3261,7 @@ input[type="submit"].active {
 
 .section-head-text {
   font-weight: normal;
+  line-height: 1.2em;
   margin-top: 1rem;
 }
 
