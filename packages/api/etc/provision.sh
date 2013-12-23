@@ -164,6 +164,8 @@ service apache2 restart
 apt-get install -y haproxy hatop
 cd /etc/default/
 ln -sf /vagrant/etc/default/haproxy
+cd /etc/haproxy/
+ln -sf /vagrant/etc/haproxy/haproxy.cfg 
 service haproxy start
 
 # cube
@@ -173,3 +175,8 @@ cd cube
 npm install
 pm2 start bin/collector.js
 pm2 start bin/evaluator.js
+
+pm2 web
+
+cd /vagrant
+pm2 processes.json
