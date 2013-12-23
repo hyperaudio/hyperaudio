@@ -118,7 +118,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/whoami', function(req, res) {
-	cube("whoami", {
+	cube("get_whoami", {
 		user: req.haSession.user
 	});
 
@@ -142,7 +142,7 @@ app.get('/login', function(req, res) {
 app.post('/login', passport.authenticate('local'), function(req, res) {
 	req.haSession.user = req.user.username;
 	//FIXME: here we miss invalide login attemtps
-	cube("login", {
+	cube("post_login", {
 		user: req.haSession.user
 	});
 	
@@ -152,7 +152,7 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-	cube("logout", {
+	cube("get_logout", {
 		user: req.haSession.user
 	});
 	
