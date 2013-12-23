@@ -43,17 +43,17 @@ app.use(express.methodOverride());
 
 var sessions = require("client-sessions");
 app.use(sessions({
-	cookieName: 'haSession',
+	cookieName: 'session',
 	secret: 'ohziuchaepah7xie0vei6Apai8aep4th', //FIXME: move to conf
 	duration: 24 * 60 * 60 * 1000, // conf
 	activeDuration: 1000 * 60 * 5 // conf
 }));
 
 app.use(function(req, res, next) {
-	if (req.haSession.seenyou) {
+	if (req.session.seenyou) {
 		res.setHeader('X-Seen-You', 'true');
 	} else {
-		req.haSession.seenyou = true;
+		req.session.seenyou = true;
 		res.setHeader('X-Seen-You', 'false');
 	}
 	// res.setHeader('X-Lag', toobusy.lag()); //FIXME move to hearbeat?
@@ -118,18 +118,25 @@ app.get('/', function(req, res) {
 });
 
 app.get('/whoami', function(req, res) {
+
+	//FIXME
+	if (typeof req.session.user == "undefined") {
+		req.session.user = null;
+	}
+	
 	cube("get_whoami", {
-		user: req.haSession.user
+		user: req.session.user
 	});
 
 	res.json({
-		user: req.haSession.user
+		user: req.session.user
 	});
 });
 
+// FIXME /finger ? as unix finger
 // app.get('/account', ensureAuthenticated, function(req, res) {
 // 	res.render('account', {
-// 		user: req.haSession.user
+// 		user: req.session.user
 // 	});
 // });
 
@@ -140,10 +147,10 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
-	req.haSession.user = req.user.username;
+	req.session.user = req.user.username;
 	//FIXME: here we miss invalide login attemtps
 	cube("post_login", {
-		user: req.haSession.user
+		user: req.session.user
 	});
 	
 	res.json({
@@ -153,12 +160,12 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
 
 app.get('/logout', function(req, res) {
 	cube("get_logout", {
-		user: req.haSession.user
+		user: req.session.user
 	});
 	
 	req.logout(); //TODO has any meaning anymore?
 	
-	req.haSession.user = null;
+	req.session.user = null;
 	res.json({
 		user: null
 	});
@@ -186,7 +193,7 @@ app.post('/register', function(req, res) {
 				});
 			}
 			if (req.isAuthenticated()) {
-				// req.haSession.user = req.user.username;
+				// req.session.user = req.user.username;
 				res.json({
 					user: req.user
 				});
@@ -218,7 +225,7 @@ process.on('SIGINT', function() {
 
 function ensureAuthenticated(req, res, next) {
 	// if (req.isAuthenticated()) { return next(); }
-	if (req.haSession.user) {
+	if (req.session.user) {
 		return next();
 	}
 	res.redirect('/login');
