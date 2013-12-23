@@ -1,16 +1,21 @@
 extends layout
 
 block content
-    
-  
-  form(action="/login",method="post")
-      div
-          label Username
-          input(type="text", name="username")
-  
-      div
-          label Password
-          input(type="password", name="password")
-  
-      div
-          input.btn(type="submit", value="Log In")
+
+  section.section
+      #main.container
+          hgroup.section-head
+            h1.section-head-heading
+              | Log in
+          .row
+            .large-8.medium-8.small-12.columns.large-offset-2.medium-offset-2
+              form#registerForm.form(action="/login", method="post")
+                .form-component
+                  label.form-label.centered(for='username') Username
+                  input#username.form-input.text-input.block.large.centered(type='text', name='username', placeholder='Username')
+                .form-component
+                  label.form-label.centered(for='password') Password
+                  input#password.form-input.text-input.block.large.centered(type='password', name='password', placeholder='Password')
+                .form-component.actions
+                  input#signup.button.large.primary(type='submit', value='Log In')
+

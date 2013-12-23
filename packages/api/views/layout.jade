@@ -2,25 +2,48 @@ doctype html
 html
   head
     title= title
+    
+    link(rel='stylesheet', href='//hyperaud.io/assets/fonts/hyperaudio/style.css')
+    link(rel='stylesheet', href='//hyperaud.io/assets/stylesheets/css/main.css')
+    link(rel='stylesheet', href='//hyperaud.io/assets/stylesheets/hyperaudio.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js')
-    script(src='//login.persona.org/include.js')
-  body
-    - if (!user)
-        ul
-          li
-            a(href="/") Home  
-          li
-            a(href="/login") Log In
-          li
-            a(href="/register") Register
-    - else
-      ul
-        li
-          a(href="/") Home
-        li
-          a(href="/account") Account
-        li
-          a(href="/logout") Log Out
+    
+  body.tpl_site.index
   
+    header.header
+        .container.row
+            .small-12.large-3.medium-3.columns
+              h1.header-brandmark
+                a.brandmark(href='http://hyperaud.io/')
+                  span.brandmark-symbol(data-picture='')
+                    span(data-src='//hyperaud.io/assets/images/inserts/logo-hyperaudio.png')
+                    span(data-src='//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png', data-media='(-webkit-min-device-pixel-ratio:2)')
+                    span(data-src='//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png', data-media='(min-resolution: 192dpi)')
+                      img(src='//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png')
+                  span.brandmark-label Hyperaudio
+            .small-12.large-9.medium-9.columns
+              ul.header-navigation.header-navigation
+                li.header-navigation-item
+                  a.button.primary(href='http://hyperaud.io/') Back to site
+
+    
     block content
+    
+    footer.footer.lt_footer
+        .container.row
+          p.nav
+            span API DEBUG PAGES:
+            a.button.small.register(href='/register') Sign up
+            a.button.small.login(href='/login') Log in
+            a.button.small.logout(href='/logout') Log out
+                  
+        .container
+          .footer-imprint
+            p
+              | Hyperaudio
+              abbr(title='Incorporated') Inc
+              | . is a non-profit producing Open Source software, established in Rhode Island, USA.
+            p © 2012–2014 Hyperaudio Incorporated. All rights reserved.
+            p
+              a(href='http://hyperaud.io/terms-of-service/') Terms of Service
+  
