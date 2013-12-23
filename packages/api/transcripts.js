@@ -11,10 +11,25 @@ client.connect(function(err) {
 	if (err) throw err;
 });
 
+//FIXME: duplicate
+var dgram = require("dgram");
+var udp = dgram.createSocket("udp4");
+function cube(type, data) {
+	var buffer = new Buffer(JSON.stringify({
+		"type": type,
+		"time": new Date().toISOString(),
+		"data": data
+	}));
+	udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
+}
 
 module.exports = function(app, nconf) {
 
   app.get('/:user?/transcripts', function(req, res) {
+	cube("get_transcripts", {
+		user: req.params.user
+	});
+		
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -29,6 +44,11 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/:user?/transcripts/:id', function(req, res) {
+  	cube("get_transcript", {
+  		user: req.params.user,
+  		id: req.params.id
+  	});
+	
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
@@ -42,6 +62,7 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/:user?/transcripts/:id/text', function(req, res) {
+	  //FIXME cube?
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
@@ -56,6 +77,7 @@ module.exports = function(app, nconf) {
   });
   
   app.get('/:user?/transcripts/:id/html', function(req, res) {
+	  //FIXME cube?
     return Transcript.findById(req.params.id).populate('media').exec(
     /*return Transcript.findById(req.params.id,*/ function(err, transcript) {
       if (!err) {
@@ -70,6 +92,10 @@ module.exports = function(app, nconf) {
   });
   
   app.put('/:user?/transcripts/:id', function(req, res) {
+	cube("put_transcript", {
+		user: req.params.user,
+		id: req.params.id
+	});
     return Transcript.findById(req.params.id, function(err, transcript) {
 
       transcript.label = req.body.label;
@@ -109,6 +135,10 @@ module.exports = function(app, nconf) {
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
   app.post('/:user?/transcripts/:id/align', function(req, res) {
+	cube("align_transcript", {
+		user: req.params.user,
+		id: req.params.id
+	});
     return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
       
       if (transcript.type == 'text' && transcript.media) {
@@ -130,7 +160,9 @@ module.exports = function(app, nconf) {
   });
   
   app.post('/:user?/transcripts', function(req, res) {
-
+	cube("post_transcript", {
+		user: req.params.user //ID?
+	});
     var transcript;
     var owner;
     var content = null;
@@ -192,6 +224,10 @@ module.exports = function(app, nconf) {
   });
 
   app.delete('/:user?/transcripts/:id', function(req, res) {
+	cube("delete_transcript", {
+		user: req.params.user,
+		id: req.params.id
+	});
     return Transcript.findById(req.params.id, function(err, transcript) {
       return transcript.remove(function(err) {
         if (!err) {

@@ -17,9 +17,26 @@ client.connect(function(err) {
 	if (err) throw err;
 });
 
+
+//FIXME: duplicate
+var dgram = require("dgram");
+var udp = dgram.createSocket("udp4");
+function cube(type, data) {
+	var buffer = new Buffer(JSON.stringify({
+		"type": type,
+		"time": new Date().toISOString(),
+		"data": data
+	}));
+	udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
+}
+
 module.exports = function(app, nconf) {
 
   app.get('/:user?/media', function(req, res) {
+	cube("get_media_list", {
+		user: req.params.user
+	});
+	
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -34,6 +51,11 @@ module.exports = function(app, nconf) {
   });
   
   app.get('/:user?/media/:id', function(req, res) {
+  	cube("get_media", {
+  		user: req.params.user,
+		id: req.params.id
+  	});
+	
     return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
@@ -46,20 +68,25 @@ module.exports = function(app, nconf) {
   });
   
   // FIXME OBSOLETE?
-  app.get('/:user?/media/:id/transcripts', function(req, res) {
-    return Transcript.find(function(err, transcripts) {
-      var ret = [];
-      
-      for(var i = 0; i < transcripts.length; i++) {
-        if (transcripts[i].media == req.params.id) {
-          ret.push(transcripts[i]);
-        }
-      }
-      return res.send(ret);
-    });
-  });
+  // app.get('/:user?/media/:id/transcripts', function(req, res) {
+  //   return Transcript.find(function(err, transcripts) {
+  //     var ret = [];
+  //     
+  //     for(var i = 0; i < transcripts.length; i++) {
+  //       if (transcripts[i].media == req.params.id) {
+  //         ret.push(transcripts[i]);
+  //       }
+  //     }
+  //     return res.send(ret);
+  //   });
+  // });
 
   app.put('/:user?/media/:id', function(req, res) {
+	cube("put_media", {
+		user: req.params.user,
+		id: req.params.id
+	});
+		
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
 
       mediaObject.label = req.body.label;
@@ -94,6 +121,10 @@ module.exports = function(app, nconf) {
     } else {
       owner = req.body.owner;
     }
+	
+	cube("post_media", {
+		user: owner //FIXME add media ID
+	});
     
     var mediaObject;
     mediaObject = new MediaObject({
@@ -133,6 +164,11 @@ module.exports = function(app, nconf) {
   });
 
   app.delete('/:user?/media/:id', function(req, res) {
+  	cube("delete_media", {
+  		user: req.params.user,
+  		id: req.params.id
+  	});
+	
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
       return mediaObject.remove(function(err) {
         if (!err) {

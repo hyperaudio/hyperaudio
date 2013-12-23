@@ -165,3 +165,11 @@ apt-get install -y haproxy hatop
 cd /etc/default/
 ln -sf /vagrant/etc/default/haproxy
 service haproxy start
+
+# cube
+cd /opt
+git clone https://github.com/square/cube.git
+cd cube
+npm install
+pm2 start bin/collector.js
+pm2 start bin/evaluator.js
