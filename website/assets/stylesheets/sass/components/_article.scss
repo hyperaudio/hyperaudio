@@ -54,16 +54,24 @@
   figure {
     border: 1px solid $light;
     margin-bottom: $space-l;
+    padding: $space-m;
+    text-align: center;
     > a {
       border: none !important;
+      display: block;
       line-height: 0;
       padding: 0;
+    }
+    img {
+      display: inline-block;
+      width: 100%;
     }
     figcaption {
       color: $mono-mid;
       font-size: $font-s;
       line-height: $lheight-m;
-      padding: $space-m;
+      margin-top: $space-m;
+      text-align: left;
     }
   }
   h2 {

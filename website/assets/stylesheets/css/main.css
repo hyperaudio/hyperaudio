@@ -2748,17 +2748,25 @@ input[type="submit"].active {
 .article-body figure {
   border: 1px solid rgba(0, 0, 0, 0.04);
   margin-bottom: 2rem;
+  padding: 1rem;
+  text-align: center;
 }
 .article-body figure > a {
   border: none !important;
+  display: block;
   line-height: 0;
   padding: 0;
+}
+.article-body figure img {
+  display: inline-block;
+  width: 100%;
 }
 .article-body figure figcaption {
   color: rgba(0, 0, 0, 0.55);
   font-size: 1.3rem;
   line-height: 1.6em;
-  padding: 1rem;
+  margin-top: 1rem;
+  text-align: left;
 }
 .article-body h2 {
   margin-bottom: 2rem;
