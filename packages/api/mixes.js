@@ -6,21 +6,22 @@ var path = require('path');
 //FIXME: duplicate
 var dgram = require("dgram");
 var udp = dgram.createSocket("udp4");
+
 function cube(type, data) {
-	var buffer = new Buffer(JSON.stringify({
-		"type": type,
-		"time": new Date().toISOString(),
-		"data": data
-	}));
-	udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
+  var buffer = new Buffer(JSON.stringify({
+    "type": type,
+    "time": new Date().toISOString(),
+    "data": data
+  }));
+  udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
 }
 
 module.exports = function(app, nconf) {
 
   app.get('/:user?/mixes', function(req, res) {
-	cube("get_mixes", {
-		user: req.params.user
-	});
+    cube("get_mixes", {
+      user: req.params.user
+    });
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -35,27 +36,29 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/:user?/mixes/:id', function(req, res) {
-  	cube("get_mix", {
-  		user: req.params.user,
-  		id: req.params.id
-  	});
+    cube("get_mix", {
+      user: req.params.user,
+      id: req.params.id
+    });
     return Mix.findById(req.params.id, function(err, mix) {
       if (!err) {
         return res.send(mix);
       }
-      
+
       res.status(404);
-      res.send({ error: 'Not found' });
+      res.send({
+        error: 'Not found'
+      });
       return;
     });
   });
 
   // TODO: restrict to same user only
   app.put('/:user?/mixes/:id', function(req, res) {
-  	cube("put_mix", {
-  		user: req.params.user,
-  		id: req.params.id
-  	});
+    cube("put_mix", {
+      user: req.params.user,
+      id: req.params.id
+    });
     return Mix.findById(req.params.id, function(err, mix) {
 
       mix.label = req.body.label;
@@ -85,9 +88,9 @@ module.exports = function(app, nconf) {
   });
 
   app.post('/:user?/mixes', function(req, res) {
-	cube("post_mix", {
-		user: req.params.user//ID?
-	});
+    cube("post_mix", {
+      user: req.params.user //ID?
+    });
 
     var mix;
     var owner;
@@ -113,7 +116,7 @@ module.exports = function(app, nconf) {
       meta: req.body.meta,
       content: content
     });
-    
+
     // download if needed
 
     console.log(mix);
@@ -129,10 +132,10 @@ module.exports = function(app, nconf) {
   // ID is unique, ignore user
   // TODO: restrict to same user only
   app.delete('/:user?/mixes/:id', function(req, res) {
-	cube("delete_mix", {
-		user: req.params.user,
-		id: req.params.id
-	});
+    cube("delete_mix", {
+      user: req.params.user,
+      id: req.params.id
+    });
     return Mix.findById(req.params.id, function(err, mix) {
       return mix.remove(function(err) {
         if (!err) {
