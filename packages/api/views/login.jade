@@ -1,24 +1,7 @@
 extends layout
 
 block content
-  form(action="/auth/browserid", method="post", style="display:none;", id="persona")
-    input(type="text", name="assertion")
-
-  img(src="//developer.mozilla.org/files/3969/plain_sign_in_blue.png", id="browserid")
-  
-  script
-    $("#browserid").click(function(){
-      navigator.id.get(function(assertion) {
-        if (assertion) {
-          $("form#persona input").val(assertion);
-          $("form#persona").submit();
-        } else {
-          location.reload();
-        }
-      });
-    });
     
-  hr
   
   form(action="/login",method="post")
       div
