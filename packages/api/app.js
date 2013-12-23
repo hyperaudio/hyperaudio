@@ -1,6 +1,7 @@
 var nconf = require('nconf');
 var fs = require('fs');
 
+// var toobusy = require('toobusy');
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
@@ -27,18 +28,46 @@ app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
+// app.use(function(req, res, next) {
+//   if (toobusy()) {
+//     res.send(503, "I'm busy right now, sorry.");
+//   } else {
+//     next();
+//   } 
+// });
+
 app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
 
-app.use(express.session({
-  secret: "xaifeeK0Xoo1Oghahfu8WeeShooqueeG",
-  cookie: {
-    httpOnly: true, 
-    secure: false},
+// app.use(express.session({
+//   secret: "xaifeeK0Xoo1Oghahfu8WeeShooqueeG",
+//   cookie: {
+//     httpOnly: true, 
+//     secure: false},
+// }));
+
+var sessions = require("client-sessions");
+app.use(sessions({
+  cookieName: 'haSession', // cookie name dictates the key name added to the request object
+  secret: 'ohziuchaepah7xie0vei6Apai8aep4th', // should be a large unguessable string
+  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+  activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
 }));
+
+app.use(function(req, res, next) {
+  if (req.haSession.seenyou) {
+    res.setHeader('X-Seen-You', 'true');
+  } else {
+    // setting a property will automatically cause a Set-Cookie response
+    // to be sent
+    req.haSession.seenyou = true;
+    res.setHeader('X-Seen-You', 'false');
+  }
+  next();
+});
   
 app.use(passport.initialize());
 app.use(passport.session());
