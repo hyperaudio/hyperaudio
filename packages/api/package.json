@@ -28,6 +28,7 @@
     "fluent-ffmpeg": "*",
     "http-proxy": "*",
 	"fivebeans": "*",
-	"client-sessions": "*"
+	"client-sessions": "*",
+	"toobusy": "*"
   }
 }

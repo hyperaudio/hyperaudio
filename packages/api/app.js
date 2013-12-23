@@ -1,7 +1,7 @@
 var nconf = require('nconf');
 var fs = require('fs');
 
-// var toobusy = require('toobusy');
+var toobusy = require('toobusy');
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
@@ -28,13 +28,13 @@ app.set('port', process.env.PORT || 80);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
-// app.use(function(req, res, next) {
-//   if (toobusy()) {
-//     res.send(503, "I'm busy right now, sorry.");
-//   } else {
-//     next();
-//   } 
-// });
+app.use(function(req, res, next) {
+  if (toobusy()) {
+    res.send(503, "I'm busy right now, sorry.");
+  } else {
+    next();
+  } 
+});
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -66,6 +66,7 @@ app.use(function(req, res, next) {
     req.haSession.seenyou = true;
     res.setHeader('X-Seen-You', 'false');
   }
+  res.setHeader('X-Lag', toobusy.lag());
   next();
 });
   
@@ -223,11 +224,21 @@ require('./subscribers')(app, nconf);
 // app.use(express.static(path.join(__dirname, 'media')));
 
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+process.on('SIGINT', function() {
+  server.close();
+  // calling .shutdown allows your process to exit normally
+  toobusy.shutdown();
+  process.exit();
+});
+
 
 function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login');
 }
+
+
