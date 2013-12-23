@@ -5,16 +5,12 @@ var toobusy = require('toobusy');
 var express = require('express');
 var routes = require('./routes');
 var http = require('http');
-// var httpProxy = require('http-proxy');
 var path = require('path');
 
 var mongoose = require('mongoose');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-
-// var PersonaStrategy = require('passport-persona').Strategy;
-// var generatePassword = require('password-generator');
 
 nconf.argv()
     .env()
@@ -40,7 +36,7 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
+// app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
 
 // app.use(express.session({
 //   secret: "xaifeeK0Xoo1Oghahfu8WeeShooqueeG",
@@ -106,11 +102,8 @@ app.use(function(req, res, next) {
 app.use(app.router);
 
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
-// app.use('/dashboard', express.static(path.join(__dirname, 'UI/public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// var mediaProxy = httpProxy.createServer(80, 'localhost');
-// app.use('/proxy', mediaProxy);
 
 // development only
 if ('development' == app.get('env')) {
@@ -128,45 +121,15 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 
-// passport.use(new PersonaStrategy({
-//     audience: 'https://data.hyperaud.io/',
-//     checkAudience: false
-//   },
-//   function(email, done) {
-//       Account.findByUsername(email, function(err, result){
-//         if (err) {
-//             console.log(err);
-//         }
-//         if (result) {
-//           return done(null, result);
-//         } else {
-//           var password = generatePassword();
-//           console.log("password " + password);
-//           Account.register(new Account({
-//                 username : email,
-//                 email: email
-//             }),
-//             password, 
-//             function(err, account) {
-//               if (err) {
-//                   console.log(err);
-//               }
-//               return done(null, account);
-//           });
-//         }         
-//       });
-//   }
-// ));
-
-
 app.get('/', routes.index);
 
 app.get('/whoami', function(req, res){
-  if (req.isAuthenticated()) {
-    res.json({user: req.user});
-  } else {
-    res.json({user: null});
-  }
+  // if (req.isAuthenticated()) {
+  //   res.json({user: req.user});
+  // } else {
+  //   res.json({user: null});
+  // }
+  res.json({user: req.haSession.user});
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
@@ -179,16 +142,14 @@ app.get('/login', function(req, res){
 
 app.post('/login', passport.authenticate('local'), function(req, res) {
     // res.redirect('/');
-    res.json({user: req.user});
+	req.haSession.user = req.user.username;
+    res.json({user: req.user.username});
 });
-
-// app.post('/auth/browserid', passport.authenticate('persona', { failureRedirect: '/login' }), function(req, res) {
-//     res.redirect('/');
-// });
 
 app.get('/logout', function(req, res){
   req.logout();
   // res.redirect('/');
+  req.haSession.user = null;
   res.json({user: null});
 });
 
@@ -207,6 +168,7 @@ app.post('/register', function(req, res) {
               return res.render('register', { account : account });
           }
 		  if (req.isAuthenticated()) {
+			// req.haSession.user = req.user.username;
 		    res.json({user: req.user});
 		  } else {
 		    res.json({user: null});
