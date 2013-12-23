@@ -127,6 +127,9 @@ app.get('/whoami', function(req, res) {
 	cube("get_whoami", {
 		user: req.session.user
 	});
+	
+	// console.log(req.session);
+// 	console.log('auth ' + req.isAuthenticated());
 
 	res.json({
 		user: req.session.user
