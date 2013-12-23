@@ -27,6 +27,8 @@
     "node-ffprobe": "*",
     "fluent-ffmpeg": "*",
     "http-proxy": "*",
-	"fivebeans": "*"
+	"fivebeans": "*",
+	"toobusy": "*",
+	"client-sessions": "*"
   }
 }
