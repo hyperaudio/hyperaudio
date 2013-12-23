@@ -3,7 +3,7 @@ var fs = require('fs');
 
 var toobusy = require('toobusy');
 var express = require('express');
-var routes = require('./routes');
+
 var http = require('http');
 var path = require('path');
 
@@ -11,6 +11,8 @@ var mongoose = require('mongoose');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+
+
 
 nconf.argv()
     .env()
@@ -20,7 +22,6 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 80);
-
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 
@@ -36,33 +37,23 @@ app.use(express.favicon());
 app.use(express.logger('dev'));
 app.use(express.bodyParser());
 app.use(express.methodOverride());
-// app.use(express.cookieParser('xaifeeK0Xoo1Oghahfu8WeeShooqueeG'));
-
-// app.use(express.session({
-//   secret: "xaifeeK0Xoo1Oghahfu8WeeShooqueeG",
-//   cookie: {
-//     httpOnly: true, 
-//     secure: false},
-// }));
 
 var sessions = require("client-sessions");
 app.use(sessions({
-  cookieName: 'haSession', // cookie name dictates the key name added to the request object
-  secret: 'ohziuchaepah7xie0vei6Apai8aep4th', // should be a large unguessable string
-  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-  activeDuration: 1000 * 60 * 5 // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+  cookieName: 'haSession',
+  secret: 'ohziuchaepah7xie0vei6Apai8aep4th', //FIXME: move to conf
+  duration: 24 * 60 * 60 * 1000, // conf
+  activeDuration: 1000 * 60 * 5 // conf
 }));
 
 app.use(function(req, res, next) {
   if (req.haSession.seenyou) {
     res.setHeader('X-Seen-You', 'true');
   } else {
-    // setting a property will automatically cause a Set-Cookie response
-    // to be sent
     req.haSession.seenyou = true;
     res.setHeader('X-Seen-You', 'false');
   }
-  res.setHeader('X-Lag', toobusy.lag());
+  // res.setHeader('X-Lag', toobusy.lag()); //FIXME move to hearbeat?
   next();
 });
   
@@ -98,7 +89,6 @@ app.use(function(req, res, next) {
     }
 });
   
-// app.use(allowCrossDomain);  
 app.use(app.router);
 
 app.use(require('less-middleware')({ src: __dirname + '/public' }));
@@ -112,28 +102,23 @@ if ('development' == app.get('env')) {
 
 
 var Account = require('./models/account');
-
 mongoose.connect(nconf.get('database'));
-
 
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 
-app.get('/', routes.index);
+app.get('/', function(req, res) {
+  res.redirect('http://hyperaud.io/');
+});
 
 app.get('/whoami', function(req, res){
-  // if (req.isAuthenticated()) {
-  //   res.json({user: req.user});
-  // } else {
-  //   res.json({user: null});
-  // }
   res.json({user: req.haSession.user});
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
+  res.render('account', { user: req.haSession.user });
 });
 
 app.get('/login', function(req, res){
@@ -180,26 +165,23 @@ app.post('/register', function(req, res) {
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
 require('./mixes')(app, nconf);
-
 require('./subscribers')(app, nconf);
-
-// app.use(express.static(path.join(__dirname, 'media')));
 
 
 var server = http.createServer(app).listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
 process.on('SIGINT', function() {
   server.close();
-  // calling .shutdown allows your process to exit normally
   toobusy.shutdown();
   process.exit();
 });
 
 
 function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
+  // if (req.isAuthenticated()) { return next(); }
+  if (req.haSession.user) { return next(); }
   res.redirect('/login');
 }
 
