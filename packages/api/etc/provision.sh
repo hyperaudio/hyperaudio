@@ -126,9 +126,9 @@ unzip v2.3.10.zip
 cd /opt
 git clone https://github.com/ptrofimov/beanstalk_console.git
 
-cd /vagrant
+cd /opt
 mkdir tools
-cd /vagrant/tools
+cd /opt/tools
 ln -sf /opt/beanstalk_console/public beanstalkd
 ln -sf /opt/genghis-2.3.10 mongo
 
@@ -155,6 +155,8 @@ cd /etc/apache2/mods-enabled
 ln -s ../mods-available/rewrite.load
 ln -s ../mods-available/headers.load 
 ln -sf /vagrant/etc/apache2/status.conf
+ln -sf /vagrant/etc/apache2/status.conf
+ln -sf /vagrant/etc/apache2/h264-streaming.conf
 
 # restart apache
 service apache2 restart
