@@ -179,4 +179,5 @@ pm2 start bin/evaluator.js
 pm2 web
 
 cd /vagrant
-pm2 processes.json
+npm install
+pm2 start processes.json
