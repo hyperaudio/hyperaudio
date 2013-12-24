@@ -16,6 +16,25 @@ function cube(type, data) {
   udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
 }
 
+function ensureOwnership(req, res, next) {
+  if (req.isAuthenticated()) { 
+    if (req.user.username != req.params.user) {
+      res.status(403);
+      res.send({
+        error: 'Forbidden'
+      });
+      return;
+    }
+    return next();
+  } else {
+    res.status(401);
+    res.send({
+      error: 'Unauthorized'
+    });
+    return;
+  }
+}
+
 module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/mixes', function(req, res) {
@@ -53,8 +72,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  // TODO: restrict to same user only
-  app.put('/v1/:user?/mixes/:id', function(req, res) {
+  app.put('/v1/:user/mixes/:id', ensureOwnership, function(req, res) {
     cube("put_mix", {
       user: req.params.user,
       id: req.params.id
@@ -87,7 +105,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/v1/:user?/mixes', function(req, res) {
+  app.post('/v1/:user/mixes', ensureOwnership, function(req, res) {
     cube("post_mix", {
       user: req.params.user //ID?
     });
@@ -131,7 +149,7 @@ module.exports = function(app, nconf) {
 
   // ID is unique, ignore user
   // TODO: restrict to same user only
-  app.delete('/v1/:user?/mixes/:id', function(req, res) {
+  app.delete('/v1/:user/mixes/:id', ensureOwnership, function(req, res) {
     cube("delete_mix", {
       user: req.params.user,
       id: req.params.id

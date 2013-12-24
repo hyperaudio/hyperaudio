@@ -31,13 +31,32 @@ function cube(type, data) {
   udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
 }
 
+function ensureOwnership(req, res, next) {
+  if (req.isAuthenticated()) { 
+    if (req.user.username != req.params.user) {
+      res.status(403);
+      res.send({
+        error: 'Forbidden'
+      });
+      return;
+    }
+    return next();
+  } else {
+    res.status(401);
+    res.send({
+      error: 'Unauthorized'
+    });
+    return;
+  }
+}
+
 module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/media', function(req, res) {
     cube("get_media_list", {
       user: req.params.user
     });
-
+    console.log(req.user);
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -84,7 +103,7 @@ module.exports = function(app, nconf) {
   //   });
   // });
 
-  app.put('/v1/:user?/media/:id', function(req, res) {
+  app.put('/v1/:user/media/:id', ensureOwnership, function(req, res) {
     cube("put_media", {
       user: req.params.user,
       id: req.params.id
@@ -116,7 +135,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/v1/:user?/media', function(req, res) {
+  app.post('/v1/:user/media', ensureOwnership, function(req, res) {
     var owner;
 
     if (req.params.user) {
@@ -166,7 +185,7 @@ module.exports = function(app, nconf) {
     return res.send(mediaObject);
   });
 
-  app.delete('/v1/:user?/media/:id', function(req, res) {
+  app.delete('/v1/:user/media/:id', ensureOwnership, function(req, res) {
     cube("delete_media", {
       user: req.params.user,
       id: req.params.id

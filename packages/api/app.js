@@ -231,10 +231,10 @@ process.on('SIGINT', function() {
 
 
 function ensureAuthenticated(req, res, next) {
-  // if (req.isAuthenticated()) { return next(); }
-  if (req.session.user) {
-    return next();
-  }
+  if (req.isAuthenticated()) { return next(); }
+  // if (req.session.user) {
+  //   return next();
+  // }
   res.redirect('/v1/login');
 }
 

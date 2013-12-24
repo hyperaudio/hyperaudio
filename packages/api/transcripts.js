@@ -24,6 +24,25 @@ function cube(type, data) {
   udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
 }
 
+function ensureOwnership(req, res, next) {
+  if (req.isAuthenticated()) { 
+    if (req.user.username != req.params.user) {
+      res.status(403);
+      res.send({
+        error: 'Forbidden'
+      });
+      return;
+    }
+    return next();
+  } else {
+    res.status(401);
+    res.send({
+      error: 'Unauthorized'
+    });
+    return;
+  }
+}
+
 module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/transcripts', function(req, res) {
@@ -104,7 +123,7 @@ module.exports = function(app, nconf) {
       });
   });
 
-  app.put('/v1/:user?/transcripts/:id', function(req, res) {
+  app.put('/v1/:user/transcripts/:id', ensureOwnership, function(req, res) {
     cube("put_transcript", {
       user: req.params.user,
       id: req.params.id
@@ -172,7 +191,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/v1/:user?/transcripts', function(req, res) {
+  app.post('/v1/:user/transcripts', ensureOwnership, function(req, res) {
     cube("post_transcript", {
       user: req.params.user //ID?
     });
@@ -236,7 +255,7 @@ module.exports = function(app, nconf) {
     return res.send(transcript);
   });
 
-  app.delete('/v1/:user?/transcripts/:id', function(req, res) {
+  app.delete('/v1/:user/transcripts/:id', ensureOwnership, function(req, res) {
     cube("delete_transcript", {
       user: req.params.user,
       id: req.params.id
