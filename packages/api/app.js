@@ -121,6 +121,12 @@ app.get('/v1', function(req, res) {
   res.redirect('http://hyperaud.io/');
 });
 
+app.get('/v1/status', function(req, res) {
+  res.json({
+    lag: toobusy.lag()
+  });
+});  
+
 app.get('/v1/whoami', function(req, res) {
 
   //FIXME
