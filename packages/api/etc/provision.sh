@@ -126,9 +126,7 @@ unzip v2.3.10.zip
 cd /opt
 git clone https://github.com/ptrofimov/beanstalk_console.git
 
-cd /opt
-mkdir tools
-cd /opt/tools
+cd /vagrant/tools
 ln -sf /opt/beanstalk_console/public beanstalkd
 ln -sf /opt/genghis-2.3.10 mongo
 
