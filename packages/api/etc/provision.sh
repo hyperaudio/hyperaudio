@@ -64,9 +64,9 @@ apt-get install -y ffmpeg
 # https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 apt-get install -y g++ make build-essential
 cd /opt
-wget http://nodejs.org/dist/v0.10.23/node-v0.10.23.tar.gz
-tar -xzf node-v0.10.23.tar.gz
-cd node-v0.10.23
+wget http://nodejs.org/dist/v0.10.24/node-v0.10.24.tar.gz
+tar -xzf node-v0.10.24.tar.gz
+cd node-v0.10.24
 ./configure
 make
 make install
