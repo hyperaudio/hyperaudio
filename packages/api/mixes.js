@@ -18,7 +18,7 @@ function cube(type, data) {
 
 module.exports = function(app, nconf) {
 
-  app.get('/:user?/mixes', function(req, res) {
+  app.get('/v1/:user?/mixes', function(req, res) {
     cube("get_mixes", {
       user: req.params.user
     });
@@ -35,7 +35,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.get('/:user?/mixes/:id', function(req, res) {
+  app.get('/v1/:user?/mixes/:id', function(req, res) {
     cube("get_mix", {
       user: req.params.user,
       id: req.params.id
@@ -54,7 +54,7 @@ module.exports = function(app, nconf) {
   });
 
   // TODO: restrict to same user only
-  app.put('/:user?/mixes/:id', function(req, res) {
+  app.put('/v1/:user?/mixes/:id', function(req, res) {
     cube("put_mix", {
       user: req.params.user,
       id: req.params.id
@@ -87,7 +87,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/:user?/mixes', function(req, res) {
+  app.post('/v1/:user?/mixes', function(req, res) {
     cube("post_mix", {
       user: req.params.user //ID?
     });
@@ -131,7 +131,7 @@ module.exports = function(app, nconf) {
 
   // ID is unique, ignore user
   // TODO: restrict to same user only
-  app.delete('/:user?/mixes/:id', function(req, res) {
+  app.delete('/v1/:user?/mixes/:id', function(req, res) {
     cube("delete_mix", {
       user: req.params.user,
       id: req.params.id

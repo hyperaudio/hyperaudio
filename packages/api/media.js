@@ -33,7 +33,7 @@ function cube(type, data) {
 
 module.exports = function(app, nconf) {
 
-  app.get('/:user?/media', function(req, res) {
+  app.get('/v1/:user?/media', function(req, res) {
     cube("get_media_list", {
       user: req.params.user
     });
@@ -51,7 +51,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.get('/:user?/media/:id', function(req, res) {
+  app.get('/v1/:user?/media/:id', function(req, res) {
     cube("get_media", {
       user: req.params.user,
       id: req.params.id
@@ -71,7 +71,7 @@ module.exports = function(app, nconf) {
   });
 
   // FIXME OBSOLETE?
-  // app.get('/:user?/media/:id/transcripts', function(req, res) {
+  // app.get('/v1/:user?/media/:id/transcripts', function(req, res) {
   //   return Transcript.find(function(err, transcripts) {
   //     var ret = [];
   //     
@@ -84,7 +84,7 @@ module.exports = function(app, nconf) {
   //   });
   // });
 
-  app.put('/:user?/media/:id', function(req, res) {
+  app.put('/v1/:user?/media/:id', function(req, res) {
     cube("put_media", {
       user: req.params.user,
       id: req.params.id
@@ -116,7 +116,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/:user?/media', function(req, res) {
+  app.post('/v1/:user?/media', function(req, res) {
     var owner;
 
     if (req.params.user) {
@@ -166,7 +166,7 @@ module.exports = function(app, nconf) {
     return res.send(mediaObject);
   });
 
-  app.delete('/:user?/media/:id', function(req, res) {
+  app.delete('/v1/:user?/media/:id', function(req, res) {
     cube("delete_media", {
       user: req.params.user,
       id: req.params.id

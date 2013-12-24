@@ -26,7 +26,7 @@ function cube(type, data) {
 
 module.exports = function(app, nconf) {
 
-  app.get('/:user?/transcripts', function(req, res) {
+  app.get('/v1/:user?/transcripts', function(req, res) {
     cube("get_transcripts", {
       user: req.params.user
     });
@@ -44,7 +44,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.get('/:user?/transcripts/:id', function(req, res) {
+  app.get('/v1/:user?/transcripts/:id', function(req, res) {
     cube("get_transcript", {
       user: req.params.user,
       id: req.params.id
@@ -66,7 +66,7 @@ module.exports = function(app, nconf) {
       });
   });
 
-  app.get('/:user?/transcripts/:id/text', function(req, res) {
+  app.get('/v1/:user?/transcripts/:id/text', function(req, res) {
     //FIXME cube?
     return Transcript.findById(req.params.id).populate('media').exec(
       /*return Transcript.findById(req.params.id,*/
@@ -85,7 +85,7 @@ module.exports = function(app, nconf) {
       });
   });
 
-  app.get('/:user?/transcripts/:id/html', function(req, res) {
+  app.get('/v1/:user?/transcripts/:id/html', function(req, res) {
     //FIXME cube?
     return Transcript.findById(req.params.id).populate('media').exec(
       /*return Transcript.findById(req.params.id,*/
@@ -104,7 +104,7 @@ module.exports = function(app, nconf) {
       });
   });
 
-  app.put('/:user?/transcripts/:id', function(req, res) {
+  app.put('/v1/:user?/transcripts/:id', function(req, res) {
     cube("put_transcript", {
       user: req.params.user,
       id: req.params.id
@@ -147,7 +147,7 @@ module.exports = function(app, nconf) {
 
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
-  app.post('/:user?/transcripts/:id/align', function(req, res) {
+  app.post('/v1/:user?/transcripts/:id/align', function(req, res) {
     cube("align_transcript", {
       user: req.params.user,
       id: req.params.id
@@ -172,7 +172,7 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/:user?/transcripts', function(req, res) {
+  app.post('/v1/:user?/transcripts', function(req, res) {
     cube("post_transcript", {
       user: req.params.user //ID?
     });
@@ -236,7 +236,7 @@ module.exports = function(app, nconf) {
     return res.send(transcript);
   });
 
-  app.delete('/:user?/transcripts/:id', function(req, res) {
+  app.delete('/v1/:user?/transcripts/:id', function(req, res) {
     cube("delete_transcript", {
       user: req.params.user,
       id: req.params.id

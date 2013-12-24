@@ -117,7 +117,11 @@ app.get('/', function(req, res) {
   res.redirect('http://hyperaud.io/');
 });
 
-app.get('/whoami', function(req, res) {
+app.get('/v1', function(req, res) {
+  res.redirect('http://hyperaud.io/');
+});
+
+app.get('/v1/whoami', function(req, res) {
 
   //FIXME
   if (typeof req.session.user == "undefined") {
@@ -143,13 +147,13 @@ app.get('/whoami', function(req, res) {
 // 	});
 // });
 
-app.get('/login', function(req, res) {
+app.get('/v1/login', function(req, res) {
   res.render('login', {
     user: req.user
   });
 });
 
-app.post('/login', passport.authenticate('local'), function(req, res) {
+app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   req.session.user = req.user.username;
   //FIXME: here we miss invalide login attemtps
   cube("post_login", {
@@ -161,7 +165,7 @@ app.post('/login', passport.authenticate('local'), function(req, res) {
   });
 });
 
-app.get('/logout', function(req, res) {
+app.get('/v1/logout', function(req, res) {
   cube("get_logout", {
     user: req.session.user
   });
@@ -174,7 +178,7 @@ app.get('/logout', function(req, res) {
   });
 });
 
-app.get('/register', function(req, res) {
+app.get('/v1/register', function(req, res) {
   res.render('register', {});
 });
 
@@ -231,7 +235,7 @@ function ensureAuthenticated(req, res, next) {
   if (req.session.user) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/v1/login');
 }
 
 function cube(type, data) {

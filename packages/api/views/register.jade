@@ -9,7 +9,7 @@ block content
               | Sign up
           .row
             .large-8.medium-8.small-12.columns.large-offset-2.medium-offset-2
-              form#registerForm.form(action="/register", method="post")
+              form#registerForm.form(action="/v1/register", method="post")
                 .form-component
                   label.form-label.centered(for='username') Username
                   input#username.form-input.text-input.block.large.centered(type='text', name='username', placeholder='Username')
