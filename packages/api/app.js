@@ -8,6 +8,7 @@ var http = require('http');
 var path = require('path');
 
 var mongoose = require('mongoose');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -196,7 +197,7 @@ app.get('/v1/register', function(req, res) {
 app.post('/v1/register', function(req, res) {
 
   Account.register(new Account({
-      _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
+      _id: ObjectId.fromString(urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0))),
       username: req.body.username
     }),
     req.body.password,
