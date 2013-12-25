@@ -8,12 +8,12 @@
     <form id="registerForm" class="form">
       <div class="form-component">
         <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">
+        <p id="registerFormError" style="display:none" class="form-alert">
+          Wrong username.
+        </p>
       </div>
       <div class="form-component">
         <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">
-        <!--<p id="error" style="display:none" class="form-alert">
-          Error
-        </p>-->
       </div>
       <div class="form-component actions">
         <input id="signup" type="submit" class="button large primary" value="Sign up">

@@ -39,17 +39,19 @@ haDash.Views = haDash.Views || {};
 			        password: $('#password').val()
 			    }
 			})
-			.done(function() {
-		        haDash.whoami(function() {
-		          if (haDash.user) {
-					  haDash.router.navigate("mixes/", {trigger: true});
-				  } else {
-					  alert('Invalid Registration');
-				  }
-		        });
+			.done(function(whoami) {
+				console.log(whoami);
+		    //     haDash.whoami(function() {
+		    //       if (haDash.user) {
+					 //  haDash.router.navigate("mixes/", {trigger: true});
+				  // } else {
+					 //  alert('Invalid Registration');
+				  // }
+		    //     });
 		    })
 		    .fail(function() {
-		      	alert( "Registration Error" );
+		      	// alert( "Registration Error" );
+		      	$('#registerFormError').show();
 		    });
 
 		}

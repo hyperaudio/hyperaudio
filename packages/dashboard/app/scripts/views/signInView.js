@@ -52,7 +52,8 @@ haDash.Views = haDash.Views || {};
 				}
 		    })
 		    .fail(function() {
-		      	alert( "Invalid user and/or password" );
+		      	// alert( "Invalid user and/or password" );
+		      	$('#loginFormError').show();
 		    });
 
 		}
