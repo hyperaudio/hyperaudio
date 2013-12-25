@@ -202,9 +202,10 @@ app.post('/v1/register', function(req, res) {
 
       //FIXME return error code
       if (err) {
-        return res.json({
-          user: null
-        });
+        return res.send(401);
+        // return res.json({
+        //   user: null
+        // });
       }
 
       //FIXME authenticate
@@ -244,7 +245,8 @@ function ensureAuthenticated(req, res, next) {
   // if (req.session.user) {
   //   return next();
   // }
-  res.redirect('/v1/login');
+  res.send(401);
+  // res.redirect('/v1/login');
 }
 
 function cube(type, data) {
