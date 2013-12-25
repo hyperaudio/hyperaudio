@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
+  _id: String,
   meta: Schema.Types.Mixed
 }, {
-  versionKey: false,
-  _id: true
+  versionKey: false
 });
 
 Account.plugin(passportLocalMongoose);
