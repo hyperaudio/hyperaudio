@@ -1,5 +1,0 @@
-{
-    "prefix": "/v1",
-    "database": "mongodb://user:pass@server.mongolab.com:port/database"
-}
-
