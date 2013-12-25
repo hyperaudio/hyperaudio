@@ -79,7 +79,10 @@ $(document).ready(function() {
 	'use strict';
 
 	$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-        options.xhrFields = {
+		console.log('--------');
+		console.log(options, originalOptions, jqXHR);
+        console.log('--------');
+		options.xhrFields = {
           withCredentials: true
         };
         //FIXME see http://backbonetutorials.com/cross-domain-sessions/
