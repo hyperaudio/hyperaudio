@@ -3,10 +3,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Metadata = new mongoose.Schema({
-	any: Schema.Types.Mixed
+	_id: String
 }, {
   versionKey: false,
-  _id: false
+  strict: false
 });
 
 module.exports = mongoose.model('Metadata', Metadata);
