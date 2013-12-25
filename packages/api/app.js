@@ -125,7 +125,7 @@ app.get('/v1/status', function(req, res) {
   res.json({
     lag: toobusy.lag()
   });
-});  
+});
 
 app.get('/v1/whoami', function(req, res) {
 
@@ -196,7 +196,7 @@ app.post('/v1/register', function(req, res) {
     req.body.password,
     function(err, account) {
       //FIXME we should log invalid ones too
-      cube("register", {
+      cube("post_register", {
         user: req.body.username
       });
 
