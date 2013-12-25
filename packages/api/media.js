@@ -32,8 +32,9 @@ function cube(type, data) {
 }
 
 function ensureOwnership(req, res, next) {
-  if (req.isAuthenticated()) { 
-    if (req.user.username != req.params.user) {
+  if (req.isAuthenticated()) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
+    if (req.user.username != owner) {
       res.status(403);
       res.send({
         error: 'Forbidden'
@@ -93,7 +94,7 @@ module.exports = function(app, nconf) {
   // app.get('/v1/:user?/media/:id/transcripts', function(req, res) {
   //   return Transcript.find(function(err, transcripts) {
   //     var ret = [];
-  //     
+  //
   //     for(var i = 0; i < transcripts.length; i++) {
   //       if (transcripts[i].media == req.params.id) {
   //         ret.push(transcripts[i]);
@@ -103,9 +104,11 @@ module.exports = function(app, nconf) {
   //   });
   // });
 
-  app.put('/v1/:user/media/:id', ensureOwnership, function(req, res) {
+  app.put('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
+
     cube("put_media", {
-      user: req.params.user,
+      user: owner,
       id: req.params.id
     });
 
@@ -115,16 +118,10 @@ module.exports = function(app, nconf) {
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
       // mediaObject.sort = req.body.sort;
-      // mediaObject.owner = req.body.owner;
+      mediaObject.owner = owner;
       mediaObject.meta = req.body.meta;
       mediaObject.source = req.body.source;
       // mediaObject.transcripts = req.body.transcripts;
-
-      if (req.params.user) {
-        mix.owner = req.params.user;
-      } else {
-        mix.owner = req.body.owner;
-      }
 
       return mediaObject.save(function(err) {
         if (!err) {
@@ -135,14 +132,8 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/v1/:user/media', ensureOwnership, function(req, res) {
-    var owner;
-
-    if (req.params.user) {
-      owner = req.params.user;
-    } else {
-      owner = req.body.owner;
-    }
+  app.post('/v1/:user?/media', ensureOwnership, function(req, res) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
 
     cube("post_media", {
       user: owner //FIXME add media ID
@@ -185,10 +176,11 @@ module.exports = function(app, nconf) {
     return res.send(mediaObject);
   });
 
-  app.delete('/v1/:user/media/:id', ensureOwnership, function(req, res) {
+  app.delete('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
     cube("delete_media", {
       user: req.params.user,
-      id: req.params.id
+      id: owner
     });
 
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
