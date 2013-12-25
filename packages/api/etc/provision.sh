@@ -7,7 +7,7 @@ export DEBIAN_FRONTEND=noninteractive
 apt-get update
 
 
-# git + etckeeper 
+# git + etckeeper
 apt-get install -y git etckeeper
 
 git config --global user.name "Automatic Jack"
@@ -25,7 +25,7 @@ apt-get install -y tree vim
 # JVM
 # apt-get install -y openjdk-7-jdk
 
-# + jgit! 
+# + jgit!
 
 
 apt-get -y upgrade
@@ -60,7 +60,7 @@ apt-get install -y ffmpeg
 
 
 
-# node from source 
+# node from source
 # https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
 apt-get install -y g++ make build-essential
 cd /opt
@@ -79,7 +79,7 @@ make install
 # wget -N http://nodejs.org/dist/node-latest.tar.gz
 # tar xzvf node-latest.tar.gz && cd node-v* #(remove the "v" in front of the version number in the dialog)
 # ./configure
-# checkinstall 
+# checkinstall
 # dpkg -i node_*
 
 npm update -g
@@ -146,12 +146,12 @@ ln -sf /vagrant/etc/apache2/VirtualHost.conf 000-default
 
 # ports
 cd /etc/apache2/
-ln -sf /vagrant/etc/apache2/ports.conf 
+ln -sf /vagrant/etc/apache2/ports.conf
 
 # apache modules
 cd /etc/apache2/mods-enabled
 ln -s ../mods-available/rewrite.load
-ln -s ../mods-available/headers.load 
+ln -s ../mods-available/headers.load
 ln -sf /vagrant/etc/apache2/status.conf
 ln -sf /vagrant/etc/apache2/status.conf
 ln -sf /vagrant/etc/apache2/h264-streaming.conf
@@ -165,7 +165,7 @@ apt-get install -y haproxy hatop
 cd /etc/default/
 ln -sf /vagrant/etc/default/haproxy
 cd /etc/haproxy/
-ln -sf /vagrant/etc/haproxy/haproxy.cfg 
+ln -sf /vagrant/etc/haproxy/haproxy.cfg
 service haproxy start
 
 # cube
