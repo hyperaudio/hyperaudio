@@ -44,6 +44,7 @@ haDash.Views = haDash.Views || {};
 				console.log(whoami);
 				//FIXME in API login person directly
 				haDash.router.navigate("secret-signin/", {trigger: true});
+				alert('Marvelous, now please log in');
 		    //     haDash.whoami(function() {
 		    //       if (haDash.user) {
 					 //  haDash.router.navigate("mixes/", {trigger: true});
