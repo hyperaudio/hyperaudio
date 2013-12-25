@@ -6,28 +6,28 @@ haDash.Views = haDash.Views || {};
     'use strict';
 
     haDash.Views.SignUpView = Backbone.View.extend({
-		
+
 		el: '#main',
 
         template: JST['app/scripts/templates/signUp.ejs'],
-		
+
 		initialize: function() {
 			this.render();
 		},
-		
+
 		render: function() {
 			this.$el.html(this.template());
 
 			return this;
 		},
-		
+
 		events: {
-			'click input[type="submit"]': 'signup'
+			'click #registerForm input[type="submit"]': 'signup'
 		},
-		
+
 		signup: function(event) {
 			event.preventDefault();
-			
+
 			$.ajax({
 				url: haDash.API + '/register',
 				xhrFields: {
@@ -51,7 +51,7 @@ haDash.Views = haDash.Views || {};
 		    .fail(function() {
 		      	alert( "Registration Error" );
 		    });
-					
+
 		}
 
     });

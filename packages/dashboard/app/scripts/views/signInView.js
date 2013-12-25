@@ -22,7 +22,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		events: {
-			'click input[type="submit"]': 'signin'
+			'click #loginForm input[type="submit"]': 'signin'
 		},
 
 		signin: function(event) {
