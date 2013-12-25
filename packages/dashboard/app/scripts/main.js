@@ -78,6 +78,17 @@ window.haDash = {
 $(document).ready(function() {
 	'use strict';
 
+	$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+        options.xhrFields = {
+          withCredentials: true
+        };
+        //FIXME see http://backbonetutorials.com/cross-domain-sessions/
+        // If we have a csrf token send it through with the next request
+        // if(typeof that.get('_csrf') !== 'undefined') {
+        //   jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
+        // }
+    });
+
 	haDash.init();
 
 	$(document).foundation();
