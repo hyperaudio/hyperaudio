@@ -19,7 +19,7 @@ var Transcript = new mongoose.Schema({
   },
   content: String,
   media: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'Media'
   } //,
   // alignments: Schema.Types.Mixed

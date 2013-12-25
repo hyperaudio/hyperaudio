@@ -80,7 +80,7 @@ module.exports = function(app, nconf) {
       id: req.params.id
     });
 
-    return MediaObject.findById(req.params.id).populate('metadata transcripts').exec(function(err, mediaObject) {
+    return MediaObject.findById(req.params.id).populate('metadata').populate('transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
       }
