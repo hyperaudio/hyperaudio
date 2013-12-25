@@ -93,20 +93,6 @@ module.exports = function(app, nconf) {
     });
   });
 
-  // FIXME OBSOLETE?
-  // app.get('/v1/:user?/media/:id/transcripts', function(req, res) {
-  //   return Transcript.find(function(err, transcripts) {
-  //     var ret = [];
-  //
-  //     for(var i = 0; i < transcripts.length; i++) {
-  //       if (transcripts[i].media == req.params.id) {
-  //         ret.push(transcripts[i]);
-  //       }
-  //     }
-  //     return res.send(ret);
-  //   });
-  // });
-
   app.put('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
 
@@ -120,7 +106,6 @@ module.exports = function(app, nconf) {
       mediaObject.label = req.body.label;
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
-      // mediaObject.sort = req.body.sort;
       mediaObject.owner = owner;
       // mediaObject.meta = req.body.meta;
       mediaObject.source = req.body.source;
@@ -184,7 +169,10 @@ module.exports = function(app, nconf) {
 
       client.put(1, 0, 0, JSON.stringify(['download', {
         type: "media",
-        payload: mediaObject
+        payload: {
+          media: mediaObject,
+          meta: metadata
+        }
       }]), function(err, jobid) {
         if (err) throw err;
       });

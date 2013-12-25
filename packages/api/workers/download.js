@@ -9,6 +9,8 @@ module.exports = function() {
 
   DownloadHandler.prototype.work = function(payload, callback) {
     console.log(payload);
+    console.log(path.join(__dirname, 'media/' + payload.media._id + '/'));
+
     // var request = https.get(m.url, function(response) {
     // 	      	try{
     // 	        	fs.mkdirSync(path.join(__dirname, 'media/' + m.owner + '/'));
@@ -23,6 +25,7 @@ module.exports = function() {
     // 	        	// process.disconnect();
     // 			});
     //     	};
+
     callback('success');
   };
 

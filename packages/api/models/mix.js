@@ -6,7 +6,6 @@ var Mix = new mongoose.Schema({
   label: String,
   desc: String,
   type: String,
-  // sort: { type: Number },
   owner: String,
   meta: Schema.Types.Mixed,
   created: {

@@ -8,7 +8,6 @@ var http = require('http');
 var path = require('path');
 
 var mongoose = require('mongoose');
-// var ObjectId = require('mongoose').Types.ObjectId;
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
@@ -54,17 +53,17 @@ app.use(sessions({
   activeDuration: 1000 * 60 * 5 // conf
 }));
 
-app.use(function(req, res, next) {
-  console.log(req.session);
-  if (req.session.seenyou) {
-    res.setHeader('X-Seen-You', 'true');
-  } else {
-    req.session.seenyou = true;
-    res.setHeader('X-Seen-You', 'false');
-  }
-  // res.setHeader('X-Lag', toobusy.lag()); //FIXME move to hearbeat?
-  next();
-});
+// app.use(function(req, res, next) {
+//   // console.log(req.session);
+//   if (req.session.seenyou) {
+//     res.setHeader('X-Seen-You', 'true');
+//   } else {
+//     req.session.seenyou = true;
+//     res.setHeader('X-Seen-You', 'false');
+//   }
+//   // res.setHeader('X-Lag', toobusy.lag()); //FIXME move to hearbeat?
+//   next();
+// });
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -207,16 +206,11 @@ app.post('/v1/register', function(req, res) {
         user: req.body.username
       });
 
-      //FIXME return error code
       if (err) {
         return res.send(401);
-        // return res.json({
-        //   user: null
-        // });
       }
 
       //FIXME authenticate
-
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         res.json({

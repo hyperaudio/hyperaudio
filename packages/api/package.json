@@ -28,6 +28,7 @@
     "fluent-ffmpeg": "*",
 	  "fivebeans": "*",
 	  "client-sessions": "*",
-	  "toobusy": "*"
+	  "toobusy": "*",
+    "ytdl": "*"
   }
 }
