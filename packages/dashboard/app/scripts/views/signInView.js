@@ -6,28 +6,28 @@ haDash.Views = haDash.Views || {};
     'use strict';
 
     haDash.Views.SignInView = Backbone.View.extend({
-		
+
 		el: '#main',
 
         template: JST['app/scripts/templates/signIn.ejs'],
-		
+
 		initialize: function() {
 			this.render();
 		},
-		
+
 		render: function() {
 			this.$el.html(this.template());
 
 			return this;
 		},
-		
+
 		events: {
 			'click input[type="submit"]': 'signin'
 		},
-		
+
 		signin: function(event) {
 			event.preventDefault();
-			
+
 			$.ajax({
 				url: haDash.API + '/login',
 				xhrFields: {
@@ -39,7 +39,8 @@ haDash.Views = haDash.Views || {};
 			        password: $('#password').val()
 			    }
 			})
-			.done(function() {
+			.done(function(data) {
+				console.log(data);
 		        haDash.whoami(function() {
 		          if (haDash.user) {
 					  haDash.router.navigate("mixes/", {trigger: true});
@@ -51,7 +52,7 @@ haDash.Views = haDash.Views || {};
 		    .fail(function() {
 		      	alert( "Login Error" );
 		    });
-					
+
 		}
     });
 
