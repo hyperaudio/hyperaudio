@@ -10,6 +10,7 @@ var ObjectId = mongoose.Types.ObjectId;
 
 var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
+var Metadata = require('./models/metadata');
 
 var fivebeans = require('fivebeans');
 var client = new fivebeans.client('127.0.0.1', 11300);
@@ -57,7 +58,7 @@ module.exports = function(app, nconf) {
     cube("get_media_list", {
       user: req.params.user
     });
-    console.log(req.user);
+    // console.log(req.user);
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -77,7 +78,7 @@ module.exports = function(app, nconf) {
       id: req.params.id
     });
 
-    return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
+    return MediaObject.findById(req.params.id).populate('metadata transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
       }
@@ -119,7 +120,7 @@ module.exports = function(app, nconf) {
       mediaObject.type = req.body.type;
       // mediaObject.sort = req.body.sort;
       mediaObject.owner = owner;
-      mediaObject.meta = req.body.meta;
+      // mediaObject.meta = req.body.meta;
       mediaObject.source = req.body.source;
       // mediaObject.transcripts = req.body.transcripts;
 
@@ -139,6 +140,8 @@ module.exports = function(app, nconf) {
       user: owner //FIXME add media ID
     });
 
+    var metadata = new Metadata(req.body.meta);
+
     var mediaObject;
     mediaObject = new MediaObject({
       label: req.body.label,
@@ -146,7 +149,7 @@ module.exports = function(app, nconf) {
       type: req.body.type,
       // sort: req.body.sort,
       owner: owner,
-      meta: req.body.meta,
+      // meta: req.body.meta,
       source: req.body.source //,
       // transcripts: req.body.transcripts
     });

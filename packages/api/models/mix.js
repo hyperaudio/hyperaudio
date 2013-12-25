@@ -1,5 +1,6 @@
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+
+var Schema = mongoose.Schema;
 
 var Mix = new mongoose.Schema({
   label: String,
@@ -18,7 +19,8 @@ var Mix = new mongoose.Schema({
   },
   content: String
 }, {
-  versionKey: false
+  versionKey: false,
+  _id: false
 });
 
 Mix.pre('save', function(next) {

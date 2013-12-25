@@ -1,5 +1,6 @@
-var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+
+var Schema = mongoose.Schema;
 
 var Transcript = new mongoose.Schema({
   label: String,
@@ -23,7 +24,8 @@ var Transcript = new mongoose.Schema({
   } //,
   // alignments: Schema.Types.Mixed
 }, {
-  versionKey: false
+  versionKey: false,
+  _id: false
 });
 
 Transcript.pre('save', function(next) {
