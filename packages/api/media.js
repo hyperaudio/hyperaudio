@@ -155,7 +155,7 @@ module.exports = function(app, nconf) {
       type: req.body.type,
       // sort: req.body.sort,
       owner: owner,
-      // meta: metaId,
+      meta: metaId,
       source: req.body.source //,
       // transcripts: req.body.transcripts
     });
@@ -165,6 +165,8 @@ module.exports = function(app, nconf) {
     metadata.save(function(err) {
       if (!err) {
         console.log("metadata created");
+      } else {
+        console.log(err);
       }
     });
 
