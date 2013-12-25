@@ -4,9 +4,11 @@ var path = require('path');
 
 var passport = require('passport');
 
-
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
+
+var uuid = require("node-uuid");
+var urlSafeBase64 = require('urlsafe-base64');
 
 var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
@@ -140,25 +142,34 @@ module.exports = function(app, nconf) {
       user: owner //FIXME add media ID
     });
 
+    var metaId = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+    req.body.meta._id = metaId;
     var metadata = new Metadata(req.body.meta);
 
     var mediaObject;
     mediaObject = new MediaObject({
+      _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
       // sort: req.body.sort,
       owner: owner,
-      // meta: req.body.meta,
+      meta: metaId,
       source: req.body.source //,
       // transcripts: req.body.transcripts
     });
 
     console.log(mediaObject);
 
+    metadata.save(function(err) {
+      if (!err) {
+        console.log("metadata created");
+      }
+    });
+
     mediaObject.save(function(err) {
       if (!err) {
-        console.log("created");
+        console.log("media created");
       }
     });
 

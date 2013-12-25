@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var MediaObject = new mongoose.Schema({
+  _id: String,
   label: String,
   desc: String,
   type: String,
@@ -25,8 +26,7 @@ var MediaObject = new mongoose.Schema({
     ref: 'Transcripts'
   }]
 }, {
-  versionKey: false,
-  _id: false
+  versionKey: false
 });
 
 MediaObject.pre('save', function(next) {
