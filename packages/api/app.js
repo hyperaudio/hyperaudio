@@ -200,11 +200,14 @@ app.post('/v1/register', function(req, res) {
         user: req.body.username
       });
 
+      //FIXME return error code
       if (err) {
-        return res.render('register', {
-          account: account
+        return res.json({
+          user: null
         });
       }
+
+      //FIXME authenticate
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         res.json({
