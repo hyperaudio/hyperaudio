@@ -173,6 +173,8 @@ module.exports = function(app, nconf) {
     mediaObject.save(function(err) {
       if (!err) {
         console.log("media created");
+      } else {
+        console.log(err);
       }
     });
 
