@@ -9,7 +9,7 @@ var MediaObject = new mongoose.Schema({
   type: String,
   owner: String,
   meta: {
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'Metadata'
   },
   created: {
@@ -22,7 +22,7 @@ var MediaObject = new mongoose.Schema({
   },
   source: Schema.Types.Mixed,
   transcripts: [{
-    type: Schema.Types.ObjectId,
+    type: String,
     ref: 'Transcripts'
   }]
 }, {
