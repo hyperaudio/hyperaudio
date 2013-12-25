@@ -4,6 +4,8 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 var Account = new Schema({
   meta: Schema.Types.Mixed
+}, {
+  versionKey: false
 });
 
 Account.plugin(passportLocalMongoose);

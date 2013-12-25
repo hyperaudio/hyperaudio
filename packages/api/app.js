@@ -209,6 +209,7 @@ app.post('/v1/register', function(req, res) {
       }
 
       //FIXME authenticate
+
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         res.json({
