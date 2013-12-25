@@ -39,18 +39,20 @@ haDash.Views = haDash.Views || {};
 			        password: $('#password').val()
 			    }
 			})
-			.done(function(data) {
-				console.log(data);
-		        haDash.whoami(function() {
-		          if (haDash.user) {
-					  haDash.router.navigate("mixes/", {trigger: true});
-				  } else {
-					  alert('Invalid Login');
-				  }
-		        });
+			.done(function(whoami) {
+				console.log(whoami);
+
+				if (whoami.user) {
+					window.haDash.user = whoami.user;
+					$('body').removeClass('anonymous').addClass('user');
+					haDash.router.navigate("mixes/", {trigger: true});
+				} else {
+					window.haDash.user = null;
+					$('body').removeClass('user').addClass('anonymous');
+				}
 		    })
 		    .fail(function() {
-		      	alert( "Login Error" );
+		      	alert( "Invalid user and/or password" );
 		    });
 
 		}

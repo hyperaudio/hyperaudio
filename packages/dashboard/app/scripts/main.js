@@ -58,7 +58,7 @@ window.haDash = {
 				withCredentials: true
 			},
 			success: function(whoami) {
-				console.log(whoami);
+				// console.log(whoami);
 
 				if (whoami.user) {
 					window.haDash.user = whoami.user;
