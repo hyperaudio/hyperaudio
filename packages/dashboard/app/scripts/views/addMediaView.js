@@ -43,6 +43,9 @@ haDash.Views = haDash.Views || {};
 					model.set('owner', haDash.user);
 					model.set('label', ytData.entry.title["$t"]);
 					model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
+					model.set('meta', {
+						"youtube": ytData
+					});
 					model.set('source', {
 						"youtube": {
 						      "type": "video/youtube",
