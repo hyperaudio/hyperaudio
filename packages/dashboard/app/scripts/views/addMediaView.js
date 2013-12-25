@@ -40,11 +40,30 @@ haDash.Views = haDash.Views || {};
 				success: function(ytData) {
 					console.log(ytData);
 
+					//clean yt json
+					var cleanYtData = {};
+
+					function ytClone(destination, source) {
+					  for (var property in source) {
+					    var prop = property.replace(/\$/g, '_');
+					    if (typeof source[property] === "object" &&
+					     source[property] !== null ) {
+					      destination[prop] = destination[prop] || {};
+					      ytClone(destination[prop], source[property]);
+					    } else {
+					      destination[prop] = source[property];
+					    }
+					  }
+					  return destination;
+					};
+
+					ytClone(cleanYtData, ytData);
+
 					model.set('owner', haDash.user);
 					model.set('label', ytData.entry.title["$t"]);
 					model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
 					model.set('meta', {
-						"youtube": ytData
+						"youtube": cleanYtData
 					});
 					model.set('source', {
 						"youtube": {
