@@ -6,7 +6,8 @@ var Metadata = new mongoose.Schema({
 	_id: String
 }, {
   versionKey: false,
-  strict: false
+  strict: false,
+  collection: 'metadata'
 });
 
 module.exports = mongoose.model('Metadata', Metadata);

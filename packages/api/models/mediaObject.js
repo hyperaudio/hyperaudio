@@ -26,7 +26,8 @@ var MediaObject = new mongoose.Schema({
     ref: 'Transcripts'
   }]
 }, {
-  versionKey: false
+  versionKey: false,
+  collection: 'media'
 });
 
 MediaObject.pre('save', function(next) {

@@ -7,7 +7,8 @@ var Account = new Schema({
   _id: String,
   meta: Schema.Types.Mixed
 }, {
-  versionKey: false
+  versionKey: false,
+  collection: 'accounts'
 });
 
 Account.plugin(passportLocalMongoose);

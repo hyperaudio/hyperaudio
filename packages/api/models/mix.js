@@ -20,7 +20,8 @@ var Mix = new mongoose.Schema({
   content: String
 }, {
   versionKey: false,
-  _id: false
+  _id: false,
+  collection: 'mixes'
 });
 
 Mix.pre('save', function(next) {

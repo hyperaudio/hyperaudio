@@ -25,7 +25,8 @@ var Transcript = new mongoose.Schema({
   // alignments: Schema.Types.Mixed
 }, {
   versionKey: false,
-  _id: false
+  _id: false,
+  collection: 'transcripts'
 });
 
 Transcript.pre('save', function(next) {
