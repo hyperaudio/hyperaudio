@@ -79,12 +79,11 @@ $(document).ready(function() {
 	'use strict';
 
 	$.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
-		console.log('--------');
-		console.log(options, originalOptions, jqXHR);
-        console.log('--------');
-		options.xhrFields = {
-          withCredentials: true
-        };
+		if (options.url.indexOf(haDash.API) == 0) {
+			options.xhrFields = {
+          		withCredentials: true
+        	};
+    	}
         //FIXME see http://backbonetutorials.com/cross-domain-sessions/
         // If we have a csrf token send it through with the next request
         // if(typeof that.get('_csrf') !== 'undefined') {
