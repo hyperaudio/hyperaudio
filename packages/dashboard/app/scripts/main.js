@@ -2,7 +2,7 @@
 
 
 window.haDash = {
-	API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io', //FIXME?
+	API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io/v1', //FIXME?
 	Models: {},
 	Collections: {},
 	Views: {},
@@ -18,7 +18,7 @@ window.haDash = {
 		});
 
 		this.whoami();
-		
+
 		// FUGLY
 		$('a.media').click(function(e){
 			e.preventDefault();
@@ -29,22 +29,22 @@ window.haDash = {
 			e.preventDefault();
 			haDash.router.navigate('mixes/', {trigger: true});
 		});
-		
+
 		$('a.logout').click(function(e){
 			e.preventDefault();
 			haDash.router.navigate('signout/', {trigger: true});
 		});
-		
+
 		$('a.register').click(function(e){
 			e.preventDefault();
 			haDash.router.navigate('secret-signup/', {trigger: true});
 		});
-		
+
 		$('a.login').click(function(e){
 			e.preventDefault();
 			haDash.router.navigate('secret-signin/', {trigger: true});
 		});
-		
+
 
 	},
 
@@ -79,7 +79,7 @@ $(document).ready(function() {
 	'use strict';
 
 	haDash.init();
-	
+
 	$(document).foundation();
 });
 
