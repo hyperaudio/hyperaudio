@@ -27,6 +27,7 @@ haDash.Views = haDash.Views || {};
 
 		signup: function(event) {
 			event.preventDefault();
+			$('#registerFormError').hide();
 
 			$.ajax({
 				url: haDash.API + '/register',
@@ -41,6 +42,8 @@ haDash.Views = haDash.Views || {};
 			})
 			.done(function(whoami) {
 				console.log(whoami);
+				//FIXME in API login person directly
+				haDash.router.navigate("secret-signin/", {trigger: true});
 		    //     haDash.whoami(function() {
 		    //       if (haDash.user) {
 					 //  haDash.router.navigate("mixes/", {trigger: true});

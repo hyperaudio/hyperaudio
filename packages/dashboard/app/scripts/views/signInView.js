@@ -27,6 +27,7 @@ haDash.Views = haDash.Views || {};
 
 		signin: function(event) {
 			event.preventDefault();
+			$('#loginFormError').hide();
 
 			$.ajax({
 				url: haDash.API + '/login',
