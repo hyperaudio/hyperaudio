@@ -50,6 +50,7 @@ app.use(sessions({
 }));
 
 app.use(function(req, res, next) {
+  console.log(req.session);
   if (req.session.seenyou) {
     res.setHeader('X-Seen-You', 'true');
   } else {
@@ -241,14 +242,14 @@ process.on('SIGINT', function() {
 });
 
 
-function ensureAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) { return next(); }
-  // if (req.session.user) {
-  //   return next();
-  // }
-  res.send(401);
-  // res.redirect('/v1/login');
-}
+// function ensureAuthenticated(req, res, next) {
+//   if (req.isAuthenticated()) { return next(); }
+//   // if (req.session.user) {
+//   //   return next();
+//   // }
+//   res.send(401);
+//   // res.redirect('/v1/login');
+// }
 
 function cube(type, data) {
   var buffer = new Buffer(JSON.stringify({
