@@ -31,10 +31,7 @@ module.exports = function() {
     if (payload.meta.download) {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
 
-      console.log('SYNC');
-      console.log(folder);
       sync.fiber(function(){  
-  		   console.log('SYNC??');
 		  // console.log(container.probe('00001.m4a'));
 		    
 		  var files = fs.readdirSync(folder);
@@ -74,7 +71,7 @@ module.exports = function() {
 		    }
 		    
 		    if (file.indexOf('info.json') > 0) {
-		      map[key]['info'] = require('./' + file);
+		      map[key]['info'] = require(folder + file);
 		    } else {
 		      map[key]['files'].push(fileMetadata(file));
 		    }
