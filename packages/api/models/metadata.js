@@ -3,10 +3,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Metadata = new mongoose.Schema({
-	_id: String
+	_id: String,
+  youtube: Schema.Types.Mixed,
+  download: Schema.Types.Mixed
 }, {
   versionKey: false,
-  strict: false,
+  // strict: false,
   collection: 'metadata'
 });
 
