@@ -26,13 +26,14 @@ module.exports = function() {
   }
 
   ProbeHandler.prototype.work = function(payload, callback) {
-    // console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
+    console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
 
     if (payload.meta.download) {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
 
+      console.log('SYNC');
       sync.fiber(function(){  
-  
+  		   console.log('SYNC??');
 		  // console.log(container.probe('00001.m4a'));
 		    
 		  var files = fs.readdirSync(folder);
