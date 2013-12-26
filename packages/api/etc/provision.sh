@@ -60,7 +60,10 @@ apt-get install -y ffmpeg
 
 apt-get install -y rtmpdump librtmp-dev
 apt-get install -y youtube-dl
-
+apt-get install -y libmp3lame-dev
+apt-get install -y libavcodec-extra-53
+apt-get install -y libmp3lame0 libmp3lame-dev libx264-120 libx264-dev sox libavcodec53 libavcodec-dev
+# apt-get install -y ubuntu-restricted-extras
 
 
 # node from source

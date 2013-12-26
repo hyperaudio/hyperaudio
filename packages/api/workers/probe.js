@@ -98,6 +98,8 @@ module.exports = function() {
 
 		});
 
+		callback('success');
+
       // probe(folder + payload.meta.download.filename, function(err, data) {
       // 	console.log(data);
       //   Metadata.findById(payload.meta._id).exec(function(err, metadata) {
