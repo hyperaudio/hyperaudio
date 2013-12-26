@@ -5,8 +5,12 @@
 		"instances"  : "1",
 		"port"       : 3000
 	},
-	{
-		"name" : "download",
-		"script" : "./runner-download.js"
-	}
+  {
+    "name" : "download",
+    "script" : "./runner-download.js"
+  },
+  {
+    "name" : "probe",
+    "script" : "./runner-probe.js"
+  }
 ]

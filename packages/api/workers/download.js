@@ -5,6 +5,12 @@ var path = require('path');
 
 var youtubedl = require('youtube-dl');
 
+var fivebeans = require('fivebeans');
+var client = new fivebeans.client('127.0.0.1', 11300);
+client.connect(function(err) {
+  if (err) throw err;
+});
+
 var mongoose = require('mongoose');
 var Metadata = require('../models/metadata');
 
@@ -16,8 +22,8 @@ module.exports = function() {
   }
 
   DownloadHandler.prototype.work = function(payload, callback) {
-    console.log(payload);
-    console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
+    // console.log(payload);
+    // console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
 
     if (payload.media.source.youtube) {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
@@ -45,12 +51,28 @@ module.exports = function() {
 
         Metadata.findById(payload.meta._id).exec(function(err, metadata) {
           if (!err) {
-            console.log('loaded metadata from db');
+            // console.log('loaded metadata from db');
             metadata.download = data;
             metadata.save(function(err) {
               if (!err) {
-                console.log('saved metadata to db');
-                console.log(metadata);
+                // console.log('saved metadata to db');
+                // console.log(metadata);
+
+                // send to another pipe
+                client.use("probe", function(err, tubename) {
+                  if (err) throw err;
+
+                  client.put(1, 0, 0, JSON.stringify(['probe', {
+                    type: "media",
+                    payload: {
+                      media: payload.media,
+                      meta: metadata
+                    }
+                  }]), function(err, jobid) {
+                    if (err) throw err;
+                  });
+                });
+
                 callback('success');
               } else {
                 console.log(err);
