@@ -46,10 +46,11 @@ module.exports = function() {
         Metadata.findById(payload.meta._id).exec(function(err, metadata) {
           if (!err) {
             console.log('loaded metadata from db');
-            metadata.download = data;
+            metadata['download'] = data;
             metadata.save(function(err) {
               if (!err) {
                 console.log('saved metadata to db');
+                console.log(metadata);
                 callback('success');
               } else {
                 console.log(err);
