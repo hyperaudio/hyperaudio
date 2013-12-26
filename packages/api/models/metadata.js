@@ -18,6 +18,7 @@ var Metadata = new mongoose.Schema({
   }
 }, {
   versionKey: true,
+  strict: false,
   collection: 'metadata'
 });
 
