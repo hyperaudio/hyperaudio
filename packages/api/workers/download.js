@@ -39,7 +39,7 @@ module.exports = function() {
       dl.on('end', function(data) {
         console.log(data);
 
-        Metadata.findById(req.params.id).exec(function(err, metadata) {
+        Metadata.findById(payload.meta._id).exec(function(err, metadata) {
           if (!err) {
             metadata.download = data;
             metadata.save(function(err) {
