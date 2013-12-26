@@ -77,9 +77,9 @@ module.exports = function() {
 		    }
 		  }
 
-		  console.log(JSON.stringify(map));
+		  // console.log(JSON.stringify(map));
 
-		  console.log('META');
+		  // console.log('META');
 		  Metadata.findById(payload.meta._id).exec(function(err, metadata) {
 	          if (!err) {
 	            metadata.probe = map;
