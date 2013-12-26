@@ -129,7 +129,7 @@ module.exports = function(app, nconf) {
 
     var metaId = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     req.body.meta['_id'] = metaId;
-    // console.log(req.body.meta);
+    console.log(req.body.meta);
     console.log("META?");
     var metadata = new Metadata(req.body.meta);
 
