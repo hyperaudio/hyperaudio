@@ -42,7 +42,7 @@ module.exports = function() {
             count: 2,
             timemarks: ['50%', '75%'],
             filename: '%b_screenshot_%w_%i'
-          }, folder), function(err, filenames) {
+          }, folder, function(err, filenames) {
             console.log(filenames);
           });
         } catch (ignored) {}
