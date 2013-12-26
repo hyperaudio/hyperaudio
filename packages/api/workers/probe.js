@@ -32,11 +32,13 @@ module.exports = function() {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
 
       console.log('SYNC');
+      console.log(folder);
       sync.fiber(function(){  
   		   console.log('SYNC??');
 		  // console.log(container.probe('00001.m4a'));
 		    
 		  var files = fs.readdirSync(folder);
+		  console.log(files);
 		  var map = {};
 
 		  var fileMetadata = function (file) {
@@ -80,6 +82,7 @@ module.exports = function() {
 
 		  console.log(JSON.stringify(map));
 
+		  console.log('META');
 		  Metadata.findById(payload.meta._id).exec(function(err, metadata) {
 	          if (!err) {
 	            metadata.probe = map;
@@ -99,7 +102,7 @@ module.exports = function() {
 
 		});
 
-		callback('success');
+		// callback('success');
 
       // probe(folder + payload.meta.download.filename, function(err, data) {
       // 	console.log(data);
