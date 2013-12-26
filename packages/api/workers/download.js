@@ -42,7 +42,7 @@ module.exports = function() {
           '--all-formats',
           '--all-subs',
           '--extract-audio',
-          '--audio-format=mp3',
+          // '--audio-format=mp3',
           '--keep-video'
         ]);
 
