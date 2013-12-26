@@ -63,7 +63,9 @@ haDash.Views = haDash.Views || {};
 					model.set('label', ytData.entry.title["$t"]);
 					model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
 					model.set('meta', {
-						"youtube": cleanYtData
+						"youtube": cleanYtData,
+						"download": null,
+						"probe": null
 					});
 					model.set('source', {
 						"youtube": {
