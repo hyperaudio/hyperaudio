@@ -33,7 +33,9 @@ module.exports = function() {
       });
 
       dl.on('error', function(err) {
-        throw err;
+        // throw err;
+        console.log(err);
+        callback('bury');
       });
 
       dl.on('end', function(data) {
@@ -45,15 +47,21 @@ module.exports = function() {
             metadata.save(function(err) {
               if (!err) {
                 callback('success');
-              } else throw err;
+              } else {
+                console.log(err);
+                callback('bury');
+              }
             });
-          } else throw err;
+          } else {
+            console.log(err);
+            callback('bury');
+          }
         });
 
       });
 
     } else {
-      callback('success');
+      callback('bury');
     }
 
     // var request = https.get(m.url, function(response) {
