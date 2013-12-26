@@ -1,11 +1,11 @@
-var https = require('https');
+// var https = require('https');
 var fs = require('fs');
-var path = require('path');
+// var path = require('path');
 
 var passport = require('passport');
 
 var mongoose = require('mongoose');
-var ObjectId = mongoose.Types.ObjectId;
+// var ObjectId = mongoose.Types.ObjectId;
 
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
