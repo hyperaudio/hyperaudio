@@ -8,6 +8,8 @@ var youtubedl = require('youtube-dl');
 var mongoose = require('mongoose');
 var Metadata = require('../models/metadata');
 
+mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
+
 module.exports = function() {
   function DownloadHandler() {
     this.type = 'media';
