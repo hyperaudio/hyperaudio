@@ -145,8 +145,8 @@ module.exports = function(app, nconf) {
       // transcripts: req.body.transcripts
     });
 
-    // console.log(mediaObject);
-
+    console.log(mediaObject);
+    console.log("metadata ?");
     metadata.save(function(err) {
       if (!err) {
         console.log("metadata created");
@@ -155,6 +155,7 @@ module.exports = function(app, nconf) {
       }
     });
 
+    console.log("media ?");
     mediaObject.save(function(err) {
       if (!err) {
         console.log("media created");

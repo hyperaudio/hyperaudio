@@ -29,7 +29,6 @@
 	  "fivebeans": "*",
 	  "client-sessions": "*",
 	  "toobusy": "*",
-    "youtube-dl": "*",
-    "node-ffprobe": "*"
+    "youtube-dl": "*"
   }
 }
