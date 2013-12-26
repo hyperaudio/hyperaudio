@@ -58,6 +58,9 @@ apt-get install -y mongodb-10gen
 apt-get install -y ffmpeg
 # TODO from source https://trac.ffmpeg.org/wiki/UbuntuCompilationGuide incl x264
 
+apt-get install -y rtmpdump librtmp-dev
+apt-get install -y youtube-dl
+
 
 
 # node from source

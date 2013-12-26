@@ -29,6 +29,9 @@
 	  "fivebeans": "*",
 	  "client-sessions": "*",
 	  "toobusy": "*",
-    "youtube-dl": "*"
+    "youtube-dl": "*",
+    "mime": "*",
+    "mmmagic": "*",
+    "synchronize": "*"
   }
 }

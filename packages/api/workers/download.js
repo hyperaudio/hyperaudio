@@ -32,8 +32,19 @@ module.exports = function() {
       } catch (ignored) {}
 
       var dl = youtubedl.download(payload.media.source.youtube.url,
-        folder,
-        ['--max-quality=18', '-o %(epoch)s-%(id)s.%(ext)s']);
+        folder, [
+          '--quiet',
+          '--max-quality=18',
+          '--output=%(autonumber)s.%(ext)s',
+          '--write-info-json',
+          '--write-annotations',
+          '--write-thumbnail',
+          '--all-formats',
+          '--all-subs',
+          '--extract-audio',
+          '--audio-format=mp3',
+          '--keep-video'
+        ]);
 
       dl.on('download', function(data) {
         console.log('filename: ' + data.filename);
@@ -43,7 +54,7 @@ module.exports = function() {
       dl.on('error', function(err) {
         // throw err;
         console.log(err);
-        callback('bury');
+        // callback('bury');
       });
 
       dl.on('end', function(data) {
