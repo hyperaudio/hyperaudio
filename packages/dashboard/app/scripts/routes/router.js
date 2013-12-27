@@ -17,6 +17,7 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		addMedia: function() {
+			console.log('ADD MEDIA');
 			new haDash.Views.AddMediaView({
 				model: new haDash.Models.MediaModel()
 			}).render();
@@ -37,6 +38,7 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		media: function() {
+			console.log('MEDIA');
 			// console.log('media');
 
 			// haDash.whoami(function(){
