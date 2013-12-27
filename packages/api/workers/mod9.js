@@ -1,22 +1,28 @@
-//FIXME use beanstalkd
 
 var querystring = require('querystring');
 var http = require('http');
-var winston = require('winston');
 
-require('winston-papertrail').Papertrail;
+module.exports = function() {
+  function ProbeHandler() {
+    this.type = 'transcript';
+  }
 
-var logger = new winston.Logger({
-  transports: [
-    new winston.transports.Papertrail({
-      host: 'logs.papertrailapp.com',
-      port: 56679,
-      logFormat: function(level, message) {
-        return '<<<' + level + '>>> ' + message;
-      }
-    })
-  ]
-});
+  ProbeHandler.prototype.work = function(payload, callback) {
+    console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
+
+    if (payload.meta.download) {
+      //
+    } else {
+      callback('bury');
+    }
+
+  };
+
+  var handler = new ProbeHandler();
+  return handler;
+};
+
+/////////////////
 
 process.on('message', function(m) {
 
@@ -39,14 +45,12 @@ process.on('message', function(m) {
   };
 
   console.log(options);
-  // logger.info(options);
 
   request = http.get(options, function(res) {
     var result = [];
     var part = "";
     res.on('data', function(data) {
       console.log('DATA ' + data);
-      // logger.info(data);
       try {
         data = part + data;
         result.push([process.hrtime(), JSON.parse(data)]);
@@ -54,21 +58,18 @@ process.on('message', function(m) {
         part = "";
       } catch (err) {
         console.log('err skipping');
-        // logger.warn(err);
-        // logger.warn('SKIP');
         part += data;
       }
     });
     res.on('end', function() {
       console.log('END');
       console.log(JSON.stringify(result));
-      // logger.info('END');
-      process.send(result);
-      process.disconnect();
+      // process.send(result);
+      // process.disconnect();
     })
     res.on('error', function(e) {
       console.log("Got error: " + e.message);
-      process.disconnect();
+      // process.disconnect();
     });
   });
 

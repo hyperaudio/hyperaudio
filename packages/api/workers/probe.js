@@ -1,4 +1,3 @@
-// var https = require('https');
 var sync = require('synchronize');
 
 var fs = require('fs');
@@ -33,7 +32,8 @@ module.exports = function() {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
 
       sync.fiber(function(){
-		  // console.log(container.probe('00001.m4a'));
+
+      //TODO sync this and put into the file list
       var screenshot = function(folder, file) {
         try {
           var proc = new ffmpeg({
