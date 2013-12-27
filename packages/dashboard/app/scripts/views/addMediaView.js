@@ -12,7 +12,7 @@ haDash.Views = haDash.Views || {};
         template: JST['app/scripts/templates/addMedia.ejs'],
 
 		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
+			// this.listenTo(this.model, 'change', this.render);
 		},
 
 		render: function() {
