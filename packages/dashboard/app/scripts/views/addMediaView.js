@@ -90,6 +90,7 @@ haDash.Views = haDash.Views || {};
 					haDash.mediaListView.collection.push(model);
 
 					model.save();
+					haDash.router.navigate("media/", {trigger: true});
 				}
 			});
 		}

@@ -6,11 +6,11 @@ haDash.Views = haDash.Views || {};
     'use strict';
 
     haDash.Views.MediaListView = Backbone.View.extend({
-		
+
 		el: '#main',
 
         template: JST['app/scripts/templates/mediaList.ejs'],
-		
+
 		initialize: function() {
 			this.render();
 
@@ -25,14 +25,14 @@ haDash.Views = haDash.Views || {};
 			// this.afterRender();
 			return this;
 		},
-		
+
 		// afterRender: function() {},
 
 		addItem: function(item) {
 			var view = new haDash.Views.MediaView({
 				model: item
 			});
-			
+
 			if (haDash.user && haDash.user.username == item.get('owner')) {
 				this.$('tbody.your').append(view.render().el);
 			} else {
@@ -43,11 +43,11 @@ haDash.Views = haDash.Views || {};
 		addAllItems: function() {
 			this.collection.each(this.addItem, this);
 		},
-		
+
 		events: {
 			'click #addMedia': 'addMedia'
 		},
-		
+
 		addMedia: function() {
 			new haDash.Views.AddMediaView({
 				model: new haDash.Models.MediaModel()
