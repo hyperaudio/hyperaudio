@@ -2,13 +2,12 @@
   "name": "ha-dash",
   "version": "0.0.2",
   "dependencies": {
-    "underscore": "~1.4.3",
-    "backbone": "~1.0.0",
-    "modernizr": "~2.6.2",
-    "jquery": "2.0.3",
-	"uri.js": "*",
+  "underscore": "~1.4.3",
+  "backbone": "~1.0.0",
+  "modernizr": "~2.6.2",
+  "jquery": "2.0.3",
 	"foundation": "~5.0.2",
-    "picturefill": "~1.2.1"
+  "picturefill": "~1.2.1"
   },
   "devDependencies": {}
 }
