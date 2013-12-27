@@ -12,7 +12,14 @@ haDash.Routers = haDash.Routers || {};
 			'media/': 'media',
 			'secret-signin/': 'signin',
 			'signout/': 'signout',
-			'secret-signup/': 'signup'
+			'secret-signup/': 'signup',
+			'add-media/': 'addMedia'
+		},
+
+		addMedia: function() {
+			new haDash.Views.AddMediaView({
+				model: new haDash.Models.MediaModel()
+			}).render();
 		},
 
 		dashboard: function() {
@@ -31,24 +38,24 @@ haDash.Routers = haDash.Routers || {};
 
 		media: function() {
 			// console.log('media');
-			
+
 			// haDash.whoami(function(){
-				
+
 				haDash.mediaListView = new haDash.Views.MediaListView({
 					collection: new haDash.Collections.MediaCollection()
 				});
-			
-				// setTimeout(applyTooltips, 500);//FIXME			
+
+				// setTimeout(applyTooltips, 500);//FIXME
 			// });
-			
+
 		},
-		
+
 		signin: function() {
 			haDash.signInView = new haDash.Views.SignInView({});
 		},
-		
+
 		signout: function() {
-			
+
 			$.ajax({
 				url: haDash.API + '/logout',
 				xhrFields: {
@@ -62,7 +69,7 @@ haDash.Routers = haDash.Routers || {};
 			});
 
 		},
-		
+
 		signup: function() {
 			haDash.signUpView = new haDash.Views.SignUpView({});
 		}

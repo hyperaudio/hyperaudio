@@ -49,9 +49,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		addMedia: function() {
-			new haDash.Views.AddMediaView({
-				model: new haDash.Models.MediaModel()
-			}).render();
+			haDash.router.navigate("add-media/", {trigger: true});
 		}
 
     });
