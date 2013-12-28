@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaView = Backbone.View.extend({
 
-		id: '#mediaPreview',
+		tagName: 'tr',
 
         template: JST['app/scripts/templates/media.ejs'],
 
