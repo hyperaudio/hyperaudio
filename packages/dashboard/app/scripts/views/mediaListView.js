@@ -37,15 +37,15 @@ haDash.Views = haDash.Views || {};
 				model: item
 			});
 
-			if (haDash.user && haDash.user == item.get('owner')) {
-				this.$('tbody.your').append(view.render().el);
+			if (haDash.user == item.get('owner')) {
+				this.$el.find('tbody.your').append(view.render().el);
 			} else {
-				this.$('tbody.other').append(view.render().el);
+				this.$el.find('tbody.other').append(view.render().el);
 			}
 		},
 
 		addAllItems: function() {
-			console.log('media adding all items: ' + this.collection.lenght);
+			console.log('media adding all items: ' + this.collection.length);
 			this.collection.each(this.addItem, this);
 		},
 
