@@ -1,5 +1,5 @@
 /*global haDash, $*/
-
+Backbone.emulateJSON = false;
 
 window.haDash = {
 	API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io/v1', //FIXME?
