@@ -19,6 +19,19 @@ haDash.Views = haDash.Views || {};
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.find("span.timeago").timeago();
 			return this;
+		},
+
+		events: {
+			"click h2.label": "editLabel",
+			"blur h2.label": "saveLabel"
+		},
+
+		editLabel: function(event) {
+			$(event.target).attr('contenteditable', true);
+		},
+
+		saveLabel: function(event) {
+			$(event.target).attr('contenteditable', false);
 		}
 
     });
