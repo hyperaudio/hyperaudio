@@ -44,9 +44,11 @@ haDash.Routers = haDash.Routers || {};
 				haDash.mediaCollection = new haDash.Collections.MediaCollection();
 			}
 
-			haDash.mediaListView = new haDash.Views.MediaListView({
-				collection: haDash.mediaCollection
-			});
+			if (!haDash.mediaListView) {
+				haDash.mediaListView = new haDash.Views.MediaListView({
+					collection: haDash.mediaCollection
+				});
+			}
 
 			haDash.mediaCollection.fetch();
 
