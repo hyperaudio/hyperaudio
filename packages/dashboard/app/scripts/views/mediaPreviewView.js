@@ -22,17 +22,30 @@ haDash.Views = haDash.Views || {};
 		},
 
 		events: {
-			"click h2.label": "editLabel",
-			"blur h2.label": "saveLabel"
+			"click h2.label, p.desc": "edit",
+			"blur h2.label": "saveLabel",
+			"blur p.desc": "saveDesc"
 		},
 
-		editLabel: function(event) {
+		edit: function(event) {
+			if (!this.model.get('owner') == haDash.user) return;
 			$(event.target).attr('contenteditable', true);
 		},
 
 		saveLabel: function(event) {
+			if (!this.model.get('owner') == haDash.user) return;
 			$(event.target).attr('contenteditable', false);
 			this.model.set('label', $(event.target).text().trim());
+		},
+
+		saveDesc: function(event) {
+			if (!this.model.get('owner') == haDash.user) return;
+			$(event.target).attr('contenteditable', false);
+			this.model.set('desc', $(event.target).text().trim());
+		},
+
+		save: function() {
+			if (!this.model.get('owner') == haDash.user) return;
 			this.model.save(null, {
 				url: haDash.API + '/media/' + this.model.id
 			});
