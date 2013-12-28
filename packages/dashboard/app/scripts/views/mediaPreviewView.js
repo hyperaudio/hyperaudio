@@ -36,12 +36,14 @@ haDash.Views = haDash.Views || {};
 			if (!this.model.get('owner') == haDash.user) return;
 			$(event.target).attr('contenteditable', false);
 			this.model.set('label', $(event.target).text().trim());
+			this.save();
 		},
 
 		saveDesc: function(event) {
 			if (!this.model.get('owner') == haDash.user) return;
 			$(event.target).attr('contenteditable', false);
 			this.model.set('desc', $(event.target).text().trim());
+			this.save();
 		},
 
 		save: function() {
