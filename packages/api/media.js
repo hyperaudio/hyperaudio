@@ -80,7 +80,7 @@ module.exports = function(app, nconf) {
       id: req.params.id
     });
 
-    return MediaObject.findById(req.params.id).populate('meta transcripts').exec(function(err, mediaObject) {
+    return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
       }
@@ -93,6 +93,24 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/media/:id/:meta', function(req, res) {
+    cube("get_media", {
+      user: req.params.user,
+      id: req.params.id
+    });
+
+    return MediaObject.findById(req.params.id).populate('meta', req.params.meta).exec(function(err, mediaObject) {
+      if (!err) {
+        return res.send(mediaObject);
+      }
+
+      res.status(404);
+      res.send({
+        error: 'Not found'
+      });
+      return;
+    });
+  });
   app.put('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
 
