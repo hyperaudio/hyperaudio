@@ -57,6 +57,12 @@ app.use(sessions({
   activeDuration: 1000 * 60 * 5 // conf
 }));
 
+app.use(express.csrf());
+app.use(function(req, res, next){
+  res.locals.token = req.session._csrf;
+  next();
+});
+
 // app.use(function(req, res, next) {
 //   // console.log(req.session);
 //   if (req.session.seenyou) {
@@ -151,7 +157,8 @@ app.get('/v1/whoami', function(req, res) {
   // 	console.log('auth ' + req.isAuthenticated());
 
   res.json({
-    user: req.session.user
+    user: req.session.user,
+    _csrf: req.session._csrf
   });
 });
 
@@ -164,7 +171,8 @@ app.get('/v1/whoami', function(req, res) {
 
 app.get('/v1/login', function(req, res) {
   res.render('login', {
-    user: req.user
+    user: req.user,
+    csrf_token: req.session._csrf
   });
 });
 
@@ -176,7 +184,8 @@ app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   });
 
   res.json({
-    user: req.user.username
+    user: req.user.username,
+    _csrf: req.session._csrf
   });
 });
 
@@ -194,7 +203,9 @@ app.post('/v1/logout', function(req, res) {
 });
 
 app.get('/v1/register', function(req, res) {
-  res.render('register', {});
+  res.render('register', {
+    csrf_token: req.session._csrf
+  });
 });
 
 app.post('/v1/register', function(req, res) {
@@ -218,7 +229,8 @@ app.post('/v1/register', function(req, res) {
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         res.json({
-          user: req.user
+          user: req.user,
+          _csrf: req.session._csrf
         });
       } else {
         res.json({
