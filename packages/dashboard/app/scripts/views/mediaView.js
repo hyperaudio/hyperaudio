@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaView = Backbone.View.extend({
 
-		tagName: 'tr',
+		id: '#mediaPreview',
 
         template: JST['app/scripts/templates/media.ejs'],
 
@@ -26,12 +26,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		preview: function() {
-			var model = this.model;
-			model.fetch();
-
-			new haDash.Views.MediaPreviewView({
-				model: model
-			}).render();
+			haDash.router.navigate("media/" + this.model.id, {trigger: true});
 		}
 
     });

@@ -12,6 +12,7 @@ haDash.Routers = haDash.Routers || {};
 			'': 'dashboard',
 			'mixes/': 'mixes',
 			'media/': 'media',
+			'media/:id': 'mediaObject',
 			'secret-signin/': 'signin',
 			'signout/': 'signout',
 			'secret-signup/': 'signup',
@@ -53,6 +54,16 @@ haDash.Routers = haDash.Routers || {};
 			$main.empty().append(haDash.mediaListView.render().el);
 			haDash.mediaCollection.fetch();
 
+		},
+
+		mediaObject: function(id) {
+			//FIXME populate collection before?
+
+			$main.empty().append(
+				new haDash.Views.MediaPreviewView({
+					model: aDash.mediaCollection.get(id)
+				}).render().el
+			);
 		},
 
 		signin: function() {
