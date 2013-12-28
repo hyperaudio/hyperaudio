@@ -73,6 +73,7 @@ haDash.Views = haDash.Views || {};
 
 						ytClone(cleanYtData, ytData);
 
+						// model.set('created', haDash.user);
 						model.set('owner', haDash.user);
 						model.set('label', ytData.entry.title["$t"]);
 						model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);

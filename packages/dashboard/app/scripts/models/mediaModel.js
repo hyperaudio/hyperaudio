@@ -16,10 +16,11 @@ haDash.Models = haDash.Models || {};
 					type: "video",
 					// sort: 0,
 					owner: null,
+					created: new Date().toISOString(),
 					meta: {},
 					transcripts: []
 				};
 			}
 	});
-		
+
 })();
