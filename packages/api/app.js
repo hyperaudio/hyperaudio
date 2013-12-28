@@ -41,10 +41,10 @@ app.use(function(req, res, next) {
 });
 
 // KILL 304 BS
-app.use(function(req, res, next) {
-  req.headers['if-none-match'] = 'no-match-for-this';
-  next();
-});
+// app.use(function(req, res, next) {
+//   req.headers['if-none-match'] = 'no-match-for-this';
+//   next();
+// });
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
