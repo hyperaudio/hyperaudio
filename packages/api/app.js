@@ -42,7 +42,11 @@ app.use(function(req, res, next) {
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
+
 // app.use(express.bodyParser());
+app.use(express.json());
+app.use(express.urlencoded());
+
 app.use(express.methodOverride());
 
 var sessions = require("client-sessions");
