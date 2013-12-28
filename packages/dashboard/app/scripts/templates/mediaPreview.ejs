@@ -2,12 +2,6 @@
 
 <p class="lead"><%= desc %></p>
 
-<ol>
-	<% for(var i = 0; i < transcripts.length; i++) { %>
-   		<li><%= transcripts[i].label %></li>
-	<% } %>
-</ol>
-
 <a class="button primary" target="_new" href="http://hyperaud.io/maker/?m=<%= _id%>">Create Transcript</a>
 <a class="button primary" target="_new" href="http://hyperaud.io/converter/?m=<%= _id%>">Convert Transcript</a>
 
@@ -22,6 +16,7 @@
       <th class="span4">Description</th>
       <th class="span2">Date</th>
       <th>Author</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
