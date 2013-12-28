@@ -29,12 +29,9 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		mixes: function() {
-			// console.log('mixes');
-			// haDash.whoami(function(){
-				haDash.mixListView = new haDash.Views.MixListView({
-					collection: new haDash.Collections.MixCollection()
-				});
-			// });
+			haDash.mixListView = new haDash.Views.MixListView({
+				collection: new haDash.Collections.MixCollection()
+			});
 		},
 
 		media: function() {
