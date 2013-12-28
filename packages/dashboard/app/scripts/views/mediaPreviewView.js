@@ -34,7 +34,7 @@ haDash.Views = haDash.Views || {};
 			$(event.target).attr('contenteditable', false);
 			this.model.set('label', $(event.target).text().trim());
 			this.model.save({
-				url: haDash.API + '/media/' + model.id
+				url: haDash.API + '/media/' + this.model.id
 			});
 		}
 
