@@ -61,7 +61,7 @@ haDash.Routers = haDash.Routers || {};
 
 			$main.empty().append(
 				new haDash.Views.MediaPreviewView({
-					model: aDash.mediaCollection.get(id)
+					model: haDash.mediaCollection.get(id)
 				}).render().el
 			);
 		},
