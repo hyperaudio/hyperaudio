@@ -48,7 +48,6 @@ haDash.Views = haDash.Views || {};
 
 		addAllItems: function() {
 			console.log('media adding all items: ' + this.collection.length);
-			this.collection.sort();
 			this.collection.each(this.addItem, this);
 		},
 
