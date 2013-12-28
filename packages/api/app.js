@@ -180,8 +180,8 @@ app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   });
 });
 
-app.get('/v1/logout', function(req, res) {
-  cube("get_logout", {
+app.post('/v1/logout', function(req, res) {
+  cube("post_logout", {
     user: req.session.user
   });
 
