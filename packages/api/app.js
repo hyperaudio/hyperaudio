@@ -72,12 +72,6 @@ app.use(sessions({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(express.csrf());
-app.use(function(req, res, next){
-  res.locals.token = req.csrfToken();
-  next();
-});
-
 //http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Credentials", "true");
@@ -157,8 +151,7 @@ app.get('/v1/whoami', function(req, res) {
   // 	console.log('auth ' + req.isAuthenticated());
 
   res.json({
-    user: req.session.user,
-    _csrf: req.csrfToken()
+    user: req.session.user
   });
 });
 
@@ -171,8 +164,7 @@ app.get('/v1/whoami', function(req, res) {
 
 app.get('/v1/login', function(req, res) {
   res.render('login', {
-    user: req.user,
-    csrf_token: req.csrfToken()
+    user: req.user
   });
 });
 
@@ -185,8 +177,7 @@ app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   });
 
   res.json({
-    user: req.user.username,
-    _csrf: req.csrfToken()
+    user: req.user.username
   });
 });
 
@@ -204,9 +195,7 @@ app.post('/v1/logout', function(req, res) {
 });
 
 app.get('/v1/register', function(req, res) {
-  res.render('register', {
-    csrf_token: req.csrfToken()
-  });
+  res.render('register', {});
 });
 
 app.post('/v1/register', express.bodyParser, function(req, res) {
@@ -230,8 +219,7 @@ app.post('/v1/register', express.bodyParser, function(req, res) {
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         res.json({
-          user: req.user,
-          _csrf: req.csrfToken()
+          user: req.user
         });
       } else {
         res.json({
