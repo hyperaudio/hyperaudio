@@ -32,6 +32,7 @@ haDash.Views = haDash.Views || {};
 		// },
 
 		addItem: function(item) {
+			console.log('media adding items: ' + item.get('_id'));
 			var view = new haDash.Views.MediaView({
 				model: item
 			});
@@ -44,6 +45,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		addAllItems: function() {
+			console.log('media adding all items: ' + this.collection.lenght);
 			this.collection.each(this.addItem, this);
 		},
 
