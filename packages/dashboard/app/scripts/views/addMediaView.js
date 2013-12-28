@@ -24,7 +24,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		events: {
-			"click button": "addYT"
+			"click button": "addVideo"
 		},
 
 		//https://gist.github.com/takien/4077195
@@ -41,7 +41,7 @@ haDash.Views = haDash.Views || {};
 		    return ID;
 		},
 
-		addYT: function() {
+		addVideo: function() {
 			var url = this.$el.find('input').val();
 			var ytID = this.YouTubeGetID(url);
 
@@ -89,10 +89,14 @@ haDash.Views = haDash.Views || {};
 
 						console.log(model);
 
-						haDash.mediaListView.collection.push(model);
+						haDash.mediaListView.collection.add(model);
 
-						model.save();
-						haDash.router.navigate("media/", {trigger: true});
+						model.save(null, {
+							success: function() {
+								haDash.router.navigate("media/", {trigger: true});
+							}
+						});
+
 					}
 				});
 			} else {
@@ -109,10 +113,13 @@ haDash.Views = haDash.Views || {};
 
 				console.log(model);
 
-				haDash.mediaListView.collection.push(model);
+				haDash.mediaListView.collection.add(model);
 
-				model.save();
-				haDash.router.navigate("media/", {trigger: true});
+				model.save(null, {
+					success: function() {
+						haDash.router.navigate("media/", {trigger: true});
+					}
+				});
 			}
 		}
 
