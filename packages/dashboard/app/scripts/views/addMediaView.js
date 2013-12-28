@@ -36,63 +36,83 @@ haDash.Views = haDash.Views || {};
 		    ID = ID[0];
 		  }
 		  else {
-		    ID = url;
+		    ID = null;
 		  }
 		    return ID;
 		},
 
 		addYT: function() {
-			var ytID = this.YouTubeGetID(this.$el.find('input').val());
+			var url = this.$el.find('input').val();
+			var ytID = this.YouTubeGetID(url);
 
-			console.log(ytID);
 
 			var model = this.model;
 
-			$.ajax({
-				url: "http://gdata.youtube.com/feeds/api/videos/" + ytID + "?v=2&alt=json",
-				success: function(ytData) {
-					console.log(ytData);
+			if (ytID) {
+				$.ajax({
+					url: "http://gdata.youtube.com/feeds/api/videos/" + ytID + "?v=2&alt=json",
+					success: function(ytData) {
+						console.log(ytData);
 
-					//clean yt json
-					var cleanYtData = {};
+						//clean yt json
+						var cleanYtData = {};
 
-					function ytClone(destination, source) {
-					  for (var property in source) {
-					    var prop = property.replace(/\$/g, '_');
-					    if (typeof source[property] === "object" &&
-					     source[property] !== null ) {
-					      destination[prop] = destination[prop] || {};
-					      ytClone(destination[prop], source[property]);
-					    } else {
-					      destination[prop] = source[property];
-					    }
-					  }
-					  return destination;
-					};
+						function ytClone(destination, source) {
+						  for (var property in source) {
+						    var prop = property.replace(/\$/g, '_');
+						    if (typeof source[property] === "object" &&
+						     source[property] !== null ) {
+						      destination[prop] = destination[prop] || {};
+						      ytClone(destination[prop], source[property]);
+						    } else {
+						      destination[prop] = source[property];
+						    }
+						  }
+						  return destination;
+						};
 
-					ytClone(cleanYtData, ytData);
+						ytClone(cleanYtData, ytData);
 
-					model.set('owner', haDash.user);
-					model.set('label', ytData.entry.title["$t"]);
-					model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
-					model.set('meta', {
-						"youtube": cleanYtData
-					});
-					model.set('source', {
-						"youtube": {
-						      "type": "video/youtube",
-						      "url": "http://www.youtube.com/watch?v=" + ytID
-						 }
-					});
+						model.set('owner', haDash.user);
+						model.set('label', ytData.entry.title["$t"]);
+						model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
+						model.set('meta', {
+							"youtube": cleanYtData
+						});
+						model.set('source', {
+							"youtube": {
+							      "type": "video/youtube",
+							      "url": "http://www.youtube.com/watch?v=" + ytID
+							 }
+						});
 
-					console.log(model);
+						console.log(model);
 
-					haDash.mediaListView.collection.push(model);
+						haDash.mediaListView.collection.push(model);
 
-					model.save();
-					haDash.router.navigate("media/", {trigger: true});
-				}
-			});
+						model.save();
+						haDash.router.navigate("media/", {trigger: true});
+					}
+				});
+			} else {
+				// non YT, hope for the best
+				model.set('owner', haDash.user);
+				model.set('label', 'n/a');
+				model.set('desc', url);
+				model.set('meta', {});
+				model.set('source', {
+					"unknown": {
+						"url": url
+					}
+				});
+
+				console.log(model);
+
+				haDash.mediaListView.collection.push(model);
+
+				model.save();
+				haDash.router.navigate("media/", {trigger: true});
+			}
 		}
 
     });
