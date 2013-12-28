@@ -35,7 +35,7 @@ haDash.Views = haDash.Views || {};
 				model: item
 			});
 
-			if (haDash.user && haDash.user.username == item.get('owner')) {
+			if (haDash.user && haDash.user == item.get('owner')) {
 				this.$('tbody.your').append(view.render().el);
 			} else {
 				this.$('tbody.other').append(view.render().el);
