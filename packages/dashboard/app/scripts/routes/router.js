@@ -58,10 +58,14 @@ haDash.Routers = haDash.Routers || {};
 
 		mediaObject: function(id) {
 			//FIXME populate collection before?
+			var model = new haDash.Models.MediaModel({_id: id});
+			model.fetch({
+				url: haDash.API + '/media/' + id
+			});
 
 			$main.empty().append(
 				new haDash.Views.MediaPreviewView({
-					model: haDash.mediaCollection.get(id)
+					model: model
 				}).render().el
 			);
 		},

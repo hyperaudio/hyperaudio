@@ -18,8 +18,6 @@ haDash.Views = haDash.Views || {};
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 
-			this.$el.foundation('reveal', 'open');
-
 			return this;
 		}
 
