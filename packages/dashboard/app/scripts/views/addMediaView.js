@@ -16,7 +16,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		render: function() {
-			this.$el.html(this.template(this.model.toJSON())).prependTo('#main');
+			this.$el.html(this.template(this.model.toJSON()));
 
 			// this.$el.foundation('reveal', 'open');
 

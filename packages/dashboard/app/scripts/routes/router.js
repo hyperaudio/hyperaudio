@@ -5,6 +5,8 @@ haDash.Routers = haDash.Routers || {};
 (function() {
 	'use strict';
 
+	var $main = $('#main');
+
 	haDash.Routers.Router = Backbone.Router.extend({
 		routes: {
 			'': 'dashboard',
@@ -18,9 +20,11 @@ haDash.Routers = haDash.Routers || {};
 
 		addMedia: function() {
 			console.log('ADD MEDIA');
-			new haDash.Views.AddMediaView({
-				model: new haDash.Models.MediaModel()
-			}).render();
+			$main.empty().append(
+				new haDash.Views.AddMediaView({
+					model: new haDash.Models.MediaModel()
+				}).render().el
+			);
 		},
 
 		dashboard: function() {
@@ -46,7 +50,7 @@ haDash.Routers = haDash.Routers || {};
 					collection: haDash.mediaCollection
 				});
 			// }
-			haDash.mediaListView.render();
+			$main.empty().append(haDash.mediaListView.render().el);
 			haDash.mediaCollection.fetch();
 
 		},

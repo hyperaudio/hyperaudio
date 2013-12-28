@@ -23,7 +23,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		render: function() {
-			this.$el.html(this.template()).appendTo('#main');
+			this.$el.html(this.template());
 			// this.afterRender();
 			this.addAllItems();
 			return this;
@@ -57,11 +57,11 @@ haDash.Views = haDash.Views || {};
 
 		addMedia: function() {
 			haDash.router.navigate("add-media/", {trigger: true});
-			var view = this;
-			this.$el.slideUp(200, function(){
-				view.remove();
-			});
-
+			// var view = this;
+			// this.$el.slideUp(200, function(){
+			// 	view.remove();
+			// });
+			this.remove();
 		}
 
     });
