@@ -60,9 +60,15 @@ haDash.Routers = haDash.Routers || {};
 
 			$.ajax({
 				url: haDash.API + '/logout',
+				contentType: "application/json; charset=utf-8",
+    			dataType: "json",
 				xhrFields: {
 					withCredentials: true
 				},
+				method: 'post',
+				data: JSON.stringify({
+					_csfr: 'TODO'
+				}),
 				success: function() {
   			      haDash.whoami(function() {
   			        haDash.router.navigate("mixes/", {trigger: true});
