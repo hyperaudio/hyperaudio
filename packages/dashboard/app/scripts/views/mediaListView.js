@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaListView = Backbone.View.extend({
 
-		el: '#main',
+		id: 'mediaListView',
 
         template: JST['app/scripts/templates/mediaList.ejs'],
 
@@ -23,7 +23,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		render: function() {
-			this.$el.html(this.template());
+			this.$el.html(this.template()).appendTo('#main');
 			// this.afterRender();
 			this.addAllItems();
 			return this;

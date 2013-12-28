@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.AddMediaView = Backbone.View.extend({
 
-		el: '#main',
+		id: 'addMediaView',
 
         template: JST['app/scripts/templates/addMedia.ejs'],
 
@@ -16,7 +16,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
+			this.$el.html(this.template(this.model.toJSON())).appendTo('#main');
 
 			// this.$el.foundation('reveal', 'open');
 
