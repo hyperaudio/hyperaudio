@@ -12,8 +12,8 @@ haDash.Views = haDash.Views || {};
         template: JST['app/scripts/templates/mediaList.ejs'],
 
 		initialize: function() {
-			this.render();
-			this.addAllItems();
+			// this.render();
+			// this.addAllItems();
 
 			this.listenTo(this.collection, 'add', this.addItem);
 			this.listenTo(this.collection, 'reset', this.addAllItems);
@@ -24,6 +24,7 @@ haDash.Views = haDash.Views || {};
 		render: function() {
 			this.$el.html(this.template());
 			// this.afterRender();
+			this.addAllItems();
 			return this;
 		},
 

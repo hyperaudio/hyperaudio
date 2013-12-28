@@ -49,7 +49,7 @@ haDash.Routers = haDash.Routers || {};
 					collection: haDash.mediaCollection
 				});
 			}
-
+			haDash.mediaListView.render();
 			haDash.mediaCollection.fetch();
 
 		},
