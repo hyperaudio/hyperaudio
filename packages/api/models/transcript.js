@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Transcript = new mongoose.Schema({
+  _id: String,
   label: String,
   desc: String,
   type: String,
@@ -24,7 +25,6 @@ var Transcript = new mongoose.Schema({
   // alignments: Schema.Types.Mixed
 }, {
   versionKey: false,
-  _id: false,
   collection: 'transcripts'
 });
 
