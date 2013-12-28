@@ -27,7 +27,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		afterRender: function() {
-			this.$("span.timeago").timeago();
+			this.$el.find("span.timeago").timeago();
 		},
 
 		addItem: function(item) {
