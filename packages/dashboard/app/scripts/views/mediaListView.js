@@ -13,11 +13,12 @@ haDash.Views = haDash.Views || {};
 
 		initialize: function() {
 			this.render();
+			this.addAllItems();
 
 			this.listenTo(this.collection, 'add', this.addItem);
 			this.listenTo(this.collection, 'reset', this.addAllItems);
 
-			this.collection.fetch();
+			// this.collection.fetch();
 		},
 
 		render: function() {

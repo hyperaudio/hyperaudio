@@ -39,7 +39,7 @@ haDash.Routers = haDash.Routers || {};
 
 		media: function() {
 			console.log('MEDIA');
-			// console.log('media');
+
 			if (!haDash.mediaCollection) {
 				haDash.mediaCollection = new haDash.Collections.MediaCollection();
 			}
@@ -47,6 +47,8 @@ haDash.Routers = haDash.Routers || {};
 			haDash.mediaListView = new haDash.Views.MediaListView({
 				collection: haDash.mediaCollection
 			});
+
+			haDash.mediaCollection.fetch();
 
 		},
 
