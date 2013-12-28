@@ -1,6 +1,6 @@
-<h2 class="label"><%= label %></h2>
+<h2 class="label"><%- label %></h2>
 
-<p class="lead desc"><%= desc %></p>
+<p class="lead desc"><%- desc %></p>
 
 <a class="button primary" target="_new" href="http://hyperaud.io/maker/?m=<%= _id%>">Create Transcript</a>
 <a class="button primary" target="_new" href="http://hyperaud.io/converter/?m=<%= _id%>">Convert Transcript</a>
@@ -22,11 +22,11 @@
   <tbody>
   	<% for(var i = 0; i < transcripts.length; i++) { %>
   		<tr>
-   			<td class="span1"><%= transcripts[i].type %></td>
-   			<td class="span2 label"><%= transcripts[i].label %></td>
-   			<td class="span4"><%= transcripts[i].desc %></td>
+   			<td class="span1"><%- transcripts[i].type %></td>
+   			<td class="span2 label"><%- transcripts[i].label %></td>
+   			<td class="span4"><%- transcripts[i].desc %></td>
    			<td class="span2"><span class="timeago" title="<%= transcripts[i].created %>"><%= transcripts[i].created %></span></td>
-   			<td><%= transcripts[i].owner %></td>
+   			<td><%- transcripts[i].owner %></td>
    			<td>actions</td>
    		</tr>
 	<% } %>
