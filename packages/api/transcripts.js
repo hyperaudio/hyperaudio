@@ -5,6 +5,9 @@ var fs = require('fs');
 var path = require('path');
 var url = require('url');
 
+var uuid = require("node-uuid");
+var urlSafeBase64 = require('urlsafe-base64');
+
 var fivebeans = require('fivebeans');
 var client = new fivebeans.client('127.0.0.1', 11300);
 client.connect(function(err) {
@@ -25,7 +28,7 @@ function cube(type, data) {
 }
 
 function ensureOwnership(req, res, next) {
-  if (req.isAuthenticated()) { 
+  if (req.isAuthenticated()) {
     if (req.user.username != req.params.user) {
       res.status(403);
       res.send({
@@ -211,6 +214,7 @@ module.exports = function(app, nconf) {
     }
 
     transcript = new Transcript({
+      _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
