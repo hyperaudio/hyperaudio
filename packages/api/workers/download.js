@@ -23,13 +23,14 @@ module.exports = function() {
     // console.log(payload);
     // console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
 
-    if (payload.media.source.youtube) {
+    if (payload.media.source.youtube || payload.media.source.unknown) {
       var folder = path.join(__dirname, '../media/' + payload.media._id + '/');
       try{
         fs.mkdirSync(folder);
       } catch (ignored) {}
 
-      var dl = youtubedl.download(payload.media.source.youtube.url,
+      var url = (payload.media.source.youtube)?payload.media.source.youtube.url:payload.media.source.unknown.url;
+      var dl = youtubedl.download(url,
         folder, [
           '--quiet',
           '--max-quality=18',
