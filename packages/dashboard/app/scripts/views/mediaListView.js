@@ -16,7 +16,8 @@ haDash.Views = haDash.Views || {};
 			// this.addAllItems();
 
 			this.listenTo(this.collection, 'add', this.addItem);
-			this.listenTo(this.collection, 'reset', this.addAllItems);
+			this.listenTo(this.collection, 'reset', this.render);
+			this.listenTo(this.collection, 'sort', this.render);
 
 			// this.collection.fetch();
 		},
