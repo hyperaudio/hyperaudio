@@ -74,7 +74,7 @@ app.use(passport.session());
 
 app.use(express.csrf());
 app.use(function(req, res, next){
-  res.locals.token = req.session._csrf;
+  res.locals.token = req.csrfToken();
   next();
 });
 
@@ -158,7 +158,7 @@ app.get('/v1/whoami', function(req, res) {
 
   res.json({
     user: req.session.user,
-    _csrf: req.session._csrf,
+    _csrf: req.csrfToken(),
     session: req.session
   });
 });
@@ -173,7 +173,7 @@ app.get('/v1/whoami', function(req, res) {
 app.get('/v1/login', function(req, res) {
   res.render('login', {
     user: req.user,
-    csrf_token: req.session._csrf
+    csrf_token: req.csrfToken()
   });
 });
 
@@ -186,7 +186,7 @@ app.post('/v1/login', passport.authenticate('local'), function(req, res) {
 
   res.json({
     user: req.user.username,
-    _csrf: req.session._csrf
+    _csrf: req.csrfToken()
   });
 });
 
@@ -205,7 +205,7 @@ app.post('/v1/logout', function(req, res) {
 
 app.get('/v1/register', function(req, res) {
   res.render('register', {
-    csrf_token: req.session._csrf
+    csrf_token: req.csrfToken()
   });
 });
 
@@ -231,7 +231,7 @@ app.post('/v1/register', function(req, res) {
         // req.session.user = req.user.username;
         res.json({
           user: req.user,
-          _csrf: req.session._csrf
+          _csrf: req.csrfToken()
         });
       } else {
         res.json({
