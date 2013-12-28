@@ -57,12 +57,6 @@ app.use(sessions({
   activeDuration: 1000 * 60 * 5 // conf
 }));
 
-app.use(express.csrf());
-app.use(function(req, res, next){
-  res.locals.token = req.session._csrf;
-  next();
-});
-
 // app.use(function(req, res, next) {
 //   // console.log(req.session);
 //   if (req.session.seenyou) {
@@ -77,6 +71,12 @@ app.use(function(req, res, next){
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(express.csrf());
+app.use(function(req, res, next){
+  res.locals.token = req.session._csrf;
+  next();
+});
 
 //http://stackoverflow.com/questions/7067966/how-to-allow-cors-in-express-nodejs
 app.use(function(req, res, next) {
@@ -158,7 +158,8 @@ app.get('/v1/whoami', function(req, res) {
 
   res.json({
     user: req.session.user,
-    _csrf: req.session._csrf
+    _csrf: req.session._csrf,
+    session: req.session
   });
 });
 
