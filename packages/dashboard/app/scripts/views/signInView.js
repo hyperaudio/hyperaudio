@@ -31,14 +31,16 @@ haDash.Views = haDash.Views || {};
 
 			$.ajax({
 				url: haDash.API + '/login',
+				contentType: "application/json; charset=utf-8",
+    			dataType: "json",
 				xhrFields: {
 					withCredentials: true
 				},
 				method: 'post',
-				data: {
+				data: JSON.stringify({
 			        username: $('#username').val(),
 			        password: $('#password').val()
-			    }
+			    })
 			})
 			.done(function(whoami) {
 				console.log(whoami);
