@@ -14,7 +14,7 @@ haDash.Collections = haDash.Collections || {};
 		},
 
 		comparator: function(model) {
-     	   return - new Date(model.get('created')).getTime();
+     	   return new Date(model.get('created')).getTime();
     	}
 
     });
