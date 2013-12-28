@@ -22,13 +22,13 @@ haDash.Views = haDash.Views || {};
 
 		render: function() {
 			this.$el.html(this.template());
-			this.afterRender();
+			// this.afterRender();
 			return this;
 		},
 
-		afterRender: function() {
-			this.$el.find("span.timeago").timeago();
-		},
+		// afterRender: function() {
+
+		// },
 
 		addItem: function(item) {
 			var view = new haDash.Views.MediaView({

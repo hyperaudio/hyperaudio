@@ -40,15 +40,9 @@ haDash.Routers = haDash.Routers || {};
 		media: function() {
 			console.log('MEDIA');
 			// console.log('media');
-
-			// haDash.whoami(function(){
-
-				haDash.mediaListView = new haDash.Views.MediaListView({
-					collection: new haDash.Collections.MediaCollection()
-				});
-
-				// setTimeout(applyTooltips, 500);//FIXME
-			// });
+			haDash.mediaListView = new haDash.Views.MediaListView({
+				collection: new haDash.Collections.MediaCollection()
+			});
 
 		},
 
