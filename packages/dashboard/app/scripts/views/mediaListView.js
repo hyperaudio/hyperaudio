@@ -57,7 +57,11 @@ haDash.Views = haDash.Views || {};
 
 		addMedia: function() {
 			haDash.router.navigate("add-media/", {trigger: true});
-			this.remove();
+			var view = this;
+			this.$el.slideUp(200, function(){
+				view.remove();
+			});
+
 		}
 
     });
