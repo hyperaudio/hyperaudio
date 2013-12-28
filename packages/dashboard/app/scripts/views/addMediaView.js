@@ -47,6 +47,7 @@ haDash.Views = haDash.Views || {};
 
 
 			var model = this.model;
+			var view = this;
 
 			if (ytID) {
 				$.ajax({
@@ -94,6 +95,7 @@ haDash.Views = haDash.Views || {};
 						model.save(null, {
 							success: function() {
 								haDash.router.navigate("media/", {trigger: true});
+								view.remove();
 							}
 						});
 
@@ -118,6 +120,7 @@ haDash.Views = haDash.Views || {};
 				model.save(null, {
 					success: function() {
 						haDash.router.navigate("media/", {trigger: true});
+						view.remove();
 					}
 				});
 			}
