@@ -17,7 +17,6 @@ window.haDash = {
 			pushState: true
 		});
 
-		this.whoami();
 
 		// FUGLY
 		$('a.media').click(function(e){
@@ -91,7 +90,9 @@ $(document).ready(function() {
         // }
     });
 
-	haDash.init();
+	haDash.whoami(function(){
+		haDash.init();
+	});
 
 	$(document).foundation();
 });
