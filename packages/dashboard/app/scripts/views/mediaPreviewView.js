@@ -33,7 +33,9 @@ haDash.Views = haDash.Views || {};
 		saveLabel: function(event) {
 			$(event.target).attr('contenteditable', false);
 			this.model.set('label', $(event.target).text().trim());
-			this.model.save();
+			this.model.save({
+				url: haDash.API + '/media/' + model.id
+			});
 		}
 
     });
