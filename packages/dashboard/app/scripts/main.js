@@ -91,7 +91,7 @@ $(document).ready(function() {
 
     TraceKit.report.subscribe(function (errorReport) {
     	$.ajax({
-			url: haDash.API + '/error',
+			url: haDash.API + '/error/dashboard',
 			contentType: "application/json; charset=utf-8",
 			dataType: "json",
 			xhrFields: {
