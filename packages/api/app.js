@@ -174,7 +174,6 @@ app.get('/v1/login', function(req, res) {
   });
 });
 
-app.use('/v1/login', express.bodyParser);
 app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   req.session.user = req.user.username;
   //FIXME: here we miss invalide login attemtps
@@ -204,7 +203,7 @@ app.get('/v1/register', function(req, res) {
   res.render('register', {});
 });
 
-app.post('/v1/register', express.bodyParser, function(req, res) {
+app.post('/v1/register', function(req, res) {
 
   Account.register(new Account({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
