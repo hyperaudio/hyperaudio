@@ -71,7 +71,7 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		signin: function() {
-			haDash.signInView = new haDash.Views.SignInView({});
+			$main.empty().append(new haDash.Views.SignInView({}).el);
 		},
 
 		signout: function() {
@@ -97,7 +97,7 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		signup: function() {
-			haDash.signUpView = new haDash.Views.SignUpView({});
+			$main.empty().append(new haDash.Views.SignUpView({}).el);
 		}
 
 	});
