@@ -27,3 +27,9 @@ table {
 td {
 	font-size: 14px !important;
 }
+
+#mediaPreview table {
+	button + button {
+		margin-left: 1em;
+	}
+}
