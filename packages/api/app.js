@@ -241,6 +241,16 @@ require('./mixes')(app, nconf);
 require('./subscribers')(app, nconf);
 
 
+app.post('/v1/error', function(req, res) {
+  cube("remote_errors", {
+    user: req.body.user,
+    errorReport: req.body.errorReport
+  });
+
+  res.json({});
+});
+
+
 var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
