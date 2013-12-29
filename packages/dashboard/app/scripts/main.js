@@ -18,7 +18,7 @@ window.haDash = {
 		});
 
 
-		// FUGLY
+		// FUGLY -> TODO create a view?
 		$('a.media').click(function(e){
 			e.preventDefault();
 			haDash.router.navigate('media/', {trigger: true});
@@ -58,8 +58,6 @@ window.haDash = {
 			},
 			timeout: 5000,
 			success: function(whoami) {
-				// console.log(whoami);
-
 				if (whoami.user) {
 					window.haDash.user = whoami.user;
 					$('body').removeClass('anonymous').addClass('user');
@@ -90,6 +88,19 @@ $(document).ready(function() {
         //   jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
         // }
     });
+
+    TraceKit.report.subscribe(function (errorReport) {
+    	$.ajax({
+			url: haDash.API + '/error',
+			contentType: "application/json; charset=utf-8",
+			dataType: "json",
+			xhrFields: {
+				withCredentials: true
+			},
+			method: 'post',
+			data: JSON.stringify(errorReport)
+		});
+  	});
 
 	haDash.whoami(function(){
 		haDash.init();

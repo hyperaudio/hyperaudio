@@ -49,7 +49,6 @@ haDash.Views = haDash.Views || {};
 				alert('Marvelous, now please log in');
 		    })
 		    .fail(function() {
-		      	// alert( "Registration Error" );
 		      	$('#registerFormError').show();
 		    });
 

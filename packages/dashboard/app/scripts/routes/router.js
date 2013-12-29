@@ -30,7 +30,7 @@ haDash.Routers = haDash.Routers || {};
 
 		dashboard: function() {
 			console.log('Dashboard N/A');
-			//TODO redirect to /
+			document.location = '/';
 		},
 
 		mixes: function() {
