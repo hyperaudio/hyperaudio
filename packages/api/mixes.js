@@ -3,6 +3,9 @@ var Mix = require('./models/mix');
 var fs = require('fs');
 var path = require('path');
 
+var uuid = require("node-uuid");
+var urlSafeBase64 = require('urlsafe-base64');
+
 //FIXME: duplicate
 var dgram = require("dgram");
 var udp = dgram.createSocket("udp4");
@@ -17,7 +20,7 @@ function cube(type, data) {
 }
 
 function ensureOwnership(req, res, next) {
-  if (req.isAuthenticated()) { 
+  if (req.isAuthenticated()) {
     if (req.user.username != req.params.user) {
       res.status(403);
       res.send({
@@ -82,7 +85,6 @@ module.exports = function(app, nconf) {
       mix.label = req.body.label;
       mix.desc = req.body.desc;
       mix.type = req.body.type;
-      // mix.sort = req.body.sort;
 
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -126,18 +128,14 @@ module.exports = function(app, nconf) {
     }
 
     mix = new Mix({
+      _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
-      // sort: req.body.sort,
       owner: owner,
       meta: req.body.meta,
       content: content
     });
-
-    // download if needed
-
-    console.log(mix);
 
     mix.save(function(err) {
       if (!err) {

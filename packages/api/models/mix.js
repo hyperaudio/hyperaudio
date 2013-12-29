@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Mix = new mongoose.Schema({
+  _id: String,
   label: String,
   desc: String,
   type: String,
@@ -19,7 +20,6 @@ var Mix = new mongoose.Schema({
   content: String
 }, {
   versionKey: false,
-  _id: false,
   collection: 'mixes'
 });
 
