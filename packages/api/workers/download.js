@@ -40,6 +40,7 @@ module.exports = function() {
           '--write-thumbnail',
           '--all-formats',
           '--all-subs',
+          '--write-auto-sub',
           '--extract-audio',
           '--audio-format=aac',
           '--keep-video'
