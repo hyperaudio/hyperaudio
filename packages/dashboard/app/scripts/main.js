@@ -98,7 +98,10 @@ $(document).ready(function() {
 				withCredentials: true
 			},
 			method: 'post',
-			data: JSON.stringify(errorReport)
+			data: JSON.stringify({
+				user: haDash.user,
+				errorReport: errorReport
+			})
 		});
   	});
 
