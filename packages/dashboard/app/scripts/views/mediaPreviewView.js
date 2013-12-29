@@ -28,26 +28,27 @@ haDash.Views = haDash.Views || {};
 		},
 
 		edit: function(event) {
-			if (!this.model.get('owner') == haDash.user) return;
+			console.log(this.model.get('owner'), haDash.user);
+			if (this.model.get('owner') != haDash.user) return;
 			$(event.target).attr('contenteditable', true);
 		},
 
 		saveLabel: function(event) {
-			if (!this.model.get('owner') == haDash.user) return;
+			if (this.model.get('owner') != haDash.user) return;
 			$(event.target).attr('contenteditable', false);
 			this.model.set('label', $(event.target).text().trim());
 			this.save();
 		},
 
 		saveDesc: function(event) {
-			if (!this.model.get('owner') == haDash.user) return;
+			if (this.model.get('owner') != haDash.user) return;
 			$(event.target).attr('contenteditable', false);
 			this.model.set('desc', $(event.target).text().trim());
 			this.save();
 		},
 
 		save: function() {
-			if (!this.model.get('owner') == haDash.user) return;
+			if (this.model.get('owner') != haDash.user) return;
 			this.model.save(null, {
 				url: haDash.API + '/media/' + this.model.id
 			});
