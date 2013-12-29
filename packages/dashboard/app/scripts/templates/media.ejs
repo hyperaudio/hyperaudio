@@ -2,7 +2,7 @@
 <td class="span2 label"><%- label %></td>
 <td class="span4"><%
 	var shortDesc = desc;
-	if (desc.length > 140) shortDesc = desc.substring(0, 140);
+	if (desc.length > 140) shortDesc = desc.substring(0, 140) + '…';
 	var lines = shortDesc.split("\n");
 	for (var i = 0; i < lines.length; i++) {
 		var line = lines[i];

@@ -22,7 +22,7 @@
       <th class="span1"></th>
       <th class="span2">Title</th>
       <th class="span3">Description</th>
-      <th class="span2">Date</th>
+      <th class="span1">Date</th>
       <th>Author</th>
       <th></th>
     </tr>
@@ -33,9 +33,19 @@
    			<td class="span1"><%- transcripts[i].type %></td>
    			<td class="span2 label"><%- transcripts[i].label %></td>
    			<td class="span3"><%- transcripts[i].desc %></td>
-   			<td class="span2"><span class="timeago" title="<%- transcripts[i].modified %>"><%- transcripts[i].modified %></span></td>
+   			<td class="span1"><span class="timeago" title="<%- transcripts[i].modified %>"><%- transcripts[i].modified %></span></td>
    			<td><%- transcripts[i].owner %></td>
-   			<td>actions</td>
+   			<td>
+   				<% if (type == "text") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= _id%>">Edit</a>
+   					<br>
+   					<button class="button align small">Align</button>
+   				<% } else if (type == "html") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= _id%>">Clean</a>
+   				<% } else if (type == "srt") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
+   				<% } %>
+   			</td>
    		</tr>
 	<% } %>
   </tbody>
