@@ -36,14 +36,14 @@
    			<td class="span1"><span class="timeago" title="<%- transcripts[i].modified %>"><%- transcripts[i].modified %></span></td>
    			<td><%- transcripts[i].owner %></td>
    			<td>
-   				<% if (type == "text") { %>
-   					<a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= _id%>">Edit</a>
+   				<% if (transcripts[i].type == "text") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= transcripts[i]._id%>">Edit</a>
    					<br>
    					<button class="button align small">Align</button>
-   				<% } else if (type == "html") { %>
-   					<a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= _id%>">Clean</a>
-   				<% } else if (type == "srt") { %>
-   					<a class="button small" target="_new" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
+   				<% } else if (transcripts[i].type == "html") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= transcripts[i]._id%>">Clean</a>
+   				<% } else if (transcripts[i].type == "srt") { %>
+   					<a class="button small" target="_new" href="http://hyperaud.io/converter/?t=<%= transcripts[i]._id%>">Convert</a>
    				<% } %>
    			</td>
    		</tr>
