@@ -241,8 +241,8 @@ require('./mixes')(app, nconf);
 require('./subscribers')(app, nconf);
 
 
-app.post('/v1/error', function(req, res) {
-  cube("remote_errors", {
+app.post('/v1/error/:component', function(req, res) {
+  cube("error_" + req.param.component, {
     user: req.body.user,
     errorReport: req.body.errorReport
   });
