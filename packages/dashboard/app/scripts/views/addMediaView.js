@@ -84,7 +84,8 @@ haDash.Views = haDash.Views || {};
 						model.set('source', {
 							"youtube": {
 							      "type": "video/youtube",
-							      "url": "http://www.youtube.com/watch?v=" + ytID
+							      "url": "http://www.youtube.com/watch?v=" + ytID,
+							      "thumbnail": ytData.entry["media$group"]["media$thumbnail"][0].url
 							 }
 						});
 
