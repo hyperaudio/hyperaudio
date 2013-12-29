@@ -56,6 +56,7 @@ window.haDash = {
 			xhrFields: {
 				withCredentials: true
 			},
+			timeout: 5000,
 			success: function(whoami) {
 				// console.log(whoami);
 

@@ -47,13 +47,6 @@ haDash.Views = haDash.Views || {};
 				//FIXME in API login person directly
 				haDash.router.navigate("secret-signin/", {trigger: true});
 				alert('Marvelous, now please log in');
-		    //     haDash.whoami(function() {
-		    //       if (haDash.user) {
-					 //  haDash.router.navigate("mixes/", {trigger: true});
-				  // } else {
-					 //  alert('Invalid Registration');
-				  // }
-		    //     });
 		    })
 		    .fail(function() {
 		      	// alert( "Registration Error" );
