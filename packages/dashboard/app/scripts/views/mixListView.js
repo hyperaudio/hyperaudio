@@ -23,6 +23,8 @@ haDash.Views = haDash.Views || {};
 		render: function() {
 			this.$el.html(this.template());
 
+			this.$el.data('view', this);
+			this.$el.data('collection', this.collection);
 			return this;
 		},
 
@@ -30,7 +32,7 @@ haDash.Views = haDash.Views || {};
 			var view = new haDash.Views.MixView({
 				model: item
 			});
-			
+
 			if (haDash.user && haDash.user.username == item.get('owner')) {
 				this.$('tbody.your').append(view.render().el);
 			} else {

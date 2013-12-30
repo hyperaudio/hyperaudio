@@ -18,37 +18,30 @@ haDash.Views = haDash.Views || {};
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.find("span.timeago").timeago();
+
+			this.$el.data('view', this);
+			this.$el.data('model', this.model);
 			return this;
 		},
 
 		events: {
 			"click h2.label, p.desc": "edit",
-			"blur h2.label": "saveLabel",
-			"blur p.desc": "saveDesc"
+			"blur h2.label, p.desc": "save"
+		},
+
+		notEditable: function() {
+			return this.model.get('owner') != haDash.user;
 		},
 
 		edit: function(event) {
-			console.log(this.model.get('owner'), haDash.user);
-			if (this.model.get('owner') != haDash.user) return;
+			if (this.notEditable()) return;
 			$(event.target).attr('contenteditable', true);
 		},
 
-		saveLabel: function(event) {
-			if (this.model.get('owner') != haDash.user) return;
+		save: function(event) {
+			if (this.notEditable()) return;
 			$(event.target).attr('contenteditable', false);
-			this.model.set('label', $(event.target).text().trim());
-			this.save();
-		},
-
-		saveDesc: function(event) {
-			if (this.model.get('owner') != haDash.user) return;
-			$(event.target).attr('contenteditable', false);
-			this.model.set('desc', $(event.target).text().trim());
-			this.save();
-		},
-
-		save: function() {
-			if (this.model.get('owner') != haDash.user) return;
+			this.model.set($(event.target).data('field'), $(event.target).text().trim());
 			this.model.save(null, {
 				url: haDash.API + '/media/' + this.model.id
 			});

@@ -18,6 +18,8 @@ haDash.Views = haDash.Views || {};
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
 
+			this.$el.data('view', this);
+			this.$el.data('model', this.model);
 			return this;
 		}
 	});

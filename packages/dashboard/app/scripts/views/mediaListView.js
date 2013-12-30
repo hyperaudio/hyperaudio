@@ -26,6 +26,9 @@ haDash.Views = haDash.Views || {};
 			this.$el.html(this.template());
 			// this.afterRender();
 			this.addAllItems();
+
+			this.$el.data('view', this);
+			this.$el.data('collection', this.collection);
 			return this;
 		},
 
