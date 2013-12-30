@@ -12,7 +12,7 @@ haDash.Routers = haDash.Routers || {};
 			'': 'dashboard',
 			'mixes/': 'mixes',
 			'media/': 'media',
-			'media/:id': 'mediaObject',
+			'media/:id': 'mediaDetail',
 			'secret-signin/': 'signin',
 			'signout/': 'signout',
 			'secret-signup/': 'signup',
@@ -56,7 +56,7 @@ haDash.Routers = haDash.Routers || {};
 
 		},
 
-		mediaObject: function(id) {
+		mediaDetail: function(id) {
 			//FIXME populate collection before?
 			var model = new haDash.Models.MediaModel({_id: id});
 			model.fetch({
@@ -64,7 +64,7 @@ haDash.Routers = haDash.Routers || {};
 			});
 
 			$main.empty().append(
-				new haDash.Views.MediaPreviewView({
+				new haDash.Views.MediaDetailView({
 					model: model
 				}).render().el
 			);
