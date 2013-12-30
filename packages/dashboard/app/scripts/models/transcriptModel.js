@@ -6,7 +6,19 @@ haDash.Models = haDash.Models || {};
     'use strict';
 
     haDash.Models.TranscriptModel = Backbone.Model.extend({
+    	idAttribute: "_id",
 
+			defaults: function() {
+				return {
+					label: "Empty",
+					desc: "",
+					type: "text",
+					owner: null,
+					created: new Date().toISOString(),
+					modified: new Date().toISOString(),
+					transcripts: []
+				};
+			}
     });
 
 })();

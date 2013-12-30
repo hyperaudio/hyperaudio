@@ -11,7 +11,11 @@ haDash.Collections = haDash.Collections || {};
 
 		url: function() {
 			return haDash.API + '/mixes';
-		}
+		},
+
+		comparator: function(model) {
+     	   return - new Date(model.get('modified')).getTime();
+    	}
 
 	});
 

@@ -12,13 +12,11 @@ haDash.Models = haDash.Models || {};
 			defaults: function() {
 				return {
 					label: "Empty",
-					desc: "no content",
+					desc: "",
 					type: "video",
-					// sort: 0,
 					owner: null,
 					created: new Date().toISOString(),
 					modified: new Date().toISOString(),
-					meta: {},
 					transcripts: []
 				};
 			}
