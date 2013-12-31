@@ -78,8 +78,11 @@ module.exports = function() {
 
           request2 = http.get(options2, function(res2) {
 
+            var result2 = "";
+
             res2.on('data', function(data2) {
-            console.log('DATAX ' + data2);
+              console.log('DATAX ' + data2);
+              result2 += data2;
 
               Transcript.findById(payload._id).exec(function(err, transcript) {
                 if (!err) {
@@ -89,7 +92,7 @@ module.exports = function() {
                   if (!transcript.meta) {
                     transcript.meta = {};
                   }
-                  transcript.meta.align = JSON.parse(data2);
+                  transcript.meta.align = JSON.parse(result2);
                   // transcript.content =
 
                   transcript.save(function(err) {
