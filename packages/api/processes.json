@@ -12,5 +12,9 @@
   {
     "name" : "probe",
     "script" : "./runner-probe.js"
+  },
+  {
+    "name" : "mod9",
+    "script" : "./runner-mod9.js"
   }
 ]
