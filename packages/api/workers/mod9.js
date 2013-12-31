@@ -56,7 +56,7 @@ module.exports = function() {
         res.on('end', function() {
           console.log('END');
           console.log(result);
-          console.log('JOBID? ' + result[0].jobid);
+          console.log('JOBID? ' + result[0][1].jobid);
           // result.push([process.hrtime(), JSON.parse(part)]);
           // console.log(JSON.stringify(result));
           // process.send(result);
@@ -66,7 +66,7 @@ module.exports = function() {
             host: 'mod9.184.73.157.200.xip.io',
             port: 80,
             path: '/mod9/align/v0.7?' + querystring.stringify({
-              jobid: result[0].jobid,
+              jobid: result[0][1].jobid,
               mode: 'poll'
             }),
             headers: {
