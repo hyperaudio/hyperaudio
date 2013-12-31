@@ -50,7 +50,22 @@ haDash.Views = haDash.Views || {};
 		},
 
 		align: function() {
-			alert('1');
+			$.ajax({
+				url: haDash.API + '/transcripts/' + this.model.id + '/align',
+				contentType: "application/json; charset=utf-8",
+    			dataType: "json",
+				xhrFields: {
+					withCredentials: true
+				},
+				method: 'post',
+				data: JSON.stringify({})
+			})
+			.done(function() {
+				console.log('OK');
+		    })
+		    .fail(function() {
+		      	console.log('ERR');
+		    });
 		}
 
     });
