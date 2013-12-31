@@ -55,34 +55,55 @@ module.exports = function() {
 
         res.on('end', function() {
           console.log('END');
-          result.push([process.hrtime(), JSON.parse(part)]);
+          // result.push([process.hrtime(), JSON.parse(part)]);
           // console.log(JSON.stringify(result));
           // process.send(result);
           // process.disconnect();
           /////
-          Transcript.findById(payload._id).exec(function(err, transcript) {
-            if (!err) {
-              console.log('loaded transcript from db');
+          var options2 = {
+            host: 'mod9.184.73.157.200.xip.io',
+            port: 80,
+            path: '/mod9/align/v0.7?' + querystring.stringify({
+              jobid: result[0].jobid,
+              mode: 'poll'
+            }),
+            headers: {
+              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+            }
+          };
 
-              transcript.type = "text";
-              if (!transcript.meta) {
-                transcript.meta = {};
-              }
-              transcript.meta.align = result;
-              // transcript.content =
+          request2 = http.get(options2, function(res2) {
 
-              transcript.save(function(err) {
+            res2.on('data', function(data2) {
+            console.log('DATAX ' + data2);
+
+              Transcript.findById(payload._id).exec(function(err, transcript) {
                 if (!err) {
-                  callback('success');
+                  console.log('loaded transcript from db');
+
+                  transcript.type = "text";
+                  if (!transcript.meta) {
+                    transcript.meta = {};
+                  }
+                  transcript.meta.align = JSON.parse(data2);
+                  // transcript.content =
+
+                  transcript.save(function(err) {
+                    if (!err) {
+                      callback('success');
+                    } else {
+                      console.log(err);
+                      callback('bury');
+                    }
+                  });
                 } else {
                   console.log(err);
                   callback('bury');
                 }
               });
-            } else {
-              console.log(err);
-              callback('bury');
-            }
+
+            });
+
           });
           /////
         })
