@@ -19,9 +19,21 @@ haDash.Views = haDash.Views || {};
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.find("span.timeago").timeago();
 
+			var transcriptIDs = this.model.get('transcripts');
+			var transcripts = new haDash.Collections.TranscriptCollection();
+
+			for (var i = 0; i < transcriptIDs; i++) {
+				var transcriptID = transcriptIDs[i];
+				var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
+				transcript.fetch({
+					url: haDash.API + '/transcripts/' + transcriptID
+				});
+				transcripts.add(transcript);
+			}
+
 			this.$el.find("#transcripts").empty().append(
 				new haDash.Views.TranscriptListView({
-					collection: new haDash.Collections.TranscriptCollection(this.model.transcripts)
+					collection: transcripts
 				}).render().el
 			);
 
