@@ -28,9 +28,9 @@ function cube(type, data) {
 }
 
 function ensureOwnership(req, res, next) {
-  console.log(req.user);
   if (req.isAuthenticated()) {
-    if (req.user.username != req.params.user) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
+    if (req.user.username != owner) {
       res.status(403);
       res.send({
         error: 'Forbidden'
