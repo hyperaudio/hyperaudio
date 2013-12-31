@@ -83,7 +83,9 @@ module.exports = function() {
             res2.on('data', function(data2) {
               console.log('DATAX ' + data2);
               result2 += data2;
+            });
 
+            res2.on('end', function(){
               Transcript.findById(payload._id).exec(function(err, transcript) {
                 if (!err) {
                   console.log('loaded transcript from db');
@@ -108,7 +110,6 @@ module.exports = function() {
                   callback('bury');
                 }
               });
-
             });
 
           });
