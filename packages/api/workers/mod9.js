@@ -37,18 +37,22 @@ module.exports = function() {
       request = http.get(options, function(res) {
         var result = [];
         var part = "";
+
+        console.log('Request in progress...');
+
         res.on('data', function(data) {
           console.log('DATA ' + data);
           try {
             data = part + data;
             result.push([process.hrtime(), JSON.parse(data)]);
-            process.send(result);
+            // process.send(result);
             part = "";
           } catch (err) {
             console.log('err skipping');
             part += data;
           }
         });
+
         res.on('end', function() {
           console.log('END');
           // console.log(JSON.stringify(result));
@@ -88,6 +92,7 @@ module.exports = function() {
       ///////
 
     } else {
+      console.log('NOT TEXT');
       callback('bury');
     }
 
