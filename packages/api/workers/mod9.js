@@ -23,7 +23,7 @@ module.exports = function() {
         port: 80,
         path: '/mod9/align/v0.7?' + querystring.stringify({
           audio: 'http://media.hyperaud.io/9-NlmilgRxapOVXcKvkzww/00002.m4a',//meta.audio,
-          text: payload.content,
+          text: 'http://api.hyperaud.io/v1/transcripts/' + payload._id + '/text',
           mode: 'stream',
           skip: 'True',
           prune: 0
