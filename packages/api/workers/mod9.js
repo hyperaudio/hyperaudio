@@ -89,6 +89,7 @@ module.exports = function() {
               Transcript.findById(payload._id).exec(function(err, transcript) {
                 if (!err) {
                   console.log('loaded transcript from db');
+                  console.log(transcript);
 
                   transcript.type = "text";
                   if (!transcript.meta) {
@@ -98,6 +99,9 @@ module.exports = function() {
                   // transcript.content =
 
                   transcript.save(function(err) {
+                    console.log('SAVING? ' + err);
+                    console.log(transcript);
+
                     if (!err) {
                       callback('success');
                     } else {
