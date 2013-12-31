@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaDetailView = Backbone.View.extend({
 
-		id: '#mediaDetail',
+		id: 'mediaDetail',
 
         template: JST['app/scripts/templates/mediaDetail.ejs'],
 
@@ -17,7 +17,7 @@ haDash.Views = haDash.Views || {};
 
 		render: function() {
 			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.find("span.timeago").timeago();
+			// this.$el.find("span.timeago").timeago();
 
 			var transcriptIDs = this.model.get('transcripts');
 			var transcripts = new haDash.Collections.TranscriptCollection();
@@ -33,7 +33,7 @@ haDash.Views = haDash.Views || {};
 			}
 			console.log(transcripts);
 
-			this.$el.find("#transcripts").empty().append(
+			this.$el.find("#transcriptList").empty().append(
 				new haDash.Views.TranscriptListView({
 					collection: transcripts
 				}).render().el

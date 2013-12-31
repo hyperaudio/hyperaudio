@@ -7,7 +7,7 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.SignUpView = Backbone.View.extend({
 
-		id: '#signUpView',
+		id: 'signUpView',
 
         template: JST['app/scripts/templates/signUp.ejs'],
 
