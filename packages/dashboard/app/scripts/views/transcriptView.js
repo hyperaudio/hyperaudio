@@ -45,7 +45,7 @@ haDash.Views = haDash.Views || {};
 
 			this.model.set($(event.target).data('field'), $(event.target).text().trim());
 			this.model.save(null, {
-				url: haDash.API + '/transcript/' + this.model.id
+				url: haDash.API + '/transcripts/' + this.model.id
 			});
 		},
 
