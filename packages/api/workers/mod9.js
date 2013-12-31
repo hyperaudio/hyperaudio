@@ -36,25 +36,26 @@ module.exports = function() {
 
       request = http.get(options, function(res) {
         var result = [];
-        var part = "";
+        var part = null;
 
         console.log('Request in progress...');
 
         res.on('data', function(data) {
           console.log('DATA ' + data);
+          if (part) part += data;
           try {
-            data = part + data;
+            // data = part + data;
             result.push([process.hrtime(), JSON.parse(data)]);
-            // process.send(result);
-            part = "";
+            // part = "";
           } catch (err) {
             console.log('err skipping');
-            part += data;
+            part = data;
           }
         });
 
         res.on('end', function() {
           console.log('END');
+          result.push([process.hrtime(), JSON.parse(part)]);
           // console.log(JSON.stringify(result));
           // process.send(result);
           // process.disconnect();
@@ -64,7 +65,9 @@ module.exports = function() {
               console.log('loaded transcript from db');
 
               transcript.type = "text";
-              if (!transcript.meta) transcript.meta = {};
+              if (!transcript.meta) {
+                transcript.meta = {};
+              }
               transcript.meta.align = result;
               // transcript.content =
 
