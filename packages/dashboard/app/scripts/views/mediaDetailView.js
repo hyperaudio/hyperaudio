@@ -19,6 +19,12 @@ haDash.Views = haDash.Views || {};
 			this.$el.html(this.template(this.model.toJSON()));
 			this.$el.find("span.timeago").timeago();
 
+			this.$el.find("#transcripts").empty().append(
+				new haDash.Views.TranscriptListView({
+					collection: new haDash.Collections.TranscriptCollection(this.model.transcripts)
+				}).render().el
+			);
+
 			this.$el.data('view', this);
 			this.$el.data('model', this.model);
 			return this;
