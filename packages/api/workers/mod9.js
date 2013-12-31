@@ -55,6 +55,8 @@ module.exports = function() {
 
         res.on('end', function() {
           console.log('END');
+          console.log(result);
+          console.log('JOBID? ' + result[0].jobid);
           // result.push([process.hrtime(), JSON.parse(part)]);
           // console.log(JSON.stringify(result));
           // process.send(result);
@@ -71,6 +73,8 @@ module.exports = function() {
               'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
             }
           };
+
+          console.log(options2);
 
           request2 = http.get(options2, function(res2) {
 
