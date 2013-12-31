@@ -33,7 +33,7 @@ haDash.Views = haDash.Views || {};
 			}
 			console.log(transcripts);
 
-			this.$el.find("#transcriptList").empty().append(
+			this.$el.find("#transcripts").empty().append(
 				new haDash.Views.TranscriptListView({
 					collection: transcripts
 				}).render().el
