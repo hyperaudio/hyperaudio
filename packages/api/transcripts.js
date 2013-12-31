@@ -28,6 +28,7 @@ function cube(type, data) {
 }
 
 function ensureOwnership(req, res, next) {
+  console.log(req.user);
   if (req.isAuthenticated()) {
     if (req.user.username != req.params.user) {
       res.status(403);
