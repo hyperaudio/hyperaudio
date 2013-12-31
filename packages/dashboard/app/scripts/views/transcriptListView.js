@@ -12,12 +12,16 @@ haDash.Views = haDash.Views || {};
         template: JST['app/scripts/templates/transcriptList.ejs'],
 
 		initialize: function() {
+			console.log("transcriptListView init");
+
 			this.listenTo(this.collection, 'add', this.addItem);
 			this.listenTo(this.collection, 'reset', this.render);
 			this.listenTo(this.collection, 'sort', this.render);
 		},
 
 		render: function() {
+			console.log("transcriptListView render");
+
 			this.$el.html(this.template());
 			this.addAllItems();
 
