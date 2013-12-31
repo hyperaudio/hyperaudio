@@ -22,7 +22,7 @@ haDash.Views = haDash.Views || {};
 			var transcriptIDs = this.model.get('transcripts');
 			var transcripts = new haDash.Collections.TranscriptCollection();
 
-			for (var i = 0; i < transcriptIDs; i++) {
+			for (var i = 0; i < transcriptIDs.length; i++) {
 				var transcriptID = transcriptIDs[i];
 				var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
 				transcript.fetch({
