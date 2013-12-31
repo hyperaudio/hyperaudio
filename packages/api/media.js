@@ -80,6 +80,25 @@ module.exports = function(app, nconf) {
       id: req.params.id
     });
 
+    return MediaObject.findById(req.params.id).exec(function(err, mediaObject) {
+      if (!err) {
+        return res.send(mediaObject);
+      }
+
+      res.status(404);
+      res.send({
+        error: 'Not found'
+      });
+      return;
+    });
+  });
+
+  app.get('/v1/:user?/media/:id/transcripts', function(req, res) {
+    cube("get_media", {
+      user: req.params.user,
+      id: req.params.id
+    });
+
     return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
       if (!err) {
         return res.send(mediaObject);
@@ -93,8 +112,9 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.get('/v1/:user?/media/:id/:meta', function(req, res) {
-    cube("get_media", {
+
+  app.get('/v1/:user?/media/:id/meta/:meta', function(req, res) {
+    cube("get_meta", {
       user: req.params.user,
       id: req.params.id
     });
