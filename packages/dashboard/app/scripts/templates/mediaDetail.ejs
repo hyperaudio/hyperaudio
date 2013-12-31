@@ -14,40 +14,5 @@
 
 <p>&nbsp;</p>
 
-<table>
-  <caption>Available Transcripts</caption>
-  <thead>
-    <tr>
-      <th class="span1"></th>
-      <th class="span2">Title</th>
-      <th class="span3">Description</th>
-      <th class="span1">Date</th>
-      <th>Author</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  	<% for(var i = 0; i < transcripts.length; i++) { %>
-  		<tr>
-   			<td class="span1"><%- transcripts[i].type %></td>
-   			<td class="span2 label"><span class="tLabel" data-id="<%- transcripts[i]._id %>"><%- transcripts[i].label %></span></td>
-   			<td class="span3"><span class="tDesc" data-id="<%- transcripts[i]._id %>"><%- transcripts[i].desc %></span></td>
-   			<td class="span1"><span class="timeago" title="<%- transcripts[i].modified %>"><%- transcripts[i].modified %></span></td>
-   			<td><%- transcripts[i].owner %></td>
-   			<td>
-   				<% if (transcripts[i].type == "text") { %>
-   					<a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= transcripts[i]._id%>">Edit</a>
-   					<button class="button align small primary">Align</button>
-   				<% } else if (transcripts[i].type == "html") { %>
-   					<a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= transcripts[i]._id%>">Clean</a>
-   				<% } else if (transcripts[i].type == "srt") { %>
-   					<a class="button small primary" target="_new" href="http://hyperaud.io/converter/?t=<%= transcripts[i]._id%>">Convert</a>
-   				<% } %>
-   			</td>
-   		</tr>
-	<% } %>
-  </tbody>
-</table>
-
 <div id="transcripts">§</div>
 
