@@ -22,7 +22,7 @@ module.exports = function() {
         host: 'mod9.184.73.157.200.xip.io',
         port: 80,
         path: '/mod9/align/v0.7?' + querystring.stringify({
-          audio: meta.audio,
+          audio: 'http://media.hyperaud.io/9-NlmilgRxapOVXcKvkzww/00002.m4a',//meta.audio,
           text: payload.content,
           mode: 'stream',
           skip: 'True',
