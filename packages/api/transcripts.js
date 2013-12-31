@@ -179,7 +179,7 @@ module.exports = function(app, nconf) {
 
       if (transcript.type == 'text' && transcript.media) {
 
-        client.use("transcribe", function(err, tubename) {
+        client.use("align", function(err, tubename) {
           if (err) throw err;
           client.put(1, 0, 0, JSON.stringify(['align', {
             type: "transcript",

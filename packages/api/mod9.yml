@@ -4,5 +4,5 @@ beanstalkd:
 handlers:
     - "./workers/mod9.js"
 watch:
-    - 'transcribe'
+    - 'align'
 ignoreDefault: true

@@ -2,16 +2,91 @@
 var querystring = require('querystring');
 var http = require('http');
 
+var mongoose = require('mongoose');
+var Transcript = require('../models/transcript');
+
+mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
+
 module.exports = function() {
   function ProbeHandler() {
     this.type = 'transcript';
   }
 
   ProbeHandler.prototype.work = function(payload, callback) {
-    console.log(path.join(__dirname, '../media/' + payload.media._id + '/'));
+    console.log(payload);
 
-    if (payload.meta.download) {
-      //
+    if (payload.type == "text") {
+
+      ///////
+      var options = {
+        host: 'mod9.184.73.157.200.xip.io',
+        port: 80,
+        path: '/mod9/align/v0.7?' + querystring.stringify({
+          audio: meta.audio,
+          text: payload.content,
+          mode: 'stream',
+          skip: 'True',
+          prune: 0
+        }),
+        headers: {
+          'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+        }
+      };
+
+
+      request = http.get(options, function(res) {
+        var result = [];
+        var part = "";
+        res.on('data', function(data) {
+          console.log('DATA ' + data);
+          try {
+            data = part + data;
+            result.push([process.hrtime(), JSON.parse(data)]);
+            process.send(result);
+            part = "";
+          } catch (err) {
+            console.log('err skipping');
+            part += data;
+          }
+        });
+        res.on('end', function() {
+          console.log('END');
+          // console.log(JSON.stringify(result));
+          // process.send(result);
+          // process.disconnect();
+          /////
+          Transcript.findById(payload._id).exec(function(err, transcript) {
+            if (!err) {
+              console.log('loaded transcript from db');
+
+              transcript.type = "text";
+              transcript.meta.align = result;
+              // transcript.content =
+
+              transcript.save(function(err) {
+                if (!err) {
+                  callback('success');
+                } else {
+                  console.log(err);
+                  callback('bury');
+                }
+              });
+            } else {
+              console.log(err);
+              callback('bury');
+            }
+          });
+          /////
+        })
+        res.on('error', function(e) {
+          console.log("Got error: " + e.message);
+          // process.disconnect();
+          callback('bury');
+        });
+      });
+
+      ///////
+
     } else {
       callback('bury');
     }
@@ -24,53 +99,53 @@ module.exports = function() {
 
 /////////////////
 
-process.on('message', function(m) {
+// process.on('message', function(m) {
 
-  console.log(m);
-  // logger.info(m);
+//   console.log(m);
+//   // logger.info(m);
 
-  var options = {
-    host: 'mod9.184.73.157.200.xip.io',
-    port: 80,
-    path: '/mod9/align/v0.7?' + querystring.stringify({
-      audio: m.audio,
-      text: m.text,
-      mode: 'stream',
-      skip: 'True',
-      prune: 0
-    }),
-    headers: {
-      'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
-    }
-  };
+//   var options = {
+//     host: 'mod9.184.73.157.200.xip.io',
+//     port: 80,
+//     path: '/mod9/align/v0.7?' + querystring.stringify({
+//       audio: m.audio,
+//       text: m.text,
+//       mode: 'stream',
+//       skip: 'True',
+//       prune: 0
+//     }),
+//     headers: {
+//       'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+//     }
+//   };
 
-  console.log(options);
+//   console.log(options);
 
-  request = http.get(options, function(res) {
-    var result = [];
-    var part = "";
-    res.on('data', function(data) {
-      console.log('DATA ' + data);
-      try {
-        data = part + data;
-        result.push([process.hrtime(), JSON.parse(data)]);
-        process.send(result);
-        part = "";
-      } catch (err) {
-        console.log('err skipping');
-        part += data;
-      }
-    });
-    res.on('end', function() {
-      console.log('END');
-      console.log(JSON.stringify(result));
-      // process.send(result);
-      // process.disconnect();
-    })
-    res.on('error', function(e) {
-      console.log("Got error: " + e.message);
-      // process.disconnect();
-    });
-  });
+//   request = http.get(options, function(res) {
+//     var result = [];
+//     var part = "";
+//     res.on('data', function(data) {
+//       console.log('DATA ' + data);
+//       try {
+//         data = part + data;
+//         result.push([process.hrtime(), JSON.parse(data)]);
+//         process.send(result);
+//         part = "";
+//       } catch (err) {
+//         console.log('err skipping');
+//         part += data;
+//       }
+//     });
+//     res.on('end', function() {
+//       console.log('END');
+//       console.log(JSON.stringify(result));
+//       // process.send(result);
+//       // process.disconnect();
+//     })
+//     res.on('error', function(e) {
+//       console.log("Got error: " + e.message);
+//       // process.disconnect();
+//     });
+//   });
 
-});
+// });
