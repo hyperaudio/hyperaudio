@@ -64,6 +64,7 @@ module.exports = function() {
               console.log('loaded transcript from db');
 
               transcript.type = "text";
+              if (!transcript.meta) transcript.meta = {};
               transcript.meta.align = result;
               // transcript.content =
 
