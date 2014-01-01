@@ -1,15 +1,14 @@
 {
   "name": "jquery.cycle2.js",
   "_cacheHeaders": {
-    "ETag": "\"bef5816e62ed285ea6ca22c78ff13397\"",
-    "Content-Length": "47564",
+    "ETag": "\"c32ba3cb5d8903faff38a8480b467176\"",
+    "Content-Length": "47907",
     "Content-Type": "text/plain; charset=utf-8",
     "Content-Disposition": "inline"
   },
-  "_release": "e-tag:bef5816e6",
+  "_release": "e-tag:c32ba3cb5",
   "main": "index.js",
   "_source": "https://raw.github.com/malsup/malsup.github.com/master/jquery.cycle2.js",
   "_target": "*",
-  "_originalSource": "https://raw.github.com/malsup/malsup.github.com/master/jquery.cycle2.js",
-  "_direct": true
+  "_originalSource": "https://raw.github.com/malsup/malsup.github.com/master/jquery.cycle2.js"
 }
