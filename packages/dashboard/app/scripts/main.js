@@ -58,7 +58,7 @@ window.haDash = {
 			},
 			timeout: 5000,
 			success: function(whoami) {
-        this.setUser(whoami);
+        haDash.setUser(whoami);
 				if (callback) callback();
 			}
 		});
