@@ -240,12 +240,10 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-var io = require('socket.io').listen(server, {
-  resource: "/v1/socket"
-});
+var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
+  // socket.emit('news', { hello: 'world' });
   socket.on('log', function (data) {
     console.log(data);
   });
