@@ -4,7 +4,7 @@
 		"script"     : "./app.js",
 		"instances"  : "1",
 		"port"       : 3000,
-    "mode"       : "fork"
+    "exec_mode"       : "fork_mode"
 	},
   {
     "name" : "download",
