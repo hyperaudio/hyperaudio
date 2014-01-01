@@ -248,7 +248,8 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('mod9', function (data) {
-    socket.volatile.emit(data.user, data);
+    // socket.volatile.emit(data.user, data);
+    socket.broadcast.emit(data.user, data);
   });
 });
 
