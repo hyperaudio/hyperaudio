@@ -240,18 +240,18 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-var io = require('socket.io').listen(server);
+// var io = require('socket.io').listen(server);
 
-io.sockets.on('connection', function (socket) {
-  socket.on('log', function (data) {
-    console.log(data);
-  });
+// io.sockets.on('connection', function (socket) {
+//   socket.on('log', function (data) {
+//     console.log(data);
+//   });
 
-  socket.on('mod9', function (data) {
-    // socket.volatile.emit(data.user, data);
-    socket.broadcast.emit(data.user, data);
-  });
-});
+//   socket.on('mod9', function (data) {
+//     // socket.volatile.emit(data.user, data);
+//     socket.broadcast.emit(data.user, data);
+//   });
+// });
 
 process.on('SIGINT', function() {
   server.close();
