@@ -7,8 +7,8 @@
 .listing-item {
   @include clearfix;
   list-style: none;
-    padding-top: $space-m;
-    padding-bottom: $space-m;
+  padding-top: $space-h;
+  padding-bottom: $space-m;
   &:first-child {
     border-top: 0;
     padding-top: 0;

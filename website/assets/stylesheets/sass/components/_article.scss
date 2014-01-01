@@ -11,12 +11,16 @@
   color: $mono-weak;
   font-size: $font-m;
   text-align: center;
+  margin-bottom: $space-l;
 }
 .article-title {
-  font-size: $font-xl;
+  @extend .heading-xl;
   margin: 0 $space-m $space-l;
   text-align: center;
   text-transform: none;
+  a {
+    display: inline;
+  }
 }
 .article-meta {
   color: $mono-weak;
@@ -34,8 +38,11 @@
 }
 
 .article-body {
+  @include hyphens(auto);
+  @include hyphenation;
   font-size: $font-s;
   line-height: $lheight-m;
+  text-align: justify;
   blockquote {
     border-left: $space-s solid $light;
     font-style: italic;
@@ -49,7 +56,8 @@
   p {
   }
   a {
-    white-space: pre-line;
+    white-space: pre-wrap;
+    display: inline;
   }
   figure {
     border: 1px solid $light;
@@ -69,36 +77,41 @@
     figcaption {
       color: $mono-mid;
       font-size: $font-s;
-      line-height: $lheight-m;
+      line-height: $lheight-s;
       margin-top: $space-m;
       text-align: left;
     }
   }
   h2 {
-    @extend .heading-m;
+    @extend .heading-l;
+    font-size: ($font-l - 0.4rem);
     margin-bottom: $space-l;
+    margin-top: $space-xl;
+    text-align: center;
+    &:first-child {
+      margin-top: 0;
+    }
   }
 }
 
 .article.excerpt {
-  .article-title {
-    text-align: center;
-  }
-  .article-date {
-    display: block;
-    margin-bottom: $space-xl;
-    text-align: center;
-  }
+
 }
 
 @media #{$small} {
   .article-body {
     font-size: $font-m;
     line-height: $lheight-l;
+    padding-left: $space-l;
+    padding-right: $space-l;
   }
 }
 
 @media #{$medium} {
+  .article-body {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 @media #{$large} {
