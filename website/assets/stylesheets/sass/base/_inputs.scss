@@ -8,9 +8,9 @@
   display: inline-block;
   font-family: $primary-font;
   font-size: $font-xs;
-  padding: $space-s;
+  padding: $space-x;
   &.large {
-    padding: $space-m;
+    padding: $space-s;
     font-size: $font-m;
   }
   &.block {

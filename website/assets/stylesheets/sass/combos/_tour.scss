@@ -2,112 +2,107 @@
 ----------------------------------------------- */
 
 .tour-items {
-  .separator {
-    margin-top: $space-xl;
-    margin-bottom: $space-xl;
-  }
-  .separator.silent {
-    margin-top: $space-xl;
-    margin-bottom: $space-xl;
+  padding-bottom: $space-h;
+  &.compact {
+    padding-bottom: 0;
+    .tour-item-heading {
+      margin-top: 0;
+    }
   }
 }
 .tour-item {
+  padding-top: $space-h;
+  > .separator.silent {
+    margin: $space-m 0;
+  }
 }
-
+.tour-item-content {
+  @include hyphens(auto);
+  @include hyphenation;
+  padding-right: $space-m;
+  padding-left: $space-m;
+  text-align: justify;
+}
 .tour-item-heading {
-  font-size: $font-l;
+  @extend .heading-l;
   margin-bottom: $space-m;
+  margin-top: $space-s;
   text-align: center;
 }
 .tour-figure {
   @include border-radius($radius-s);
   border: 1px solid $alt-color-light;
-  margin-top: $space-m;
-  margin-bottom: $space-m;
+  margin-top: $space-s;
+  margin-bottom: $space-s;
   overflow: hidden;
   &.clear {
     border: none;
   }
 }
-.tour-image {
-}
 .tour-item-text {
-  font-size: $font-xs;
-  display: inline;
-  &:first-child {
-    margin-top: 0;
-    padding-top: 0;
-  }
+  margin-top: $space-x;
+  font-size: $font-m + 0.2rem;
+  line-height: $lheight-m;
 }
 
-/* Tour Compact
------------------------------------------------ */
+// Compact Variation
 
 .tour-item.compact {
-
+  padding-bottom: 0;
+  .tour-item-text {
+    margin-top: $space-s;
+    font-size: $font-s;
+    line-height: $lheight-m;
+  }
 }
 
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small-up} {
+@media #{$small-only} {
   .tour-items {
-    .separator {
-      margin-top: $space-h;
-      margin-bottom: $space-h;
-    }
-    .separator.silent {
-      margin-top: $space-l;
-      margin-bottom: $space-l;
-    }
+    padding-bottom: $space-l;
   }
-  .tour-item-heading {
-    font-size: $font-l;
-    margin-bottom: $space-l;
-    text-align: center;
+  .tour-item {
+    padding-top: $space-l;
+  }
+  .tour-item-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .tour-item-text,
+  .tour-item.compact .tour-item-text {
+    margin-top: $space-x;
+    font-size: $font-m;
+    line-height: $lheight-s;
+  }
+  .tour-items .separator {
+    display: none;
   }
   .tour-figure {
-    margin-bottom: 0;
-    margin-top: 0;
-  }
-  .tour-item-text {
-    display: block;
-    font-size: $font-m;
-    line-height: $lheight-m;
-    &:first-child {
-      margin-top: 0;
-      padding-top: 0;
-    }
-  }
-  .tour-item.compact {
-    .tour-item-text {
-      text-align: center;
-    }
-  }
-  .tour-item.odd {
-    .tour-figure {
-      margin-left: $space-l;
-    }
-  }
-  .tour-item.even {
-    .tour-figure {
-      margin-right: $space-l;
-    }
+    margin-left: $space-h;
+    margin-right: $space-h;
   }
 }
 
-@media #{$medium-up} {
+@media #{$medium-only} {
   .tour-items {
-    .separator {
-      margin-top: $space-h;
-      margin-bottom: $space-h;
-    }
-    .separator.silent {
-      margin-top: $space-xl;
-      margin-bottom: $space-xl;
-    }
+    padding-bottom: $space-l;
+  }
+  .tour-item {
+    padding-top: $space-l;
+  }
+  .tour-item-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .tour-item-text,
+  .tour-item.compact .tour-item-text {
+    margin-top: $space-x;
+    font-size: $font-m;
+    line-height: $lheight-s;
   }
 }
 
-@media #{$large-up} {
+@media #{$large-only} {
 }

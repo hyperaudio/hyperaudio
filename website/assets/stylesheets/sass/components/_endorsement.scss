@@ -5,7 +5,7 @@
 }
 .endorsement {
   @include clearfix;
-  margin-top: $space-xl;
+  margin-top: $space-l;
   &:first-child {
     margin-top: 0;
   }
@@ -13,7 +13,7 @@
 .endorsement-quote {
   display: block;
   font-style: italic;
-  margin-bottom: $space-m;
+  margin-bottom: $space-s;
 }
 .endorsement-author {
   color: $mono-weak;
@@ -38,7 +38,7 @@
   .endorsement-quote {
     display: block;
     font-style: italic;
-    margin-bottom: $space-l;
+    margin-bottom: $space-m;
     min-height: 10rem;
   }
 }

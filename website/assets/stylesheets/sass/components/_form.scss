@@ -3,13 +3,13 @@
 
 .form {
   .form-component {
-    margin-top: $space-xl;
+    margin-top: $space-l;
     &:first-child {
       margin-top: 0;
     }
   }
   .form-component.actions {
-    margin-top: $space-xl;
+    margin-top: $space-l;
     text-align: center;
   }
 }
@@ -21,7 +21,7 @@
   display: block;
   font-size: $font-xs;
   font-weight: bold;
-  margin-bottom: $space-s;
+  margin-bottom: $space-x;
   &.centered {
     text-align: center;
   }

@@ -14,10 +14,10 @@
 }
 .feature-heading {
   font-size: $font-m;
-  margin-bottom: $space-s;
+  margin-bottom: $space-x;
 }
 .feature-detail {
-  margin: $space-l 0 0;
+  margin: $space-m 0 0;
 }
 .feature-text {
   display: inline;
@@ -26,13 +26,13 @@
 }
 .feature-call {
   font-size: $font-s;
-  margin-top: $space-m;
+  margin-top: $space-s;
 }
 .feature-figure {
   @include border-radius($radius-s);
   border: 1px solid $alt-color-light;
   line-height: 0;
-  margin-bottom: $space-m;
+  margin-bottom: $space-s;
   max-height: 350px;
   overflow: hidden;
   position: relative;
@@ -48,12 +48,12 @@
 
 @media #{$small-up} {
   .feature-figure {
-    margin-bottom: $space-l;
+    margin-bottom: $space-m;
   }
   .feature-heading {
     font-size: $font-l;
-    margin-top: $space-l;
-    margin-bottom: $space-l;
+    margin-top: $space-m;
+    margin-bottom: $space-m;
   }
   .feature-text {
     display: block;
@@ -65,16 +65,16 @@
     display: inline-block;
     font-size: $font-s;
     font-weight: normal;
-    margin-top: $space-l;
+    margin-top: $space-m;
   }
   .feature.odd {
     .feature-figure {
-      margin-right: $space-l;
+      margin-right: $space-m;
     }
   }
   .feature.even {
     .feature-figure {
-      margin-left: $space-l;
+      margin-left: $space-m;
     }
   }
 

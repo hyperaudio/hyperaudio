@@ -5,17 +5,17 @@
   position: relative;
 }
 .article-head {
-  margin-bottom: $space-xl;
+  margin-bottom: $space-l;
 }
 .article-heading {
   color: $mono-weak;
   font-size: $font-m;
   text-align: center;
-  margin-bottom: $space-l;
+  margin-bottom: $space-m;
 }
 .article-title {
   @extend .heading-xl;
-  margin: 0 $space-m $space-l;
+  margin: 0 $space-s $space-m;
   text-align: center;
   text-transform: none;
   a {
@@ -44,14 +44,14 @@
   line-height: $lheight-m;
   text-align: justify;
   blockquote {
-    border-left: $space-s solid $light;
+    border-left: $space-x solid $light;
     font-style: italic;
-    margin: $space-l;
-    padding-left: $space-l;
+    margin: $space-m;
+    padding-left: $space-m;
   }
   ul,
   ol {
-    margin: $space-l;
+    margin: $space-m;
   }
   p {
   }
@@ -61,8 +61,8 @@
   }
   figure {
     border: 1px solid $light;
-    margin-bottom: $space-l;
-    padding: $space-m;
+    margin-bottom: $space-m;
+    padding: $space-s;
     text-align: center;
     > a {
       border: none !important;
@@ -78,15 +78,15 @@
       color: $mono-mid;
       font-size: $font-s;
       line-height: $lheight-s;
-      margin-top: $space-m;
+      margin-top: $space-s;
       text-align: left;
     }
   }
   h2 {
     @extend .heading-l;
     font-size: ($font-l - 0.4rem);
-    margin-bottom: $space-l;
-    margin-top: $space-xl;
+    margin-bottom: $space-m;
+    margin-top: $space-l;
     text-align: center;
     &:first-child {
       margin-top: 0;

@@ -15,7 +15,7 @@
 
 .heading-xl {
   color: $alt-color;
-  font-size: $font-xl;
+  font-size: $font-h;
   font-weight: bold;
   text-transform: capitalize;
 }
@@ -47,3 +47,40 @@ h2 { @extend .heading-l; }
 h3 { @extend .heading-m; }
 h4 { @extend .heading-s; }
 h5 { @extend .heading-xs; }
+
+@media #{$small-only} {
+  .heading-xl {
+    font-size: $font-l;
+  }
+  .heading-l {
+    font-size: $font-m;
+  }
+  .heading-m {
+    font-size: ($font-s + 0.5rem);
+  }
+  .heading-s {
+    font-size: ($font-xs + 0.5rem);
+  }
+  .heading-xs {
+    font-size: $font-xs;
+  }
+}
+@media #{$medium-only} {
+  .heading-xl {
+    font-size: $font-xl;
+  }
+  .heading-l {
+    font-size: ($font-m + 0.68rem);
+  }
+  .heading-m {
+    font-size: ($font-s + 0.5rem);
+  }
+  .heading-s {
+    font-size: ($font-xs + 0.5rem);
+  }
+  .heading-xs {
+    font-size: $font-xs;
+  }
+}
+@media #{$large-only} {
+}

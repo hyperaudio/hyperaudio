@@ -1,49 +1,103 @@
 /* Header
 ----------------------------------------------- */
 
-header {
-  padding: $space-xl 0;
+.header {
+  padding-top: $space-l;
+  padding-bottom: $space-m;
 }
 
-// Header navigation
+// Brandmark
+
+.header-brandmark {
+  float: left;
+  margin-top: -($space-s);
+  margin-bottom: $space-s;
+}
+
+// Navigation
 
 .header-navigation {
   list-style: none;
-  text-align: center;
+  margin-bottom: $space-x;
+  text-align: right;
 }
 .header-navigation-item {
   display: inline-block;
   font-size: $font-s;
-  margin: 0 0 0 $space-s;
+  margin: 0 $space-s;
   text-transform: uppercase;
 }
 .header-navigation-item.active {
-  border: inherit;
   opacity: 0.75;
 }
 .header-navigation-item a {
   letter-spacing: 0.1em;
 }
-.header-navigation-item a:hover {
-  border-bottom-color: $bright;
+
+// Imprint
+
+.header-imprint {
+  color: $mono-weak;
+  margin-top: $space-h;
+  margin-bottom: $space-h;
+  text-align: center;
+}
+.header-imprint-links {
+  display: block !important;
+  margin-top: $space-s;
 }
 
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small-up} {
+@media #{$small-only} {
+  .lt_header {
+    margin-top: $space-l;
+  }
+  .header-brandmark {
+    float: none;
+    text-align: center;
+    margin-bottom: $space-m;
+    > .brandmark {
+      display: inline-block;
+    }
+  }
   .header-navigation {
-    margin-top: $space-s;
-    text-align: right;
+    text-align: center;
   }
   .header-navigation-item {
-    margin-left: $space-l;
-    padding: $space-xs 0;
+    margin-bottom: $space-m;
+  }
+  .header-imprint {
+    margin-top: $space-l;
+    margin-bottom: $space-l;
+    p {
+      display: inline;
+    }
   }
 }
 
-@media #{$medium-up} {
+@media #{$medium-only} {
+  .header-brandmark {
+    float: none;
+    text-align: center;
+    > .brandmark {
+      display: inline-block;
+    }
+  }
+  .header-navigation {
+  }
+  .header-navigation-item {
+    margin-bottom: $space-m;
+  }
+  .header-imprint {
+    margin-top: $space-l;
+    margin-bottom: $space-l;
+    p {
+      display: inline;
+    }
+  }
 }
 
-@media #{$large-up} {
+@media #{$large-only} {
 }

@@ -10,7 +10,7 @@ table {
     font-size: $font-m;
     font-weight: bold;
     line-height: $lheight-s;
-    margin-bottom: $space-s;
+    margin-bottom: $space-x;
     text-align: left;
   }
   .span1 {
@@ -42,7 +42,7 @@ th {
   border-bottom: 1px solid $mono-light;
   font-size: $font-xs;
   line-height: $lheight-s;
-  padding: $space-m;
+  padding: $space-s;
   text-align: left;
   vertical-align: top;
   &:first-child {

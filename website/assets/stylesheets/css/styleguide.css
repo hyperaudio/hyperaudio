@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Exo+2:500,500italic,700|Merriweather+Sans:400,400italic,700italic,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Exo+2:400,700,400italic);
 /* Import Gem-based Base Frameworks
 ------------------------------------------- */
 /* Import Bower-driven Vendor Modules
@@ -102,7 +102,7 @@ html {
   -ms-border-radius: 0.3rem;
   -o-border-radius: 0.3rem;
   border-radius: 0.3rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
@@ -154,7 +154,7 @@ html {
   -ms-border-radius: 0.3rem;
   -o-border-radius: 0.3rem;
   border-radius: 0.3rem;
-  padding: 0.2rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
@@ -187,6 +187,6 @@ html {
   font-size: 1.22rem;
   font-weight: normal;
   line-height: 1.4em;
-  padding: 0.2rem 0.5rem;
+  padding: 0.5rem 0.5rem;
   white-space: nowrap;
 }

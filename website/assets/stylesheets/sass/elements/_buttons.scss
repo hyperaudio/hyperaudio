@@ -12,7 +12,7 @@ input[type="submit"] {
   display: inline-block;
   font-weight: bold;
   line-height: $lheight-m;
-  padding: $space-s $space-m;
+  padding: $space-x $space-s;
   &:hover {
     background: #2C3E50;
     color: $bright !important;
@@ -47,13 +47,13 @@ input[type="submit"] {
 }
 
 .button.large {
-  padding: $space-m $space-l !important;
+  padding: $space-s $space-m !important;
   text-align: center;
 }
 
 .button.small {
   font-size: $font-xs;
-  padding: $space-xs $space-m;
+  padding: $space-x $space-s;
 }
 
 /* Queries

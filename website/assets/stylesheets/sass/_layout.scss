@@ -1,43 +1,65 @@
 /* Layout Generic
 ------------------------------------------- */
 
-@media #{$medium-up} {
-  .row {
-    max-width: 96rem;
-  }
-  .container {
-    @include clearfix;
-    margin: 0 auto;
-    min-height: 100%;
-    max-width: 960px;
-  }
+.row { // Foundation Override
+  max-width: 96rem;
+}
 
-  .section > .container,
-  .footer > .container {
-    max-width: 88rem;
+.section {
+  @include clearfix;
+  padding-top: $space-h;
+  padding-bottom: $space-h;
+  position: relative;
+  &.plain {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
+
+.container {
+  @include clearfix;
+  margin: 0 auto;
+  min-height: 100%;
+  max-width: 96rem;
+}
+
+/* Layout Specific
+------------------------------------------- */
+
+.lt_homefold {
+  padding-top: $space-l;
+  padding-bottom: 0 !important;
+}
+.lt_pitch {
+  margin-bottom: $space-h;
+}
+
+/* Media Queries
+------------------------------------------- */
 
 @media #{$small-only} {
-  section {
-    padding-left: $space-m;
-    padding-right: $space-m;
+  .lt_pitch {
+    margin-bottom: $space-l;
   }
-}
-@media #{$medium-only} {
-  section {
-    padding-left: $space-l;
-    padding-right: $space-l;
+  .section {
+    padding-left: $space-s;
+    padding-right: $space-s;
+    padding-top: $space-l;
+    padding-bottom: $space-l;
   }
 }
 
-@media #{$large-up} {
-  .row,
-  .container {
-    max-width: 100rem;
+@media #{$medium-only} {
+  .lt_pitch {
+    margin-bottom: $space-l;
   }
-  .section > .container,
-  .footer > .container {
-    max-width: 99rem;
+  .section {
+    padding-left: $space-m;
+    padding-right: $space-m;
+    padding-top: $space-l;
+    padding-bottom: $space-l;
   }
+}
+@media #{$large-only} {
+
 }

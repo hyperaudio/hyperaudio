@@ -9,8 +9,8 @@
 .functionality-heading {
   display: none;
   font-size: $font-m;
-  margin-top: $space-m;
-  margin-bottom: $space-m;
+  margin-top: $space-s;
+  margin-bottom: $space-s;
 }
 .functionality-text {
   display: inline;
@@ -21,13 +21,13 @@
   color: $flare-strong;
 }
 .functionality-call {
-  margin-top: $space-m;
+  margin-top: $space-s;
 }
 .functionality-figure {
   @include border-top-radius($radius-s);
   background: $bright;
   line-height: 0;
-  margin-bottom: $space-m;
+  margin-bottom: $space-s;
   overflow: hidden;
   position: relative;
 }
@@ -45,7 +45,7 @@
     display: block;
     font-size: $font-xl;
     line-height: $lheight-xs;
-    margin-top: $space-m;
+    margin-top: $space-s;
   }
   .functionality-text {
     display: block;
@@ -56,7 +56,7 @@
     background: $bright;
     line-height: 0;
     margin-bottom: 0;
-    margin-left: $space-l;
+    margin-left: $space-m;
   }
 }
 
