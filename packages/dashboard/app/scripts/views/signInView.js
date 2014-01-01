@@ -3,9 +3,9 @@
 haDash.Views = haDash.Views || {};
 
 (function () {
-    'use strict';
+  'use strict';
 
-    haDash.Views.SignInView = Backbone.View.extend({
+  haDash.Views.SignInView = Backbone.View.extend({
 
 		id: 'signInView',
 
@@ -44,21 +44,16 @@ haDash.Views = haDash.Views || {};
 			})
 			.done(function(whoami) {
 				console.log(whoami);
-
+        haDash.setUser(whoami);
 				if (whoami.user) {
-					window.haDash.user = whoami.user;
-					$('body').removeClass('anonymous').addClass('user');
 					haDash.router.navigate("mixes/", {trigger: true});
-				} else {
-					window.haDash.user = null;
-					$('body').removeClass('user').addClass('anonymous');
 				}
-		    })
-		    .fail(function() {
-		      	$('#loginFormError').show();
-		    });
+		  })
+		  .fail(function() {
+		  	$('#loginFormError').show();
+	    });
 
 		}
-    });
+  });
 
 })();

@@ -58,19 +58,38 @@ window.haDash = {
 			},
 			timeout: 5000,
 			success: function(whoami) {
-				if (whoami.user) {
-					window.haDash.user = whoami.user;
-					$('body').removeClass('anonymous').addClass('user');
-				} else {
-					window.haDash.user = null;
-					$('body').removeClass('user').addClass('anonymous');
-				}
-
+        this.setUser(whoami);
 				if (callback) callback();
 			}
 		});
 
-	}
+	},
+
+  setUser: function (whoami) {
+    if (whoami.user) {
+      window.haDash.user = whoami.user;
+      $('body').removeClass('anonymous').addClass('user');
+      this.socketConnect();
+    } else {
+      window.haDash.user = null;
+      $('body').removeClass('user').addClass('anonymous');
+      this.socketDisconnect();
+    }
+  },
+
+  socket: null,
+
+  socketConnect: function () {
+    this.socket = io.connect('//api.hyperaud.io');
+
+    this.socket.on(this.user, function (data) {
+      console.log(data);
+    });
+  },
+
+  socketDisconnect: function () {
+    this.socket.disconnect();
+  }
 };
 
 $(document).ready(function() {
