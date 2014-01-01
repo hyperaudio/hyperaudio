@@ -33,6 +33,7 @@
     "mime": "*",
     "mmmagic": "*",
     "synchronize": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "socket.io-client": "*"
   }
 }
