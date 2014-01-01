@@ -42,6 +42,11 @@ haDash.Views = haDash.Views || {};
 		},
 
 		addVideo: function() {
+      if (!haDash.user) {
+        haDash.router.navigate("secret-signin/", {trigger: true});
+        this.remove();
+      }
+
 			var url = this.$el.find('input').val();
 			var ytID = this.YouTubeGetID(url);
 

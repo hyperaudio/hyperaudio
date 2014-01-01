@@ -50,6 +50,11 @@ haDash.Views = haDash.Views || {};
 		},
 
 		align: function() {
+      if (!haDash.user) {
+        haDash.router.navigate("secret-signin/", {trigger: true});
+        this.remove();
+      }
+
 			$.ajax({
 				url: haDash.API + '/transcripts/' + this.model.id + '/align',
 				contentType: "application/json; charset=utf-8",

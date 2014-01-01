@@ -25,10 +25,10 @@ haDash.Views = haDash.Views || {};
 		},
 
 		events: {
-			'click .label': 'preview'
+			'click .label': 'mediaDetail'
 		},
 
-		preview: function() {
+		mediaDetail: function() {
 			haDash.router.navigate("media/" + this.model.id, {trigger: true});
 		}
 
