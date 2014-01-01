@@ -2,39 +2,52 @@
 ----------------------------------------------- */
 
 .section-head {
-  margin-bottom: $space-xl;
   text-align: center;
+  margin-bottom: $space-h;
 }
 .section-head-heading {
-  font-size: $font-l;
-  padding: 0 $space-s;
+  @extend .heading-xl;
 }
 .section-head-text {
+  @include hyphens(auto);
+  @include hyphenation;
+  @extend .heading-l;
   font-weight: 400;
-  line-height: $lheight-xs;
   margin-top: $space-m;
 }
 .section-head-figure {
-  margin-top: $space-xl;
+  margin-top: $space-l;
+}
+.section-head > p {
+  margin-top: $space-l;
 }
 
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small-up} {
-  .section-head-heading {
-    font-size: $font-xl;
-    margin-bottom: 0;
-    padding: 0;
+@media #{$small-only} {
+  .section-head {
+    margin-bottom: $space-l;
   }
   .section-head-text {
-    font-weight: normal;
+    margin-top: $space-s;
+  }
+  .section-head-figure {
     margin-top: $space-m;
   }
 }
 
-@media #{$medium-up} {
+@media #{$medium-only} {
+  .section-head {
+    margin-bottom: $space-l;
+  }
+  .section-head-text {
+    margin-top: $space-m;
+  }
+  .section-head-figure {
+    margin-top: $space-l;
+  }
 }
 
-@media #{$large-up} {
+@media #{$large-only} {
 }
