@@ -68,7 +68,7 @@ html {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   font-weight: bold;
   font-size: 2.5rem;
-  line-height: 1.6em;
+  line-height: 1.5em;
 }
 .sg-mod-heading .sg-mod-class {
   -webkit-border-radius: 0.3rem;
@@ -83,7 +83,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.3rem;
+  font-size: 1.42rem;
   font-family: monospace;
   line-height: 1.2em;
 }
@@ -93,8 +93,8 @@ html {
   padding: 0;
 }
 .sg-mod-intro p, .sg-mod-intro li {
-  font-size: 1.3rem;
-  line-height: 1.6em;
+  font-size: 1.42rem;
+  line-height: 1.5em;
 }
 .sg-mod-intro pre {
   -webkit-border-radius: 0.3rem;
@@ -106,9 +106,9 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.5rem;
+  font-size: 1.62rem;
   font-family: monospace;
-  line-height: 1.6em;
+  line-height: 1.5em;
 }
 .sg-mod-intro li {
   margin-left: 1.8rem;
@@ -158,7 +158,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.3rem;
+  font-size: 1.42rem;
   font-family: monospace;
   line-height: 1.2em;
 }
@@ -167,7 +167,7 @@ html {
   margin-top: 2rem;
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  background: url('../../images/backgrounds/sg-grid.png?1386149330') repeat;
+  background: url('../../images/backgrounds/sg-grid.png?1385152527') repeat;
   position: relative;
 }
 
@@ -183,8 +183,8 @@ html {
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.04);
   color: rgba(0, 0, 0, 0.55);
-  font-family: "Merriweather Sans", sans-serif;
-  font-size: 1.2rem;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 1.22rem;
   font-weight: normal;
   line-height: 1.4em;
   padding: 0.2rem 0.5rem;

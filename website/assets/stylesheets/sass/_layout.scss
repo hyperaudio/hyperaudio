@@ -3,7 +3,7 @@
 
 @media #{$medium} {
   .row {
-    max-width: 960px;
+    max-width: 96rem;
   }
   .container {
     @include clearfix;
@@ -14,22 +14,17 @@
 
   .section > .container,
   .footer > .container {
-    max-width: 880px;
+    max-width: 88rem;
   }
 }
 
 @media #{$large} {
-  body {
-    font-size: 140%;
-  }
-  .row {
-    max-width: 1200px;
-  }
+  .row,
   .container {
-    max-width: 1200px;
+    max-width: 100rem;
   }
   .section > .container,
   .footer > .container {
-    max-width: 1100px;
+    max-width: 99rem;
   }
 }
