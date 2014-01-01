@@ -31,7 +31,7 @@ haDash.Routers = haDash.Routers || {};
 
 		dashboard: function() {
 			// console.log('Dashboard N/A');
-			document.location = 'media/';
+			document.location = '/media/';
 		},
 
 		mixes: function() {
