@@ -69,8 +69,7 @@ haDash.Routers = haDash.Routers || {};
 			);
 		},
 
-		signin: function(params) {
-      console.log(params);
+		signin: function() {
 			$main.empty().append(new haDash.Views.SignInView({}).el);
 		},
 
