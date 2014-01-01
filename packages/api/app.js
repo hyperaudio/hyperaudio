@@ -243,9 +243,12 @@ var server = http.createServer(app).listen(app.get('port'), function() {
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
-  // socket.emit('news', { hello: 'world' });
   socket.on('log', function (data) {
     console.log(data);
+  });
+
+  socket.on('mod9', function (data) {
+    socket.volatile.emit(data.user, data);
   });
 });
 

@@ -49,7 +49,8 @@ module.exports = function() {
           try {
             // data = part + data;
             result.push([process.hrtime(), JSON.parse(data)]);
-            socket.emit([payload.owner, {
+            socket.emit(['mod9', {
+              user: payload.owner,
               transcript: payload._id,
               align: JSON.parse(data)
             }]);
