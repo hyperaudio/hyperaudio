@@ -5,7 +5,8 @@
 
   .section {
     @include clearfix;
-    padding: $space-xl 0;
+    padding-top: $space-xl;
+    padding-bottom: $space-xl;
     position: relative;
   }
   .lt_section-head {
@@ -31,7 +32,8 @@
     }
     .section {
       @include clearfix;
-      padding: $space-h 0;
+      padding-bottom: $space-h;
+      padding-top: $space-h;
       position: relative;
     }
     .lt_section-head {

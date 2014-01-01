@@ -2796,19 +2796,6 @@ input[type="submit"].active {
   .article-title {
     font-size: 2.12rem;
   }
-
-  .article-meta,
-  .article-body {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-@media only screen and (min-width: 40.063em) and (max-width: 64em) {
-  .article-meta,
-  .article-body {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
 }
 /* Brandmark
 ----------------------------------------------- */
@@ -2869,9 +2856,9 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen {
+@media only screen and (max-width: 40em) {
   .call-heading {
-    font-size: 2.9rem;
+    font-size: 2.12rem;
     padding: 0;
   }
 }
@@ -3667,6 +3654,18 @@ header {
     max-width: 88rem;
   }
 }
+@media only screen and (max-width: 40em) {
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  section {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
 @media only screen and (min-width: 64.063em) {
   .row, .form-component.horizontal,
   .container {
@@ -3682,7 +3681,8 @@ header {
 ------------------------------------------- */
 .tpl_site .section {
   *zoom: 1;
-  padding: 4rem 0;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
   position: relative;
 }
 .tpl_site .section:before, .tpl_site .section:after {
@@ -3713,7 +3713,8 @@ header {
   }
   .tpl_site .section {
     *zoom: 1;
-    padding: 8rem 0;
+    padding-bottom: 8rem;
+    padding-top: 8rem;
     position: relative;
   }
   .tpl_site .section:before, .tpl_site .section:after {

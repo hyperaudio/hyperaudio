@@ -15,9 +15,9 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small-up} {
+@media #{$small-only} {
   .call-heading {
-    font-size: $font-xl;
+    font-size: ($font-m + 0.5rem);
     padding: 0;
   }
 }

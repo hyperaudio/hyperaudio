@@ -18,6 +18,19 @@
   }
 }
 
+@media #{$small-only} {
+  section {
+    padding-left: $space-m;
+    padding-right: $space-m;
+  }
+}
+@media #{$medium-only} {
+  section {
+    padding-left: $space-l;
+    padding-right: $space-l;
+  }
+}
+
 @media #{$large-up} {
   .row,
   .container {

@@ -101,19 +101,9 @@
   .article-title {
     font-size: ($font-m + 0.5rem);
   }
-  .article-meta,
-  .article-body {
-    padding-left: $space-l;
-    padding-right: $space-l;
-  }
 }
 
 @media #{$medium-only} {
-  .article-meta,
-  .article-body {
-    padding-left: $space-l;
-    padding-right: $space-l;
-  }
 }
 
 @media #{$large-up} {
