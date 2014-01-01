@@ -40,12 +40,6 @@ app.use(function(req, res, next) {
   }
 });
 
-// KILL 304 BS
-// app.use(function(req, res, next) {
-//   req.headers['if-none-match'] = 'no-match-for-this';
-//   next();
-// });
-
 app.use(express.favicon());
 app.use(express.logger('dev'));
 
@@ -63,6 +57,7 @@ app.use(sessions({
   activeDuration: 1000 * 60 * 5 // conf
 }));
 
+//TODO move CUBE in here
 // app.use(function(req, res, next) {
 //   // console.log(req.session);
 //   if (req.session.seenyou) {
@@ -153,20 +148,10 @@ app.get('/v1/whoami', function(req, res) {
     user: req.session.user
   });
 
-  // console.log(req.session);
-  // 	console.log('auth ' + req.isAuthenticated());
-
   res.json({
     user: req.session.user
   });
 });
-
-// FIXME /finger ? as unix finger
-// app.get('/account', ensureAuthenticated, function(req, res) {
-// 	res.render('account', {
-// 		user: req.session.user
-// 	});
-// });
 
 app.get('/v1/login', function(req, res) {
   res.render('login', {
@@ -255,14 +240,16 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-// var io = require('socket.io').listen(server);
+var io = require('socket.io').listen(server, {
+  resource: "/v1/socket"
+});
 
-// io.sockets.on('connection', function (socket) {
-//   socket.emit('news', { hello: 'world' });
-//   socket.on('my other event', function (data) {
-//     console.log(data);
-//   });
-// });
+io.sockets.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('log', function (data) {
+    console.log(data);
+  });
+});
 
 process.on('SIGINT', function() {
   server.close();

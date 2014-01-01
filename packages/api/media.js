@@ -1,11 +1,7 @@
-// var https = require('https');
 var fs = require('fs');
-// var path = require('path');
 
 var passport = require('passport');
-
 var mongoose = require('mongoose');
-// var ObjectId = mongoose.Types.ObjectId;
 
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
@@ -60,7 +56,6 @@ module.exports = function(app, nconf) {
     cube("get_media_list", {
       user: req.params.user
     });
-    // console.log(req.user);
     if (req.params.user) {
       var query = {
         owner: req.params.user
@@ -131,6 +126,7 @@ module.exports = function(app, nconf) {
       return;
     });
   });
+
   app.put('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
 
@@ -145,15 +141,17 @@ module.exports = function(app, nconf) {
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
       mediaObject.owner = owner;
-      // mediaObject.meta = req.body.meta;
       mediaObject.source = req.body.source;
-      // mediaObject.transcripts = req.body.transcripts;
 
       return mediaObject.save(function(err) {
         if (!err) {
-          console.log("updated");
+          return res.send(mediaObject);
         }
-        return res.send(mediaObject);
+
+        res.status(500);
+        return res.send({
+          error: err
+        });
       });
     });
   });
@@ -168,7 +166,6 @@ module.exports = function(app, nconf) {
     var metaId = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     req.body.meta['_id'] = metaId;
     console.log(req.body.meta);
-    // console.log("META?");
     var metadata = new Metadata(req.body.meta);
 
     var mediaObject;
@@ -177,30 +174,26 @@ module.exports = function(app, nconf) {
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
-      // sort: req.body.sort,
       owner: owner,
       meta: metaId,
-      source: req.body.source //,
-      // transcripts: req.body.transcripts
+      source: req.body.source
     });
 
-    // console.log("MEDIA?");
-    // console.log(mediaObject);
-    // console.log("metadata ?");
     metadata.save(function(err) {
-      if (!err) {
-        console.log("metadata created");
-      } else {
-        console.log(err);
+      if (err) {
+        res.status(500);
+        return res.send({
+          error: err
+        });
       }
     });
 
-    // console.log("media ?");
     mediaObject.save(function(err) {
-      if (!err) {
-        console.log("media created");
-      } else {
-        console.log(err);
+      if (err) {
+        res.status(500);
+        return res.send({
+          error: err
+        });
       }
     });
 
@@ -237,6 +230,10 @@ module.exports = function(app, nconf) {
           console.log("removed");
           return res.send('')
         }
+        res.status(500);
+        return res.send({
+          error: err
+        });
       });
     });
   });

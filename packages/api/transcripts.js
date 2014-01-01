@@ -137,8 +137,6 @@ module.exports = function(app, nconf) {
       transcript.label = req.body.label;
       transcript.desc = req.body.desc;
       transcript.type = req.body.type;
-      // transcript.sort = req.body.sort;
-      // transcript.owner = req.body.owner;
       transcript.meta = req.body.meta;
       transcript.media = req.body.media;
 
@@ -226,9 +224,6 @@ module.exports = function(app, nconf) {
       media: req.body.media
     });
 
-    // download if needed
-
-    console.log(transcript);
 
     transcript.save(function(err) {
       if (!err) {
