@@ -40,7 +40,7 @@ $flare-light       : rgba(255,255,255,0.1);
 html { font-size: 62.5%; }
 
 // Font Families
-$primary-font      : 'Merriweather Sans', sans-serif;
+$primary-font: 'Source Sans Pro', sans-serif;
 $secondary-font    : 'Exo 2', sans-serif;
 
 // Font Sizes
@@ -49,14 +49,14 @@ $font-t            : 1.0rem; // tiny
 
 $font-xl           : 2.9rem;
 $font-l            : 2.5rem;
-$font-m            : 1.5rem;
-$font-s            : 1.3rem;
-$font-xs           : 1.2rem;
+$font-m            : 1.62rem;
+$font-s            : 1.42rem;
+$font-xs           : 1.22rem;
 
 // Line Heights
 $lheight-xl        : 2.4em;
-$lheight-l         : 1.8em;
-$lheight-m         : 1.6em;
+$lheight-l         : 1.7em;
+$lheight-m         : 1.5em;
 $lheight-s         : 1.4em;
 $lheight-xs        : 1.2em;
 
@@ -83,4 +83,4 @@ $dflt-background  : $bright;
 $dflt-color       : $mono-strong;
 $dflt-font        : $primary-font;
 $dflt-font-size   : $font-s;
-$dflt-line-height : $lheight-m;
+$dflt-line-height : $lheight-s;

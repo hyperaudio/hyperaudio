@@ -5,8 +5,7 @@
   text-align: center;
 }
 .call-heading {
-  font-size: $font-l;
-  padding: 0 $space-s;
+  @extend .heading-l;
 }
 .call-text {
   font-weight: normal;
