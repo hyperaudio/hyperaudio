@@ -8,7 +8,7 @@ var Transcript = require('../models/transcript');
 mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
 
 var io = require('socket.io-client');
-var socket = io.connect('http://api.hyperaud.io');
+var socket = io.connect('//api.hyperaud.io');
 
 module.exports = function() {
   function ProbeHandler() {
@@ -49,11 +49,11 @@ module.exports = function() {
           try {
             // data = part + data;
             result.push([process.hrtime(), JSON.parse(data)]);
-            socket.emit(['mod9', {
+            socket.emit('mod9', {
               user: payload.owner,
               transcript: payload._id,
               align: JSON.parse(data)
-            }]);
+            });
             // part = "";
           } catch (err) {
             console.log('err skipping');
