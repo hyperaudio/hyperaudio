@@ -69,26 +69,26 @@ window.haDash = {
     if (whoami.user) {
       window.haDash.user = whoami.user;
       $('body').removeClass('anonymous').addClass('user');
-      this.socketConnect();
+      haDash.socketConnect();
     } else {
       window.haDash.user = null;
       $('body').removeClass('user').addClass('anonymous');
-      this.socketDisconnect();
+      haDash.socketDisconnect();
     }
   },
 
   socket: null,
 
   socketConnect: function () {
-    this.socket = io.connect('//api.hyperaud.io');
+    haDash.socket = io.connect('//api.hyperaud.io');
 
-    this.socket.on(this.user, function (data) {
+    haDash.socket.on(haDash.user, function (data) {
       console.log(data);
     });
   },
 
   socketDisconnect: function () {
-    if (this.socket) this.socket.disconnect();
+    if (haDash.socket) haDash.socket.disconnect();
   }
 };
 
