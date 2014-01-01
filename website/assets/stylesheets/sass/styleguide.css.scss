@@ -9,7 +9,7 @@
 
 /* Import Other External Assets
 ------------------------------------------- */
-@import url(http://fonts.googleapis.com/css?family=Exo+2:500,500italic,700|Merriweather+Sans:400,400italic,700italic,700);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Exo+2:400,700,400italic);
 
 /* Import Hyperaudio Library Mixins
 ------------------------------------------- */
@@ -28,14 +28,14 @@
 }
 
 .sg-container {
-  padding: 0 $space-m;
+  padding: 0 $space-s;
 }
 
 // Navigation
 .sg-nav {
   color: $mono-light;
   list-style: decimal;
-  margin-bottom: $space-xl;
+  margin-bottom: $space-l;
 }
 .sg-nav-item {
 
@@ -45,8 +45,8 @@
 }
 .sg-nav-link {
   display: block;
-  margin-left: $space-s;
-  padding: $space-m 0;
+  margin-left: $space-x;
+  padding: $space-s 0;
   border-bottom: 1px solid $light !important;
   &.active {
     color: $mono-strong;
@@ -56,7 +56,7 @@
 // Module
 .sg-mod {
   position: relative;
-  margin-bottom: $space-xl;
+  margin-bottom: $space-l;
 }
 .sg-mod-heading {
   margin-top: 0;
@@ -67,8 +67,8 @@
   line-height: $lheight-m;
   .sg-mod-class {
     @include border-radius($radius-s);
-    @include position-top-right($space-s, 0);
-    padding: $space-s $space-m;
+    @include position-top-right($space-x, 0);
+    padding: $space-x $space-s;
     border: 1px solid $light;
     background: $bright;
     color: $mono-mid;
@@ -79,7 +79,7 @@
 }
 .sg-mod-intro {
   p, ul, ol, pre {
-    margin-bottom: $space-l;
+    margin-bottom: $space-m;
     padding: 0;
   }
   p, li {
@@ -91,7 +91,7 @@
   }
   pre {
     @include border-radius($radius-s);
-    padding: $space-xs $space-s;
+    padding: $space-x $space-x;
     border: 1px solid $light;
     background: $bright;
     color: $mono-mid;
@@ -106,7 +106,7 @@
 
   }
   li {
-    margin-left: $space-l - $space-xs;
+    margin-left: ($space-m - 0.2rem);
   }
   iframe {
     border: 1px solid $light;
@@ -128,8 +128,8 @@
     background: $bright;
     font-family: monospace;
     line-height: $lheight-xs;
-    margin-top: $space-l;
-    padding: $space-l;
+    margin-top: $space-m;
+    padding: $space-m;
     text-align: center;
     &.inverted {
       background: $shadow-mid;
@@ -140,7 +140,7 @@
   }
   code {
     @include border-radius($radius-s);
-    padding: $space-xs $space-s;
+    padding: $space-x $space-x;
     border: 1px solid $light;
     background: $bright;
     color: $mono-mid;
@@ -150,14 +150,14 @@
   }
 }
 .sg-mod-canvas {
-  margin-top: $space-l;
-  padding: $space-l;
+  margin-top: $space-m;
+  padding: $space-m;
   border: 1px solid $light;
   background: image-url("backgrounds/sg-grid.png") repeat;
   position: relative;
 }
 .sg-mod-canvas-note {
-  @include position-top-left(-($space-m), $space-l);
+  @include position-top-left(-($space-s), $space-m);
   @include border-radius($radius-s);
   background: $bright;
   border: 1px solid $light;
@@ -166,6 +166,6 @@
   font-size: $font-xs;
   font-weight: normal;
   line-height: $lheight-s;
-  padding: $space-xs $space-s;
+  padding: $space-x $space-x;
   white-space: nowrap;
 }
