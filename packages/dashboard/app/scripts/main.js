@@ -11,7 +11,7 @@ window.haDash = {
 	init: function() {
 		'use strict';
 
-		this.router = new this.Routers.Router();
+    this.router = new this.Routers.Router();
 
 		Backbone.history.start({
 			pushState: true

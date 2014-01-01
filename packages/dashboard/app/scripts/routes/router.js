@@ -13,7 +13,7 @@ haDash.Routers = haDash.Routers || {};
 			'mixes/': 'mixes',
 			'media/': 'media',
 			'media/:id': 'mediaDetail',
-			'secret-signin/:token': 'signin',
+			'secret-signin/': 'signin',
 			'signout/': 'signout',
 			'secret-signup/': 'signup',
 			'add-media/': 'addMedia'
@@ -69,8 +69,7 @@ haDash.Routers = haDash.Routers || {};
 			);
 		},
 
-		signin: function(token, params) {
-      console.log(token);
+		signin: function(params) {
       console.log(params);
 			$main.empty().append(new haDash.Views.SignInView({}).el);
 		},
