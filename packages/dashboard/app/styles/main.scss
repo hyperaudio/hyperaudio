@@ -18,6 +18,16 @@ body.user {
   .anonymous {
     display: none;
   }
+
+  .editable {
+    &:hover {
+    	background-color: lightyellow;
+    }
+    &:empty {
+    	background-color: lightyellow;
+    	min-width: 1em;
+    }
+  }
 }
 
 table {
@@ -33,3 +43,4 @@ td {
 		margin-left: 1em;
 	}
 }
+

@@ -25,7 +25,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		events: {
-			'click .label': 'mediaDetail'
+			'click td': 'mediaDetail'
 		},
 
 		mediaDetail: function() {
