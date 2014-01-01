@@ -18,7 +18,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .pitch-heading {
     display: block;
     font-size: $font-h;
@@ -30,8 +30,8 @@
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

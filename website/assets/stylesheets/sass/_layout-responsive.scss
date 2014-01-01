@@ -24,7 +24,7 @@
     padding: $space-xl 0 0;
   }
 
-  @media #{$small} {
+  @media #{$small-up} {
 
     .header-brandmark {
       min-height: 0;
@@ -53,10 +53,10 @@
 
   }
 
-  @media #{$medium} {
+  @media #{$medium-up} {
   }
 
-  @media #{$large} {
+  @media #{$large-up} {
   }
 
 }

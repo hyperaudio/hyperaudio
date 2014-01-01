@@ -32,14 +32,14 @@
   margin-left: $space-m;
 }
 
-@media #{$small} {
+@media #{$small-up} {
   .brandmark {
     text-align: left;
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

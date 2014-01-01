@@ -15,15 +15,15 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .call-heading {
     font-size: $font-xl;
     padding: 0;
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

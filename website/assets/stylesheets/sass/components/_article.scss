@@ -40,7 +40,7 @@
 .article-body {
   @include hyphens(auto);
   @include hyphenation;
-  font-size: $font-s;
+  font-size: $font-m;
   line-height: $lheight-m;
   text-align: justify;
   blockquote {
@@ -94,25 +94,27 @@
   }
 }
 
-.article.excerpt {
-
-}
-
-@media #{$small} {
+@media #{$small-only} {
+  .article-heading {
+    font-size: $font-s;
+  }
+  .article-title {
+    font-size: ($font-m + 0.5rem);
+  }
+  .article-meta,
   .article-body {
-    font-size: $font-m;
-    line-height: $lheight-l;
     padding-left: $space-l;
     padding-right: $space-l;
   }
 }
 
-@media #{$medium} {
+@media #{$medium-only} {
+  .article-meta,
   .article-body {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: $space-l;
+    padding-right: $space-l;
   }
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

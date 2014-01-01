@@ -31,7 +31,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .endorsement {
     margin-top: 0;
   }
@@ -43,8 +43,8 @@
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

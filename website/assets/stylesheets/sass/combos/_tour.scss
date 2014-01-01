@@ -50,7 +50,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .tour-items {
     .separator {
       margin-top: $space-h;
@@ -96,7 +96,7 @@
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
   .tour-items {
     .separator {
       margin-top: $space-h;
@@ -109,5 +109,5 @@
   }
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

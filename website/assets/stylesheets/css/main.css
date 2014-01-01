@@ -2737,7 +2737,7 @@ input[type="submit"].active {
   -webkit-hyphens: auto;
   -moz-hyphens: auto;
   hyphens: auto;
-  font-size: 1.42rem;
+  font-size: 1.62rem;
   line-height: 1.5em;
   text-align: justify;
 }
@@ -2788,18 +2788,26 @@ input[type="submit"].active {
   margin-top: 0;
 }
 
-@media only screen and (min-width: 40.063em) {
+@media only screen and (max-width: 40em) {
+  .article-heading {
+    font-size: 1.42rem;
+  }
+
+  .article-title {
+    font-size: 2.12rem;
+  }
+
+  .article-meta,
   .article-body {
-    font-size: 1.62rem;
-    line-height: 1.7em;
     padding-left: 2rem;
     padding-right: 2rem;
   }
 }
-@media only screen and (min-width: 40.063em) {
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  .article-meta,
   .article-body {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 }
 /* Brandmark
@@ -2843,7 +2851,7 @@ input[type="submit"].active {
   margin-left: 1rem;
 }
 
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .brandmark {
     text-align: left;
   }
@@ -2861,7 +2869,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .call-heading {
     font-size: 2.9rem;
     padding: 0;
@@ -2906,7 +2914,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .endorsement {
     margin-top: 0;
   }
@@ -2988,7 +2996,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .feature-figure {
     margin-bottom: 2rem;
   }
@@ -3044,7 +3052,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .footer-navigation {
     text-align: right;
   }
@@ -3160,7 +3168,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .functionality-heading {
     display: block;
     font-size: 2.9rem;
@@ -3226,7 +3234,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .listing-title {
     font-size: 2.5rem;
     text-align: center;
@@ -3253,7 +3261,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .pitch-heading {
     display: block;
     font-size: 4rem;
@@ -3289,7 +3297,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .section-head-heading {
     font-size: 2.9rem;
     margin-bottom: 0;
@@ -3382,7 +3390,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .slider-pager {
     display: block;
   }
@@ -3406,7 +3414,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .supporter {
     border: none !important;
     color: rgba(0, 0, 0, 0.55);
@@ -3480,7 +3488,7 @@ input[type="submit"].active {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .footer-brandmark {
     margin-top: 0;
   }
@@ -3522,7 +3530,7 @@ header {
 
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .header-navigation {
     margin-top: 0.5rem;
     text-align: right;
@@ -3578,7 +3586,7 @@ header {
 ----------------------------------------------- */
 /* Queries
 ----------------------------------------------- */
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .tour-items .separator {
     margin-top: 8rem;
     margin-bottom: 8rem;
@@ -3699,7 +3707,7 @@ header {
 .tpl_site .lt_footer {
   padding: 4rem 0 0;
 }
-@media only screen and (min-width: 40.063em) {
+@media only screen {
   .tpl_site .header-brandmark {
     min-height: 0;
   }

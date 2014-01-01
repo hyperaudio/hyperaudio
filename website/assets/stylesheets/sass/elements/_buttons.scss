@@ -59,11 +59,11 @@ input[type="submit"] {
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

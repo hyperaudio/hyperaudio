@@ -19,7 +19,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .footer-navigation {
     text-align: right;
   }
@@ -31,8 +31,8 @@
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

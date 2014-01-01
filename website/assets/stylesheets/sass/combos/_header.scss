@@ -31,7 +31,7 @@ header {
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .header-navigation {
     margin-top: $space-s;
     text-align: right;
@@ -42,8 +42,8 @@ header {
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

@@ -34,7 +34,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .listing-title {
     font-size: $font-l;
     text-align: center;
@@ -42,9 +42,9 @@
   }
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }
 

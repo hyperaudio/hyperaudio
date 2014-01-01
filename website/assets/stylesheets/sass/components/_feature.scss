@@ -46,7 +46,7 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small} {
+@media #{$small-up} {
   .feature-figure {
     margin-bottom: $space-l;
   }
@@ -80,8 +80,8 @@
 
 }
 
-@media #{$medium} {
+@media #{$medium-up} {
 }
 
-@media #{$large} {
+@media #{$large-up} {
 }

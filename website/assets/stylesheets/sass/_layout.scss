@@ -1,7 +1,7 @@
 /* Layout Generic
 ------------------------------------------- */
 
-@media #{$medium} {
+@media #{$medium-up} {
   .row {
     max-width: 96rem;
   }
@@ -18,7 +18,7 @@
   }
 }
 
-@media #{$large} {
+@media #{$large-up} {
   .row,
   .container {
     max-width: 100rem;
