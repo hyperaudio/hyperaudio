@@ -21,7 +21,7 @@ haDash.Views = haDash.Views || {};
 		},
 
 		render: function() {
-			console.log("transcriptListView render");
+			// console.log("transcriptListView render");
 
 			this.$el.html(this.template());
 			this.addAllItems();
@@ -38,12 +38,12 @@ haDash.Views = haDash.Views || {};
 			});
 
 			// this.$el.find('tbody').append(view.render().el);
-      console.log(haDash.user + ' vs ' + item.get('owner'));
+      // console.log(haDash.user + ' vs ' + item.get('owner'));
 			if (haDash.user == item.get('owner')) {
-        console.log('t your');
+        // console.log('t your');
 				this.$el.find('tbody.your').append(view.render().el);
 			} else {
-				console.log('t other');
+				// console.log('t other');
         this.$el.find('tbody.other').append(view.render().el);
 			}
 		},

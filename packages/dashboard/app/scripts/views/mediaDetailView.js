@@ -24,14 +24,14 @@ haDash.Views = haDash.Views || {};
 
 			for (var i = 0; i < transcriptIDs.length; i++) {
 				var transcriptID = transcriptIDs[i];
-				console.log(transcriptID);
+				// console.log(transcriptID);
 				var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
 				transcript.fetch({
 					url: haDash.API + '/transcripts/' + transcriptID
 				});
 				transcripts.add(transcript);
 			}
-			console.log(transcripts);
+			// console.log(transcripts);
 
 			this.$el.find("#transcripts").empty().append(
 				new haDash.Views.TranscriptListView({
