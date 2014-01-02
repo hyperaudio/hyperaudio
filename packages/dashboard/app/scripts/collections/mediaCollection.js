@@ -9,13 +9,13 @@ haDash.Collections = haDash.Collections || {};
 
         model: haDash.Models.MediaModel,
 
-		url: function() {
-			return haDash.API + '/media';
-		},
+    url: function() {
+      return haDash.API + '/media';
+    },
 
-		comparator: function(model) {
-     	   return - new Date(model.get('modified')).getTime();
-    	}
+    comparator: function(model) {
+         return - new Date(model.get('modified')).getTime();
+      }
 
     });
 

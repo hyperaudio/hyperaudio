@@ -11,67 +11,67 @@ haDash.Views = haDash.Views || {};
 
         template: JST['app/scripts/templates/transcript.ejs'],
 
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-		},
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+    },
 
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.find("span.timeago").timeago();
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.find("span.timeago").timeago();
 
-			this.$el.data('view', this);
-			this.$el.data('model', this.model);
-			return this;
-		},
+      this.$el.data('view', this);
+      this.$el.data('model', this.model);
+      return this;
+    },
 
-		events: {
-			"click .tLabel, tDesc": "edit",
-			"blur .tLabel, .tDesc": "save",
-			"click .align": "align"
-		},
+    events: {
+      "click .tLabel, tDesc": "edit",
+      "blur .tLabel, .tDesc": "save",
+      "click .align": "align"
+    },
 
-		notEditable: function() {
-			return this.model.get('owner') != haDash.user;
-		},
+    notEditable: function() {
+      return this.model.get('owner') != haDash.user;
+    },
 
-		edit: function(event) {
-			if (this.notEditable()) return;
-			$(event.target).attr('contenteditable', true);
-		},
+    edit: function(event) {
+      if (this.notEditable()) return;
+      $(event.target).attr('contenteditable', true);
+    },
 
-		save: function(event) {
-			if (this.notEditable()) return;
-			$(event.target).attr('contenteditable', false);
+    save: function(event) {
+      if (this.notEditable()) return;
+      $(event.target).attr('contenteditable', false);
 
-			this.model.set($(event.target).data('field'), $(event.target).text().trim());
-			this.model.save(null, {
-				url: haDash.API + '/transcripts/' + this.model.id
-			});
-		},
+      this.model.set($(event.target).data('field'), $(event.target).text().trim());
+      this.model.save(null, {
+        url: haDash.API + '/transcripts/' + this.model.id
+      });
+    },
 
-		align: function() {
+    align: function() {
       if (!haDash.user) {
         haDash.router.navigate("secret-signin/", {trigger: true});
         this.remove();
       }
 
-			$.ajax({
-				url: haDash.API + '/transcripts/' + this.model.id + '/align',
-				contentType: "application/json; charset=utf-8",
-    			dataType: "json",
-				xhrFields: {
-					withCredentials: true
-				},
-				method: 'post',
-				data: JSON.stringify({})
-			})
-			.done(function() {
-				console.log('OK');
-		    })
-		    .fail(function() {
-		      	console.log('ERR');
-		    });
-		}
+      $.ajax({
+        url: haDash.API + '/transcripts/' + this.model.id + '/align',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({})
+      })
+      .done(function() {
+        console.log('OK');
+        })
+        .fail(function() {
+            console.log('ERR');
+        });
+    }
 
     });
 

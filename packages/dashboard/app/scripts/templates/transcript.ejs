@@ -4,12 +4,12 @@
 <td class="span1"><span class="timeago" title="<%- modified %>"><%- modified %></span></td>
 <td><%- owner %></td>
 <td>
-	<% if (type == "text") { %>
-		<a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= _id%>">Edit</a>
-		<button class="button align small primary">Align</button>
-	<% } else if (type == "html") { %>
-		<a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= _id%>">Clean</a>
-	<% } else if (type == "srt") { %>
-		<a class="button small primary" target="_new" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
-	<% } %>
+  <% if (type == "text") { %>
+    <a class="button small" target="_new" href="http://hyperaud.io/maker/?t=<%= _id%>">Edit</a>
+    <button class="button align small primary">Align</button>
+  <% } else if (type == "html") { %>
+    <a class="button small" target="_new" href="http://hyperaud.io/cleaner/?t=<%= _id%>">Clean</a>
+  <% } else if (type == "srt") { %>
+    <a class="button small primary" target="_new" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
+  <% } %>
 </td>

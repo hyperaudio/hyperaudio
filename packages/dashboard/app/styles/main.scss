@@ -20,51 +20,51 @@ body.user {
   }
 
   .editable {
-  	cursor: text;
+    cursor: text;
     &:hover {
-    	background-color: lightyellow;
+      background-color: lightyellow;
     }
     &:empty {
-    	background-color: lightyellow;
-    	min-width: 1em;
+      background-color: lightyellow;
+      min-width: 1em;
     }
   }
 }
 
 table {
-	border: none;
+  border: none;
 }
 
 // td {
-// 	font-size: 14px !important;
+//  font-size: 14px !important;
 // }
 
 #mediaPreview table {
-	button + button {
-		margin-left: 1em;
-	}
+  button + button {
+    margin-left: 1em;
+  }
 }
 
 #mediaListView {
-	tbody {
-		tr {
-			&:hover {
-				background-color: lightyellow;
-			}
-			td {
-				cursor: pointer;
-			}
-		}
-	}
+  tbody {
+    tr {
+      &:hover {
+        background-color: lightyellow;
+      }
+      td {
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 #mixListView {
-	tbody {
-		tr {
-			&:hover {
-				background-color: lightyellow;
-			}
-		}
-	}
+  tbody {
+    tr {
+      &:hover {
+        background-color: lightyellow;
+      }
+    }
+  }
 }
 

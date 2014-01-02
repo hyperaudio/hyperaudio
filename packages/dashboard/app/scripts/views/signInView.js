@@ -7,53 +7,53 @@ haDash.Views = haDash.Views || {};
 
   haDash.Views.SignInView = Backbone.View.extend({
 
-		id: 'signInView',
+    id: 'signInView',
 
         template: JST['app/scripts/templates/signIn.ejs'],
 
-		initialize: function() {
-			this.render();
-		},
+    initialize: function() {
+      this.render();
+    },
 
-		render: function() {
-			this.$el.html(this.template());
+    render: function() {
+      this.$el.html(this.template());
 
-			return this;
-		},
+      return this;
+    },
 
-		events: {
-			'click #loginForm input[type="submit"]': 'signin'
-		},
+    events: {
+      'click #loginForm input[type="submit"]': 'signin'
+    },
 
-		signin: function(event) {
-			event.preventDefault();
-			$('#loginFormError').hide();
+    signin: function(event) {
+      event.preventDefault();
+      $('#loginFormError').hide();
 
-			$.ajax({
-				url: haDash.API + '/login',
-				contentType: "application/json; charset=utf-8",
-    			dataType: "json",
-				xhrFields: {
-					withCredentials: true
-				},
-				method: 'post',
-				data: JSON.stringify({
-			        username: $('#username').val(),
-			        password: $('#password').val()
-			    })
-			})
-			.done(function(whoami) {
-				console.log(whoami);
+      $.ajax({
+        url: haDash.API + '/login',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+              username: $('#username').val(),
+              password: $('#password').val()
+          })
+      })
+      .done(function(whoami) {
+        console.log(whoami);
         haDash.setUser(whoami);
-				if (whoami.user) {
-					haDash.router.navigate("mixes/", {trigger: true});
-				}
-		  })
-		  .fail(function() {
-		  	$('#loginFormError').show();
-	    });
+        if (whoami.user) {
+          haDash.router.navigate("mixes/", {trigger: true});
+        }
+      })
+      .fail(function() {
+        $('#loginFormError').show();
+      });
 
-		}
+    }
   });
 
 })();

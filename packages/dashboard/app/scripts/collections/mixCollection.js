@@ -3,20 +3,20 @@
 haDash.Collections = haDash.Collections || {};
 
 (function() {
-	'use strict';
+  'use strict';
 
-	haDash.Collections.MixCollection = Backbone.Collection.extend({
+  haDash.Collections.MixCollection = Backbone.Collection.extend({
 
-		model: haDash.Models.MixModel,
+    model: haDash.Models.MixModel,
 
-		url: function() {
-			return haDash.API + '/mixes';
-		},
+    url: function() {
+      return haDash.API + '/mixes';
+    },
 
-		comparator: function(model) {
-     	   return - new Date(model.get('modified')).getTime();
-    	}
+    comparator: function(model) {
+         return - new Date(model.get('modified')).getTime();
+      }
 
-	});
+  });
 
 })();

@@ -1,12 +1,12 @@
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p class="lead desc editable" data-field="desc"><%
-	var lines = desc.split("\n");
-	for (var i = 0; i < lines.length; i++) {
-		var line = lines[i];
-		print(_.escape(line));
-		if (i < lines.length - 1) print('<br />');
-	}
+  var lines = desc.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    print(_.escape(line));
+    if (i < lines.length - 1) print('<br />');
+  }
 %></p>
 
 <a class="button primary" target="_new" href="http://hyperaud.io/maker/?m=<%= _id%>">Create Transcript</a>

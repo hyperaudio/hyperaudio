@@ -7,65 +7,65 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaListView = Backbone.View.extend({
 
-		id: 'mediaListView',
+    id: 'mediaListView',
 
         template: JST['app/scripts/templates/mediaList.ejs'],
 
-		initialize: function() {
-			// this.render();
-			// this.addAllItems();
+    initialize: function() {
+      // this.render();
+      // this.addAllItems();
 
-			this.listenTo(this.collection, 'add', this.addItem);
-			this.listenTo(this.collection, 'reset', this.render);
-			this.listenTo(this.collection, 'sort', this.render);
+      this.listenTo(this.collection, 'add', this.addItem);
+      this.listenTo(this.collection, 'reset', this.render);
+      this.listenTo(this.collection, 'sort', this.render);
 
-			// this.collection.fetch();
-		},
+      // this.collection.fetch();
+    },
 
-		render: function() {
-			this.$el.html(this.template());
-			// this.afterRender();
-			this.addAllItems();
+    render: function() {
+      this.$el.html(this.template());
+      // this.afterRender();
+      this.addAllItems();
 
-			this.$el.data('view', this);
-			this.$el.data('collection', this.collection);
-			return this;
-		},
+      this.$el.data('view', this);
+      this.$el.data('collection', this.collection);
+      return this;
+    },
 
-		// afterRender: function() {
+    // afterRender: function() {
 
-		// },
+    // },
 
-		addItem: function(item) {
-			// console.log('media adding items: ' + item.get('_id'));
-			var view = new haDash.Views.MediaView({
-				model: item
-			});
+    addItem: function(item) {
+      // console.log('media adding items: ' + item.get('_id'));
+      var view = new haDash.Views.MediaView({
+        model: item
+      });
 
-			if (haDash.user == item.get('owner')) {
-				this.$el.find('tbody.your').append(view.render().el);
-			} else {
-				this.$el.find('tbody.other').append(view.render().el);
-			}
-		},
+      if (haDash.user == item.get('owner')) {
+        this.$el.find('tbody.your').append(view.render().el);
+      } else {
+        this.$el.find('tbody.other').append(view.render().el);
+      }
+    },
 
-		addAllItems: function() {
-			// console.log('media adding all items: ' + this.collection.length);
-			this.collection.each(this.addItem, this);
-		},
+    addAllItems: function() {
+      // console.log('media adding all items: ' + this.collection.length);
+      this.collection.each(this.addItem, this);
+    },
 
-		events: {
-			'click #addMedia': 'addMedia'
-		},
+    events: {
+      'click #addMedia': 'addMedia'
+    },
 
-		addMedia: function() {
-			haDash.router.navigate("add-media/", {trigger: true});
-			// var view = this;
-			// this.$el.slideUp(200, function(){
-			// 	view.remove();
-			// });
-			this.remove();
-		}
+    addMedia: function() {
+      haDash.router.navigate("add-media/", {trigger: true});
+      // var view = this;
+      // this.$el.slideUp(200, function(){
+      //  view.remove();
+      // });
+      this.remove();
+    }
 
     });
 

@@ -7,30 +7,30 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.MediaView = Backbone.View.extend({
 
-		tagName: 'tr',
+    tagName: 'tr',
 
         template: JST['app/scripts/templates/media.ejs'],
 
-		initialize: function() {
-			this.listenTo(this.model, 'change', this.render);
-		},
+    initialize: function() {
+      this.listenTo(this.model, 'change', this.render);
+    },
 
-		render: function() {
-			this.$el.html(this.template(this.model.toJSON()));
-			this.$el.find("span.timeago").timeago();
+    render: function() {
+      this.$el.html(this.template(this.model.toJSON()));
+      this.$el.find("span.timeago").timeago();
 
-			this.$el.data('view', this);
-			this.$el.data('model', this.model);
-			return this;
-		},
+      this.$el.data('view', this);
+      this.$el.data('model', this.model);
+      return this;
+    },
 
-		events: {
-			'click td': 'mediaDetail'
-		},
+    events: {
+      'click td': 'mediaDetail'
+    },
 
-		mediaDetail: function() {
-			haDash.router.navigate("media/" + this.model.id, {trigger: true});
-		}
+    mediaDetail: function() {
+      haDash.router.navigate("media/" + this.model.id, {trigger: true});
+    }
 
     });
 

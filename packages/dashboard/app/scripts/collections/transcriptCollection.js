@@ -10,12 +10,12 @@ haDash.Collections = haDash.Collections || {};
         model: haDash.Models.TranscriptModel,
 
   //       url: function() {
-		// 	return haDash.API + '/transcripts';
-		// },
+    //  return haDash.API + '/transcripts';
+    // },
 
-		comparator: function(model) {
-     	   return - new Date(model.get('modified')).getTime();
-    	}
+    comparator: function(model) {
+         return - new Date(model.get('modified')).getTime();
+      }
 
     });
 
