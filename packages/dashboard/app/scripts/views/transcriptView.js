@@ -76,10 +76,6 @@ haDash.Views = haDash.Views || {};
 
     delete: function() {
       if (this.notMutable()) return;
-      if (this.model.get('transcripts').length > 0) {
-        alert('You cannot delete a video with transcripts, please remove all transcripts first.');
-        return;
-      }
 
       this.model.destroy({
         url: haDash.API + '/transcripts/' + this.model.id
