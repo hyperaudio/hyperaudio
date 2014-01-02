@@ -18,23 +18,27 @@ haDash.Views = haDash.Views || {};
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
 
-      var transcriptIDs = this.model.get('transcripts');
-      var transcripts = new haDash.Collections.TranscriptCollection();
+      // var transcriptIDs = this.model.get('transcripts');
+      var transcripts = new haDash.Collections.TranscriptCollection({
+        url: haDash.API + '/media/' + this.model.id + '/transcripts'
+      });
 
-      for (var i = 0; i < transcriptIDs.length; i++) {
-        var transcriptID = transcriptIDs[i];
-        var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
-        transcript.fetch({
-          url: haDash.API + '/transcripts/' + transcriptID
-        });
-        transcripts.add(transcript);
-      }
+      // for (var i = 0; i < transcriptIDs.length; i++) {
+      //   var transcriptID = transcriptIDs[i];
+      //   var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
+      //   transcript.fetch({
+      //     url: haDash.API + '/transcripts/' + transcriptID
+      //   });
+      //   transcripts.add(transcript);
+      // }
 
       this.$el.find("#transcripts").empty().append(
         new haDash.Views.TranscriptListView({
           collection: transcripts
         }).render().el
       );
+
+      transcripts.fetch();
 
       this.$el.data('view', this);
       this.$el.data('model', this.model);

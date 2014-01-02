@@ -7,13 +7,13 @@ haDash.Collections = haDash.Collections || {};
 
     haDash.Collections.TranscriptCollection = Backbone.Collection.extend({
 
-        model: haDash.Models.TranscriptModel,
+      model: haDash.Models.TranscriptModel,
 
-  //       url: function() {
-    //  return haDash.API + '/transcripts';
-    // },
+      url: function() {
+       return haDash.API + '/transcripts';
+      },
 
-    comparator: function(model) {
+      comparator: function(model) {
          return - new Date(model.get('modified')).getTime();
       }
 

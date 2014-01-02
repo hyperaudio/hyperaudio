@@ -17,7 +17,7 @@ haDash.Models = haDash.Models || {};
           owner: null,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
-          transcripts: []
+          media: null
         };
       }
     });
