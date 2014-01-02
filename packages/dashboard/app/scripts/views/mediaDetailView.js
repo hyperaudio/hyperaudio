@@ -32,13 +32,13 @@ haDash.Views = haDash.Views || {};
       //   transcripts.add(transcript);
       // }
 
-      this.$el.find("#transcripts").empty().append(
-        new haDash.Views.TranscriptListView({
-          collection: transcripts
-        }).render().el
-      );
+      // this.$el.find("#transcripts").empty().append(
+      //   new haDash.Views.TranscriptListView({
+      //     collection: transcripts
+      //   }).render().el
+      // );
 
-      transcripts.fetch();
+      // transcripts.fetch();
 
       this.$el.data('view', this);
       this.$el.data('model', this.model);
