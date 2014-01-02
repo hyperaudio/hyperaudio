@@ -17,21 +17,18 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      // this.$el.find("span.timeago").timeago();
 
       var transcriptIDs = this.model.get('transcripts');
       var transcripts = new haDash.Collections.TranscriptCollection();
 
       for (var i = 0; i < transcriptIDs.length; i++) {
         var transcriptID = transcriptIDs[i];
-        // console.log(transcriptID);
         var transcript = new haDash.Models.TranscriptModel({_id: transcriptID});
         transcript.fetch({
           url: haDash.API + '/transcripts/' + transcriptID
         });
         transcripts.add(transcript);
       }
-      // console.log(transcripts);
 
       this.$el.find("#transcripts").empty().append(
         new haDash.Views.TranscriptListView({
@@ -46,23 +43,36 @@ haDash.Views = haDash.Views || {};
 
     events: {
       "click h2.label, p.desc": "edit",
-      "blur h2.label, p.desc": "save"
+      "blur h2.label, p.desc": "save",
+      "click button.delete": "delete"
     },
 
-    notEditable: function() {
+    notMutable: function() {
       return this.model.get('owner') != haDash.user;
     },
 
     edit: function(event) {
-      if (this.notEditable()) return;
+      if (this.notMutable()) return;
       $(event.target).attr('contenteditable', true);
     },
 
     save: function(event) {
-      if (this.notEditable()) return;
+      if (this.notMutable()) return;
       $(event.target).attr('contenteditable', false);
       this.model.set($(event.target).data('field'), $(event.target).text().trim());
       this.model.save(null, {
+        url: haDash.API + '/media/' + this.model.id
+      });
+    },
+
+    delete: function() {
+      if (this.notMutable()) return;
+      if (this.model.get('transcripts').length > 0) {
+        alert('You cannot delete a video with transcripts, please remove all transcripts first.');
+        return;
+      }
+
+      this.model.destroy(null, {
         url: haDash.API + '/media/' + this.model.id
       });
     }
