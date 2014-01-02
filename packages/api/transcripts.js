@@ -91,7 +91,7 @@ module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/transcripts/:id/text', function(req, res) {
     //FIXME cube?
-    return Transcript.findById(req.params.id).populate('media').exec(
+    return Transcript.findById(req.params.id).exec(
       /*return Transcript.findById(req.params.id,*/
 
       function(err, transcript) {
@@ -110,7 +110,7 @@ module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/transcripts/:id/html', function(req, res) {
     //FIXME cube?
-    return Transcript.findById(req.params.id).populate('media').exec(
+    return Transcript.findById(req.params.id).exec(
       /*return Transcript.findById(req.params.id,*/
 
       function(err, transcript) {
@@ -230,25 +230,25 @@ module.exports = function(app, nconf) {
         console.log("created");
 
         // fix media
-        console.log("looking for media " + req.body.media);
-        MediaObject.findById(req.body.media).exec(function(err, mediaObject) {
-          console.log(err);
-          console.log(mediaObject);
-          if (!err) {
-            for (var i = 0; i < mediaObject.transcripts.length; i++) {
-              if (mediaObject.transcripts[i] == transcript._id) {
-                return
-              }
-            }
+        // console.log("looking for media " + req.body.media);
+        // MediaObject.findById(req.body.media).exec(function(err, mediaObject) {
+        //   console.log(err);
+        //   console.log(mediaObject);
+        //   if (!err) {
+        //     for (var i = 0; i < mediaObject.transcripts.length; i++) {
+        //       if (mediaObject.transcripts[i] == transcript._id) {
+        //         return
+        //       }
+        //     }
 
-            mediaObject.transcripts.push(transcript._id);
-            mediaObject.save(function(err) {
-              console.log(err);
-            });
+        //     mediaObject.transcripts.push(transcript._id);
+        //     mediaObject.save(function(err) {
+        //       console.log(err);
+        //     });
 
-            console.log(mediaObject);
-          }
-        });
+        //     console.log(mediaObject);
+        //   }
+        // });
         // fix media
       }
     });

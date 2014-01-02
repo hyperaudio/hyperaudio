@@ -20,11 +20,7 @@ var MediaObject = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  source: Schema.Types.Mixed,
-  transcripts: [{
-    type: String,
-    ref: 'Transcripts'
-  }]
+  source: Schema.Types.Mixed
 }, {
   versionKey: false,
   collection: 'media'
