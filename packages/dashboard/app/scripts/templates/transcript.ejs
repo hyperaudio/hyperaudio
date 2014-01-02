@@ -12,4 +12,8 @@
   <% } else if (type == "srt") { %>
     <a class="button small primary" target="_new" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
   <% } %>
+
+  <% if (owner == haDash.user) { %>
+    <button class="button tDelete">Delete</button>
+  <% } %>
 </td>

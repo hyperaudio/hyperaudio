@@ -72,7 +72,7 @@ haDash.Views = haDash.Views || {};
         return;
       }
 
-      this.model.destroy(null, {
+      this.model.destroy({
         url: haDash.API + '/media/' + this.model.id
       });
     }

@@ -27,20 +27,21 @@ haDash.Views = haDash.Views || {};
     events: {
       "click .tLabel, tDesc": "edit",
       "blur .tLabel, .tDesc": "save",
-      "click .align": "align"
+      "click .align": "align",
+      "click .tDelete": "delete"
     },
 
-    notEditable: function() {
+    notMutable: function() {
       return this.model.get('owner') != haDash.user;
     },
 
     edit: function(event) {
-      if (this.notEditable()) return;
+      if (this.notMutable()) return;
       $(event.target).attr('contenteditable', true);
     },
 
     save: function(event) {
-      if (this.notEditable()) return;
+      if (this.notMutable()) return;
       $(event.target).attr('contenteditable', false);
 
       this.model.set($(event.target).data('field'), $(event.target).text().trim());
@@ -71,6 +72,18 @@ haDash.Views = haDash.Views || {};
         .fail(function() {
             console.log('ERR');
         });
+    },
+
+    delete: function() {
+      if (this.notMutable()) return;
+      if (this.model.get('transcripts').length > 0) {
+        alert('You cannot delete a video with transcripts, please remove all transcripts first.');
+        return;
+      }
+
+      this.model.destroy({
+        url: haDash.API + '/transcripts/' + this.model.id
+      });
     }
 
     });
