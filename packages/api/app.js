@@ -53,8 +53,26 @@ var sessions = require("client-sessions");
 app.use(sessions({
   cookieName: 'session',
   secret: 'ohziuchaepah7xie0vei6Apai8aep4th', //FIXME: move to conf
-  duration: 24 * 60 * 60 * 1000, // conf
-  activeDuration: 1000 * 60 * 5 // conf
+  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
+  activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
+  cookie: {
+    path: '/v1', // cookie will only be sent to requests under '/v1'
+    // maxAge: 60000, // duration of the cookie in milliseconds, defaults to duration above
+    ephemeral: false, // when true, cookie expires when the browser closes
+    httpOnly: true, // when true, cookie is not accessible from javascript
+    secure: false   // when true, cookie will only be sent over SSL
+  }
+}));
+
+app.use(sessions({
+  cookieName: 'recall',
+  duration: 7 * 24 * 60 * 60 * 1000,
+  cookie: {
+    path: '/', // cookie will only be sent to requests under '/v1'
+    ephemeral: false, // when true, cookie expires when the browser closes
+    httpOnly: false, // when true, cookie is not accessible from javascript
+    secure: false   // when true, cookie will only be sent over SSL
+  }
 }));
 
 //TODO move CUBE in here
@@ -147,6 +165,8 @@ app.get('/v1/whoami', function(req, res) {
   cube("get_whoami", {
     user: req.session.user
   });
+
+  if (res.recall) res.recall.user = req.session.user;
 
   res.json({
     user: req.session.user
