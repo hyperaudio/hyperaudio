@@ -30,6 +30,7 @@ function cube(type, data) {
   udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
 }
 
+// FIXME: rename to ensureUsername
 function ensureOwnership(req, res, next) {
   if (req.isAuthenticated()) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
@@ -137,6 +138,14 @@ module.exports = function(app, nconf) {
 
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
 
+      if (mediaObject.owner != req.user.username) {
+        res.status(403);
+        res.send({
+          error: 'Forbidden'
+        });
+        return;
+      }
+
       mediaObject.label = req.body.label;
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
@@ -217,15 +226,22 @@ module.exports = function(app, nconf) {
     return res.send(mediaObject);
   });
 
-  app.delete('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
+  app.delete('/v1/:user?/media/:id', function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
     cube("delete_media", {
-      user: req.params.user,
-      id: owner
+      user: owner,
+      id: req.params.id
     });
 
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
       return mediaObject.remove(function(err) {
+        if (mediaObject.owner != req.user.username) {
+          res.status(403);
+          res.send({
+            error: 'Forbidden'
+          });
+          return;
+        }
         if (!err) {
           console.log("removed");
           return res.send('')
