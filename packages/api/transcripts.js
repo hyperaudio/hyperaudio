@@ -255,13 +255,20 @@ module.exports = function(app, nconf) {
     return res.send(transcript);
   });
 
-  app.delete('/v1/:user?/transcripts/:id', ensureOwnership, function(req, res) {
+  app.delete('/v1/:user?/transcripts/:id', function(req, res) {
     cube("delete_transcript", {
       user: req.params.user,
       id: req.params.id
     });
     return Transcript.findById(req.params.id, function(err, transcript) {
       return transcript.remove(function(err) {
+        if (transcript.owner != req.user.username) {
+          res.status(403);
+          res.send({
+            error: 'Forbidden'
+          });
+          return;
+        }
         if (!err) {
           console.log("removed");
           return res.send('')
