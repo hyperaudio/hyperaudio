@@ -67,6 +67,7 @@ app.use(sessions({
 app.use(sessions({
   cookieName: 'recall',
   duration: 7 * 24 * 60 * 60 * 1000,
+  secret: 'qwer1234',
   cookie: {
     path: '/', // cookie will only be sent to requests under '/v1'
     ephemeral: false, // when true, cookie expires when the browser closes
