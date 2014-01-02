@@ -37,7 +37,7 @@ haDash.Views = haDash.Views || {};
 			});
 
 			// this.$el.find('tbody').append(view.render().el);
-
+      console.log(haDash.user + ' vs ' + item.get('owner'));
 			if (haDash.user == item.get('owner')) {
         console.log('t your');
 				this.$el.find('tbody.your').append(view.render().el);
