@@ -35,9 +35,16 @@ haDash.Routers = haDash.Routers || {};
 		},
 
 		mixes: function() {
+      if (!haDash.mixCollection) {
+        haDash.mixCollection = new haDash.Collections.MixCollection();
+      }
+
 			haDash.mixListView = new haDash.Views.MixListView({
-				collection: new haDash.Collections.MixCollection()
+				collection: haDash.mixCollection
 			});
+
+      $main.empty().append(haDash.mixListView.render().el);
+      haDash.mixCollection.fetch();
 		},
 
 		media: function() {

@@ -7,21 +7,19 @@ haDash.Views = haDash.Views || {};
 
 	haDash.Views.MixListView = Backbone.View.extend({
 
-		el: '#main',
+		id: 'mixListView',
 
 		template: JST['app/scripts/templates/mixList.ejs'],
 
 		initialize: function() {
-			this.render();
-
 			this.listenTo(this.collection, 'add', this.addItem);
 			this.listenTo(this.collection, 'reset', this.addAllItems);
-
-			this.collection.fetch();
+      this.listenTo(this.collection, 'sort', this.render);
 		},
 
 		render: function() {
 			this.$el.html(this.template());
+      this.addAllItems();
 
 			this.$el.data('view', this);
 			this.$el.data('collection', this.collection);
