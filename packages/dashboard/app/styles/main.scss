@@ -20,6 +20,7 @@ body.user {
   }
 
   .editable {
+  	cursor: text;
     &:hover {
     	background-color: lightyellow;
     }
@@ -41,6 +42,19 @@ td {
 #mediaPreview table {
 	button + button {
 		margin-left: 1em;
+	}
+}
+
+#mediaListView {
+	tbody {
+		tr {
+			&:hover {
+				background-color: lightyellow;
+			}
+			td {
+				cursor: pointer;
+			}
+		}
 	}
 }
 
