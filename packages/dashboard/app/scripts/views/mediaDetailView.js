@@ -19,9 +19,7 @@ haDash.Views = haDash.Views || {};
       this.$el.html(this.template(this.model.toJSON()));
 
       // var transcriptIDs = this.model.get('transcripts');
-      var transcripts = new haDash.Collections.TranscriptCollection({
-        url: haDash.API + '/media/' + this.model.id + '/transcripts'
-      });
+      var transcripts = new haDash.Collections.TranscriptCollection();
 
       // for (var i = 0; i < transcriptIDs.length; i++) {
       //   var transcriptID = transcriptIDs[i];
@@ -32,13 +30,15 @@ haDash.Views = haDash.Views || {};
       //   transcripts.add(transcript);
       // }
 
-      // this.$el.find("#transcripts").empty().append(
-      //   new haDash.Views.TranscriptListView({
-      //     collection: transcripts
-      //   }).render().el
-      // );
+      this.$el.find("#transcripts").empty().append(
+        new haDash.Views.TranscriptListView({
+          collection: transcripts
+        }).render().el
+      );
 
-      // transcripts.fetch();
+      transcripts.fetch({
+        url: haDash.API + '/media/' + this.model.id + '/transcripts'
+      });
 
       this.$el.data('view', this);
       this.$el.data('model', this.model);
