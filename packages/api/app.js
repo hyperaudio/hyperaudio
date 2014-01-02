@@ -167,7 +167,7 @@ app.get('/v1/whoami', function(req, res) {
     user: req.session.user
   });
 
-  if (res.recall) res.recall.user = req.session.user;
+  if (req.recall) req.recall.user = req.session.user;
 
   res.json({
     user: req.session.user
