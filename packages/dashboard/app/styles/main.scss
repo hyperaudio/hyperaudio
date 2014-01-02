@@ -58,3 +58,13 @@ td {
 	}
 }
 
+#mixListView {
+	tbody {
+		tr {
+			&:hover {
+				background-color: lightyellow;
+			}
+		}
+	}
+}
+

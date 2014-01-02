@@ -36,13 +36,13 @@ haDash.Views = haDash.Views || {};
 				model: item
 			});
 
-			this.$el.find('tbody').append(view.render().el);
+			// this.$el.find('tbody').append(view.render().el);
 
-			// if (haDash.user == item.get('owner')) {
-			// 	this.$el.find('tbody.your').append(view.render().el);
-			// } else {
-			// 	this.$el.find('tbody.other').append(view.render().el);
-			// }
+			if (haDash.user == item.get('owner')) {
+				this.$el.find('tbody.your').append(view.render().el);
+			} else {
+				this.$el.find('tbody.other').append(view.render().el);
+			}
 		},
 
 		addAllItems: function() {
