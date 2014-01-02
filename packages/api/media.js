@@ -95,17 +95,26 @@ module.exports = function(app, nconf) {
       id: req.params.id
     });
 
-    return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
-      if (!err) {
-        return res.send(mediaObject);
-      }
+    // return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
+    //   if (!err) {
+    //     return res.send(mediaObject);
+    //   }
 
-      res.status(404);
-      res.send({
-        error: 'Not found'
-      });
-      return;
+    //   res.status(404);
+    //   res.send({
+    //     error: 'Not found'
+    //   });
+    //   return;
+    // });
+
+    var query = {
+      media: req.params.id
+    };
+
+    return Transcript.find(query, function(err, transcripts) {
+       return res.send(transcripts);
     });
+
   });
 
 
