@@ -64,17 +64,17 @@ app.use(sessions({
   }
 }));
 
-app.use(sessions({
-  cookieName: 'recall',
-  duration: 7 * 24 * 60 * 60 * 1000,
-  secret: 'qwer1234',
-  cookie: {
-    path: '/', // cookie will only be sent to requests under '/v1'
-    ephemeral: false, // when true, cookie expires when the browser closes
-    httpOnly: false, // when true, cookie is not accessible from javascript
-    secure: false   // when true, cookie will only be sent over SSL
-  }
-}));
+// app.use(sessions({
+//   cookieName: 'recall',
+//   duration: 7 * 24 * 60 * 60 * 1000,
+//   secret: 'qwer1234',
+//   cookie: {
+//     path: '/', // cookie will only be sent to requests under '/v1'
+//     ephemeral: false, // when true, cookie expires when the browser closes
+//     httpOnly: false, // when true, cookie is not accessible from javascript
+//     secure: false   // when true, cookie will only be sent over SSL
+//   }
+// }));
 
 //TODO move CUBE in here
 // app.use(function(req, res, next) {
@@ -167,7 +167,7 @@ app.get('/v1/whoami', function(req, res) {
     user: req.session.user
   });
 
-  if (req.recall) req.recall.user = req.session.user;
+  // if (req.recall) req.recall.user = req.session.user;
 
   res.json({
     user: req.session.user

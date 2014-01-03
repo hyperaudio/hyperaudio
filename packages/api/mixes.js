@@ -76,12 +76,22 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.put('/v1/:user/mixes/:id', ensureOwnership, function(req, res) {
+  app.put('/v1/:user?/mixes/:id', ensureOwnership, function(req, res) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
     cube("put_mix", {
-      user: req.params.user,
+      user: owner,
       id: req.params.id
     });
+
     return Mix.findById(req.params.id, function(err, mix) {
+
+      if (mix.owner != req.user.username) {
+        res.status(403);
+        res.send({
+          error: 'Forbidden'
+        });
+        return;
+      }
 
       mix.label = req.body.label;
       mix.desc = req.body.desc;
@@ -108,20 +118,22 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.post('/v1/:user/mixes', ensureOwnership, function(req, res) {
+  app.post('/v1/:user?/mixes', ensureOwnership, function(req, res) {
+    var owner = (req.params.user)?req.params.user:req.body.owner;
+
     cube("post_mix", {
-      user: req.params.user //ID?
+      user: owner //ID?
     });
 
     var mix;
-    var owner;
+    // var owner;
     var content = null;
 
-    if (req.params.user) {
-      owner = req.params.user;
-    } else {
-      owner = req.body.owner;
-    }
+    // if (req.params.user) {
+    //   owner = req.params.user;
+    // } else {
+    //   owner = req.body.owner;
+    // }
 
 
     if (req.body.content) {
@@ -148,12 +160,19 @@ module.exports = function(app, nconf) {
 
   // ID is unique, ignore user
   // TODO: restrict to same user only
-  app.delete('/v1/:user/mixes/:id', ensureOwnership, function(req, res) {
+  app.delete('/v1/:user?/mixes/:id', ensureOwnership, function(req, res) {
     cube("delete_mix", {
       user: req.params.user,
       id: req.params.id
     });
     return Mix.findById(req.params.id, function(err, mix) {
+      if (mix.owner != req.user.username) {
+        res.status(403);
+        res.send({
+          error: 'Forbidden'
+        });
+        return;
+      }
       return mix.remove(function(err) {
         if (!err) {
           console.log("removed");
