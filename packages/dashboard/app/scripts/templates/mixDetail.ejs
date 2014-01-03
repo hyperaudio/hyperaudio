@@ -1,2 +1,22 @@
-<p>Your MIX here.</p>
+<h2 class="label editable" data-field="label"><%- label %></h2>
+
+<p class="lead desc editable" data-field="desc"><%
+  var lines = desc.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    print(_.escape(line));
+    if (i < lines.length - 1) print('<br />');
+  }
+%></p>
+
+
+<a class="button primary" href="http://hyperaud.io/pad/?mix=<%- _id%>">View Mix</a>
+
+<% if (owner == haDash.user) { %>
+  <button class="button delete">Delete Video</button>
+<% } %>
+
+<p>&nbsp;</p>
+
+<!-- <div id="transcripts"></div> -->
 
