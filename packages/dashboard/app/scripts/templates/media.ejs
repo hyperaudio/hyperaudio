@@ -1,4 +1,8 @@
-<td class="span1"><img src="<%= source.youtube.thumbnail %>" class=""></td>
+<td class="span1"><img src="<%
+if (source.youtube && source.youtube.thumbnail) {
+  print(_.escape(source.youtube.thumbnail));
+}
+%>" class=""></td>
 <td class="span2 label"><%- label %></td>
 <td class="span4"><%
   var shortDesc = desc;

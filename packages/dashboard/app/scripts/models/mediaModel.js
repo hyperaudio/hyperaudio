@@ -15,6 +15,7 @@ haDash.Models = haDash.Models || {};
           desc: "",
           type: "video",
           owner: null,
+          source: {},
           created: new Date().toISOString(),
           modified: new Date().toISOString()
         };
