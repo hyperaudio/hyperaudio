@@ -68,6 +68,9 @@ haDash.Views = haDash.Views || {};
         url: haDash.API + '/transcripts'
       });
 
+      //TODO use it in success above
+      $('#mediaDetail').data('view').render();
+
     },
 
     align: function() {
@@ -100,6 +103,9 @@ haDash.Views = haDash.Views || {};
       this.model.destroy({
         url: haDash.API + '/transcripts/' + this.model.id
       });
+
+      //TODO use it in success above
+      $('#mediaDetail').data('view').render();
     }
 
     });
