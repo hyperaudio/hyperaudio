@@ -21,7 +21,7 @@ haDash.Views = haDash.Views || {};
         // var mediaIDs = [];//this.model.get('transcripts');
         // var mediaCollection = new haDash.Collections.MediaCollection();
 
-        $($.parseHTML($('#mixDetail').data('model').get('content'))).find('[data-id]').each(
+        $($.parseHTML(this.model.get('content'))).find('[data-id]').each(
           function(i,e){
             var mediaID = $(e).attr('data-id');
             var mediaModel = new haDash.Models.MediaModel({_id: mediaID});
