@@ -26,13 +26,17 @@ haDash.Views = haDash.Views || {};
         $($.parseHTML(this.model.get('content'))).find('[data-id]').each(
           function(i,e){
             var mediaID = $(e).attr('data-id');
+            var text = $(e).text();
             var mediaModel = new haDash.Models.MediaModel({_id: mediaID});
             mediaModel.fetch({
               url: haDash.API + '/media/' + mediaID
             });
 
             var mediaView = new haDash.Views.MediaView({
-              model: mediaModel
+              model: mediaModel,
+              success: function() {
+                mediaModel.set('desc', text)
+              }
             });
 
             _this.$el.find('tbody').append(mediaView.render().el);
