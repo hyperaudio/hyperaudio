@@ -57,7 +57,7 @@ haDash.Views = haDash.Views || {};
 
     edit: function(event) {
       if (this.notMutable()) return;
-      $(event.target).attr('contenteditable', true);
+      $(event.target).attr('contenteditable', true).trigger('focus');
     },
 
     save: function(event) {

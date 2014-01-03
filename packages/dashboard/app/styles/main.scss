@@ -22,10 +22,10 @@ body.user {
   .editable {
     cursor: text;
     &:hover {
-      background-color: lightyellow;
+      background-color: #FFF7DD;
     }
     &:empty {
-      background-color: lightyellow;
+      background-color: #FFF7DD;
       min-width: 1em;
     }
   }

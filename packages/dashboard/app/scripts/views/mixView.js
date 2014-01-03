@@ -22,6 +22,14 @@ haDash.Views = haDash.Views || {};
       this.$el.data('view', this);
       this.$el.data('model', this.model);
       return this;
+    },
+
+    events: {
+      "click td": "openPad"
+    },
+
+    openPad: function() {
+      document.location = "http://hyperaud.io/pad/?mix=" + this.model.id;
     }
   });
 
