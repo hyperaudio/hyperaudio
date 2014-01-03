@@ -30,7 +30,7 @@ haDash.Views = haDash.Views || {};
     },
 
     openPad: function() {
-      document.location = "http://hyperaud.io/pad/?mix=" + this.model.id;
+      document.location = "http://hyperaud.io/pad/?m=" + this.model.id;
     },
 
     mixDetail: function(event) {
