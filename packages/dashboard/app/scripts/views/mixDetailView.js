@@ -18,6 +18,41 @@ haDash.Views = haDash.Views || {};
       render: function() {
         this.$el.html(this.template(this.model.toJSON()));
 
+        // var mediaIDs = [];//this.model.get('transcripts');
+        // var mediaCollection = new haDash.Collections.MediaCollection();
+
+        $($.parseHTML($('#mixDetail').data('model').get('content'))).find('[data-id]').each(
+          function(i,e){
+            var mediaID = $(e).attr('data-id');
+            var mediaModel = new haDash.Models.MediaModel({_id: mediaID});
+            mediaModel.fetch({
+              url: haDash.API + '/media/' + mediaID
+            });
+
+            var mediaView = new haDash.Views.MediaView({
+              model: mediaModel
+            });
+
+            this.$el.find('tbody').append(mediaView.render().el);
+          }
+        );
+
+        // for (var i = 0; i < mediaIDs.length; i++) {
+        //   var mediaID = mediaIDs[i];
+
+        //   var mediaModel = new haDash.Models.MediaModel({_id: mediaID});
+        //   mediaModel.fetch({
+        //     url: haDash.API + '/media/' + mediaID
+        //   });
+
+        //   var mediaView = new haDash.Views.MediaView({
+        //     model: mediaModel
+        //   });
+
+        //   this.$el.find('tbody').append(mediaView.render().el);
+        // }
+
+
         this.$el.data('view', this);
         this.$el.data('model', this.model);
         return this;
@@ -52,6 +87,7 @@ haDash.Views = haDash.Views || {};
         this.model.destroy({
           url: haDash.API + '/mixes/' + this.model.id
         });
+        haDash.router.navigate("/mixes/", {trigger: true});
       }
 
     });
