@@ -45,11 +45,11 @@ table {
   }
 }
 
-#mediaListView {
+#mediaListView, #mixListView {
   tbody {
     tr {
       &:hover {
-        background-color: lightyellow;
+        background-color: #FFF7DD;
       }
       td {
         cursor: pointer;
@@ -58,13 +58,4 @@ table {
   }
 }
 
-#mixListView {
-  tbody {
-    tr {
-      &:hover {
-        background-color: lightyellow;
-      }
-    }
-  }
-}
 
