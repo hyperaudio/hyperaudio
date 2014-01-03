@@ -160,7 +160,7 @@ module.exports = function(app, nconf) {
 
   // ID is unique, ignore user
   // TODO: restrict to same user only
-  app.delete('/v1/:user?/mixes/:id', ensureOwnership, function(req, res) {
+  app.delete('/v1/:user?/mixes/:id', function(req, res) {
     cube("delete_mix", {
       user: req.params.user,
       id: req.params.id
