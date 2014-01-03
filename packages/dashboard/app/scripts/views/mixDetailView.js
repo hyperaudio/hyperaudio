@@ -21,6 +21,8 @@ haDash.Views = haDash.Views || {};
         // var mediaIDs = [];//this.model.get('transcripts');
         // var mediaCollection = new haDash.Collections.MediaCollection();
 
+        var _this = this;
+
         $($.parseHTML(this.model.get('content'))).find('[data-id]').each(
           function(i,e){
             var mediaID = $(e).attr('data-id');
@@ -33,7 +35,7 @@ haDash.Views = haDash.Views || {};
               model: mediaModel
             });
 
-            this.$el.find('tbody').append(mediaView.render().el);
+            _this.$el.find('tbody').append(mediaView.render().el);
           }
         );
 
