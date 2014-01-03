@@ -35,7 +35,8 @@ haDash.Views = haDash.Views || {};
             var mediaView = new haDash.Views.MediaView({
               model: mediaModel,
               success: function() {
-                mediaModel.set('desc', text)
+                console.log(text);
+                mediaModel.set({desc: text});
               }
             });
 
