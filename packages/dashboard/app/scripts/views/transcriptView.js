@@ -28,7 +28,8 @@ haDash.Views = haDash.Views || {};
       "click .tLabel, tDesc": "edit",
       "blur .tLabel, .tDesc": "save",
       "click .align": "align",
-      "click .tDelete": "delete"
+      "click .tDelete": "delete",
+      "click .tClone": "clone"
     },
 
     notMutable: function() {
@@ -48,6 +49,22 @@ haDash.Views = haDash.Views || {};
       this.model.save(null, {
         url: haDash.API + '/transcripts/' + this.model.id
       });
+    },
+
+    clone: function() {
+      if (!haDash.user) {
+        haDash.router.navigate("secret-signin/", {trigger: true});
+        this.remove();
+      }
+
+      var transcript = this.model.clone();
+      transcript.set({label: 'clone of ' + transcript.get('label')});
+      transcript.unset('_id');
+
+      transcript.save(null, {
+        url: haDash.API + '/transcripts'
+      });
+
     },
 
     align: function() {
