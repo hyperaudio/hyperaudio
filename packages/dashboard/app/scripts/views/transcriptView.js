@@ -58,7 +58,10 @@ haDash.Views = haDash.Views || {};
       }
 
       var transcript = this.model.clone();
-      transcript.set({label: 'clone of ' + transcript.get('label')});
+      transcript.set({
+        label: 'clone of ' + transcript.get('label'),
+        owner: haDash.user
+      });
       transcript.unset('_id');
 
       transcript.save(null, {
