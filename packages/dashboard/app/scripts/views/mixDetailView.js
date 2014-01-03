@@ -29,15 +29,15 @@ haDash.Views = haDash.Views || {};
             var text = $(e).text();
             var mediaModel = new haDash.Models.MediaModel({_id: mediaID});
             mediaModel.fetch({
-              url: haDash.API + '/media/' + mediaID
-            });
-
-            var mediaView = new haDash.Views.MediaView({
-              model: mediaModel,
+              url: haDash.API + '/media/' + mediaID,
               success: function() {
                 console.log(text);
                 mediaModel.set({desc: text});
               }
+            });
+
+            var mediaView = new haDash.Views.MediaView({
+              model: mediaModel
             });
 
             _this.$el.find('tbody').append(mediaView.render().el);
