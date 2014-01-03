@@ -12,6 +12,7 @@ haDash.Routers = haDash.Routers || {};
       '': 'dashboard',
       'dashboard/': 'dashboard',
       'mixes/': 'mixes',
+      'mixes/:id': 'mixDetail',
       'media/': 'media',
       'media/:id': 'mediaDetail',
       'secret-signin/': 'signin',
@@ -72,6 +73,19 @@ haDash.Routers = haDash.Routers || {};
 
       $main.empty().append(
         new haDash.Views.MediaDetailView({
+          model: model
+        }).render().el
+      );
+    },
+
+    mixDetail: function(id) {
+      var model = new haDash.Models.MixModel({_id: id});
+      model.fetch({
+        url: haDash.API + '/mixes/' + id
+      });
+
+      $main.empty().append(
+        new haDash.Views.MixDetailView({
           model: model
         }).render().el
       );

@@ -25,11 +25,17 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click td": "openPad"
+      "click td": "openPad",
+      "click button.details": "mixDetail"
     },
 
     openPad: function() {
       document.location = "http://hyperaud.io/pad/?mix=" + this.model.id;
+    },
+
+    mixDetail: function(event) {
+      event.stopPropagation();
+      haDash.router.navigate("mixes/" + this.model.id, {trigger: true});
     }
   });
 
