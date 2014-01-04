@@ -6,8 +6,12 @@ var path = require('path');
 var probe = require('node-ffprobe');
 var ffmpeg = require('fluent-ffmpeg');
 
+var uuid = require("node-uuid");
+var urlSafeBase64 = require('urlsafe-base64');
+
 var mongoose = require('mongoose');
 var Metadata = require('../models/metadata');
+var Transcript = require('../models/transcript');
 
 var mime = require('mime');
 var mmm = require('mmmagic');
@@ -169,25 +173,50 @@ module.exports = function() {
 		    }
 		  }
 
-		  // console.log(JSON.stringify(map));
+		  // transcript
+      try{
+        if (map['00001'].info.subtitles.en) {
+          var transcript = new Transcript({
+            _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
+            label: 'Subtitles for ' + payload.label,
+            desc: '',
+            type: 'srt',
+            owner: payload.owner,
+            meta: {},
+            content: map['00001'].info.subtitles.en,
+            media: payload._id
+          });
 
-		  // console.log('META');
+
+          transcript.save(function(err) {
+            if (!err) {
+              console.log("created");
+            }
+          });
+      } catch (ignored) {}
+
+      // metadata
 		  Metadata.findById(payload.meta._id).exec(function(err, metadata) {
-	          if (!err) {
-	            metadata.probe = map;
-	            metadata.save(function(err) {
-	              if (!err) {
-	                callback('success');
-	              } else {
-	                console.log(err);
-	                callback('bury');
-	              }
-	            });
-	          } else {
-	            console.log(err);
-	            callback('bury');
-	          }
-	      });
+          if (!err) {
+
+            metadata.probe = map;
+            metadata.video = getVideo(map);
+            metadata.audio = getAudio(map);
+            metadata.m4a = getM4A(map);
+
+            metadata.save(function(err) {
+              if (!err) {
+                callback('success');
+              } else {
+                console.log(err);
+                callback('bury');
+              }
+            });
+          } else {
+            console.log(err);
+            callback('bury');
+          }
+      });
 
 		});
 
