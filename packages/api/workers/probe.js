@@ -178,13 +178,13 @@ module.exports = function() {
         if (map['00001'].info.subtitles.en) {
           var transcript = new Transcript({
             _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
-            label: 'Subtitles for ' + payload.label,
+            label: 'Subtitles for ' + payload.media.label,
             desc: '',
             type: 'srt',
-            owner: payload.owner,
+            owner: payload.media.owner,
             meta: {},
             content: map['00001'].info.subtitles.en,
-            media: payload._id
+            media: payload.media._id
           });
 
           console.log(transcript);
