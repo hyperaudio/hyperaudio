@@ -187,10 +187,13 @@ module.exports = function() {
             media: payload._id
           });
 
+          console.log(transcript);
 
           transcript.save(function(err) {
             if (!err) {
-              console.log("created");
+              console.log("created transcript!");
+            } else {
+              console.log(err);
             }
           });
         }

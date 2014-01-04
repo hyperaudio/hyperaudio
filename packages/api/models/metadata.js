@@ -15,6 +15,18 @@ var Metadata = new mongoose.Schema({
   probe: {
     type: Schema.Types.Mixed,
     default: null
+  },
+  video: {
+    type: Schema.Types.Mixed,
+    default: null
+  },
+  audio: {
+    type: Schema.Types.Mixed,
+    default: null
+  },
+  m4a: {
+    type: Schema.Types.Mixed,
+    default: null
   }
 }, {
   versionKey: false,
