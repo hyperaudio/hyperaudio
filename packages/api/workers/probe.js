@@ -193,6 +193,7 @@ module.exports = function() {
               console.log("created");
             }
           });
+        }
       } catch (ignored) {}
 
       // metadata
