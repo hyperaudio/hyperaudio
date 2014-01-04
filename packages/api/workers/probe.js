@@ -20,6 +20,83 @@ sync(container, 'probe');
 
 mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
 
+/////
+function getM4A(probeData) {
+
+  var results = [];
+
+  for (var i in probeData) {
+    var files = probeData[i].files;
+    var info = probeData[i].info;
+
+    for (var j in files) {
+      var file = files[j].file;
+      var ext = file.split('.').pop();
+      var type = files[j].type;
+      var meta = files[j].meta;
+
+      //m4a
+      if (meta && ext == 'm4a') {
+        results.push(files[j]);
+      }
+
+    }
+  }
+
+  return results;
+}
+
+
+function getVideo(probeData) {
+
+  var results = [];
+
+  for (var i in probeData) {
+    var files = probeData[i].files;
+    var info = probeData[i].info;
+
+    for (var j in files) {
+      var file = files[j].file;
+      var ext = file.split('.').pop();
+      var type = files[j].type;
+      var meta = files[j].meta;
+
+      //video, FIXME assuming only one stream
+      if (meta && meta.streams[0].codec_type == "video") {
+        results.push(files[j]);
+      }
+    }
+  }
+
+  return results;
+}
+
+
+function getAudio(probeData) {
+
+  var results = [];
+
+  for (var i in probeData) {
+    var files = probeData[i].files;
+    var info = probeData[i].info;
+
+    for (var j in files) {
+      var file = files[j].file;
+      var ext = file.split('.').pop();
+      var type = files[j].type;
+      var meta = files[j].meta;
+
+      //video, FIXME assuming only one stream
+      if (meta && meta.streams[0].codec_type == "audio") {
+        results.push(files[j]);
+      }
+    }
+  }
+
+  return results;
+}
+/////
+
 module.exports = function() {
   function ProbeHandler() {
     this.type = 'media';
