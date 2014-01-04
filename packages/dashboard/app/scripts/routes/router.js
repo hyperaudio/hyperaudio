@@ -36,9 +36,9 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mixes: function() {
-      if (!haDash.mixCollection) {
+      // if (!haDash.mixCollection) {
         haDash.mixCollection = new haDash.Collections.MixCollection();
-      }
+      // }
 
       haDash.mixListView = new haDash.Views.MixListView({
         collection: haDash.mixCollection
@@ -51,9 +51,9 @@ haDash.Routers = haDash.Routers || {};
     media: function() {
       console.log('MEDIA');
 
-      if (!haDash.mediaCollection) {
+      // if (!haDash.mediaCollection) {
         haDash.mediaCollection = new haDash.Collections.MediaCollection();
-      }
+      // }
 
       // if (!haDash.mediaListView) {
         haDash.mediaListView = new haDash.Views.MediaListView({
