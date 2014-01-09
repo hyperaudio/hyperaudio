@@ -108,7 +108,7 @@ module.exports = function() {
                   // if (m[m.length - 1][1].alignment) {
                     var hypertranscript = "<article><header></header><section><header></header><p>";
 
-                    var al = transcript.meta.align;
+                    var al = transcript.meta.align.alignment;
 
                     for (var i = 0; i < al.length; i++) {
                        hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
