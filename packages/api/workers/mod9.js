@@ -104,7 +104,21 @@ module.exports = function() {
                     transcript.meta = {};
                   }
                   transcript.meta.align = JSON.parse(result2);
-                  // transcript.content =
+                  ////////
+                  // if (m[m.length - 1][1].alignment) {
+                    var hypertranscript = "<article><header></header><section><header></header><p>";
+
+                    var al = transcript.meta.align;
+
+                    for (var i = 0; i < al.length; i++) {
+                       hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+                    }
+
+                    hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+                  // }
+                  ////////
+                  transcript.content = hypertranscript;
+                  transcript.type = 'html';
 
                   transcript.save(function(err) {
                     console.log('SAVING? ' + err);
