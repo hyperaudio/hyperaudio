@@ -4,8 +4,8 @@ var http = require('http');
 
 var mongoose = require('mongoose');
 var Transcript = require('../models/transcript');
-var MediaObject = require('./models/mediaObject');
-var Metadata = require('./models/metadata');
+var MediaObject = require('../models/mediaObject');
+var Metadata = require('../models/metadata');
 
 mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
 
