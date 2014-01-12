@@ -16,6 +16,8 @@
   margin-top: $space-m;
 }
 .section-head-figure {
+  @include clearfix;
+  display: block;
   margin-top: $space-l;
 }
 .section-head > p {
