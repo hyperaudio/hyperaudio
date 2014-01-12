@@ -18,7 +18,7 @@
 
 .header-navigation {
   list-style: none;
-  margin-bottom: $space-x;
+  margin-top: -($space-x);
   text-align: right;
 }
 .header-navigation-item {

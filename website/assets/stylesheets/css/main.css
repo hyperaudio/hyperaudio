@@ -3605,7 +3605,7 @@ input[type="submit"].active {
 
 .header-navigation {
   list-style: none;
-  margin-bottom: 0.5rem;
+  margin-top: -0.5rem;
   text-align: right;
 }
 
