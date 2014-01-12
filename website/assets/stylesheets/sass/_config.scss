@@ -37,21 +37,20 @@ $flare-light       : rgba(255,255,255,0.1);
 
 /* Typography
 ----------------------------------------------- */
-html { font-size: 62.5%; }
 
 // Font Families
-$primary-font: 'Source Sans Pro', sans-serif;
+$primary-font      : 'Source Sans Pro', sans-serif;
 $secondary-font    : 'Exo 2', sans-serif;
 
 // Font Sizes
 $font-h            : 3.5rem; // humongous
 $font-t            : 1.0rem; // tiny
 
-$font-xl           : 2.9rem;
+$font-xl           : 3.5rem;
 $font-l            : 2.5rem;
-$font-m            : 1.62rem;
-$font-s            : 1.42rem;
-$font-xs           : 1.22rem;
+$font-m            : 1.7rem;
+$font-s            : 1.6rem;
+$font-xs           : 1.5rem;
 
 // Line Heights
 $lheight-xl        : 2.4em;
