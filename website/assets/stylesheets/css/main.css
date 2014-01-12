@@ -2367,10 +2367,6 @@ select {
 ----------------------------------------------- */
 /* Typography
 ----------------------------------------------- */
-html {
-  font-size: 62.5%;
-}
-
 /* Spaces
 ----------------------------------------------- */
 /* Border Radii
@@ -2381,11 +2377,15 @@ html {
 ----------------------------------------------- */
 /* Body
 ----------------------------------------------- */
+html {
+  font-size: 62.5%;
+}
+
 body {
   background: white;
   color: rgba(0, 0, 0, 0.66);
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.4em;
 }
 
@@ -2452,19 +2452,19 @@ h5 {
 
 .heading-m, h3 {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   font-weight: bold;
 }
 
 .heading-s, h4 {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
 .heading-xs, h5 {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -2476,40 +2476,40 @@ h5 {
   }
 
   .heading-l, h2, .article-body h2, .call-heading, .section-head-text, .tour-item-heading {
-    font-size: 1.62rem;
+    font-size: 1.7rem;
   }
 
   .heading-m, h3 {
-    font-size: 1.92rem;
+    font-size: 2.1rem;
   }
 
   .heading-s, h4 {
-    font-size: 1.72rem;
+    font-size: 2rem;
   }
 
   .heading-xs, h5 {
-    font-size: 1.22rem;
+    font-size: 1.5rem;
   }
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
   .heading-xl, h1, .article-title, .section-head-heading {
-    font-size: 2.9rem;
+    font-size: 3.5rem;
   }
 
   .heading-l, h2, .article-body h2, .call-heading, .section-head-text, .tour-item-heading {
-    font-size: 2.3rem;
+    font-size: 2.38rem;
   }
 
   .heading-m, h3 {
-    font-size: 1.92rem;
+    font-size: 2.1rem;
   }
 
   .heading-s, h4 {
-    font-size: 1.72rem;
+    font-size: 2rem;
   }
 
   .heading-xs, h5 {
-    font-size: 1.22rem;
+    font-size: 1.5rem;
   }
 }
 /* Inputs
@@ -2525,7 +2525,7 @@ textarea {
   border: 1px solid rgba(0, 0, 0, 0.35);
   display: inline-block;
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   padding: 0.5rem;
 }
 .text-input.large, input.large[type="text"],
@@ -2533,7 +2533,7 @@ input.large[type="password"],
 input.large[type="email"],
 textarea.large {
   padding: 1rem;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
 }
 .text-input.block, input.block[type="text"],
 input.block[type="password"],
@@ -2595,7 +2595,7 @@ table {
 }
 table caption {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   font-weight: bold;
   line-height: 1.4em;
   margin-bottom: 0.5rem;
@@ -2630,7 +2630,7 @@ tr {
 td,
 th {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.4em;
   padding: 1rem;
   text-align: left;
@@ -2649,7 +2649,7 @@ thead th,
 thead td,
 tfoot th,
 tfoot td {
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-weight: bold;
 }
 
@@ -2719,7 +2719,7 @@ input[type="submit"].active {
 }
 
 .button.small {
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   padding: 0.5rem 1rem;
 }
 
@@ -2739,7 +2739,7 @@ input[type="submit"].active {
 
 .article-heading {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   text-align: center;
   margin-bottom: 2rem;
 }
@@ -2756,14 +2756,14 @@ input[type="submit"].active {
 .article-meta {
   color: rgba(0, 0, 0, 0.35);
   display: block;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-style: italic;
   text-align: center;
 }
 
 .article-author {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-style: italic;
 }
 
@@ -2778,7 +2778,7 @@ input[type="submit"].active {
   -ms-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   line-height: 1.5em;
   text-align: justify;
 }
@@ -2814,7 +2814,7 @@ input[type="submit"].active {
 }
 .article-body figure figcaption {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.4em;
   margin-top: 1rem;
   text-align: left;
@@ -2831,11 +2831,11 @@ input[type="submit"].active {
 
 @media only screen and (max-width: 40em) {
   .article-heading {
-    font-size: 1.42rem;
+    font-size: 1.6rem;
   }
 
   .article-title {
-    font-size: 2.12rem;
+    font-size: 2.2rem;
   }
 }
 /* Brandmark
@@ -2871,7 +2871,7 @@ input[type="submit"].active {
 .brandmark-label {
   display: inline;
   font-family: "Exo 2", sans-serif;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   font-weight: bold;
   line-height: 40px;
   margin-left: 1rem;
@@ -2897,7 +2897,7 @@ input[type="submit"].active {
 ----------------------------------------------- */
 @media only screen and (max-width: 40em) {
   .call-heading {
-    font-size: 2.12rem;
+    font-size: 2.2rem;
     padding: 0;
   }
 }
@@ -2927,7 +2927,7 @@ input[type="submit"].active {
 .endorsement-author {
   color: rgba(0, 0, 0, 0.35);
   display: inline-block;
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   font-style: normal;
   font-weight: bold;
   line-height: 1.5em;
@@ -2977,7 +2977,7 @@ input[type="submit"].active {
 }
 
 .feature-heading {
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   margin-bottom: 0.5rem;
 }
 
@@ -2987,12 +2987,12 @@ input[type="submit"].active {
 
 .feature-text {
   display: inline;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.5em;
 }
 
 .feature-call {
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   margin-top: 1rem;
 }
 
@@ -3031,14 +3031,14 @@ input[type="submit"].active {
 
   .feature-text {
     display: block;
-    font-size: 1.62rem;
+    font-size: 1.7rem;
     line-height: 1.5em;
     margin-bottom: 0;
   }
 
   .feature-call {
     display: inline-block;
-    font-size: 1.42rem;
+    font-size: 1.6rem;
     font-weight: normal;
     margin-top: 2rem;
   }
@@ -3066,7 +3066,7 @@ input[type="submit"].active {
 
 .form-label {
   display: block;
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -3076,7 +3076,7 @@ input[type="submit"].active {
 
 .form-note {
   color: rgba(0, 0, 0, 0.35);
-  font-size: 1.22rem;
+  font-size: 1.5rem;
 }
 
 .form-alert {
@@ -3112,14 +3112,14 @@ input[type="submit"].active {
 
 .functionality-heading {
   display: none;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .functionality-text {
   display: inline;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
 }
 
 .functionality-detail {
@@ -3158,14 +3158,14 @@ input[type="submit"].active {
 @media only screen {
   .functionality-heading {
     display: block;
-    font-size: 2.9rem;
+    font-size: 3.5rem;
     line-height: 1.2em;
     margin-top: 1rem;
   }
 
   .functionality-text {
     display: block;
-    font-size: 1.62rem;
+    font-size: 1.7rem;
   }
 
   .functionality-figure {
@@ -3203,7 +3203,7 @@ input[type="submit"].active {
 
 .listing-title {
   display: inline;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   line-height: 2.5rem;
   text-align: left;
 }
@@ -3244,14 +3244,14 @@ input[type="submit"].active {
 
 .pitch-heading {
   display: inline;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   line-height: 1.2em;
 }
 
 .pitch-text {
   font-weight: normal;
   display: inline;
-  font-size: 1.62rem;
+  font-size: 1.7rem;
 }
 
 /* Queries
@@ -3291,7 +3291,16 @@ input[type="submit"].active {
 }
 
 .section-head-figure {
+  *zoom: 1;
+  display: block;
   margin-top: 4rem;
+}
+.section-head-figure:before, .section-head-figure:after {
+  content: " ";
+  display: table;
+}
+.section-head-figure:after {
+  clear: both;
 }
 
 .section-head > p {
@@ -3450,14 +3459,14 @@ input[type="submit"].active {
 
 .characteristic-heading {
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   letter-spacing: 0.2em;
   margin-bottom: 1rem;
   text-transform: uppercase;
 }
 
 .characteristic-text {
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   margin: 0;
 }
 
@@ -3499,7 +3508,7 @@ input[type="submit"].active {
 
 .footer-navigation-item {
   display: inline-block;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   margin: 0 1rem;
   text-transform: uppercase;
 }
@@ -3602,7 +3611,7 @@ input[type="submit"].active {
 
 .header-navigation-item {
   display: inline-block;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   margin: 0 1rem;
   text-transform: uppercase;
 }
@@ -3736,7 +3745,7 @@ input[type="submit"].active {
 
 .tour-item-text {
   margin-top: 0.5rem;
-  font-size: 1.82rem;
+  font-size: 1.7rem;
   line-height: 1.5em;
 }
 
@@ -3745,7 +3754,7 @@ input[type="submit"].active {
 }
 .tour-item.compact .tour-item-text {
   margin-top: 1rem;
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.5em;
 }
 
@@ -3768,7 +3777,7 @@ input[type="submit"].active {
   .tour-item-text,
   .tour-item.compact .tour-item-text {
     margin-top: 0.5rem;
-    font-size: 1.62rem;
+    font-size: 1.7rem;
     line-height: 1.4em;
   }
 
@@ -3798,7 +3807,7 @@ input[type="submit"].active {
   .tour-item-text,
   .tour-item.compact .tour-item-text {
     margin-top: 0.5rem;
-    font-size: 1.62rem;
+    font-size: 1.7rem;
     line-height: 1.4em;
   }
 }

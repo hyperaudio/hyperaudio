@@ -17,10 +17,6 @@
 ----------------------------------------------- */
 /* Typography
 ----------------------------------------------- */
-html {
-  font-size: 62.5%;
-}
-
 /* Spaces
 ----------------------------------------------- */
 /* Border Radii
@@ -85,7 +81,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-family: monospace;
   line-height: 1.2em;
 }
@@ -95,7 +91,7 @@ html {
   padding: 0;
 }
 .sg-mod-intro p, .sg-mod-intro li {
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   line-height: 1.5em;
 }
 .sg-mod-intro pre {
@@ -106,7 +102,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.62rem;
+  font-size: 1.7rem;
   font-family: monospace;
   line-height: 1.5em;
 }
@@ -154,7 +150,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.42rem;
+  font-size: 1.6rem;
   font-family: monospace;
   line-height: 1.2em;
 }
@@ -178,7 +174,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.04);
   color: rgba(0, 0, 0, 0.55);
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 1.22rem;
+  font-size: 1.5rem;
   font-weight: normal;
   line-height: 1.4em;
   padding: 0.5rem 0.5rem;
