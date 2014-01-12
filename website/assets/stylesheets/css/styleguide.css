@@ -43,17 +43,21 @@ html {
   margin-bottom: 4rem;
 }
 
+.sg-nav-item {
+  display: block;
+}
+
 .sg-nav-separator {
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
 }
 
 .sg-nav-link {
-  display: block;
+  display: block !important;
   margin-left: 0.5rem;
   padding: 1rem 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
 }
-.sg-nav-link.active {
+.sg-nav-link:hover, .sg-nav-link.active {
   color: rgba(0, 0, 0, 0.66);
 }
 
