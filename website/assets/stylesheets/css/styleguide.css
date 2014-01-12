@@ -71,10 +71,8 @@ html {
   line-height: 1.5em;
 }
 .sg-mod-heading .sg-mod-class {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   position: absolute;
   top: 0.5rem;
@@ -97,10 +95,8 @@ html {
   line-height: 1.5em;
 }
 .sg-mod-intro pre {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   padding: 0.5rem 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -129,10 +125,8 @@ html {
   background-color: rgba(0, 0, 0, 0.5);
 }
 .sg-mod-intro figure {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
@@ -149,10 +143,8 @@ html {
   display: inline-block;
 }
 .sg-mod-intro code {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   padding: 0.5rem 0.5rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -167,7 +159,7 @@ html {
   margin-top: 2rem;
   padding: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.04);
-  background: url('../../images/backgrounds/sg-grid.png?1386255749') repeat;
+  background: url('../../images/backgrounds/sg-grid.png?1385152527') repeat;
   position: relative;
 }
 
@@ -175,10 +167,8 @@ html {
   position: absolute;
   top: -1rem;
   left: 2rem;
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.04);

@@ -2518,10 +2518,8 @@ h5 {
 input[type="password"],
 input[type="email"],
 textarea {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.35);
@@ -2667,10 +2665,8 @@ a.button,
 button.button,
 .button,
 input[type="submit"] {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   background: transparent;
   border: 1px solid rgba(44, 62, 80, 0.1);
@@ -2772,14 +2768,15 @@ input[type="submit"].active {
 }
 
 .article-body {
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
-  -ms-word-break: break-all;
   word-break: break-all;
   word-break: break-word;
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
   font-size: 1.62rem;
   line-height: 1.5em;
@@ -2853,13 +2850,11 @@ input[type="submit"].active {
 }
 
 .brandmark-symbol {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   background: white;
   float: left;
@@ -2965,10 +2960,8 @@ input[type="submit"].active {
 
 .feature {
   *zoom: 1;
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   margin-bottom: 8rem;
 }
@@ -3004,10 +2997,8 @@ input[type="submit"].active {
 }
 
 .feature-figure {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   border: 1px solid rgba(44, 62, 80, 0.1);
   line-height: 0;
@@ -3285,14 +3276,15 @@ input[type="submit"].active {
 }
 
 .section-head-text {
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
-  -ms-word-break: break-all;
   word-break: break-all;
   word-break: break-word;
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
   font-weight: 400;
   margin-top: 2rem;
@@ -3384,13 +3376,11 @@ input[type="submit"].active {
 }
 
 .slider-page {
-  -webkit-border-radius: 100rem;
   -moz-border-radius: 100rem;
-  -ms-border-radius: 100rem;
-  -o-border-radius: 100rem;
+  -webkit-border-radius: 100rem;
   border-radius: 100rem;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
   background: white;
   clear: both;
@@ -3402,10 +3392,8 @@ input[type="submit"].active {
 }
 
 .slider-page.active {
-  -webkit-border-radius: 100rem;
   -moz-border-radius: 100rem;
-  -ms-border-radius: 100rem;
-  -o-border-radius: 100rem;
+  -webkit-border-radius: 100rem;
   border-radius: 100rem;
   background: transparent;
   border: 1px solid white;
@@ -3478,10 +3466,8 @@ input[type="submit"].active {
 }
 
 .characteristic-figure {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   line-height: 0;
   overflow: hidden;
@@ -3714,14 +3700,15 @@ input[type="submit"].active {
 }
 
 .tour-item-content {
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
-  -ms-word-break: break-all;
   word-break: break-all;
   word-break: break-word;
-  -webkit-hyphens: auto;
   -moz-hyphens: auto;
+  -ms-hyphens: auto;
+  -webkit-hyphens: auto;
   hyphens: auto;
   padding-right: 2rem;
   padding-left: 2rem;
@@ -3735,10 +3722,8 @@ input[type="submit"].active {
 }
 
 .tour-figure {
-  -webkit-border-radius: 0.3rem;
   -moz-border-radius: 0.3rem;
-  -ms-border-radius: 0.3rem;
-  -o-border-radius: 0.3rem;
+  -webkit-border-radius: 0.3rem;
   border-radius: 0.3rem;
   border: 1px solid rgba(44, 62, 80, 0.1);
   margin-top: 1rem;
