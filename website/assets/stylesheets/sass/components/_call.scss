@@ -17,7 +17,7 @@
 
 @media #{$small-only} {
   .call-heading {
-    font-size: ($font-m + 0.5rem);
+    font-size: ($font-m + 5px);
     padding: 0;
   }
 }

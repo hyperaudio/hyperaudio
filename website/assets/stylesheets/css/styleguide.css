@@ -26,17 +26,17 @@
 /* Styleguide Styles
 ------------------------------------------- */
 .tpl_sg > section {
-  padding: 8rem 0;
+  padding: 80px 0;
 }
 
 .sg-container {
-  padding: 0 1rem;
+  padding: 0 10px;
 }
 
 .sg-nav {
   color: rgba(0, 0, 0, 0.2);
   list-style: decimal;
-  margin-bottom: 4rem;
+  margin-bottom: 40px;
 }
 
 .sg-nav-item {
@@ -49,8 +49,8 @@
 
 .sg-nav-link {
   display: block !important;
-  margin-left: 0.5rem;
-  padding: 1rem 0;
+  margin-left: 5px;
+  padding: 10px 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
 }
 .sg-nav-link:hover, .sg-nav-link.active {
@@ -59,7 +59,7 @@
 
 .sg-mod {
   position: relative;
-  margin-bottom: 4rem;
+  margin-bottom: 40px;
 }
 
 .sg-mod-heading {
@@ -67,47 +67,47 @@
   padding: 0;
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   font-weight: bold;
-  font-size: 2.5rem;
+  font-size: 25px;
   line-height: 1.5em;
 }
 .sg-mod-heading .sg-mod-class {
-  -moz-border-radius: 0.3rem;
-  -webkit-border-radius: 0.3rem;
-  border-radius: 0.3rem;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   position: absolute;
-  top: 0.5rem;
+  top: 5px;
   right: 0;
-  padding: 0.5rem 1rem;
+  padding: 5px 10px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.6rem;
+  font-size: 16px;
   font-family: monospace;
   line-height: 1.2em;
 }
 
 .sg-mod-intro p, .sg-mod-intro ul, .sg-mod-intro ol, .sg-mod-intro pre {
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
   padding: 0;
 }
 .sg-mod-intro p, .sg-mod-intro li {
-  font-size: 1.6rem;
+  font-size: 16px;
   line-height: 1.5em;
 }
 .sg-mod-intro pre {
-  -moz-border-radius: 0.3rem;
-  -webkit-border-radius: 0.3rem;
-  border-radius: 0.3rem;
-  padding: 0.5rem 0.5rem;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.7rem;
+  font-size: 17px;
   font-family: monospace;
   line-height: 1.5em;
 }
 .sg-mod-intro li {
-  margin-left: 1.8rem;
+  margin-left: 18px;
 }
 .sg-mod-intro iframe {
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -125,15 +125,15 @@
   background-color: rgba(0, 0, 0, 0.5);
 }
 .sg-mod-intro figure {
-  -moz-border-radius: 0.3rem;
-  -webkit-border-radius: 0.3rem;
-  border-radius: 0.3rem;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   font-family: monospace;
   line-height: 1.2em;
-  margin-top: 2rem;
-  padding: 2rem;
+  margin-top: 20px;
+  padding: 20px;
   text-align: center;
 }
 .sg-mod-intro figure.inverted {
@@ -143,21 +143,21 @@
   display: inline-block;
 }
 .sg-mod-intro code {
-  -moz-border-radius: 0.3rem;
-  -webkit-border-radius: 0.3rem;
-  border-radius: 0.3rem;
-  padding: 0.5rem 0.5rem;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: white;
   color: rgba(0, 0, 0, 0.55);
-  font-size: 1.6rem;
+  font-size: 16px;
   font-family: monospace;
   line-height: 1.2em;
 }
 
 .sg-mod-canvas {
-  margin-top: 2rem;
-  padding: 2rem;
+  margin-top: 20px;
+  padding: 20px;
   border: 1px solid rgba(0, 0, 0, 0.04);
   background: url('../../images/backgrounds/sg-grid.png?1385152527') repeat;
   position: relative;
@@ -165,18 +165,18 @@
 
 .sg-mod-canvas-note {
   position: absolute;
-  top: -1rem;
-  left: 2rem;
-  -moz-border-radius: 0.3rem;
-  -webkit-border-radius: 0.3rem;
-  border-radius: 0.3rem;
+  top: -10px;
+  left: 20px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
   background: white;
   border: 1px solid rgba(0, 0, 0, 0.04);
   color: rgba(0, 0, 0, 0.55);
   font-family: "Source Sans Pro", sans-serif;
-  font-size: 1.5rem;
+  font-size: 15px;
   font-weight: normal;
   line-height: 1.4em;
-  padding: 0.5rem 0.5rem;
+  padding: 5px 5px;
   white-space: nowrap;
 }

@@ -84,7 +84,7 @@
   }
   h2 {
     @extend .heading-l;
-    font-size: ($font-l - 0.4rem);
+    font-size: ($font-l - 4px);
     margin-bottom: $space-m;
     margin-top: $space-l;
     text-align: center;
@@ -99,7 +99,7 @@
     font-size: $font-s;
   }
   .article-title {
-    font-size: ($font-m + 0.5rem);
+    font-size: ($font-m + 5px);
   }
 }
 

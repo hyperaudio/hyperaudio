@@ -2,7 +2,7 @@
 ------------------------------------------- */
 
 .row { // Foundation Override
-  max-width: 96rem;
+  max-width: 960px;
 }
 
 .section {
@@ -20,7 +20,7 @@
   @include clearfix;
   margin: 0 auto;
   min-height: 100%;
-  max-width: 96rem;
+  max-width: 960px;
 }
 
 /* Layout Specific

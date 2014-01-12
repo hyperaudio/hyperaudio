@@ -56,10 +56,10 @@ h5 { @extend .heading-xs; }
     font-size: $font-m;
   }
   .heading-m {
-    font-size: ($font-s + 0.5rem);
+    font-size: ($font-s + 5px);
   }
   .heading-s {
-    font-size: ($font-xs + 0.5rem);
+    font-size: ($font-xs + 5px);
   }
   .heading-xs {
     font-size: $font-xs;
@@ -70,13 +70,13 @@ h5 { @extend .heading-xs; }
     font-size: $font-xl;
   }
   .heading-l {
-    font-size: ($font-m + 0.68rem);
+    font-size: ($font-m + 7px);
   }
   .heading-m {
-    font-size: ($font-s + 0.5rem);
+    font-size: ($font-s + 5px);
   }
   .heading-s {
-    font-size: ($font-xs + 0.5rem);
+    font-size: ($font-xs + 5px);
   }
   .heading-xs {
     font-size: $font-xs;
