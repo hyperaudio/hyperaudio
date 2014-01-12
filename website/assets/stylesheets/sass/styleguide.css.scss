@@ -38,16 +38,17 @@
   margin-bottom: $space-l;
 }
 .sg-nav-item {
-
+  display: block;
 }
 .sg-nav-separator {
   border-bottom: 1px solid $light;
 }
 .sg-nav-link {
-  display: block;
+  display: block !important;
   margin-left: $space-x;
   padding: $space-s 0;
   border-bottom: 1px solid $light !important;
+  &:hover,
   &.active {
     color: $mono-strong;
   }
