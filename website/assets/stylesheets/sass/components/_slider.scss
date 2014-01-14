@@ -9,14 +9,20 @@
 }
 .slider-pager {
   @include position-top-right(50%,-20px);
-  display: none;
+  display: block;
   margin-top: $space-l;
   margin-top: -30px;
   text-align: center;
   width: 14px;
+  @media #{$small-only} {
+    position: static;
+    top: auto;
+    right: auto;
+    margin-top: 0;
+    width: auto;
+  }
 }
 .slider-pages {
-  display: block;
   text-align: center;
 }
 .slider-page {
@@ -29,6 +35,11 @@
   height: 10px;
   margin: 3px 0;
   width: 10px;
+  @media #{$small-only} {
+    clear: none;
+    display: inline-block;
+    margin: $space-m $space-x;
+  }
 }
 .slider-page.active {
   @include border-radius($radius-absolute);
@@ -37,19 +48,9 @@
   height: 12px;
   margin: 2px 0;
   width: 12px;
-}
-
-/* Queries
------------------------------------------------ */
-
-@media #{$small-up} {
-  .slider-pager {
-    display: block;
+  @media #{$small-only} {
+    clear: none;
+    display: inline-block;
+    margin: $space-m $space-x;
   }
-}
-
-@media #{$medium-up} {
-}
-
-@media #{$large-up} {
 }
