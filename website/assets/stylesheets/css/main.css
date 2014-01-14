@@ -3532,6 +3532,10 @@ input[type="submit"].active {
   display: block !important;
   margin-top: 10px;
 }
+.footer-imprint-links a {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
 /* Queries
 ----------------------------------------------- */

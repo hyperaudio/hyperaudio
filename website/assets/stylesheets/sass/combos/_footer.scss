@@ -43,6 +43,10 @@
 .footer-imprint-links {
   display: block !important;
   margin-top: $space-s;
+  a {
+    margin-left: $space-s;
+    margin-right: $space-s;
+  }
 }
 
 /* Queries
