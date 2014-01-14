@@ -26,9 +26,12 @@
 /* Layout Specific
 ------------------------------------------- */
 
-.lt_homefold {
+.section.lt_homefold {
   padding-top: $space-l;
-  padding-bottom: 0 !important;
+  padding-bottom: 0;
+  @media #{$small-only} {
+    padding-top: $space-s;
+  }
 }
 .lt_pitch {
   margin-bottom: $space-h;
