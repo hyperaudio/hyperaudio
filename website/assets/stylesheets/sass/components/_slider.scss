@@ -21,6 +21,13 @@
     margin-top: 0;
     width: auto;
   }
+  @media #{$medium-only} {
+    position: static;
+    top: auto;
+    right: auto;
+    margin-top: 0;
+    width: auto;
+  }
 }
 .slider-pages {
   text-align: center;
@@ -40,6 +47,11 @@
     display: inline-block;
     margin: $space-m $space-x;
   }
+  @media #{$medium-only} {
+    clear: none;
+    display: inline-block;
+    margin: $space-m $space-x;
+  }
 }
 .slider-page.active {
   @include border-radius($radius-absolute);
@@ -49,6 +61,11 @@
   margin: 2px 0;
   width: 12px;
   @media #{$small-only} {
+    clear: none;
+    display: inline-block;
+    margin: $space-m $space-x;
+  }
+  @media #{$medium-only} {
     clear: none;
     display: inline-block;
     margin: $space-m $space-x;
