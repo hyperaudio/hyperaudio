@@ -3,13 +3,6 @@
 
 .endorsements {
 }
-.endorsement {
-  @include clearfix;
-  margin-top: $space-l;
-  &:first-child {
-    margin-top: 0;
-  }
-}
 .endorsement-quote {
   display: block;
   font-style: italic;
@@ -31,19 +24,19 @@
 /* Queries
 ----------------------------------------------- */
 
-@media #{$small-up} {
+@media #{$small-only} {
   .endorsement {
-    margin-top: 0;
-  }
-  .endorsement-quote {
-    display: block;
-    font-style: italic;
     margin-bottom: $space-m;
-    min-height: 100px;
+    &:last-child {
+      margin: 0;
+    }
   }
 }
 
 @media #{$medium-up} {
+  .endorsement-quote {
+    min-height: 154px;
+  }
 }
 
 @media #{$large-up} {

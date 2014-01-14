@@ -1,6 +1,9 @@
 /* Colour Palette
 ----------------------------------------------- */
 
+$block-grid-elements: 12;
+$block-grid-default-spacing: rem-calc(40);
+
 // Shades of Grey
 $dark              : #000;
 $bright            : #fff;
