@@ -4,35 +4,19 @@
 .supporters {
   margin-top: $space-l;
   text-align: center;
+  @media #{$small-only} {
+    margin-top: $space-m;
+  }
 }
 .supporter {
   border: none !important;
   color: $mono-mid;
-  font-size: 45px;
-  margin: 0 $space-x;
+  font-size: 80px;
+  margin: 0 $space-m;
   &:hover {
     color: $mono-heavy;
   }
-}
-
-/* Queries
------------------------------------------------ */
-
-@media #{$small-up} {
-  .supporter {
-    border: none !important;
-    color: $mono-mid;
-    font-size: 100px;
-    margin: 0 $space-m;
-    padding: $space-x;
-    &:hover {
-      color: $mono-heavy;
-    }
+  @media #{$small-only} {
+    margin: 0 $space-s;
   }
-}
-
-@media #{$medium-up} {
-}
-
-@media #{$large-up} {
 }
