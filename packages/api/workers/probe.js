@@ -220,9 +220,11 @@ module.exports = function() {
 
                   if (mediaObject.source.unknown) {
                     console.log('adding format');
+                    mediaObject.source = {};
                     mediaObject.source[map['00001'].info.formats[0].ext] = {
                       url: map['00001'].info.formats[0].url
                     };
+
                   }
 
                   console.log(mediaObject);
