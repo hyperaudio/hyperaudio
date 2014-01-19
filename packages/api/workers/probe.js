@@ -12,6 +12,8 @@ var urlSafeBase64 = require('urlsafe-base64');
 var mongoose = require('mongoose');
 var Metadata = require('../models/metadata');
 var Transcript = require('../models/transcript');
+var MediaObject = require('../models/mediaObject');
+
 
 var mime = require('mime');
 var mmm = require('mmmagic');
@@ -207,6 +209,22 @@ module.exports = function() {
             metadata.video = getVideo(map);
             metadata.audio = getAudio(map);
             metadata.m4a = getM4A(map);
+
+            //if audio only
+            if (metadata.video.length == 0) {
+              MediaObject.findById(payload.media._id).exec(function(err, mediaObject) {
+                if (!err) {
+                  mediaObject.type = 'audio';
+                  mediaObject.label = metadata.audio[0].meta.metadata.title + ', ' + metadata.audio[0].meta.metadata.artist;
+                  mediaObject.desc = metadata.audio[0].meta.metadata.album;
+
+                  mediaObject.save(function(err){
+                    if (err) console.log(err);
+                  });
+                }
+              });
+            }
+            //audio
 
             metadata.save(function(err) {
               if (!err) {
