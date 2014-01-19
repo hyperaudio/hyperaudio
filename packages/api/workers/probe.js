@@ -219,10 +219,13 @@ module.exports = function() {
                   mediaObject.desc = metadata.audio[0].meta.metadata.album;
 
                   if (mediaObject.source.unknown) {
+                    console.log('adding format');
                     mediaObject.source[map['00001'].info.formats[0].ext] = {
                       url: map['00001'].info.formats[0].url
                     };
                   }
+
+                  console.log(mediaObject);
 
                   mediaObject.save(function(err){
                     if (err) console.log(err);
