@@ -18,7 +18,7 @@ module.exports = function() {
   }
 
   ProbeHandler.prototype.work = function(payload, callback) {
-    console.log(payload);
+    // console.log(payload);
 
     MediaObject.findById(payload.media).populate('meta').exec(function(err, mediaObject) {
       if (!err) {
@@ -173,7 +173,7 @@ module.exports = function() {
         ////
       }
       callback('bury');
-      return;
+      // return;
     });
 
   };
