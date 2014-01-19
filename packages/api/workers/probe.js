@@ -218,6 +218,12 @@ module.exports = function() {
                   mediaObject.label = metadata.audio[0].meta.metadata.title + ', ' + metadata.audio[0].meta.metadata.artist;
                   mediaObject.desc = metadata.audio[0].meta.metadata.album;
 
+                  if (mediaObject.source.unknown) {
+                    mediaObject.source[map['00001'].info.formats[0].ext] = {
+                      url: map['00001'].info.formats[0].url
+                    };
+                  }
+
                   mediaObject.save(function(err){
                     if (err) console.log(err);
                   });
