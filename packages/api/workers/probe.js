@@ -224,6 +224,11 @@ module.exports = function() {
                     mediaObject.source[map['00001'].info.formats[0].ext] = {
                       url: map['00001'].info.formats[0].url
                     };
+                    if (map['00001'].info.formats[0].url.indexOf('bgm') != -1) {
+                      mediaObject.source['ogg'] = {
+                       url: map['00001'].info.formats[0].url.replace('mp3', 'ogg')
+                     };
+                    }
 
                   }
 
