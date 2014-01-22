@@ -77,14 +77,14 @@ module.exports = function(app, nconf) {
     if (req.params.user) {
       var query = {
         owner: req.params.user,
-        tags: []
+        $or: [{tags: []}, {tags: null}]
       };
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
     }
     var query = {
-      tags: []
+      $or: [{tags: []}, {tags: null}]
     };
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
