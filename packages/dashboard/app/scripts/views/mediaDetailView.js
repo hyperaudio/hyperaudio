@@ -30,13 +30,13 @@ haDash.Views = haDash.Views || {};
       //   transcripts.add(transcript);
       // }
 
-      var locked = this.notMutable();
-
       this.$el.find('.tags').select2({
-        readonly: locked,
         tags:[],
         tokenSeparators: [",", " "]
       });
+      if (this.notMutable()) {
+        this.$el.find('.tags').select2("readonly", true);
+      }
 
       this.$el.find("#transcripts").empty().append(
         new haDash.Views.TranscriptListView({
