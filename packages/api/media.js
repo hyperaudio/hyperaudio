@@ -84,7 +84,7 @@ module.exports = function(app, nconf) {
       });
     }
     var query = {
-      $or: [{tags: []}, { '$exists': False }]
+      $or: [{tags: []}, { '$exists': false }]
     };
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
