@@ -22,12 +22,13 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      'click #registerForm input[type="submit"]': 'signup'
+      'click #registerForm button[type="submit"]': 'signup'
     },
 
     signup: function(event) {
       event.preventDefault();
       $('#registerFormError').hide();
+      $(event.target).find('img').show();
 
       $.ajax({
         url: haDash.API + '/register',
@@ -50,6 +51,7 @@ haDash.Views = haDash.Views || {};
         })
         .fail(function() {
             $('#registerFormError').show();
+            $(event.target).find('img').show();
         });
 
     }
