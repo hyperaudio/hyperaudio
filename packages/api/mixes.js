@@ -58,6 +58,58 @@ module.exports = function(app, nconf) {
     });
   });
 
+    app.get('/v1/:user?/mixes/tags', function(req, res) {
+    cube("get_mixes_tags", {
+      user: req.params.user
+    });
+
+    Mix.collection.distinct('tags', function(err, results) {
+      return res.send(results);
+    });
+  });
+
+  app.get('/v1/:user?/mixes/tags/notag', function(req, res) {
+    cube("get_mixes_by_tag", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        $or: [{tags: []}, {tags: { $exists: false }}]
+      };
+      return Mix.find(query, function(err, mixes) {
+        return res.send(mixes);
+      });
+    }
+    var query = {
+      $or: [{tags: []}, {tags: { $exists: false }}]
+    };
+    return Mix.find(query,function(err, mixes) {
+      return res.send(mixes);
+    });
+  });
+
+  app.get('/v1/:user?/mixes/tags/:tag', function(req, res) {
+    cube("get_mixes_by_tag", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        tags: { $in: [req.params.tag] }
+      };
+      return Mix.find(query, function(err, mixes) {
+        return res.send(mixes);
+      });
+    }
+    var query = {
+      tags: { $in: [req.params.tag] }
+    };
+    return Mix.find(query,function(err, mixes) {
+      return res.send(mixes);
+    });
+  });
+
   app.get('/v1/:user?/mixes/:id', function(req, res) {
     cube("get_mix", {
       user: req.params.user,
