@@ -32,7 +32,7 @@ haDash.Views = haDash.Views || {};
 
       this.$el.find('.tags').select2({
         tags:[],
-        tokenSeparators: [",", " "]
+        tokenSeparators: [","]
       });
       if (this.notMutable()) {
         this.$el.find('.tags').select2("readonly", true);
@@ -87,7 +87,11 @@ haDash.Views = haDash.Views || {};
     },
 
     saveTags: function() {
-      console.log('tag event');
+      if (this.notMutable()) return;
+      this.model.set('tags', this.$el.find('.tags').select2("val"));
+      this.model.save(null, {
+        url: haDash.API + '/media/' + this.model.id
+      });
     }
 
     });
