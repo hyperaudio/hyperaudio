@@ -96,6 +96,7 @@ module.exports = function(app, nconf) {
       mix.label = req.body.label;
       mix.desc = req.body.desc;
       mix.type = req.body.type;
+      mix.tags = req.body.tags;
 
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -147,7 +148,8 @@ module.exports = function(app, nconf) {
       type: req.body.type,
       owner: owner,
       meta: req.body.meta,
-      content: content
+      content: content,
+      tags: req.body.tags
     });
 
     mix.save(function(err) {

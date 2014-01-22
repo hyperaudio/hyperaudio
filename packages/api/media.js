@@ -160,6 +160,7 @@ module.exports = function(app, nconf) {
       mediaObject.type = req.body.type;
       mediaObject.owner = owner;
       mediaObject.source = req.body.source;
+      mediaObject.tags = req.body.tags;
 
       return mediaObject.save(function(err) {
         if (!err) {
@@ -194,7 +195,8 @@ module.exports = function(app, nconf) {
       type: req.body.type,
       owner: owner,
       meta: metaId,
-      source: req.body.source
+      source: req.body.source,
+      tags: req.body.tags
     });
 
     metadata.save(function(err) {
