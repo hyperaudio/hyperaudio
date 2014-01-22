@@ -28,6 +28,7 @@ haDash.Views = haDash.Views || {};
     signin: function(event) {
       event.preventDefault();
       $('#loginFormError').hide();
+      $(event.target).find('img').show();
 
       $.ajax({
         url: haDash.API + '/login',
@@ -51,6 +52,7 @@ haDash.Views = haDash.Views || {};
       })
       .fail(function() {
         $('#loginFormError').show();
+        $(event.target).find('img').hide();
       });
 
     }
