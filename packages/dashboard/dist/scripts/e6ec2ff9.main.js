@@ -961,7 +961,13 @@ haDash.Views = haDash.Views || {};
       //   transcripts.add(transcript);
       // }
 
-      this.$el.find('.tags').select2({tags:[],tokenSeparators: [",", " "]});
+      var locked = this.notMutable();
+
+      this.$el.find('.tags').select2({
+        locked: locked
+        tags:[],
+        tokenSeparators: [",", " "]
+      });
 
       this.$el.find("#transcripts").empty().append(
         new haDash.Views.TranscriptListView({
@@ -981,7 +987,8 @@ haDash.Views = haDash.Views || {};
     events: {
       "click h2.label, p.desc": "edit",
       "blur h2.label, p.desc": "save",
-      "click button.delete": "delete"
+      "click button.delete": "delete",
+      "change .tags": "saveTags"
     },
 
     notMutable: function() {
@@ -1008,6 +1015,10 @@ haDash.Views = haDash.Views || {};
         url: haDash.API + '/media/' + this.model.id
       });
       haDash.router.navigate("/media/", {trigger: true});
+    },
+
+    saveTags: function() {
+      console.log('tag event');
     }
 
     });
