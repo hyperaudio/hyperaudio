@@ -70,6 +70,16 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/media/tags', function(req, res) {
+    cube("get_media_tags", {
+      user: req.params.user
+    });
+
+    MediaObject.collection.distinct('tags', function(err, results) {
+      return res.send(results);
+    });
+  });
+
   app.get('/v1/:user?/media/tags/notag', function(req, res) {
     cube("get_media_by_tag", {
       user: req.params.user
