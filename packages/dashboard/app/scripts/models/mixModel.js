@@ -11,12 +11,13 @@ haDash.Models = haDash.Models || {};
 
     defaults: function() {
       return {
-        label: "Empty",
+        label: "",
         desc: "",
         type: "html",
         created: new Date().toISOString(),
         modified: new Date().toISOString(),
-        owner: null
+        owner: null,
+        tags: []
       };
     }
 
