@@ -80,6 +80,16 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/media/channels', function(req, res) {
+    cube("get_media_channels", {
+      user: req.params.user
+    });
+
+    MediaObject.collection.distinct('channel', function(err, results) {
+      return res.send(results);
+    });
+  });
+
   app.get('/v1/:user?/media/tags/notag', function(req, res) {
     cube("get_media_by_tag", {
       user: req.params.user
@@ -116,6 +126,27 @@ module.exports = function(app, nconf) {
     }
     var query = {
       tags: { $in: [req.params.tag] }
+    };
+    return MediaObject.find(query,function(err, mediaObjects) {
+      return res.send(mediaObjects);
+    });
+  });
+
+  app.get('/v1/:user?/media/channels/:channel', function(req, res) {
+    cube("get_media_by_channel", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        channel: req.params.channel
+      };
+      return MediaObject.find(query, function(err, mediaObjects) {
+        return res.send(mediaObjects);
+      });
+    }
+    var query = {
+      channel: req.params.channel
     };
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
@@ -213,6 +244,7 @@ module.exports = function(app, nconf) {
       mediaObject.owner = owner;
       mediaObject.source = req.body.source;
       mediaObject.tags = req.body.tags;
+      mediaObject.channel = req.body.channel;
 
       return mediaObject.save(function(err) {
         if (!err) {
@@ -248,7 +280,8 @@ module.exports = function(app, nconf) {
       owner: owner,
       meta: metaId,
       source: req.body.source,
-      tags: req.body.tags
+      tags: req.body.tags,
+      channel: req.body.channel
     });
 
     metadata.save(function(err) {

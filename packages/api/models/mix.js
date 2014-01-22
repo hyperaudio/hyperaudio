@@ -18,7 +18,8 @@ var Mix = new mongoose.Schema({
     default: Date.now
   },
   content: String,
-  tags: [String]
+  tags: [String],
+  channel: String
 }, {
   versionKey: false,
   collection: 'mixes'

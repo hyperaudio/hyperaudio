@@ -21,7 +21,8 @@ var MediaObject = new mongoose.Schema({
     default: Date.now
   },
   source: Schema.Types.Mixed,
-  tags: [String]
+  tags: [String],
+  channel: String
 }, {
   versionKey: false,
   collection: 'media'

@@ -58,7 +58,17 @@ module.exports = function(app, nconf) {
     });
   });
 
-    app.get('/v1/:user?/mixes/tags', function(req, res) {
+  app.get('/v1/:user?/mixes/channels', function(req, res) {
+    cube("get_mixes_channels", {
+      user: req.params.user
+    });
+
+    Mix.collection.distinct('channel', function(err, results) {
+      return res.send(results);
+    });
+  });
+
+  app.get('/v1/:user?/mixes/tags', function(req, res) {
     cube("get_mixes_tags", {
       user: req.params.user
     });
@@ -110,6 +120,27 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/mixes/channels/:channel', function(req, res) {
+    cube("get_mixes_by_tag", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        channel: req.params.channel
+      };
+      return Mix.find(query, function(err, mixes) {
+        return res.send(mixes);
+      });
+    }
+    var query = {
+      channel: req.params.channel
+    };
+    return Mix.find(query,function(err, mixes) {
+      return res.send(mixes);
+    });
+  });
+
   app.get('/v1/:user?/mixes/:id', function(req, res) {
     cube("get_mix", {
       user: req.params.user,
@@ -149,6 +180,7 @@ module.exports = function(app, nconf) {
       mix.desc = req.body.desc;
       mix.type = req.body.type;
       mix.tags = req.body.tags;
+      mix.channel = req.body.channel;
 
       if (req.params.user) {
         mix.owner = req.params.user;
@@ -201,7 +233,8 @@ module.exports = function(app, nconf) {
       owner: owner,
       meta: req.body.meta,
       content: content,
-      tags: req.body.tags
+      tags: req.body.tags,
+      channel: req.body.channel
     });
 
     mix.save(function(err) {
