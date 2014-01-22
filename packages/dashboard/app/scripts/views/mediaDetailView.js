@@ -33,7 +33,7 @@ haDash.Views = haDash.Views || {};
       var locked = this.notMutable();
 
       this.$el.find('.tags').select2({
-        locked: locked
+        locked: locked,
         tags:[],
         tokenSeparators: [",", " "]
       });
