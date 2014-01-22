@@ -18,6 +18,15 @@ haDash.Views = haDash.Views || {};
       render: function() {
         this.$el.html(this.template(this.model.toJSON()));
 
+        this.$el.find('.tags').select2({
+          tags:[],
+          tokenSeparators: [","]
+        });
+
+        if (this.notMutable()) {
+          this.$el.find('.tags').select2("readonly", true);
+        }
+
         // var mediaIDs = [];//this.model.get('transcripts');
         // var mediaCollection = new haDash.Collections.MediaCollection();
 
@@ -68,7 +77,8 @@ haDash.Views = haDash.Views || {};
       events: {
         "click h2.label, p.desc": "edit",
         "blur h2.label, p.desc": "save",
-        "click button.delete": "delete"
+        "click button.delete": "delete",
+        "change .tags": "saveTags"
       },
 
       notMutable: function() {
@@ -95,6 +105,14 @@ haDash.Views = haDash.Views || {};
           url: haDash.API + '/mixes/' + this.model.id
         });
         haDash.router.navigate("/mixes/", {trigger: true});
+      },
+
+      saveTags: function() {
+        if (this.notMutable()) return;
+        this.model.set('tags', this.$el.find('.tags').select2("val"));
+        this.model.save(null, {
+          url: haDash.API + '/mixes/' + this.model.id
+        });
       }
 
     });
