@@ -9,7 +9,9 @@
   }
 %></p>
 
-<p><input type="hidden" class="tags"></p>
+<p><input type="hidden" class="tags" value="<%
+print(tags.join(','));
+%>"></p>
 
 
 <a class="button primary" href="http://hyperaud.io/maker/?m=<%- _id%>">Create Transcript</a>
