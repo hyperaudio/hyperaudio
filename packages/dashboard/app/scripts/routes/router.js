@@ -68,7 +68,7 @@ haDash.Routers = haDash.Routers || {};
     mediaDetail: function(id) {
       var model = new haDash.Models.MediaModel({_id: id});
       model.fetch({
-        url: haDash.API + '/media/' + id + '/meta/probe'
+        url: haDash.API + '/media/' + id
       });
 
       $main.empty().append(
