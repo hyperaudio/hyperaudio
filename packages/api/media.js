@@ -70,6 +70,27 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/media/tags/:tag', function(req, res) {
+    cube("get_media_by_tag", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        tags: { $in: [req.params.tag] }
+      };
+      return MediaObject.find(query, function(err, mediaObjects) {
+        return res.send(mediaObjects);
+      });
+    }
+    var query = {
+      tags: { $in: [req.params.tag] }
+    };
+    return MediaObject.find(query,function(err, mediaObjects) {
+      return res.send(mediaObjects);
+    });
+  });
+
   app.get('/v1/:user?/media/:id', function(req, res) {
     cube("get_media", {
       user: req.params.user,
