@@ -18,7 +18,8 @@ haDash.Models = haDash.Models || {};
           source: {},
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
-          tags: []
+          tags: [],
+          channel: null
         };
       }
   });
