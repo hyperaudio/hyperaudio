@@ -30,7 +30,7 @@ haDash.Views = haDash.Views || {};
       //   transcripts.add(transcript);
       // }
 
-      this.$el.find('.tags').select2({tokenSeparators: [",", " "]});
+      // this.$el.find('.tags').select2({tokenSeparators: [",", " "]});
 
       this.$el.find("#transcripts").empty().append(
         new haDash.Views.TranscriptListView({
