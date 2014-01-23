@@ -115,6 +115,27 @@ module.exports = function(app, nconf) {
     });
   });
 
+  app.get('/v1/:user?/mixes/channels/nochannel', function(req, res) {
+    cube("get_mixes_by_channel", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        $or: [{channel: null}, {channel: { $exists: false }}]
+      };
+      return Mix.find(query, function(err, mixes) {
+        return res.send(mixes);
+      });
+    }
+    var query = {
+      $or: [{channel: null}, {channel: { $exists: false }}]
+    };
+    return Mix.find(query,function(err, mixes) {
+      return res.send(mixes);
+    });
+  });
+
   app.get('/v1/:user?/mixes/tags/:tag', function(req, res) {
     cube("get_mixes_by_tag", {
       user: req.params.user
