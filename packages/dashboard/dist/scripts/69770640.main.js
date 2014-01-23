@@ -307,7 +307,7 @@ this["JST"]["app/scripts/templates/mixList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="user">\n\n  <a class="button primary" href="http://hyperaud.io/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="your"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<table>\n  <caption>Recent Mixes</caption>\n  <thead>\n    <tr>\n      <th class="span1"></th>\n      <th class="span2">Title</th>\n      <th class="span4">Description</th>\n      <th class="span2">Date</th>\n      <th>Author</th>\n    </tr>\n  </thead>\n  <tbody class="other"></tbody>\n</table>\n';
+__p += '<div class="user your">\n\n  <a class="button primary" href="http://hyperaud.io/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n</div>\n';
 
 }
 return __p
@@ -639,11 +639,34 @@ haDash.Views = haDash.Views || {};
         model: item
       });
 
+      // if (haDash.user == item.get('owner')) {
+      //   this.$('tbody.your').append(view.render().el);
+      // } else {
+      //   this.$('tbody.other').append(view.render().el);
+      // }
       if (haDash.user == item.get('owner')) {
-        this.$('tbody.your').append(view.render().el);
+        $tbody = this.$el.find('.your tbody.' + channel);
+        if ($tbody.length == 0) {
+          var $table = $(this.$el.find('.your table').get(0));
+          var $clone = $table.clone();
+          $table.after($clone);
+          $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').attr('class', channel);
+          $tbody = this.$el.find('.your tbody.' + channel);
+        }
       } else {
-        this.$('tbody.other').append(view.render().el);
+        $tbody = this.$el.find('.other tbody.' + channel);
+        if ($tbody.length == 0) {
+          var $table = $(this.$el.find('.other table').get(0));
+          var $clone = $table.clone();
+          $table.after($clone);
+          $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').attr('class', channel);
+          $tbody = this.$el.find('.other tbody.' + channel);
+        }
       }
+
+      $tbody.append(view.render().el);
     },
 
     addAllItems: function() {

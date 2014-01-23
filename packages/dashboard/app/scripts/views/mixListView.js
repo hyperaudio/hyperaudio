@@ -31,11 +31,34 @@ haDash.Views = haDash.Views || {};
         model: item
       });
 
+      // if (haDash.user == item.get('owner')) {
+      //   this.$('tbody.your').append(view.render().el);
+      // } else {
+      //   this.$('tbody.other').append(view.render().el);
+      // }
       if (haDash.user == item.get('owner')) {
-        this.$('tbody.your').append(view.render().el);
+        $tbody = this.$el.find('.your tbody.' + channel);
+        if ($tbody.length == 0) {
+          var $table = $(this.$el.find('.your table').get(0));
+          var $clone = $table.clone();
+          $table.after($clone);
+          $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').attr('class', channel);
+          $tbody = this.$el.find('.your tbody.' + channel);
+        }
       } else {
-        this.$('tbody.other').append(view.render().el);
+        $tbody = this.$el.find('.other tbody.' + channel);
+        if ($tbody.length == 0) {
+          var $table = $(this.$el.find('.other table').get(0));
+          var $clone = $table.clone();
+          $table.after($clone);
+          $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').attr('class', channel);
+          $tbody = this.$el.find('.other tbody.' + channel);
+        }
       }
+
+      $tbody.append(view.render().el);
     },
 
     addAllItems: function() {
