@@ -56,15 +56,15 @@ haDash.Views = haDash.Views || {};
         //   tbody = this.$el.find('.your tbody.' + channel);
         // }
       } else {
-        $tbody = this.$el.find('.other tbody.nochannel');
-        // $tbody = this.$el.find('.other tbody.' + channel);
-        // if ($tbody.length == 0) {
-        //   var table = this.$el.find('.other table');
-        //   var clone = table.clone().after(table);
-        //   clone.find('caption').text(channel);
-        //   clone.find('tbody').attr('class', channel);
-        //   $tbody = this.$el.find('.other tbody.' + channel);
-        // }
+        $tbody = this.$el.find('.other tbody.' + channel);
+        if ($tbody.length == 0) {
+          var $table = $(this.$el.find('.other table').get(0));
+          var $clone = $table.clone();
+          $table.after($clone);
+          $clone.find('caption').text(channel);
+          $clone.find('tbody').attr('class', channel);
+          $tbody = this.$el.find('.other tbody.' + channel);
+        }
       }
 
       $tbody.append(view.render().el);
