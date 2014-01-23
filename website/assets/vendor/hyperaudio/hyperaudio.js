@@ -1,4 +1,4 @@
-/*! hyperaudio v0.3.25 ~ (c) 2012-2014 Hyperaudio Inc. <hello@hyperaud.io> (http://hyperaud.io) http://hyperaud.io/licensing/ ~ Built: 22nd January 2014 22:31:48 */
+/*! hyperaudio v0.4.0 ~ (c) 2012-2014 Hyperaudio Inc. <hello@hyperaud.io> (http://hyperaud.io) http://hyperaud.io/licensing/ ~ Built: 23rd January 2014 22:41:52 */
 (function(global, document) {
 
   // Popcorn.js does not support archaic browsers
@@ -3964,12 +3964,14 @@ var hyperaudio = (function() {
 			ready: 'ha:ready',
 			load: 'ha:load',
 			save: 'ha:save',
+			change: 'ha:change',
+			// login: 'ha:login', // No DOM element relating to a login. It is handled by the api.signin when the stage fails to authenticate.
 			unauthenticated: 'ha:unauthenticated',
 			error: 'ha:error'
 		},
 		_commonMethods: {
 			options: {
-				DEBUG: true,
+				DEBUG: false,
 				entity: 'core'
 			},
 			_trigger: function(eventType, eventData) {
@@ -7072,7 +7074,6 @@ var Stage = (function(document, hyperaudio) {
 					}
 				});
 			}
-			// Would then need to init the dragdrop ability on each item
 		},
 
 		save: function(callback) {
@@ -7223,6 +7224,7 @@ var Stage = (function(document, hyperaudio) {
 			if(this.options.projector) {
 				this.options.projector.requestUpdate(reset);
 			}
+			this._trigger(hyperaudio.event.change, {msg: 'The mix has changed'});
 		},
 
 		enable: function() {
