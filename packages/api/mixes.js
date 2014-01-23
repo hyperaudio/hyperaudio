@@ -63,7 +63,15 @@ module.exports = function(app, nconf) {
       user: req.params.user
     });
 
-    Mix.collection.distinct('channel', function(err, results) {
+    if (req.params.user) {
+      return Mix.distinct('channel', {
+        owner: req.params.user
+      }, function(err, results) {
+        return res.send(results);
+      });
+    }
+
+    Mix.distinct('channel', function(err, results) {
       return res.send(results);
     });
   });
@@ -73,7 +81,15 @@ module.exports = function(app, nconf) {
       user: req.params.user
     });
 
-    Mix.collection.distinct('tags', function(err, results) {
+    if (req.params.user) {
+      return Mix.distinct('tags', {
+        owner: req.params.user
+      }, function(err, results) {
+        return res.send(results);
+      });
+    }
+
+    Mix.distinct('tags', function(err, results) {
       return res.send(results);
     });
   });

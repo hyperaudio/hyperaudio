@@ -75,7 +75,15 @@ module.exports = function(app, nconf) {
       user: req.params.user
     });
 
-    MediaObject.collection.distinct('tags', function(err, results) {
+    if (req.params.user) {
+      return MediaObject.distinct('tags', {
+        owner: req.params.user
+      }, function(err, results) {
+        return res.send(results);
+      });
+    }
+
+    MediaObject.distinct('tags', function(err, results) {
       return res.send(results);
     });
   });
@@ -85,7 +93,15 @@ module.exports = function(app, nconf) {
       user: req.params.user
     });
 
-    MediaObject.collection.distinct('channel', function(err, results) {
+    if (req.params.user) {
+      return MediaObject.distinct('channel', {
+        owner: req.params.user
+      }, function(err, results) {
+        return res.send(results);
+      });
+    }
+
+    MediaObject.distinct('channel', function(err, results) {
       return res.send(results);
     });
   });
