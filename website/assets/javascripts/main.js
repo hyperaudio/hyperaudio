@@ -39,6 +39,32 @@ $(document).ready(function() {
 
   // Speed up touch tap response time
 
-  document.addEventListener("touchstart", function(){}, true)
+  document.addEventListener("touchstart", function(){}, true);
+
+  // Check for login
+
+  var API = 'http://api.hyperaud.io/v1';
+
+  $.ajax({
+    url: API + '/whoami',
+    xhrFields: {
+      withCredentials: true
+    },
+    timeout: 5000,
+    success: function(whoami) {
+      setUser(whoami);
+    }
+  });
+
+  function setUser(whoami) {
+    if (whoami.user) {
+      $('.logged-in-state').show();
+      $('.logged-out-state').hide();
+    } else {
+      $('.logged-in-state').hide();
+      $('.logged-out-state').show();
+    }
+    $('ul.header-navigation').fadeIn();
+  }
 
 });

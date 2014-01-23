@@ -30,8 +30,11 @@
           <ul class="header-navigation header-navigation">
             <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
             <li class="header-navigation-item"><a href="/blog/">Blog</a></li>
-            <li class="header-navigation-item"><a class="altered" href="/signup/">Sign up</a></li>
-            <li class="header-navigation-item"><a class="button small" href="/login/">Log in</a></li>
+            <li class="header-navigation-item logged-out-state"><a class="altered logged-out-state" href="/signup/">Sign up</a></li>
+            <li class="header-navigation-item logged-out-state"><a class="button small" href="/login/">Log in</a></li>
+            <li style="display:none" class="header-navigation-item logged-in-state"><a href="/mixes/">Mixes</a></li>
+            <li style="display:none" class="header-navigation-item logged-in-state"><a href="/media/">Media</a></li>
+            <li style="display:none" class="header-navigation-item user logged-in-state"><a class="button small logout" href="/signout/">Log out</a></li>
           </ul>
         </div>
 
