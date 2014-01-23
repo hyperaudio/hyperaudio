@@ -915,14 +915,14 @@ haDash.Views = haDash.Views || {};
       if (!channel) channel = "nochannel";
 
       if (haDash.user == item.get('owner')) {
-        tbody = this.$el.find('.your tbody.' + channel);
-        if (tbody.length == 0) {
-          var table = this.$el.find('.your table');
-          var clone = table.clone().after(table);
-          clone.find('caption').text(channel);
-          clone.find('tbody').attr('class', channel);
-          tbody = this.$el.find('.your tbody.' + channel);
-        }
+        tbody = this.$el.find('.your tbody.nochannel');
+        // if (tbody.length == 0) {
+        //   var table = this.$el.find('.your table');
+        //   var clone = table.clone().after(table);
+        //   clone.find('caption').text(channel);
+        //   clone.find('tbody').attr('class', channel);
+        //   tbody = this.$el.find('.your tbody.' + channel);
+        // }
       } else {
         tbody = this.$el.find('.other tbody.' + channel);
         if (tbody.length == 0) {
