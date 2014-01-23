@@ -9,7 +9,9 @@
   }
 %></p>
 
-<p><input type="hidden" class="tags" value="<%
+<p>Channel: <input type="hidden" class="channels" value="<%- channel %>"></p>
+
+<p>Tags: <input type="hidden" class="tags" value="<%
 print(tags.join(','));
 %>"></p>
 
