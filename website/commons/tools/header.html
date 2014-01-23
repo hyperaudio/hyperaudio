@@ -47,14 +47,14 @@
           </h1>
         </div>
         <div class="small-12 large-9 medium-9 columns">
-          <ul class="header-navigation">
+          <ul style="display:none" class="header-navigation">
             <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
             <li class="header-navigation-item"><a href="/blog/">Blog</a></li>
             <li class="header-navigation-item"><a href="/mixes/">Mixes</a></li>
             <li class="header-navigation-item"><a href="/media/">Media</a></li>
             <li class="header-navigation-item anonymous"><a class="altered register" href="/secret-signup/">Sign up</a></li>
             <li class="header-navigation-item anonymous"><a class="button small login" href="/secret-signin/">Log in</a></li>
-            <li style="display:none" class="header-navigation-item user"><a class="button small logout" href="/signout/">Log out</a></li>
+            <li class="header-navigation-item user"><a class="button small logout" href="/signout/">Log out</a></li>
           </ul>
         </div>
       </div>
@@ -101,6 +101,7 @@
         } else {
           $('body').removeClass('user').addClass('anonymous');
         }
+        $('ul.header-navigation').fadeIn();
       }
     });
     </script>
