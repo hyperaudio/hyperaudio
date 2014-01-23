@@ -57,7 +57,7 @@ haDash.Views = haDash.Views || {};
         // }
       } else {
         $tbody = this.$el.find('.other tbody.' + channel);
-        if (tbody.length == 0) {
+        if ($tbody.length == 0) {
           var table = this.$el.find('.other table');
           var clone = table.clone().after(table);
           clone.find('caption').text(channel);
