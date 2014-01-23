@@ -209,7 +209,9 @@ __e( label ) +
     if (i < lines.length - 1) print('<br />');
   }
 ;
-__p += '</p>\n\n<p><input type="hidden" class="tags" value="';
+__p += '</p>\n\n<p>Channel: <input type="hidden" class="channels" value="' +
+__e( channel ) +
+'"></p>\n\n<p>Tags: <input type="hidden" class="tags" value="';
 
 print(tags.join(','));
 ;
@@ -968,12 +970,21 @@ haDash.Views = haDash.Views || {};
       // }
 
       this.$el.find('.tags').select2({
-        maximumSelectionSize: 1,
+        // maximumSelectionSize: 1,
         tags:[],
         tokenSeparators: [","]
       });
       if (this.notMutable()) {
         this.$el.find('.tags').select2("readonly", true);
+      }
+
+      this.$el.find('.channels').select2({
+        maximumSelectionSize: 1,
+        tags:[],
+        tokenSeparators: [","]
+      });
+      if (this.notMutable()) {
+        this.$el.find('.channels').select2("readonly", true);
       }
 
       this.$el.find("#transcripts").empty().append(
@@ -995,7 +1006,8 @@ haDash.Views = haDash.Views || {};
       "click h2.label, p.desc": "edit",
       "blur h2.label, p.desc": "save",
       "click button.delete": "delete",
-      "change .tags": "saveTags"
+      "change .tags": "saveTags",
+      "change .channels": "saveChannels"
     },
 
     notMutable: function() {
@@ -1027,6 +1039,14 @@ haDash.Views = haDash.Views || {};
     saveTags: function() {
       if (this.notMutable()) return;
       this.model.set('tags', this.$el.find('.tags').select2("val"));
+      this.model.save(null, {
+        url: haDash.API + '/media/' + this.model.id
+      });
+    },
+
+    saveChannels: function() {
+      if (this.notMutable()) return;
+      this.model.set('channel', this.$el.find('.channels').select2("val")[0]);
       this.model.save(null, {
         url: haDash.API + '/media/' + this.model.id
       });
