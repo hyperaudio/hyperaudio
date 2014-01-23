@@ -65,3 +65,8 @@ table {
 p div.tags, p div.channels {
   min-width: 10em;
 }
+
+table + table {
+  margin-top: 2em;
+}
+
