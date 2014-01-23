@@ -36,6 +36,15 @@ haDash.Views = haDash.Views || {};
       // } else {
       //   this.$('tbody.other').append(view.render().el);
       // }
+
+      var $tbody;
+      var channel = item.get('channel');
+      if (!channel) {
+        channel = "nochannel";
+      } else {
+        channel = channel.replace(' ', '_');
+      }
+
       if (haDash.user == item.get('owner')) {
         $tbody = this.$el.find('.your tbody.' + channel);
         if ($tbody.length == 0) {
