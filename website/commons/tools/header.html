@@ -53,9 +53,14 @@
     <!-- this script here so we can keep the html the same -->
     <script type="text/javascript">
 
+    var notify; // Global variable
+
     $(document).ready(function() {
 
       var anchors = document.getElementsByTagName('a');
+
+      var warnOnLeave = true;
+      var firstTime = true;
 
       for (var i = 0; i < anchors.length; i++) {
         anchors[i].setAttribute('target', '_top');
@@ -64,14 +69,36 @@
       }
 
       function warning(e) {
-        var i = window.confirm("You are about to leave the page. Make sure you've saved your work.");
-        if (i == false) {
-          var evt = e ? e:window.event;
-          if (evt.preventDefault) evt.preventDefault();
-          evt.returnValue = false;
-          return false;
+        if(warnOnLeave) {
+          var i = window.confirm("You are about to leave the page. Make sure you've saved your work.");
+          if (i == false) {
+            var evt = e ? e:window.event;
+            if (evt.preventDefault) evt.preventDefault();
+            evt.returnValue = false;
+            return false;
+          }
         }
       }
+
+      notify = function(type) {
+        switch(type) {
+          case 'login':
+            setUser({user:true});
+            break;
+          case 'unauthenticated':
+            setUser({user:false});
+            break;
+          case 'change':
+            warnOnLeave = true;
+            break;
+          case 'load':
+            warnOnLeave = false;
+            break;
+          case 'save':
+            warnOnLeave = false;
+            break;
+        }
+      };
 
       var API = 'http://api.hyperaud.io/v1';
 
@@ -92,7 +119,10 @@
         } else {
           $('body').removeClass('user').addClass('anonymous');
         }
-        $('ul.header-navigation').fadeIn();
+        if(firstTime) {
+          firstTime = false;
+          $('ul.header-navigation').fadeIn();
+        }
       }
     });
     </script>
