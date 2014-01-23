@@ -911,7 +911,7 @@ haDash.Views = haDash.Views || {};
       });
 
       var $tbody;
-      var channel = this.model.get('channel');
+      var channel = item.get('channel');
       if (!channel) channel = "nochannel";
 
       if (haDash.user == item.get('owner')) {
