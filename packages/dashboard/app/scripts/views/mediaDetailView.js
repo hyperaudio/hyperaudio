@@ -31,6 +31,7 @@ haDash.Views = haDash.Views || {};
       // }
 
       this.$el.find('.tags').select2({
+        maximumSelectionSize: 1,
         tags:[],
         tokenSeparators: [","]
       });

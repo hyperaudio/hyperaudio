@@ -400,7 +400,8 @@ haDash.Models = haDash.Models || {};
         created: new Date().toISOString(),
         modified: new Date().toISOString(),
         owner: null,
-        tags: []
+        tags: [],
+        channel: null
       };
     }
 
@@ -792,7 +793,8 @@ haDash.Models = haDash.Models || {};
           source: {},
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
-          tags: []
+          tags: [],
+          channel: null
         };
       }
   });
@@ -966,6 +968,7 @@ haDash.Views = haDash.Views || {};
       // }
 
       this.$el.find('.tags').select2({
+        maximumSelectionSize: 1,
         tags:[],
         tokenSeparators: [","]
       });
