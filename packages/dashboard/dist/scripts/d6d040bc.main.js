@@ -233,7 +233,7 @@ this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="user">\n\n  <button id="addMedia" class="button primary">Add Media</button>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="your"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n\n<table>\n  <caption>Recent Media</caption>\n  <thead>\n    <tr>\n      <th class="span1"></th>\n      <th class="span2">Title</th>\n      <th class="span4">Description</th>\n      <th class="span2">Date</th>\n      <th>Author</th>\n    </tr>\n  </thead>\n  <tbody class="other"></tbody>\n</table>\n\n\n\n\n';
+__p += '<div class="user your">\n\n  <button id="addMedia" class="button primary">Add Media</button>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n  <table>\n    <caption>Recent Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n</div>\n\n\n\n\n';
 
 }
 return __p
@@ -910,11 +910,32 @@ haDash.Views = haDash.Views || {};
         model: item
       });
 
+      var tbody;
+      var channel = this.model.get('channel');
+      if (!channel) channel = "nochannel";
+
       if (haDash.user == item.get('owner')) {
-        this.$el.find('tbody.your').append(view.render().el);
+        tbody = this.$el.find('.your tbody.' + channel);
+        if (tbody.length == 0) {
+          var table = this.$el.find('.your table');
+          var clone = table.clone().after(table);
+          clone.find('caption').text(channel);
+          clone.find('tbody').attr('class', channel);
+          tbody = this.$el.find('.your tbody.' + channel);
+        }
       } else {
-        this.$el.find('tbody.other').append(view.render().el);
+        tbody = this.$el.find('.other tbody.' + channel);
+        if (tbody.length == 0) {
+          var table = this.$el.find('.other table');
+          var clone = table.clone().after(table);
+          clone.find('caption').text(channel);
+          clone.find('tbody').attr('class', channel);
+          tbody = this.$el.find('.other tbody.' + channel);
+        }
       }
+
+      $tbody.append(view.render().el);
+
     },
 
     addAllItems: function() {
