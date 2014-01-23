@@ -1,3 +1,13 @@
 /* Hyperaudio styles overriding compiled CSS
 ------------------------------------------- */
 
+/* used for switching and hiding login / logout buttons before they are ready */
+
+body.anonymous .user {
+  display: none;
+}
+
+body.user .anonymous {
+  display: none;
+}
+
