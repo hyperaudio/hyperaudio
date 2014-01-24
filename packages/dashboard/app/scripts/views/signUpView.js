@@ -40,7 +40,8 @@ haDash.Views = haDash.Views || {};
         method: 'post',
         data: JSON.stringify({
               username: $('#username').val(),
-              password: $('#password').val()
+              password: $('#password').val(),
+              email: $('#email').val(),
           })
       })
       .done(function(whoami) {

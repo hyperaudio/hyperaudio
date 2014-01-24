@@ -215,9 +215,9 @@ __e( channel ) +
 
 print(tags.join(','));
 ;
-__p += '"></p>\n\n\n<a class="button primary" href="http://hyperaud.io/maker/?m=' +
+__p += '"></p>\n\n\n<!-- <a class="button primary" href="http://hyperaud.io/maker/?m=' +
 __e( _id) +
-'">Create Transcript</a>\n<a class="button primary" href="http://hyperaud.io/converter/?m=' +
+'">Create Transcript</a> -->\n<a class="button primary" href="http://hyperaud.io/converter/?m=' +
 __e( _id) +
 '">Convert Transcript</a>\n\n';
  if (owner == haDash.user) { ;
@@ -327,7 +327,7 @@ this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerFormError" style="display:none" class="form-alert">\n          Wrong username.\n        </p>\n      </div>\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerFormError" style="display:none" class="form-alert">\n          Wrong username.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
 
 }
 return __p
@@ -547,9 +547,10 @@ haDash.Routers = haDash.Routers || {};
           _csfr: 'TODO'
         }),
         success: function() {
-              haDash.whoami(function() {
-                haDash.router.navigate("mixes/", {trigger: true});
-              });
+          // haDash.whoami(function() {
+          //   haDash.router.navigate("mixes/", {trigger: true});
+          // });
+          document.location = '/';
         }
       });
 
@@ -789,7 +790,8 @@ haDash.Views = haDash.Views || {};
         method: 'post',
         data: JSON.stringify({
               username: $('#username').val(),
-              password: $('#password').val()
+              password: $('#password').val(),
+              email: $('#email').val(),
           })
       })
       .done(function(whoami) {

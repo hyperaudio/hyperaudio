@@ -6,15 +6,22 @@
 <div class="row">
   <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">
     <form id="registerForm" class="form">
+
       <div class="form-component">
         <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">
         <p id="registerFormError" style="display:none" class="form-alert">
           Wrong username.
         </p>
       </div>
+
       <div class="form-component">
         <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">
       </div>
+
+      <div class="form-component">
+        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">
+      </div>
+
       <div class="form-component actions">
         <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->
         <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>
