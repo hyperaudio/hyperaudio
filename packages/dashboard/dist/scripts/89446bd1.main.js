@@ -34,14 +34,14 @@ window.haDash = {
       haDash.router.navigate('signout/', {trigger: true});
     });
 
-    $('a.register').click(function(e){
-      e.preventDefault();
-      haDash.router.navigate('secret-signup/', {trigger: true});
-    });
+    // $('a.register').click(function(e){
+    //   e.preventDefault();
+    //   haDash.router.navigate('secret-signup/', {trigger: true});
+    // });
 
     $('a.login').click(function(e){
       e.preventDefault();
-      haDash.router.navigate('secret-signin/', {trigger: true});
+      haDash.router.navigate('login/', {trigger: true});
     });
 
 
@@ -453,9 +453,16 @@ haDash.Routers = haDash.Routers || {};
       'mixes/:id': 'mixDetail',
       'media/': 'media',
       'media/:id': 'mediaDetail',
+
       'secret-signin/': 'signin',
+      'signin/': 'signin',
+      'login/': 'signin',
+
       'signout/': 'signout',
+
       'secret-signup/': 'signup',
+      'beta-signup/': 'signup',
+
       'add-media/': 'addMedia'
     },
 
