@@ -63,7 +63,7 @@ module.exports = function(app, nconf) {
         query.type = req.query.type;
       }
 
-      return Transcript.find(query).select('_id label type owner media modified created').exec(function(err, transcripts) {
+      return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
         return res.send(transcripts);
       });
     }
@@ -76,7 +76,7 @@ module.exports = function(app, nconf) {
       query.type = req.query.type;
     }
 
-    return Transcript.find(query).select('_id label type owner media modified created').exec(function(err, transcripts) {
+    return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
       return res.send(transcripts);
     });
   });
