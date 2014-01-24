@@ -213,7 +213,8 @@ app.post('/v1/register', function(req, res) {
 
   Account.register(new Account({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
-      username: req.body.username
+      username: req.body.username,
+      email: req.body.email
     }),
     req.body.password,
     function(err, account) {
