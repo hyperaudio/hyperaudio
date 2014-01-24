@@ -58,11 +58,25 @@ module.exports = function(app, nconf) {
       var query = {
         owner: req.params.user
       };
-      return Transcript.find(query, function(err, transcripts) {
+
+      if (req.query.type) {
+        query.type = req.query.type;
+      }
+
+      return Transcript.find(query).select('_id label type owner media modified created').exec(function(err, transcripts) {
         return res.send(transcripts);
       });
     }
-    return Transcript.find(function(err, transcripts) {
+
+    var query = {
+      owner: req.params.user
+    };
+
+    if (req.query.type) {
+      query.type = req.query.type;
+    }
+
+    return Transcript.find(query).select('_id label type owner media modified created').exec(function(err, transcripts) {
       return res.send(transcripts);
     });
   });
