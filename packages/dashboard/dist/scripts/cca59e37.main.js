@@ -317,7 +317,7 @@ this["JST"]["app/scripts/templates/signIn.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign In\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="loginForm" class="form">\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label>\n        <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="Username">\n        <!-- <p style="display:none" class="form-alert">Wrong username.</p> -->\n      </div>\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n        <p id="loginFormError" style="display:none" class="form-alert">\n          Wrong username or password.\n        </p>\n      </div>\n      <div class="form-component actions">\n        <!-- <input id="signin" type="submit" class="button large primary" value="Sign In"> -->\n        <button id="signin" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign In</button>\n      </div>\n    </form>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign In\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="loginForm" class="form">\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label>\n        <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="Username">\n        <!-- <p style="display:none" class="form-alert">Wrong username.</p> -->\n      </div>\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n        <p id="loginFormError" style="display:none" class="form-alert">\n          Incorrect username or password.\n        </p>\n      </div>\n      <div class="form-component actions">\n        <!-- <input id="signin" type="submit" class="button large primary" value="Sign In"> -->\n        <button id="signin" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign In</button>\n      </div>\n    </form>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -327,7 +327,7 @@ this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerFormError" style="display:none" class="form-alert">\n          Wrong username.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerFormError" style="display:none" class="form-alert">\n          Sorry, username already exists.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
 
 }
 return __p
@@ -1278,30 +1278,34 @@ haDash.Views = haDash.Views || {};
               }
             });
 
+          },
+          error: function(ytData) {
+            alert('YouTube API threw an error, the video might not exist, or it is private');
           }
         });
       } else {
         // non YT, hope for the best
-        model.set('owner', haDash.user);
-        model.set('label', 'n/a');
-        model.set('desc', url);
-        model.set('meta', {});
-        model.set('source', {
-          "unknown": {
-            "url": url
-          }
-        });
+        // model.set('owner', haDash.user);
+        // model.set('label', 'n/a');
+        // model.set('desc', url);
+        // model.set('meta', {});
+        // model.set('source', {
+        //   "unknown": {
+        //     "url": url
+        //   }
+        // });
 
-        console.log(model);
+        // console.log(model);
 
-        haDash.mediaListView.collection.add(model);
+        // haDash.mediaListView.collection.add(model);
 
-        model.save(null, {
-          success: function() {
-            haDash.router.navigate("media/", {trigger: true});
-            view.remove();
-          }
-        });
+        // model.save(null, {
+        //   success: function() {
+        //     haDash.router.navigate("media/", {trigger: true});
+        //     view.remove();
+        //   }
+        // });
+        alert('Cannot recognise this URL as an YouTube Video URL.')
       }
     }
 

@@ -105,30 +105,34 @@ haDash.Views = haDash.Views || {};
               }
             });
 
+          },
+          error: function(ytData) {
+            alert('YouTube API threw an error, the video might not exist, or it is private');
           }
         });
       } else {
         // non YT, hope for the best
-        model.set('owner', haDash.user);
-        model.set('label', 'n/a');
-        model.set('desc', url);
-        model.set('meta', {});
-        model.set('source', {
-          "unknown": {
-            "url": url
-          }
-        });
+        // model.set('owner', haDash.user);
+        // model.set('label', 'n/a');
+        // model.set('desc', url);
+        // model.set('meta', {});
+        // model.set('source', {
+        //   "unknown": {
+        //     "url": url
+        //   }
+        // });
 
-        console.log(model);
+        // console.log(model);
 
-        haDash.mediaListView.collection.add(model);
+        // haDash.mediaListView.collection.add(model);
 
-        model.save(null, {
-          success: function() {
-            haDash.router.navigate("media/", {trigger: true});
-            view.remove();
-          }
-        });
+        // model.save(null, {
+        //   success: function() {
+        //     haDash.router.navigate("media/", {trigger: true});
+        //     view.remove();
+        //   }
+        // });
+        alert('Cannot recognise this URL as an YouTube Video URL.')
       }
     }
 
