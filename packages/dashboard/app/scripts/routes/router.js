@@ -15,9 +15,16 @@ haDash.Routers = haDash.Routers || {};
       'mixes/:id': 'mixDetail',
       'media/': 'media',
       'media/:id': 'mediaDetail',
+
       'secret-signin/': 'signin',
+      'signin/': 'signin',
+      'login/': 'signin',
+
       'signout/': 'signout',
+
       'secret-signup/': 'signup',
+      'beta-signup/': 'signup',
+
       'add-media/': 'addMedia'
     },
 
