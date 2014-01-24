@@ -190,6 +190,18 @@ module.exports = function(app, nconf) {
     });
   });
 
+  // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
+  //   cube("get_media_by_channel", {
+  //     user: req.params.user
+  //   });
+
+  //   var query = {
+  //     owner: req.params.user,
+  //     channel: req.params.channel
+  //   };
+
+  // });
+
   app.get('/v1/:user?/media/:id', function(req, res) {
     cube("get_media", {
       user: req.params.user,
