@@ -244,7 +244,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<td class="span1"><img src="http://placekitten.com/g/100/100" class=""></td>\n<td class="span2 label">' +
+__p += '<td class="span1"><img src="http://hyperaud.io/assets/images/inserts/tempmixfiller.png" class=""></td>\n<td class="span2 label">' +
 __e( label ) +
 '</td>\n<td class="span4">';
 
