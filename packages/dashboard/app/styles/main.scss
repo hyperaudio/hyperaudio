@@ -74,4 +74,10 @@ table caption {
   font-size: 24px;
 }
 
+caption.collapsed:before {
+  content: "+ ";
+}
 
+caption.expanded:before {
+  content: "- ";
+}
