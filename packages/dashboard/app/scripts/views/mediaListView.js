@@ -54,7 +54,8 @@ haDash.Views = haDash.Views || {};
         $tbody = this.$el.find('.your tbody.' + channel);
         if ($tbody.length == 0) {
           var $table = $(this.$el.find('.your table').get(0));
-          var $clone = $table.clone();
+          // var $clone = $table.clone();
+          var $clone = $('<table>' + $table.html() + '</table>');
           $table.after($clone);
           $clone.find('caption').text(channel.replace('_', ' '));
           $clone.find('tbody').attr('class', channel);
@@ -64,7 +65,8 @@ haDash.Views = haDash.Views || {};
         $tbody = this.$el.find('.other tbody.' + channel);
         if ($tbody.length == 0) {
           var $table = $(this.$el.find('.other table').get(0));
-          var $clone = $table.clone();
+          // var $clone = $table.clone();
+          var $clone = $('<table>' + $table.html() + '</table>');
           $table.after($clone);
           $clone.find('caption').text(channel.replace('_', ' '));
           $clone.find('tbody').attr('class', channel);
