@@ -44,7 +44,8 @@ haDash.Views = haDash.Views || {};
 
       var $tbody;
       var channel = item.get('channel');
-      if (!channel) {
+
+      if (!channel || channel == '') {
         channel = "nochannel";
       } else {
         channel = channel.replace(' ', '_');
