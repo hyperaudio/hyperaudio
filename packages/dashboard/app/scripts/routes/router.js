@@ -109,9 +109,10 @@ haDash.Routers = haDash.Routers || {};
           _csfr: 'TODO'
         }),
         success: function() {
-              haDash.whoami(function() {
-                haDash.router.navigate("mixes/", {trigger: true});
-              });
+          // haDash.whoami(function() {
+          //   haDash.router.navigate("mixes/", {trigger: true});
+          // });
+          document.location = '/';
         }
       });
 
