@@ -358,9 +358,9 @@ __p += '\n    <a class="button small" href="http://hyperaud.io/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n    <button class="button align small primary">Align</button>\n  ';
  } else if (type == "html") { ;
-__p += '\n    <a class="button small" href="http://hyperaud.io/cleaner/?t=' +
+__p += '\n    <!-- <a class="button small" href="http://hyperaud.io/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Clean</a>\n  ';
+'">Clean</a> -->\n  ';
  } else if (type == "srt") { ;
 __p += '\n    <a class="button small primary" href="http://hyperaud.io/converter/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
@@ -667,8 +667,9 @@ haDash.Views = haDash.Views || {};
           var $table = $(this.$el.find('.your table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').text(channel.replace('_', ' '));
-          $clone.find('tbody').empty();
+          $clone.find('caption').addClass('collapsed').text(channel.replace('_', ' '));
+          $clone.find('thead').empty().hide();
+          $clone.find('tbody').empty().hide();
           $clone.find('tbody').attr('class', channel);
           $tbody = this.$el.find('.your tbody.' + channel);
         }
@@ -678,8 +679,9 @@ haDash.Views = haDash.Views || {};
           var $table = $(this.$el.find('.other table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').text(channel.replace('_', ' '));
-          $clone.find('tbody').empty();
+          $clone.find('caption').addClass('collapsed').text(channel.replace('_', ' '));
+          $clone.find('thead').empty().hide();
+          $clone.find('tbody').empty().hide();
           $clone.find('tbody').attr('class', channel);
           $tbody = this.$el.find('.other tbody.' + channel);
         }
@@ -690,7 +692,26 @@ haDash.Views = haDash.Views || {};
 
     addAllItems: function() {
       this.collection.each(this.addItem, this);
+    },
+
+    events: {
+      "caption.collapsed click": "show",
+      "caption.expanded click": "hide"
+    },
+
+    show: function(event) {
+      $(event.target).removeClass('collapsed').addClass('expanded');
+      $(event.target).parent().find('thead').show();
+      $(event.target).parent().find('tbody').slideDown();
+    },
+
+    hide: function(event) {
+      $(event.target).removeClass('expanded').addClass('collapsed');
+      $(event.target).parent().find('thead').hide();
+      $(event.target).parent().find('tbody').slideUp();
     }
+
+
   });
 
 })();
