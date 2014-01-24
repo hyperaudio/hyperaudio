@@ -68,9 +68,7 @@ module.exports = function(app, nconf) {
       });
     }
 
-    var query = {
-      owner: req.params.user
-    };
+    var query = {};
 
     if (req.query.type) {
       query.type = req.query.type;
