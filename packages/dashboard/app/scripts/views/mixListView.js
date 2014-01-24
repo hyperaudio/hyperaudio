@@ -52,6 +52,7 @@ haDash.Views = haDash.Views || {};
           var $clone = $table.clone();
           $table.after($clone);
           $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').empty();
           $clone.find('tbody').attr('class', channel);
           $tbody = this.$el.find('.your tbody.' + channel);
         }
@@ -62,6 +63,7 @@ haDash.Views = haDash.Views || {};
           var $clone = $table.clone();
           $table.after($clone);
           $clone.find('caption').text(channel.replace('_', ' '));
+          $clone.find('tbody').empty();
           $clone.find('tbody').attr('class', channel);
           $tbody = this.$el.find('.other tbody.' + channel);
         }
