@@ -79,8 +79,8 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "caption.collapsed click": "show",
-      "caption.expanded click": "hide"
+      "click caption.collapsed": "show",
+      "click caption.expanded": "hide"
     },
 
     show: function(event) {
