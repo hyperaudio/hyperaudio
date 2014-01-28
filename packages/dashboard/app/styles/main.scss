@@ -81,3 +81,7 @@ caption.collapsed:before {
 caption.expanded:before {
   content: "- ";
 }
+
+caption.expanded, caption.collapsed {
+  cursor: pointer;
+}
