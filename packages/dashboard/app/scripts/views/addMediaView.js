@@ -111,28 +111,31 @@ haDash.Views = haDash.Views || {};
           }
         });
       } else {
-        // non YT, hope for the best
-        // model.set('owner', haDash.user);
-        // model.set('label', 'n/a');
-        // model.set('desc', url);
-        // model.set('meta', {});
-        // model.set('source', {
-        //   "unknown": {
-        //     "url": url
-        //   }
-        // });
+        if (confirm('Cannot recognise this URL as an YouTube Video; choose [cancel] to abort or [ok] to continue')) {
 
-        // console.log(model);
+          // non YT, hope for the best
+          model.set('owner', haDash.user);
+          model.set('label', 'n/a');
+          model.set('desc', url);
+          model.set('meta', {});
+          model.set('source', {
+            "unknown": {
+              "url": url
+            }
+          });
 
-        // haDash.mediaListView.collection.add(model);
+          console.log(model);
 
-        // model.save(null, {
-        //   success: function() {
-        //     haDash.router.navigate("media/", {trigger: true});
-        //     view.remove();
-        //   }
-        // });
-        alert('Cannot recognise this URL as an YouTube Video URL.')
+          haDash.mediaListView.collection.add(model);
+
+          model.save(null, {
+            success: function() {
+              haDash.router.navigate("media/", {trigger: true});
+              view.remove();
+            }
+          });
+        }
+
       }
     }
 
