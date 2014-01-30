@@ -38,6 +38,10 @@ haDash.Views = haDash.Views || {};
 
     addItem: function(item) {
       // console.log('media adding items: ' + item.get('_id'));
+
+      // hide bgm user
+      if (item.get('owner') == 'bgm') return;
+
       var view = new haDash.Views.MediaView({
         model: item
       });
