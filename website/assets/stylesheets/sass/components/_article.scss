@@ -10,8 +10,8 @@
 .article-heading {
   color: $mono-weak;
   font-size: $font-m;
-  text-align: center;
   margin-bottom: $space-m;
+  text-align: center;
 }
 .article-title {
   @extend .heading-xl;
@@ -43,6 +43,8 @@
   font-size: $font-m;
   line-height: $lheight-m;
   text-align: justify;
+  -ms-word-break: normal;
+  word-break: normal;
   blockquote {
     border-left: $space-x solid $light;
     font-style: italic;
@@ -56,8 +58,8 @@
   p {
   }
   a {
-    white-space: pre-wrap;
     display: inline;
+    white-space: pre-wrap;
   }
   figure {
     border: 1px solid $light;
@@ -85,8 +87,8 @@
   h2 {
     @extend .heading-l;
     font-size: ($font-l - 4px);
-    margin-bottom: $space-m;
     margin-top: $space-l;
+    margin-bottom: $space-m;
     text-align: center;
     &:first-child {
       margin-top: 0;

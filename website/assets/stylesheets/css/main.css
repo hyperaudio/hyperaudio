@@ -3159,8 +3159,8 @@ input[type="submit"].active {
 .article-heading {
   color: rgba(0, 0, 0, 0.35);
   font-size: 17px;
-  text-align: center;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 .article-title {
@@ -3200,6 +3200,8 @@ input[type="submit"].active {
   font-size: 17px;
   line-height: 1.5em;
   text-align: justify;
+  -ms-word-break: normal;
+  word-break: normal;
 }
 .article-body blockquote {
   border-left: 5px solid rgba(0, 0, 0, 0.04);
@@ -3212,8 +3214,8 @@ input[type="submit"].active {
   margin: 20px;
 }
 .article-body a {
-  white-space: pre-wrap;
   display: inline;
+  white-space: pre-wrap;
 }
 .article-body figure {
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -3240,8 +3242,8 @@ input[type="submit"].active {
 }
 .article-body h2 {
   font-size: 21px;
-  margin-bottom: 20px;
   margin-top: 40px;
+  margin-bottom: 20px;
   text-align: center;
 }
 .article-body h2:first-child {
@@ -3675,8 +3677,8 @@ input[type="submit"].active {
 /* Section Head
 ----------------------------------------------- */
 .section-head {
-  text-align: center;
   margin-bottom: 80px;
+  text-align: center;
 }
 
 .section-head-text {
@@ -3692,6 +3694,8 @@ input[type="submit"].active {
   hyphens: auto;
   font-weight: 400;
   margin-top: 20px;
+  -ms-word-break: normal;
+  word-break: normal;
 }
 
 .section-head-figure {
@@ -4164,11 +4168,13 @@ input[type="submit"].active {
   padding-right: 20px;
   padding-left: 20px;
   text-align: justify;
+  -ms-word-break: normal;
+  word-break: normal;
 }
 
 .tour-item-heading {
-  margin-bottom: 20px;
   margin-top: 10px;
+  margin-bottom: 20px;
   text-align: center;
 }
 
@@ -4186,18 +4192,18 @@ input[type="submit"].active {
 }
 
 .tour-item-text {
-  margin-top: 5px;
   font-size: 17px;
   line-height: 1.5em;
+  margin-top: 5px;
 }
 
 .tour-item.compact {
   padding-bottom: 0;
 }
 .tour-item.compact .tour-item-text {
-  margin-top: 10px;
   font-size: 16px;
   line-height: 1.5em;
+  margin-top: 10px;
 }
 
 /* Queries
@@ -4218,9 +4224,9 @@ input[type="submit"].active {
 
   .tour-item-text,
   .tour-item.compact .tour-item-text {
-    margin-top: 5px;
     font-size: 17px;
     line-height: 1.4em;
+    margin-top: 5px;
   }
 
   .tour-items .separator {
@@ -4228,8 +4234,8 @@ input[type="submit"].active {
   }
 
   .tour-figure {
-    margin-left: 80px;
     margin-right: 80px;
+    margin-left: 80px;
   }
 }
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -4248,9 +4254,9 @@ input[type="submit"].active {
 
   .tour-item-text,
   .tour-item.compact .tour-item-text {
-    margin-top: 5px;
     font-size: 17px;
     line-height: 1.4em;
+    margin-top: 5px;
   }
 }
 /* Import Layout Styles

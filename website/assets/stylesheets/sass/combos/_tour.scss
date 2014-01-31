@@ -22,11 +22,13 @@
   padding-right: $space-m;
   padding-left: $space-m;
   text-align: justify;
+  -ms-word-break: normal;
+  word-break: normal;
 }
 .tour-item-heading {
   @extend .heading-l;
-  margin-bottom: $space-m;
   margin-top: $space-s;
+  margin-bottom: $space-m;
   text-align: center;
 }
 .tour-figure {
@@ -40,9 +42,9 @@
   }
 }
 .tour-item-text {
-  margin-top: $space-x;
   font-size: $font-m;
   line-height: $lheight-m;
+  margin-top: $space-x;
 }
 
 // Compact Variation
@@ -50,9 +52,9 @@
 .tour-item.compact {
   padding-bottom: 0;
   .tour-item-text {
-    margin-top: $space-s;
     font-size: $font-s;
     line-height: $lheight-m;
+    margin-top: $space-s;
   }
 }
 
@@ -72,16 +74,16 @@
   }
   .tour-item-text,
   .tour-item.compact .tour-item-text {
-    margin-top: $space-x;
     font-size: $font-m;
     line-height: $lheight-s;
+    margin-top: $space-x;
   }
   .tour-items .separator {
     display: none;
   }
   .tour-figure {
-    margin-left: $space-h;
     margin-right: $space-h;
+    margin-left: $space-h;
   }
 }
 
@@ -98,9 +100,9 @@
   }
   .tour-item-text,
   .tour-item.compact .tour-item-text {
-    margin-top: $space-x;
     font-size: $font-m;
     line-height: $lheight-s;
+    margin-top: $space-x;
   }
 }
 
