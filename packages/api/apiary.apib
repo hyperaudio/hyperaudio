@@ -1,14 +1,14 @@
 FORMAT: 1A
-HOST: http://data.hyperaud.io
+HOST: http://api.hyperaud.io
 
 # Hyperaudio v1
 This is the bottom-up version created for MozFest 2013.
 TODO fixme
 
-## User details [/whoami]
+## User details [/v1/whoami]
 
 ### Check for existing user session [GET]
-Note: both responses are actually 200.
+Note: both responses are actually 200. (404 TBD)
 
 + Response 404 (application/json)
 
@@ -19,60 +19,61 @@ Note: both responses are actually 200.
 + Response 200 (application/json)
 
         {
-            "user": {
-                "salt": "e92...f77",
-                "hash": "bc8...3bd3137",
-                "username": "gridinoc",
-                "_id": "5258af31bed1bc3e66000001",
-                "__v": 0
-            }
+            "user": "masterblaster"
         }
 
-## Sign in [/login]
+## Sign in [/v1/login]
 ### [POST]
+Successful response identical with /v1/whoami
 
-+ Request (application/x-www-form-urlencoded)
++ Request (application/json)
     
-        username=gridinoc&password=test
+        {
+            password: "thunderdome",
+            username: "masterblaster"
+        }
 
-+ Response 302
-    + Headers
-    
-            Location: /
++ Response 200
 
-    + Body
-            
-            EMPTY
+        {
+            "user": "masterblaster"
+        }
 
 + Response 401
     
             EMPTY
 
 
-## Sign out [/logout]
-### [GET]
+## Sign out [/v1/logout]
+### [POST]
+Successful response identical with /v1/whoami (null user)
 
-+ Response 302
-    + Headers
-    
-            Location: /
++ Response 200
 
-    + Body
-            
-            EMPTY
+        {
+            "user": null
+        }
 
 
-## Register [/register]
+## Register [/v1/register]
 In this version check `/whoami` afterwards to see if registered (and logged in) as it fails silently if the account already exists.
 ### [POST]
 
-+ Request (application/x-www-form-urlencoded)
++ Request (application/json)
     
-        username=gridinoc&password=test
+        {
+            username: "masterblaster",
+            password: "thunderdome",
+            email: "master@blaster.foo"
+        }
 
 + Response 200
             
             (some html)
+
++ Response 401
+
+        sss
 
 
 ## Transcripts Collecton [/{user}/transcripts]
