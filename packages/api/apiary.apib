@@ -162,7 +162,7 @@ The `_id` is used as a MongoDB ObjectId, it is generated from an UUID v4 encoded
             "created": "2014-01-21T10:56:59.200Z"
         }
         
-## Transcript [/{user}/transcript/{id}]
+## Transcript [/v1/{user}/transcript/{id}]
 A single Transcript object with all the details.
 
 + Parameters
@@ -245,7 +245,7 @@ The `media` field always contains the ObjectId of a media object.
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
 + Response 204
 
-## Transcript [/{user}/transcript/{id}/{format}]
+## Transcript Content [/v1/{user}/transcript/{id}/{format}]
 A single Transcript content
 
 + Parameters
@@ -260,7 +260,7 @@ A single Transcript content
         Greetings citizens of the world, we are anonymous.\n\nGovernment of the United Kingdom, It has come to our attention...
         
 
-## Transcript [/{user}/transcript/{id}/align]
+## Transcript Alignment [/v1/{user}/transcript/{id}/align]
 Submit `text` transcript to alignment, it will change its type to `html` once the alignment is successful.
 
 ### [POST]
@@ -277,4 +277,34 @@ Submit `text` transcript to alignment, it will change its type to `html` once th
             "modified": "2014-01-21T10:59:31.840Z",
             "created": "2014-01-21T10:56:59.200Z"
         }
+
+
+## Mixes Collection [/v1/{user}/mixes]
++ Parameters
+    + user (optional) ... user filter
+    
+### List all mixes [GET]
+
++ Response 200 (application/json)
+        
+        [
+            {
+                "_id": "sPT0dvAwSK6hp5aS7acyAg",
+                "content": "<article>...</article>",
+                "desc": "Description not set",
+                "label": "No More Lies",
+                "owner": "maboamaboa",
+                "type": "beta",
+                "tags": [],
+                "modified": "2014-01-27T14:09:51.824Z",
+                "created": "2014-01-23T20:49:39.463Z"
+            },
+            {}
+        ]
+
+### Create Mix [POST]
+
++ Request
+
++ Response 200
 
