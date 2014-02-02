@@ -242,7 +242,7 @@ The `media` field always contains the ObjectId of a media object.
         }
         
 ### Delete Transcript [DELETE]
-This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
+
 + Response 204
 
 ## Transcript Content [/v1/{user}/transcript/{id}/{format}]
@@ -306,5 +306,79 @@ Submit `text` transcript to alignment, it will change its type to `html` once th
 
 + Request
 
+        {
+            "content": "<article>...</article>",
+            "desc": "Description not set",
+            "label": "No More Lies",
+            "owner": "maboamaboa",
+            "type": "beta",
+            "tags": []
+        }
+        
 + Response 200
+        
+        {
+            "_id": "sPT0dvAwSK6hp5aS7acyAg",
+            "content": "<article>...</article>",
+            "desc": "Description not set",
+            "label": "No More Lies",
+            "owner": "maboamaboa",
+            "type": "beta",
+            "tags": [],
+            "modified": "2014-01-27T14:09:51.824Z",
+            "created": "2014-01-23T20:49:39.463Z"
+        }
+
+## Mix [/v1/{user}/mixes/{id}]
+
+### [GET]
+
++ Response 200
+
+        {
+            "_id": "sPT0dvAwSK6hp5aS7acyAg",
+            "content": "<article>...</article>",
+            "desc": "Description not set",
+            "label": "No More Lies",
+            "owner": "maboamaboa",
+            "type": "beta",
+            "tags": [],
+            "modified": "2014-01-27T14:09:51.824Z",
+            "created": "2014-01-23T20:49:39.463Z"
+        }
+
+### [PUT]
+Update a mix
+
++ Request
+    
+        {
+            "_id": "sPT0dvAwSK6hp5aS7acyAg",
+            "content": "<article>...</article>",
+            "desc": "NEW Description",
+            "label": "No More Lies",
+            "owner": "maboamaboa",
+            "type": "beta",
+            "tags": [],
+            "modified": "2014-01-27T14:09:51.824Z",
+            "created": "2014-01-23T20:49:39.463Z"
+        }
+
++ Response 200
+
+        {
+            "_id": "sPT0dvAwSK6hp5aS7acyAg",
+            "content": "<article>...</article>",
+            "desc": "New Description",
+            "label": "No More Lies",
+            "owner": "maboamaboa",
+            "type": "beta",
+            "tags": [],
+            "modified": "2014-01-27T14:09:51.824Z",
+            "created": "2014-01-23T20:49:39.463Z"
+        }
+
+### [DELETE]
+
++ Response 204
 
