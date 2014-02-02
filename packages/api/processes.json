@@ -1,0 +1,21 @@
+[
+	{
+		"name"       : "api",
+		"script"     : "./app.js",
+		"instances"  : "1",
+		"port"       : 3000,
+    "exec_mode"       : "fork_mode"
+	},
+  {
+    "name" : "download",
+    "script" : "./runner-download.js"
+  },
+  {
+    "name" : "probe",
+    "script" : "./runner-probe.js"
+  },
+  {
+    "name" : "mod9",
+    "script" : "./runner-mod9.js"
+  }
+]

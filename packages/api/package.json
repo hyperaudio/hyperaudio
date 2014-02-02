@@ -1,17 +1,17 @@
 {
-  "name": "ha-data",
-  "version": "0.0.1",
+  "name": "ha-api",
+  "version": "0.0.2",
   "homepage": "https://github.com/hyperaudio-dev/ha-data",
   "authors": [
     "Laurian Gridinoc <laurian@gridinoc.name>"
   ],
-  "description": "data.hyperaud.io",
+  "description": "api.hyperaud.io",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "spdy": "*",
     "express": "3.4.0",
     "jade": "*",
     "less-middleware": "*",
@@ -19,14 +19,21 @@
     "passport-local": "*",
     "nconf": "0.6.x",
     "passport-local-mongoose": "0.2.x",
-    "mongoose": "3.6.x",
+    "mongoose": "3.8.1",
+    "node-uuid": "*",
+    "urlsafe-base64": "*",
     "mongodb": "1.3.x",
-    "passport-persona": "*",
-    "password-generator": "*",
     "fivebeans": "*",
     "node-ffprobe": "*",
     "fluent-ffmpeg": "*",
-    "http-proxy": "*",
-    "clarinet": "*"
+	  "fivebeans": "*",
+	  "client-sessions": "*",
+	  "toobusy": "*",
+    "youtube-dl": "*",
+    "mime": "*",
+    "mmmagic": "*",
+    "synchronize": "*",
+    "socket.io": "*",
+    "socket.io-client": "*"
   }
 }
