@@ -2,12 +2,13 @@ FORMAT: 1A
 HOST: http://api.hyperaud.io
 
 # Hyperaudio v1
-This is the bottom-up version created for MozFest 2013.
-TODO fixme
+
 
 ## User details [/v1/whoami]
 
-### Check for existing user session [GET]
+### [GET]
+Check for existing user session 
+
 Note: both responses are actually 200. (404 TBD)
 
 + Response 404 (application/json)
@@ -24,7 +25,7 @@ Note: both responses are actually 200. (404 TBD)
 
 ## Sign in [/v1/login]
 ### [POST]
-Successful response identical with /v1/whoami
+Successful response identical with `/v1/whoami`
 
 + Request (application/json)
     
@@ -46,7 +47,7 @@ Successful response identical with /v1/whoami
 
 ## Sign out [/v1/logout]
 ### [POST]
-Successful response identical with /v1/whoami (null user)
+Successful response identical with `/v1/whoami` (null user)
 
 + Response 200
 
@@ -77,100 +78,203 @@ In this version check `/whoami` afterwards to see if registered (and logged in) 
 
         EMPTY
 
+## Error reporting [/v1/error/{component}]
+Used in reporting client-sider errors from the dashboard, to be extended to the other tools.
 
-## Transcripts Collecton [/{user}/transcripts]
+### [POST]
++ Parameters
+    + component ... component name
+
++ Request 
+
+        {
+            errorReport: {}
+        }
+
++ Response 200
+
+        {}
+
+## Status check [/v1/status]
+Used by monitoring tools, returns the `lag` reported by https://npmjs.org/package/toobusy
+### [GET]
+
++ Response 200
+
+        {
+            lag: 3
+        }
+
+
+## Transcripts Collecton [/v1/{user}/transcripts?type={type}]
 + Parameters
     + user (optional) ... username
+    + type (optional) ... filter by type (html, text, srt)
     
 ### List all Transcripts [GET]
-Shows all transcripts.
+Shows all transcripts, ignoring the bulky `meta` and `content` fields.
 
 + Response 200 (application/json)
         
         [
-          {
-            "_id": "5265bdf9ddb17fae06000001",
-            "label": "ts-clapper-march-13.htm",
-            "desc": "",
-            "type": "html",
-            "sort": 999,
-            "owner": "gridinoc",
-            "media": "5265bc2a5b1746d605000001",
-            "meta": {
-              "filename": "ts-clapper-march-13.htm",
-              "mimetype": "text/html",
-              "size": 2016,
-              "url": "https://www.filepicker.io/api/file/6oDMzLGeTJGHzvDbLdsj",
-              "key": "SgTSetUYS620HxDIGVsY_ts-clapper-march-13.htm"
+            {
+                "_id": "QvtfKjw5QCaupKhSPg83-Q",
+                "label": "Anonymous - Message to the UK government",
+                "media": "LLQkcoO-TDuoe92oiO3rJw",
+                "owner": "gridinoc",
+                "type": "html",
+                "modified": "2014-01-21T10:59:31.840Z",
+                "created": "2014-01-21T10:56:59.200Z"
             },
-            "content": null,
-            "__v": 0
-          },
-          {
-            "_id": "5265be16ddb17fae06000002",
-            "label": "ts-clapper-responds.htm",
-            "desc": "",
-            "type": "html",
-            "sort": 999,
-            "owner": "gridinoc",
-            "media": "5265bc605b1746d605000002",
-            "meta": {
-              "filename": "ts-clapper-responds.htm",
-              "mimetype": "text/html",
-              "size": 2461,
-              "url": "https://www.filepicker.io/api/file/WXm8dAq7Tw209CxZnY7g",
-              "key": "2JDtDZO0QQGEW4gS5tjY_ts-clapper-responds.htm"
-            },
-            "content": null,
-            "__v": 0
-          }
+            {
+                "_id": "l_uz5I8HQTST-3FJnX62JA",
+                "label": "Subtitles for Washing Wearable Electronics",
+                "desc": "",
+                "type": "srt",
+                "owner": "gridinoc",
+                "media": "MBYhBcpIRHyMJTFnonyddQ",
+                "modified": "2014-01-24T09:29:28.902Z",
+                "created": "2014-01-24T09:29:28.897Z"
+            }
         ]
 
 ### Create Transcript [POST]
-The `_id` is the MongoDB ObjectId, generated at creation time.
+The `_id` is used as a MongoDB ObjectId, it is generated from an UUID v4 encoded with URL-safe Base64. It should not be supplied for creation.
 
 + Request (application/json)
 
-        TODO
+        {
+            "label": "new transcript",
+            "media": "LLQkcoO-TDuoe92oiO3rJw",
+            "owner": "gridinoc",
+            "type": "text"
+        }
         
 + Response 200 (application/json)
 
-        TODO
+        {
+            "_id": "AAAfKjw5QCCCpKhSPg83-Q",
+           "label": "new transcript",
+            "media": "LLQkcoO-TDuoe92oiO3rJw",
+            "owner": "gridinoc",
+            "type": "text",
+            "modified": "2014-01-21T10:59:31.840Z",
+            "created": "2014-01-21T10:56:59.200Z"
+        }
         
 ## Transcript [/{user}/transcript/{id}]
 A single Transcript object with all the details.
 
 + Parameters
-    + id (required) ... transcript id = MongoDB ObjectId
+    + id (required) ... transcript id 
     + user (optional) ... when provided it filters the collection
     
 ### Retrieve Transcript [GET]
-The `content` field is populated with the content of the `/{owner}/{meta.filename}`
 The `media` field is expanded with the content of the corresponding Media object.
+
 + Response 200 (application/json)
         
-        
         {
-
+          "_id": "QvtfKjw5QCaupKhSPg83-Q",
+          "content": "<article>...</article>",
+          "label": "Anonymous - Message to the UK government",
+          "media": {
+            "_id": "LLQkcoO-TDuoe92oiO3rJw",
+            "desc": "Greetings citizens of the world...Expect us.",
+            "label": "Anonymous - Message to the UK government",
+            "meta": "YsRrIqeySaiUtSotSJ0exA",
+            "owner": "gridinoc",
+            "source": {
+              "youtube": {
+                "type": "video/youtube",
+                "url": "http://www.youtube.com/watch?v=4TmliW_F2Kw",
+                "thumbnail": "http://i1.ytimg.com/vi/4TmliW_F2Kw/default.jpg"
+              }
+            },
+            "type": "video",
+            "tags": [
+              "bar",
+              "baz"
+            ],
+            "modified": "2014-01-22T14:26:56.948Z",
+            "created": "2014-01-21T00:23:35.968Z"
+          },
+          "meta": {},
+          "owner": "gridinoc",
+          "type": "html",
+          "modified": "2014-01-21T10:59:31.840Z",
+          "created": "2014-01-21T10:56:59.200Z"
         }
 
++ Response 404
+
+        {
+            "error": "Not Found"
+        }
 
 ### Update Transcript [PUT]
-The `media` field contains the ObjectId of a media object. Populate it to link a transcript to a media file.
-The `content` will be stored in the database, and if a `meta.filename` is provided, also written to that file (`/{owner}/{meta.filename}`)
+The `media` field always contains the ObjectId of a media object. 
+
 + Request (application/json)
 
         {
-
+            "_id": "AAAfKjw5QCCCpKhSPg83-Q",
+           "label": "modified transcript",
+            "media": "LLQkcoO-TDuoe92oiO3rJw",
+            "owner": "gridinoc",
+            "type": "text",
+            "content": "...",
+            "modified": "2014-01-21T10:59:31.840Z",
+            "created": "2014-01-21T10:56:59.200Z"
         }
 
 + Response 200 (application/json)
 
         {
-
+            "_id": "AAAfKjw5QCCCpKhSPg83-Q",
+           "label": "modified transcript",
+            "media": "LLQkcoO-TDuoe92oiO3rJw",
+            "owner": "gridinoc",
+            "type": "text",
+            "content": "...",
+            "modified": "2014-01-21T10:59:31.840Z",
+            "created": "2014-01-21T10:56:59.200Z"
         }
         
 ### Delete Transcript [DELETE]
 This deleted the database entry not the actual files (that exist on filepicker.io, S3 and data.hyperaud.io server)
 + Response 204
+
+## Transcript [/{user}/transcript/{id}/{format}]
+A single Transcript content
+
++ Parameters
+    + id (required) ... transcript id 
+    + user (optional) ... when provided it filters the collection
+    + format (required) ... `text` or `html`
+    
+### [GET]
+
++ Response 200 (text/plain)
+
+        Greetings citizens of the world, we are anonymous.\n\nGovernment of the United Kingdom, It has come to our attention...
+        
+
+## Transcript [/{user}/transcript/{id}/align]
+Submit `text` transcript to alignment, it will change its type to `html` once the alignment is successful.
+
+### [POST]
+
++ Response 200 (application/json)
+
+        {
+            "_id": "AAAfKjw5QCCCpKhSPg83-Q",
+           "label": "modified transcript",
+            "media": "LLQkcoO-TDuoe92oiO3rJw",
+            "owner": "gridinoc",
+            "type": "text",
+            "content": "...",
+            "modified": "2014-01-21T10:59:31.840Z",
+            "created": "2014-01-21T10:56:59.200Z"
+        }
 
