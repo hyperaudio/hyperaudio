@@ -605,3 +605,210 @@ Update media object
 + Response 204
 
 
+## Media Transcripts [/v1/{user}/media/{id}/transcripts]
+Retrieve transcripts associated with this media object.
+
+### [GET]
++ Response 200
+
+        [
+          {
+            "_id": "z7E28pWmTfqY4dZIgzryog",
+            "content": "<article>...</article>",
+            "desc": "",
+            "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+            "media": "dHAyAHpaSlSaYXKTKul6pA",
+            "owner": "maboamaboa",
+            "type": "html",
+            "modified": "2014-01-24T16:15:40.497Z",
+            "created": "2014-01-23T10:17:52.933Z"
+          }
+        ]
+        
+## Media Metadata [/v1/{user}/media/{id}/meta/{data}]
+Where `data` is usually `video`, `audio` and will retrieve cached files metadata of such format (codec).
+
++ Response 200
+
+        {
+          "_id": "KrQPHNKBQxSuXRlLvdIJPA",
+          "label": "Anonymous - Message to the UK government",
+          "desc": "Greetings citizens of the world, we are anonymous....Expect us.",
+          "type": "video",
+          "owner": "gridinoc",
+          "meta": {
+            "_id": "qyt1AzF0TzGtFMKsjP9XTA",
+            "video": [
+              {
+                "type": "application/octet-stream",
+                "file": "00003.mp4",
+                "meta": {
+                  "filename": "00003.mp4",
+                  "filepath": "/vagrant/media/KrQPHNKBQxSuXRlLvdIJPA",
+                  "fileext": ".mp4",
+                  "file": "/vagrant/media/KrQPHNKBQxSuXRlLvdIJPA/00003.mp4",
+                  "probe_time": 25,
+                  "streams": [
+                    {
+                      "codec_name": "h264",
+                      "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                      "codec_type": "video",
+                      "codec_time_base": "1/30",
+                      "codec_tag_string": "avc1",
+                      "codec_tag": "0x31637661",
+                      "width": 256,
+                      "height": 144,
+                      "has_b_frames": 0,
+                      "pix_fmt": "yuv420p",
+                      "level": 12,
+                      "r_frame_rate": "15/1",
+                      "avg_frame_rate": "0/1",
+                      "time_base": "1/90000",
+                      "start_time": 171.705,
+                      "duration": 343.41,
+                      "TAG:creation_time": "2013-12-04 03:45:38",
+                      "TAG:language": "und"
+                    }
+                  ],
+                  "format": {
+                    "nb_streams": 1,
+                    "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+                    "format_long_name": "QuickTime/MPEG-4/Motion JPEG 2000 format",
+                    "start_time": 171.705,
+                    "duration": 343.41,
+                    "size": 2426472,
+                    "bit_rate": 56526
+                  },
+                  "metadata": {
+                    "major_brand": "dash",
+                    "minor_version": 0,
+                    "compatible_brands": "iso6avc1mp41",
+                    "creation_time": "2013-12-04 03:45:38"
+                  }
+                }
+              }
+            ]
+          },
+          "source": {
+            "youtube": {
+              "type": "video/youtube",
+              "url": "http://www.youtube.com/watch?v=4TmliW_F2Kw",
+              "thumbnail": "http://i1.ytimg.com/vi/4TmliW_F2Kw/default.jpg"
+            }
+          },
+          "tags": [
+            "baz"
+          ],
+          "modified": "2014-01-04T16:50:11.101Z",
+          "created": "2014-01-04T16:50:11.096Z"
+        }
+        
+
+
+## Media tags [/v1/{user}/media/tags]
+### [GET]
+
++ Response 200
+
+        [
+          "baz",
+          "AJ+",
+          "mandela",
+          "soviet",
+          "politics",
+          "Hyperaudio",
+          "nsa",
+          "snowden",
+          "mozilla",
+          "netscape",
+          "aj+",
+          "Fox",
+          "Prime Minister's Question Time",
+          "state of the union",
+          "ideas",
+          "open source"
+        ]
+        
+## Media tagged with a specific tag [/v1/{user}/media/tags/{tag}]
+Use `tag = notag` to retrieve mixes with no tags set.
+
+### [GET]
+
++ Response 200
+
+        [
+          {
+            "_id": "BZIzo_Z3T6eOSWm-zFbJ2Q",
+            "channel": "MEGA",
+            "desc": "",
+            "label": "(41) Megastructures - Soviet Doomsday Submarine",
+            "meta": "WnJzxUdcT-OdL0RGOoNm_Q",
+            "owner": "gridinoc",
+            "source": {
+              "youtube": {
+                "type": "video/youtube",
+                "url": "http://www.youtube.com/watch?v=CifAGql4NeY",
+                "thumbnail": "http://i1.ytimg.com/vi/CifAGql4NeY/default.jpg"
+              }
+            },
+            "type": "video",
+            "tags": [
+              "soviet"
+            ],
+            "modified": "2014-01-23T05:20:51.712Z",
+            "created": "2014-01-22T16:20:13.431Z"
+          }
+        ]
+
+
+## Media channels [/v1/{user}/media/channels]
+### [GET]
+
++ Response 200
+
+        [
+          "US Politics",
+          "MEGA",
+          "tutorials",
+          null,
+          "World Politics",
+          "hacker culture",
+          "World News",
+          "Music",
+          "UK Parliament",
+          "TED",
+          "robots",
+          "inspiration",
+          "zombies"
+        ]
+        
+## Media with a specific channel [/v1/{user}/media/channels/{channel}]
+Use `channel = nochannel` to retrieve mixes with no tags set.
+
+### [GET]
+
++ Response 200
+
+        [
+          {
+            "_id": "aBDjQwYkQ86MpWdSheu-5A",
+            "channel": "zombies",
+            "desc": "Decay is a 75 minute zombie film, shot and set at the Large Hadron Collider, CERN, by physics PhD students. Download: http://www.DecayFilm.com (CC-BY-NC)\n\nSoundtrack now available free! https://soundcloud.com/onehundredmiles/sets/decay-2012-ost\n\nTrapped underground at the world's largest particle accelerator, a group of students make a deadly discovery.\n\nTwitter: http://www.twitter.com/DecayFilm @Decay Film\nFacebook: http://www.facebook.com/DecayFilm\n\nEnglish subtitles: http://www.decayfilm.com/static/files/EnglishCCSubs.acc or http://www.decayfilm.com/static/files/EnglishCCSubs.sub\n\nBloopers reel: http://youtu.be/Y5xAQtsFOGs",
+            "label": "Decay (2012) - The LHC Zombie Movie [full film]",
+            "meta": "ZbZpeLBqRgCV6BjxckcUUg",
+            "owner": "maboamaboa",
+            "source": {
+              "youtube": {
+                "type": "video/youtube",
+                "url": "http://www.youtube.com/watch?v=n-NwLUPZWZc",
+                "thumbnail": "http://i1.ytimg.com/vi/n-NwLUPZWZc/default.jpg"
+              }
+            },
+            "type": "video",
+            "tags": [],
+            "modified": "2014-01-30T12:46:11.316Z",
+            "created": "2014-01-30T12:45:52.670Z"
+          }
+        ]
+
+
