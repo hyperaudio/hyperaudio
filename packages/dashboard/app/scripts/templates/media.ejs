@@ -1,0 +1,18 @@
+<td class="span1"><img src="<%
+if (source.youtube && source.youtube.thumbnail) {
+  print(_.escape(source.youtube.thumbnail));
+}
+%>" class=""></td>
+<td class="span2 label"><%- label %></td>
+<td class="span4"><%
+  var shortDesc = desc;
+  if (desc.length > 140) shortDesc = desc.substring(0, 140) + '…';
+  var lines = shortDesc.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    print(_.escape(line));
+    if (i < lines.length - 1) print('<br />');
+  }
+%></td>
+<td class="span2"><span class="timeago" title="<%- modified %>"><%- modified %></span></td>
+<td><%- owner %></td>

@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteRule ^mixes/(.*)$ /dashboard/ [L]
+RewriteRule ^media/(.*)$ /dashboard/ [L]
+RewriteRule ^login/(.*)$ /dashboard/ [L]
+RewriteRule ^signout/(.*)$ /dashboard/ [L]
+RewriteRule ^beta-signup/(.*)$ /dashboard/ [L]
+

@@ -1,0 +1,39 @@
+<h2 class="label editable" data-field="label"><%- label %></h2>
+
+<p class="lead desc editable" data-field="desc"><%
+  var lines = desc.split("\n");
+  for (var i = 0; i < lines.length; i++) {
+    var line = lines[i];
+    print(_.escape(line));
+    if (i < lines.length - 1) print('<br />');
+  }
+%></p>
+
+<p>Channel: <input type="hidden" class="channels" value="<%- channel %>"></p>
+
+<p>Tags: <input type="hidden" class="tags" value="<%
+print(tags.join(','));
+%>"></p>
+
+<a class="button primary" href="http://hyperaud.io/pad/?m=<%- _id%>">View Mix</a>
+
+<% if (owner == haDash.user) { %>
+  <button class="button delete">Delete Mix</button>
+<% } %>
+
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<table>
+  <caption>Remixed Media</caption>
+  <thead>
+    <tr>
+      <th class="span1"></th>
+      <th class="span2">Title</th>
+      <th class="span4">Used transcript</th>
+      <th class="span2">Date</th>
+      <th>Author</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
