@@ -452,3 +452,156 @@ Use `channel = nochannel` to retrieve mixes with no channel set (missing field, 
             {}
         ]
 
+## Media Collection [/v1/{user}/media]
+
+### [GET]
+Get list of media objects.
+
++ Response 200
+
+        [
+            {
+                "_id": "dHAyAHpaSlSaYXKTKul6pA",
+                "channel": "US Politics",
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "meta": "eYUdvDfBQMW6G7k7Kq82bw",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": [
+                  "politics"
+                ],
+                "modified": "2014-01-23T10:28:03.773Z",
+                "created": "2014-01-22T16:37:10.821Z"
+          },
+          {}
+        ]
+
+
+### [POST]
+Creates media object (`_id` and `meta` will be assigned upon creation)
+
++ Request
+
+        {
+                "channel": null,
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": []
+         }
+
++ Response 200
+
+        {
+                "_id": "dHAyAHpaSlSaYXKTKul6pA",
+                "channel": null,
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "meta": "eYUdvDfBQMW6G7k7Kq82bw",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": [],
+                "modified": "2014-01-23T10:28:03.773Z",
+                "created": "2014-01-22T16:37:10.821Z"
+        }
+          
+## Media Object [/v1/{user}/media/{id}]
+
+### [GET]
++ Response 200
+
+        {
+                "_id": "dHAyAHpaSlSaYXKTKul6pA",
+                "channel": null,
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "meta": "eYUdvDfBQMW6G7k7Kq82bw",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": [],
+                "modified": "2014-01-23T10:28:03.773Z",
+                "created": "2014-01-22T16:37:10.821Z"
+        }
+        
+### [PUT]
+Update media object
+
++ Request
+
+        {
+                "_id": "dHAyAHpaSlSaYXKTKul6pA",
+                "channel": "US Politics",
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "meta": "eYUdvDfBQMW6G7k7Kq82bw",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": [],
+                "modified": "2014-01-23T10:28:03.773Z",
+                "created": "2014-01-22T16:37:10.821Z"
+        }
+        
++ Response 200
+
+        {
+                "_id": "dHAyAHpaSlSaYXKTKul6pA",
+                "channel": "US Politics",
+                "desc": "",
+                "label": "1st US Presidential Debate - 2012 - Obama Romney (Denver)",
+                "meta": "eYUdvDfBQMW6G7k7Kq82bw",
+                "owner": "maboamaboa",
+                "source": {
+                  "youtube": {
+                    "type": "video/youtube",
+                    "url": "http://www.youtube.com/watch?v=-ImRaxGNAkM",
+                    "thumbnail": "http://i1.ytimg.com/vi/-ImRaxGNAkM/default.jpg"
+                  }
+                },
+                "type": "video",
+                "tags": [],
+                "modified": "2014-01-23T10:28:03.773Z",
+                "created": "2014-01-22T16:37:10.821Z"
+        }
+        
+
+### [DELETE]
++ Response 204
+
+
