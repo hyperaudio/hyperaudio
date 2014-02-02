@@ -382,3 +382,73 @@ Update a mix
 
 + Response 204
 
+## Mixes tags [/v1/{user}/mixes/tags]
+### [GET]
+
++ Response 200
+
+        [
+            "Funny",
+            "Test"
+        ]
+        
+## Mixes tagged with a specific tag [/v1/{user}/mixes/tags/{tag}]
+Use `tag = notag` to retrieve mixes with no tags set.
+
+### [GET]
+
++ Response 200
+
+        [
+            {
+                "_id": "Vz6rumWaTrOLWWJ1rcpabg",
+                "channel": "Funny",
+                "content": "<article>...</article>",
+                "desc": "Description not set",
+                "label": "FP- TEST1- Mitt Romeny Cutting Crack in Denver",
+                "owner": "fpruitt",
+                "type": "beta",
+                "tags": [
+                  "Funny"
+                ],
+                "modified": "2014-01-23T18:18:06.551Z",
+                "created": "2014-01-23T16:59:51.038Z"
+            },
+            {}
+        ]
+
+## Mixes channels [/v1/{user}/mixes/channels]
+### [GET]
+
++ Response 200
+
+        [
+            "Funny",
+            "Test"
+        ]
+        
+## Mixes from a channel [/v1/{user}/mixes/channels/{channel}]
+Use `channel = nochannel` to retrieve mixes with no channel set (missing field, or channel `null`).
+
+### [GET]
+
++ Response 200
+
+        [
+            {
+                "_id": "Vz6rumWaTrOLWWJ1rcpabg",
+                "channel": "Funny",
+                "content": "<article>...</article>",
+                "desc": "Description not set",
+                "label": "FP- TEST1- Mitt Romeny Cutting Crack in Denver",
+                "owner": "fpruitt",
+                "type": "beta",
+                "tags": [
+                  "Funny"
+                ],
+                "modified": "2014-01-23T18:18:06.551Z",
+                "created": "2014-01-23T16:59:51.038Z"
+            },
+            {}
+        ]
+
