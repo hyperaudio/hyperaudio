@@ -1,5 +1,6 @@
 var passport = require('passport');
 var Subscriber = require('./models/subscriber');
+var express = require('express');
 
 module.exports = function(app, nconf) {
 
