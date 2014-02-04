@@ -20,9 +20,26 @@ var mmm = require('mmmagic');
 var Magic = mmm.Magic;
 var magic = new Magic(mmm.MAGIC_MIME_TYPE);
 
-var container = {probe: probe};
+var container = {
+  probe: probe,
+  screenshot: function(folder, file) {
+        try {
+          var proc = new ffmpeg({
+            source: folder + file
+          }).withSize('150x100').takeScreenshots({
+            count: 2,
+            timemarks: ['50%', '75%'],
+            filename: '%b_screenshot_%w_%i'
+          }, folder, function(err, filenames) {
+            console.log(filenames);
+          });
+        } catch (ignored) {}
+      }
+};
+
 sync(magic, 'detectFile');
 sync(container, 'probe');
+sync(container, 'screenshot');
 
 mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
 
@@ -117,19 +134,19 @@ module.exports = function() {
       sync.fiber(function(){
 
       //TODO sync this and put into the file list
-      var screenshot = function(folder, file) {
-        try {
-          var proc = new ffmpeg({
-            source: folder + file
-          }).withSize('150x100').takeScreenshots({
-            count: 2,
-            timemarks: ['50%', '75%'],
-            filename: '%b_screenshot_%w_%i'
-          }, folder, function(err, filenames) {
-            console.log(filenames);
-          });
-        } catch (ignored) {}
-      }
+      // var screenshot = function(folder, file) {
+      //   try {
+      //     var proc = new ffmpeg({
+      //       source: folder + file
+      //     }).withSize('150x100').takeScreenshots({
+      //       count: 2,
+      //       timemarks: ['50%', '75%'],
+      //       filename: '%b_screenshot_%w_%i'
+      //     }, folder, function(err, filenames) {
+      //       console.log(filenames);
+      //     });
+      //   } catch (ignored) {}
+      // }
 
 		  var files = fs.readdirSync(folder);
 		  console.log(files);
@@ -150,7 +167,7 @@ module.exports = function() {
 		      try {
 		        var fp = container.probe(folder + file);
 		        fmeta.meta = fp;
-            screenshot(folder, file);
+            container.screenshot(folder, file);
 		      } catch (ignored) {}
 		    }
 		    return fmeta;
@@ -279,27 +296,6 @@ module.exports = function() {
 
 		});
 
-		// callback('success');
-
-      // probe(folder + payload.meta.download.filename, function(err, data) {
-      // 	console.log(data);
-      //   Metadata.findById(payload.meta._id).exec(function(err, metadata) {
-      //     if (!err) {
-      //       metadata.probe = data;
-      //       metadata.save(function(err) {
-      //         if (!err) {
-      //           callback('success');
-      //         } else {
-      //           console.log(err);
-      //           callback('bury');
-      //         }
-      //       });
-      //     } else {
-      //       console.log(err);
-      //       callback('bury');
-      //     }
-      //   });
-      // });
 
     } else {
       callback('bury');
