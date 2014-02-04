@@ -239,8 +239,29 @@ module.exports = function() {
                   });
                 }
               });
-            }
-            //audio
+            // audio
+            } else { //video  
+              MediaObject.findById(payload.media._id).exec(function(err, mediaObject) {
+                if (!err) {
+                  mediaObject.type = 'video';
+                  mediaObject.label = metadata.video[0].meta.metadata.title;
+
+                  if (mediaObject.source.unknown) {
+                    console.log('adding format');
+                    mediaObject.source = {};
+                    mediaObject.source[map['00001'].info.formats[0].ext] = {
+                      url: map['00001'].info.formats[0].url
+                    };
+                  }
+
+                  console.log(mediaObject);
+
+                  mediaObject.save(function(err){
+                    if (err) console.log(err);
+                  });
+                }
+              });
+            }// video
 
             metadata.save(function(err) {
               if (!err) {
