@@ -4,7 +4,7 @@ var Subscriber = require('./models/subscriber');
 module.exports = function(app, nconf) {
 
 
-  app.post('/subscribe', function(req, res) {
+  app.post('/subscribe', express.bodyParser(), function(req, res) {
 
     var subscriber;
 
