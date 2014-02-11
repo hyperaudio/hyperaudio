@@ -16,6 +16,8 @@ haDash.Views = haDash.Views || {};
     },
 
     render: function() {
+      document.title = "Hyperaudio: " + this.model.get('label');
+
       this.$el.html(this.template(this.model.toJSON()));
 
       // var transcriptIDs = this.model.get('transcripts');

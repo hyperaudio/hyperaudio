@@ -48,6 +48,7 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mixes: function() {
+      document.title = "Hyperaudio Mixes";
       // if (!haDash.mixCollection) {
         haDash.mixCollection = new haDash.Collections.MixCollection();
       // }
@@ -61,7 +62,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     media: function() {
-      console.log('MEDIA');
+      document.title = "Hyperaudio Media";
+      // console.log('MEDIA');
 
       // if (!haDash.mediaCollection) {
         haDash.mediaCollection = new haDash.Collections.MediaCollection();
@@ -104,10 +106,12 @@ haDash.Routers = haDash.Routers || {};
     },
 
     signin: function() {
+      document.title = "Hyperaudio Login";
       $main.empty().append(new haDash.Views.SignInView({}).el);
     },
 
     signout: function() {
+      document.title = "Hyperaudio Logout";
 
       $.ajax({
         url: haDash.API + '/logout',
@@ -131,6 +135,7 @@ haDash.Routers = haDash.Routers || {};
     },
 
     signup: function() {
+      document.title = "Hyperaudio Sign Up";
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
 
