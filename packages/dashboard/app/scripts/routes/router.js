@@ -8,6 +8,11 @@ haDash.Routers = haDash.Routers || {};
   var $main = $('#main');
 
   haDash.Routers.Router = Backbone.Router.extend({
+    //http://sizeableidea.com/adding-google-analytics-to-your-backbone-js-app/
+    initialize: function() {
+      this.bind('route', this.pageView);
+    },
+
     routes: {
       '': 'dashboard',
       'dashboard/': 'dashboard',
@@ -127,6 +132,18 @@ haDash.Routers = haDash.Routers || {};
 
     signup: function() {
       $main.empty().append(new haDash.Views.SignUpView({}).el);
+    },
+
+    pageView : function(){
+      var url = Backbone.history.getFragment();
+
+      if (!/^\//.test(url) && url != "") {
+          url = "/" + url;
+      }
+
+      if(! _.isUndefined(window._gaq)){
+        _gaq.push(['_trackPageview', url]);
+      }
     }
 
   });
