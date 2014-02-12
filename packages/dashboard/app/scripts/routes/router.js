@@ -48,6 +48,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mixes: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.mixes').addClass('active');
       document.title = "Hyperaudio Mixes";
       // if (!haDash.mixCollection) {
         haDash.mixCollection = new haDash.Collections.MixCollection();
@@ -62,6 +64,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     media: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.media').addClass('active');
       document.title = "Hyperaudio Media";
       // console.log('MEDIA');
 
@@ -80,6 +84,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mediaDetail: function(id) {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.media').addClass('active');
       var model = new haDash.Models.MediaModel({_id: id});
       model.fetch({
         url: haDash.API + '/media/' + id
@@ -93,6 +99,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mixDetail: function(id) {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.mixes').addClass('active');
       var model = new haDash.Models.MixModel({_id: id});
       model.fetch({
         url: haDash.API + '/mixes/' + id
@@ -106,6 +114,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     signin: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Login";
       $main.empty().append(new haDash.Views.SignInView({}).el);
     },
@@ -135,6 +145,8 @@ haDash.Routers = haDash.Routers || {};
     },
 
     signup: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.register').addClass('active');
       document.title = "Hyperaudio Sign Up";
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
