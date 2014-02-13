@@ -52,7 +52,7 @@ haDash.Views = haDash.Views || {};
       if (!channel || channel == '') {
         channel = "nochannel";
       } else {
-        channel = channel.replace(' ', '_');
+        channel = channel.replace(' ', '_').replace('\'', '_');
       }
 
       if (haDash.user == item.get('owner')) {
