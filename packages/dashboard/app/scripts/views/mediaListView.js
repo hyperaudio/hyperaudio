@@ -52,6 +52,7 @@ haDash.Views = haDash.Views || {};
 
       if (!channel || channel == '') {
         channel = "nochannel";
+        channelHash = channel;
       } else {
         var shaObj = new jsSHA(channel, "TEXT");
         channelHash = 'sha1-' + shaObj.getHash("SHA-1", "HEX");
@@ -67,7 +68,7 @@ haDash.Views = haDash.Views || {};
           $clone.find('caption').addClass('collapsed').text(channel);
           $clone.find('thead').empty().hide();
           $clone.find('tbody').empty().hide();
-          $clone.find('tbody').attr('class', channel);
+          $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.your tbody.' + channelHash);
         }
       } else {
@@ -80,7 +81,7 @@ haDash.Views = haDash.Views || {};
           $clone.find('caption').addClass('collapsed').text(channel);
           $clone.find('thead').empty().hide();
           $clone.find('tbody').empty().hide();
-          $clone.find('tbody').attr('class', channel);
+          $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.other tbody.' + channelHash);
         }
       }
