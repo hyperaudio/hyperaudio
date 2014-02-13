@@ -12,7 +12,8 @@
     "foundation": "~5.0.2",
     "picturefill": "~1.2.1",
     "jquery-timeago": "*",
-    "select2": "*"
+    "select2": "*",
+    "jssha": "*"
   },
   "devDependencies": {}
 }

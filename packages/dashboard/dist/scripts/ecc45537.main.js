@@ -1018,7 +1018,8 @@ haDash.Views = haDash.Views || {};
       if (!channel || channel == '') {
         channel = "nochannel";
       } else {
-        channel = channel.replace(' ', '_').replace('\'', '_');
+        var shaObj = new jsSHA(channel, "TEXT");
+        channel = 'sha1-' + shaObj.getHash("SHA-1", "HEX");
       }
 
       if (haDash.user == item.get('owner')) {
