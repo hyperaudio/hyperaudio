@@ -39,35 +39,39 @@ haDash.Views = haDash.Views || {};
 
       var $tbody;
       var channel = item.get('channel');
+      var channelHash = channel;
+
       if (!channel) {
         channel = "nochannel";
       } else {
-        channel = channel.replace(' ', '_');
+        // channel = channel.replace(' ', '_');
+        var shaObj = new jsSHA(channel, "TEXT");
+        channelHash = 'sha1-' + shaObj.getHash("SHA-1", "HEX");
       }
 
       if (haDash.user == item.get('owner')) {
-        $tbody = this.$el.find('.your tbody.' + channel);
+        $tbody = this.$el.find('.your tbody.' + channelHash);
         if ($tbody.length == 0) {
           var $table = $(this.$el.find('.your table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel.replace('_', ' '));
+          $clone.find('caption').addClass('collapsed').text(channel);
           $clone.find('thead').empty().hide();
           $clone.find('tbody').empty().hide();
           $clone.find('tbody').attr('class', channel);
-          $tbody = this.$el.find('.your tbody.' + channel);
+          $tbody = this.$el.find('.your tbody.' + channelHash);
         }
       } else {
-        $tbody = this.$el.find('.other tbody.' + channel);
+        $tbody = this.$el.find('.other tbody.' + channelHash);
         if ($tbody.length == 0) {
           var $table = $(this.$el.find('.other table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel.replace('_', ' '));
+          $clone.find('caption').addClass('collapsed').text(channel);
           $clone.find('thead').empty().hide();
           $clone.find('tbody').empty().hide();
           $clone.find('tbody').attr('class', channel);
-          $tbody = this.$el.find('.other tbody.' + channel);
+          $tbody = this.$el.find('.other tbody.' + channelHash);
         }
       }
 
