@@ -7,3 +7,5 @@ tools/mongo
 public/stylesheets/style.css
 
 npm-debug.log
+
+media/*

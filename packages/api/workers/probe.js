@@ -39,7 +39,7 @@ var container = {
 
 sync(magic, 'detectFile');
 sync(container, 'probe');
-sync(container, 'screenshot');
+//sync(container, 'screenshot');
 
 mongoose.connect("mongodb://localhost/hyperaudio01"); //FIXME conf
 
@@ -167,7 +167,7 @@ module.exports = function() {
 		      try {
 		        var fp = container.probe(folder + file);
 		        fmeta.meta = fp;
-            container.screenshot(folder, file);
+            //container.screenshot(folder, file);
 		      } catch (ignored) {}
 		    }
 		    return fmeta;
