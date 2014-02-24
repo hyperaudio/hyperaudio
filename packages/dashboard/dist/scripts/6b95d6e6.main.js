@@ -1458,7 +1458,7 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click .tLabel, tDesc": "edit",
+      "click .tLabel, .tDesc": "edit",
       "blur .tLabel, .tDesc": "save",
       "click .align": "align",
       "click .tDelete": "delete",

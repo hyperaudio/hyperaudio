@@ -27,6 +27,12 @@ body.user {
     &:empty {
       background-color: #FFF7DD;
       min-width: 1em;
+
+      // background-color: #FFF7DD;
+      /* min-width: 1em; */
+      min-height: 1.2em;
+      // border: 1px solid red;
+      display: inline-block;
     }
   }
 }
