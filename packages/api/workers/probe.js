@@ -264,7 +264,7 @@ module.exports = function() {
 
                   var label = metadata.video[0].meta.metadata.title;
 
-                  if (!label || label.length > mediaObject.label) {
+                  if (label && typeof label != 'undefined' && label.length > mediaObject.label.length) {
                     mediaObject.label = label;
                   }
 
