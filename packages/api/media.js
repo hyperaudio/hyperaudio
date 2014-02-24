@@ -287,7 +287,12 @@ module.exports = function(app, nconf) {
         return;
       }
 
-      mediaObject.label = req.body.label;
+      var label = req.body.label;
+      if (!label || label == "") {
+        label = "Empty label";
+      }
+
+      mediaObject.label = label;
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
       mediaObject.owner = owner;
@@ -320,10 +325,15 @@ module.exports = function(app, nconf) {
     console.log(req.body.meta);
     var metadata = new Metadata(req.body.meta);
 
+    var label = req.body.label;
+    if (!label || label == "") {
+      label = "Empty label";
+    }
+
     var mediaObject;
     mediaObject = new MediaObject({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
-      label: req.body.label,
+      label: label,
       desc: req.body.desc,
       type: req.body.type,
       owner: owner,
