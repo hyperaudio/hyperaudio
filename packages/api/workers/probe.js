@@ -257,11 +257,16 @@ module.exports = function() {
                 }
               });
             // audio
-            } else { //video  
+            } else { //video
               MediaObject.findById(payload.media._id).exec(function(err, mediaObject) {
                 if (!err) {
                   mediaObject.type = 'video';
-                  mediaObject.label = metadata.video[0].meta.metadata.title;
+
+                  var label = metadata.video[0].meta.metadata.title;
+
+                  if (!label || label.length > mediaObject.label) {
+                    mediaObject.label = label;
+                  }
 
                   if (mediaObject.source.unknown) {
                     console.log('adding format');
