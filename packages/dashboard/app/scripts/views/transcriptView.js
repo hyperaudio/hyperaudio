@@ -101,11 +101,18 @@ haDash.Views = haDash.Views || {};
       if (this.notMutable()) return;
 
       this.model.destroy({
-        url: haDash.API + '/transcripts/' + this.model.id
+        url: haDash.API + '/transcripts/' + this.model.id,
+        success: function() {
+          $('#mediaDetail').data('view').render();
+        },
+        error: function() {
+          //TODO, alert?
+          $('#mediaDetail').data('view').render();
+        }
       });
 
       //TODO use it in success above
-      $('#mediaDetail').data('view').render();
+      // $('#mediaDetail').data('view').render();
     }
 
     });
