@@ -11,8 +11,8 @@ haDash.Models = haDash.Models || {};
 
       defaults: function() {
         return {
-          label: "",
-          desc: "",
+          label: "Not set",
+          desc: "Not set",
           type: "video",
           owner: null,
           source: {},
