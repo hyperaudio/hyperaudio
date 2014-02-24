@@ -81,7 +81,14 @@ haDash.Views = haDash.Views || {};
 
             // model.set('created', haDash.user);
             model.set('owner', haDash.user);
-            model.set('label', ytData.entry.title["$t"]);
+
+            var title = ytData.entry.title["$t"];
+            if (!title || title == "") {
+              title = "Untitled";
+            }
+            model.set('label', title);
+
+
             model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
             model.set('meta', {
               "youtube": cleanYtData
@@ -115,6 +122,7 @@ haDash.Views = haDash.Views || {};
 
           // non YT, hope for the best
           model.set('owner', haDash.user);
+          model.set('label', 'n/a');
           model.set('label', 'n/a');
           model.set('desc', url);
           model.set('meta', {});
