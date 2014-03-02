@@ -41,10 +41,15 @@
   font-size: $font-m;
   line-height: $lheight-l;
   blockquote {
-    border-left: $space-x solid $light;
     font-style: italic;
-    margin: $space-m;
-    padding-left: $space-m;
+    margin: $space-l;
+    color: $mono-mid;
+    &:before {
+      content: "“";
+    }
+    &:after {
+      content: "”";
+    }
   }
   ul,
   ol {

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Exo+2:400,700,400italic);
 /* Import Gem-based Base Frameworks
@@ -3191,10 +3192,15 @@ input[type="submit"].active {
   line-height: 1.7em;
 }
 .article-body blockquote {
-  border-left: 5px solid rgba(0, 0, 0, 0.04);
   font-style: italic;
-  margin: 20px;
-  padding-left: 20px;
+  margin: 40px;
+  color: rgba(0, 0, 0, 0.55);
+}
+.article-body blockquote:before {
+  content: "“";
+}
+.article-body blockquote:after {
+  content: "”";
 }
 .article-body ul,
 .article-body ol {
