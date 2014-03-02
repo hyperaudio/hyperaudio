@@ -3187,21 +3187,8 @@ input[type="submit"].active {
 }
 
 .article-body {
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-  word-break: break-all;
-  word-break: break-word;
-  -moz-hyphens: auto;
-  -ms-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
   font-size: 17px;
-  line-height: 1.5em;
-  text-align: justify;
-  -ms-word-break: normal;
-  word-break: normal;
+  line-height: 1.7em;
 }
 .article-body blockquote {
   border-left: 5px solid rgba(0, 0, 0, 0.04);
