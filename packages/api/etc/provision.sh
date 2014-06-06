@@ -8,15 +8,16 @@ apt-get update
 
 
 # git + etckeeper
-apt-get install -y git etckeeper
+# apt-get install -y git etckeeper
+apt-get install -y git 
 
-git config --global user.name "Automatic Jack"
-git config --global user.email webmaster@hyperaud.io
+# git config --global user.name "Automatic Jack"
+# git config --global user.email webmaster@hyperaud.io
 
-cd /etc/etckeeper
-ln -sf /vagrant/etc/etckeeper.conf
-etckeeper init
-etckeeper commit -m"init"
+# cd /etc/etckeeper
+# ln -sf /vagrant/etc/etckeeper.conf
+# etckeeper init
+# etckeeper commit -m"init"
 
 # essentials
 apt-get install -y tree vim
@@ -39,7 +40,7 @@ echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' > 
 apt-get install -y python-software-properties
 
 # mosh
-add-apt-repository -y ppa:keithw/mosh
+# add-apt-repository -y ppa:keithw/mosh
 
 # ffmpeg http://linuxg.net/how-to-install-ffmpeg-2-1-ubuntu-13-10-13-04-12-10-linux-mint-16-15-14-and-pear-os-8-7/
 add-apt-repository -y ppa:samrog131/ppa
@@ -49,7 +50,7 @@ apt-get update
 
 
 # mosh
-apt-get install -y mosh
+# apt-get install -y mosh
 
 # mongodb
 apt-get install -y mongodb-10gen
@@ -69,14 +70,20 @@ apt-get install -y libavcodec-extra-53 libavdevice-extra-53 libavfilter-extra-2 
 
 # node from source
 # https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
-apt-get install -y g++ make build-essential
-cd /opt
-wget http://nodejs.org/dist/v0.10.24/node-v0.10.24.tar.gz
-tar -xzf node-v0.10.24.tar.gz
-cd node-v0.10.24
-./configure
-make
-make install
+# apt-get install -y g++ make build-essential
+# cd /opt
+# wget http://nodejs.org/dist/v0.10.24/node-v0.10.24.tar.gz
+# tar -xzf node-v0.10.24.tar.gz
+# cd node-v0.10.24
+# ./configure
+# make
+# make install
+
+# Add nodejs repo https://github.com/markdunphy/node-mongo-vagrant/blob/master/node-bootstrap.sh
+add-apt-repository -y ppa:chris-lea/node.js
+apt-get -y update
+
+apt-get install -y nodejs
 
 # FIXME make this non-interactive
 # https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
@@ -113,29 +120,29 @@ ln -sf /vagrant/etc/default/beanstalkd
 service beanstalkd start
 
 # apache + LAMP
-apt-get install -y apache2 apache2-threaded-dev lamp-server^
-apt-get install -y php5 php5-gd php5-mysql php5-curl php5-cli php5-cgi php5-dev
+# apt-get install -y apache2 apache2-threaded-dev lamp-server^
+# apt-get install -y php5 php5-gd php5-mysql php5-curl php5-cli php5-cgi php5-dev
 
-apt-get install -y php-pear
-pecl install mongo
-cd /etc/php5/apache2/conf.d/
-ln -s /vagrant/etc/apache2/mongo.ini
+# apt-get install -y php-pear
+# pecl install mongo
+# cd /etc/php5/apache2/conf.d/
+# ln -s /vagrant/etc/apache2/mongo.ini
 
 # tools
 apt-get install -y unzip
 
 # genghis
-cd /opt
-wget https://github.com/bobthecow/genghis/archive/v2.3.10.zip
-unzip v2.3.10.zip
+# cd /opt
+# wget https://github.com/bobthecow/genghis/archive/v2.3.10.zip
+# unzip v2.3.10.zip
 
 # beanstalk console
-cd /opt
-git clone https://github.com/ptrofimov/beanstalk_console.git
+# cd /opt
+# git clone https://github.com/ptrofimov/beanstalk_console.git
 
-cd /vagrant/tools
-ln -sf /opt/beanstalk_console/public beanstalkd
-ln -sf /opt/genghis-2.3.10 mongo
+# cd /vagrant/tools
+# ln -sf /opt/beanstalk_console/public beanstalkd
+# ln -sf /opt/genghis-2.3.10 mongo
 
 
 # mod_h264
@@ -148,42 +155,42 @@ ln -sf /opt/genghis-2.3.10 mongo
 # make install
 
 # vhost
-cd /etc/apache2/sites-enabled/
-ln -sf /vagrant/etc/apache2/VirtualHost.conf 000-default
+# cd /etc/apache2/sites-enabled/
+# ln -sf /vagrant/etc/apache2/VirtualHost.conf 000-default
 
 # ports
-cd /etc/apache2/
-ln -sf /vagrant/etc/apache2/ports.conf
+# cd /etc/apache2/
+# ln -sf /vagrant/etc/apache2/ports.conf
 
 # apache modules
-cd /etc/apache2/mods-enabled
-ln -s ../mods-available/rewrite.load
-ln -s ../mods-available/headers.load
-ln -sf /vagrant/etc/apache2/status.conf
-ln -sf /vagrant/etc/apache2/status.conf
-ln -sf /vagrant/etc/apache2/h264-streaming.conf
+# cd /etc/apache2/mods-enabled
+# ln -s ../mods-available/rewrite.load
+# ln -s ../mods-available/headers.load
+# ln -sf /vagrant/etc/apache2/status.conf
+# ln -sf /vagrant/etc/apache2/status.conf
+# ln -sf /vagrant/etc/apache2/h264-streaming.conf
 
 # restart apache
-service apache2 restart
+# service apache2 restart
 
 
 # haproxy
-apt-get install -y haproxy hatop
-cd /etc/default/
-ln -sf /vagrant/etc/default/haproxy
-cd /etc/haproxy/
-ln -sf /vagrant/etc/haproxy/haproxy.cfg
-service haproxy start
+# apt-get install -y haproxy hatop
+# cd /etc/default/
+# ln -sf /vagrant/etc/default/haproxy
+# cd /etc/haproxy/
+# ln -sf /vagrant/etc/haproxy/haproxy.cfg
+# service haproxy start
 
 # cube
-cd /opt
-git clone https://github.com/square/cube.git
-cd cube
-npm install
-pm2 start bin/collector.js
-pm2 start bin/evaluator.js
+# cd /opt
+# git clone https://github.com/square/cube.git
+# cd cube
+# npm install
+# pm2 start bin/collector.js
+# pm2 start bin/evaluator.js
 
-pm2 web
+# pm2 web
 
 cd /vagrant
 npm install
