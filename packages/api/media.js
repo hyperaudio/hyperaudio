@@ -68,7 +68,9 @@ module.exports = function(app, nconf) {
         return res.send(mediaObjects);
       });
     }
-    return MediaObject.find(function(err, mediaObjects) {
+    var query = {};
+    if (req.query.ns) query.namespace = req.query.ns;
+    return MediaObject.find(query, function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
   });

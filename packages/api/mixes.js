@@ -49,11 +49,17 @@ module.exports = function(app, nconf) {
       var query = {
         owner: req.params.user
       };
+
+      if (req.query.ns) query.namespace = req.query.ns;
+
       return Mix.find(query, function(err, mixes) {
         return res.send(mixes);
       });
     }
-    return Mix.find(function(err, mixes) {
+
+    var query = {};
+    if (req.query.ns) query.namespace = req.query.ns;
+    return Mix.find(query, function(err, mixes) {
       return res.send(mixes);
     });
   });
@@ -225,6 +231,8 @@ module.exports = function(app, nconf) {
         mix.owner = req.body.owner;
       }
 
+      mix.namespace = req.body.ns;
+
       mix.meta = req.body.meta;
 
       if (req.body.content) {
@@ -268,6 +276,7 @@ module.exports = function(app, nconf) {
       desc: req.body.desc,
       type: req.body.type,
       owner: owner,
+      namespace: req.body.ns,
       meta: req.body.meta,
       content: content,
       tags: req.body.tags,
