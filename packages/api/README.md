@@ -25,6 +25,5 @@ Note: You may try to run the local ha-api without a VM, just be sure you have a 
 Note: This works fine on OSX. On Ubuntu you will probably need to install nfs support:
 `````
 sudo apt-get install nfs-kernel-server
-
 `````
 
