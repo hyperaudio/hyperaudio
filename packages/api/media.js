@@ -61,6 +61,9 @@ module.exports = function(app, nconf) {
       var query = {
         owner: req.params.user
       };
+
+      if (req.query.ns) query.namespace = req.query.ns;
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -296,9 +299,11 @@ module.exports = function(app, nconf) {
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
       mediaObject.owner = owner;
+      mediaObject.namespace = req.body.ns;
       mediaObject.source = req.body.source;
       mediaObject.tags = req.body.tags;
       mediaObject.channel = req.body.channel;
+
 
       return mediaObject.save(function(err) {
         if (!err) {
@@ -337,6 +342,7 @@ module.exports = function(app, nconf) {
       desc: req.body.desc,
       type: req.body.type,
       owner: owner,
+      namespace: req.body.ns,
       meta: metaId,
       source: req.body.source,
       tags: req.body.tags,
