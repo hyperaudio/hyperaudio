@@ -39,6 +39,8 @@ apt-get install -y libmp3lame0 libmp3lame-dev libx264-120 libx264-dev sox libavc
 apt-get install -y libavcodec-extra-53 libavdevice-extra-53 libavfilter-extra-2 libavformat-extra-53 libavutil-extra-51 libpostproc-extra-52 libswscale-extra-2
 # apt-get install -y ubuntu-restricted-extras
 
+apt-get install -y g++ make build-essential
+
 # Add nodejs repo https://github.com/markdunphy/node-mongo-vagrant/blob/master/node-bootstrap.sh
 add-apt-repository -y ppa:chris-lea/node.js
 apt-get -y update
@@ -63,5 +65,7 @@ apt-get install -y unzip
 
 
 cd /vagrant
-npm install
+
+chmod 755 ./tmp_npm.sh
+./tmp_npm.sh install
 pm2 start processes.json
