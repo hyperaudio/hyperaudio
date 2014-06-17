@@ -10,7 +10,7 @@ haDash.Collections = haDash.Collections || {};
         model: haDash.Models.MediaModel,
 
     url: function() {
-      return haDash.API + '/media';
+      return haDash.API + '/media';// + (haDash.namespace?'?ns='+haDash.namespace:'');
     },
 
     comparator: function(model) {

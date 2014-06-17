@@ -11,6 +11,8 @@ window.haDash = {
   init: function() {
     'use strict';
 
+    // this.namespace = 'foo';
+
     this.router = new this.Routers.Router();
 
     Backbone.history.start({
@@ -48,6 +50,7 @@ window.haDash = {
   },
 
   user: null,
+  namespace: null,
 
   whoami: function(callback) {
 
