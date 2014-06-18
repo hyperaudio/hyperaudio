@@ -1,8 +1,17 @@
 /*global haDash, $*/
 Backbone.emulateJSON = false;
 
+
+var namespace = null;
+// var namespace = 'mozilla';
+
+
+var prefix = '';
+if (namespace) prefix = namespace + '.';
+
 window.haDash = {
-  API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io/v1', //FIXME?
+
+  API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.10.0.54.74.xip.io' : 'http://' + prefix + 'api.hyperaud.io/v1',
   Models: {},
   Collections: {},
   Views: {},
@@ -50,7 +59,6 @@ window.haDash = {
   },
 
   user: null,
-  namespace: null,
 
   whoami: function(callback) {
 
