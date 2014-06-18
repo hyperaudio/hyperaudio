@@ -62,14 +62,17 @@ module.exports = function(app, nconf) {
         owner: req.params.user
       };
 
-      if (req.query.ns) query.namespace = req.query.ns;
+      // if (req.query.ns) query.namespace = req.query.ns;
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
 
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
     }
     var query = {};
-    if (req.query.ns) query.namespace = req.query.ns;
+    // if (req.query.ns) query.namespace = req.query.ns;
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query, function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
@@ -297,11 +300,14 @@ module.exports = function(app, nconf) {
         label = "Empty label";
       }
 
+      var ns = null;
+      if (req.headers.host.indexOf('api') > 0) ns = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       mediaObject.label = label;
       mediaObject.desc = req.body.desc;
       mediaObject.type = req.body.type;
       mediaObject.owner = owner;
-      mediaObject.namespace = req.body.ns;
+      mediaObject.namespace = ns;
       mediaObject.source = req.body.source;
       mediaObject.tags = req.body.tags;
       mediaObject.channel = req.body.channel;
@@ -337,6 +343,9 @@ module.exports = function(app, nconf) {
       label = "Empty label";
     }
 
+    var ns = null;
+    if (req.headers.host.indexOf('api') > 0) ns = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     var mediaObject;
     mediaObject = new MediaObject({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
@@ -344,7 +353,7 @@ module.exports = function(app, nconf) {
       desc: req.body.desc,
       type: req.body.type,
       owner: owner,
-      namespace: req.body.ns,
+      namespace: ns,
       meta: metaId,
       source: req.body.source,
       tags: req.body.tags,
