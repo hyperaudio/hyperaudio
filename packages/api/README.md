@@ -1,6 +1,6 @@
 To run a local ha-api, you need Vagrant with vagrant-vbguest plugin and Virtualbox.
 
-Clone this repo and you will find a vagrantfile. Work from the repo directory on the command line.
+Clone this repo and you will find a vagrantfile within. Work from the repo directory on the command line.
 
 In a terminal issue `vagrant up` which will download the required box (and cache it), update the vbguest environment (this will take some time) then run the provisioning script which will install/compile project dependencies (this will take less time).
 
