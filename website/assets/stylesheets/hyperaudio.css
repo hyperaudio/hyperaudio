@@ -10,19 +10,3 @@ body.anonymous .user {
 body.user .anonymous {
   display: none;
 }
-
-.article-body {
-  text-align: left;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  -webkit-hyphens: none;
-  hyphens: none;
-  word-break: none;
-  word-break: none;
-  -moz-hyphens: none;
-  -ms-hyphens: none;
-  -webkit-hyphens: none;
-  hyphens: none;
-  -ms-word-break: none;
-  word-break: none;
-}
