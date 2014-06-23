@@ -26,7 +26,7 @@ module.exports = function() {
 
             var audio = null;
 
-            if (mediaObject.meta.m4a) {
+            if (mediaObject.meta.m4a && mediaObject.meta.m4a.length > 0 && mediaObject.meta.m4a[0].file) {
               audio = 'http://media.hyperaud.io/' + mediaObject._id + '/' + mediaObject.meta.m4a[0].file;
             } else if (mediaObject.meta.audio) {
               audio = 'http://media.hyperaud.io/' + mediaObject._id + '/' + mediaObject.meta.audio[0].file;
