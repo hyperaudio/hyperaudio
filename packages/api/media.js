@@ -246,19 +246,20 @@ module.exports = function(app, nconf) {
         // return res.send(transcriptsOf(_mediaObjects, []));
         return transcriptsOf(_mediaObjects, [], res, req.params.user);
       });
+    } else {
+          var query = {
+            channel: req.params.channel
+          };
+          return MediaObject.find(query,function(err, mediaObjects) {
+            var _mediaObjects = [];
+            for (var i = 0; i < mediaObjects.length; i++) {
+              _mediaObjects.push(mediaObjects[i]._id);
+            }
+            // return res.send(_mediaObjects);
+            // return res.send(transcriptsOf(_mediaObjects, []));
+            return transcriptsOf(_mediaObjects, [], res, null);
+          });
     }
-    var query = {
-      channel: req.params.channel
-    };
-    return MediaObject.find(query,function(err, mediaObjects) {
-      var _mediaObjects = [];
-      for (var i = 0; i < mediaObjects.length; i++) {
-        _mediaObjects.push(mediaObjects[i]._id);
-      }
-      // return res.send(_mediaObjects);
-      // return res.send(transcriptsOf(_mediaObjects, []));
-      return transcriptsOf(_mediaObjects, [], res, null);
-    });
   });
 
   // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
