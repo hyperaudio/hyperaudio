@@ -213,8 +213,9 @@ module.exports = function(app, nconf) {
     return Transcript.find({
       media: mediaObject
     }, function(err, _transcripts) {
+        console.log(mediaObject);
         console.log(err);
-        console.log(_transcripts);
+        // console.log(_transcripts);
        // return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
        // return _transcripts;
