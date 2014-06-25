@@ -219,7 +219,7 @@ module.exports = function(app, nconf) {
     });
   };
 
-  app.get('/v1/:user?/_transcripts/channels/:channel', function(req, res) {
+  app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
     cube("get_media_by_channel", {
       user: req.params.user
     });
