@@ -230,17 +230,24 @@ module.exports = function(app, nconf) {
       };
       return MediaObject.find(query, function(err, mediaObjects) {
         // return res.send(mediaObjects);
-        var _mediaObjects = JSON.parse(JSON.stringify(mediaObjects));
-        return res.send(transcriptsOf(_mediaObjects, []));
+        var _mediaObjects = [];
+        for (var i = 0; i < mediaObjects.length; i++) {
+          _mediaObjects.push(mediaObjects[i]._id);
+        }
+        return res.send(_mediaObjects);
+        // return res.send(transcriptsOf(_mediaObjects, []));
       });
     }
     var query = {
       channel: req.params.channel
     };
     return MediaObject.find(query,function(err, mediaObjects) {
-      // return res.send(mediaObjects);
-      var _mediaObjects = JSON.parse(JSON.stringify(mediaObjects));
-      return res.send(transcriptsOf(_mediaObjects, []));
+      var _mediaObjects = [];
+      for (var i = 0; i < mediaObjects.length; i++) {
+        _mediaObjects.push(mediaObjects[i]._id);
+      }
+      return res.send(_mediaObjects);
+      // return res.send(transcriptsOf(_mediaObjects, []));
     });
   });
 
