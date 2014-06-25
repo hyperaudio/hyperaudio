@@ -215,8 +215,7 @@ module.exports = function(app, nconf) {
     }, function(err, _transcripts) {
        // return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
-       // return _transcripts;
-       return mediaObject;
+       return _transcripts;
     });
   };
 
