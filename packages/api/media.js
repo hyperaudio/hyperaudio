@@ -205,17 +205,17 @@ module.exports = function(app, nconf) {
     });
   });
 
-  var transcriptsOf = function (mediaObjects, transcripts) {
-    if (mediaObjects.length == 0) return transcripts;
+  var transcriptsOf = function (mediaObjects, transcripts, res) {
+    if (mediaObjects.length == 0) return res.send(transcripts);
 
     var mediaObject = mediaObjects.pop();
 
     Transcript.find({
       media: mediaObject
     }, function(err, _transcripts) {
-       // return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
+       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res);
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
-       return _transcripts;
+       // return _transcripts;
     });
   };
 
@@ -235,7 +235,8 @@ module.exports = function(app, nconf) {
           _mediaObjects.push(mediaObjects[i]._id);
         }
         // return res.send(_mediaObjects);
-        return res.send(transcriptsOf(_mediaObjects, []));
+        // return res.send(transcriptsOf(_mediaObjects, []));
+        return transcriptsOf(_mediaObjects, [], res);
       });
     }
     var query = {
@@ -247,7 +248,8 @@ module.exports = function(app, nconf) {
         _mediaObjects.push(mediaObjects[i]._id);
       }
       // return res.send(_mediaObjects);
-      return res.send(transcriptsOf(_mediaObjects, []));
+      // return res.send(transcriptsOf(_mediaObjects, []));
+      return transcriptsOf(_mediaObjects, [], res);
     });
   });
 
