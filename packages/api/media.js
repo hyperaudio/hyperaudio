@@ -106,6 +106,21 @@ module.exports = function(app, nconf) {
     });
   });
 
+  // TODO ignore transcriptless channels
+  app.get('/v1/:user?/transcripts/channels', function(req, res) {
+    if (req.params.user) {
+      return MediaObject.distinct('channel', {
+        owner: req.params.user
+      }, function(err, results) {
+        return res.send(results);
+      });
+    }
+
+    MediaObject.distinct('channel', function(err, results) {
+      return res.send(results);
+    });
+  });
+
   app.get('/v1/:user?/media/tags/notag', function(req, res) {
     cube("get_media_by_tag", {
       user: req.params.user
@@ -187,6 +202,41 @@ module.exports = function(app, nconf) {
     };
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
+    });
+  });
+
+  var transcriptsOf = function (mediaObjects, transcripts) {
+    if (mediaObjects.length == 0) return transcripts;
+
+    var mediaObject = mediaObjects.pop();
+
+    return Transcript.find({
+      media: mediaObjects._id
+    }, function(err, _transcripts) {
+       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
+    });
+  };
+
+  app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
+    cube("get_media_by_channel", {
+      user: req.params.user
+    });
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user,
+        channel: req.params.channel
+      };
+      return MediaObject.find(query, function(err, mediaObjects) {
+        // return res.send(mediaObjects);
+        return res.send(transcriptsOf(mediaObjects, []));
+      });
+    }
+    var query = {
+      channel: req.params.channel
+    };
+    return MediaObject.find(query,function(err, mediaObjects) {
+      // return res.send(mediaObjects);
+      return res.send(transcriptsOf(mediaObjects, []));
     });
   });
 
