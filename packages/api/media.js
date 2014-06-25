@@ -230,7 +230,8 @@ module.exports = function(app, nconf) {
       };
       return MediaObject.find(query, function(err, mediaObjects) {
         // return res.send(mediaObjects);
-        return res.send(transcriptsOf(JSON.parse(JSON.stringify(mediaObjects))), []));
+        var _mediaObjects = JSON.parse(JSON.stringify(mediaObjects));
+        return res.send(transcriptsOf(_mediaObjects, []));
       });
     }
     var query = {
@@ -238,7 +239,8 @@ module.exports = function(app, nconf) {
     };
     return MediaObject.find(query,function(err, mediaObjects) {
       // return res.send(mediaObjects);
-      return res.send(transcriptsOf(JSON.parse(JSON.stringify(mediaObjects))), []));
+      var _mediaObjects = JSON.parse(JSON.stringify(mediaObjects));
+      return res.send(transcriptsOf(_mediaObjects, []));
     });
   });
 
