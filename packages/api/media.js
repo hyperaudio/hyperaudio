@@ -205,17 +205,20 @@ module.exports = function(app, nconf) {
     });
   });
 
-  var transcriptsOf = function (mediaObjects, transcripts, res) {
+  var transcriptsOf = function (mediaObjects, transcripts, res, user) {
     if (mediaObjects.length == 0) return res.send(transcripts);
 
     var mediaObject = mediaObjects.pop();
     //return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
         // return res.send(transcripts);
       // });
-
-    Transcript.find({
+    var query = {
       media: mediaObject
-    })
+    };
+
+    if (user) query.owner = user;
+
+    Transcript.find(query)
     .select('-meta -content')
     .exec(function(err, _transcripts) {
        return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res);
@@ -230,7 +233,7 @@ module.exports = function(app, nconf) {
     });
     if (req.params.user) {
       var query = {
-        owner: req.params.user,
+        // owner: req.params.user,
         channel: req.params.channel
       };
       return MediaObject.find(query, function(err, mediaObjects) {
@@ -241,7 +244,7 @@ module.exports = function(app, nconf) {
         }
         // return res.send(_mediaObjects);
         // return res.send(transcriptsOf(_mediaObjects, []));
-        return transcriptsOf(_mediaObjects, [], res);
+        return transcriptsOf(_mediaObjects, [], res, req.params.user);
       });
     }
     var query = {
@@ -254,7 +257,7 @@ module.exports = function(app, nconf) {
       }
       // return res.send(_mediaObjects);
       // return res.send(transcriptsOf(_mediaObjects, []));
-      return transcriptsOf(_mediaObjects, [], res);
+      return transcriptsOf(_mediaObjects, [], res, null);
     });
   });
 
