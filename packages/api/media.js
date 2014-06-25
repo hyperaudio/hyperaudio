@@ -224,7 +224,7 @@ module.exports = function(app, nconf) {
     Transcript.find(query)
     .select('-meta -content')
     .exec(function(err, _transcripts) {
-       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res);
+       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res, user);
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
        // return _transcripts;
     });
