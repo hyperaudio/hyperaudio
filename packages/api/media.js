@@ -234,8 +234,8 @@ module.exports = function(app, nconf) {
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
         }
-        return res.send(_mediaObjects);
-        // return res.send(transcriptsOf(_mediaObjects, []));
+        // return res.send(_mediaObjects);
+        return res.send(transcriptsOf(_mediaObjects, []));
       });
     }
     var query = {
@@ -246,8 +246,8 @@ module.exports = function(app, nconf) {
       for (var i = 0; i < mediaObjects.length; i++) {
         _mediaObjects.push(mediaObjects[i]._id);
       }
-      return res.send(_mediaObjects);
-      // return res.send(transcriptsOf(_mediaObjects, []));
+      // return res.send(_mediaObjects);
+      return res.send(transcriptsOf(_mediaObjects, []));
     });
   });
 
