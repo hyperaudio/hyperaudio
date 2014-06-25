@@ -209,10 +209,15 @@ module.exports = function(app, nconf) {
     if (mediaObjects.length == 0) return res.send(transcripts);
 
     var mediaObject = mediaObjects.pop();
+    //return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
+        // return res.send(transcripts);
+      // });
 
     Transcript.find({
       media: mediaObject
-    }, function(err, _transcripts) {
+    })
+    .select('-meta -content')
+    .exec(function(err, _transcripts) {
        return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res);
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
        // return _transcripts;
