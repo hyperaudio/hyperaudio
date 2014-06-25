@@ -205,6 +205,9 @@ module.exports = function(app, nconf) {
     });
   });
 
+
+
+
   var transcriptsOf = function (mediaObjects, transcripts, res, user) {
     if (mediaObjects.length == 0) return res.send(transcripts);
 
@@ -228,10 +231,8 @@ module.exports = function(app, nconf) {
   };
 
   app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
-    cube("get_media_by_channel", {
-      user: req.params.user
-    });
-    if (req.params.user) {
+
+    // if (req.params.user) {
       var query = {
         // owner: req.params.user,
         channel: req.params.channel
@@ -246,20 +247,20 @@ module.exports = function(app, nconf) {
         // return res.send(transcriptsOf(_mediaObjects, []));
         return transcriptsOf(_mediaObjects, [], res, req.params.user);
       });
-    } else {
-          var query = {
-            channel: req.params.channel
-          };
-          return MediaObject.find(query,function(err, mediaObjects) {
-            var _mediaObjects = [];
-            for (var i = 0; i < mediaObjects.length; i++) {
-              _mediaObjects.push(mediaObjects[i]._id);
-            }
-            // return res.send(_mediaObjects);
-            // return res.send(transcriptsOf(_mediaObjects, []));
-            return transcriptsOf(_mediaObjects, [], res, null);
-          });
-    }
+    // } else {
+    //       var query = {
+    //         channel: req.params.channel
+    //       };
+    //       return MediaObject.find(query,function(err, mediaObjects) {
+    //         var _mediaObjects = [];
+    //         for (var i = 0; i < mediaObjects.length; i++) {
+    //           _mediaObjects.push(mediaObjects[i]._id);
+    //         }
+    //         // return res.send(_mediaObjects);
+    //         // return res.send(transcriptsOf(_mediaObjects, []));
+    //         return transcriptsOf(_mediaObjects, [], res, null);
+    //       });
+    // }
   });
 
   // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
