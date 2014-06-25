@@ -211,7 +211,7 @@ module.exports = function(app, nconf) {
     var mediaObject = mediaObjects.pop();
 
     return Transcript.find({
-      media: mediaObjects._id
+      media: mediaObject
     }, function(err, _transcripts) {
        // return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
