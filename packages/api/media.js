@@ -213,7 +213,8 @@ module.exports = function(app, nconf) {
     return Transcript.find({
       media: mediaObjects._id
     }, function(err, _transcripts) {
-       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
+       // return transcriptsOf(mediaObjects, transcripts.concat(_transcripts));
+       return transcripts.concat(_transcripts);
     });
   };
 
