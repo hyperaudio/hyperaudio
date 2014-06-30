@@ -235,7 +235,7 @@ module.exports = function(app, nconf) {
       var query = {
         channel: req.params.channel
       };
-      return MediaObject.find(query, function(err, mediaObjects) {
+      MediaObject.find(query, function(err, mediaObjects) {
         var _mediaObjects = [];
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
@@ -249,7 +249,7 @@ module.exports = function(app, nconf) {
       var query = {
         $or: [{channel: null}, {channel: { $exists: false }}]
       };
-      return MediaObject.find(query, function(err, mediaObjects) {
+      MediaObject.find(query, function(err, mediaObjects) {
         var _mediaObjects = [];
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
