@@ -219,7 +219,7 @@ module.exports = function(app, nconf) {
 
 
 
-  var transcriptsOf = function (mediaObjects, transcripts, res, user) {
+  var transcriptsOf = function (mediaObjects, transcripts, res, user, type) {
     if (mediaObjects.length == 0) {
       // transcripts.sort();
       return res.send(transcripts);
@@ -235,10 +235,12 @@ module.exports = function(app, nconf) {
 
     if (user) query.owner = user;
 
+    if (type) query.type = req.query.type;
+
     Transcript.find(query)
     .select('-meta -content')
     .exec(function(err, _transcripts) {
-       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res, user);
+       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res, user, type);
        // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
        // return _transcripts;
     });
@@ -254,7 +256,7 @@ module.exports = function(app, nconf) {
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
         }
-        return transcriptsOf(_mediaObjects, [], res, req.params.user);
+        return transcriptsOf(_mediaObjects, [], res, req.params.user, req.query.type);
       });
   });
 
@@ -268,7 +270,7 @@ module.exports = function(app, nconf) {
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
         }
-        return transcriptsOf(_mediaObjects, [], res, req.params.user);
+        return transcriptsOf(_mediaObjects, [], res, req.params.user, req.query.type);
       });
   });
 
