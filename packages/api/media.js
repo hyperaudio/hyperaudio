@@ -106,6 +106,15 @@ module.exports = function(app, nconf) {
     });
   });
 
+  //todo better version of this
+  var noNull = function (list) {
+    var _list = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] != null) _list.push(list[i]);
+    }
+    return _list;
+  }
+
   // TODO ignore transcriptless channels
   app.get('/v1/:user?/transcripts/channels', function(req, res) {
     if (req.params.user) {
@@ -113,13 +122,13 @@ module.exports = function(app, nconf) {
         owner: req.params.user
       }, function(err, results) {
         results.sort();
-        return res.send(results);
+        return res.send(noNull(results));
       });
     }
 
     MediaObject.distinct('channel', function(err, results) {
       results.sort();
-      return res.send(results);
+      return res.send(noNull(results));
     });
   });
 
