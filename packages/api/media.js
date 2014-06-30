@@ -235,7 +235,7 @@ module.exports = function(app, nconf) {
 
     if (user) query.owner = user;
 
-    if (type) query.type = req.query.type;
+    if (type) query.type = type;
 
     Transcript.find(query)
     .select('-meta -content')
