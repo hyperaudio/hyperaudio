@@ -209,7 +209,7 @@ module.exports = function(app, nconf) {
 
 
   var transcriptsOf = function (mediaObjects, transcripts, res, user) {
-    if (mediaObjects.length == 0) return res.send(transcripts);
+    if (mediaObjects.length == 0) return res.send(transcripts.sort());
 
     var mediaObject = mediaObjects.pop();
     //return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
