@@ -112,11 +112,13 @@ module.exports = function(app, nconf) {
       return MediaObject.distinct('channel', {
         owner: req.params.user
       }, function(err, results) {
+        results.sort();
         return res.send(results);
       });
     }
 
     MediaObject.distinct('channel', function(err, results) {
+      results.sort();
       return res.send(results);
     });
   });
@@ -209,7 +211,10 @@ module.exports = function(app, nconf) {
 
 
   var transcriptsOf = function (mediaObjects, transcripts, res, user) {
-    if (mediaObjects.length == 0) return res.send(transcripts.sort());
+    if (mediaObjects.length == 0) {
+      // transcripts.sort();
+      return res.send(transcripts);
+    }
 
     var mediaObject = mediaObjects.pop();
     //return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
