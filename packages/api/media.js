@@ -232,35 +232,30 @@ module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
 
-    // if (req.params.user) {
       var query = {
-        // owner: req.params.user,
         channel: req.params.channel
       };
       return MediaObject.find(query, function(err, mediaObjects) {
-        // return res.send(mediaObjects);
         var _mediaObjects = [];
         for (var i = 0; i < mediaObjects.length; i++) {
           _mediaObjects.push(mediaObjects[i]._id);
         }
-        // return res.send(_mediaObjects);
-        // return res.send(transcriptsOf(_mediaObjects, []));
         return transcriptsOf(_mediaObjects, [], res, req.params.user);
       });
-    // } else {
-    //       var query = {
-    //         channel: req.params.channel
-    //       };
-    //       return MediaObject.find(query,function(err, mediaObjects) {
-    //         var _mediaObjects = [];
-    //         for (var i = 0; i < mediaObjects.length; i++) {
-    //           _mediaObjects.push(mediaObjects[i]._id);
-    //         }
-    //         // return res.send(_mediaObjects);
-    //         // return res.send(transcriptsOf(_mediaObjects, []));
-    //         return transcriptsOf(_mediaObjects, [], res, null);
-    //       });
-    // }
+  });
+
+  app.get('/v1/:user?/transcripts/channels/nochannel', function(req, res) {
+
+      var query = {
+        $or: [{channel: null}, {channel: { $exists: false }}]
+      };
+      return MediaObject.find(query, function(err, mediaObjects) {
+        var _mediaObjects = [];
+        for (var i = 0; i < mediaObjects.length; i++) {
+          _mediaObjects.push(mediaObjects[i]._id);
+        }
+        return transcriptsOf(_mediaObjects, [], res, req.params.user);
+      });
   });
 
   // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
