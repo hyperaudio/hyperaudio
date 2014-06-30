@@ -230,6 +230,20 @@ module.exports = function(app, nconf) {
     });
   };
 
+  app.get('/v1/:user?/transcripts/channels/nochannel', function(req, res) {
+
+      var query = {
+        $or: [{channel: null}, {channel: { $exists: false }}]
+      };
+      MediaObject.find(query, function(err, mediaObjects) {
+        var _mediaObjects = [];
+        for (var i = 0; i < mediaObjects.length; i++) {
+          _mediaObjects.push(mediaObjects[i]._id);
+        }
+        return transcriptsOf(_mediaObjects, [], res, req.params.user);
+      });
+  });
+
   app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
 
       var query = {
@@ -244,19 +258,6 @@ module.exports = function(app, nconf) {
       });
   });
 
-  app.get('/v1/:user?/transcripts/channels/nochannel', function(req, res) {
-
-      var query = {
-        $or: [{channel: null}, {channel: { $exists: false }}]
-      };
-      MediaObject.find(query, function(err, mediaObjects) {
-        var _mediaObjects = [];
-        for (var i = 0; i < mediaObjects.length; i++) {
-          _mediaObjects.push(mediaObjects[i]._id);
-        }
-        return transcriptsOf(_mediaObjects, [], res, req.params.user);
-      });
-  });
 
   // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
   //   cube("get_media_by_channel", {
