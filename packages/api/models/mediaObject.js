@@ -8,6 +8,7 @@ var MediaObject = new mongoose.Schema({
   desc: String,
   type: String,
   owner: String,
+  namespace: String,
   meta: {
     type: String,
     ref: 'Metadata'

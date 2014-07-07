@@ -49,11 +49,18 @@ module.exports = function(app, nconf) {
       var query = {
         owner: req.params.user
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return Mix.find(query, function(err, mixes) {
         return res.send(mixes);
       });
     }
-    return Mix.find(function(err, mixes) {
+
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    return Mix.find(query, function(err, mixes) {
       return res.send(mixes);
     });
   });
@@ -225,6 +232,10 @@ module.exports = function(app, nconf) {
         mix.owner = req.body.owner;
       }
 
+      var ns = null;
+      if (req.headers.host.indexOf('api') > 0) ns = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+      mix.namespace = ns;
+
       mix.meta = req.body.meta;
 
       if (req.body.content) {
@@ -262,12 +273,17 @@ module.exports = function(app, nconf) {
       content = req.body.content;
     }
 
+    var ns = null;
+    if (req.headers.host.indexOf('api') > 0) ns = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+
     mix = new Mix({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
       desc: req.body.desc,
       type: req.body.type,
       owner: owner,
+      namespace: ns,
       meta: req.body.meta,
       content: content,
       tags: req.body.tags,
