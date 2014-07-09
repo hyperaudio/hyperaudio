@@ -12,9 +12,6 @@ var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var dgram = require("dgram");
-var udp = dgram.createSocket("udp4");
-
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
 
@@ -29,8 +26,6 @@ var app = express();
 
 // all environments
 app.set('port', process.env.PORT || 3000);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
 
 app.use(function(req, res, next) {
   if (toobusy()) {
@@ -64,30 +59,6 @@ app.use(sessions({
   }
 }));
 
-// app.use(sessions({
-//   cookieName: 'recall',
-//   duration: 7 * 24 * 60 * 60 * 1000,
-//   secret: 'qwer1234',
-//   cookie: {
-//     path: '/', // cookie will only be sent to requests under '/v1'
-//     ephemeral: false, // when true, cookie expires when the browser closes
-//     httpOnly: false, // when true, cookie is not accessible from javascript
-//     secure: false   // when true, cookie will only be sent over SSL
-//   }
-// }));
-
-//TODO move CUBE in here
-// app.use(function(req, res, next) {
-//   // console.log(req.session);
-//   if (req.session.seenyou) {
-//     res.setHeader('X-Seen-You', 'true');
-//   } else {
-//     req.session.seenyou = true;
-//     res.setHeader('X-Seen-You', 'false');
-//   }
-//   // res.setHeader('X-Lag', toobusy.lag()); //FIXME move to hearbeat?
-//   next();
-// });
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -122,9 +93,6 @@ app.use(function(req, res, next) {
 
 app.use(app.router);
 
-// app.use(require('less-middleware')({
-//   src: __dirname + '/public'
-// }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -163,10 +131,6 @@ app.get('/v1/whoami', function(req, res) {
     req.session.user = null;
   }
 
-  cube("get_whoami", {
-    user: req.session.user
-  });
-
   // if (req.recall) req.recall.user = req.session.user;
 
   res.json({
@@ -182,20 +146,12 @@ app.get('/v1/login', function(req, res) {
 
 app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   req.session.user = req.user.username;
-  //FIXME: here we miss invalide login attemtps
-  cube("post_login", {
-    user: req.session.user
-  });
-
   res.json({
     user: req.user.username
   });
 });
 
 app.post('/v1/logout', function(req, res) {
-  cube("post_logout", {
-    user: req.session.user
-  });
 
   req.logout(); //TODO has any meaning anymore?
 
@@ -218,11 +174,6 @@ app.post('/v1/register', function(req, res) {
     }),
     req.body.password,
     function(err, account) {
-      //FIXME we should log invalid ones too
-      cube("post_register", {
-        user: req.body.username
-      });
-
       if (err) {
         return res.send(401);
       }
@@ -249,10 +200,10 @@ require('./subscribers')(app, nconf);
 
 
 app.post('/v1/error/:component', function(req, res) {
-  cube("error_" + req.param.component, {
-    user: req.body.user,
-    errorReport: req.body.errorReport
-  });
+  // cube("error_" + req.param.component, {
+  //   user: req.body.user,
+  //   errorReport: req.body.errorReport
+  // });
 
   res.json({});
 });
@@ -262,40 +213,9 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-// var io = require('socket.io').listen(server);
-
-// io.sockets.on('connection', function (socket) {
-//   socket.on('log', function (data) {
-//     console.log(data);
-//   });
-
-//   socket.on('mod9', function (data) {
-//     // socket.volatile.emit(data.user, data);
-//     socket.broadcast.emit(data.user, data);
-//   });
-// });
 
 process.on('SIGINT', function() {
   server.close();
   toobusy.shutdown();
   process.exit();
 });
-
-
-// function ensureAuthenticated(req, res, next) {
-//   if (req.isAuthenticated()) { return next(); }
-//   // if (req.session.user) {
-//   //   return next();
-//   // }
-//   res.send(401);
-//   // res.redirect('/v1/login');
-// }
-
-function cube(type, data) {
-  var buffer = new Buffer(JSON.stringify({
-    "type": type,
-    "time": new Date().toISOString(),
-    "data": data
-  }));
-  udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
-}
