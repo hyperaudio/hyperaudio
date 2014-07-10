@@ -15,6 +15,7 @@ haDash.Models = haDash.Models || {};
           desc: "Not set",
           type: "video",
           owner: null,
+          namespace: window.haDash.namespace,
           source: {},
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
