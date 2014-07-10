@@ -1,8 +1,22 @@
 /*global haDash, $*/
 Backbone.emulateJSON = false;
 
+
+var namespace = null;
+// var namespace = 'mozilla';
+
+if (document.location.hostname.indexOf('hyperaud') > 0) {
+  namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
+}
+
+var prefix = '';
+if (namespace) prefix = namespace + '.';
+
+var stage ='api.hyperaudio.net/v1';
+
 window.haDash = {
-  API: (document.location.host == '10.0.54.74') ? 'http://10.0.54.74' : 'http://api.hyperaud.io/v1', //FIXME?
+
+  API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
   Models: {},
   Collections: {},
   Views: {},
@@ -10,6 +24,8 @@ window.haDash = {
 
   init: function() {
     'use strict';
+
+    // this.namespace = 'foo';
 
     this.router = new this.Routers.Router();
 
