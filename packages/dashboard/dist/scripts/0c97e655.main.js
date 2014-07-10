@@ -12,11 +12,16 @@ if (document.location.hostname.indexOf('hyperaud') > 0) {
 var prefix = '';
 if (namespace) prefix = namespace + '.';
 
-var stage ='api.hyperaudio.net/v1';
+var stage;
+stage ='api.hyperaudio.net/v1';
 
 window.haDash = {
+  
+  namespace: namespace,
 
-  API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
+  // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
+  // API: 'http://' + prefix + stage,
+  API: 'http://' + prefix + 'api.hyperaud.io/v1',
   Models: {},
   Collections: {},
   Views: {},
@@ -420,6 +425,7 @@ haDash.Models = haDash.Models || {};
         created: new Date().toISOString(),
         modified: new Date().toISOString(),
         owner: null,
+        namespace: window.haDash.namespace,
         tags: [],
         channel: null
       };
@@ -913,6 +919,7 @@ haDash.Models = haDash.Models || {};
           desc: "Not set",
           type: "video",
           owner: null,
+          namespace: window.haDash.namespace,
           source: {},
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
@@ -1415,6 +1422,7 @@ haDash.Models = haDash.Models || {};
           desc: "",
           type: "text",
           owner: null,
+          // namespace: window.haDash.namespace,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
           media: null
