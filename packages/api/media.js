@@ -102,15 +102,22 @@ module.exports = function(app, nconf) {
   // TODO ignore transcriptless channels
   app.get('/v1/:user?/transcripts/channels', function(req, res) {
     if (req.params.user) {
-      return MediaObject.distinct('channel', {
+      var query {
         owner: req.params.user
-      }, function(err, results) {
+      };
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+
+      return MediaObject.distinct('channel', query, function(err, results) {
         results.sort();
         return res.send(noNull(results));
       });
     }
 
-    MediaObject.distinct('channel', function(err, results) {
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('channel', query, function(err, results) {
       results.sort();
       return res.send(noNull(results));
     });
@@ -123,6 +130,9 @@ module.exports = function(app, nconf) {
         owner: req.params.user,
         $or: [{tags: []}, {tags: { $exists: false }}]
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -130,6 +140,9 @@ module.exports = function(app, nconf) {
     var query = {
       $or: [{tags: []}, {tags: { $exists: false }}]
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
