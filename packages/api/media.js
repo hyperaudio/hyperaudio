@@ -98,7 +98,7 @@ module.exports = function(app, nconf) {
     var query = {};
     if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
 
-    MediaObject.distinct('channel', query function(err, results) {
+    MediaObject.distinct('channel', query, function(err, results) {
       return res.send(results);
     });
   });
@@ -115,7 +115,7 @@ module.exports = function(app, nconf) {
   // TODO ignore transcriptless channels
   app.get('/v1/:user?/transcripts/channels', function(req, res) {
     if (req.params.user) {
-      var query {
+      var query = {
         owner: req.params.user
       };
       if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
