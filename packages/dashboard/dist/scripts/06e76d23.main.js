@@ -312,7 +312,7 @@ __e( channel ) +
 
 print(tags.join(','));
 ;
-__p += '"></p>\n\n<a class="button primary" href="http://hyperaud.io/pad/?m=' +
+__p += '"></p>\n\n<a class="button primary" href="/pad/?m=' +
 __e( _id) +
 '">View Mix</a>\n\n';
  if (owner == haDash.user) { ;
@@ -328,7 +328,7 @@ this["JST"]["app/scripts/templates/mixList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="user your">\n\n  <a class="button primary" href="http://hyperaud.io/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n</div>\n';
+__p += '<div class="user your">\n\n  <a class="button primary" href="/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel"></tbody>\n  </table>\n</div>\n';
 
 }
 return __p
@@ -375,15 +375,15 @@ __e( owner ) +
  if (owner == haDash.user) { ;
 __p += '\n    ';
  if (type == "text") { ;
-__p += '\n    <a class="button small" href="http://hyperaud.io/maker/?t=' +
+__p += '\n    <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n    <button class="button align small primary">Align</button>\n  ';
  } else if (type == "html") { ;
-__p += '\n    <!-- <a class="button small" href="http://hyperaud.io/cleaner/?t=' +
+__p += '\n    <!-- <a class="button small" href="/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Clean</a> -->\n  ';
  } else if (type == "srt") { ;
-__p += '\n    <a class="button small primary" href="http://hyperaud.io/converter/?t=' +
+__p += '\n    <a class="button small primary" href="/converter/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Convert</a>\n  ';
  } ;

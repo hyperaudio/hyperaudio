@@ -6,12 +6,12 @@
 <td>
   <% if (owner == haDash.user) { %>
     <% if (type == "text") { %>
-    <a class="button small" href="http://hyperaud.io/maker/?t=<%= _id%>">Edit</a>
+    <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
     <button class="button align small primary">Align</button>
   <% } else if (type == "html") { %>
-    <!-- <a class="button small" href="http://hyperaud.io/cleaner/?t=<%= _id%>">Clean</a> -->
+    <!-- <a class="button small" href="/cleaner/?t=<%= _id%>">Clean</a> -->
   <% } else if (type == "srt") { %>
-    <a class="button small primary" href="http://hyperaud.io/converter/?t=<%= _id%>">Convert</a>
+    <a class="button small primary" href="/converter/?t=<%= _id%>">Convert</a>
   <% } %>
     <button class="button tDelete">Delete</button>
   <% } else { %>
