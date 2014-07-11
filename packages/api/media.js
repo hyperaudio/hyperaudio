@@ -63,14 +63,20 @@ module.exports = function(app, nconf) {
   app.get('/v1/:user?/media/tags', function(req, res) {
 
     if (req.params.user) {
-      return MediaObject.distinct('tags', {
+      var query = {
         owner: req.params.user
-      }, function(err, results) {
+      };
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      return MediaObject.distinct('tags', query, function(err, results) {
         return res.send(results);
       });
     }
 
-    MediaObject.distinct('tags', function(err, results) {
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('tags', query, function(err, results) {
       return res.send(results);
     });
   });
@@ -78,14 +84,21 @@ module.exports = function(app, nconf) {
   app.get('/v1/:user?/media/channels', function(req, res) {
 
     if (req.params.user) {
-      return MediaObject.distinct('channel', {
+      var query = {
         owner: req.params.user
-      }, function(err, results) {
+      };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      return MediaObject.distinct('channel', query, function(err, results) {
         return res.send(results);
       });
     }
 
-    MediaObject.distinct('channel', function(err, results) {
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('channel', query function(err, results) {
       return res.send(results);
     });
   });
@@ -155,6 +168,9 @@ module.exports = function(app, nconf) {
         owner: req.params.user,
         $or: [{channel: null}, {channel: { $exists: false }}]
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -162,6 +178,9 @@ module.exports = function(app, nconf) {
     var query = {
       $or: [{channel: null}, {channel: { $exists: false }}]
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
@@ -174,6 +193,9 @@ module.exports = function(app, nconf) {
         owner: req.params.user,
         tags: { $in: [req.params.tag] }
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -181,6 +203,9 @@ module.exports = function(app, nconf) {
     var query = {
       tags: { $in: [req.params.tag] }
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
@@ -193,6 +218,9 @@ module.exports = function(app, nconf) {
         owner: req.params.user,
         channel: req.params.channel
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -200,6 +228,9 @@ module.exports = function(app, nconf) {
     var query = {
       channel: req.params.channel
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
@@ -240,6 +271,9 @@ module.exports = function(app, nconf) {
       var query = {
         $or: [{channel: null}, {channel: { $exists: false }}]
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       MediaObject.find(query, function(err, mediaObjects) {
         var _mediaObjects = [];
         for (var i = 0; i < mediaObjects.length; i++) {
@@ -254,6 +288,9 @@ module.exports = function(app, nconf) {
       var query = {
         channel: req.params.channel
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       MediaObject.find(query, function(err, mediaObjects) {
         var _mediaObjects = [];
         for (var i = 0; i < mediaObjects.length; i++) {
