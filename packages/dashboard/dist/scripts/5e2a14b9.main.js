@@ -659,7 +659,7 @@ haDash.Views = haDash.Views || {};
     },
 
     openPad: function() {
-      document.location = "http://hyperaud.io/pad/?m=" + this.model.id;
+      document.location = "/pad/?m=" + this.model.id;
     },
 
     mixDetail: function(event) {
