@@ -17,19 +17,6 @@ client.connect(function(err) {
 });
 
 
-//FIXME: duplicate
-var dgram = require("dgram");
-var udp = dgram.createSocket("udp4");
-
-function cube(type, data) {
-  var buffer = new Buffer(JSON.stringify({
-    "type": type,
-    "time": new Date().toISOString(),
-    "data": data
-  }));
-  udp.send(buffer, 0, buffer.length, 1180, "127.0.0.1");
-}
-
 // FIXME: rename to ensureUsername
 function ensureOwnership(req, res, next) {
   if (req.isAuthenticated()) {
@@ -54,23 +41,18 @@ function ensureOwnership(req, res, next) {
 module.exports = function(app, nconf) {
 
   app.get('/v1/:user?/media', function(req, res) {
-    cube("get_media_list", {
-      user: req.params.user
-    });
     if (req.params.user) {
       var query = {
         owner: req.params.user
       };
-
-      // if (req.query.ns) query.namespace = req.query.ns;
       if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
 
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
     }
+
     var query = {};
-    // if (req.query.ns) query.namespace = req.query.ns;
     if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
 
     return MediaObject.find(query, function(err, mediaObjects) {
@@ -79,50 +61,91 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/v1/:user?/media/tags', function(req, res) {
-    cube("get_media_tags", {
-      user: req.params.user
-    });
 
     if (req.params.user) {
-      return MediaObject.distinct('tags', {
+      var query = {
         owner: req.params.user
-      }, function(err, results) {
+      };
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      return MediaObject.distinct('tags', query, function(err, results) {
         return res.send(results);
       });
     }
 
-    MediaObject.distinct('tags', function(err, results) {
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('tags', query, function(err, results) {
       return res.send(results);
     });
   });
 
   app.get('/v1/:user?/media/channels', function(req, res) {
-    cube("get_media_channels", {
-      user: req.params.user
-    });
 
     if (req.params.user) {
-      return MediaObject.distinct('channel', {
+      var query = {
         owner: req.params.user
-      }, function(err, results) {
+      };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      return MediaObject.distinct('channel', query, function(err, results) {
         return res.send(results);
       });
     }
 
-    MediaObject.distinct('channel', function(err, results) {
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('channel', query, function(err, results) {
       return res.send(results);
     });
   });
 
-  app.get('/v1/:user?/media/tags/notag', function(req, res) {
-    cube("get_media_by_tag", {
-      user: req.params.user
+  //todo better version of this
+  var noNull = function (list) {
+    var _list = [];
+    for (var i = 0; i < list.length; i++) {
+      if (list[i] != null) _list.push(list[i]);
+    }
+    return _list;
+  }
+
+  // TODO ignore transcriptless channels
+  app.get('/v1/:user?/transcripts/channels', function(req, res) {
+    if (req.params.user) {
+      var query = {
+        owner: req.params.user
+      };
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+
+      return MediaObject.distinct('channel', query, function(err, results) {
+        results.sort();
+        return res.send(noNull(results));
+      });
+    }
+
+    var query = {};
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+    MediaObject.distinct('channel', query, function(err, results) {
+      results.sort();
+      return res.send(noNull(results));
     });
+  });
+
+  app.get('/v1/:user?/media/tags/notag', function(req, res) {
+
     if (req.params.user) {
       var query = {
         owner: req.params.user,
         $or: [{tags: []}, {tags: { $exists: false }}]
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -130,20 +153,24 @@ module.exports = function(app, nconf) {
     var query = {
       $or: [{tags: []}, {tags: { $exists: false }}]
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
   });
 
   app.get('/v1/:user?/media/channels/nochannel', function(req, res) {
-    cube("get_media_by_channel", {
-      user: req.params.user
-    });
+
     if (req.params.user) {
       var query = {
         owner: req.params.user,
         $or: [{channel: null}, {channel: { $exists: false }}]
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -151,20 +178,24 @@ module.exports = function(app, nconf) {
     var query = {
       $or: [{channel: null}, {channel: { $exists: false }}]
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
   });
 
   app.get('/v1/:user?/media/tags/:tag', function(req, res) {
-    cube("get_media_by_tag", {
-      user: req.params.user
-    });
+
     if (req.params.user) {
       var query = {
         owner: req.params.user,
         tags: { $in: [req.params.tag] }
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -172,20 +203,24 @@ module.exports = function(app, nconf) {
     var query = {
       tags: { $in: [req.params.tag] }
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
   });
 
   app.get('/v1/:user?/media/channels/:channel', function(req, res) {
-    cube("get_media_by_channel", {
-      user: req.params.user
-    });
+
     if (req.params.user) {
       var query = {
         owner: req.params.user,
         channel: req.params.channel
       };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
       return MediaObject.find(query, function(err, mediaObjects) {
         return res.send(mediaObjects);
       });
@@ -193,28 +228,81 @@ module.exports = function(app, nconf) {
     var query = {
       channel: req.params.channel
     };
+
+    if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
     return MediaObject.find(query,function(err, mediaObjects) {
       return res.send(mediaObjects);
     });
   });
 
-  // app.get('/v1/:user?/media/channels/:channel/transcripts', function(req, res) {
-  //   cube("get_media_by_channel", {
-  //     user: req.params.user
-  //   });
 
-  //   var query = {
-  //     owner: req.params.user,
-  //     channel: req.params.channel
-  //   };
 
-  // });
+
+  var transcriptsOf = function (mediaObjects, transcripts, res, user, type) {
+    if (mediaObjects.length == 0) {
+      // transcripts.sort();
+      return res.send(transcripts);
+    }
+
+    var mediaObject = mediaObjects.pop();
+    //return Transcript.find(query).select('-meta -content').exec(function(err, transcripts) {
+        // return res.send(transcripts);
+      // });
+    var query = {
+      media: mediaObject
+    };
+
+    if (user) query.owner = user;
+
+    if (type) query.type = type;
+
+    Transcript.find(query)
+    .select('-meta -content')
+    .exec(function(err, _transcripts) {
+       return transcriptsOf(mediaObjects, transcripts.concat(_transcripts), res, user, type);
+       // return transcripts.concat(JSON.parse(JSON.stringify(_transcripts)));
+       // return _transcripts;
+    });
+  };
+
+  app.get('/v1/:user?/transcripts/channels/nochannel', function(req, res) {
+
+      var query = {
+        $or: [{channel: null}, {channel: { $exists: false }}]
+      };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      MediaObject.find(query, function(err, mediaObjects) {
+        var _mediaObjects = [];
+        for (var i = 0; i < mediaObjects.length; i++) {
+          _mediaObjects.push(mediaObjects[i]._id);
+        }
+        return transcriptsOf(_mediaObjects, [], res, req.params.user, req.query.type);
+      });
+  });
+
+  app.get('/v1/:user?/transcripts/channels/:channel', function(req, res) {
+
+      var query = {
+        channel: req.params.channel
+      };
+
+      if (req.headers.host.indexOf('api') > 0) query.namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
+      MediaObject.find(query, function(err, mediaObjects) {
+        var _mediaObjects = [];
+        for (var i = 0; i < mediaObjects.length; i++) {
+          _mediaObjects.push(mediaObjects[i]._id);
+        }
+        return transcriptsOf(_mediaObjects, [], res, req.params.user, req.query.type);
+      });
+  });
+
 
   app.get('/v1/:user?/media/:id', function(req, res) {
-    cube("get_media", {
-      user: req.params.user,
-      id: req.params.id
-    });
+
 
     return MediaObject.findById(req.params.id).exec(function(err, mediaObject) {
       if (!err) {
@@ -230,10 +318,7 @@ module.exports = function(app, nconf) {
   });
 
   app.get('/v1/:user?/media/:id/transcripts', function(req, res) {
-    cube("get_media", {
-      user: req.params.user,
-      id: req.params.id
-    });
+
 
     // return MediaObject.findById(req.params.id).populate('transcripts').exec(function(err, mediaObject) {
     //   if (!err) {
@@ -259,10 +344,6 @@ module.exports = function(app, nconf) {
 
 
   app.get('/v1/:user?/media/:id/meta/:meta', function(req, res) {
-    cube("get_meta", {
-      user: req.params.user,
-      id: req.params.id
-    });
 
     return MediaObject.findById(req.params.id).populate('meta', req.params.meta).exec(function(err, mediaObject) {
       if (!err) {
@@ -279,11 +360,6 @@ module.exports = function(app, nconf) {
 
   app.put('/v1/:user?/media/:id', ensureOwnership, function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
-
-    cube("put_media", {
-      user: owner,
-      id: req.params.id
-    });
 
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
 
@@ -312,7 +388,6 @@ module.exports = function(app, nconf) {
       mediaObject.tags = req.body.tags;
       mediaObject.channel = req.body.channel;
 
-
       return mediaObject.save(function(err) {
         if (!err) {
           return res.send(mediaObject);
@@ -328,10 +403,6 @@ module.exports = function(app, nconf) {
 
   app.post('/v1/:user?/media', ensureOwnership, function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
-
-    cube("post_media", {
-      user: owner //FIXME add media ID
-    });
 
     var metaId = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     req.body.meta['_id'] = metaId;
@@ -400,10 +471,6 @@ module.exports = function(app, nconf) {
 
   app.delete('/v1/:user?/media/:id', function(req, res) {
     var owner = (req.params.user)?req.params.user:req.body.owner;
-    cube("delete_media", {
-      user: owner,
-      id: req.params.id
-    });
 
     return MediaObject.findById(req.params.id, function(err, mediaObject) {
       return mediaObject.remove(function(err) {
