@@ -6,3 +6,17 @@ RewriteRule ^login/(.*)$ /dashboard/ [L]
 RewriteRule ^signout/(.*)$ /dashboard/ [L]
 RewriteRule ^beta-signup/(.*)$ /dashboard/ [L]
 
+#MB Added
+
+#RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io\z
+#RewriteRule ^(.*)$ _org/chattanooga/index.html [L]
+
+
+
+RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/chattanooga/ [L]
+
+RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/chattanooga/assets/stylesheets/css/custom.css [L]

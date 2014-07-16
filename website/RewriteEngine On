@@ -1,0 +1,5 @@
+RewriteEngine on
+RewriteBase /
+
+RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io
+RewriteRule ^(.*)$ _org/chattanooga/index.html [L]

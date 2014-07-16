@@ -1,0 +1,4 @@
+RewriteEngine on
+
+RewriteCond ^test.hyperaud.io$
+RewriteRule ^(.*)$ test/index.html [L]
