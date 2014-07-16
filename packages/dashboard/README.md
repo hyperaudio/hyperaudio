@@ -1,7 +1,7 @@
 ha-dash
 =======
 
-Hyperaud.io dashboard
+Hyperaud.io dashboard.
 
 This is the dashboard that binds the whole hyperaud.io system.
 
