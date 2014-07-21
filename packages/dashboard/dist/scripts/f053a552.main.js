@@ -1366,7 +1366,7 @@ haDash.Views = haDash.Views || {};
       } else if (url.toLowerCase().indexOf('archive.org') >= 0) {
         console.log('IA detected, trying magic.');
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
-        var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + urlencode(url);
+        var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         $.get(curl, function (page) {
 
           var title = $(page).filter('meta[property="og:title"]').attr('content');
