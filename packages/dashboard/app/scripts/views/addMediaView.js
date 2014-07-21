@@ -122,8 +122,8 @@ haDash.Views = haDash.Views || {};
         url = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         $.get(url, function (page) {
 
-          var thumb = $(data).filter('meta[property="og:image"]').attr('content');
-          var video0 = $(data).filter('meta[property="og:video"]').attr('content');
+          var thumb = $(page).filter('meta[property="og:image"]').attr('content');
+          var video0 = $(page).filter('meta[property="og:video"]').attr('content');
           var ext0 = video0.split('.').pop();
 
           model.set('owner', haDash.user);
