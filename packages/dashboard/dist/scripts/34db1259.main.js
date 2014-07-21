@@ -187,6 +187,8 @@ __p += '<td class="span1"><img src="';
 
 if (source.youtube && source.youtube.thumbnail) {
   print(_.escape(source.youtube.thumbnail));
+} else if (source.mp4 && source.mp4.thumbnail) {
+  print(_.escape(source.mp4.thumbnail));
 }
 ;
 __p += '" class=""></td>\n<td class="span2 label">' +
