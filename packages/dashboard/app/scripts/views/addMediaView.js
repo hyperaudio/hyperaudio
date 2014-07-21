@@ -117,6 +117,54 @@ haDash.Views = haDash.Views || {};
             alert('YouTube API threw an error, the video might not exist, or it is private');
           }
         });
+      } else if (url.toLowerCase().indexOf('archive.org') >= 0) {
+        console.log('IA detected, trying magic.');
+        url = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
+        $.get(url, function (page) {
+
+          var thumb = $(data).filter('meta[property="og:image"]').attr('content');
+          var video0 = $(data).filter('meta[property="og:video"]').attr('content');
+          var ext0 = video0.split('.').pop();
+
+          model.set('owner', haDash.user);
+          model.set('label', 'n/a');
+          model.set('label', 'n/a');
+          model.set('desc', url);
+          model.set('meta', {});
+
+          var source = {};
+
+          if (video0 && ext0) {
+            source[ext0] = {
+              url: video0
+            };
+            if (thumb) source[ext0].thumbnail = thumb;
+            if (ext0 != 'mp4') {
+              source.mp4 = {
+                url: video0.replace('.' + ext0, '.mp4'),
+                thumbnail: thumb
+              };
+            }
+          } else {
+            source.unknown = {
+              url: url;
+            }
+          }
+
+          model.set('source', source);
+
+          console.log(model);
+
+          haDash.mediaListView.collection.add(model);
+
+          model.save(null, {
+            success: function() {
+              haDash.router.navigate("media/", {trigger: true});
+              view.remove();
+            }
+          });
+          ////
+        });
       } else {
         if (confirm('Cannot recognise this URL as an YouTube Video; choose [cancel] to abort or [ok] to continue')) {
 
