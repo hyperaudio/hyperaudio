@@ -30,6 +30,7 @@
     "youtube-dl": "*",
     "mime": "*",
     "mmmagic": "*",
-    "synchronize": "*"
+    "synchronize": "*",
+    "pm2": "*"
   }
 }
