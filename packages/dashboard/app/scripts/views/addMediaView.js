@@ -119,17 +119,18 @@ haDash.Views = haDash.Views || {};
         });
       } else if (url.toLowerCase().indexOf('archive.org') >= 0) {
         console.log('IA detected, trying magic.');
-        url = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
-        $.get(url, function (page) {
+        var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
+        $.get(curl, function (page) {
 
-          var thumb = $(page).filter('meta[property="og:image"]').attr('content');
+          var title = $(page).filter('meta[property="og:title"]').attr('content');
+          var desc = $(page).filter('meta[property="og:description"]').attr('content');
+          var thumb = $(page).filter('meta[property="og:image"]').attr('content').replace('https://', 'http://');;
           var video0 = $(page).filter('meta[property="og:video"]').attr('content');
           var ext0 = video0.split('.').pop();
 
           model.set('owner', haDash.user);
-          model.set('label', 'n/a');
-          model.set('label', 'n/a');
-          model.set('desc', url);
+          model.set('label', title);
+          model.set('desc', desc);
           model.set('meta', {});
 
           var source = {};
