@@ -8,11 +8,11 @@ var url = require('url');
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
 
-var fivebeans = require('fivebeans');
-var client = new fivebeans.client('127.0.0.1', 11300);
-client.connect(function(err) {
-  if (err) throw err;
-});
+// var fivebeans = require('fivebeans');
+// var client = new fivebeans.client('127.0.0.1', 11300);
+// client.connect(function(err) {
+//   if (err) throw err;
+// });
 
 
 function ensureOwnership(req, res, next) {
@@ -165,17 +165,17 @@ module.exports = function(app, nconf) {
 
       if (transcript.type == 'text' && transcript.media) {
 
-        client.use("align", function(err, tubename) {
-          if (err) throw err;
-          client.put(1, 0, 0, JSON.stringify(['align', {
-            type: "transcript",
-            payload: transcript
-          }]), function(err, jobid) {
-            if (err) throw err;
-          });
+      //   client.use("align", function(err, tubename) {
+      //     if (err) throw err;
+      //     client.put(1, 0, 0, JSON.stringify(['align', {
+      //       type: "transcript",
+      //       payload: transcript
+      //     }]), function(err, jobid) {
+      //       if (err) throw err;
+      //     });
 
-        });
-      }
+      //   });
+      // }
 
       return res.send(transcript);
     });

@@ -1,8 +1,0 @@
-beanstalkd:
-    host: "127.0.0.1"
-    port: 11300
-handlers:
-    - "./workers/mod9.js"
-watch:
-    - 'align'
-ignoreDefault: true

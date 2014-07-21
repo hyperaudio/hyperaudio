@@ -10,11 +10,11 @@ var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 var Metadata = require('./models/metadata');
 
-var fivebeans = require('fivebeans');
-var client = new fivebeans.client('127.0.0.1', 11300);
-client.connect(function(err) {
-  if (err) throw err;
-});
+// var fivebeans = require('fivebeans');
+// var client = new fivebeans.client('127.0.0.1', 11300);
+// client.connect(function(err) {
+//   if (err) throw err;
+// });
 
 
 // FIXME: rename to ensureUsername
@@ -450,20 +450,20 @@ module.exports = function(app, nconf) {
     });
 
     // download and probe (probe is next in queue from download)
-    client.use("download", function(err, tubename) {
-      if (err) throw err;
+    // client.use("download", function(err, tubename) {
+    //   if (err) throw err;
 
-      client.put(1, 0, 0, JSON.stringify(['download', {
-        type: "media",
-        payload: {
-          media: mediaObject,
-          meta: metadata
-        }
-      }]), function(err, jobid) {
-        if (err) throw err;
-      });
+    //   client.put(1, 0, 0, JSON.stringify(['download', {
+    //     type: "media",
+    //     payload: {
+    //       media: mediaObject,
+    //       meta: metadata
+    //     }
+    //   }]), function(err, jobid) {
+    //     if (err) throw err;
+    //   });
 
-    });
+    // });
 
 
     return res.send(mediaObject);
