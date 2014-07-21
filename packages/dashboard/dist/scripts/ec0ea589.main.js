@@ -1391,7 +1391,7 @@ haDash.Views = haDash.Views || {};
             }
           } else {
             source.unknown = {
-              url: url;
+              url: url
             }
           }
 
