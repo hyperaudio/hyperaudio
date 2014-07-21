@@ -381,9 +381,9 @@ __p += '\n    <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n    <button class="button align small primary">Align</button>\n  ';
  } else if (type == "html") { ;
-__p += '\n    <!-- <a class="button small" href="/cleaner/?t=' +
+__p += '\n    <a class="button small" href="/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Clean</a> -->\n  ';
+'">Clean</a>\n  ';
  } else if (type == "srt") { ;
 __p += '\n    <a class="button small primary" href="/converter/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
