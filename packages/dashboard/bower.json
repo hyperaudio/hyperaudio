@@ -2,7 +2,7 @@
   "name": "ha-dash",
   "version": "0.0.2",
   "dependencies": {
-    "console-polyfill": "0.0.1",
+    "console-polyfill": "0.1.1",
     "tracekit": "*",
     "underscore": "1.4.4",
     "backbone": "1.0.0",
@@ -12,7 +12,7 @@
     "foundation": "5.0.3",
     "picturefill": "1.2.1",
     "jquery-timeago": "*",
-    "select2": "2.0.3",
+    "select2": "2.1.0",
     "jssha": "*"
   },
   "devDependencies": {}
