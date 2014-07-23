@@ -1574,11 +1574,18 @@ haDash.Views = haDash.Views || {};
       transcript.unset('_id');
 
       transcript.save(null, {
-        url: haDash.API + '/transcripts'
+        url: haDash.API + '/transcripts',
+        success: function() {
+          $('#mediaDetail').data('view').render();
+        },
+        error: function() {
+          //TODO, alert?
+          $('#mediaDetail').data('view').render();
+        }
       });
 
       //TODO use it in success above
-      $('#mediaDetail').data('view').render();
+      // $('#mediaDetail').data('view').render();
 
     },
 
