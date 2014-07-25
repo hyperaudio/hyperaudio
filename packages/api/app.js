@@ -196,7 +196,6 @@ app.post('/v1/register', function(req, res) {
 require('./media')(app, nconf);
 require('./transcripts')(app, nconf);
 require('./mixes')(app, nconf);
-require('./subscribers')(app, nconf);
 
 
 app.post('/v1/error/:component', function(req, res) {
