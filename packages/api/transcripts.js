@@ -163,7 +163,7 @@ module.exports = function(app, nconf) {
     //.populate('media')
     return Transcript.findById(req.params.id).exec(function(err, transcript) {
 
-      if (transcript.type == 'text' && transcript.media) {
+      //if (transcript.type == 'text' && transcript.media) {
 
       //   client.use("align", function(err, tubename) {
       //     if (err) throw err;
