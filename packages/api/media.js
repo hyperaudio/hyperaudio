@@ -10,12 +10,6 @@ var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 var Metadata = require('./models/metadata');
 
-// var fivebeans = require('fivebeans');
-// var client = new fivebeans.client('127.0.0.1', 11300);
-// client.connect(function(err) {
-//   if (err) throw err;
-// });
-
 
 // FIXME: rename to ensureUsername
 function ensureOwnership(req, res, next) {
@@ -235,8 +229,6 @@ module.exports = function(app, nconf) {
       return res.send(mediaObjects);
     });
   });
-
-
 
 
   var transcriptsOf = function (mediaObjects, transcripts, res, user, type) {

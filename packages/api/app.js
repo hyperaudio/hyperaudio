@@ -131,8 +131,6 @@ app.get('/v1/whoami', function(req, res) {
     req.session.user = null;
   }
 
-  // if (req.recall) req.recall.user = req.session.user;
-
   res.json({
     user: req.session.user
   });
@@ -199,11 +197,6 @@ require('./mixes')(app, nconf);
 
 
 app.post('/v1/error/:component', function(req, res) {
-  // cube("error_" + req.param.component, {
-  //   user: req.body.user,
-  //   errorReport: req.body.errorReport
-  // });
-
   res.json({});
 });
 

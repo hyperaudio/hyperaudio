@@ -8,12 +8,6 @@ var url = require('url');
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
 
-// var fivebeans = require('fivebeans');
-// var client = new fivebeans.client('127.0.0.1', 11300);
-// client.connect(function(err) {
-//   if (err) throw err;
-// });
-
 
 function ensureOwnership(req, res, next) {
   if (req.isAuthenticated()) {
