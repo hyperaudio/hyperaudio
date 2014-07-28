@@ -1,4 +1,6 @@
 var fs = require('fs');
+var youtubedl = require('youtube-dl');
+var path = require('path');
 
 var passport = require('passport');
 var mongoose = require('mongoose');

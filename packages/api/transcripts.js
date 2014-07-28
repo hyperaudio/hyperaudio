@@ -218,6 +218,9 @@ module.exports = function(app, nconf) {
                 //   align: JSON.parse(data)
                 // });
                 // part = "";
+              transcript.status = JSON.parse(data);
+              transcript.save(function(){});
+
               } catch (err) {
                 console.log('err skipping');
                 part = data;
@@ -258,6 +261,8 @@ module.exports = function(app, nconf) {
                         transcript.meta = {};
                       }
                       transcript.meta.align = JSON.parse(result2);
+                      transcript.status = transcript.meta.align;
+
                       var hypertranscript = "<article><header></header><section><header></header><p>";
                       var al = transcript.meta.align.alignment;
                       for (var i = 0; i < al.length; i++) {
@@ -294,11 +299,11 @@ module.exports = function(app, nconf) {
           });
 
         } else {// if text & media
-          return res.send({error: 'not text, or no media, or no url'});
+          // return res.send({error: 'not text, or no media, or no url'});
         }
       });//getMediaUrl
 
-      // return res.send(transcript);
+      return res.send(transcript);
     });
   });
 
