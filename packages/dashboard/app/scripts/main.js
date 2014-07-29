@@ -103,7 +103,7 @@ window.haDash = {
   // socket: null,
 
   socketConnect: function () {
-    if (!!window.socket) return;
+    if (!window.socket) return;
     // window.socket = io.connect('//' + prefix + 'api.' + domain + '/');
 
     window.socket.on(haDash.user, function (data) {
