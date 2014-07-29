@@ -146,25 +146,10 @@
         <!-- // <script src="//api.hyperaud.io/socket.io/socket.io.js"></script> -->
 
         <script>
-        // var namespace = null;
-        // if (document.location.hostname.indexOf('hyperaud') > 0) {
-        //   namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
-        // }
-
-        // var prefix = '';
-        // if (namespace) prefix = namespace + '.';
-
-        // var domain;
-        // if (document.location.hostname.indexOf('hyperaud.io') > -1) {
-        //   domain = 'hyperaud.io';
-        // } else {
-        //   domain = 'hyperaudio.net';
-        // }
-
-        document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
+        // document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
         </script>
         <script>
-        var socket = io.connect('//' + prefix + 'api.' + domain + '/');
+        // var socket = io.connect('//' + prefix + 'api.' + domain + '/');
         </script>
 </body>
 </html>

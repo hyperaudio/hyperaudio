@@ -103,6 +103,7 @@ window.haDash = {
   // socket: null,
 
   socketConnect: function () {
+    if (!!window.socket) return;
     // window.socket = io.connect('//' + prefix + 'api.' + domain + '/');
 
     window.socket.on(haDash.user, function (data) {
@@ -1200,6 +1201,12 @@ haDash.Views = haDash.Views || {};
       "change .channels": "saveChannels"
     },
 
+    // refresh: function() {
+    //   this.transcripts.fetch({
+    //     url: haDash.API + '/media/' + this.model.id + '/transcripts'
+    //   });
+    // },
+
     notMutable: function() {
       return this.model.get('owner') != haDash.user;
     },
@@ -1592,6 +1599,17 @@ haDash.Views = haDash.Views || {};
 
     },
 
+    refresh: function() {
+      if (this.refreshing) return;
+
+      if (this.model.get('status') == null || !this.model.get('status').alignment) {
+        this.refreshing = setInterval(function() {
+          this.model.fetch();
+          this.refresh();//FIXME
+        }, 2000);
+      }
+    },
+
     align: function() {
       if (!haDash.user) {
         haDash.router.navigate("secret-signin/", {trigger: true});
@@ -1609,11 +1627,14 @@ haDash.Views = haDash.Views || {};
         data: JSON.stringify({})
       })
       .done(function() {
-        console.log('OK');
+          console.log('OK');
         })
-        .fail(function() {
-            console.log('ERR');
-        });
+      .fail(function() {
+        console.log('ERR');
+      });
+      // spin
+      //$('#mediaDetail').data('view').refresh();
+      // spin
     },
 
     delete: function() {
@@ -1649,7 +1670,7 @@ haDash.Views = haDash.Views || {};
 
     id: 'transcriptListView',
 
-        template: JST['app/scripts/templates/transcriptList.ejs'],
+    template: JST['app/scripts/templates/transcriptList.ejs'],
 
     initialize: function() {
       console.log("transcriptListView init");

@@ -80,6 +80,17 @@ haDash.Views = haDash.Views || {};
 
     },
 
+    refresh: function() {
+      if (this.refreshing) return;
+
+      if (this.model.get('status') == null || !this.model.get('status').alignment) {
+        this.refreshing = setInterval(function() {
+          this.model.fetch();
+          this.refresh();//FIXME
+        }, 2000);
+      }
+    },
+
     align: function() {
       if (!haDash.user) {
         haDash.router.navigate("secret-signin/", {trigger: true});
@@ -97,11 +108,14 @@ haDash.Views = haDash.Views || {};
         data: JSON.stringify({})
       })
       .done(function() {
-        console.log('OK');
+          console.log('OK');
         })
-        .fail(function() {
-            console.log('ERR');
-        });
+      .fail(function() {
+        console.log('ERR');
+      });
+      // spin
+      //$('#mediaDetail').data('view').refresh();
+      // spin
     },
 
     delete: function() {

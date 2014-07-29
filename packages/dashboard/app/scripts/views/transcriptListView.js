@@ -9,7 +9,7 @@ haDash.Views = haDash.Views || {};
 
     id: 'transcriptListView',
 
-        template: JST['app/scripts/templates/transcriptList.ejs'],
+    template: JST['app/scripts/templates/transcriptList.ejs'],
 
     initialize: function() {
       console.log("transcriptListView init");

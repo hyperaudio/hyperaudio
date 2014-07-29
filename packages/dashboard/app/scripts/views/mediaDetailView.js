@@ -73,6 +73,12 @@ haDash.Views = haDash.Views || {};
       "change .channels": "saveChannels"
     },
 
+    // refresh: function() {
+    //   this.transcripts.fetch({
+    //     url: haDash.API + '/media/' + this.model.id + '/transcripts'
+    //   });
+    // },
+
     notMutable: function() {
       return this.model.get('owner') != haDash.user;
     },
