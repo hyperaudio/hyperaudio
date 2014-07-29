@@ -370,13 +370,9 @@ __e( type ) +
 __e( label ) +
 '</span></td>\n<td class="span3">\n  <span class="tDesc editable" data-field="desc">' +
 __e( desc ) +
-'</span>\n  <br> ' +
-((__t = ( status.score )) == null ? '' : __t) +
-'\n  <br> ' +
-((__t = ( status.status )) == null ? '' : __t) +
-'\n  <br> ' +
-__e( new Date() ) +
-'\n</td>\n<td class="span1"><span class="timeago" title="' +
+'</span>\n  <br> ';
+if (status) { print (status.status) } ;
+__p += '\n</td>\n<td class="span1"><span class="timeago" title="' +
 __e( modified ) +
 '">' +
 __e( modified ) +
