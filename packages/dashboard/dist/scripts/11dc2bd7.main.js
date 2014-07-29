@@ -1541,7 +1541,7 @@ haDash.Views = haDash.Views || {};
     },
 
     render: function() {
-      console.log('render');
+      console.log('render ' + this.model.get('status'));
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
