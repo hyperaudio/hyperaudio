@@ -1603,9 +1603,10 @@ haDash.Views = haDash.Views || {};
       if (this.refreshing) return;
 
       if (this.model.get('status') == null || !this.model.get('status').alignment) {
+        var self = this;
         this.refreshing = setInterval(function() {
-          this.model.fetch();
-          this.refresh();//FIXME
+          self.model.fetch();
+          self.refresh();//FIXME
         }, 2000);
       }
     },
