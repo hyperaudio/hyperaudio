@@ -88,8 +88,10 @@ haDash.Views = haDash.Views || {};
         var self = this;
         this.refreshing = setInterval(function() {
           self.model.fetch({
-            success: function() {
-              console.log(this);
+            success: function(model) {
+              console.log(model);
+              self.model = model;
+              self.render();
               self.refresh();
             }
           });
