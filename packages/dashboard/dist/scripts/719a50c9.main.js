@@ -1529,9 +1529,9 @@ haDash.Views = haDash.Views || {};
 
     haDash.Views.TranscriptView = Backbone.View.extend({
 
-        tagName: 'tr',
+    tagName: 'tr',
 
-        template: JST['app/scripts/templates/transcript.ejs'],
+    template: JST['app/scripts/templates/transcript.ejs'],
 
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -1610,6 +1610,7 @@ haDash.Views = haDash.Views || {};
         var self = this;
         this.refreshing = setInterval(function() {
           self.model.fetch({
+            url: haDash.API + '/transcripts/' + self.model.id
             success: function(model) {
               console.log(model);
               // self.render();
