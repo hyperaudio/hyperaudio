@@ -33,7 +33,7 @@ function ensureOwnership(req, res, next) {
   }
 }
 
-module.exports = function(app, nconf) {
+module.exports = function(app, nconf, io) {
 
   app.get('/v1/:user?/transcripts', function(req, res) {
 
@@ -159,7 +159,7 @@ module.exports = function(app, nconf) {
       callback(mediaObject.source.mp4.url);
     } else {
       //assume yt
-      var video = youtubedl.getInfo(url, options, function(err, info) {
+      var video = youtubedl.getInfo(mediaObject.source.youtube.url, [], function(err, info) {
         if (err) throw err;
 
         console.log('id:', info.id);
@@ -220,6 +220,7 @@ module.exports = function(app, nconf) {
                 // part = "";
               transcript.status = JSON.parse(data);
               transcript.save(function(){});
+              io.sockets.emit(transcript._id, transcript.status);
 
               } catch (err) {
                 console.log('err skipping');
@@ -262,6 +263,7 @@ module.exports = function(app, nconf) {
                       }
                       transcript.meta.align = JSON.parse(result2);
                       transcript.status = transcript.meta.align;
+              	      io.sockets.emit(transcript._id, transcript.status);
 
                       var hypertranscript = "<article><header></header><section><header></header><p>";
                       var al = transcript.meta.align.alignment;
