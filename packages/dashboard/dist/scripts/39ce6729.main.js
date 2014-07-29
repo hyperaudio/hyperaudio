@@ -13,7 +13,7 @@ var prefix = '';
 if (namespace) prefix = namespace + '.';
 
 var domain;
-if (document.location.hostname.indexOf('hyperaud.io') > 0) {
+if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaud.io';
 } else {
    domain = 'hyperaudio.net';
