@@ -97,9 +97,28 @@
 
         <script src="scripts/8963d771.plugins.js"></script>
 
-        <script src="scripts/128ef0ad.main.js"></script>
+        <script src="scripts/3575a5e6.main.js"></script>
 
         <script src="//hyperaud.io/commons/tools/analytics/ga.js"></script>
         <!-- // <script src="//api.hyperaud.io/socket.io/socket.io.js"></script> -->
+
+        <script>
+        // var namespace = null;
+        // if (document.location.hostname.indexOf('hyperaud') > 0) {
+        //   namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
+        // }
+
+        // var prefix = '';
+        // if (namespace) prefix = namespace + '.';
+
+        // var domain;
+        // if (document.location.hostname.indexOf('hyperaud.io') > -1) {
+        //   domain = 'hyperaud.io';
+        // } else {
+        //   domain = 'hyperaudio.net';
+        // }
+
+        document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
+        </script>
 </body>
 </html>

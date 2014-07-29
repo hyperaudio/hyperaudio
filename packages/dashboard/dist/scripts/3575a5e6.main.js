@@ -34,8 +34,6 @@ window.haDash = {
   init: function() {
     'use strict';
 
-    // this.namespace = 'foo';
-
     this.router = new this.Routers.Router();
 
     Backbone.history.start({
@@ -105,15 +103,15 @@ window.haDash = {
   socket: null,
 
   socketConnect: function () {
-    // haDash.socket = io.connect('//api.hyperaud.io/');
+    haDash.socket = io.connect('//' + prefix + 'api.' + domain + '/');
 
-    // haDash.socket.on(haDash.user, function (data) {
-    //   console.log(data);
-    // });
+    haDash.socket.on(haDash.user, function (data) {
+      console.log(data);
+    });
   },
 
   socketDisconnect: function () {
-    // if (haDash.socket) haDash.socket.disconnect();
+    if (haDash.socket) haDash.socket.disconnect();
   }
 };
 
