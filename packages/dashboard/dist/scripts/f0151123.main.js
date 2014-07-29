@@ -1493,7 +1493,8 @@ haDash.Models = haDash.Models || {};
           // namespace: window.haDash.namespace,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
-          media: null
+          media: null,
+          status: null
         };
       }
     });
