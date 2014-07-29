@@ -16,7 +16,7 @@ var domain;
 if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaud.io';
 } else {
-   domain = 'hyperaudio.net';
+  domain = 'hyperaudio.net';
 }
 
 window.haDash = {
@@ -495,6 +495,7 @@ haDash.Routers = haDash.Routers || {};
 
       'secret-signup/': 'signup',
       'beta-signup/': 'signup',
+      'signup/': 'signup',
 
       'add-media/': 'addMedia'
     },
