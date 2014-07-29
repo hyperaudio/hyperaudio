@@ -372,6 +372,8 @@ __e( label ) +
 __e( desc ) +
 '</span>\n  <br> ' +
 __e( status.status ) +
+'\n  <br> ' +
+__e( new Date() ) +
 '\n</td>\n<td class="span1"><span class="timeago" title="' +
 __e( modified ) +
 '">' +
@@ -1537,6 +1539,7 @@ haDash.Views = haDash.Views || {};
     },
 
     render: function() {
+      console.log('render');
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
