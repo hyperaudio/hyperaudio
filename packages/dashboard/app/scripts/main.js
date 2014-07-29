@@ -12,9 +12,11 @@ if (document.location.hostname.indexOf('hyperaud') > 0) {
 var prefix = '';
 if (namespace) prefix = namespace + '.';
 
-var domain = 'hyperaudio.net'; //default use staging
+var domain;
 if (document.location.hostname.indexOf('hyperaud.io') > 0) {
-  domain = 'hyperaud.io';//live
+  domain = 'hyperaud.io';
+} else {
+   domain = 'hyperaudio.net';
 }
 
 window.haDash = {
