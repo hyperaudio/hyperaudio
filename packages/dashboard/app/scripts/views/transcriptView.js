@@ -16,7 +16,7 @@ haDash.Views = haDash.Views || {};
     },
 
     render: function() {
-      console.log('render ' + JSON.stringify(this.model.get('status')));
+      console.log('render ' + this.model.get('status'));
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
@@ -90,8 +90,7 @@ haDash.Views = haDash.Views || {};
           self.model.fetch({
             success: function(model) {
               console.log(model);
-              self.model = model;
-              self.render();
+              // self.render();
               self.refresh();
             }
           });

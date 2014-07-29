@@ -370,9 +370,9 @@ __e( type ) +
 __e( label ) +
 '</span></td>\n<td class="span3">\n  <span class="tDesc editable" data-field="desc">' +
 __e( desc ) +
-'</span>\n  <br> ';
-if (status) { print (status.status) } ;
-__p += '\n</td>\n<td class="span1"><span class="timeago" title="' +
+'</span>\n  <br> ' +
+__e( status ) +
+'\n</td>\n<td class="span1"><span class="timeago" title="' +
 __e( modified ) +
 '">' +
 __e( modified ) +
@@ -1538,7 +1538,7 @@ haDash.Views = haDash.Views || {};
     },
 
     render: function() {
-      console.log('render ' + JSON.stringify(this.model.get('status')));
+      console.log('render ' + this.model.get('status'));
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
@@ -1612,8 +1612,7 @@ haDash.Views = haDash.Views || {};
           self.model.fetch({
             success: function(model) {
               console.log(model);
-              self.model = model;
-              self.render();
+              // self.render();
               self.refresh();
             }
           });
