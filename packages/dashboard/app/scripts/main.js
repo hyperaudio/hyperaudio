@@ -12,16 +12,18 @@ if (document.location.hostname.indexOf('hyperaud') > 0) {
 var prefix = '';
 if (namespace) prefix = namespace + '.';
 
-var stage;
-stage ='api.hyperaudio.net/v1';
+var domain = 'hyperaudio.net'; //default use staging
+if (document.location.hostname.indexOf('hyperaud.io') > 0) {
+  domain = 'hyperaud.io';//live
+}
 
 window.haDash = {
-  
+
   namespace: namespace,
 
   // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
   // API: 'http://' + prefix + stage,
-  API: 'http://' + prefix + 'api.hyperaud.io/v1',
+  API: 'http://' + prefix + 'api.' + domain + '/v1',
   Models: {},
   Collections: {},
   Views: {},
