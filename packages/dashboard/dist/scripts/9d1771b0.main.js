@@ -1612,8 +1612,12 @@ haDash.Views = haDash.Views || {};
       if (this.model.get('status') == null || !this.model.get('status').alignment) {
         var self = this;
         this.refreshing = setInterval(function() {
-          self.model.fetch();
-          self.refresh();//FIXME
+          self.model.fetch({
+            success: function() {
+              console.log(this);
+              self.refresh();
+            }
+          });
         }, 2000);
       }
     },
