@@ -368,9 +368,11 @@ __p += '<td class="span1">' +
 __e( type ) +
 '</td>\n<td class="span2 label"><span class="tLabel editable" data-field="label">' +
 __e( label ) +
-'</span></td>\n<td class="span3"><span class="tDesc editable" data-field="desc">' +
+'</span></td>\n<td class="span3">\n  <span class="tDesc editable" data-field="desc">' +
 __e( desc ) +
-'</span></td>\n<td class="span1"><span class="timeago" title="' +
+'</span>\n  <br> ' +
+__e( status.status ) +
+'\n</td>\n<td class="span1"><span class="timeago" title="' +
 __e( modified ) +
 '">' +
 __e( modified ) +
@@ -1617,6 +1619,7 @@ haDash.Views = haDash.Views || {};
         this.remove();
       }
 
+      var self = this;
       $.ajax({
         url: haDash.API + '/transcripts/' + this.model.id + '/align',
         contentType: "application/json; charset=utf-8",
@@ -1629,6 +1632,7 @@ haDash.Views = haDash.Views || {};
       })
       .done(function() {
           console.log('OK');
+          self.refresh();
         })
       .fail(function() {
         console.log('ERR');

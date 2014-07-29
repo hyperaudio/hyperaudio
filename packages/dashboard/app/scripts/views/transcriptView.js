@@ -98,6 +98,7 @@ haDash.Views = haDash.Views || {};
         this.remove();
       }
 
+      var self = this;
       $.ajax({
         url: haDash.API + '/transcripts/' + this.model.id + '/align',
         contentType: "application/json; charset=utf-8",
@@ -110,6 +111,7 @@ haDash.Views = haDash.Views || {};
       })
       .done(function() {
           console.log('OK');
+          self.refresh();
         })
       .fail(function() {
         console.log('ERR');
