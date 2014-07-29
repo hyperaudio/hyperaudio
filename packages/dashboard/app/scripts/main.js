@@ -16,7 +16,7 @@ var domain;
 if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaud.io';
 } else {
-   domain = 'hyperaudio.net';
+  domain = 'hyperaudio.net';
 }
 
 window.haDash = {
