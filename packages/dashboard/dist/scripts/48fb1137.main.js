@@ -1610,7 +1610,7 @@ haDash.Views = haDash.Views || {};
         var self = this;
         this.refreshing = setInterval(function() {
           self.model.fetch({
-            url: haDash.API + '/transcripts/' + self.model.id
+            url: haDash.API + '/transcripts/' + self.model.id,
             success: function(model) {
               console.log(model);
               // self.render();
