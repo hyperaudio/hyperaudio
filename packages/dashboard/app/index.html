@@ -163,5 +163,8 @@
 
         document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
         </script>
+        <script>
+        var socket = io.connect('//' + prefix + 'api.' + domain + '/');
+        </script>
 </body>
 </html>

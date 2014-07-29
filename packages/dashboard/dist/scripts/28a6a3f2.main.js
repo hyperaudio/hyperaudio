@@ -100,18 +100,18 @@ window.haDash = {
     }
   },
 
-  socket: null,
+  // socket: null,
 
   socketConnect: function () {
-    haDash.socket = io.connect('//' + prefix + 'api.' + domain + '/');
+    // window.socket = io.connect('//' + prefix + 'api.' + domain + '/');
 
-    haDash.socket.on(haDash.user, function (data) {
+    window.socket.on(haDash.user, function (data) {
       console.log(data);
     });
   },
 
   socketDisconnect: function () {
-    if (haDash.socket) haDash.socket.disconnect();
+    if (window.socket) haDash.socket.disconnect();
   }
 };
 
