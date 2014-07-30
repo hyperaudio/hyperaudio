@@ -218,9 +218,9 @@ module.exports = function(app, nconf, io) {
                 //   align: JSON.parse(data)
                 // });
                 // part = "";
-              transcript.status = JSON.parse(data);
+              transcript.status = JSON.parse(data).status;
               transcript.save(function(){});
-              io.sockets.emit(transcript._id, transcript.status);
+              if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
               } catch (err) {
                 console.log('err skipping');
@@ -262,8 +262,9 @@ module.exports = function(app, nconf, io) {
                         transcript.meta = {};
                       }
                       transcript.meta.align = JSON.parse(result2);
-                      transcript.status = transcript.meta.align;
-              	      io.sockets.emit(transcript._id, transcript.status);
+                      transcript.status = "";
+                      if (transcript.meta.align.status) transcript.status = transcript.meta.align.status;
+              	      if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
                       var hypertranscript = "<article><header></header><section><header></header><p>";
                       var al = transcript.meta.align.alignment;
