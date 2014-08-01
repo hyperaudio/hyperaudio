@@ -1230,9 +1230,11 @@ haDash.Views = haDash.Views || {};
     delete: function() {
       if (this.notMutable()) return;
       this.model.destroy({
-        url: haDash.API + '/media/' + this.model.id
+        url: haDash.API + '/media/' + this.model.id,
+        success: function() {
+          haDash.router.navigate("/media/", {trigger: true});
+        }
       });
-      haDash.router.navigate("/media/", {trigger: true});
     },
 
     saveTags: function() {
