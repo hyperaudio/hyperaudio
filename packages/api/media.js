@@ -490,7 +490,7 @@ module.exports = function(app, nconf) {
 
   app.get('/v1/about', function(req, res) {
     var url = req.query.url;
-    var request = http.get("http://www.google.com/images/srpr/logo4w.png", function (response) {
+    var request = http.get(url, function (response) {
         console.log("Response headers:", response.headers);
         var data = '';
 
@@ -503,7 +503,7 @@ module.exports = function(app, nconf) {
         });
 
         response.on('end', function() {
-          console.log("data: ", chunk);
+          console.log("data: ", data);
           // res.send(data);
         });
     });
