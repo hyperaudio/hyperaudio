@@ -2,6 +2,7 @@ var fs = require('fs');
 var youtubedl = require('youtube-dl');
 var path = require('path');
 var http = require('http');
+var https = require('https');
 
 var passport = require('passport');
 var mongoose = require('mongoose');
@@ -490,7 +491,11 @@ module.exports = function(app, nconf) {
 
   app.post('/v1/about', function(req, res) {
     var url = req.body.url;
-    var request = http.get(url, function (response) {
+
+    var httpx = http;
+    if (url.toLowerCase().indexOf('https') == 0) httpx = https;
+
+    var request = httpx.get(url, function (response) {
         console.log("Response headers:", response.headers);
         var data = '';
         var skip = true;
