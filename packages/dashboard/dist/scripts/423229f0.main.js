@@ -1235,7 +1235,7 @@ haDash.Views = haDash.Views || {};
         success: function(model, response, options) {
           console.log(model, response, options);
           haDash.router.navigate("/media/", {trigger: true});
-        }
+        },
         error: function(model, response, options) {
           console.log('error');
           console.log(model, response, options);
