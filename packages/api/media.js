@@ -493,9 +493,14 @@ module.exports = function(app, nconf) {
     var request = http.get(url, function (response) {
         console.log("Response headers:", response.headers);
         var data = '';
+        var skip = true;
 
-        response.destroy();
-        res.send(response.headers);
+        if (response.headers['content-type'] && response.headers['content-type'].indexOf('text/html') == 0) {
+          skip = false;
+        } else {
+          response.destroy();
+          res.send(response.headers);
+        }
 
         response.on("data", function (chunk) {
             console.log("received data chunk: ", chunk);
@@ -504,7 +509,7 @@ module.exports = function(app, nconf) {
 
         response.on('end', function() {
           console.log("data: ", data);
-          // res.send(data);
+          if (!skip) res.send(data);
         });
     });
   });
