@@ -119,9 +119,13 @@ haDash.Views = haDash.Views || {};
         });
       } else if (url.toLowerCase().indexOf('archive.org') >= 0) {
         console.log('IA detected, trying magic.');
+
+
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
-        var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
-        $.get(curl, function (page) {
+        // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
+        // $.get(curl, function (page) {
+        var curl = 'http://api.hyperaudio.net/v1/about';
+        $.post(curl, {url: curl}, function (page) {
 
           var title = $(page).filter('meta[property="og:title"]').attr('content');
           var desc = $(page).filter('meta[property="og:description"]').attr('content');
@@ -167,6 +171,9 @@ haDash.Views = haDash.Views || {};
           });
           ////
         });
+
+
+
       } else {
         if (confirm('Cannot recognise this URL as an YouTube Video; choose [cancel] to abort or [ok] to continue')) {
 
