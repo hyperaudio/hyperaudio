@@ -488,8 +488,8 @@ module.exports = function(app, nconf) {
     });
   });
 
-  app.get('/v1/about', function(req, res) {
-    var url = req.query.url;
+  app.post('/v1/about', function(req, res) {
+    var url = req.body.url;
     var request = http.get(url, function (response) {
         console.log("Response headers:", response.headers);
         var data = '';
