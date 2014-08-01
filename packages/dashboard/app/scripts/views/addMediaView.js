@@ -125,7 +125,7 @@ haDash.Views = haDash.Views || {};
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
         var curl = 'http://api.hyperaudio.net/v1/about';
-        $.post(curl, {url: curl}, function (page) {
+        $.post(curl, {url: url}, function (page) {
 
           var title = $(page).filter('meta[property="og:title"]').attr('content');
           var desc = $(page).filter('meta[property="og:description"]').attr('content');
