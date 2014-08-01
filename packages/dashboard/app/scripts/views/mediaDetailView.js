@@ -101,7 +101,14 @@ haDash.Views = haDash.Views || {};
       if (this.notMutable()) return;
       this.model.destroy({
         url: haDash.API + '/media/' + this.model.id,
-        success: function() {
+        wait: true,
+        success: function(model, response, options) {
+          console.log(model, response, options);
+          haDash.router.navigate("/media/", {trigger: true});
+        }
+        error: function(model, response, options) {
+          console.log('error');
+          console.log(model, response, options);
           haDash.router.navigate("/media/", {trigger: true});
         }
       });
