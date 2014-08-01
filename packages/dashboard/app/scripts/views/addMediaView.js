@@ -186,7 +186,7 @@ haDash.Views = haDash.Views || {};
               return;
             }
 
-            if (info['content-type'].indexOf('video') != 0 || info['content-type'].indexOf('audio') != 0 ) {
+            if (info['content-type'].indexOf('video') != 0 && info['content-type'].indexOf('audio') != 0 ) {
               alert('URL points to ' + info['content-type'] + ' which is not to a media file');
               return;
             }
