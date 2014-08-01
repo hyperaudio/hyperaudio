@@ -1391,7 +1391,7 @@ haDash.Views = haDash.Views || {};
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
-        var curl = 'http://api.hyperaudio.net/v1/about';
+        var curl = 'http://api.hyperaudio.net/v1/about';//FIXME use proper API endpoint (domain, prefix)
         $.post(curl, {url: url}, function (page) {
 
           var title = $(page).filter('meta[property="og:title"]').attr('content');
@@ -1442,33 +1442,48 @@ haDash.Views = haDash.Views || {};
 
 
       } else {
-        if (confirm('Cannot recognise this URL as an YouTube Video; choose [cancel] to abort or [ok] to continue')) {
+        if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
-          // non YT, hope for the best
-          model.set('owner', haDash.user);
-          model.set('label', 'n/a');
-          model.set('label', 'n/a');
-          model.set('desc', url);
-          model.set('meta', {});
-          model.set('source', {
-            "unknown": {
-              "url": url
+
+          var curl = 'http://api.hyperaudio.net/v1/about';//FIXME use proper API endpoint (domain, prefix)
+          $.post(curl, {url: url}, function (info) {
+            console.log(info);
+            if (typeof info == 'string') {
+              alert('URL points to a page not to a media file');
+              return;
             }
-          });
 
-          console.log(model);
-
-          haDash.mediaListView.collection.add(model);
-
-          model.save(null, {
-            success: function() {
-              haDash.router.navigate("media/", {trigger: true});
-              view.remove();
+            if (info['content-type'].indexOf('video') != 0 || info['content-type'].indexOf('audio') != 0 ) {
+              alert('URL points to ' + info['content-type'] + ' which is not to a media file');
+              return;
             }
-          });
-        }
 
-      }
+            var source = {};
+            var type = info['content-type'].split('/')[1];
+            source[type] = url;
+
+            // non YT, hope for the best
+            model.set('owner', haDash.user);
+            model.set('label', 'n/a');
+            model.set('desc', url);
+            model.set('meta', {});
+            model.set('source', source);
+
+            console.log(model);
+
+            haDash.mediaListView.collection.add(model);
+
+            model.save(null, {
+              success: function() {
+                haDash.router.navigate("media/", {trigger: true});
+                view.remove();
+              }
+            });
+
+          });//post
+        }//confirm
+
+      }//else
     }
 
     });
