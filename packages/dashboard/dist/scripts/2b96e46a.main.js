@@ -241,9 +241,9 @@ __e( channel ) +
 
 print(tags.join(','));
 ;
-__p += '"></p>\n\n\n<!-- <a class="button primary" href="/maker/?m=' +
+__p += '"></p>\n\n\n<a class="button primary" href="/maker/?m=' +
 __e( _id) +
-'">Create Transcript</a> -->\n<a class="button primary" href="/converter/?m=' +
+'">Create Transcript</a>\n<a class="button primary" href="/converter/?m=' +
 __e( _id) +
 '">Convert Transcript</a>\n\n';
  if (owner == haDash.user) { ;
