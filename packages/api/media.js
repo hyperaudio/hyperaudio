@@ -495,7 +495,7 @@ module.exports = function(app, nconf) {
         var data = '';
         var skip = true;
 
-        if (response.headers['content-type'] && response.headers['content-type'].indexOf('text/html') == 0) {
+        if (response.headers['content-type'] && response.headers['content-type'].indexOf('text') == 0) {
           skip = false;
         } else {
           response.destroy();
