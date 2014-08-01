@@ -1,6 +1,7 @@
 var fs = require('fs');
 var youtubedl = require('youtube-dl');
 var path = require('path');
+var http = require('http');
 
 var passport = require('passport');
 var mongoose = require('mongoose');
@@ -484,6 +485,27 @@ module.exports = function(app, nconf) {
           error: err
         });
       });
+    });
+  });
+
+  app.get('/v1/about', function(req, res) {
+    var url = req.query.url;
+    var request = http.get("http://www.google.com/images/srpr/logo4w.png", function (response) {
+        console.log("Response headers:", response.headers);
+        var data = '';
+
+        response.destroy();
+        res.send(response.headers);
+
+        response.on("data", function (chunk) {
+            console.log("received data chunk: ", chunk);
+            data += chunk;
+        });
+
+        response.on('end', function() {
+          console.log("data: ", chunk);
+          // res.send(data);
+        });
     });
   });
 
