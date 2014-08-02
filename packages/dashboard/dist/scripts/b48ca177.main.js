@@ -384,7 +384,13 @@ __p += '\n    ';
  if (type == "text") { ;
 __p += '\n    <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Edit</a>\n    <button class="button align small primary">Align</button>\n  ';
+'">Edit</a>\n    ';
+ if (status && status != '') { ;
+__p += '\n    <button class="button align small primary">Align</button>\n    ';
+ } else { ;
+__p += '\n    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n    ';
+ } ;
+__p += '\n  ';
  } else if (type == "html") { ;
 __p += '\n    <a class="button small" href="/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
@@ -398,7 +404,7 @@ __p += '\n    <button class="button tDelete">Delete</button>\n  ';
  } else { ;
 __p += '\n    <button class="button tClone">Clone</button>\n  ';
  } ;
-__p += '\n</td>\n';
+__p += '\n</td>\n\n\n';
 
 }
 return __p
