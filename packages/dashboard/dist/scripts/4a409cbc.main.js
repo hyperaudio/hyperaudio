@@ -386,9 +386,9 @@ __p += '\n    <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n    ';
  if (status && status != '') { ;
-__p += '\n    <button class="button align small primary">Align</button>\n    ';
- } else { ;
 __p += '\n    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n    ';
+ } else { ;
+__p += '\n    <button class="button align small primary">Align</button>\n    ';
  } ;
 __p += '\n  ';
  } else if (type == "html") { ;

@@ -11,9 +11,9 @@
     <% if (type == "text") { %>
     <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
     <% if (status && status != '') { %>
-    <button class="button align small primary">Align</button>
-    <% } else { %>
     <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
+    <% } else { %>
+    <button class="button align small primary">Align</button>
     <% } %>
   <% } else if (type == "html") { %>
     <a class="button small" href="/cleaner/?t=<%= _id%>">Clean</a>
