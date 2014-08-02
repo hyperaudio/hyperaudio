@@ -364,21 +364,29 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<td class="span1">' +
-__e( type ) +
-'</td>\n<td class="span2 label"><span class="tLabel editable" data-field="label">' +
+__p += '<td class="span2 label"><span class="tLabel editable" data-field="label">' +
 __e( label ) +
 '</span></td>\n<td class="span3">\n  <span class="tDesc editable" data-field="desc">' +
 __e( desc ) +
-'</span>\n  <br> ' +
-__e( status ) +
-'\n</td>\n<td class="span1"><span class="timeago" title="' +
+'</span>\n</td>\n<td class="span1"><span class="timeago" title="' +
 __e( modified ) +
 '">' +
 __e( modified ) +
 '</span></td>\n<td>' +
 __e( owner ) +
-'</td>\n<td>\n  ';
+'</td>\n<td class="span1">\n  ';
+ if (type == "text") { ;
+__p += '\n  not aligned\n  ';
+ } else if (type == "html") { ;
+__p += '\n  aligned\n  ';
+ } else if (type == "srt") { ;
+__p += '\n  not converted\n  ';
+ } else { ;
+__p += '\n  n/a\n  ';
+ } ;
+__p += '\n  <br>' +
+__e( status ) +
+'\n</td>\n<td>\n  ';
  if (owner == haDash.user) { ;
 __p += '\n    ';
  if (type == "text") { ;
@@ -414,7 +422,7 @@ this["JST"]["app/scripts/templates/transcriptList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<table class="user">\n  <caption>Your Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span1"></th>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="your">\n  </tbody>\n</table>\n\n<p>&nbsp;</p>\n<p>&nbsp;</p>\n\n<table>\n  <caption>Available Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span1"></th>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="other">\n  </tbody>\n</table>\n';
+__p += '<table class="user">\n  <caption>Your Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="your">\n  </tbody>\n</table>\n\n<p>&nbsp;</p>\n<p>&nbsp;</p>\n\n<table>\n  <caption>Available Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="other">\n  </tbody>\n</table>\n';
 
 }
 return __p
