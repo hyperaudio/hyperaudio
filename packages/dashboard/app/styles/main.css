@@ -53,3 +53,8 @@ caption.expanded:before {
 
 caption.expanded, caption.collapsed {
   cursor: pointer; }
+
+tr.lone {
+  display: none; }
+  tr.lone:only-child {
+    display: table-row; }

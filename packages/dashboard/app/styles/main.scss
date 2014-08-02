@@ -91,3 +91,11 @@ caption.expanded:before {
 caption.expanded, caption.collapsed {
   cursor: pointer;
 }
+
+tr.lone {
+  display: none;
+  &:only-child {
+    display: table-row;
+  }
+}
+
