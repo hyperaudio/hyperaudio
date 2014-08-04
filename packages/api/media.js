@@ -1,4 +1,8 @@
 var fs = require('fs');
+var youtubedl = require('youtube-dl');
+var path = require('path');
+var http = require('http');
+var https = require('https');
 
 var passport = require('passport');
 var mongoose = require('mongoose');
@@ -9,12 +13,6 @@ var urlSafeBase64 = require('urlsafe-base64');
 var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 var Metadata = require('./models/metadata');
-
-var fivebeans = require('fivebeans');
-var client = new fivebeans.client('127.0.0.1', 11300);
-client.connect(function(err) {
-  if (err) throw err;
-});
 
 
 // FIXME: rename to ensureUsername
@@ -237,8 +235,6 @@ module.exports = function(app, nconf) {
   });
 
 
-
-
   var transcriptsOf = function (mediaObjects, transcripts, res, user, type) {
     if (mediaObjects.length == 0) {
       // transcripts.sort();
@@ -450,20 +446,20 @@ module.exports = function(app, nconf) {
     });
 
     // download and probe (probe is next in queue from download)
-    client.use("download", function(err, tubename) {
-      if (err) throw err;
+    // client.use("download", function(err, tubename) {
+    //   if (err) throw err;
 
-      client.put(1, 0, 0, JSON.stringify(['download', {
-        type: "media",
-        payload: {
-          media: mediaObject,
-          meta: metadata
-        }
-      }]), function(err, jobid) {
-        if (err) throw err;
-      });
+    //   client.put(1, 0, 0, JSON.stringify(['download', {
+    //     type: "media",
+    //     payload: {
+    //       media: mediaObject,
+    //       meta: metadata
+    //     }
+    //   }]), function(err, jobid) {
+    //     if (err) throw err;
+    //   });
 
-    });
+    // });
 
 
     return res.send(mediaObject);
@@ -490,6 +486,36 @@ module.exports = function(app, nconf) {
           error: err
         });
       });
+    });
+  });
+
+  app.post('/v1/about', function(req, res) {
+    var url = req.body.url;
+
+    var httpx = http;
+    if (url.toLowerCase().indexOf('https') == 0) httpx = https;
+
+    var request = httpx.get(url, function (response) {
+        console.log("Response headers:", response.headers);
+        var data = '';
+        var skip = true;
+
+        if (response.headers['content-type'] && response.headers['content-type'].indexOf('text') == 0) {
+          skip = false;
+        } else {
+          response.destroy();
+          res.send(response.headers);
+        }
+
+        response.on("data", function (chunk) {
+            console.log("received data chunk: ", chunk);
+            data += chunk;
+        });
+
+        response.on('end', function() {
+          console.log("data: ", data);
+          if (!skip) res.send(data);
+        });
     });
   });
 

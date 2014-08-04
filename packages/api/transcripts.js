@@ -4,15 +4,13 @@ var Transcript = require('./models/transcript');
 var fs = require('fs');
 var path = require('path');
 var url = require('url');
+var youtubedl = require('youtube-dl');
 
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
 
-var fivebeans = require('fivebeans');
-var client = new fivebeans.client('127.0.0.1', 11300);
-client.connect(function(err) {
-  if (err) throw err;
-});
+var querystring = require('querystring');
+var http = require('http');
 
 
 function ensureOwnership(req, res, next) {
@@ -35,7 +33,7 @@ function ensureOwnership(req, res, next) {
   }
 }
 
-module.exports = function(app, nconf) {
+module.exports = function(app, nconf, io) {
 
   app.get('/v1/:user?/transcripts', function(req, res) {
 
@@ -156,26 +154,157 @@ module.exports = function(app, nconf) {
   });
 
 
+  var getMediaUrl = function (mediaObject, callback) {
+    if (mediaObject.source.mp4) {
+      callback(mediaObject.source.mp4.url);
+    } else {
+      //assume yt
+      var video = youtubedl.getInfo(mediaObject.source.youtube.url, [], function(err, info) {
+        if (err) throw err;
+
+        console.log('id:', info.id);
+        console.log('title:', info.title);
+        console.log('url:', info.url);
+        console.log('thumbnail:', info.thumbnail);
+        console.log('description:', info.description);
+        console.log('filename:', info.filename);
+        console.log('itag:', info.itag);
+        console.log('resolution:', info.resolution);
+
+        callback(info.url);
+      });
+    }
+  }
+
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
   app.post('/v1/:user?/transcripts/:id/align', function(req, res) {
 
-    //.populate('media')
-    return Transcript.findById(req.params.id).exec(function(err, transcript) {
+    return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
 
-      if (transcript.type == 'text' && transcript.media) {
+      getMediaUrl(transcript.media, function(url) {
+        if (transcript.type == 'text' && transcript.media && url) {
+          var options = {
+            host: 'mod9.184.73.157.200.xip.io',
+            port: 80,
+            path: '/mod9/align/v0.7?' + querystring.stringify({
+              audio: url,
+              text: 'http://api.hyperaudio.net/v1/transcripts/' + transcript._id + '/text',
+              mode: 'stream',
+              skip: 'True',
+              prune: 0
+            }),
+            headers: {
+              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+            }
+          };
 
-        client.use("align", function(err, tubename) {
-          if (err) throw err;
-          client.put(1, 0, 0, JSON.stringify(['align', {
-            type: "transcript",
-            payload: transcript
-          }]), function(err, jobid) {
-            if (err) throw err;
+
+          request = http.get(options, function(res1) {
+            var result = [];
+            var part = null;
+
+            console.log('Request in progress...');
+
+            res1.on('data', function(data) {
+              console.log('DATA ' + data);
+              if (part) part += data;
+              try {
+                // data = part + data;
+                result.push([process.hrtime(), JSON.parse(data)]);
+                // socket.emit('mod9', {
+                //   user: payload.owner,
+                //   transcript: payload._id,
+                //   align: JSON.parse(data)
+                // });
+                // part = "";
+              transcript.status = JSON.parse(data).status;
+              transcript.save(function(){});
+              if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
+
+              } catch (err) {
+                console.log('err skipping');
+                part = data;
+              }
+            });
+
+            res1.on('end', function() {
+              console.log('END');
+              console.log(result);
+              console.log('JOBID? ' + result[0][1].jobid);
+
+              var options2 = {
+                host: 'mod9.184.73.157.200.xip.io',
+                port: 80,
+                path: '/mod9/align/v0.7?' + querystring.stringify({
+                  jobid: result[0][1].jobid,
+                  mode: 'poll'
+                }),
+                headers: {
+                  'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+                }
+              };
+
+              console.log(options2);
+
+              request2 = http.get(options2, function(res2) {
+
+                var result2 = "";
+
+                res2.on('data', function(data2) {
+                  console.log('DATAX ' + data2);
+                  result2 += data2;
+                });
+
+                res2.on('end', function(){
+                      transcript.type = "text";
+                      if (!transcript.meta) {
+                        transcript.meta = {};
+                      }
+                      transcript.meta.align = JSON.parse(result2);
+                      transcript.status = "";
+                      if (transcript.meta.align.status) transcript.status = transcript.meta.align.status;
+              	      if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
+
+                      var hypertranscript = "<article><header></header><section><header></header><p>";
+                      var al = transcript.meta.align.alignment;
+                      for (var i = 0; i < al.length; i++) {
+                         hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+                      }
+                      hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+
+                      transcript.content = hypertranscript;
+                      transcript.type = 'html';
+
+                      transcript.save(function(err) {
+                        console.log('SAVING? ' + err);
+                        console.log(transcript);
+
+                        if (!err) {
+                          // callback('success');
+                          return res.send(transcript);
+                        } else {
+                          console.log(err);
+                        }
+                      });
+
+                });
+
+              });//req2
+              /////
+            });//req1.end
+
+            res1.on('error', function(e) {
+              console.log("Got error: " + e.message);
+              // process.disconnect();
+              // callback('bury');
+            });
           });
 
-        });
-      }
+        } else {// if text & media
+          // return res.send({error: 'not text, or no media, or no url'});
+        }
+      });//getMediaUrl
 
       return res.send(transcript);
     });

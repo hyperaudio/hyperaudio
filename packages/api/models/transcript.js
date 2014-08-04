@@ -10,6 +10,7 @@ var Transcript = new mongoose.Schema({
   owner: String,
   namespace: String,
   meta: Schema.Types.Mixed,
+  status: Schema.Types.Mixed,
   created: {
     type: Date,
     default: Date.now

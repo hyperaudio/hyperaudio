@@ -131,8 +131,6 @@ app.get('/v1/whoami', function(req, res) {
     req.session.user = null;
   }
 
-  // if (req.recall) req.recall.user = req.session.user;
-
   res.json({
     user: req.session.user
   });
@@ -192,19 +190,13 @@ app.post('/v1/register', function(req, res) {
     });
 });
 
-
-require('./media')(app, nconf);
-require('./transcripts')(app, nconf);
-require('./mixes')(app, nconf);
-require('./subscribers')(app, nconf);
+var io;
+require('./media')(app, nconf, io);
+require('./transcripts')(app, nconf, io);
+require('./mixes')(app, nconf, io);
 
 
 app.post('/v1/error/:component', function(req, res) {
-  // cube("error_" + req.param.component, {
-  //   user: req.body.user,
-  //   errorReport: req.body.errorReport
-  // });
-
   res.json({});
 });
 
@@ -212,6 +204,19 @@ app.post('/v1/error/:component', function(req, res) {
 var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
+
+io = require('socket.io')(server);
+var redis = require('socket.io-redis');
+io.adapter(redis({ host: 'localhost', port: 6379 }));
+
+io.on('connection', function (socket) {
+  socket.emit('news', { hello: 'world' });
+  socket.on('my other event', function (data) {
+    console.log(data);
+  });
+});
+
+
 
 
 process.on('SIGINT', function() {
