@@ -11,7 +11,7 @@ RewriteRule ^beta-signup/(.*)$ /dashboard/ [L]
 #RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io\z
 #RewriteRule ^(.*)$ _org/chattanooga/index.html [L]
 
-
+#chattanooga
 
 RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io
 RewriteCond %{REQUEST_URI} ^/$
@@ -20,3 +20,16 @@ RewriteRule ^(.*)$ _org/chattanooga/ [L]
 RewriteCond %{HTTP_HOST} ^chattanooga.hyperaud.io
 RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
 RewriteRule ^(.*)$ _org/chattanooga/assets/stylesheets/css/custom.css [L]
+
+#trent
+
+RewriteCond %{HTTP_HOST} ^trent.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/trent/ [L]
+
+RewriteCond %{HTTP_HOST} ^trent.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/trent/assets/stylesheets/css/custom.css [L]
+
+
+
