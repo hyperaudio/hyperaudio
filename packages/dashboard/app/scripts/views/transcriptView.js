@@ -88,7 +88,7 @@ haDash.Views = haDash.Views || {};
         var self = this;
         this.refreshing = setInterval(function() {
           self.model.fetch({
-            url: haDash.API + '/transcripts/' + self.model.id + '?salt=' + Math.random(),
+            url: haDash.API + '/transcripts/' + self.model.id + '/poll?salt=' + Math.random(),
             success: function(model) {
               console.log(model);
               // self.render();
