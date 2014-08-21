@@ -140,6 +140,8 @@ module.exports = function(app, nconf, io) {
 
                 transcript.content = hypertranscript;
                 transcript.type = 'html';
+
+                transcript.meta.status.alignment = true;
               }
 
               transcript.save(function(err) {
