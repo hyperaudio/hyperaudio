@@ -56,5 +56,8 @@ caption.expanded, caption.collapsed {
 
 tr.lone {
   display: none; }
-  tr.lone:only-child {
+
+.ajax tr.lone {
+  display: none; }
+  .ajax tr.lone:only-child {
     display: table-row; }

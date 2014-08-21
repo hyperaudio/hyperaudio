@@ -130,10 +130,18 @@ $(document).ready(function() {
         // if(typeof that.get('_csrf') !== 'undefined') {
         //   jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
         // }
-    });
+  });
 
-    TraceKit.report.subscribe(function (errorReport) {
-      $.ajax({
+  $.ajaxStart(function(){
+    $('body').addClass('ajax');
+  });
+
+  $.ajaxComplete(function(){
+    $('body').removeClass('ajax');
+  });
+
+  TraceKit.report.subscribe(function (errorReport) {
+    $.ajax({
       url: haDash.API + '/error/dashboard',
       contentType: "application/json; charset=utf-8",
       dataType: "json",
@@ -146,7 +154,7 @@ $(document).ready(function() {
         errorReport: errorReport
       })
     });
-    });
+  });
 
   haDash.whoami(function(){
     haDash.init();

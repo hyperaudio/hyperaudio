@@ -94,6 +94,10 @@ caption.expanded, caption.collapsed {
 
 tr.lone {
   display: none;
+}
+
+.ajax tr.lone {
+  display: none;
   &:only-child {
     display: table-row;
   }
