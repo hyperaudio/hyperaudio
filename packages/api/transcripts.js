@@ -185,8 +185,8 @@ module.exports = function(app, nconf, io) {
 
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
-          var lang = transcript.meta.lang;
-          if (!lang) lang = 'en';
+          var lang = 'en';
+          if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
           var options = {
             host: '54.197.237.1',
             port: 80,
