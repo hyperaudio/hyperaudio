@@ -276,7 +276,7 @@ module.exports = function(app, nconf, io) {
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
 
-          if (!transcript.meta) transcript.meta = {status:null};
+          if (!transcript.meta) transcript.meta = {status: {}};
 
           var lang = 'en';
           if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
@@ -322,7 +322,9 @@ module.exports = function(app, nconf, io) {
               transcript.meta.status = JSON.parse(data);
               transcript.meta.mod9 = JSON.parse(data);
               transcript.meta.mod9.input = options;
-              transcript.save(function(){});
+              transcript.save(function(){
+                return res.send(transcript);
+              });
               // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
               } catch (err) {
@@ -336,6 +338,14 @@ module.exports = function(app, nconf, io) {
               console.log(result);
               console.log('JOBID? ' + result[0][1].jobid);
 
+              // transcript.status = JSON.parse(data).status;
+              // transcript.meta.status = JSON.parse(data);
+              // transcript.meta.mod9 = JSON.parse(data);
+              // transcript.meta.mod9.input = options;
+
+              transcript.save(function(){
+                return res.send(transcript);
+              });
 
               /////
             });//req.end
@@ -347,10 +357,11 @@ module.exports = function(app, nconf, io) {
 
         } else {// if text & media
           // return res.send({error: 'not text, or no media, or no url'});
+          return res.send(transcript);
         }
       });//getMediaUrl
 
-      return res.send(transcript);
+      //return res.send(transcript);
     });
   });
 
