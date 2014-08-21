@@ -108,16 +108,16 @@ module.exports = function(app, nconf, io) {
 
           console.log(options);
 
-          request = http.get(options, function(res) {
+          request = http.get(options, function(response) {
 
             var result = '';
 
-            res.on('data', function(data) {
+            response.on('data', function(data) {
               console.log('DATAX ' + data);
               result += data;
             });
 
-            res.on('end', function() {
+            response.on('end', function() {
               transcript.type = "text";
               if (!transcript.meta) transcript.meta = {};
 
