@@ -60,7 +60,7 @@ haDash.Routers = haDash.Routers || {};
         collection: haDash.mixCollection
       });
 
-      $main.empty().append(haDash.mixListView.render().el);
+      $main.empty().append(haDash.mixListView.renderEmpty().el);
       haDash.mixCollection.fetch();
     },
 
@@ -79,7 +79,7 @@ haDash.Routers = haDash.Routers || {};
           collection: haDash.mediaCollection
         });
       // }
-      $main.empty().append(haDash.mediaListView.render().el);
+      $main.empty().append(haDash.mediaListView.renderEmpty().el);
       haDash.mediaCollection.fetch();
 
     },

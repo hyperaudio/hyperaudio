@@ -549,7 +549,7 @@ haDash.Routers = haDash.Routers || {};
         collection: haDash.mixCollection
       });
 
-      $main.empty().append(haDash.mixListView.render().el);
+      $main.empty().append(haDash.mixListView.renderEmpty().el);
       haDash.mixCollection.fetch();
     },
 
@@ -568,7 +568,7 @@ haDash.Routers = haDash.Routers || {};
           collection: haDash.mediaCollection
         });
       // }
-      $main.empty().append(haDash.mediaListView.render().el);
+      $main.empty().append(haDash.mediaListView.renderEmpty().el);
       haDash.mediaCollection.fetch();
 
     },
@@ -719,6 +719,13 @@ haDash.Views = haDash.Views || {};
       this.listenTo(this.collection, 'sort', this.render);
     },
 
+    renderEmpty: function() {
+      this.$el.addClass('loading');
+      this.$el.addClass('empty');
+      this.$el.html(this.template());
+      return this;
+    },
+
     render: function() {
       this.$el.html(this.template());
       this.addAllItems();
@@ -782,6 +789,10 @@ haDash.Views = haDash.Views || {};
     },
 
     addAllItems: function() {
+      this.$el.removeClass('loading');
+      if (this.collection.length == 0) {
+        this.$el.addClass('empty');
+      } else this.$el.removeClass('empty');
       this.collection.each(this.addItem, this);
     },
 
@@ -1046,6 +1057,13 @@ haDash.Views = haDash.Views || {};
       // this.collection.fetch();
     },
 
+    renderEmpty: function() {
+      this.$el.addClass('loading');
+      this.$el.addClass('empty');
+      this.$el.html(this.template());
+      return this;
+    },
+
     render: function() {
       this.$el.html(this.template());
       // this.afterRender();
@@ -1115,6 +1133,10 @@ haDash.Views = haDash.Views || {};
     },
 
     addAllItems: function() {
+      this.$el.removeClass('loading');
+      if (this.collection.length == 0) {
+        this.$el.addClass('empty');
+      } else this.$el.removeClass('empty');
       // console.log('media adding all items: ' + this.collection.length);
       this.collection.each(this.addItem, this);
     },

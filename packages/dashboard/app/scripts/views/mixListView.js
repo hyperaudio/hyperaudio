@@ -17,6 +17,13 @@ haDash.Views = haDash.Views || {};
       this.listenTo(this.collection, 'sort', this.render);
     },
 
+    renderEmpty: function() {
+      this.$el.addClass('loading');
+      this.$el.addClass('empty');
+      this.$el.html(this.template());
+      return this;
+    },
+
     render: function() {
       this.$el.html(this.template());
       this.addAllItems();
@@ -80,6 +87,10 @@ haDash.Views = haDash.Views || {};
     },
 
     addAllItems: function() {
+      this.$el.removeClass('loading');
+      if (this.collection.length == 0) {
+        this.$el.addClass('empty');
+      } else this.$el.removeClass('empty');
       this.collection.each(this.addItem, this);
     },
 

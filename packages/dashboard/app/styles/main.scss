@@ -96,10 +96,16 @@ tr.lone {
   display: none;
 }
 
-.ajax tr.lone {
+// .ajax tr.lone {
+//   display: none;
+//   &:only-child {
+//     display: table-row;
+//   }
+// }
+
+.loading tr.lone {
   display: none;
   &:only-child {
     display: table-row;
   }
 }
-
