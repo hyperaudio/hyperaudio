@@ -18,6 +18,7 @@ haDash.Models = haDash.Models || {};
           // namespace: window.haDash.namespace,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
+          meta: {},
           media: null,
           status: null
         };

@@ -19,6 +19,7 @@ haDash.Models = haDash.Models || {};
         owner: null,
         namespace: window.haDash.namespace,
         tags: [],
+        meta: {},
         channel: null
       };
     }

@@ -456,6 +456,7 @@ haDash.Models = haDash.Models || {};
         owner: null,
         namespace: window.haDash.namespace,
         tags: [],
+        meta: {},
         channel: null
       };
     }
@@ -965,6 +966,7 @@ haDash.Models = haDash.Models || {};
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
           tags: [],
+          meta: {},
           channel: null
         };
       }
@@ -1564,6 +1566,7 @@ haDash.Models = haDash.Models || {};
           // namespace: window.haDash.namespace,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
+          meta: {},
           media: null,
           status: null
         };

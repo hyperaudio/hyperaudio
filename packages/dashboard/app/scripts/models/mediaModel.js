@@ -20,6 +20,7 @@ haDash.Models = haDash.Models || {};
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
           tags: [],
+          meta: {},
           channel: null
         };
       }
