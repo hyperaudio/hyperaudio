@@ -82,7 +82,8 @@ module.exports = function(app, nconf, io) {
 
   app.get('/v1/:user?/transcripts/:id/text', function(req, res) {
 
-    return Transcript.findById(req.params.id).exec(
+    //return Transcript.findById(req.params.id).exec(
+    return Transcript.findById(req.params.id).populate('media').exec(
       /*return Transcript.findById(req.params.id,*/
 
       function(err, transcript) {
@@ -184,21 +185,25 @@ module.exports = function(app, nconf, io) {
 
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
+          var lang = transcript.meta.lang;
+          if (!lang) lang = 'en';
           var options = {
-            host: 'mod9.184.73.157.200.xip.io',
+            host: '54.197.237.1',
             port: 80,
-            path: '/mod9/align/v0.7?' + querystring.stringify({
+            path: '/mod9/align/v0.8?' + querystring.stringify({
               audio: url,
-              text: 'http://api.hyperaudio.net/v1/transcripts/' + transcript._id + '/text',
+              lang: lang,
+              text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
               mode: 'stream',
               skip: 'True',
               prune: 0
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('cielo24' + ':' + 'cielo24').toString('base64')
             }
           };
 
+	console.log(options);
 
           request = http.get(options, function(res1) {
             var result = [];
