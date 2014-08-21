@@ -209,7 +209,7 @@ module.exports = function(app, nconf, io) {
       transcript.desc = req.body.desc;
       transcript.type = req.body.type;
       transcript.meta = req.body.meta;
-      if (!transcript.meta) transcript.meta = {};
+      if (!transcript.meta) transcript.meta = {status:null};
       transcript.media = req.body.media;
 
       if (req.params.media && req.params.media._id) {
@@ -268,6 +268,8 @@ module.exports = function(app, nconf, io) {
 
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
+
+          if (!transcript.meta) transcript.meta = {status:null};
 
           var lang = 'en';
           if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
@@ -361,7 +363,7 @@ module.exports = function(app, nconf, io) {
     }
 
     var meta = req.body.meta;
-    if (!meta) meta = {};
+    if (!meta) meta = {status:null};
     transcript = new Transcript({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
