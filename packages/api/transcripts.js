@@ -300,13 +300,13 @@ module.exports = function(app, nconf, io) {
 
 	       console.log(options);
 
-          request = http.get(options, function(res) {
+          request = http.get(options, function(response) {
             var result = [];
             var part = null;
 
             console.log('Request in progress...');
 
-            res.on('data', function(data) {
+            response.on('data', function(data) {
               console.log('DATA ' + data);
               if (part) part += data;
               try {
@@ -333,7 +333,7 @@ module.exports = function(app, nconf, io) {
               }
             });
 
-            res.on('end', function() {
+            response.on('end', function() {
               console.log('END');
               console.log(result);
               console.log('JOBID? ' + result[0][1].jobid);
@@ -350,7 +350,7 @@ module.exports = function(app, nconf, io) {
               /////
             });//req.end
 
-            res.on('error', function(e) {
+            response.on('error', function(e) {
               console.log("Got error: " + e.message);
             });
           });
