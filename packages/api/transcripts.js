@@ -98,8 +98,8 @@ module.exports = function(app, nconf, io) {
             host: '54.197.237.1',
             port: 80,
             path: '/mod9/align/v0.8?' + querystring.stringify({
-              jobid: jobid,
-              mode: 'poll'
+              jobid: jobid//,
+              // mode: 'poll'
             }),
             headers: {
               'Authorization': 'Basic ' + new Buffer('cielo24' + ':' + 'cielo24').toString('base64')
