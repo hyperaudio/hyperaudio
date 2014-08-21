@@ -85,19 +85,24 @@ module.exports = function(app, nconf, io) {
 
       function(err, transcript) {
         if (!err) {
-          // return res.send(transcript);
 
+          var jobid = null;
+          if (transcript.meta && transcript.meta.mod9 && transcript.meta.mod9.jobid) {
+            jobid = transcript.meta.mod9.jobid;
+          } else {
+            return res.send(transcript);
+          }
 
           ////
           var options = {
             host: '54.197.237.1',
             port: 80,
             path: '/mod9/align/v0.8?' + querystring.stringify({
-              jobid: result[0][1].jobid,
+              jobid: jobid,
               mode: 'poll'
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('cielo24' + ':' + 'cielo24').toString('base64')
             }
           };
 
@@ -116,26 +121,28 @@ module.exports = function(app, nconf, io) {
               transcript.type = "text";
               if (!transcript.meta) transcript.meta = {};
 
-              transcript.meta.align = JSON.parse(result);
+              // transcript.meta.align = JSON.parse(result);
+              transcript.meta.status = JSON.parse(result);
               transcript.status = '';
 
-              if (transcript.meta.align.status) transcript.status = transcript.meta.align.status;
+              if (transcript.meta.status.status) transcript.status = transcript.meta.status.status;
               // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
-              var hypertranscript = "<article><header></header><section><header></header><p>";
-              var al = transcript.meta.align.alignment;
-              for (var i = 0; i < al.length; i++) {
-                 hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
-              }
-              hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+              if (transcript.meta.status.alignment) {
+                var hypertranscript = "<article><header></header><section><header></header><p>";
+                var al = transcript.meta.status.alignment;
+                for (var i = 0; i < al.length; i++) {
+                   hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+                }
+                hypertranscript += "</p><footer></footer></section></footer></footer></article>";
 
-              transcript.content = hypertranscript;
-              transcript.type = 'html';
+                transcript.content = hypertranscript;
+                transcript.type = 'html';
+              }
 
               transcript.save(function(err) {
-                console.log('SAVING? ' + err);
-                console.log(transcript);
-
+                // console.log('SAVING? ' + err);
+                // console.log(transcript);
                 if (!err) {
                   return res.send(transcript);
                 } else {
@@ -313,6 +320,7 @@ module.exports = function(app, nconf, io) {
                 // part = "";
               transcript.status = JSON.parse(data).status;
               transcript.meta.status = JSON.parse(data);
+              transcript.meta.mod9 = JSON.parse(data);
               transcript.save(function(){});
               // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
