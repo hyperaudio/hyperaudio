@@ -87,7 +87,10 @@ module.exports = function(app, nconf, io) {
         if (!err) {
 
           var jobid = null;
-          if (transcript.meta && transcript.meta.status && transcript.meta.status.alignment) {
+
+          if (transcript.type == 'html') {
+            return res.send(transcript);
+          } else if (transcript.meta && transcript.meta.status && transcript.meta.status.alignment) {
             return res.send(transcript);
           } else if (transcript.meta && transcript.meta.mod9 && transcript.meta.mod9.jobid) {
             jobid = transcript.meta.mod9.jobid;
