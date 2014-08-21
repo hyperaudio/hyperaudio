@@ -1435,7 +1435,7 @@ haDash.Views = haDash.Views || {};
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
-        var curl = 'http://api.hyperaudio.net/v1/about';//FIXME use proper API endpoint (domain, prefix)
+        var curl = haDash.API + '/about';
         $.post(curl, {url: url}, function (page) {
 
           var title = $(page).filter('meta[property="og:title"]').attr('content');
