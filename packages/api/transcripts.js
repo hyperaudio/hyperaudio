@@ -148,7 +148,7 @@ module.exports = function(app, nconf, io) {
                 } else {
                   console.log(err);
                   res.status(500);
-                  res.send({
+                  return res.send({
                     error: err
                   });
                 }
