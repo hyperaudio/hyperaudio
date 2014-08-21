@@ -162,7 +162,7 @@ module.exports = function(app, nconf, io) {
 
         res.status(404);
         res.send({
-          error: 'Not found'
+          error: err,
         });
         return;
       });
