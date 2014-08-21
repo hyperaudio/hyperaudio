@@ -127,6 +127,7 @@ module.exports = function(app, nconf, io) {
       transcript.desc = req.body.desc;
       transcript.type = req.body.type;
       transcript.meta = req.body.meta;
+      if (!transcript.meta) transcript.meta = {};
       transcript.media = req.body.media;
 
       if (req.params.media && req.params.media._id) {
@@ -333,6 +334,8 @@ module.exports = function(app, nconf, io) {
       content = req.body.content;
     }
 
+    var meta = req.body.meta;
+    if (!meta) meta = {};
     transcript = new Transcript({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
@@ -340,7 +343,7 @@ module.exports = function(app, nconf, io) {
       type: req.body.type,
       // sort: req.body.sort,
       owner: req.body.owner,
-      meta: req.body.meta,
+      meta: meta,
       content: content,
       media: req.body.media
     });
