@@ -219,6 +219,7 @@ module.exports = function(app, nconf, io) {
                 // });
                 // part = "";
               transcript.status = JSON.parse(data).status;
+              transcript.meta.status = JSON.parse(data);
               transcript.save(function(){});
               if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
