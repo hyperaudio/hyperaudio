@@ -158,13 +158,13 @@ module.exports = function(app, nconf, io) {
 
           });//req2
           ////
+        } else {
+          res.status(404);
+          res.send({
+            error: err,
+          });
+          return;
         }
-
-        res.status(404);
-        res.send({
-          error: err,
-        });
-        return;
       });
   });
 
