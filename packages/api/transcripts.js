@@ -296,7 +296,7 @@ module.exports = function(app, nconf, io) {
               audio: url,
               lang: lang,
               text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
-              mode: 'stream',
+              mode: 'submit',
               skip: 'True',
               prune: 0
             }),
