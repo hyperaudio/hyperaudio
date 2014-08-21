@@ -132,11 +132,11 @@ $(document).ready(function() {
         // }
   });
 
-  $.ajaxStart(function(){
+  $(document).ajaxStart(function(){
     $('body').addClass('ajax');
   });
 
-  $.ajaxComplete(function(){
+  $(document).ajaxComplete(function(){
     $('body').removeClass('ajax');
   });
 
