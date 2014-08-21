@@ -95,14 +95,14 @@ module.exports = function(app, nconf, io) {
 
           ////
           var options = {
-            host: '54.197.237.1',
+            host: 'mod9.184.73.157.200.xip.io',
             port: 80,
-            path: '/mod9/align/v0.8?' + querystring.stringify({
-              jobid: jobid//,
-              // mode: 'poll'
+            path: '/mod9/align/v0.7?' + querystring.stringify({
+              jobid: jobid,
+              mode: 'poll'
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('cielo24' + ':' + 'cielo24').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
             }
           };
 
@@ -283,9 +283,9 @@ module.exports = function(app, nconf, io) {
           if (req.body.lang) lang = req.body.lang;
 
           var options = {
-            host: '54.197.237.1',
+            host: 'mod9.184.73.157.200.xip.io',
             port: 80,
-            path: '/mod9/align/v0.8?' + querystring.stringify({
+            path: '/mod9/align/v0.7?' + querystring.stringify({
               audio: url,
               lang: lang,
               text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
@@ -294,7 +294,7 @@ module.exports = function(app, nconf, io) {
               prune: 0
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('cielo24' + ':' + 'cielo24').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
             }
           };
 
