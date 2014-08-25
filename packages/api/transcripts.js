@@ -298,6 +298,9 @@ module.exports = function(app, nconf, io) {
           if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
           if (req.body.lang) lang = req.body.lang;
 
+          //use redirect url
+          url = 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/video';
+
           var options = {
             host: 'mod9.184.73.157.200.xip.io',
             port: 80,
