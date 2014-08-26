@@ -292,7 +292,7 @@ module.exports = function(app, nconf, io) {
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
 
-          if (!transcript.meta) transcript.meta = {status: {}};
+          if (!transcript.meta) transcript.meta = {status: null, state: 0};
 
           var lang = 'en';
           if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
@@ -339,6 +339,9 @@ module.exports = function(app, nconf, io) {
                 // part = "";
                 transcript.status = JSON.parse(data).status;
                 transcript.meta.status = JSON.parse(data);
+
+                transcript.meta.state = 1;
+
                 transcript.meta.mod9 = JSON.parse(data);
                 transcript.meta.mod9.input = options;
               // transcript.save(function(){
@@ -359,12 +362,13 @@ module.exports = function(app, nconf, io) {
 
               // transcript.status = JSON.parse(data).status;
               // transcript.meta.status = JSON.parse(data);
+              transcript.meta.state = 2;
               if (!transcript.meta.mod9) transcript.meta.mod9 = {};
               transcript.meta.mod9.jobid = result[0][1].jobid;
 
-              transcript.save(function(err, transcript){
+              transcript.save(function(err, _transcript){
                 console.log(err);
-                return res.send(transcript);
+                return res.send(_transcript);
               });
 
               /////
