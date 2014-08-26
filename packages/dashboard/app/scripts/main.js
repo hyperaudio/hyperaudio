@@ -21,6 +21,8 @@ if (document.location.hostname.indexOf('hyperaud.io') > -1) {
 
 window.haDash = {
 
+  lang: 'en',
+
   namespace: namespace,
 
   // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',

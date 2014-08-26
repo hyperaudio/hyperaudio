@@ -114,7 +114,9 @@ haDash.Views = haDash.Views || {};
           withCredentials: true
         },
         method: 'post',
-        data: JSON.stringify({})
+        data: JSON.stringify({
+          lang: haDash.lang
+        })
       })
       .done(function() {
           console.log('OK');
