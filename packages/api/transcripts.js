@@ -337,10 +337,10 @@ module.exports = function(app, nconf, io) {
                 //   align: JSON.parse(data)
                 // });
                 // part = "";
-              transcript.status = JSON.parse(data).status;
-              transcript.meta.status = JSON.parse(data);
-              transcript.meta.mod9 = JSON.parse(data);
-              transcript.meta.mod9.input = options;
+                transcript.status = JSON.parse(data).status;
+                transcript.meta.status = JSON.parse(data);
+                transcript.meta.mod9 = JSON.parse(data);
+                transcript.meta.mod9.input = options;
               // transcript.save(function(){
                 // return res.send(transcript);
               // });
@@ -362,7 +362,8 @@ module.exports = function(app, nconf, io) {
               if (!transcript.meta.mod9) transcript.meta.mod9 = {};
               transcript.meta.mod9.jobid = result[0][1].jobid;
 
-              transcript.save(function(){
+              transcript.save(function(err, transcript){
+                console.log(err);
                 return res.send(transcript);
               });
 
