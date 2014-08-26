@@ -100,14 +100,14 @@ module.exports = function(app, nconf, io) {
 
           ////
           var options = {
-            host: 'mod9.54.197.230.167.xip.io',
+            host: 'mod9.54.197.237.1.xip.io',
             port: 80,
             path: '/mod9/align/v0.7?' + querystring.stringify({
               jobid: jobid,
               mode: 'poll'
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('hyperaudio' + ':' + 'hyperaudio').toString('base64')
             }
           };
 
@@ -302,7 +302,7 @@ module.exports = function(app, nconf, io) {
           url = 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/video';
 
           var options = {
-            host: 'mod9.54.197.230.167.xip.io',
+            host: 'mod9.54.197.237.1.xip.io',
             port: 80,
             path: '/mod9/align/v0.7?' + querystring.stringify({
               audio: url,
@@ -313,7 +313,7 @@ module.exports = function(app, nconf, io) {
               prune: 0
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('hyperaudio' + ':' + 'hyperaudio').toString('base64')
             }
           };
 
