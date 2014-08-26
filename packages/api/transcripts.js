@@ -305,7 +305,7 @@ module.exports = function(app, nconf, io) {
             host: 'mod9.54.197.237.1.xip.io',
             port: 80,
             path: '/mod9/align/v0.8?' + querystring.stringify({
-              audio: 'http://hyperaudio.net/test/AC.mp3',//url,
+              audio: url,
               lang: lang,
               text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
               mode: 'submit',
