@@ -366,8 +366,9 @@ module.exports = function(app, nconf, io) {
               if (!transcript.meta.mod9) transcript.meta.mod9 = {};
               transcript.meta.mod9.jobid = result[0][1].jobid;
 
-              transcript.save(function(err, _transcript){
-                console.log(err);
+              transcript.save(function(err, _transcript, number){
+                console.log(err, number);
+                console.log(_transcript);
                 return res.send(_transcript);
               });
 
