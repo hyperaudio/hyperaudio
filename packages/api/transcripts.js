@@ -342,7 +342,7 @@ module.exports = function(app, nconf, io) {
               transcript.meta.mod9 = JSON.parse(data);
               transcript.meta.mod9.input = options;
               transcript.save(function(){
-                return res.send(transcript);
+                // return res.send(transcript);
               });
               // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
@@ -359,8 +359,8 @@ module.exports = function(app, nconf, io) {
 
               // transcript.status = JSON.parse(data).status;
               // transcript.meta.status = JSON.parse(data);
-              // transcript.meta.mod9 = JSON.parse(data);
-              // transcript.meta.mod9.input = options;
+              if (!transcript.meta.mod9) transcript.meta.mod9 = {};
+              transcript.meta.mod9.jobid = result[0][1].jobid;
 
               transcript.save(function(){
                 return res.send(transcript);
