@@ -102,7 +102,7 @@ module.exports = function(app, nconf, io) {
           var options = {
             host: 'mod9.54.197.237.1.xip.io',
             port: 80,
-            path: '/mod9/align/v0.7?' + querystring.stringify({
+            path: '/mod9/align/v0.8?' + querystring.stringify({
               jobid: jobid,
               mode: 'poll'
             }),
@@ -304,8 +304,8 @@ module.exports = function(app, nconf, io) {
           var options = {
             host: 'mod9.54.197.237.1.xip.io',
             port: 80,
-            path: '/mod9/align/v0.7?' + querystring.stringify({
-              audio: url,
+            path: '/mod9/align/v0.8?' + querystring.stringify({
+              audio: 'http://hyperaudio.net/test/AC.mp3',//url,
               lang: lang,
               text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
               mode: 'submit',
