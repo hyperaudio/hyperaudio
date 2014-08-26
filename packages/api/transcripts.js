@@ -337,6 +337,7 @@ module.exports = function(app, nconf, io) {
                 //   align: JSON.parse(data)
                 // });
                 // part = "";
+                transcript.meta = {status: null, state: 1};
                 transcript.status = JSON.parse(data).status;
                 transcript.meta.status = JSON.parse(data);
 
@@ -362,6 +363,7 @@ module.exports = function(app, nconf, io) {
 
               // transcript.status = JSON.parse(data).status;
               // transcript.meta.status = JSON.parse(data);
+              transcript.meta = {status: null, state: 2};
               transcript.meta.state = 2;
               if (!transcript.meta.mod9) transcript.meta.mod9 = {};
               transcript.meta.mod9.jobid = result[0][1].jobid;
