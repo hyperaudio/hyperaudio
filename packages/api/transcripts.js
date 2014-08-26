@@ -341,9 +341,9 @@ module.exports = function(app, nconf, io) {
               transcript.meta.status = JSON.parse(data);
               transcript.meta.mod9 = JSON.parse(data);
               transcript.meta.mod9.input = options;
-              transcript.save(function(){
+              // transcript.save(function(){
                 // return res.send(transcript);
-              });
+              // });
               // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
               } catch (err) {
