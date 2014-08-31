@@ -1493,7 +1493,7 @@ haDash.Views = haDash.Views || {};
         if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
 
-          var curl = 'http://api.hyperaudio.net/v1/about';//FIXME use proper API endpoint (domain, prefix)
+          var curl = 'http://api.hyperaud.io/v1/about';//FIXME use proper API endpoint (domain, prefix)
           $.post(curl, {url: url}, function (info) {
             console.log(info);
             if (typeof info == 'string') {
