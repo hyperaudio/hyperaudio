@@ -15,6 +15,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
 
+var mandrill = require('mandrill-api/mandrill');
+
 
 nconf.argv()
   .env()
@@ -202,7 +204,27 @@ app.get('/v1/reset-password', function(req, res) {
     }
 
     if (user) {
-      return res.send(user);
+      ///
+      var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+      var message = JSON.parse(JSON.stringify(nconf.get('mandrill').message));
+
+      message.to[0].email = user.email;
+      message.to[0].name = user.username;
+
+      var async = false;
+      var ip_pool = "Main Pool";
+      mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+          console.log(result);
+          return res.send(result);
+      }, function(e) {
+          console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+          res.status(500);
+          return res.send({
+            error: e
+          });
+      });
+      ///
+      // return res.send(user);
     } else {
       res.status(404);
       return res.send({

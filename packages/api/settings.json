@@ -1,3 +1,37 @@
 {
-    "database": "mongodb://localhost/hyperaudio01"
+    "database": "mongodb://localhost/hyperaudio01",
+    "mandrill": {
+      "apiKey": "TAfHl2JVtO67GXjCEaOQ0Q",
+      "message": {
+          "html": "<p>FORGOT PASS</p>",
+          "text": "FORGOT PASS",
+          "subject": "example subject",
+          "from_email": "message.from_email@example.com",
+          "from_name": "Example Name",
+          "to": [{
+              "email": "mark@hyperaud.io",
+              "name": "MASTER BLASTER",
+              "type": "to"
+          }],
+          "headers": {
+              "Reply-To": "mark@hyperaud.io"
+          },
+          "important": false,
+          "track_opens": null,
+          "track_clicks": null,
+          "auto_text": null,
+          "auto_html": null,
+          "inline_css": null,
+          "url_strip_qs": null,
+          "preserve_recipients": null,
+          "view_content_link": null,
+          "tracking_domain": null,
+          "signing_domain": null,
+          "return_path_domain": null,
+          "merge": false,
+          "tags": [
+              "password-resets"
+          ]
+      }
+    }
 }
