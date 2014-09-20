@@ -1714,6 +1714,12 @@ haDash.Views = haDash.Views || {};
         this.remove();
       }
 
+      var lang = this.$el.find('select').val();
+
+      if (!lang) lang = haDash.lang;
+      alert(lang);
+      return;
+
       var self = this;
       $.ajax({
         url: haDash.API + '/transcripts/' + this.model.id + '/align',
@@ -1724,7 +1730,7 @@ haDash.Views = haDash.Views || {};
         },
         method: 'post',
         data: JSON.stringify({
-          lang: haDash.lang
+          lang: lang
         })
       })
       .done(function() {
