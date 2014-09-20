@@ -265,7 +265,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
 return __p
 };
 
-this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -344,6 +344,16 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
 __p += '<div class="user your">\n\n  <a class="button primary" href="/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["app/scripts/templates/password.ejs"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          Invalid Email.\n        </p>\n      </div>\n    </form>\n    <div>\n      <p id="passwordFormConfirm" style="display:none">\n        Please check your email for instructions on how to change your password. \n      </p>\n    </div>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -533,6 +543,8 @@ haDash.Routers = haDash.Routers || {};
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
+      'reset-password/': 'password',
+
       'add-media/': 'addMedia'
     },
 
@@ -652,6 +664,13 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.register').addClass('active');
       document.title = "Hyperaudio Sign Up";
       $main.empty().append(new haDash.Views.SignUpView({}).el);
+    },
+
+    password: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Forgot Password";
+      $main.empty().append(new haDash.Views.PasswordView({}).el);
     },
 
     pageView : function(){
