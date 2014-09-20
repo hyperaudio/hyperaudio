@@ -134,8 +134,9 @@ haDash.Views = haDash.Views || {};
           console.log('OK');
           self.refresh();
         })
-      .fail(function() {
-        console.log('ERR');
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+        alert('Error: ' + textStatus + '\n' + errorThrown);
       });
       // spin
       //$('#mediaDetail').data('view').refresh();

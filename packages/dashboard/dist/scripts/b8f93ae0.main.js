@@ -265,7 +265,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
 return __p
 };
 
-this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -1745,8 +1745,9 @@ haDash.Views = haDash.Views || {};
           console.log('OK');
           self.refresh();
         })
-      .fail(function() {
-        console.log('ERR');
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log(errorThrown);
+        alert('Error: ' + textStatus + '\n' + errorThrown);
       });
       // spin
       //$('#mediaDetail').data('view').refresh();
