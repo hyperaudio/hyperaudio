@@ -166,9 +166,29 @@ app.get('/v1/session', function(req, res) {
 app.get('/v1/token',
   passport.authenticate('token', { session: true }),
   function(req, res) {
-  res.json({
-    session: req.session
-  });
+
+    Account.findOne({ token: token }, function (err, user) {
+      if (err) {
+        res.status(500);
+        return res.send({
+          error: err
+        });
+      }
+
+      if (!user) {
+        res.status(500);
+        return res.send({
+          error: err
+        });
+      }
+
+      req.session.user = user.username;
+      req.user = user.username;
+
+      res.json({
+        user: req.user
+      });
+    });
 });
 
 app.get('/v1/whoami', function(req, res) {
