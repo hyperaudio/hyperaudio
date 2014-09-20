@@ -276,17 +276,17 @@ app.get('/v1/change-password', function(req, res) {
     if (user) {
       ///
       user.setPassword(req.query.password, function() {
-        // user.save(function(err) {
-        //   if (err) {
-        //     res.status(500);
-        //     return res.send({
-        //       error: err
-        //     });
-        //   }
+        user.save(function(err) {
+          if (err) {
+            res.status(500);
+            return res.send({
+              error: err
+            });
+          }
 
-        //   return res.send(user);
-        // });
-        return res.send(user);
+          return res.send(user);
+        });
+        // return res.send(user);
       });
 
     } else {
