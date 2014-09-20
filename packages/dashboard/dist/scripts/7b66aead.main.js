@@ -406,7 +406,7 @@ __p += '\n    <a class="button small" href="/maker/?t=' +
  if (status && status != '') { ;
 __p += '\n    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n    ';
  } else { ;
-__p += '\n\n    <select>\n      <option name="English" value="en">\n      <option name="Spanish" value="es">\n    </select>\n    <button class="button align small primary">Align</button>\n\n    ';
+__p += '\n\n    <select>\n      <option name="English" value="en">English</option>\n      <option name="Spanish" value="es">Spanish</option>\n    </select>\n    <button class="button align small primary">Align</button>\n\n    ';
  } ;
 __p += '\n  ';
  } else if (type == "html") { ;
