@@ -410,7 +410,9 @@ __p += '\n    <button class="button align small primary">Align</button>\n    ';
  } ;
 __p += '\n  ';
  } else if (type == "html") { ;
-__p += '\n    <a class="button small" href="/cleaner/?t=' +
+__p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
+((__t = ( _id)) == null ? '' : __t) +
+'" target="_new">View</a>\n    <a class="button small" href="/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Clean</a>\n  ';
  } else if (type == "srt") { ;
@@ -420,7 +422,9 @@ __p += '\n    <a class="button small primary" href="/converter/?t=' +
  } ;
 __p += '\n    <button class="button tDelete">Delete</button>\n  ';
  } else { ;
-__p += '\n    <button class="button tClone">Clone</button>\n  ';
+__p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
+((__t = ( _id)) == null ? '' : __t) +
+'" target="_new">View</a>\n    <button class="button tClone">Clone</button>\n  ';
  } ;
 __p += '\n</td>\n\n\n';
 
