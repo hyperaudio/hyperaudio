@@ -257,7 +257,7 @@ app.post('/v1/register', function(req, res) {
     });
 });
 
-app.get('/v1/change-password', function(req, res) {
+app.post('/v1/change-password', function(req, res) {
   if (!req.session.user) {
     res.status(500);
     return res.send({
@@ -275,7 +275,7 @@ app.get('/v1/change-password', function(req, res) {
 
     if (user) {
       ///
-      user.setPassword(req.query.password, function() {
+      user.setPassword(req.body.password, function() {
         user.save(function(err) {
           if (err) {
             res.status(500);
@@ -326,8 +326,8 @@ app.post('/v1/reset-password', function(req, res) {
 
         message.to[0].email = user.email;
         message.to[0].name = user.username;
-        message.text = 'Reset password link: http://hyperaudio.net/reset-password/' + user.token;
-        message.html = '<p>Reset password link: <a href="http://hyperaudio.net/reset-password/' + user.token + '">http://hyperaudio.net/reset-password/' + user.token + '</a></p>';
+        message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
+        message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
 
         var async = false;
         var ip_pool = "Main Pool";
