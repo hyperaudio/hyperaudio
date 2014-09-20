@@ -31,12 +31,10 @@ function validEmail(email) {
     },
 
     send: function(event) {
-      console.log("sending");
       event.preventDefault();
       $('#passwordFormError').hide();
 
       if (validEmail($('#email').val())) {
-        console.log($('#email').val());
         $(event.target).find('img').show();
 
         $.ajax({
@@ -48,7 +46,7 @@ function validEmail(email) {
           },
           method: 'post',
           data: JSON.stringify({
-            email: 'mark@hyperaud.io'
+            email: $('#email').val()
           })
         })
         .done(function(whoami) {

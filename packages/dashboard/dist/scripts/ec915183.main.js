@@ -2056,12 +2056,10 @@ function validEmail(email) {
     },
 
     send: function(event) {
-      console.log("sending");
       event.preventDefault();
       $('#passwordFormError').hide();
 
       if (validEmail($('#email').val())) {
-        console.log($('#email').val());
         $(event.target).find('img').show();
 
         $.ajax({
@@ -2073,7 +2071,7 @@ function validEmail(email) {
           },
           method: 'post',
           data: JSON.stringify({
-            email: 'mark@hyperaud.io'
+            email: $('#email').val()
           })
         })
         .done(function(whoami) {
@@ -2104,11 +2102,11 @@ haDash.Views = haDash.Views || {};
 (function () {
     'use strict';
 
-    haDash.Views.ResetPasswordView = Backbone.View.extend({
+    haDash.Views.ChangePasswordView = Backbone.View.extend({
 
     id: 'passwordView',
 
-        template: JST['app/scripts/templates/resetPassword.ejs'],
+        template: JST['app/scripts/templates/changePassword.ejs'],
 
     initialize: function() {
       this.render();

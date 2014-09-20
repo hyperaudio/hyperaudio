@@ -6,11 +6,11 @@ haDash.Views = haDash.Views || {};
 (function () {
     'use strict';
 
-    haDash.Views.ResetPasswordView = Backbone.View.extend({
+    haDash.Views.ChangePasswordView = Backbone.View.extend({
 
     id: 'passwordView',
 
-        template: JST['app/scripts/templates/resetPassword.ejs'],
+        template: JST['app/scripts/templates/changePassword.ejs'],
 
     initialize: function() {
       this.render();
