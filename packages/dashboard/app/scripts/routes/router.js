@@ -31,6 +31,8 @@ haDash.Routers = haDash.Routers || {};
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
+      'forgot-password/': 'password',
+
       'add-media/': 'addMedia'
     },
 
@@ -150,6 +152,13 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.register').addClass('active');
       document.title = "Hyperaudio Sign Up";
       $main.empty().append(new haDash.Views.SignUpView({}).el);
+    },
+
+    password: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Forgot Password";
+      $main.empty().append(new haDash.Views.PasswordView({}).el);
     },
 
     pageView : function(){
