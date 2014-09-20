@@ -25,7 +25,7 @@ nconf.argv()
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3005);
 
 app.use(function(req, res, next) {
   if (toobusy()) {
