@@ -2017,11 +2017,11 @@ function validEmail(email) {
 (function () {
     'use strict';
 
-    haDash.Views.PasswordView = Backbone.View.extend({
+    haDash.Views.ResetPasswordView = Backbone.View.extend({
 
     id: 'passwordView',
 
-        template: JST['app/scripts/templates/password.ejs'],
+        template: JST['app/scripts/templates/resetPassword.ejs'],
 
     initialize: function() {
       this.render();
