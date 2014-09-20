@@ -112,16 +112,16 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-passport.use(new TokenStrategy(
-  function(token, done) {
-    Account.findOne({ token: token }, function (err, user) {
-      if (err) { return done(err); }
-      if (!user) { return done(null, false); }
+// passport.use(new TokenStrategy(
+//   function(token, done) {
+//     Account.findOne({ token: token }, function (err, user) {
+//       if (err) { return done(err); }
+//       if (!user) { return done(null, false); }
 
-      return done(null, user, { scope: 'all' });
-    });
-  }
-));
+//       return done(null, user, { scope: 'all' });
+//     });
+//   }
+// ));
 
 // passport.use(new LocalStrategy({
 //     usernameField: 'token',
@@ -164,7 +164,7 @@ app.get('/v1/session', function(req, res) {
 });
 
 app.post('/v1/token-login',
-  passport.authenticate('token', { session: true }),
+  // passport.authenticate('token', { session: true }),
   function(req, res) {
     var token = req.body.access_token;
     Account.findOne({ token: token }, function (err, user) {
