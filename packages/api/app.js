@@ -254,7 +254,7 @@ app.post('/v1/register', function(req, res) {
       }
 
       //FIXME authenticate
-      if (req.isAuthenticated()) {
+      // if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
         /// email user
         var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
@@ -281,11 +281,11 @@ app.post('/v1/register', function(req, res) {
         // res.json({
         //   user: req.user
         // });
-      } else {
-        res.json({
-          user: null
-        });
-      }
+      // } else {
+      //   res.json({
+      //     user: null
+      //   });
+      // }
     });
 });
 
