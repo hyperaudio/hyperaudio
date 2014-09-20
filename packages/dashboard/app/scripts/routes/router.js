@@ -33,6 +33,7 @@ haDash.Routers = haDash.Routers || {};
 
       'reset-password/': 'resetPassword',
       'change-password/': 'changePassword',
+      'token/:token': 'signInToken',
 
       'add-media/': 'addMedia'
     },
@@ -167,6 +168,32 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Change Password";
       $main.empty().append(new haDash.Views.ChangePasswordView({}).el);
+    },
+
+    signInToken: function (token) {
+      $.ajax({
+          url: haDash.API + '/token-login',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            'access-token': token
+          })
+        })
+        .done(function(whoami) {
+          console.log(whoami);
+          // changePassword();
+          haDash.setUser(whoami);
+          if (whoami.user) {
+            haDash.router.navigate("change-password/", {trigger: true});
+          }
+        })
+        .fail(function() {
+          console.log('error');
+        });
     },
 
     pageView : function(){
