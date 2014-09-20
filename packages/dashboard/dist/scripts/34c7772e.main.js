@@ -2104,7 +2104,7 @@ function validEmail(email) {
         .done(function(whoami) {
           console.log(whoami);
           $('#passwordForm').hide();
-          $('#passwordConfirm').show();
+          $('#passwordFormConfirm').show();
         })
         .fail(function() {
           $('#passwordFormError').show();
