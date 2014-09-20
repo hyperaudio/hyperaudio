@@ -163,10 +163,10 @@ app.get('/v1/session', function(req, res) {
   });
 });
 
-app.get('/v1/token',
+app.post('/v1/token-login',
   passport.authenticate('token', { session: true }),
   function(req, res) {
-    var token = req.query.access_token;
+    var token = req.body.access_token;
     Account.findOne({ token: token }, function (err, user) {
       if (err) {
         res.status(500);
@@ -255,6 +255,46 @@ app.post('/v1/register', function(req, res) {
         });
       }
     });
+});
+
+app.get('/v1/change-password', function(req, res) {
+  if (!req.session.user) {
+    res.status(500);
+    return res.send({
+      error: 'not logged in'
+    });
+  }
+
+  Account.findOne({username: req.session.user}).exec(function(err, user) {
+    if (err) {
+      res.status(500);
+      return res.send({
+        error: err
+      });
+    }
+
+    if (user) {
+      ///
+      user.setPassword(req.query.password, function() {
+        // user.save(function(err) {
+        //   if (err) {
+        //     res.status(500);
+        //     return res.send({
+        //       error: err
+        //     });
+        //   }
+
+        //   return res.send(user);
+        // });
+        return res.send(user);
+      });
+
+    } else {
+      res.status(404);
+      return res.send({
+        error: 'User not found'
+      });
+    }
 });
 
 app.post('/v1/reset-password', function(req, res) {
