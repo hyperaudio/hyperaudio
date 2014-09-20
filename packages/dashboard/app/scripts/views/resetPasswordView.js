@@ -35,6 +35,7 @@ function validEmail(email) {
       $('#passwordFormError').hide();
 
       if (validEmail($('#email').val())) {
+        console.log($('#email').val());
         $(event.target).find('img').show();
 
         $.ajax({
@@ -46,7 +47,7 @@ function validEmail(email) {
           },
           method: 'post',
           data: JSON.stringify({
-            email: $('#email').val()
+            email: 'mark@hyperaud.io'
           })
         })
         .done(function(whoami) {
