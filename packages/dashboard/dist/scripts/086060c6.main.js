@@ -359,7 +359,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signIn.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signin.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -369,7 +369,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signup.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -669,7 +669,7 @@ haDash.Routers = haDash.Routers || {};
     password: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Forgot Password";
+      document.title = "Hyperaudio Reset Password";
       $main.empty().append(new haDash.Views.PasswordView({}).el);
     },
 
@@ -2002,5 +2002,65 @@ haDash.Views = haDash.Views || {};
       }
 
     });
+
+})();
+
+/*global haDash, Backbone, JST*/
+
+haDash.Views = haDash.Views || {};
+
+(function () {
+    'use strict';
+
+    haDash.Views.PasswordView = Backbone.View.extend({
+
+    id: 'passwordView',
+
+        template: JST['app/scripts/templates/password.ejs'],
+
+    initialize: function() {
+      this.render();
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      return this;
+    },
+
+    events: {
+      'click #passwordForm button[type="submit"]': 'send'
+    },
+
+    send: function(event) {
+      event.preventDefault();
+      $('#passwordFormError').hide();
+      $(event.target).find('img').show();
+
+      $.ajax({
+        url: haDash.API + '/password',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+          email: $('#email').val(),
+        })
+      })
+      .done(function(whoami) {
+        console.log(whoami);
+        $('#passwordForm').hide();
+        $('#passwordConfirm').show();
+      })
+      .fail(function() {
+        $('#passwordFormError').show();
+        $(event.target).find('img').hide();
+      });
+
+    }
+
+  });
 
 })();

@@ -157,7 +157,7 @@ haDash.Routers = haDash.Routers || {};
     password: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Forgot Password";
+      document.title = "Hyperaudio Reset Password";
       $main.empty().append(new haDash.Views.PasswordView({}).el);
     },
 
