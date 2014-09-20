@@ -205,26 +205,40 @@ app.get('/v1/reset-password', function(req, res) {
 
     if (user) {
       ///
-      var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-      var message = JSON.parse(JSON.stringify(nconf.get('mandrill').message));
+      user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
 
-      message.to[0].email = user.email;
-      message.to[0].name = user.username;
-
-      var async = false;
-      var ip_pool = "Main Pool";
-      mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
-          console.log(result);
-          return res.send(result);
-      }, function(e) {
-          console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+      user.save(function(err) {
+        if (err) {
           res.status(500);
           return res.send({
-            error: e
+            error: err
           });
-      });
+        }
+
+        var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').message));
+
+        message.to[0].email = user.email;
+        message.to[0].name = user.username;
+        message.text = 'Reset password link: http://hyperaudio.net/reset-password/' + user.token;
+        message.html = '<p>Reset password link: <a href="http://hyperaudio.net/reset-password/' + user.token + '">http://hyperaudio.net/reset-password/' + user.token + '</a></p>';
+
+        var async = false;
+        var ip_pool = "Main Pool";
+        mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+            console.log(result);
+            return res.send(result);
+        }, function(e) {
+            console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+            res.status(500);
+            return res.send({
+              error: e
+            });
+        });
+      });//user token save
+
+
       ///
-      // return res.send(user);
     } else {
       res.status(404);
       return res.send({
