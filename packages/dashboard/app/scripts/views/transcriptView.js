@@ -21,7 +21,7 @@ haDash.Views = haDash.Views || {};
       this.$el.find("span.timeago").timeago();
 
       //
-      if (status && status != '') {
+      if (this.model.get('status') && this.model.get('status') != '') {
         this.refresh();
       }
       //
