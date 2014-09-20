@@ -353,7 +353,7 @@ this["JST"]["app/scripts/templates/password.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          Invalid Email.\n        </p>\n      </div>\n    </form>\n    <div>\n      <p id="passwordFormConfirm" style="display:none">\n        Please check your email for instructions on how to change your password. \n      </p>\n    </div>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like that\'s not a valid email address. Sorry.\n        </p>\n      </div>\n    </form>\n    <div>\n      <p id="passwordFormConfirm" style="display:none">\n        Please check your email for instructions on how to change your password. \n      </p>\n    </div>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -2009,6 +2009,11 @@ haDash.Views = haDash.Views || {};
 
 haDash.Views = haDash.Views || {};
 
+function validEmail(email) { 
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+} 
+
 (function () {
     'use strict';
 
@@ -2035,29 +2040,35 @@ haDash.Views = haDash.Views || {};
     send: function(event) {
       event.preventDefault();
       $('#passwordFormError').hide();
-      $(event.target).find('img').show();
 
-      $.ajax({
-        url: haDash.API + '/password',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-          email: $('#email').val(),
+      if (validEmail) {
+        $(event.target).find('img').show();
+
+        $.ajax({
+          url: haDash.API + '/password',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            email: $('#email').val(),
+          })
         })
-      })
-      .done(function(whoami) {
-        console.log(whoami);
-        $('#passwordForm').hide();
-        $('#passwordConfirm').show();
-      })
-      .fail(function() {
+        .done(function(whoami) {
+          console.log(whoami);
+          $('#passwordForm').hide();
+          $('#passwordConfirm').show();
+        })
+        .fail(function() {
+          $('#passwordFormError').show();
+          $(event.target).find('img').hide();
+        });
+
+      } else {
         $('#passwordFormError').show();
-        $(event.target).find('img').hide();
-      });
+      }
 
     }
 
