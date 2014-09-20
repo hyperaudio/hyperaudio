@@ -31,7 +31,7 @@ haDash.Routers = haDash.Routers || {};
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
-      'reset-password/': 'password',
+      'reset-password/': 'resetPassword',
 
       'add-media/': 'addMedia'
     },
@@ -154,11 +154,11 @@ haDash.Routers = haDash.Routers || {};
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
 
-    password: function() {
+    resetPassword: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Reset Password";
-      $main.empty().append(new haDash.Views.PasswordView({}).el);
+      $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
     },
 
     pageView : function(){
