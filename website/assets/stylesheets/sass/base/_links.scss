@@ -17,9 +17,7 @@
   &.active,
   &:active {
     border-bottom: 1px solid $brand-color;
-    // -webkit-transition: all 0.3s;
-    // -moz-transition: all 0.3s;
-    // transition: all 0.3s;
+    @include transition(border $dflt-time, opacity $dflt-time)
   }
   &:active {
     opacity: 0.7
