@@ -99,6 +99,9 @@ haDash.Views = haDash.Views || {};
 
     delete: function() {
       if (this.notMutable()) return;
+
+      if (!confirm('Are you sure you wish to delete this media entry?')) return;
+
       this.model.destroy({
         url: haDash.API + '/media/' + this.model.id,
         wait: true,

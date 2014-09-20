@@ -1287,6 +1287,9 @@ haDash.Views = haDash.Views || {};
 
     delete: function() {
       if (this.notMutable()) return;
+
+      if (!confirm('Are you sure you wish to delete this media entry?')) return;
+
       this.model.destroy({
         url: haDash.API + '/media/' + this.model.id,
         wait: true,
@@ -1747,7 +1750,9 @@ haDash.Views = haDash.Views || {};
         })
       .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown);
-        alert('Error: ' + textStatus + '\n' + errorThrown);
+        alert("We have trouble aligning your media, your file may be too large or in a format we don't understand. Sorry.");
+        this.$el.find('button.align').show();
+        this.$el.find('button.aligning').hide();
       });
       // spin
       //$('#mediaDetail').data('view').refresh();
@@ -1756,6 +1761,8 @@ haDash.Views = haDash.Views || {};
 
     delete: function() {
       if (this.notMutable()) return;
+
+      if (!confirm('Are you sure you wish to delete this transcript?')) return;
 
       this.model.destroy({
         url: haDash.API + '/transcripts/' + this.model.id,
@@ -1950,6 +1957,9 @@ haDash.Views = haDash.Views || {};
 
       delete: function() {
         if (this.notMutable()) return;
+
+        if (!confirm('Are you sure you wish to delete this mix?')) return;
+
         this.model.destroy({
           url: haDash.API + '/mixes/' + this.model.id
         });

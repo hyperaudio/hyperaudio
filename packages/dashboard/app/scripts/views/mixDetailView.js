@@ -114,6 +114,9 @@ haDash.Views = haDash.Views || {};
 
       delete: function() {
         if (this.notMutable()) return;
+
+        if (!confirm('Are you sure you wish to delete this mix?')) return;
+
         this.model.destroy({
           url: haDash.API + '/mixes/' + this.model.id
         });
