@@ -34,7 +34,7 @@ haDash.Views = haDash.Views || {};
         $(event.target).find('img').show();
 
         $.ajax({
-          url: haDash.API + '/password',
+          url: haDash.API + '/change-password',
           contentType: "application/json; charset=utf-8",
             dataType: "json",
           xhrFields: {

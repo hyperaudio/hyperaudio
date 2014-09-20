@@ -38,7 +38,7 @@ function validEmail(email) {
         $(event.target).find('img').show();
 
         $.ajax({
-          url: haDash.API + '/password',
+          url: haDash.API + '/reset-password',
           contentType: "application/json; charset=utf-8",
             dataType: "json",
           xhrFields: {
