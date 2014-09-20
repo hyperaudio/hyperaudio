@@ -191,6 +191,16 @@ __p += '<h2>Add YouTube Video</h2>\n\n<p class="lead">Please paste a link to a v
 return __p
 };
 
+this["JST"]["app/scripts/templates/changePassword.ejs"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Change Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password2" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Password2">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
+
+}
+return __p
+};
+
 this["JST"]["app/scripts/templates/media.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
@@ -353,7 +363,7 @@ this["JST"]["app/scripts/templates/resetPassword.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like that\'s not a valid email address. Sorry.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Please check your email for instructions on how to change your password. \n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like that\'s not a valid email address. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Please check your email for instructions on how to change your password. \n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -544,6 +554,7 @@ haDash.Routers = haDash.Routers || {};
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
+      'change-password/': 'changePassword',
 
       'add-media/': 'addMedia'
     },
@@ -671,6 +682,13 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Reset Password";
       $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    changePassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Change Password";
+      $main.empty().append(new haDash.Views.ChangePasswordView({}).el);
     },
 
     pageView : function(){
@@ -2054,6 +2072,73 @@ function validEmail(email) {
           method: 'post',
           data: JSON.stringify({
             email: $('#email').val(),
+          })
+        })
+        .done(function(whoami) {
+          console.log(whoami);
+          $('#passwordForm').hide();
+          $('#passwordConfirm').show();
+        })
+        .fail(function() {
+          $('#passwordFormError').show();
+          $(event.target).find('img').hide();
+        });
+
+      } else {
+        $('#passwordFormError').show();
+      }
+
+    }
+
+  });
+
+})();
+
+/*global haDash, Backbone, JST*/
+
+haDash.Views = haDash.Views || {};
+
+
+(function () {
+    'use strict';
+
+    haDash.Views.ResetPasswordView = Backbone.View.extend({
+
+    id: 'passwordView',
+
+        template: JST['app/scripts/templates/resetPassword.ejs'],
+
+    initialize: function() {
+      this.render();
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      return this;
+    },
+
+    events: {
+      'click #passwordForm button[type="submit"]': 'change'
+    },
+
+    change: function(event) {
+      event.preventDefault();
+      $('#passwordFormError').hide();
+
+      if ($('#password').val() == $('#password2').val()) {
+        $(event.target).find('img').show();
+
+        $.ajax({
+          url: haDash.API + '/password',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            password: $('#password').val(),
           })
         })
         .done(function(whoami) {

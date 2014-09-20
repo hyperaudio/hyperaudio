@@ -32,6 +32,7 @@ haDash.Routers = haDash.Routers || {};
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
+      'change-password/': 'changePassword',
 
       'add-media/': 'addMedia'
     },
@@ -159,6 +160,13 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Reset Password";
       $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    changePassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Change Password";
+      $main.empty().append(new haDash.Views.ChangePasswordView({}).el);
     },
 
     pageView : function(){
