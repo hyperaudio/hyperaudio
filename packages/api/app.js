@@ -238,12 +238,16 @@ app.get('/v1/register', function(req, res) {
 
 app.post('/v1/register', function(req, res) {
 
+  var token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+
   Account.register(new Account({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       username: req.body.username,
-      email: req.body.email
+      email: req.body.email,
+      token: token
     }),
-    req.body.password,
+    // req.body.password,
+    urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), //secret password
     function(err, account) {
       if (err) {
         return res.send(401);
@@ -252,9 +256,31 @@ app.post('/v1/register', function(req, res) {
       //FIXME authenticate
       if (req.isAuthenticated()) {
         // req.session.user = req.user.username;
-        res.json({
-          user: req.user
+        /// email user
+        var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').registerMessage));
+
+        message.to[0].email = req.body.email;
+        message.to[0].name = req.body.username;
+        message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
+        message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
+
+        var async = false;
+        var ip_pool = "Main Pool";
+        mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+            console.log(result);
+            return res.send(result);
+        }, function(e) {
+            console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+            res.status(500);
+            return res.send({
+              error: e
+            });
         });
+        /// email
+        // res.json({
+        //   user: req.user
+        // });
       } else {
         res.json({
           user: null
@@ -282,6 +308,9 @@ app.post('/v1/change-password', function(req, res) {
     if (user) {
       ///
       user.setPassword(req.body.password, function() {
+        //reset token
+        user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+
         user.save(function(err) {
           if (err) {
             res.status(500);
@@ -328,7 +357,7 @@ app.post('/v1/reset-password', function(req, res) {
         }
 
         var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').message));
+        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').resetMessage));
 
         message.to[0].email = user.email;
         message.to[0].name = user.username;
