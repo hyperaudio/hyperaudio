@@ -20,6 +20,12 @@ haDash.Views = haDash.Views || {};
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
+      //
+      if (status && status != '') {
+        this.refresh();
+      }
+      //
+
       this.$el.data('view', this);
       this.$el.data('model', this.model);
       return this;
@@ -104,6 +110,9 @@ haDash.Views = haDash.Views || {};
         haDash.router.navigate("secret-signin/", {trigger: true});
         this.remove();
       }
+
+      this.$el.find('button.align').hide();
+      this.$el.find('button.aligning').show();
 
       var lang = this.$el.find('select').val();
       if (!lang) lang = haDash.lang;

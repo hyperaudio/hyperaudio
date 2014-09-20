@@ -402,9 +402,9 @@ __p += '\n\n    ';
  if (type == "text") { ;
 __p += '\n\n      ';
  if (status && status != '') { ;
-__p += '\n        <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n      ';
+__p += '\n        <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n      ';
  } else { ;
-__p += '\n        <select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n        </select>\n        <button class="button align small primary">Align</button>\n\n        <a class="button small" href="/maker/?t=' +
+__p += '\n        <select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n        </select>\n        <button class="button align small primary">Align</button>\n        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n\n        <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n      ';
  } ;
@@ -1629,6 +1629,12 @@ haDash.Views = haDash.Views || {};
       this.$el.html(this.template(this.model.toJSON()));
       this.$el.find("span.timeago").timeago();
 
+      //
+      if (status && status != '') {
+        this.refresh();
+      }
+      //
+
       this.$el.data('view', this);
       this.$el.data('model', this.model);
       return this;
@@ -1713,6 +1719,9 @@ haDash.Views = haDash.Views || {};
         haDash.router.navigate("secret-signin/", {trigger: true});
         this.remove();
       }
+
+      this.$el.find('button.align').hide();
+      this.$el.find('button.aligning').show();
 
       var lang = this.$el.find('select').val();
       if (!lang) lang = haDash.lang;

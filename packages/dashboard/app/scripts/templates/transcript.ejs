@@ -22,7 +22,7 @@
     <% if (type == "text") { %>
 
       <% if (status && status != '') { %>
-        <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
+        <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
       <% } else { %>
         <select>
           <option value="en" selected>English</option>
@@ -31,6 +31,7 @@
           <option value="de">German</option>
         </select>
         <button class="button align small primary">Align</button>
+        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
 
         <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
       <% } %>
