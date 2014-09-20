@@ -34,7 +34,7 @@ function validEmail(email) {
       event.preventDefault();
       $('#passwordFormError').hide();
 
-      if (validEmail) {
+      if (validEmail($('email').val())) {
         $(event.target).find('img').show();
 
         $.ajax({
