@@ -166,7 +166,7 @@ app.get('/v1/session', function(req, res) {
 app.get('/v1/token',
   passport.authenticate('token', { session: true }),
   function(req, res) {
-
+    var token = req.query.access_token;
     Account.findOne({ token: token }, function (err, user) {
       if (err) {
         res.status(500);
