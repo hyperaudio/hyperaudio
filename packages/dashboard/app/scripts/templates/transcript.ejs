@@ -20,7 +20,6 @@
   <% if (owner == haDash.user) { %>
 
     <% if (type == "text") { %>
-      <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
 
       <% if (status && status != '') { %>
         <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
@@ -30,6 +29,8 @@
           <option value="es">Spanish</option>
         </select>
         <button class="button align small primary">Align</button>
+
+        <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
       <% } %>
 
 
