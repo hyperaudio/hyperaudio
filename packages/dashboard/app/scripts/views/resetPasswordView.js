@@ -31,6 +31,7 @@ function validEmail(email) {
     },
 
     send: function(event) {
+      console.log("sending");
       event.preventDefault();
       $('#passwordFormError').hide();
 
