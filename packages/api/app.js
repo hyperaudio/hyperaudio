@@ -237,8 +237,8 @@ app.post('/v1/register', function(req, res) {
     });
 });
 
-app.get('/v1/reset-password', function(req, res) {
-  var email = req.query.email;
+app.post('/v1/reset-password', function(req, res) {
+  var email = req.body.email;
 
   return Account.findOne({email: email}).exec(function(err, user) {
     if (err) {
