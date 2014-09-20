@@ -398,17 +398,17 @@ __p += '\n  <br>' +
 __e( status ) +
 '\n</td>\n<td>\n  ';
  if (owner == haDash.user) { ;
-__p += '\n    ';
+__p += '\n\n    ';
  if (type == "text") { ;
-__p += '\n    <a class="button small" href="/maker/?t=' +
+__p += '\n      <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Edit</a>\n    ';
+'">Edit</a>\n\n      ';
  if (status && status != '') { ;
-__p += '\n    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n    ';
+__p += '\n        <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n      ';
  } else { ;
-__p += '\n    <button class="button align small primary">Align</button>\n    ';
+__p += '\n        <select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n        </select>\n        <button class="button align small primary">Align</button>\n      ';
  } ;
-__p += '\n  ';
+__p += '\n\n\n  ';
  } else if (type == "html") { ;
 __p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
@@ -416,13 +416,13 @@ __p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Mix</a>\n    <a class="button small" href="/cleaner/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Clean</a>\n  ';
+'">Clean</a>\n\n\n  ';
  } else if (type == "srt") { ;
 __p += '\n    <a class="button small primary" href="/converter/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Convert</a>\n  ';
+'">Convert</a>\n\n  ';
  } ;
-__p += '\n    <button class="button tDelete">Delete</button>\n  ';
+__p += '\n    <button class="button tDelete">Delete</button>\n\n  ';
  } else { ;
 __p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +

@@ -18,21 +18,33 @@
 </td>
 <td>
   <% if (owner == haDash.user) { %>
+
     <% if (type == "text") { %>
-    <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
-    <% if (status && status != '') { %>
-    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
-    <% } else { %>
-    <button class="button align small primary">Align</button>
-    <% } %>
+      <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
+
+      <% if (status && status != '') { %>
+        <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
+      <% } else { %>
+        <select>
+          <option value="en" selected>English</option>
+          <option value="es">Spanish</option>
+        </select>
+        <button class="button align small primary">Align</button>
+      <% } %>
+
+
   <% } else if (type == "html") { %>
     <a class="button small primary" href="/pad/viewer/?t=<%= _id%>" target="_new">View</a>
     <a class="button small" href="/pad/?t=<%= _id%>">Mix</a>
     <a class="button small" href="/cleaner/?t=<%= _id%>">Clean</a>
+
+
   <% } else if (type == "srt") { %>
     <a class="button small primary" href="/converter/?t=<%= _id%>">Convert</a>
+
   <% } %>
     <button class="button tDelete">Delete</button>
+
   <% } else { %>
     <a class="button small primary" href="/pad/viewer/?t=<%= _id%>" target="_new">View</a>
     <a class="button small" href="/pad/?t=<%= _id%>">Mix</a>
