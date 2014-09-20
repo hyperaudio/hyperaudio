@@ -21,6 +21,8 @@ if (document.location.hostname.indexOf('hyperaud.io') > -1) {
 
 window.haDash = {
 
+  lang: 'en',
+
   namespace: namespace,
 
   // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
@@ -456,6 +458,7 @@ haDash.Models = haDash.Models || {};
         owner: null,
         namespace: window.haDash.namespace,
         tags: [],
+        meta: {},
         channel: null
       };
     }
@@ -965,6 +968,7 @@ haDash.Models = haDash.Models || {};
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
           tags: [],
+          meta: {},
           channel: null
         };
       }
@@ -1489,7 +1493,7 @@ haDash.Views = haDash.Views || {};
         if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
 
-          var curl = 'http://api.hyperaudio.net/v1/about';//FIXME use proper API endpoint (domain, prefix)
+          var curl = 'http://api.hyperaud.io/v1/about';//FIXME use proper API endpoint (domain, prefix)
           $.post(curl, {url: url}, function (info) {
             console.log(info);
             if (typeof info == 'string') {
@@ -1564,6 +1568,7 @@ haDash.Models = haDash.Models || {};
           // namespace: window.haDash.namespace,
           created: new Date().toISOString(),
           modified: new Date().toISOString(),
+          meta: {},
           media: null,
           status: null
         };
@@ -1685,7 +1690,7 @@ haDash.Views = haDash.Views || {};
         var self = this;
         this.refreshing = setInterval(function() {
           self.model.fetch({
-            url: haDash.API + '/transcripts/' + self.model.id + '?salt=' + Math.random(),
+            url: haDash.API + '/transcripts/' + self.model.id + '/poll?salt=' + Math.random(),
             success: function(model) {
               console.log(model);
               // self.render();
@@ -1711,7 +1716,9 @@ haDash.Views = haDash.Views || {};
           withCredentials: true
         },
         method: 'post',
-        data: JSON.stringify({})
+        data: JSON.stringify({
+          lang: haDash.lang
+        })
       })
       .done(function() {
           console.log('OK');
