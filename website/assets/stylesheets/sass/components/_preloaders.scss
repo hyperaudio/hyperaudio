@@ -1,0 +1,61 @@
+/* Preloaders
+----------------------------------------------- */
+
+%preloader {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  .preloader__blob1 {
+    @include animation-delay(0);
+  }
+  .preloader__blob2 {
+    @include animation-delay($dflt-time * 0.5);
+  }
+  .preloader__blob3 {
+    @include animation-delay($dflt-time );
+  }
+}
+
+%preloader__blob {
+  @include animation(preloader ($dflt-time * 3.0) infinite ease-in-out);
+  @include animation-fill-mode(both);
+  background-color: #333;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+.preloader--large {
+  @extend %preloader;
+  width: 50px;
+  > div {
+    @extend %preloader__blob;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.preloader--small {
+  @extend %preloader;
+  width: 16px;
+  > div {
+    @extend %preloader__blob;
+    width: 3px;
+    height: 3px;
+  }
+}
+
+@-webkit-keyframes preloader {
+  0%, 80%, 100% {
+    @include transform(scale(0.0));
+  } 40% {
+    @include transform(scale(1.0));
+  }
+}
+
+@keyframes preloader {
+  0%, 80%, 100% {
+    @include transform(scale(0.0));
+  } 40% {
+    @include transform(scale(1.0));
+  }
+}
