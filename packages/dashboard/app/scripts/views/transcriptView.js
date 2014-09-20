@@ -106,10 +106,7 @@ haDash.Views = haDash.Views || {};
       }
 
       var lang = this.$el.find('select').val();
-
       if (!lang) lang = haDash.lang;
-      alert(lang);
-      return;
 
       var self = this;
       $.ajax({
