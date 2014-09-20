@@ -193,21 +193,22 @@ app.post('/v1/register', function(req, res) {
 app.get('/v1/reset-password', function(req, res) {
   var email = req.query.email;
 
-  return Account.find({email: email}).exec(function(err, user) {
-    if (!err) {
-      return res.send(user);
-    } else {
+  return Account.findOne({email: email}).exec(function(err, user) {
+    if (err) {
       res.status(500);
       return res.send({
         error: err
       });
     }
 
-    res.status(404);
-    res.send({
-      error: 'Not found'
-    });
-    return;
+    if (user) {
+      return res.send(user);
+    } else {
+      res.status(404);
+      return res.send({
+        error: 'Not found'
+      });
+    }
   });
 
 });
