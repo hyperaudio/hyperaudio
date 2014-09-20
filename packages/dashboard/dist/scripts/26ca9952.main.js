@@ -384,9 +384,13 @@ __e( modified ) +
 __e( modified ) +
 '</span></td>\n<td>' +
 __e( owner ) +
-'</td>\n<td class="span1">\n  ';
- if (type == "text") { ;
-__p += '\n  not aligned\n  ';
+'</td>\n<td class="span1">\n\n  ';
+ if (type == "text" && !status) { ;
+__p += '\n    not aligned\n  ';
+ } else if (type == "text" && status) { ;
+__p += '\n    ' +
+__e( status ) +
+'\n  ';
  } else if (type == "html") { ;
 __p += '\n  aligned\n  ';
  } else if (type == "srt") { ;
@@ -394,9 +398,7 @@ __p += '\n  not converted\n  ';
  } else { ;
 __p += '\n  n/a\n  ';
  } ;
-__p += '\n  <br>' +
-__e( status ) +
-'\n</td>\n<td>\n  ';
+__p += '\n\n\n</td>\n<td>\n  ';
  if (owner == haDash.user) { ;
 __p += '\n\n    ';
  if (type == "text") { ;

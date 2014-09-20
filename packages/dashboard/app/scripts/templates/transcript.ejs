@@ -5,8 +5,11 @@
 <td class="span1"><span class="timeago" title="<%- modified %>"><%- modified %></span></td>
 <td><%- owner %></td>
 <td class="span1">
-  <% if (type == "text") { %>
-  not aligned
+
+  <% if (type == "text" && !status) { %>
+    not aligned
+  <% } else if (type == "text" && status) { %>
+    <%- status %>
   <% } else if (type == "html") { %>
   aligned
   <% } else if (type == "srt") { %>
@@ -14,7 +17,8 @@
   <% } else { %>
   n/a
   <% } %>
-  <br><%- status %>
+
+
 </td>
 <td>
   <% if (owner == haDash.user) { %>
