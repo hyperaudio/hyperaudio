@@ -65,7 +65,6 @@ module.exports = function(app, nconf, io) {
   app.get('/v1/:user?/transcripts/:id', function(req, res) {
 
     return Transcript.findById(req.params.id).populate('media').exec(
-      /*return Transcript.findById(req.params.id,*/
 
       function(err, transcript) {
         if (!err) {
@@ -80,9 +79,107 @@ module.exports = function(app, nconf, io) {
       });
   });
 
+  app.get('/v1/:user?/transcripts/:id/poll', function(req, res) {
+
+    return Transcript.findById(req.params.id).populate('media').exec(
+
+      function(err, transcript) {
+        if (!err) {
+
+          var jobid = null;
+
+          if (transcript.type == 'html') {
+            return res.send(transcript);
+          } else if (transcript.meta && transcript.meta.status && transcript.meta.status.alignment) {
+            return res.send(transcript);
+          } else if (transcript.meta && transcript.meta.mod9 && transcript.meta.mod9.jobid) {
+            jobid = transcript.meta.mod9.jobid;
+          } else {
+            return res.send(transcript);
+          }
+
+          ////
+          var options = {
+            host: 'mod9.54.197.237.1.xip.io',
+            port: 80,
+            path: '/mod9/align/v0.8?' + querystring.stringify({
+              jobid: jobid,
+              mode: 'poll'
+            }),
+            headers: {
+              'Authorization': 'Basic ' + new Buffer('hyperaudio' + ':' + 'hyperaudio').toString('base64')
+            }
+          };
+
+          console.log(options);
+
+          request = http.get(options, function(response) {
+
+            var result = '';
+
+            response.on('data', function(data) {
+              console.log('DATAX ' + data);
+              result += data;
+            });
+
+            response.on('end', function() {
+              transcript.type = "text";
+              if (!transcript.meta) transcript.meta = {};
+
+              // transcript.meta.align = JSON.parse(result);
+              transcript.meta.status = JSON.parse(result);
+              transcript.status = '';
+
+              if (transcript.meta.status.status) transcript.status = transcript.meta.status.status;
+              // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
+
+              if (transcript.meta.status.alignment) {
+                var hypertranscript = "<article><header></header><section><header></header><p>";
+                var al = transcript.meta.status.alignment;
+                for (var i = 0; i < al.length; i++) {
+                   hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
+                }
+                hypertranscript += "</p><footer></footer></section></footer></footer></article>";
+
+                transcript.content = hypertranscript;
+                transcript.type = 'html';
+
+                transcript.meta.status.alignment = true;
+              }
+
+              transcript.save(function(err) {
+                // console.log('SAVING? ' + err);
+                // console.log(transcript);
+                if (!err) {
+                  return res.send(transcript);
+                } else {
+                  console.log(err);
+                  res.status(500);
+                  return res.send({
+                    error: err
+                  });
+                }
+              });
+
+            });
+
+          });//req2
+          ////
+        } else {
+          res.status(404);
+          res.send({
+            error: err,
+          });
+          return;
+        }
+      });
+  });
+
+
   app.get('/v1/:user?/transcripts/:id/text', function(req, res) {
 
-    return Transcript.findById(req.params.id).exec(
+    //return Transcript.findById(req.params.id).exec(
+    return Transcript.findById(req.params.id).populate('media').exec(
       /*return Transcript.findById(req.params.id,*/
 
       function(err, transcript) {
@@ -126,6 +223,7 @@ module.exports = function(app, nconf, io) {
       transcript.desc = req.body.desc;
       transcript.type = req.body.type;
       transcript.meta = req.body.meta;
+      if (!transcript.meta) transcript.meta = {status:null};
       transcript.media = req.body.media;
 
       if (req.params.media && req.params.media._id) {
@@ -176,6 +274,15 @@ module.exports = function(app, nconf, io) {
     }
   }
 
+  app.get('/v1/:user?/transcripts/:id/video', function(req, res) {
+    return Transcript.findById(req.params.id).populate('media').exec(function(err, transcript) {
+      getMediaUrl(transcript.media, function(url) {
+        if (url) return res.redirect(url);
+        return res.send(404);
+      });
+    });
+  });
+
   // FIXME better location? think web-calculus, also allow setting text now?
   // pass media url
   app.post('/v1/:user?/transcripts/:id/align', function(req, res) {
@@ -184,29 +291,41 @@ module.exports = function(app, nconf, io) {
 
       getMediaUrl(transcript.media, function(url) {
         if (transcript.type == 'text' && transcript.media && url) {
+
+          if (!transcript.meta) transcript.meta = {status: null, state: 0};
+
+          var lang = 'en';
+          if (transcript.meta && transcript.meta.lang) lang = transcript.meta.lang;
+          if (req.body.lang) lang = req.body.lang;
+
+          //use redirect url
+          url = 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/video';
+
           var options = {
-            host: 'mod9.184.73.157.200.xip.io',
+            host: 'mod9.54.197.237.1.xip.io',
             port: 80,
-            path: '/mod9/align/v0.7?' + querystring.stringify({
+            path: '/mod9/align/v0.8?' + querystring.stringify({
               audio: url,
-              text: 'http://api.hyperaudio.net/v1/transcripts/' + transcript._id + '/text',
-              mode: 'stream',
+              lang: lang,
+              text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
+              mode: 'submit',
               skip: 'True',
               prune: 0
             }),
             headers: {
-              'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
+              'Authorization': 'Basic ' + new Buffer('hyperaudio' + ':' + 'hyperaudio').toString('base64')
             }
           };
 
+	       console.log(options);
 
-          request = http.get(options, function(res1) {
+          request = http.get(options, function(response) {
             var result = [];
             var part = null;
 
             console.log('Request in progress...');
 
-            res1.on('data', function(data) {
+            response.on('data', function(data) {
               console.log('DATA ' + data);
               if (part) part += data;
               try {
@@ -218,9 +337,18 @@ module.exports = function(app, nconf, io) {
                 //   align: JSON.parse(data)
                 // });
                 // part = "";
-              transcript.status = JSON.parse(data).status;
-              transcript.save(function(){});
-              if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
+                transcript.meta = {status: null, state: 1};
+                transcript.status = JSON.parse(data).status;
+                transcript.meta.status = JSON.parse(data);
+
+                transcript.meta.state = 1;
+
+                transcript.meta.mod9 = JSON.parse(data);
+                transcript.meta.mod9.input = options;
+              // transcript.save(function(){
+                // return res.send(transcript);
+              // });
+              // if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
 
               } catch (err) {
                 console.log('err skipping');
@@ -228,85 +356,40 @@ module.exports = function(app, nconf, io) {
               }
             });
 
-            res1.on('end', function() {
+            response.on('end', function() {
               console.log('END');
               console.log(result);
               console.log('JOBID? ' + result[0][1].jobid);
 
-              var options2 = {
-                host: 'mod9.184.73.157.200.xip.io',
-                port: 80,
-                path: '/mod9/align/v0.7?' + querystring.stringify({
-                  jobid: result[0][1].jobid,
-                  mode: 'poll'
-                }),
-                headers: {
-                  'Authorization': 'Basic ' + new Buffer('hyperaud.io' + ':' + 'hyperaud.io').toString('base64')
-                }
-              };
+              // transcript.status = JSON.parse(data).status;
+              // transcript.meta.status = JSON.parse(data);
+              transcript.meta = {status: null, state: 2};
+              transcript.meta.state = 2;
+              if (!transcript.meta.mod9) transcript.meta.mod9 = {};
+              transcript.meta.mod9.jobid = result[0][1].jobid;
+              transcript.label += '.';
 
-              console.log(options2);
+              transcript.save(function(err, _transcript, number){
+                console.log(err, number);
+                console.log(_transcript);
+                return res.send(_transcript);
+              });
 
-              request2 = http.get(options2, function(res2) {
-
-                var result2 = "";
-
-                res2.on('data', function(data2) {
-                  console.log('DATAX ' + data2);
-                  result2 += data2;
-                });
-
-                res2.on('end', function(){
-                      transcript.type = "text";
-                      if (!transcript.meta) {
-                        transcript.meta = {};
-                      }
-                      transcript.meta.align = JSON.parse(result2);
-                      transcript.status = "";
-                      if (transcript.meta.align.status) transcript.status = transcript.meta.align.status;
-              	      if (io && io.sockets) io.sockets.emit(transcript._id, transcript.status);
-
-                      var hypertranscript = "<article><header></header><section><header></header><p>";
-                      var al = transcript.meta.align.alignment;
-                      for (var i = 0; i < al.length; i++) {
-                         hypertranscript += "<a data-m='"+(al[i][1]*1000)+"'>"+al[i][0]+" </a>";
-                      }
-                      hypertranscript += "</p><footer></footer></section></footer></footer></article>";
-
-                      transcript.content = hypertranscript;
-                      transcript.type = 'html';
-
-                      transcript.save(function(err) {
-                        console.log('SAVING? ' + err);
-                        console.log(transcript);
-
-                        if (!err) {
-                          // callback('success');
-                          return res.send(transcript);
-                        } else {
-                          console.log(err);
-                        }
-                      });
-
-                });
-
-              });//req2
               /////
-            });//req1.end
+            });//req.end
 
-            res1.on('error', function(e) {
+            response.on('error', function(e) {
               console.log("Got error: " + e.message);
-              // process.disconnect();
-              // callback('bury');
             });
           });
 
         } else {// if text & media
           // return res.send({error: 'not text, or no media, or no url'});
+          return res.send(transcript);
         }
       });//getMediaUrl
 
-      return res.send(transcript);
+      //return res.send(transcript);
     });
   });
 
@@ -327,6 +410,8 @@ module.exports = function(app, nconf, io) {
       content = req.body.content;
     }
 
+    var meta = req.body.meta;
+    if (!meta) meta = {status:null};
     transcript = new Transcript({
       _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
       label: req.body.label,
@@ -334,7 +419,7 @@ module.exports = function(app, nconf, io) {
       type: req.body.type,
       // sort: req.body.sort,
       owner: req.body.owner,
-      meta: req.body.meta,
+      meta: meta,
       content: content,
       media: req.body.media
     });
