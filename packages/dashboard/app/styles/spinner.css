@@ -5,9 +5,8 @@
 }
 
 .spinner > div {
-  width: 18px;
-  height: 18px;
-  background-color: #333;
+  width: 14px;
+  height: 14px;
 
   border-radius: 100%;
   display: inline-block;
@@ -16,6 +15,10 @@
   /* Prevent first frame from flickering when animation starts */
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
+}
+
+.spinner .bounce1, .spinner .bounce2, .spinner .bounce3 {
+  background-color: rgba(0, 0, 0, 0.55);
 }
 
 .spinner .bounce1 {
