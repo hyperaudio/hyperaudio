@@ -406,7 +406,7 @@ __p += '\n    <a class="button small" href="/maker/?t=' +
  if (status && status != '') { ;
 __p += '\n    <button class="button small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n    ';
  } else { ;
-__p += '\n\n    <select>\n      <option name="English" value="en">\n      <option name="Spanish" value="es">\n    </select>\n    <button class="button align small primary">Align</button>\n\n    ';
+__p += '\n    <button class="button align small primary">Align</button>\n    ';
  } ;
 __p += '\n  ';
  } else if (type == "html") { ;
@@ -432,7 +432,7 @@ this["JST"]["app/scripts/templates/transcriptList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<table class="user">\n  <caption>Your Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="your">\n  </tbody>\n</table>\n\n<p>&nbsp;</p>\n<p>&nbsp;</p>\n\n<table>\n  <caption>Available Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="other">\n  </tbody>\n</table>\n';
+__p += '<table class="user">\n  <caption>Your Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="your">\n  </tbody>\n</table>\n\n<p>&nbsp;</p>\n<p>&nbsp;</p>\n\n<table>\n  <caption>Available Transcripts</caption>\n  <thead>\n    <tr>\n      <th class="span2">Title</th>\n      <th class="span3">Description</th>\n      <th class="span1">Date</th>\n      <th>Author</th>\n      <th class="span1">Status</th>\n      <th></th>\n    </tr>\n  </thead>\n  <tbody class="other">\n  </tbody>\n</table>\n\n<hr>\n<hr>\n<hr>\n\n<button href="#" data-dropdown="drop1" aria-controls="drop1" aria-expanded="false" class="button dropdown">Dropdown Button</button><br>\n<ul id="drop1" data-dropdown-content class="f-dropdown" aria-hidden="true" tabindex="-1">\n  <li><a href="#">This is a link</a></li>\n  <li><a href="#">This is another</a></li>\n  <li><a href="#">Yet another</a></li>\n</ul>\n';
 
 }
 return __p
