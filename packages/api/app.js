@@ -295,6 +295,7 @@ app.get('/v1/change-password', function(req, res) {
         error: 'User not found'
       });
     }
+  });
 });
 
 app.post('/v1/reset-password', function(req, res) {
