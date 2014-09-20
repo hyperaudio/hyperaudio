@@ -1751,8 +1751,8 @@ haDash.Views = haDash.Views || {};
       .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(errorThrown);
         alert("We have trouble aligning your media, your file may be too large or in a format we don't understand. Sorry.");
-        this.$el.find('button.align').show();
-        this.$el.find('button.aligning').hide();
+        self.$el.find('button.align').show();
+        self.$el.find('button.aligning').hide();
       });
       // spin
       //$('#mediaDetail').data('view').refresh();
