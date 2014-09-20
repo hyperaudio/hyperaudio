@@ -24,6 +24,7 @@
 	  "client-sessions": "*",
 	  "toobusy": "*",
     "synchronize": "*",
-    "mandrill-api": "*"
+    "mandrill-api": "*",
+    "passport-token-auth": "*"
   }
 }

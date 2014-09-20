@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var TokenStrategy = require('passport-token-auth').Strategy;
 
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
@@ -111,25 +112,36 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-passport.use(new LocalStrategy({
-    usernameField: 'token',
-    passwordField: 'token'
-  },
-  function(username, token, done) {
+passport.use(new TokenStrategy(
+  function(token, done) {
+    Account.findOne({ token: token }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
 
-    Account.findOne({token: token}).exec(function(err, user) {
-      if (err) return done(err, null);
-      if (!user) return done('token not found', null);
-
-      var _user = {
-
-      };
-
-      return done(null, _user);
+      return done(null, user, { scope: 'all' });
     });
-
   }
 ));
+
+// passport.use(new LocalStrategy({
+//     usernameField: 'token',
+//     passwordField: 'token'
+//   },
+//   function(username, token, done) {
+
+//     Account.findOne({token: token}).exec(function(err, user) {
+//       if (err) return done(err, null);
+//       if (!user) return done('token not found', null);
+
+//       var _user = {
+
+//       };
+
+//       return done(null, _user);
+//     });
+
+//   }
+// ));
 
 app.get('/', function(req, res) {
   res.redirect('http://hyperaud.io/');
@@ -146,6 +158,14 @@ app.get('/v1/status', function(req, res) {
 });
 
 app.get('/v1/session', function(req, res) {
+  res.json({
+    session: req.session
+  });
+});
+
+app.get('/v1/token',
+  passport.authenticate('token', { session: true }),
+  function(req, res) {
   res.json({
     session: req.session
   });
