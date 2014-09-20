@@ -171,6 +171,7 @@ app.post('/v1/token-login',
       if (err) {
         res.status(500);
         return res.send({
+          code: 1,
           error: err
         });
       }
@@ -178,6 +179,7 @@ app.post('/v1/token-login',
       if (!user) {
         res.status(500);
         return res.send({
+          code: 2,
           error: err
         });
       }
