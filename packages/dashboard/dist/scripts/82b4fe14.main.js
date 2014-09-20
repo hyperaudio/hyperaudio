@@ -195,7 +195,7 @@ this["JST"]["app/scripts/templates/changePassword.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Change Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password2" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Password2">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Change Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Retype Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -2171,7 +2171,7 @@ haDash.Views = haDash.Views || {};
         .done(function(whoami) {
           console.log(whoami);
           $('#passwordForm').hide();
-          $('#passwordConfirm').show();
+          $('#passwordFormConfirm').show();
         })
         .fail(function() {
           $('#passwordFormError').show();
