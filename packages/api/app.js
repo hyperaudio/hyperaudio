@@ -167,6 +167,7 @@ app.post('/v1/token-login',
   // passport.authenticate('token', { session: true }),
   function(req, res) {
     var token = req.body.access_token;
+    console.log('token ' + token);
     Account.findOne({ token: token }, function (err, user) {
       if (err) {
         res.status(500);
@@ -175,6 +176,8 @@ app.post('/v1/token-login',
           error: err
         });
       }
+
+      console.log("user", user);
 
       if (!user) {
         res.status(500);
