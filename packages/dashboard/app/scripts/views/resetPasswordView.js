@@ -46,7 +46,7 @@ function validEmail(email) {
           },
           method: 'post',
           data: JSON.stringify({
-            email: $('#email').val(),
+            email: $('#email').val()
           })
         })
         .done(function(whoami) {

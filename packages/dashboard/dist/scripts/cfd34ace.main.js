@@ -2071,7 +2071,7 @@ function validEmail(email) {
           },
           method: 'post',
           data: JSON.stringify({
-            email: $('#email').val(),
+            email: $('#email').val()
           })
         })
         .done(function(whoami) {
@@ -2138,7 +2138,7 @@ haDash.Views = haDash.Views || {};
           },
           method: 'post',
           data: JSON.stringify({
-            password: $('#password').val(),
+            password: $('#password').val()
           })
         })
         .done(function(whoami) {
