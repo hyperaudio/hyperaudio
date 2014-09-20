@@ -31,7 +31,7 @@ haDash.Routers = haDash.Routers || {};
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
-      'forgot-password/': 'password',
+      'reset-password/': 'password',
 
       'add-media/': 'addMedia'
     },
