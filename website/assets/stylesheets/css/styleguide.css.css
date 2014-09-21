@@ -1,0 +1,182 @@
+/* Import Gem-based Base Frameworks
+------------------------------------------- */
+/* Import Bower-driven Vendor Modules
+------------------------------------------- */
+/* Import Other External Assets
+------------------------------------------- */
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Exo+2:400,700,400italic);
+/* Import Hyperaudio Library Mixins
+------------------------------------------- */
+/* Hide Text Mixin
+----------------------------------------------- */
+/* Positionining Mixin
+----------------------------------------------- */
+/* Import Site Config
+------------------------------------------- */
+/* Colour Palette
+----------------------------------------------- */
+/* Typography
+----------------------------------------------- */
+/* Spaces
+----------------------------------------------- */
+/* Border Radii
+----------------------------------------------- */
+/* Default definitions
+----------------------------------------------- */
+/* Styleguide Styles
+------------------------------------------- */
+.tpl_sg > section {
+  padding: 80px 0;
+}
+
+.sg-container {
+  padding: 0 10px;
+}
+
+.sg-nav {
+  color: rgba(0, 0, 0, 0.2);
+  list-style: decimal;
+  margin-bottom: 40px;
+}
+
+.sg-nav-item {
+  display: block;
+}
+
+.sg-nav-separator {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.sg-nav-link {
+  display: block !important;
+  margin-left: 5px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+.sg-nav-link:hover, .sg-nav-link.active {
+  color: rgba(0, 0, 0, 0.66);
+}
+
+.sg-mod {
+  position: relative;
+  margin-bottom: 40px;
+}
+
+.sg-mod-heading {
+  margin-top: 0;
+  padding: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  font-weight: bold;
+  font-size: 25px;
+  line-height: 1.5em;
+}
+.sg-mod-heading .sg-mod-class {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  position: absolute;
+  top: 5px;
+  right: 0;
+  padding: 5px 10px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 16px;
+  font-family: monospace;
+  line-height: 1.2em;
+}
+
+.sg-mod-intro p, .sg-mod-intro ul, .sg-mod-intro ol, .sg-mod-intro pre {
+  margin-bottom: 20px;
+  padding: 0;
+}
+.sg-mod-intro p, .sg-mod-intro li {
+  font-size: 16px;
+  line-height: 1.5em;
+}
+.sg-mod-intro pre {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 17px;
+  font-family: monospace;
+  line-height: 1.5em;
+}
+.sg-mod-intro li {
+  margin-left: 18px;
+}
+.sg-mod-intro iframe {
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.sg-mod-intro iframe::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+.sg-mod-intro iframe::-webkit-scrollbar:vertical {
+  width: 11px;
+}
+.sg-mod-intro iframe::-webkit-scrollbar-thumb {
+  border: 2px solid white;
+  /* should match background, can't be transparent */
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+.sg-mod-intro figure {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: #fff;
+  font-family: monospace;
+  line-height: 1.2em;
+  margin-top: 20px;
+  padding: 20px;
+  text-align: center;
+}
+.sg-mod-intro figure.inverted {
+  background: rgba(0, 0, 0, 0.5);
+}
+.sg-mod-intro figure img {
+  display: inline-block;
+}
+.sg-mod-intro code {
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  padding: 5px 5px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 16px;
+  font-family: monospace;
+  line-height: 1.2em;
+}
+
+.sg-mod-canvas {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  background: url('../../images/backgrounds/sg-grid.png?1411245130') repeat;
+  position: relative;
+}
+
+.sg-mod-canvas-note {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  color: rgba(0, 0, 0, 0.55);
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.4em;
+  padding: 5px 5px;
+  white-space: nowrap;
+}
