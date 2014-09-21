@@ -4,9 +4,9 @@
 http_path = "/"
 css_dir = "assets/stylesheets/css"
 sass_dir = "assets/stylesheets/sass"
-add_import_path "assets/"
+add_import_path "assets"
 images_dir = "assets/images"
-javascripts_dir = "assets/javasscripts"
+javascripts_dir = "assets/javascripts"
 
 # You can select your preferred output style here (can be overridden via the command line):
 # output_style = :expanded or :nested or :compact or :compressed

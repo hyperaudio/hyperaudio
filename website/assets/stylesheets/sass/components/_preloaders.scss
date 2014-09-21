@@ -19,10 +19,13 @@
 %preloader__blob {
   @include animation(preloader ($dflt-time * 3.0) infinite ease-in-out);
   @include animation-fill-mode(both);
-  background-color: #333;
+  background-color: $shadow-strong;
   border-radius: 100%;
   display: inline-block;
 }
+
+/* Size Variations
+----------------------------------------------- */
 
 .preloader--large {
   @extend %preloader;
@@ -43,6 +46,16 @@
     height: 3px;
   }
 }
+
+/* Colour Modifiers
+----------------------------------------------- */
+
+.preloader--inverted > div {
+  background: $flare-strong;
+}
+
+/* Animation
+----------------------------------------------- */
 
 @-webkit-keyframes preloader {
   0%, 80%, 100% {
