@@ -543,13 +543,11 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'secret-signin/': 'signin',
       'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
 
-      'secret-signup/': 'signup',
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
@@ -1006,7 +1004,7 @@ haDash.Views = haDash.Views || {};
       .done(function(whoami) {
         console.log(whoami);
         //FIXME in API login person directly
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         alert('Marvelous, now please log in');
         })
         .fail(function() {
@@ -1016,7 +1014,7 @@ haDash.Views = haDash.Views || {};
 
     }
 
-    });
+  });
 
 })();
 

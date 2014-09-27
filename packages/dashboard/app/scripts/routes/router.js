@@ -21,13 +21,11 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'secret-signin/': 'signin',
       'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
 
-      'secret-signup/': 'signup',
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
