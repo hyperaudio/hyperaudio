@@ -378,7 +378,7 @@ this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerUsernameError" style="display:none" class="form-alert">\n          Sorry, username already exists.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n        <p id="registerEmailError" style="display:none" class="form-alert">\n          Sorry, somebody has already registered with this email address. <a class="link" href="forgotten-password/">Forgotten your password?</a>\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="http://hyperaud.io/terms-of-service/">The Hyperaud.io Terms of Service</a></label>\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerUsernameError" style="display:none" class="form-alert">\n          Sorry, username already exists.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n        <p id="registerEmailError" style="display:none" class="form-alert">\n          Sorry, somebody has already registered with this email address. <a class="link" href="forgotten-password/">Forgotten your password?</a>\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="http://hyperaud.io/terms-of-service/">The Hyperaud.io Terms of Service</a></label>\n        <p id="registerTermsError" style="display:none" class="form-alert">\n          Please accept the terms of service.\n        </p>\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
 
 }
 return __p
@@ -979,40 +979,44 @@ haDash.Views = haDash.Views || {};
 
     signup: function(event) {
       event.preventDefault();
-      $('#registerFormError').hide();
+      $('.form-alert').hide();
       $(event.target).find('img').show();
 
-      $.ajax({
-        url: haDash.API + '/register',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-              username: $('#username').val(),
-              password: $('#password').val(),
-              email: $('#email').val(),
-          })
-      })
-      .done(function(whoami) {
-        console.log(whoami);
-        haDash.router.navigate("signin/", {trigger: true});
-      })
-      .fail(function(e) {
-        $('.form-alert').hide();
-        console.log("e.status="+e.status);
-        if (e.status == "401") {
-          $('#registerUsernameError').show();
-        }
+      if($('#accept').attr('checked')) {
 
-        if (e.status == "409") {
-          $('#registerEmailError').show();
-        }
+        $.ajax({
+          url: haDash.API + '/register',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#password').val(),
+                email: $('#email').val(),
+            })
+        })
+        .done(function(whoami) {
+          haDash.router.navigate("signin/", {trigger: true});
+        })
+        .fail(function(e) {
+
+          if (e.status == "401") {
+            $('#registerUsernameError').show();
+          }
+
+          if (e.status == "409") {
+            $('#registerEmailError').show();
+          }
+          
+          $(event.target).find('img').hide();
+        });
         
-        $(event.target).find('img').hide();
-      });
+      } else {
+        $('#registerTermsError').show();
+      }
     }
   });
 })();
