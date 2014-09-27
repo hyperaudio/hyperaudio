@@ -227,7 +227,7 @@ app.post('/v1/register', function(req, res) {
             // req.session.user = req.user.username;
             /// email user
             var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-            var message = JSON.parse(JSON.stringify(nconf.get('mandrill').chooseMessage));
+            var message = JSON.parse(JSON.stringify(nconf.get('mandrill').registrationMessage));
 
             message.to[0].email = req.body.email;
             message.to[0].name = req.body.username;
