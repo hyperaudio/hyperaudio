@@ -48,14 +48,13 @@ haDash.Views = haDash.Views || {};
         console.log(whoami);
         haDash.router.navigate("signin/", {trigger: true});
       })
-      .fail(function(j,t,e) {
-        console.log("t="+t);
-        console.log("e="+e);
-        if (e == "401") {
+      .fail(function(e) {
+        console.log("e.status="+e.status);
+        if (e.status == "401") {
           $('#registerUsernameError').show();
         }
 
-        if (e == "409") {
+        if (e.status == "409") {
           $('#registerEmailError').show();
         }
         
