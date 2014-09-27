@@ -96,6 +96,7 @@ var Account = require('./models/account');
 var MediaObject = require('./models/mediaObject');
 var Transcript = require('./models/transcript');
 var Metadata = require('./models/metadata');
+var Mix = require('./models/mix');
 
 mongoose.connect(nconf.get('database'));
 
@@ -302,7 +303,7 @@ app.post('/v1/choose-password', function(req, res) {
   });
 });
 
-app.get('/v1/delete-account', function(req, res) {
+app.post('/v1/delete-account', function(req, res) {
   if (!req.session.user) {
     res.status(500);
     return res.send({
@@ -344,7 +345,7 @@ app.get('/v1/delete-account', function(req, res) {
           // reset all media, transcripts and mixes
           MediaObject.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
           Transcript.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
-          Metadata.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
+          Mix.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
 
           //logout
           req.logout(); //TODO has any meaning anymore?
