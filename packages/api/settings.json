@@ -18,50 +18,19 @@
 
     "mandrill": {
       "apiKey": "TAfHl2JVtO67GXjCEaOQ0Q",
-      "resetMessage": {
-          "html": "<p>FORGOT PASS</p>",
-          "text": "FORGOT PASS",
-          "subject": "hyperaudio reset password link",
-          "from_email": "mark+forgotPassword@hyperaud.io",
-          "from_name": "Hyperaudio",
+      "chooseMessage": {
+          "html": "<p>Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication.</p> \n<p>Here's your magic activation link <a href='http://hyperaudio.net/token/TOKEN'>http://hyperaudio.net/token/TOKEN</a> </p>\n<p>(Not really magic.)</p> \n<p>The Hyperaud.io Team</p>",
+          "text": "Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication. \nHere's your magic activation link http://hyperaudio.net/token/TOKEN \n(Not really magic.) \nThe Hyperaud.io Team",
+          "subject": "Hyperaud.io registration",
+          "from_email": "mark+registration@hyperaud.io",
+          "from_name": "Hyperaud.io",
           "to": [{
               "email": "mark@hyperaud.io",
               "name": "MASTER BLASTER",
               "type": "to"
           }],
           "headers": {
-              "Reply-To": "mark+forgotPassword@hyperaud.io"
-          },
-          "important": false,
-          "track_opens": null,
-          "track_clicks": null,
-          "auto_text": null,
-          "auto_html": null,
-          "inline_css": null,
-          "url_strip_qs": null,
-          "preserve_recipients": null,
-          "view_content_link": null,
-          "tracking_domain": null,
-          "signing_domain": null,
-          "return_path_domain": null,
-          "merge": false,
-          "tags": [
-              "password-resets"
-          ]
-      },
-      "registerMessage": {
-          "html": "<p>REGISTER PASS LINK</p>",
-          "text": "REGISTER PASS LINK",
-          "subject": "hyperaudio account validation link",
-          "from_email": "mark+register@hyperaud.io",
-          "from_name": "Hyperaudio",
-          "to": [{
-              "email": "mark@hyperaud.io",
-              "name": "MASTER BLASTER",
-              "type": "to"
-          }],
-          "headers": {
-              "Reply-To": "mark+register@hyperaud.io"
+              "Reply-To": "mark+registration@hyperaud.io"
           },
           "important": false,
           "track_opens": null,

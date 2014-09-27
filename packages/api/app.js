@@ -227,12 +227,14 @@ app.post('/v1/register', function(req, res) {
             // req.session.user = req.user.username;
             /// email user
             var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-            var message = JSON.parse(JSON.stringify(nconf.get('mandrill').registerMessage));
+            var message = JSON.parse(JSON.stringify(nconf.get('mandrill').chooseMessage));
 
             message.to[0].email = req.body.email;
             message.to[0].name = req.body.username;
-            message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
-            message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
+            message.text = message.text.replace(/TOKEN/g, token);
+            message.html = message.html.replace(/TOKEN/g, token);
+            // message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
+            // message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
 
             var async = false;
             var ip_pool = "Main Pool";
@@ -320,12 +322,14 @@ app.post('/v1/reset-password', function(req, res) {
         }
 
         var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').resetMessage));
+        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').chooseMessage));
 
         message.to[0].email = user.email;
         message.to[0].name = user.username;
-        message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
-        message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
+        message.text = message.text.replace(/TOKEN/g, token);
+        message.html = message.html.replace(/TOKEN/g, token);
+        // message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
+        // message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
 
         var async = false;
         var ip_pool = "Main Pool";
