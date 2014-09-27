@@ -50,6 +50,7 @@ haDash.Views = haDash.Views || {};
         .done(function(whoami) {
           //haDash.router.navigate("signin/", {trigger: true});
           $(event.target).find('img').hide();
+          $('#signup').hide();
           $('#registerCheckMail').show();
         })
         .fail(function(e) {
