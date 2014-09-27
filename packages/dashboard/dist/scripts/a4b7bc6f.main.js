@@ -998,28 +998,23 @@ haDash.Views = haDash.Views || {};
       })
       .done(function(whoami) {
         console.log(whoami);
-        //FIXME in API login person directly
         haDash.router.navigate("signin/", {trigger: true});
-          alert('Marvelous, now please log in');
-        })
-        .fail(function(j,t,e) {
-          console.log("t="+t);
-          console.log("e="+e);
-          if (e == "401") {
-            $('#registerUsernameError').show();
-          }
+      })
+      .fail(function(j,t,e) {
+        console.log("t="+t);
+        console.log("e="+e);
+        if (e == "401") {
+          $('#registerUsernameError').show();
+        }
 
-          if (e == "409") {
-            $('#registerEmailError').show();
-          }
-          
-          $(event.target).find('img').hide();
-        });
-
+        if (e == "409") {
+          $('#registerEmailError').show();
+        }
+        
+        $(event.target).find('img').hide();
+      });
     }
-
   });
-
 })();
 
 /*global haDash, Backbone*/
