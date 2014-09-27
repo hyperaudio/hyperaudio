@@ -11,7 +11,6 @@ var mongoose = require('mongoose');
 
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var TokenStrategy = require('passport-token-auth').Strategy;
 
 var uuid = require("node-uuid");
 var urlSafeBase64 = require('urlsafe-base64');
@@ -28,7 +27,7 @@ nconf.argv()
 var app = express();
 
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', nconf.get('port') || process.env.PORT || 3000);
 
 app.use(function(req, res, next) {
   if (toobusy()) {
@@ -48,19 +47,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 
 var sessions = require("client-sessions");
-app.use(sessions({
-  cookieName: 'session',
-  secret: 'ohziuchaepah7xie0vei6Apai8aep4th', //FIXME: move to conf
-  duration: 24 * 60 * 60 * 1000, // how long the session will stay valid in ms
-  activeDuration: 1000 * 60 * 5, // if expiresIn < activeDuration, the session will be extended by activeDuration milliseconds
-  cookie: {
-    path: '/v1', // cookie will only be sent to requests under '/v1'
-    // maxAge: 60000, // duration of the cookie in milliseconds, defaults to duration above
-    ephemeral: false, // when true, cookie expires when the browser closes
-    httpOnly: true, // when true, cookie is not accessible from javascript
-    secure: false   // when true, cookie will only be sent over SSL
-  }
-}));
+app.use(sessions(nconf.get('sessions')));
 
 
 app.use(passport.initialize());
@@ -112,36 +99,6 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-// passport.use(new TokenStrategy(
-//   function(token, done) {
-//     Account.findOne({ token: token }, function (err, user) {
-//       if (err) { return done(err); }
-//       if (!user) { return done(null, false); }
-
-//       return done(null, user, { scope: 'all' });
-//     });
-//   }
-// ));
-
-// passport.use(new LocalStrategy({
-//     usernameField: 'token',
-//     passwordField: 'token'
-//   },
-//   function(username, token, done) {
-
-//     Account.findOne({token: token}).exec(function(err, user) {
-//       if (err) return done(err, null);
-//       if (!user) return done('token not found', null);
-
-//       var _user = {
-
-//       };
-
-//       return done(null, _user);
-//     });
-
-//   }
-// ));
 
 app.get('/', function(req, res) {
   res.redirect('http://hyperaud.io/');
@@ -164,11 +121,8 @@ app.get('/v1/session', function(req, res) {
 });
 
 app.post('/v1/token-login',
-  // passport.authenticate('token', { session: true }),
   function(req, res) {
-    // console.log(JSON.stringify(req.body));
     var token = req.body['access-token'];
-    // console.log('token ' + token);
     Account.findOne({ token: token }, function (err, user) {
       if (err) {
         res.status(500);
@@ -177,8 +131,6 @@ app.post('/v1/token-login',
           error: err
         });
       }
-
-      // console.log("user", user);
 
       if (!user) {
         res.status(500);
@@ -209,11 +161,11 @@ app.get('/v1/whoami', function(req, res) {
   });
 });
 
-app.get('/v1/login', function(req, res) {
-  res.render('login', {
-    user: req.user
-  });
-});
+// app.get('/v1/login', function(req, res) {
+//   res.render('login', {
+//     user: req.user
+//   });
+// });
 
 app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   req.session.user = req.user.username;
@@ -232,61 +184,72 @@ app.post('/v1/logout', function(req, res) {
   });
 });
 
-app.get('/v1/register', function(req, res) {
-  res.render('register', {});
-});
+// app.get('/v1/register', function(req, res) {
+//   res.render('register', {});
+// });
 
 app.post('/v1/register', function(req, res) {
 
-  var token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+  //check email
+  Account.findOne({email: req.body.email}).exec(function(err, user) {
+    if (err) {
+      res.status(500);
+      return res.send({
+        error: err
+      });
+    }
 
-  Account.register(new Account({
-      _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
-      username: req.body.username,
-      email: req.body.email,
-      token: token
-    }),
-    // req.body.password,
-    urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), //secret password
-    function(err, account) {
-      if (err) {
-        return res.send(401);
-      }
+    if (user) {
 
-      //FIXME authenticate
-      // if (req.isAuthenticated()) {
-        // req.session.user = req.user.username;
-        /// email user
-        var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').registerMessage));
+      res.status(409);
+      return res.send({
+        error: 'email address already in use'
+      });
 
-        message.to[0].email = req.body.email;
-        message.to[0].name = req.body.username;
-        message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
-        message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
+    } else { //no user with that email
 
-        var async = false;
-        var ip_pool = "Main Pool";
-        mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
-            console.log(result);
-            return res.send(result);
-        }, function(e) {
-            console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
-            res.status(500);
-            return res.send({
-              error: e
+      var token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+
+      Account.register(new Account({
+          _id: urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)),
+          username: req.body.username,
+          email: req.body.email,
+          token: token
+        }),
+        urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), //secret password
+        function(err, account) {
+          if (err) {
+            return res.send(401);
+          }
+
+          //FIXME authenticate
+          // if (req.isAuthenticated()) {
+            // req.session.user = req.user.username;
+            /// email user
+            var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+            var message = JSON.parse(JSON.stringify(nconf.get('mandrill').registerMessage));
+
+            message.to[0].email = req.body.email;
+            message.to[0].name = req.body.username;
+            message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
+            message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
+
+            var async = false;
+            var ip_pool = "Main Pool";
+            mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+                console.log(result);
+                return res.send(result);
+            }, function(e) {
+                console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+                res.status(500);
+                return res.send({
+                  error: e
+                });
             });
         });
-        /// email
-        // res.json({
-        //   user: req.user
-        // });
-      // } else {
-      //   res.json({
-      //     user: null
-      //   });
-      // }
-    });
+
+    }//else no user
+  });//email check
 });
 
 app.post('/v1/change-password', function(req, res) {
@@ -406,16 +369,16 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-io = require('socket.io')(server);
-var redis = require('socket.io-redis');
-io.adapter(redis({ host: 'localhost', port: 6379 }));
+// io = require('socket.io')(server);
+// var redis = require('socket.io-redis');
+// io.adapter(redis({ host: 'localhost', port: 6379 }));
 
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
-});
+// io.on('connection', function (socket) {
+//   socket.emit('news', { hello: 'world' });
+//   socket.on('my other event', function (data) {
+//     console.log(data);
+//   });
+// });
 
 
 
