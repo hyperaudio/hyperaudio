@@ -1599,6 +1599,7 @@ haDash.Views = haDash.Views || {};
               return;
             }
 
+
             var source = {};
             var type = info['content-type'].split('/')[1];
             source[type] = url;
