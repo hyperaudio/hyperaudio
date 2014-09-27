@@ -1001,7 +1001,8 @@ haDash.Views = haDash.Views || {};
         })
         .done(function(whoami) {
           //haDash.router.navigate("signin/", {trigger: true});
-          $('#formCheckEmail').show();
+          $(event.target).find('img').hide();
+          $('#registerCheckMail').show();
         })
         .fail(function(e) {
 
