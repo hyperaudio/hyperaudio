@@ -678,10 +678,10 @@ haDash.Routers = haDash.Routers || {};
       $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
     },
 
-    changePassword: function() {
+    choosePassword: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Change Password";
+      document.title = "Hyperaudio Choose a Password";
       $main.empty().append(new haDash.Views.ChangePasswordView({}).el);
     },
 
@@ -703,7 +703,7 @@ haDash.Routers = haDash.Routers || {};
           // changePassword();
           haDash.setUser(whoami);
           if (whoami.user) {
-            haDash.router.navigate("change-password/", {trigger: true});
+            haDash.router.navigate("choose-password/", {trigger: true});
           }
         })
         .fail(function() {
