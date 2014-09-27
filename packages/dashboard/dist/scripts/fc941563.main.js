@@ -186,11 +186,11 @@ __p += '<h2>Add YouTube Video</h2>\n\n<p class="lead">Please paste a link to a v
 return __p
 };
 
-this["JST"]["app/scripts/templates/changePassword.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/choosePassword.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Change Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Retype Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Choose a Password\n  </h1>\n</hgroup>\n\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Retype Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n<!-- "Choose Life. Choose a job. Choose a career. Choose a family. Choose a fucking big television, choose washing machines, cars, compact disc players and electrical tin openers. Choose good health, low cholesterol, and dental insurance. Choose fixed interest mortgage repayments. Choose a starter home. Choose your friends. Choose leisurewear and matching luggage. Choose a three-piece suit on hire purchase in a range of fucking fabrics. Choose DIY and wondering who the fuck you are on Sunday morning. Choose sitting on that couch watching mind-numbing, spirit-crushing game shows, stuffing fucking junk food into your mouth. Choose rotting away at the end of it all, pissing your last in a miserable home, nothing more than an embarrassment to the selfish, fucked up brats you spawned to replace yourselves. Choose your future. Choose life..." Choose a fucking Password. -->\n';
 
 }
 return __p
@@ -547,7 +547,7 @@ haDash.Routers = haDash.Routers || {};
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
-      'change-password/': 'changePassword',
+      'choose-password/': 'choosePassword',
       'token/:token': 'signInToken',
 
       'add-media/': 'addMedia'
@@ -2092,73 +2092,6 @@ function validEmail(email) {
           method: 'post',
           data: JSON.stringify({
             email: $('#email').val()
-          })
-        })
-        .done(function(whoami) {
-          console.log(whoami);
-          $('#passwordForm').hide();
-          $('#passwordFormConfirm').show();
-        })
-        .fail(function() {
-          $('#passwordFormError').show();
-          $(event.target).find('img').hide();
-        });
-
-      } else {
-        $('#passwordFormError').show();
-      }
-
-    }
-
-  });
-
-})();
-
-/*global haDash, Backbone, JST*/
-
-haDash.Views = haDash.Views || {};
-
-
-(function () {
-    'use strict';
-
-    haDash.Views.ChangePasswordView = Backbone.View.extend({
-
-    id: 'passwordView',
-
-        template: JST['app/scripts/templates/changePassword.ejs'],
-
-    initialize: function() {
-      this.render();
-    },
-
-    render: function() {
-      this.$el.html(this.template());
-
-      return this;
-    },
-
-    events: {
-      'click #passwordForm button[type="submit"]': 'change'
-    },
-
-    change: function(event) {
-      event.preventDefault();
-      $('#passwordFormError').hide();
-
-      if ($('#password').val() == $('#password2').val()) {
-        $(event.target).find('img').show();
-
-        $.ajax({
-          url: haDash.API + '/change-password',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
-          data: JSON.stringify({
-            password: $('#password').val()
           })
         })
         .done(function(whoami) {

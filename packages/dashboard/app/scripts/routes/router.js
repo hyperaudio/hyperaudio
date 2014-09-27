@@ -30,7 +30,7 @@ haDash.Routers = haDash.Routers || {};
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
-      'change-password/': 'changePassword',
+      'choose-password/': 'choosePassword',
       'token/:token': 'signInToken',
 
       'add-media/': 'addMedia'
