@@ -59,11 +59,6 @@ window.haDash = {
       haDash.router.navigate('signout/', {trigger: true});
     });
 
-    // $('a.register').click(function(e){
-    //   e.preventDefault();
-    //   haDash.router.navigate('secret-signup/', {trigger: true});
-    // });
-
     $('a.login').click(function(e){
       e.preventDefault();
       haDash.router.navigate('login/', {trigger: true});
@@ -1433,7 +1428,7 @@ haDash.Views = haDash.Views || {};
 
     addVideo: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 
@@ -1736,7 +1731,7 @@ haDash.Views = haDash.Views || {};
 
     clone: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 

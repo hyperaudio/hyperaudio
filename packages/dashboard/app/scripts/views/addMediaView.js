@@ -43,7 +43,7 @@ haDash.Views = haDash.Views || {};
 
     addVideo: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 

@@ -60,7 +60,7 @@ haDash.Views = haDash.Views || {};
 
     clone: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 
