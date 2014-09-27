@@ -270,7 +270,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
 return __p
 };
 
-this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -374,7 +374,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signup.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -1476,6 +1476,12 @@ haDash.Views = haDash.Views || {};
 
             ytClone(cleanYtData, ytData);
 
+            var duration = cleanYtData.entry.media_group.media_content["0"].duration;
+            if (duration > 30*60) {
+              alert('Sorry, we cannot process videos longer than 30 minutes');
+              return;
+            }
+
             // model.set('created', haDash.user);
             model.set('owner', haDash.user);
 
@@ -1584,6 +1590,12 @@ haDash.Views = haDash.Views || {};
 
             if (info['content-type'].indexOf('video') != 0 && info['content-type'].indexOf('audio') != 0 ) {
               alert('URL points to ' + info['content-type'] + ' which is not to a media file');
+              return;
+            }
+
+            ///"content-length": "4062859",
+            if (info['content-length'] && parseInt(info['content-length']) > 4000 ) {
+              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us');
               return;
             }
 
