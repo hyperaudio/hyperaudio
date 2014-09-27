@@ -270,7 +270,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
 return __p
 };
 
-this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -374,7 +374,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signup.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -1594,8 +1594,8 @@ haDash.Views = haDash.Views || {};
             }
 
             ///"content-length": "4062859",
-            if (info['content-length'] && parseInt(info['content-length']) > 4000 ) {
-              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us');
+            if (info['content-length'] && parseInt(info['content-length']) > 300000000 ) {
+              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us (please use max 300MB)');
               return;
             }
 

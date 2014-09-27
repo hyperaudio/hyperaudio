@@ -197,8 +197,8 @@ haDash.Views = haDash.Views || {};
             }
 
             ///"content-length": "4062859",
-            if (info['content-length'] && parseInt(info['content-length']) > 4000 ) {
-              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us');
+            if (info['content-length'] && parseInt(info['content-length']) > 300000000 ) {
+              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us (please use max 300MB)');
               return;
             }
 
