@@ -165,7 +165,7 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Choose a Password";
-      $main.empty().append(new haDash.Views.ChangePasswordView({}).el);
+      $main.empty().append(new haDash.Views.ChoosePasswordView({}).el);
     },
 
     signInToken: function (token) {
