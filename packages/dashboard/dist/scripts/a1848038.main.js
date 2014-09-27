@@ -981,7 +981,7 @@ haDash.Views = haDash.Views || {};
       event.preventDefault();
       $('.form-alert').hide();
 
-      if($('#accept').attr('checked')) {
+      if($('#accept').is(':checked')) {
 
         $(event.target).find('img').show();
 
