@@ -23,18 +23,19 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      'click #passwordForm button[type="submit"]': 'change'
+      'click #passwordForm button[type="submit"]': 'change',
+      'click #deleteAccountForm button[type="submit"]': 'delete'
     },
 
     change: function(event) {
       event.preventDefault();
-      $('#passwordFormError').hide();
+      $('.form-alert').hide();
 
       if ($('#password').val() == $('#password2').val()) {
         $(event.target).find('img').show();
 
         $.ajax({
-          url: haDash.API + '/choose-password',
+          url: haDash.API + '/change-email',
           contentType: "application/json; charset=utf-8",
             dataType: "json",
           xhrFields: {
@@ -46,7 +47,6 @@ haDash.Views = haDash.Views || {};
           })
         })
         .done(function(whoami) {
-          console.log(whoami);
           $('#passwordForm').hide();
           $('#passwordFormConfirm').show();
         })
@@ -58,8 +58,45 @@ haDash.Views = haDash.Views || {};
       } else {
         $('#passwordFormError').show();
       }
+    },
 
-    }
+    delete: function(event) {
+      event.preventDefault();
+
+      var r = confirm("Are you sure you want to delete your account?");
+      if (r != true) {
+
+        $('.form-alert').hide();
+
+        if ($('#password').val() == $('#password2').val()) {
+          $(event.target).find('img').show();
+
+          $.ajax({
+            url: haDash.API + '/delete-account',
+            contentType: "application/json; charset=utf-8",
+              dataType: "json",
+            xhrFields: {
+              withCredentials: true
+            },
+            method: 'post',
+            data: JSON.stringify({
+              password: $('#password-delete').val()
+            })
+          })
+          .done(function(whoami) {
+            $('#deleteAccountForm').hide();
+            $('#deleteAccountFormConfirm').show();
+          })
+          .fail(function() {
+            $('#deleteAccountFormError').show();
+            $(event.target).find('img').hide();
+          });
+
+        } else {
+          $('#passwordFormError').show();
+        }
+      }
+    }    
 
   });
 
