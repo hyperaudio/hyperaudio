@@ -211,7 +211,7 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.settings').addClass('active');
       document.title = "Hyperaudio Settings";
-      $main.empty().append(new haDash.Views.Settings({}).el);
+      $main.empty().append(new haDash.Views.SettingsView({}).el);
     }
 
   });
