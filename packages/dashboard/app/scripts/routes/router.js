@@ -33,7 +33,8 @@ haDash.Routers = haDash.Routers || {};
       'choose-password/': 'choosePassword',
       'token/:token': 'signInToken',
 
-      'add-media/': 'addMedia'
+      'add-media/': 'addMedia',
+      'settings/': 'settings'
     },
 
     addMedia: function() {
@@ -205,6 +206,13 @@ haDash.Routers = haDash.Routers || {};
         _gaq.push(['_trackPageview', url]);
       }
     }
+
+    settings: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.settings').addClass('active');
+      document.title = "Hyperaudio Settings";
+      $main.empty().append(new haDash.Views.Settings({}).el);
+    },
 
   });
 
