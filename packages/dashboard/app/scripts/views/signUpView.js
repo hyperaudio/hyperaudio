@@ -48,7 +48,8 @@ haDash.Views = haDash.Views || {};
             })
         })
         .done(function(whoami) {
-          haDash.router.navigate("signin/", {trigger: true});
+          //haDash.router.navigate("signin/", {trigger: true});
+          $('#formCheckEmail').show();
         })
         .fail(function(e) {
 
