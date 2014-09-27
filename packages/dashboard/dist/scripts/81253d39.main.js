@@ -732,14 +732,14 @@ haDash.Routers = haDash.Routers || {};
       if(! _.isUndefined(window._gaq)){
         _gaq.push(['_trackPageview', url]);
       }
-    }
+    },
 
     settings: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.settings').addClass('active');
       document.title = "Hyperaudio Settings";
       $main.empty().append(new haDash.Views.Settings({}).el);
-    },
+    }
 
   });
 
