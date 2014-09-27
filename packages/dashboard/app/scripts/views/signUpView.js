@@ -28,9 +28,10 @@ haDash.Views = haDash.Views || {};
     signup: function(event) {
       event.preventDefault();
       $('.form-alert').hide();
-      $(event.target).find('img').show();
 
       if($('#accept').attr('checked')) {
+
+        $(event.target).find('img').show();
 
         $.ajax({
           url: haDash.API + '/register',
@@ -61,7 +62,7 @@ haDash.Views = haDash.Views || {};
           
           $(event.target).find('img').hide();
         });
-        
+
       } else {
         $('#registerTermsError').show();
       }
