@@ -160,7 +160,8 @@ app.post('/v1/token-login',
       }
 
       req.session.user = user.username;
-      req.session.passport = user.username;
+      if (!req.session.passport) req.session.passport = {};
+      req.session.passport.user = user.username;
       req.user = user.username;
 
       res.json({
