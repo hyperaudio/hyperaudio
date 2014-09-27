@@ -49,6 +49,7 @@ haDash.Views = haDash.Views || {};
         haDash.router.navigate("signin/", {trigger: true});
       })
       .fail(function(e) {
+        $('.form-alert').hide();
         console.log("e.status="+e.status);
         if (e.status == "401") {
           $('#registerUsernameError').show();
