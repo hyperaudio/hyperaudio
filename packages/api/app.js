@@ -298,7 +298,7 @@ app.post('/v1/change-password', function(req, res) {
   });
 });
 
-app.post('/v1/reset-password', function(req, res) {
+app.post('/v1/choose-password', function(req, res) {
   var email = req.body.email;
 
   return Account.findOne({email: email}).exec(function(err, user) {
