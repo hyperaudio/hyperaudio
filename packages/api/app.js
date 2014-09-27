@@ -93,6 +93,10 @@ if ('development' == app.get('env')) {
 
 
 var Account = require('./models/account');
+var MediaObject = require('./models/mediaObject');
+var Transcript = require('./models/transcript');
+var Metadata = require('./models/metadata');
+
 mongoose.connect(nconf.get('database'));
 
 passport.use(new LocalStrategy(Account.authenticate()));
@@ -297,6 +301,118 @@ app.post('/v1/choose-password', function(req, res) {
     }
   });
 });
+
+app.get('/v1/delete-account', function(req, res) {
+  if (!req.session.user) {
+    res.status(500);
+    return res.send({
+      error: 'not logged in'
+    });
+  }
+
+  Account.findOne({username: req.session.user}).exec(function(err, user) {
+    if (err) {
+      res.status(500);
+      return res.send({
+        error: err
+      });
+    }
+
+    if (user) {
+      ///set a random password
+      user.setPassword(urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), function() {
+
+        //store and reset token, username, password
+        if (!user.meta) user.meta = {};
+        user.meta.deleted = {};
+        user.meta.deleted.username = user.username;
+        user.meta.deleted.email = user.email;
+
+        var username = user.username + ''; //hmmmm
+        user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+        user.username = 'deleted-' + user._id;
+        user.email = 'mark+deleted-' + user._id + '@hyperaud.io';
+
+        user.save(function(err) {
+          if (err) {
+            res.status(500);
+            return res.send({
+              error: err
+            });
+          }
+
+          // reset all media, transcripts and mixes
+          MediaObject.update({ user: username }, { $set: { user: user.username }}, function(err){if(err){console.log(err);}});
+          Transcript.update({ user: username }, { $set: { user: user.username }}, function(err){if(err){console.log(err);}});
+          Metadata.update({ user: username }, { $set: { user: user.username }}, function(err){if(err){console.log(err);}});
+
+          //logout
+          req.logout(); //TODO has any meaning anymore?
+
+          req.session.user = null;
+          res.json({
+            user: null
+          });
+
+          //debug:
+          return res.send(user);
+        });
+        // return res.send(user);
+      });
+
+    } else {
+      res.status(404);
+      return res.send({
+        error: 'User not found'
+      });
+    }
+  });
+});
+
+// app.post('/v1/change-email', function(req, res) {
+//   if (!req.session.user) {
+//     res.status(500);
+//     return res.send({
+//       error: 'not logged in'
+//     });
+//   }
+
+//   Account.findOne({username: req.session.user}).exec(function(err, user) {
+//     if (err) {
+//       res.status(500);
+//       return res.send({
+//         error: err
+//       });
+//     }
+
+//     if (user) {
+//       ///
+//       user.setPassword(req.body.password, function() {
+//         //reset token
+//         user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+
+//         user.save(function(err) {
+//           if (err) {
+//             res.status(500);
+//             return res.send({
+//               error: err
+//             });
+//           }
+
+//           return res.send(user);
+//         });
+//         // return res.send(user);
+//       });
+
+//     } else {
+//       res.status(404);
+//       return res.send({
+//         error: 'User not found'
+//       });
+//     }
+//   });
+// });
+
 
 app.post('/v1/reset-password', function(req, res) {
   var email = req.body.email;
