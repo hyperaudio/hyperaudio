@@ -1,0 +1,56 @@
+/**
+ * Selects
+ * @module components/selects
+ * ============================================ */
+
+.select {
+  @include box-sizing(border-box);
+  background: $shadow-light;
+  border-radius: $radius-m;
+  color: $alt-color;
+  display: inline-block;
+  line-height: 1;
+  padding: $space-x;
+  position: relative;
+  top: 2px;
+  &:before {
+    @include position-top-right(50%,($space-s * 1.2));
+    @include set-size(8px,8px);
+    margin-top: -4px;
+    content: "\e609";
+    display: block;
+    font-family: 'hyperaudio';
+    font-size: 12px;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    speak: none;
+    line-height: 1;
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  &.block {
+    width: 100%;
+  }
+}
+
+.select__el {
+  @include box-sizing(border-box);
+  @include appearance(none);
+  @include truncate;
+  background: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  display: block;
+  line-height: 1.3em;
+  font-family: $dflt-font;
+  font-size: $dflt-font-size;
+  margin: 0;
+  padding: 0 $space-m 0 0;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}

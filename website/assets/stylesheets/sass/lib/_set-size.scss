@@ -1,0 +1,18 @@
+/**
+ * Set Size
+ * ============================================ */
+
+@mixin set-size($width: auto, $height: auto) {
+  height: $height;
+  width: $width;
+}
+
+@mixin set-min-size($width: initial, $height: initial) {
+  min-height: $height;
+  min-width: $width;
+}
+
+@mixin set-max-size($width: initial, $height: initial) {
+  max-height: $height;
+  max-width: $width;
+}

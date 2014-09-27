@@ -108,52 +108,32 @@
                  ##### ##### ##### ##### -->
 
             <div class="sg-mod">
-              <h2 class="sg-mod-heading">Form Component. <span class="sg-mod-class">.form-component</span></h2>
+              <h2 class="sg-mod-heading">Selects. <span class="sg-mod-class">.select</span></h2>
               <div class="sg-mod-intro">
-                <p>Form Component is the very basic form element usually accommodating a label and an input field. A more complex combinations are possible and may include instructions/notes, validation feedback messages, tooltips and so on.</p>
+                <p>Custom selects rely on a strict markup structure: select itself needs <code>.select__el</code> class and requires to be wrapped with a <code>span.select</code>.</p>
               </div>
               <div class="sg-mod-canvas">
-                <h3 class="sg-mod-canvas-note">Basic Form Component</h3>
+                <h3 class="sg-mod-canvas-note">Select</h3>
                 <div class="form-component">
-                  <div class="form-label-wrapper">
-                    <label for="sample-field" class="form-label">Label:</label>
-                  </div>
-                  <div class="form-input-wrapper">
-                    <input name="sample-field" type="text" class="form-input text-input" placeholder="Placeholder">
-                  </div>
+                  <span class="select">
+                    <select class="select__el">
+                      <option>Option 1</option>
+                      <option>Option 2</option>
+                      <option>Option 3</option>
+                    </select>
+                  </span>
                 </div>
               </div>
               <div class="sg-mod-canvas">
-                <h3 class="sg-mod-canvas-note">Basic Form Component Variation</h3>
+                <h3 class="sg-mod-canvas-note">Block Selects</h3>
                 <div class="form-component">
-                  <div class="form-label-wrapper">
-                    <label for="sample-field" class="form-label">Label:</label>
-                  </div>
-                  <div class="form-input-wrapper">
-                    <input name="sample-field" type="text" class="form-input text-input block" placeholder="Placeholder">
-                  </div>
-                </div>
-              </div>
-              <div class="sg-mod-canvas">
-                <h3 class="sg-mod-canvas-note">Horizontal Form Component</h3>
-                <div class="form-component horizontal">
-                  <div class="form-label-wrapper">
-                    <label for="sample-field" class="form-label">Label:</label>
-                  </div>
-                  <div class="form-input-wrapper">
-                    <input name="sample-field" type="text" class="form-input text-input" placeholder="Placeholder">
-                  </div>
-                </div>
-              </div>
-              <div class="sg-mod-canvas">
-                <h3 class="sg-mod-canvas-note">Horizontal Form Component Variation</h3>
-                <div class="form-component horizontal">
-                  <div class="form-label-wrapper">
-                    <label for="sample-field" class="form-label">Label:</label>
-                  </div>
-                  <div class="form-input-wrapper">
-                    <input name="sample-field" type="text" class="form-input text-input block" placeholder="Placeholder">
-                  </div>
+                  <span class="select block">
+                    <select class="select__el">
+                      <option>Option 1</option>
+                      <option>Option 2</option>
+                      <option>Option 3</option>
+                    </select>
+                  </span>
                 </div>
               </div>
             </div>

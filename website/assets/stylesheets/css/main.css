@@ -2463,6 +2463,12 @@ dialog[open] {
 ----------------------------------------------- */
 /* Positionining Mixin
 ----------------------------------------------- */
+/**
+ * Set Size
+ * ============================================ */
+/**
+ * Truncate
+ * ============================================ */
 /* Import Site Config
 ----------------------------------------------- */
 /* Colour Palette
@@ -3507,6 +3513,74 @@ input[type="submit"].active {
     margin-top: 40px;
   }
 }
+/**
+ * Selects
+ * @module components/selects
+ * ============================================ */
+.select {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  color: #2c3e50;
+  display: inline-block;
+  line-height: 1;
+  padding: 5px;
+  position: relative;
+  top: 2px;
+}
+.select:before {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  height: 8px;
+  width: 8px;
+  margin-top: -4px;
+  content: "\e609";
+  display: block;
+  font-family: 'hyperaudio';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  speak: none;
+  line-height: 1;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.select.block {
+  width: 100%;
+}
+
+.select__el {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  background: transparent;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  display: block;
+  line-height: 1.3em;
+  font-family: "Source Sans Pro", sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0 20px 0 0;
+  position: relative;
+  z-index: 5;
+  width: 100%;
+}
+
 /* Pitch
 ----------------------------------------------- */
 .separator {
