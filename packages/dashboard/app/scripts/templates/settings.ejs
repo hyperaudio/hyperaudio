@@ -5,15 +5,18 @@
 </hgroup>
 
 <div class="row">
+  <h2>Change Email</h2>
   <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">
     <form id="passwordForm" class="form">
       <div class="form-component">
-        <label for="password" class="form-label centered">Password</label>
-        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
+        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">
+        <p id="registerEmailError" style="display:none" class="form-alert">
+          Sorry, somebody has already registered with this email address. <a class="link" href="forgotten-password/">Forgotten your password?</a>
+        </p>
       </div>
       <div class="form-component">
-        <label for="password2" class="form-label centered">Retype Password</label>
-        <input type="password" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Retype Password">
+        <label for="password" class="form-label centered">Enter Password Confirmation</label>
+        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
       </div>
       <div class="form-component actions">
         <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>
@@ -26,4 +29,24 @@
       </div>
     </form>
   </div>
+  <h2>Delete Account</h2>
+  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">
+    <form id="passwordForm" class="form">
+      <div class="form-component">
+        <label for="password" class="form-label centered">Password</label>
+        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
+      </div>
+      <div class="form-component actions">
+        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Delete Account</button>
+        <p id="passwordFormError" style="display:none" class="form-alert">
+          It looks like your passwords don't match. Please re-enter.
+        </p>
+        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">
+          Password changed. Hooray!
+        </p>
+      </div>
+    </form>
+  </div>
 </div>
+
+
