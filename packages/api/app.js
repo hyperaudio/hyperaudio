@@ -182,11 +182,6 @@ app.get('/v1/whoami', function(req, res) {
   });
 });
 
-// app.get('/v1/login', function(req, res) {
-//   res.render('login', {
-//     user: req.user
-//   });
-// });
 
 app.post('/v1/login', passport.authenticate('local'), function(req, res) {
   req.session.user = req.user.username;
@@ -204,10 +199,6 @@ app.post('/v1/logout', function(req, res) {
     user: null
   });
 });
-
-// app.get('/v1/register', function(req, res) {
-//   res.render('register', {});
-// });
 
 app.post('/v1/register', function(req, res) {
 
@@ -336,46 +327,57 @@ app.post('/v1/delete-account', function(req, res) {
     }
 
     if (user) {
-      ///set a random password
-      user.setPassword(urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), function() {
-
-        //store and reset token, username, password
-        if (!user.meta) user.meta = {};
-        user.meta.deleted = {};
-        user.meta.deleted.username = user.username;
-        user.meta.deleted.email = user.email;
-
-        var username = user.username + ''; //hmmmm
-        user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-        user.username = 'deleted-' + user._id;
-        user.email = 'mark+deleted-' + user._id + '@hyperaud.io';
-
-        user.save(function(err) {
-          if (err) {
-            res.status(500);
+      //check password
+      user.authenticate(req.body.password, function(err, _user, message) {
+        if (err) {
+          res.status(401);
             return res.send({
-              error: err
+              error: err,
+              message: message.message
             });
-          }
+        }
+        // ok user.
+        ///set a random password
+        user.setPassword(urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0)), function() {
 
-          // reset all media, transcripts and mixes
-          MediaObject.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
-          Transcript.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
-          Mix.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
+          //store and reset token, username, password
+          if (!user.meta) user.meta = {};
+          user.meta.deleted = {};
+          user.meta.deleted.username = user.username;
+          user.meta.deleted.email = user.email;
 
-          //logout
-          req.logout(); //TODO has any meaning anymore?
+          var username = user.username + ''; //hmmmm
+          user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+          user.username = 'deleted-' + user._id;
+          user.email = 'mark+deleted-' + user._id + '@hyperaud.io';
 
-          req.session.user = null;
-          res.json({
-            user: null
+          user.save(function(err) {
+            if (err) {
+              res.status(500);
+              return res.send({
+                error: err
+              });
+            }
+
+            // reset all media, transcripts and mixes
+            MediaObject.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
+            Transcript.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
+            Mix.update({ owner: username }, { $set: { owner: user.username }}, function(err){if(err){console.log(err);}});
+
+            //logout
+            req.logout(); //TODO has any meaning anymore?
+
+            req.session.user = null;
+            res.json({
+              user: null
+            });
+
+            //debug:
+            return res.send(user);
           });
-
-          //debug:
-          return res.send(user);
-        });
-        // return res.send(user);
-      });
+          // return res.send(user);
+        });//set pass
+      }); //auth
 
     } else {
       res.status(404);
@@ -462,42 +464,50 @@ app.post('/v1/reset-password', function(req, res) {
     }
 
     if (user) {
-      ///
-      user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-
-      user.save(function(err) {
+      user.authenticate(req.body.password, function(err, _user, message) {
         if (err) {
-          res.status(500);
-          return res.send({
-            error: err
-          });
+          res.status(401);
+            return res.send({
+              error: err,
+              message: message.message
+            });
         }
+        // ok user.
+        ///
+        user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
 
-        var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').chooseMessage));
-
-        message.to[0].email = user.email;
-        message.to[0].name = user.username;
-        message.text = message.text.replace(/TOKEN/g, token);
-        message.html = message.html.replace(/TOKEN/g, token);
-        // message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
-        // message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
-
-        var async = false;
-        var ip_pool = "Main Pool";
-        mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
-            console.log(result);
-            return res.send(result);
-        }, function(e) {
-            console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+        user.save(function(err) {
+          if (err) {
             res.status(500);
             return res.send({
-              error: e
+              error: err
             });
-        });
-      });//user token save
+          }
 
+          var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+          var message = JSON.parse(JSON.stringify(nconf.get('mandrill').chooseMessage));
 
+          message.to[0].email = user.email;
+          message.to[0].name = user.username;
+          message.text = message.text.replace(/TOKEN/g, token);
+          message.html = message.html.replace(/TOKEN/g, token);
+          // message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
+          // message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
+
+          var async = false;
+          var ip_pool = "Main Pool";
+          mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+              console.log(result);
+              return res.send(result);
+          }, function(e) {
+              console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+              res.status(500);
+              return res.send({
+                error: e
+              });
+          });
+        });//user token save
+      });//auth
       ///
     } else {
       res.status(404);
@@ -535,9 +545,6 @@ var server = http.createServer(app).listen(app.get('port'), function() {
 //     console.log(data);
 //   });
 // });
-
-
-
 
 process.on('SIGINT', function() {
   server.close();
