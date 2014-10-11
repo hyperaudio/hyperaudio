@@ -421,6 +421,7 @@ app.post('/v1/change-email', function(req, res) {
       user.meta.pendingEmail = req.body.email;
       //reset token
       user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+      var token = user.token;
 
       user.save(function(err) {
         if (err) {
