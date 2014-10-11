@@ -44,8 +44,8 @@ haDash.Views = haDash.Views || {};
         })
       })
       .done(function(whoami) {
-        console.log(whoami);
-        $('#passwordForm').hide();
+        //console.log(whoami);
+        $('#send').hide();
         $('#passwordFormConfirm').show();
       })
       .fail(function() {
