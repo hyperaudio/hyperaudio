@@ -51,7 +51,7 @@ haDash.Views = haDash.Views || {};
         $('#passwordFormConfirm').show();
       })
       .fail(function() {
-        $('#passwordFormError').show();
+        $('#changeEmailError').show();
         $(event.target).find('img').hide();
       });
     },
