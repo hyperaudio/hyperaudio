@@ -2192,9 +2192,10 @@ haDash.Views = haDash.Views || {};
           })
         })
         .done(function(whoami) {
-          console.log(whoami);
+          /*console.log(whoami);
           $('#passwordForm').hide();
-          $('#passwordFormConfirm').show();
+          $('#passwordFormConfirm').show();*/
+          window.location("/pad/");
         })
         .fail(function() {
           $('#passwordFormError').show();
