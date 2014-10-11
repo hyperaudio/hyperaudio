@@ -1,0 +1,17 @@
+[
+  {
+    "name"       : "api-stage",
+    "script"     : "app.js",
+    "instances"  : "1",
+    "exec_mode"  : "cluster_mode",
+    "port"       : 3000,
+    "error_file" : "./logs/api-stage-err.log",
+    "out_file"   : "./logs/api-stage-out.log",
+    "pid_file"   : "./logs/api-stage.pid",
+    "env" : {
+      "NODE_ENV" : "staging",
+      "NEW_RELIC_LOG" : "stdout",
+      "SETTINGS": "settings-staging.json"
+    }
+  }
+]

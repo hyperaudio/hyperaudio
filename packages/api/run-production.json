@@ -1,0 +1,17 @@
+[
+  {
+    "name"       : "api-prod",
+    "script"     : "app.js",
+    "instances"  : "2",
+    "exec_mode"  : "cluster_mode",
+    "port"       : 3005,
+    "error_file" : "./logs/api-prod-err.log",
+    "out_file"   : "./logs/api-prod-out.log",
+    "pid_file"   : "./logs/api-prod.pid",
+    "env" : {
+      "NODE_ENV" : "production",
+      "NEW_RELIC_LOG" : "stdout",
+      "SETTINGS": "settings-production.json"
+    }
+  }
+]
