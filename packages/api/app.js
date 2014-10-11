@@ -21,7 +21,7 @@ var mandrill = require('mandrill-api/mandrill');
 nconf.argv()
   .env()
   .file({
-    file: 'settings.json'
+    file: process.env.SETTINGS
   });
 
 var app = express();
