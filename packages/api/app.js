@@ -421,54 +421,78 @@ app.post('/v1/change-email', function(req, res) {
 
     if (user) {
 
-      if (!user.meta) user.meta = {};
-      user.meta.pendingEmail = req.body.email;
-      //reset token
-      user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-      var token = user.token;
-
-      user.save(function(err) {
+      ///look for duplicate email
+      Account.findOne({email: req.body.email}).exec(function(err, user2) {
         if (err) {
           res.status(500);
           return res.send({
             error: err
           });
         }
-        /// email token
-        var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
-        var message = JSON.parse(JSON.stringify(nconf.get('mandrill').changeEmailMessage));
 
-        message.to[0].email = user.meta.pendingEmail;
-        message.to[0].name = user.username;
-        message.text = message.text.replace(/TOKEN/g, token);
-        message.html = message.html.replace(/TOKEN/g, token);
-
-        if (namespace) {
-          message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
-          message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+        if (user2) {
+          res.status(500);
+          return res.send({
+            error: 'duplicate email'
+          });
         }
 
-        var async = false;
-        var ip_pool = "Main Pool";
-        mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
-            console.log(result);
-            return res.send(result);
-        }, function(e) {
-            console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+        /////////
+        if (!user.meta) user.meta = {};
+        user.meta.pendingEmail = req.body.email;
+        //reset token
+        user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+        var token = user.token;
+
+        user.save(function(err) {
+          if (err) {
             res.status(500);
             return res.send({
-              error: e
+              error: err
             });
+          }
+          /// email token
+          var mandrill_client = new mandrill.Mandrill(nconf.get('mandrill').apiKey);
+          var message = JSON.parse(JSON.stringify(nconf.get('mandrill').changeEmailMessage));
+
+          message.to[0].email = user.meta.pendingEmail;
+          message.to[0].name = user.username;
+          message.text = message.text.replace(/TOKEN/g, token);
+          message.html = message.html.replace(/TOKEN/g, token);
+
+          if (namespace) {
+            message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+            message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+          }
+
+          var async = false;
+          var ip_pool = "Main Pool";
+          mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
+              console.log(result);
+              return res.send(result);
+          }, function(e) {
+              console.log('A mandrill error occurred: ' + e.name + ' - ' + e.message);
+              res.status(500);
+              return res.send({
+                error: e
+              });
+          });
+          /// email token
+          return res.send(user);
         });
-        /// email token
-        return res.send(user);
-      });
+        ////////
+      });//email user?
+
+
+
+
+
     } else {
       res.status(404);
       return res.send({
         error: 'User not found'
       });
-    }
+    }// if user
   });
 });
 
