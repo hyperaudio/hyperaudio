@@ -559,6 +559,7 @@ haDash.Routers = haDash.Routers || {};
       'reset-password/': 'resetPassword',
       'choose-password/': 'choosePassword',
       'token/:token': 'signInToken',
+      'email/:token': 'emailChangeToken',
 
       'add-media/': 'addMedia',
       'settings/': 'settings'
@@ -715,6 +716,32 @@ haDash.Routers = haDash.Routers || {};
           haDash.setUser(whoami);
           if (whoami.user) {
             haDash.router.navigate("choose-password/", {trigger: true});
+          }
+        })
+        .fail(function() {
+          console.log('error');
+        });
+    },
+
+    emailChangeToken: function (token) {
+      $.ajax({
+          url: haDash.API + '/token-login',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            'access-token': token
+          })
+        })
+        .done(function(whoami) {
+          console.log(whoami);
+          // changePassword();
+          haDash.setUser(whoami);
+          if (whoami.user) {
+            haDash.router.navigate("settings/#emailchange", {trigger: true});
           }
         })
         .fail(function() {
