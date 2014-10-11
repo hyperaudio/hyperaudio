@@ -2195,7 +2195,7 @@ haDash.Views = haDash.Views || {};
           /*console.log(whoami);
           $('#passwordForm').hide();
           $('#passwordFormConfirm').show();*/
-          window.location("/pad/");
+          window.location = "/pad/";
         })
         .fail(function() {
           $('#passwordFormError').show();
