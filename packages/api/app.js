@@ -495,6 +495,7 @@ app.post('/v1/reset-password', function(req, res) {
         // ok user.
         ///
         user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+        var token = user.token;
 
         user.save(function(err) {
           if (err) {
