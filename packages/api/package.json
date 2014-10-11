@@ -24,6 +24,8 @@
 	  "client-sessions": "*",
 	  "toobusy": "*",
     "synchronize": "*",
-    "mandrill-api": "*"
+    "mandrill-api": "*",
+    "socket.io": "*",
+    "socket.io-redis": "*"
   }
 }
