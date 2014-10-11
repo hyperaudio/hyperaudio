@@ -42,7 +42,7 @@ haDash.Views = haDash.Views || {};
         },
         method: 'post',
         data: JSON.stringify({
-          email: $('#password').val(),
+          email: $('#email').val(),
           password: $('#password-change').val()
         })
       })
