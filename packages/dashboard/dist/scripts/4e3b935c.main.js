@@ -2245,34 +2245,29 @@ haDash.Views = haDash.Views || {};
       event.preventDefault();
       $('.form-alert').hide();
 
-      if ($('#password').val() == $('#password2').val()) {
-        $(event.target).find('img').show();
+      $(event.target).find('img').show();
 
-        $.ajax({
-          url: haDash.API + '/change-email',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
-          data: JSON.stringify({
-            email: $('#password').val(),
-            password: $('#password-change').val()
-          })
+      $.ajax({
+        url: haDash.API + '/change-email',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+          email: $('#password').val(),
+          password: $('#password-change').val()
         })
-        .done(function(whoami) {
-          $('#passwordForm').hide();
-          $('#passwordFormConfirm').show();
-        })
-        .fail(function() {
-          $('#passwordFormError').show();
-          $(event.target).find('img').hide();
-        });
-
-      } else {
+      })
+      .done(function(whoami) {
+        $('#passwordForm').hide();
+        $('#passwordFormConfirm').show();
+      })
+      .fail(function() {
         $('#passwordFormError').show();
-      }
+        $(event.target).find('img').hide();
+      });
     },
 
     delete: function(event) {
