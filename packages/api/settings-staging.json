@@ -83,8 +83,8 @@
       },
 
       "changeEmailMessage": {
-          "html": "<p>Hello. You are receiving this email because somebody (hopefully you) told us they wished to change their email. If you did not, please feel free to ignore this communication.</p> \n<p>Click here to confirm that this is your new email address <a href='http://hyperaudio.net/token/TOKEN'>http://hyperaudio.net/token/TOKEN</a> </p> \n<p>The Hyperaud.io Team</p>",
-          "text": "Hello. You are receiving this email because somebody (hopefully you) told us they wished to change their email. If you did not, please feel free to ignore this communication. \nClick here to confirm that this is your new email address http://hyperaudio.net/token/TOKEN \nThe Hyperaud.io Team",
+          "html": "<p>Hello. You are receiving this email because somebody (hopefully you) told us they wished to change their email. If you did not, please feel free to ignore this communication.</p> \n<p>Click here to confirm that this is your new email address <a href='http://hyperaudio.net/email/TOKEN'>http://hyperaudio.net/email/TOKEN</a> </p> \n<p>The Hyperaud.io Team</p>",
+          "text": "Hello. You are receiving this email because somebody (hopefully you) told us they wished to change their email. If you did not, please feel free to ignore this communication. \nClick here to confirm that this is your new email address http://hyperaudio.net/email/TOKEN \nThe Hyperaud.io Team",
           "subject": "Hyperaud.io email validation",
           "from_email": "mark+email@hyperaud.io",
           "from_name": "Hyperaud.io",

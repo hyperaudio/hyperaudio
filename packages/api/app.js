@@ -145,9 +145,12 @@ app.post('/v1/token-login',
         });
       }
 
+      var emailChanged = false;
       if (user.meta && user.meta.pendingEmail) {
         user.email = user.meta.pendingEmail + ''; //hmmm
         user.meta.pendingEmail = null;
+
+        emailChanged = true;
 
         user.save(function(err) {
           // if (err) {
@@ -165,7 +168,8 @@ app.post('/v1/token-login',
       req.user = user.username;
 
       res.json({
-        user: req.user
+        user: req.user,
+        email: emailChanged
       });
     });
 });
