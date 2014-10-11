@@ -484,14 +484,14 @@ app.post('/v1/reset-password', function(req, res) {
     }
 
     if (user) {
-      user.authenticate(req.body.password, function(err, _user, message) {
-        if (err) {
-          res.status(401);
-            return res.send({
-              error: err,
-              message: message.message
-            });
-        }
+      // user.authenticate(req.body.password, function(err, _user, message) {
+      //   if (err) {
+      //     res.status(401);
+      //       return res.send({
+      //         error: err,
+      //         message: message.message
+      //       });
+      //   }
         // ok user.
         ///
         user.token = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
@@ -530,7 +530,7 @@ app.post('/v1/reset-password', function(req, res) {
               });
           });
         });//user token save
-      });//auth
+      //});//auth
       ///
     } else {
       res.status(404);
