@@ -201,6 +201,9 @@ app.post('/v1/logout', function(req, res) {
 });
 
 app.post('/v1/register', function(req, res) {
+  var namespace = null;
+  if (req.headers.host.indexOf('api') > 0) namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
 
   //check email
   Account.findOne({email: req.body.email}).exec(function(err, user) {
@@ -243,10 +246,14 @@ app.post('/v1/register', function(req, res) {
 
             message.to[0].email = req.body.email;
             message.to[0].name = req.body.username;
+
             message.text = message.text.replace(/TOKEN/g, token);
             message.html = message.html.replace(/TOKEN/g, token);
-            // message.text = 'Account set password link: http://hyperaudio.net/token/' + token;
-            // message.html = '<p>Account set password link: <a href="http://hyperaudio.net/token/' + token + '">http://hyperaudio.net/token/' + token + '</a></p>';
+
+            if (namespace) {
+              message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+              message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+            }
 
             var async = false;
             var ip_pool = "Main Pool";
@@ -389,12 +396,16 @@ app.post('/v1/delete-account', function(req, res) {
 });
 
 app.post('/v1/change-email', function(req, res) {
+
   if (!req.session.user) {
     res.status(500);
     return res.send({
       error: 'not logged in'
     });
   }
+
+  var namespace = null;
+  if (req.headers.host.indexOf('api') > 0) namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
 
   Account.findOne({username: req.session.user}).exec(function(err, user) {
     if (err) {
@@ -427,6 +438,11 @@ app.post('/v1/change-email', function(req, res) {
         message.text = message.text.replace(/TOKEN/g, token);
         message.html = message.html.replace(/TOKEN/g, token);
 
+        if (namespace) {
+          message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+          message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+        }
+
         var async = false;
         var ip_pool = "Main Pool";
         mandrill_client.messages.send({"message": message, "async": async, "ip_pool": ip_pool}, function(result) {
@@ -454,6 +470,10 @@ app.post('/v1/change-email', function(req, res) {
 
 app.post('/v1/reset-password', function(req, res) {
   var email = req.body.email;
+
+  var namespace = null;
+  if (req.headers.host.indexOf('api') > 0) namespace = req.headers.host.substring(0, req.headers.host.indexOf('api') - 1);
+
 
   return Account.findOne({email: email}).exec(function(err, user) {
     if (err) {
@@ -491,8 +511,11 @@ app.post('/v1/reset-password', function(req, res) {
           message.to[0].name = user.username;
           message.text = message.text.replace(/TOKEN/g, token);
           message.html = message.html.replace(/TOKEN/g, token);
-          // message.text = 'Reset password link: http://hyperaudio.net/token/' + user.token;
-          // message.html = '<p>Reset password link: <a href="http://hyperaudio.net/token/' + user.token + '">http://hyperaudio.net/token/' + user.token + '</a></p>';
+
+          if (namespace) {
+            message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+            message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
+          }
 
           var async = false;
           var ip_pool = "Main Pool";
