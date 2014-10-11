@@ -2,11 +2,6 @@
 
 haDash.Views = haDash.Views || {};
 
-function validEmail(email) { 
-    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-} 
-
 (function () {
     'use strict';
 
@@ -34,37 +29,29 @@ function validEmail(email) {
       event.preventDefault();
       $('#passwordFormError').hide();
 
-      if (validEmail($('#email').val())) {
-        $(event.target).find('img').show();
+      $(event.target).find('img').show();
 
-        $.ajax({
-          url: haDash.API + '/reset-password',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
-          data: JSON.stringify({
-            email: $('#email').val()
-          })
+      $.ajax({
+        url: haDash.API + '/reset-password',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+          email: $('#email').val()
         })
-        .done(function(whoami) {
-          console.log(whoami);
-          $('#passwordForm').hide();
-          $('#passwordFormConfirm').show();
-        })
-        .fail(function() {
-          $('#passwordFormError').show();
-          $(event.target).find('img').hide();
-        });
-
-      } else {
+      })
+      .done(function(whoami) {
+        console.log(whoami);
+        $('#passwordForm').hide();
+        $('#passwordFormConfirm').show();
+      })
+      .fail(function() {
         $('#passwordFormError').show();
-      }
-
+        $(event.target).find('img').hide();
+      });
     }
-
   });
-
 })();
