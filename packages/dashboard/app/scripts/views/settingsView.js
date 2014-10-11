@@ -23,7 +23,7 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      'click #passwordForm button[type="submit"]': 'change',
+      'click #emailForm button[type="submit"]': 'change',
       'click #deleteAccountForm button[type="submit"]': 'delete'
     },
 
