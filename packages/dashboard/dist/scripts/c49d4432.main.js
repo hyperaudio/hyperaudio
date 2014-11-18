@@ -548,7 +548,7 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'signin/': 'signIn',
+      'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
@@ -937,8 +937,6 @@ haDash.Views = haDash.Views || {};
       event.preventDefault();
       $('#loginFormError').hide();
       $(event.target).find('img').show();
-
-      console.log('test');
 
       $.ajax({
         url: haDash.API + '/login',

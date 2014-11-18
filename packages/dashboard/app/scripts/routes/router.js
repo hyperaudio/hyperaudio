@@ -21,7 +21,7 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'signin/': 'signIn',
+      'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',

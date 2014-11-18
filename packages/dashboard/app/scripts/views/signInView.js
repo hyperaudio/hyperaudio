@@ -30,8 +30,6 @@ haDash.Views = haDash.Views || {};
       $('#loginFormError').hide();
       $(event.target).find('img').show();
 
-      console.log('test');
-
       $.ajax({
         url: haDash.API + '/login',
         contentType: "application/json; charset=utf-8",
