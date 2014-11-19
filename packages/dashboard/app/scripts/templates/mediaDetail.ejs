@@ -1,8 +1,8 @@
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p>
-<% var ytdataStr = JSON.stringify(source.youtube.url); 
-print(_.escape(ytdataStr));
+<% var ytdataStr = JSON.stringify(source.youtube); 
+print('<span>');print(_.escape(ytdataStr));print('</span>');
 /*ytdataStr = ytdataStr.toString();
 var ytdata = JSON.parse(ytdataStr);
 print(_.escape(ytdata.url));*/
