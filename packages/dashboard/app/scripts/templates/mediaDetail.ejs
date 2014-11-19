@@ -1,7 +1,7 @@
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p>
-<% var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
+<% var ytdataStr = JSON.stringify(source.youtube); 
 print(ytdataStr);
 print(ytdataStr.length);
 print(ytdataStr.indexOf('?v='));
