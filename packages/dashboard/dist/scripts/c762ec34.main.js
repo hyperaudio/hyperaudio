@@ -243,7 +243,7 @@ __p += '<h2 class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n';
  var ytdataStr = JSON.stringify(source.youtube)+""; 
-print(_.escape(ytdataStr.substr(0,10)));
+print(_.escape(ytdataStr).substr(0,10));
 
 /*ytdataStr = ytdataStr.toString();*/
 var ytdata = JSON.parse(ytdataStr);
