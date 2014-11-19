@@ -3,6 +3,8 @@
 <p>
 <% var ytdataStr = JSON.stringify(source.youtube); 
 print(_.escape(ytdataStr));
+var ytdata = JSON.parse(ytdataStr);
+print(_.escape(ytdata));
 %>
 <iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">
 </iframe>
