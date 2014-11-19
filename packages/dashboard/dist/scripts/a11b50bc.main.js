@@ -242,10 +242,10 @@ with (obj) {
 __p += '<h2 class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n';
- var ytdataStr = JSON.stringify(source.youtube); 
+ var ytdataStr = JSON.stringify(source.youtube).toString(); 
 print(_.escape(ytdataStr));
-/*var ytdata = JSON.parse(ytdataStr);
-print(_.escape(ytdata));*/
+var ytdata = JSON.parse(ytdataStr);
+print(_.escape(ytdata.url));
 ;
 __p += '\n<iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">\n</iframe>\n</p>\n\n<p class="lead desc editable" data-field="desc">';
 
