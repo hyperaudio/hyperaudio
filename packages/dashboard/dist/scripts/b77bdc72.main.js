@@ -245,10 +245,10 @@ __e( label ) +
  var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
 print(ytdataStr);
 print(ytdataStr.length);
-print(ytdataStr.indexOf('v=?'));
-print(ytdataStr.indexOf('","thumbnail'));
+print(ytdataStr.indexOf('?v='));
+print(ytdataStr.indexOf('thumbnail'));
 
-var ytcode = ytdataStr.substr(ytdataStr.indexOf('v=?'),ytdataStr.indexOf('","thumbnail'));
+var ytcode = ytdataStr.substr(ytdataStr.indexOf('v=?'),ytdataStr.indexOf('thumbnail'));
 print(ytcode);
 /*ytdataStr = ytdataStr.toString();
 var ytdata = JSON.parse(ytdataStr);
