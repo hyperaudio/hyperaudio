@@ -244,6 +244,9 @@ __e( label ) +
 '</h2>\n\n<p>\n';
  var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
 print(ytdataStr);
+print(ytdataStr.indexOf('v=?'));
+print(ytdataStr.indexOf('","thumbnail'));
+
 var ytcode = ytdataStr.substr(ytdataStr.indexOf('v=?'),ytdataStr.indexOf('","thumbnail'));
 print(ytcode);
 /*ytdataStr = ytdataStr.toString();
