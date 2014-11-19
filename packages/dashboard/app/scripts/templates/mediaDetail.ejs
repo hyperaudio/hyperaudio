@@ -1,9 +1,8 @@
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p>
-<% var ytdata = JSON.parse(JSON.stringify(source.youtube)); 
-var ytdata = source.youtube;
-print(_.escape(ytdata.url));
+<% var ytdataStr = JSON.stringify(source.youtube); 
+print(_.escape(ytdataStr));
 %>
 <iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">
 </iframe>
