@@ -250,9 +250,9 @@ __e( label ) +
     if (i < lines.length - 1) print('<br />');
   }
 ;
-__p += '</p>\n\n<p>Channel: <input type="hidden" class="channels" value="' +
+__p += '</p>\n\n<p>Channel : <input type="hidden" class="channels" value="' +
 __e( channel ) +
-'"></p>\n\n<p>Tags: <input type="hidden" class="tags" value="';
+'"></p>\n\n<p>Tags : <input type="hidden" class="tags" value="';
 
 print(tags.join(','));
 ;
