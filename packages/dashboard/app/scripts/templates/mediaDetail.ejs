@@ -2,7 +2,7 @@
 
 <p>
 <% var ytdataStr = JSON.stringify(source.youtube)+""; 
-print(_.escape(ytdataStr));
+print(_.escape(ytdataStr.substr(0,10)));
 
 /*ytdataStr = ytdataStr.toString();*/
 var ytdata = JSON.parse(ytdataStr);
