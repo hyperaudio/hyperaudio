@@ -242,7 +242,7 @@ with (obj) {
 __p += '<h2 class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n' +
-__e( source.youtube.url ) +
+__e( _source.youtube.url ) +
 '\n<iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">\n</iframe>\n</p>\n\n<p class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
