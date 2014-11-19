@@ -242,8 +242,9 @@ with (obj) {
 __p += '<h2 class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n';
- var ytdataStr = JSON.stringify(source.youtube).toString(); 
+ var ytdataStr = JSON.stringify(source.youtube); 
 print(_.escape(ytdataStr));
+ytdataStr = ydataStr.toString();
 var ytdata = JSON.parse(ytdataStr);
 print(_.escape(ytdata.url));
 ;
