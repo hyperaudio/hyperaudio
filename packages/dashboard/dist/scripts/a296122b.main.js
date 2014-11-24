@@ -239,10 +239,18 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<h2 class="label editable" data-field="label">' +
+__p += '<img src="';
+
+if (source.youtube && source.youtube.thumbnail) {
+  print(_.escape(source.youtube.thumbnail));
+} else if (source.mp4 && source.mp4.thumbnail) {
+  print(_.escape(source.mp4.thumbnail));
+}
+;
+__p += '" class="">\n<h2 class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n';
- var ytdataStr = JSON.stringify(source.youtube); 
+ var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
 print(ytdataStr);
 print(ytdataStr.length);
 print(ytdataStr.indexOf('?v='));

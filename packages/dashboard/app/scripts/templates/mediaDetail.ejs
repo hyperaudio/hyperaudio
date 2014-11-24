@@ -1,7 +1,14 @@
+<img src="<%
+if (source.youtube && source.youtube.thumbnail) {
+  print(_.escape(source.youtube.thumbnail));
+} else if (source.mp4 && source.mp4.thumbnail) {
+  print(_.escape(source.mp4.thumbnail));
+}
+%>" class="">
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p>
-<% var ytdataStr = JSON.stringify(source.youtube); 
+<% var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
 print(ytdataStr);
 print(ytdataStr.length);
 print(ytdataStr.indexOf('?v='));
