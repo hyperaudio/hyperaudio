@@ -270,7 +270,17 @@ if (source.youtube && source.youtube.url) {
   print(_.escape(source.mp4.url));
 }
 ;
-__p += '" class="">View Video</a>\n<iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">\n</iframe>\n</p>\n\n<p class="lead desc editable" data-field="desc">';
+__p += '" class="">View Video</a>\n\n';
+
+if (source.youtube && source.youtube.url) {;
+__p += '\n<iframe width="420" height="315" src="http://www.youtube.com/embed/';
+print(_.escape(source.youtube.url.split('=')[1])) ;
+__p += '">\n</iframe>\n';
+} else if (source.mp4 && source.mp4.url) {
+
+}
+;
+__p += '\n\n\n</p>\n\n<p class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
