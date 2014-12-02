@@ -244,7 +244,7 @@ __e( label ) +
 '</h2>\n\n<p>\n\n';
 
 if (source.youtube && source.youtube.url) {;
-__p += '\n<iframe width="420" height="315" src="http://www.youtube.com/embed/';
+__p += '\n<iframe width="420" height="315" frameborder="0" allowfullscreen src="http://www.youtube.com/embed/';
 print(_.escape(source.youtube.url.split('=')[1])) ;
 __p += '">\n</iframe>\n';
 } else if (source.mp4 && source.mp4.url) {;
