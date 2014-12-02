@@ -1,32 +1,6 @@
 <h2 class="label editable" data-field="label"><%- label %></h2>
 
 <p>
-<% var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
-print(ytdataStr);
-print(ytdataStr.length);
-print(ytdataStr.indexOf('?v='));
-print(ytdataStr.indexOf('thumbnail'));
-
-var ytcode = ytdataStr.substr(ytdataStr.indexOf('v=?'),ytdataStr.indexOf('thumbnail'));
-print(ytcode);
-/*ytdataStr = ytdataStr.toString();
-var ytdata = JSON.parse(ytdataStr);
-print(_.escape(ytdata.url));*/
-%>
-<img src="<%
-if (source.youtube && source.youtube.thumbnail) {
-  print(_.escape(source.youtube.thumbnail));
-} else if (source.mp4 && source.mp4.thumbnail) {
-  print(_.escape(source.mp4.thumbnail));
-}
-%>" class="">
-<a href="<%
-if (source.youtube && source.youtube.url) {
-  print(_.escape(source.youtube.url));
-} else if (source.mp4 && source.mp4.url) {
-  print(_.escape(source.mp4.url));
-}
-%>" class="">View Video</a>
 
 <%
 if (source.youtube && source.youtube.url) {%>
@@ -38,9 +12,6 @@ if (source.youtube && source.youtube.url) {%>
 <%
 }
 %>
-
-
-
 
 </p>
 

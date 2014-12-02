@@ -241,36 +241,7 @@ function print() { __p += __j.call(arguments, '') }
 with (obj) {
 __p += '<h2 class="label editable" data-field="label">' +
 __e( label ) +
-'</h2>\n\n<p>\n';
- var ytdataStr = _.escape(JSON.stringify(source.youtube)); 
-print(ytdataStr);
-print(ytdataStr.length);
-print(ytdataStr.indexOf('?v='));
-print(ytdataStr.indexOf('thumbnail'));
-
-var ytcode = ytdataStr.substr(ytdataStr.indexOf('v=?'),ytdataStr.indexOf('thumbnail'));
-print(ytcode);
-/*ytdataStr = ytdataStr.toString();
-var ytdata = JSON.parse(ytdataStr);
-print(_.escape(ytdata.url));*/
-;
-__p += '\n<img src="';
-
-if (source.youtube && source.youtube.thumbnail) {
-  print(_.escape(source.youtube.thumbnail));
-} else if (source.mp4 && source.mp4.thumbnail) {
-  print(_.escape(source.mp4.thumbnail));
-}
-;
-__p += '" class="">\n<a href="';
-
-if (source.youtube && source.youtube.url) {
-  print(_.escape(source.youtube.url));
-} else if (source.mp4 && source.mp4.url) {
-  print(_.escape(source.mp4.url));
-}
-;
-__p += '" class="">View Video</a>\n\n';
+'</h2>\n\n<p>\n\n';
 
 if (source.youtube && source.youtube.url) {;
 __p += '\n<iframe width="420" height="315" src="http://www.youtube.com/embed/';
@@ -283,7 +254,7 @@ __p += '">\n</video>\n';
 
 }
 ;
-__p += '\n\n\n\n\n</p>\n\n<p class="lead desc editable" data-field="desc">';
+__p += '\n\n</p>\n\n<p class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
