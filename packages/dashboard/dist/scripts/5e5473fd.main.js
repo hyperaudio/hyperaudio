@@ -262,7 +262,15 @@ if (source.youtube && source.youtube.thumbnail) {
   print(_.escape(source.mp4.thumbnail));
 }
 ;
-__p += '" class="">\n<iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">\n</iframe>\n</p>\n\n<p class="lead desc editable" data-field="desc">';
+__p += '" class="">\n<a href="';
+
+if (source.youtube && source.youtube.url) {
+  print(_.escape(source.youtube.url));
+} else if (source.mp4 && source.mp4.url) {
+  print(_.escape(source.mp4.url));
+}
+;
+__p += '" class="">View Video</a>\n<iframe width="420" height="315" src="http://www.youtube.com/embed/x2qFQcgogCw">\n</iframe>\n</p>\n\n<p class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
