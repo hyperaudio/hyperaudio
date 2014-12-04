@@ -387,7 +387,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signin.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signIn.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -397,7 +397,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signup.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
