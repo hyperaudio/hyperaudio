@@ -211,6 +211,8 @@ if (source.youtube && source.youtube.thumbnail) {
   print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-video.png'));
 } else if (source.mpeg) {
   print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-audio.png'));
+} else {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb.png'));
 }
 
 ;
