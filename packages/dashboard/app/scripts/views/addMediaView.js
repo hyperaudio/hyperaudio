@@ -215,7 +215,7 @@ haDash.Views = haDash.Views || {};
 
             // non YT, hope for the best
             model.set('owner', haDash.user);
-            model.set('label', 'untitled');
+            model.set('label', 'n/a');
             model.set('desc', url);
             model.set('meta', {});
             model.set('source', source);
