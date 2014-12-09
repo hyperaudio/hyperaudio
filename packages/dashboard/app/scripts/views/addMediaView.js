@@ -181,7 +181,7 @@ haDash.Views = haDash.Views || {};
 
 
       } else {
-        //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
+        if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
           var curl = haDash.API + '/about';
           $.post(curl, {url: url}, function (info) {
@@ -232,7 +232,7 @@ haDash.Views = haDash.Views || {};
             });
 
           });//post
-        //}//confirm
+        }//confirm
 
       }//else
     }
