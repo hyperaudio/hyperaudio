@@ -180,7 +180,7 @@ this["JST"]["app/scripts/templates/addMedia.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<h2>Add Audio or Video</h2>\n\n<p class="lead">Please paste a link to an audio or video file below (YouTube and Internet Aerchive links allowed)</p>\n\n<input id="yt" type="text" class="large" placeholder="http://example.com/myvideo.mp4">\n\n<button class="button primary">Add Media</button>\n\n<!-- -->\n';
+__p += '<h2>Add Audio or Video</h2>\n\n<p class="lead">Please paste a link to an audio or video file below (YouTube and Internet Archive links allowed)</p>\n\n<input id="yt" type="text" class="large" placeholder="http://me.com/myvideo.mp4">\n\n<button class="button primary">Add Media</button>\n\n<!-- -->\n';
 
 }
 return __p
