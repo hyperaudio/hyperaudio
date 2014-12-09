@@ -252,9 +252,9 @@ __p += '\n<video controls width="420" height="315" src="';
 print(_.escape(source.mp4.url)) ;
 __p += '">\n</video>\n';
 } else if (source.mpeg && source.mpeg.url) {;
-__p += '\n<video controls src="';
+__p += '\n<audio controls src="';
 print(_.escape(source.mpeg.url)) ;
-__p += '">\n</video>\n';
+__p += '">\n</audio>\n';
 
 }
 ;
