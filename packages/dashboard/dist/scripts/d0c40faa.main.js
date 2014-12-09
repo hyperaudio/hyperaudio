@@ -1609,7 +1609,7 @@ haDash.Views = haDash.Views || {};
 
 
       } else {
-        if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
+        //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
           var curl = haDash.API + '/about';
           $.post(curl, {url: url}, function (info) {
@@ -1643,7 +1643,7 @@ haDash.Views = haDash.Views || {};
 
             // non YT, hope for the best
             model.set('owner', haDash.user);
-            model.set('label', 'n/a');
+            model.set('label', 'untitled');
             model.set('desc', url);
             model.set('meta', {});
             model.set('source', source);
@@ -1660,7 +1660,7 @@ haDash.Views = haDash.Views || {};
             });
 
           });//post
-        }//confirm
+        //}//confirm
 
       }//else
     }
