@@ -255,6 +255,8 @@ module.exports = function(app, nconf, io) {
   var getMediaUrl = function (mediaObject, callback) {
     if (mediaObject.source.mp4) {
       callback(mediaObject.source.mp4.url);
+    } else if (mediaObject.source.mpeg) {
+      callback(mediaObject.source.mpeg.url);
     } else {
       //assume yt
       var video = youtubedl.getInfo(mediaObject.source.youtube.url, [], function(err, info) {
