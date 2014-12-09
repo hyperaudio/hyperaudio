@@ -202,10 +202,16 @@ haDash.Views = haDash.Views || {};
               return;
             }
 
-
-            var source = {};
             var type = info['content-type'].split('/')[1];
-            source[type] = url;
+            // source[type] = url;
+            var source = {};
+            source[type] = {
+                type: info['content-type'],
+                url: url
+            };
+            
+            
+            
 
             // non YT, hope for the best
             model.set('owner', haDash.user);
