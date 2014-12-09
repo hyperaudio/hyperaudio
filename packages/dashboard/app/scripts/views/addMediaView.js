@@ -81,8 +81,10 @@ haDash.Views = haDash.Views || {};
 
             var duration = cleanYtData.entry.media_group.media_content["0"].duration;
             if (duration > 30*60) {
-              alert('Sorry, we cannot process videos longer than 30 minutes');
-              return;
+              var pass = prompt('Please enter your code to process audio/video longer than 30 minutes','');
+              if (pass != '808080') {
+                return;
+              } 
             }
 
             // model.set('created', haDash.user);
