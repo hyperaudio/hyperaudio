@@ -207,7 +207,12 @@ if (source.youtube && source.youtube.thumbnail) {
   print(_.escape(source.youtube.thumbnail));
 } else if (source.mp4 && source.mp4.thumbnail) {
   print(_.escape(source.mp4.thumbnail));
+} else if (source.mp4) {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-video.png'));
+} else if (source.mpeg) {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-audio.png'));
 }
+
 ;
 __p += '" class=""></td>\n<td class="span2 label">' +
 __e( label ) +
