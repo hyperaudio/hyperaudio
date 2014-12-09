@@ -248,7 +248,7 @@ __p += '\n<iframe width="420" height="315" frameborder="0" allowfullscreen src="
 print(_.escape(source.youtube.url.split('=')[1])) ;
 __p += '">\n</iframe>\n';
 } else if (source.mp4 && source.mp4.url) {;
-__p += '\n<video src="';
+__p += '\n<video controls width="420" height="315" src="';
 print(_.escape(source.mp4.url)) ;
 __p += '">\n</video>\n';
 
