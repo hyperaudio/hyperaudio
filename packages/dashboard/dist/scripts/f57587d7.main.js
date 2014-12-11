@@ -479,7 +479,7 @@ __p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '" target="_new">View</a>\n    <a class="button small" href="/pad/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Mix</a>\n    <button class="button tClone">Clone</button>\n\n  ';
+'">Mix</a>\n    <button class="button tClone">Make a Copy</button>\n\n  ';
  } ;
 __p += '\n</td>\n\n\n';
 
