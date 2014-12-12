@@ -246,7 +246,7 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<h2 class="label editable" data-field="label">' +
+__p += '<h2 id="titleLabel" class="label editable" data-field="label">' +
 __e( label ) +
 '</h2>\n\n<p>\n\n';
 
@@ -265,7 +265,7 @@ __p += '">\n</audio>\n';
 
 }
 ;
-__p += '\n\n</p>\n\n<p class="lead desc editable" data-field="desc">';
+__p += '\n\n</p>\n\n<p id="descLabel" class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
@@ -288,7 +288,7 @@ __e( _id) +
  if (owner == haDash.user) { ;
 __p += '\n  <button class="button delete">Delete Video</button>\n';
  } ;
-__p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
+__p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mediaDetail/shepherd-tour.js"></script>\n';
 
 }
 return __p

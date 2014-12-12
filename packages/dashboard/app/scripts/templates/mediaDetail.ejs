@@ -1,4 +1,4 @@
-<h2 class="label editable" data-field="label"><%- label %></h2>
+<h2 id="titleLabel" class="label editable" data-field="label"><%- label %></h2>
 
 <p>
 
@@ -18,7 +18,7 @@ if (source.youtube && source.youtube.url) {%>
 
 </p>
 
-<p class="lead desc editable" data-field="desc"><%
+<p id="descLabel" class="lead desc editable" data-field="desc"><%
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
@@ -45,3 +45,4 @@ print(tags.join(','));
 
 <div id="transcripts"></div>
 
+<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mediaDetail/shepherd-tour.js"></script>
