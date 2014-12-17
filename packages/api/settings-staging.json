@@ -51,7 +51,7 @@
       },
 
       "chooseMessage": {
-          "html": "<p>Hello. You are receiving this email because somebody (hopefully you) told us they had forgotten their password. If you did not, please feel free to ignore this communication.</p> \n<p>Click here to choose a new password <a href='http://hyperaudio.net/token/TOKEN'>http://hyperaudio.net/token/TOKEN</a></p> \n</p>(Retina scanning coming soon!)</p> \n<p>The Hyperaud.io Team</p>",
+          "html": "<p>Hello. You are receiving this email because somebody (hopefully you) told us they had forgotten their password. If you did not, please feel free to ignore this communication.</p> \n<p>Click here to choose a new password <a href='http://hyperaudio.net/token/TOKEN'>http://hyperaudio.net/token/TOKEN</a></p> \n</p>(Retina scanning coming soon!)</p> \n<p>The Hyperaud.io Team</p> \n\n<p>PS Your username is USER</p>",
           "text": "Hello. You are receiving this email because somebody (hopefully you) told us they had forgotten their password. If you did not, please feel free to ignore this communication. \nClick here to choose a new password http://hyperaudio.net/token/TOKEN \n(Retina scanning coming soon!) \nThe Hyperaud.io Team \n\nPS Your username is USER",
           "subject": "Hyperaud.io password",
           "from_email": "mark+password@hyperaud.io",
