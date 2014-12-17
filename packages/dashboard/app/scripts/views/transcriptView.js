@@ -92,7 +92,7 @@ haDash.Views = haDash.Views || {};
 
       if (this.model.get('status') == null || !this.model.get('status').alignment) {
         var self = this;
-        this.refreshing = setInterval(function() {
+        this.refreshing = setTimeout(function() {
           self.model.fetch({
             url: haDash.API + '/transcripts/' + self.model.id + '/poll?salt=' + Math.random(),
             success: function(model) {
