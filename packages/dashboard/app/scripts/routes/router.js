@@ -21,17 +21,20 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'secret-signin/': 'signin',
       'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
 
-      'secret-signup/': 'signup',
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
-      'add-media/': 'addMedia'
+      'reset-password/': 'resetPassword',
+      'choose-password/': 'choosePassword',
+      'token/:token': 'signInToken',
+
+      'add-media/': 'addMedia',
+      'settings/': 'settings'
     },
 
     addMedia: function() {
@@ -152,6 +155,46 @@ haDash.Routers = haDash.Routers || {};
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
 
+    resetPassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Reset Password";
+      $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    choosePassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Choose a Password";
+      $main.empty().append(new haDash.Views.ChoosePasswordView({}).el);
+    },
+
+    signInToken: function (token) {
+      $.ajax({
+          url: haDash.API + '/token-login',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            'access-token': token
+          })
+        })
+        .done(function(whoami) {
+          console.log(whoami);
+          // changePassword();
+          haDash.setUser(whoami);
+          if (whoami.user) {
+            haDash.router.navigate("choose-password/", {trigger: true});
+          }
+        })
+        .fail(function() {
+          console.log('error');
+        });
+    },
+
     pageView : function(){
       var url = Backbone.history.getFragment();
 
@@ -162,6 +205,13 @@ haDash.Routers = haDash.Routers || {};
       if(! _.isUndefined(window._gaq)){
         _gaq.push(['_trackPageview', url]);
       }
+    },
+
+    settings: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.settings').addClass('active');
+      document.title = "Hyperaudio Settings";
+      $main.empty().append(new haDash.Views.SettingsView({}).el);
     }
 
   });

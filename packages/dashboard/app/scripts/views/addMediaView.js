@@ -43,7 +43,7 @@ haDash.Views = haDash.Views || {};
 
     addVideo: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 
@@ -78,6 +78,14 @@ haDash.Views = haDash.Views || {};
             };
 
             ytClone(cleanYtData, ytData);
+
+            var duration = cleanYtData.entry.media_group.media_content["0"].duration;
+            if (duration > 30*60) {
+              var pass = prompt('Please enter your code to process audio/video longer than 30 minutes','');
+              if (pass != '808080') {
+                return;
+              } 
+            }
 
             // model.set('created', haDash.user);
             model.set('owner', haDash.user);
@@ -175,7 +183,7 @@ haDash.Views = haDash.Views || {};
 
 
       } else {
-        if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
+        //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
           var curl = haDash.API + '/about';
           $.post(curl, {url: url}, function (info) {
@@ -190,13 +198,26 @@ haDash.Views = haDash.Views || {};
               return;
             }
 
-            var source = {};
+            ///"content-length": "4062859",
+            if (info['content-length'] && parseInt(info['content-length']) > 300000000 ) {
+              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us (please use max 300MB)');
+              return;
+            }
+
             var type = info['content-type'].split('/')[1];
-            source[type] = url;
+            // source[type] = url;
+            var source = {};
+            source[type] = {
+                type: info['content-type'],
+                url: url
+            };
+            
+            
+            
 
             // non YT, hope for the best
             model.set('owner', haDash.user);
-            model.set('label', 'n/a');
+            model.set('label', 'untitled');
             model.set('desc', url);
             model.set('meta', {});
             model.set('source', source);
@@ -213,7 +234,7 @@ haDash.Views = haDash.Views || {};
             });
 
           });//post
-        }//confirm
+        //}//confirm
 
       }//else
     }

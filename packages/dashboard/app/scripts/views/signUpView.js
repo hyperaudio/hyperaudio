@@ -27,36 +27,48 @@ haDash.Views = haDash.Views || {};
 
     signup: function(event) {
       event.preventDefault();
-      $('#registerFormError').hide();
-      $(event.target).find('img').show();
+      $('.form-alert').hide();
 
-      $.ajax({
-        url: haDash.API + '/register',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-              username: $('#username').val(),
-              password: $('#password').val(),
-              email: $('#email').val(),
-          })
-      })
-      .done(function(whoami) {
-        console.log(whoami);
-        //FIXME in API login person directly
-        haDash.router.navigate("secret-signin/", {trigger: true});
-        alert('Marvelous, now please log in');
+      if($('#accept').is(':checked')) {
+
+        $(event.target).find('img').show();
+
+        $.ajax({
+          url: haDash.API + '/register',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#password').val(),
+                email: $('#email').val(),
+            })
         })
-        .fail(function() {
-            $('#registerFormError').show();
-            $(event.target).find('img').hide();
+        .done(function(whoami) {
+          //haDash.router.navigate("signin/", {trigger: true});
+          $(event.target).find('img').hide();
+          $('#signup').hide();
+          $('#registerCheckMail').show();
+        })
+        .fail(function(e) {
+
+          if (e.status == "401") {
+            $('#registerUsernameError').show();
+          }
+
+          if (e.status == "409") {
+            $('#registerEmailError').show();
+          }
+          
+          $(event.target).find('img').hide();
         });
 
+      } else {
+        $('#registerTermsError').show();
+      }
     }
-
-    });
-
+  });
 })();

@@ -9,22 +9,31 @@
 
       <div class="form-component">
         <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">
-        <p id="registerFormError" style="display:none" class="form-alert">
+        <p id="registerUsernameError" style="display:none" class="form-alert">
           Sorry, username already exists.
         </p>
       </div>
 
       <div class="form-component">
-        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">
+        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">
+        <p id="registerEmailError" style="display:none" class="form-alert">
+          Sorry, somebody has already registered with this email address. <a class="link" href="/reset-password/">Forgotten your password?</a>
+        </p>
       </div>
 
       <div class="form-component">
-        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">
+        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="http://hyperaud.io/terms-of-service/">The Hyperaud.io Terms of Service</a></label>
+        <p id="registerTermsError" style="display:none" class="form-alert">
+          Please accept the terms of service.
+        </p>
       </div>
 
       <div class="form-component actions">
         <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->
         <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>
+        <p id="registerCheckMail" style="display:none" class="form-alert">
+          Thanks. Instructions are being sent to your email address.
+        </p>
       </div>
     </form>
   </div>

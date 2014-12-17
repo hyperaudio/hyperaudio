@@ -1,6 +1,24 @@
-<h2 class="label editable" data-field="label"><%- label %></h2>
+<h2 id="titleLabel" class="label editable" data-field="label"><%- label %></h2>
 
-<p class="lead desc editable" data-field="desc"><%
+<p>
+
+<%
+if (source.youtube && source.youtube.url) {%>
+<iframe width="420" height="315" frameborder="0" allowfullscreen src="http://www.youtube.com/embed/<%print(_.escape(source.youtube.url.split('=')[1])) %>">
+</iframe>
+<%} else if (source.mp4 && source.mp4.url) {%>
+<video controls width="420" height="315" src="<%print(_.escape(source.mp4.url)) %>">
+</video>
+<%} else if (source.mpeg && source.mpeg.url) {%>
+<audio controls src="<%print(_.escape(source.mpeg.url)) %>">
+</audio>
+<%
+}
+%>
+
+</p>
+
+<p id="descLabel" class="lead desc editable" data-field="desc"><%
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
     var line = lines[i];
@@ -9,9 +27,9 @@
   }
 %></p>
 
-<p>Channel: <input type="hidden" class="channels" value="<%- channel %>"></p>
+<p>Channel : <input type="hidden" class="channels" value="<%- channel %>"></p>
 
-<p>Tags: <input type="hidden" class="tags" value="<%
+<p>Tags : <input type="hidden" class="tags" value="<%
 print(tags.join(','));
 %>"></p>
 
@@ -27,3 +45,4 @@ print(tags.join(','));
 
 <div id="transcripts"></div>
 
+<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mediaDetail/shepherd-tour.js"></script>

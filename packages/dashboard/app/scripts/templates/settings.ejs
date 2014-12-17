@@ -1,0 +1,72 @@
+<hgroup class="section-head">
+  <h1 class="section-head-heading">
+    Settings
+  </h1>
+</hgroup>
+
+<div class="row">
+  
+  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">
+    
+    <form id="emailForm" class="form">
+    
+      <div class="form-component">
+        <h2 class="centered">Change Email</h2>
+        <label for="email" class="form-label centered">New email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="New Email">
+        <p id="registerEmailError" style="display:none" class="form-alert">
+          Sorry, somebody has already registered with this email address. <a class="link" href="/forgotten-password/">Forgotten your password?</a>
+        </p>
+        <p id="changeEmailConfirm" style="display:none" class="form-alert">
+          Your email change has been confirmed.</a>
+        </p>
+      </div>
+      <div class="form-component">
+        <label for="password-change" class="form-label centered">Confirm by entering your password</label>
+        <input type="password" name="password-change" id="password-change" class="form-input text-input block large centered" placeholder="Password">
+      </div>
+      <div class="form-component actions">
+        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>
+        <p id="changeEmailError" style="display:none" class="form-alert">
+          Sorry. Either the email you entered is already registered with this or another account or you entered your password incorrectly.
+        </p>
+        <p id="emailFormConfirm" class="form-note text-center" style="display:none">
+          Email changed.
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="tour-item">
+</div>
+
+<hr class="separator">
+
+<div class="tour-item">
+</div>
+
+<div class="row">
+  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">
+
+    <form id="deleteAccountForm" class="form">
+      
+      <div class="form-component">
+        <h2 class="centered">Delete Account</h2>
+        <label for="password-delete" class="form-label centered">Confirm by entering your password</label>
+        <input type="password-delete" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">
+      </div>
+      <div class="form-component actions">
+        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Delete Account</button>
+        <p id="deleteAccountFormError" style="display:none" class="form-alert">
+          It looks like you entered your password incorrectly. Please re-enter.
+        </p>
+        <p id="deleteAccountFormConfirm" class="form-note text-center" style="display:none">
+          Your account has been deleted. :(
+        </p>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+

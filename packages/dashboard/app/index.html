@@ -15,16 +15,19 @@
         <link rel="stylesheet" href="//hyperaud.io/assets/fonts/hyperaudio/style.css">
         <link rel="stylesheet" href="//hyperaud.io/assets/stylesheets/css/main.css">
         <link rel="stylesheet" href="//hyperaud.io/assets/stylesheets/hyperaudio.css">
+        <link rel="stylesheet" href="//hyperaud.io/assets/tours/shepherd/css/shepherd-theme-hyperaudio.css" />
         <!-- build:css(.tmp) styles/main.css -->
         <link rel="stylesheet" href="styles/select2.css">
         <link rel="stylesheet" href="styles/main.css">
         <link rel="stylesheet" href="styles/spinner.css">
+
         <!-- endbuild -->
         <link rel="stylesheet" href="/assets/stylesheets/css/custom.css">
         <!-- build:js scripts/vendor/modernizr.js -->
         <script src="bower_components/console-polyfill/index.js"></script>
         <script src="bower_components/tracekit/tracekit.js"></script>
         <!-- endbuild -->
+        <script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/shepherd.min.js"></script>
     </head>
     <body class="tpl_site index">
         <!--[if lt IE 10]>
@@ -52,6 +55,7 @@
                 <li class="header-navigation-item header-navigation-item-blog"><a href="http://hyperaud.io/blog/">Blog</a></li>
                 <li class="header-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li>
                 <li class="header-navigation-item"><a class="media" href="/media/">Media</a></li>
+                <li class="header-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
                 <li class="header-navigation-item anonymous"><a class="altered register" href="/signup/">Sign up</a></li>
                 <li class="header-navigation-item anonymous"><a class="button small login" href="/login/">Log in</a></li>
                 <li class="header-navigation-item user"><a class="button small logout" href="/signout/">Log out</a></li>
@@ -74,6 +78,7 @@
                 <li class="footer-navigation-item"><a href="http://hyperaud.io/blog/">Blog</a></li>
                 <li class="footer-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li>
                 <li class="footer-navigation-item"><a class="media" href="/media/">Media</a></li>
+                <li class="footer-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
                 <li class="footer-navigation-item"><a href="mailto:mark@hyperaud.io" class="email">Contact</a></li>
                 <li class="footer-navigation-item"><a href="https://groups.google.com/forum/#!forum/hyperaudio">Community</a></li>
                 <li class="footer-navigation-item"><a href="https://twitter.com/hyperaud_io">Twitter</a></li>
@@ -141,14 +146,19 @@
         <script src="scripts/views/transcriptListView.js"></script>
         <script src="scripts/views/mixDetailView.js"></script>
         <script src="scripts/views/mixDetail.js"></script>
+        <script src="scripts/views/resetPasswordView.js"></script>
+        <script src="scripts/views/choosePasswordView.js"></script>
+        <script src="scripts/views/settingsView.js"></script>
         <!-- endbuild -->
 
         <script src="//hyperaud.io/commons/tools/analytics/ga.js"></script>
+
         <!-- // <script src="//api.hyperaud.io/socket.io/socket.io.js"></script> -->
 
         <script>
         // document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
         </script>
+        <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script>
         <script>
         // var socket = io.connect('//' + prefix + 'api.' + domain + '/');
         </script>

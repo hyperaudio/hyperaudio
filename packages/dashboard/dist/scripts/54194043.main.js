@@ -59,11 +59,6 @@ window.haDash = {
       haDash.router.navigate('signout/', {trigger: true});
     });
 
-    // $('a.register').click(function(e){
-    //   e.preventDefault();
-    //   haDash.router.navigate('secret-signup/', {trigger: true});
-    // });
-
     $('a.login').click(function(e){
       e.preventDefault();
       haDash.router.navigate('login/', {trigger: true});
@@ -185,7 +180,17 @@ this["JST"]["app/scripts/templates/addMedia.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<h2>Add YouTube Video</h2>\n\n<p class="lead">Please paste a link to a video below (YouTube preferably)</p>\n\n<input id="yt" type="text" class="large" placeholder="video link">\n\n<button class="button primary">Add Video</button>\n\n<!-- -->\n';
+__p += '<h2>Add Audio or Video</h2>\n\n<p class="lead">Please paste a link to an audio or video file below (YouTube and Internet Archive links allowed).</p>\n\n<input id="yt" type="text" size="40" class="large" placeholder="http://example.com/myvideo.mp4">\n\n<button class="button primary">Add Media</button>\n\n<!-- -->\n';
+
+}
+return __p
+};
+
+this["JST"]["app/scripts/templates/choosePassword.ejs"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Choose a Password\n  </h1>\n</hgroup>\n\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component">\n        <label for="password2" class="form-label centered">Retype Password</label>\n        <input type="password" name="password2" id="password2" class="form-input text-input block large centered" placeholder="Retype Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          It looks like your passwords don\'t match. Please re-enter.\n        </p>\n        <p id="passwordFormConfirm" class="form-note text-center" style="display:none">\n          Password changed. Hooray!\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n<!-- "Choose Life. Choose a job. Choose a career. Choose a family. Choose a fucking big television, choose washing machines, cars, compact disc players and electrical tin openers. Choose good health, low cholesterol, and dental insurance. Choose fixed interest mortgage repayments. Choose a starter home. Choose your friends. Choose leisurewear and matching luggage. Choose a three-piece suite on hire purchase in a range of fucking fabrics. Choose DIY and wondering who the fuck you are on Sunday morning. Choose sitting on that couch watching mind-numbing, spirit-crushing game shows, stuffing fucking junk food into your mouth. Choose rotting away at the end of it all, pissing your last in a miserable home, nothing more than an embarrassment to the selfish, fucked up brats you spawned to replace yourselves. Choose your future. Choose life..." Choose a fucking Password. -->\n';
 
 }
 return __p
@@ -202,7 +207,14 @@ if (source.youtube && source.youtube.thumbnail) {
   print(_.escape(source.youtube.thumbnail));
 } else if (source.mp4 && source.mp4.thumbnail) {
   print(_.escape(source.mp4.thumbnail));
+} else if (source.mp4) {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-video.png'));
+} else if (source.mpeg) {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb-audio.png'));
+} else {
+  print(_.escape('http://hyperaud.io/assets/images/inserts/ha-thumb.png'));
 }
+
 ;
 __p += '" class=""></td>\n<td class="span2 label">' +
 __e( label ) +
@@ -234,9 +246,26 @@ obj || (obj = {});
 var __t, __p = '', __e = _.escape, __j = Array.prototype.join;
 function print() { __p += __j.call(arguments, '') }
 with (obj) {
-__p += '<h2 class="label editable" data-field="label">' +
+__p += '<h2 id="titleLabel" class="label editable" data-field="label">' +
 __e( label ) +
-'</h2>\n\n<p class="lead desc editable" data-field="desc">';
+'</h2>\n\n<p>\n\n';
+
+if (source.youtube && source.youtube.url) {;
+__p += '\n<iframe width="420" height="315" frameborder="0" allowfullscreen src="http://www.youtube.com/embed/';
+print(_.escape(source.youtube.url.split('=')[1])) ;
+__p += '">\n</iframe>\n';
+} else if (source.mp4 && source.mp4.url) {;
+__p += '\n<video controls width="420" height="315" src="';
+print(_.escape(source.mp4.url)) ;
+__p += '">\n</video>\n';
+} else if (source.mpeg && source.mpeg.url) {;
+__p += '\n<audio controls src="';
+print(_.escape(source.mpeg.url)) ;
+__p += '">\n</audio>\n';
+
+}
+;
+__p += '\n\n</p>\n\n<p id="descLabel" class="lead desc editable" data-field="desc">';
 
   var lines = desc.split("\n");
   for (var i = 0; i < lines.length; i++) {
@@ -245,9 +274,9 @@ __e( label ) +
     if (i < lines.length - 1) print('<br />');
   }
 ;
-__p += '</p>\n\n<p>Channel: <input type="hidden" class="channels" value="' +
+__p += '</p>\n\n<p>Channel : <input type="hidden" class="channels" value="' +
 __e( channel ) +
-'"></p>\n\n<p>Tags: <input type="hidden" class="tags" value="';
+'"></p>\n\n<p>Tags : <input type="hidden" class="tags" value="';
 
 print(tags.join(','));
 ;
@@ -259,7 +288,7 @@ __e( _id) +
  if (owner == haDash.user) { ;
 __p += '\n  <button class="button delete">Delete Video</button>\n';
  } ;
-__p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n';
+__p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mediaDetail/shepherd-tour.js"></script>\n';
 
 }
 return __p
@@ -269,7 +298,7 @@ this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="user your">\n\n  <button id="addMedia" class="button primary">Add Media</button>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n\n<div class="other">\n  <table>\n    <caption>Recent Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n</div>\n\n\n\n\n';
+__p += '<div class="user your">\n\n  <button id="addMedia" class="button primary">Add Media</button>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n\n<div class="other">\n  <table>\n    <caption>Recent Media</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n</div>\n\n<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mediaList/shepherd-tour.js"></script>\n\n\n';
 
 }
 return __p
@@ -343,7 +372,27 @@ this["JST"]["app/scripts/templates/mixList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<div class="user your">\n\n  <a class="button primary" href="/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n</div>\n';
+__p += '<div class="user your">\n\n  <a id="createMix" class="button primary" href="/pad/">Create Mix</a>\n\n  <p>&nbsp;</p>\n\n  <table>\n    <caption>Your Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n\n  <p>&nbsp;</p>\n  <p>&nbsp;</p>\n</div>\n\n<div class="other">\n<table>\n    <caption>Recent Mixes</caption>\n    <thead>\n      <tr>\n        <th class="span1"></th>\n        <th class="span2">Title</th>\n        <th class="span4">Description</th>\n        <th class="span2">Date</th>\n        <th>Author</th>\n      </tr>\n    </thead>\n    <tbody class="nochannel">\n      <tr class="lone"><td>\n        <div class="spinner dark">\n          <div class="bounce1"></div>\n          <div class="bounce2"></div>\n          <div class="bounce3"></div>\n        </div>\n      </td></tr>\n    </tbody>\n  </table>\n</div>\n\n<script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/ha-dash-mixList/shepherd-tour.js"></script>\n';
+
+}
+return __p
+};
+
+this["JST"]["app/scripts/templates/resetPassword.ejs"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Reset Password\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="passwordForm" class="form">\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Send</button>\n        <p id="passwordFormError" style="display:none" class="form-alert">\n          Sorry we have no record of that email address.\n        </p>\n        <p id="passwordFormConfirm" class="form-label text-center" style="display:none">\n          Please check your email for instructions on how to change your password. \n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n';
+
+}
+return __p
+};
+
+this["JST"]["app/scripts/templates/settings.ejs"] = function(obj) {
+obj || (obj = {});
+var __t, __p = '', __e = _.escape;
+with (obj) {
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Settings\n  </h1>\n</hgroup>\n\n<div class="row">\n  \n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    \n    <form id="emailForm" class="form">\n    \n      <div class="form-component">\n        <h2 class="centered">Change Email</h2>\n        <label for="email" class="form-label centered">New email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="New Email">\n        <p id="registerEmailError" style="display:none" class="form-alert">\n          Sorry, somebody has already registered with this email address. <a class="link" href="/forgotten-password/">Forgotten your password?</a>\n        </p>\n        <p id="changeEmailConfirm" style="display:none" class="form-alert">\n          Your email change has been confirmed.</a>\n        </p>\n      </div>\n      <div class="form-component">\n        <label for="password-change" class="form-label centered">Confirm by entering your password</label>\n        <input type="password" name="password-change" id="password-change" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Change</button>\n        <p id="changeEmailError" style="display:none" class="form-alert">\n          Sorry. Either the email you entered is already registered with this or another account or you entered your password incorrectly.\n        </p>\n        <p id="emailFormConfirm" class="form-note text-center" style="display:none">\n          Email changed.\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n\n<div class="tour-item">\n</div>\n\n<hr class="separator">\n\n<div class="tour-item">\n</div>\n\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n\n    <form id="deleteAccountForm" class="form">\n      \n      <div class="form-component">\n        <h2 class="centered">Delete Account</h2>\n        <label for="password-delete" class="form-label centered">Confirm by entering your password</label>\n        <input type="password-delete" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n      <div class="form-component actions">\n        <button id="send" type="submit" class="button large primary"><img style="display:none" src="images/ajax-loader-ffffff-on-808080.gif"> Delete Account</button>\n        <p id="deleteAccountFormError" style="display:none" class="form-alert">\n          It looks like you entered your password incorrectly. Please re-enter.\n        </p>\n        <p id="deleteAccountFormConfirm" class="form-note text-center" style="display:none">\n          Your account has been deleted. :(\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n\n\n\n';
 
 }
 return __p
@@ -353,7 +402,7 @@ this["JST"]["app/scripts/templates/signIn.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign In\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="loginForm" class="form">\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label>\n        <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="Username">\n        <!-- <p style="display:none" class="form-alert">Wrong username.</p> -->\n      </div>\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n        <p id="loginFormError" style="display:none" class="form-alert">\n          Incorrect username or password.\n        </p>\n      </div>\n      <div class="form-component actions">\n        <!-- <input id="signin" type="submit" class="button large primary" value="Sign In"> -->\n        <button id="signin" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign In</button>\n      </div>\n    </form>\n  </div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign In\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 medium-offset-2 small-12 columns large-offset-2">\n    <form id="loginForm" class="form">\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label>\n        <input type="text" name="username" id="username" class="form-input text-input block large centered" placeholder="Username">\n        <!-- <p style="display:none" class="form-alert">Wrong username.</p> -->\n      </div>\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label>\n        <input type="password" name="password" id="password" class="form-input text-input block large centered" placeholder="Password">\n        <p id="loginFormError" style="display:none" class="form-alert">\n          Incorrect username or password.\n        </p>\n      </div>\n      <div class="form-component">\n        <label for="accept" class="form-label centered">\n          <a class="link" href="/reset-password/">Forgotten your password?</a>\n        </label>\n      </div>\n      <div class="form-component actions">\n        <!-- <input id="signin" type="submit" class="button large primary" value="Sign In"> -->\n        <button id="signin" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign In</button>\n      </div>\n    </form>\n  </div>\n</div>\n';
 
 }
 return __p
@@ -363,7 +412,7 @@ this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
-__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerFormError" style="display:none" class="form-alert">\n          Sorry, username already exists.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="password" class="form-label centered">Password</label> <input id="password" type="password" name="password" class="form-input text-input block large centered" placeholder="Password">\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
+__p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    Sign up\n  </h1>\n</hgroup>\n<div class="row">\n  <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">\n    <form id="registerForm" class="form">\n\n      <div class="form-component">\n        <label for="username" class="form-label centered">Username</label> <input id="username" type="text" name="username" class="form-input text-input block large centered" placeholder="Username">\n        <p id="registerUsernameError" style="display:none" class="form-alert">\n          Sorry, username already exists.\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="email" class="form-label centered">Email</label> <input id="email" type="text" name="email" class="form-input text-input block large centered" placeholder="Email">\n        <p id="registerEmailError" style="display:none" class="form-alert">\n          Sorry, somebody has already registered with this email address. <a class="link" href="/reset-password/">Forgotten your password?</a>\n        </p>\n      </div>\n\n      <div class="form-component">\n        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="http://hyperaud.io/terms-of-service/">The Hyperaud.io Terms of Service</a></label>\n        <p id="registerTermsError" style="display:none" class="form-alert">\n          Please accept the terms of service.\n        </p>\n      </div>\n\n      <div class="form-component actions">\n        <!-- <input id="signup" type="submit" class="button large primary" value="Sign up"> -->\n        <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>\n        <p id="registerCheckMail" style="display:none" class="form-alert">\n          Thanks. Instructions are being sent to your email address.\n        </p>\n      </div>\n    </form>\n  </div>\n</div>\n</div>\n';
 
 }
 return __p
@@ -430,7 +479,7 @@ __p += '\n    <a class="button small primary" href="/pad/viewer/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '" target="_new">View</a>\n    <a class="button small" href="/pad/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
-'">Mix</a>\n    <button class="button tClone">Clone</button>\n\n  ';
+'">Mix</a>\n    <button class="button tClone">Copy</button>\n\n  ';
  } ;
 __p += '\n</td>\n\n\n';
 
@@ -523,17 +572,20 @@ haDash.Routers = haDash.Routers || {};
       'media/': 'media',
       'media/:id': 'mediaDetail',
 
-      'secret-signin/': 'signin',
       'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
 
-      'secret-signup/': 'signup',
       'beta-signup/': 'signup',
       'signup/': 'signup',
 
-      'add-media/': 'addMedia'
+      'reset-password/': 'resetPassword',
+      'choose-password/': 'choosePassword',
+      'token/:token': 'signInToken',
+
+      'add-media/': 'addMedia',
+      'settings/': 'settings'
     },
 
     addMedia: function() {
@@ -654,6 +706,46 @@ haDash.Routers = haDash.Routers || {};
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
 
+    resetPassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Reset Password";
+      $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    choosePassword: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.login').addClass('active');
+      document.title = "Hyperaudio Choose a Password";
+      $main.empty().append(new haDash.Views.ChoosePasswordView({}).el);
+    },
+
+    signInToken: function (token) {
+      $.ajax({
+          url: haDash.API + '/token-login',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            'access-token': token
+          })
+        })
+        .done(function(whoami) {
+          console.log(whoami);
+          // changePassword();
+          haDash.setUser(whoami);
+          if (whoami.user) {
+            haDash.router.navigate("choose-password/", {trigger: true});
+          }
+        })
+        .fail(function() {
+          console.log('error');
+        });
+    },
+
     pageView : function(){
       var url = Backbone.history.getFragment();
 
@@ -664,6 +756,13 @@ haDash.Routers = haDash.Routers || {};
       if(! _.isUndefined(window._gaq)){
         _gaq.push(['_trackPageview', url]);
       }
+    },
+
+    settings: function() {
+      $('.header-navigation a').removeClass('active');
+      $('.header-navigation a.settings').addClass('active');
+      document.title = "Hyperaudio Settings";
+      $main.empty().append(new haDash.Views.SettingsView({}).el);
     }
 
   });
@@ -922,38 +1021,50 @@ haDash.Views = haDash.Views || {};
 
     signup: function(event) {
       event.preventDefault();
-      $('#registerFormError').hide();
-      $(event.target).find('img').show();
+      $('.form-alert').hide();
 
-      $.ajax({
-        url: haDash.API + '/register',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-              username: $('#username').val(),
-              password: $('#password').val(),
-              email: $('#email').val(),
-          })
-      })
-      .done(function(whoami) {
-        console.log(whoami);
-        //FIXME in API login person directly
-        haDash.router.navigate("secret-signin/", {trigger: true});
-        alert('Marvelous, now please log in');
+      if($('#accept').is(':checked')) {
+
+        $(event.target).find('img').show();
+
+        $.ajax({
+          url: haDash.API + '/register',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+                username: $('#username').val(),
+                password: $('#password').val(),
+                email: $('#email').val(),
+            })
         })
-        .fail(function() {
-            $('#registerFormError').show();
-            $(event.target).find('img').hide();
+        .done(function(whoami) {
+          //haDash.router.navigate("signin/", {trigger: true});
+          $(event.target).find('img').hide();
+          $('#signup').hide();
+          $('#registerCheckMail').show();
+        })
+        .fail(function(e) {
+
+          if (e.status == "401") {
+            $('#registerUsernameError').show();
+          }
+
+          if (e.status == "409") {
+            $('#registerEmailError').show();
+          }
+          
+          $(event.target).find('img').hide();
         });
 
+      } else {
+        $('#registerTermsError').show();
+      }
     }
-
-    });
-
+  });
 })();
 
 /*global haDash, Backbone*/
@@ -1371,7 +1482,7 @@ haDash.Views = haDash.Views || {};
 
     addVideo: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 
@@ -1406,6 +1517,14 @@ haDash.Views = haDash.Views || {};
             };
 
             ytClone(cleanYtData, ytData);
+
+            var duration = cleanYtData.entry.media_group.media_content["0"].duration;
+            if (duration > 30*60) {
+              var pass = prompt('Please enter your code to process audio/video longer than 30 minutes','');
+              if (pass != '808080') {
+                return;
+              } 
+            }
 
             // model.set('created', haDash.user);
             model.set('owner', haDash.user);
@@ -1503,7 +1622,7 @@ haDash.Views = haDash.Views || {};
 
 
       } else {
-        if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
+        //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
           var curl = haDash.API + '/about';
           $.post(curl, {url: url}, function (info) {
@@ -1518,13 +1637,26 @@ haDash.Views = haDash.Views || {};
               return;
             }
 
-            var source = {};
+            ///"content-length": "4062859",
+            if (info['content-length'] && parseInt(info['content-length']) > 300000000 ) {
+              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us (please use max 300MB)');
+              return;
+            }
+
             var type = info['content-type'].split('/')[1];
-            source[type] = url;
+            // source[type] = url;
+            var source = {};
+            source[type] = {
+                type: info['content-type'],
+                url: url
+            };
+            
+            
+            
 
             // non YT, hope for the best
             model.set('owner', haDash.user);
-            model.set('label', 'n/a');
+            model.set('label', 'untitled');
             model.set('desc', url);
             model.set('meta', {});
             model.set('source', source);
@@ -1541,7 +1673,7 @@ haDash.Views = haDash.Views || {};
             });
 
           });//post
-        }//confirm
+        //}//confirm
 
       }//else
     }
@@ -1674,7 +1806,7 @@ haDash.Views = haDash.Views || {};
 
     clone: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate("signin/", {trigger: true});
         this.remove();
       }
 
@@ -1706,7 +1838,7 @@ haDash.Views = haDash.Views || {};
 
       if (this.model.get('status') == null || !this.model.get('status').alignment) {
         var self = this;
-        this.refreshing = setInterval(function() {
+        this.refreshing = setTimeout(function() {
           self.model.fetch({
             url: haDash.API + '/transcripts/' + self.model.id + '/poll?salt=' + Math.random(),
             success: function(model) {
@@ -1983,5 +2115,231 @@ haDash.Views = haDash.Views || {};
       }
 
     });
+
+})();
+
+/*global haDash, Backbone, JST*/
+
+haDash.Views = haDash.Views || {};
+
+(function () {
+    'use strict';
+
+    haDash.Views.ResetPasswordView = Backbone.View.extend({
+
+    id: 'passwordView',
+
+        template: JST['app/scripts/templates/resetPassword.ejs'],
+
+    initialize: function() {
+      this.render();
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      return this;
+    },
+
+    events: {
+      'click #passwordForm button[type="submit"]': 'send'
+    },
+
+    send: function(event) {
+      event.preventDefault();
+      $('#passwordFormError').hide();
+
+      $(event.target).find('img').show();
+
+      $.ajax({
+        url: haDash.API + '/reset-password',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+          email: $('#email').val()
+        })
+      })
+      .done(function(whoami) {
+        //console.log(whoami);
+        $('#send').hide();
+        $('#passwordFormConfirm').show();
+      })
+      .fail(function() {
+        $('#passwordFormError').show();
+        $(event.target).find('img').hide();
+      });
+    }
+  });
+})();
+
+/*global haDash, Backbone, JST*/
+
+haDash.Views = haDash.Views || {};
+
+
+(function () {
+    'use strict';
+
+    haDash.Views.ChoosePasswordView = Backbone.View.extend({
+
+    id: 'passwordView',
+
+        template: JST['app/scripts/templates/choosePassword.ejs'],
+
+    initialize: function() {
+      this.render();
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      return this;
+    },
+
+    events: {
+      'click #passwordForm button[type="submit"]': 'change'
+    },
+
+    change: function(event) {
+      event.preventDefault();
+      $('#passwordFormError').hide();
+
+      if ($('#password').val() == $('#password2').val()) {
+        $(event.target).find('img').show();
+
+        $.ajax({
+          url: haDash.API + '/choose-password',
+          contentType: "application/json; charset=utf-8",
+            dataType: "json",
+          xhrFields: {
+            withCredentials: true
+          },
+          method: 'post',
+          data: JSON.stringify({
+            password: $('#password').val()
+          })
+        })
+        .done(function(whoami) {
+          /*console.log(whoami);
+          $('#passwordForm').hide();
+          $('#passwordFormConfirm').show();*/
+          window.location = "/pad/";
+        })
+        .fail(function() {
+          $('#passwordFormError').show();
+          $(event.target).find('img').hide();
+        });
+
+      } else {
+        $('#passwordFormError').show();
+      }
+
+    }
+
+  });
+
+})();
+
+/*global haDash, Backbone, JST*/
+
+haDash.Views = haDash.Views || {};
+
+
+(function () {
+    'use strict';
+
+    haDash.Views.SettingsView = Backbone.View.extend({
+
+    id: 'settingsView',
+
+        template: JST['app/scripts/templates/settings.ejs'],
+
+    initialize: function() {
+      this.render();
+    },
+
+    render: function() {
+      this.$el.html(this.template());
+
+      return this;
+    },
+
+    events: {
+      'click #emailForm button[type="submit"]': 'change',
+      'click #deleteAccountForm button[type="submit"]': 'delete'
+    },
+
+    change: function(event) {
+      event.preventDefault();
+      $('.form-alert').hide();
+
+      $(event.target).find('img').show();
+
+      $.ajax({
+        url: haDash.API + '/change-email',
+        contentType: "application/json; charset=utf-8",
+          dataType: "json",
+        xhrFields: {
+          withCredentials: true
+        },
+        method: 'post',
+        data: JSON.stringify({
+          email: $('#email').val(),
+          password: $('#password-change').val()
+        })
+      })
+      .done(function(whoami) {
+        $('#passwordForm').hide();
+        $('#passwordFormConfirm').show();
+      })
+      .fail(function() {
+        $('#changeEmailError').show();
+        $(event.target).find('img').hide();
+      });
+    },
+
+    delete: function(event) {
+      event.preventDefault();
+
+      var r = confirm("Are you sure you want to delete your account?");
+      if (r != true) {
+
+        $('.form-alert').hide();
+
+        if ($('#password').val() == $('#password2').val()) {
+          $(event.target).find('img').show();
+
+          $.ajax({
+            url: haDash.API + '/delete-account',
+            contentType: "application/json; charset=utf-8",
+              dataType: "json",
+            xhrFields: {
+              withCredentials: true
+            },
+            method: 'post',
+            data: JSON.stringify({
+              password: $('#password-delete').val()
+            })
+          })
+          .done(function(whoami) {
+            $('#deleteAccountForm').hide();
+            $('#deleteAccountFormConfirm').show();
+          })
+          .fail(function() {
+            $('#deleteAccountFormError').show();
+            $(event.target).find('img').hide();
+          });
+
+        } else {
+          $('#passwordFormError').show();
+        }
+      }
+    }    
+
+  });
 
 })();
