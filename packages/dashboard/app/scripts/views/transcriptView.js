@@ -88,17 +88,17 @@ haDash.Views = haDash.Views || {};
     },
 
     refresh: function() {
-      // if (this.refreshing) return;
+      if (this.refreshing) return;
 
       if (this.model.get('status') == null || !this.model.get('status').alignment) {
         var self = this;
-        // this.refreshing =
-        setTimeout(function() {
+        this.refreshing = setTimeout(function() {
           self.model.fetch({
             url: haDash.API + '/transcripts/' + self.model.id + '/poll?salt=' + Math.random(),
             success: function(model) {
               console.log(model);
               // self.render();
+              this.refreshing = null;
               self.refresh();
             }
           });
