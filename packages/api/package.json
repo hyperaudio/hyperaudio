@@ -1,6 +1,6 @@
 {
   "name": "ha-api",
-  "version": "0.0.2",
+  "version": "0.2.0",
   "homepage": "https://github.com/hyperaudio-dev/ha-data",
   "authors": [
     "Laurian Gridinoc <laurian@gridinoc.name>"
