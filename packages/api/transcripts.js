@@ -301,7 +301,7 @@ module.exports = function(app, nconf, io) {
           if (req.body.lang) lang = req.body.lang;
 
           //use redirect url
-          url = 'http://api.hyperaudio.net/v1/transcripts/' + transcript._id + '/video';
+          url = 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/video';
 
           var options = {
             host: 'mod9.54.197.237.1.xip.io',
@@ -309,7 +309,7 @@ module.exports = function(app, nconf, io) {
             path: '/mod9/align/v0.8?' + querystring.stringify({
               audio: url,
               lang: lang,
-              text: 'http://api.hyperaudio.net/v1/transcripts/' + transcript._id + '/text',
+              text: 'http://api.hyperaud.io/v1/transcripts/' + transcript._id + '/text',
               mode: 'submit',
               skip: 'True',
               prune: 0
