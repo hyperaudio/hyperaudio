@@ -542,6 +542,10 @@ app.post('/v1/reset-password', function(req, res) {
           message.text = message.text.replace(/TOKEN/g, token);
           message.html = message.html.replace(/TOKEN/g, token);
 
+          message.text = message.text.replace(/USER/g, user.username);
+          message.html = message.html.replace(/USER/g, user.username);
+
+
           if (namespace) {
             message.text = message.text.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
             message.html = message.html.replace(/\/\/hyperaud/g, '//' + namespace + '.hyperaud');
