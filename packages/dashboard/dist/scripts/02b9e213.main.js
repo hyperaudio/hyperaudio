@@ -294,7 +294,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n<script type="text/
 return __p
 };
 
-this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
