@@ -1,3 +1,4 @@
+
 To run a local ha-api, you need Vagrant with vagrant-vbguest plugin and Virtualbox.
 
 Clone this repo and you will find a vagrantfile within. Work from the repo directory on the command line.
