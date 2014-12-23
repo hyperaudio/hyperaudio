@@ -98,6 +98,7 @@ haDash.Views = haDash.Views || {};
             success: function(model) {
               console.log(model);
               // self.render();
+              // self.refreshing = null;
               self.refresh();
             }
           });
