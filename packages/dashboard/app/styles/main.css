@@ -34,8 +34,7 @@ table {
   background-color: #FFF7DD; }
 #mediaListView tbody tr td, #mixListView tbody tr td, #mixDetail tbody tr td {
   cursor: pointer;
-  overflow: hidden;
-  word-break: break-all; }
+  overflow: hidden; }
 
 #loginForm button img, #registerForm button img {
   display: none; }
