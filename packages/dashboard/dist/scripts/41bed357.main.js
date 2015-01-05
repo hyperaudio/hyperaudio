@@ -455,7 +455,7 @@ __p += '\n\n      ';
  if (status && status != '') { ;
 __p += '\n        <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n      ';
  } else { ;
-__p += '\n        <select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n        </select>\n        <button class="button align small primary">Align</button>\n        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n\n        <a class="button small" href="/maker/?t=' +
+__p += '\n        <!--<select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n        </select>\n        <button class="button align small primary">Align</button>-->\n        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n\n        <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n      ';
  } ;
