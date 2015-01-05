@@ -2002,7 +2002,7 @@ haDash.Views = haDash.Views || {};
         });
 
         if (this.notMutable()) {
-          this.$el.find('.tags').select2("readonly", true);
+          // this.$el.find('.tags').select2("readonly", true);
         }
 
         this.$el.find('.channels').select2({
@@ -2012,7 +2012,7 @@ haDash.Views = haDash.Views || {};
         });
 
         if (this.notMutable()) {
-          this.$el.find('.channels').select2("readonly", true);
+          // this.$el.find('.channels').select2("readonly", true);
         }
 
         // var mediaIDs = [];//this.model.get('transcripts');
