@@ -294,7 +294,7 @@ __p += '\n\n<p>&nbsp;</p>\n\n<div id="transcripts"></div>\n\n<script type="text/
 return __p
 };
 
-this["JST"]["app/scripts/templates/medialist.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/mediaList.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -398,7 +398,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signin.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signIn.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -408,7 +408,7 @@ __p += '<hgroup class="section-head">\n  <h1 class="section-head-heading">\n    
 return __p
 };
 
-this["JST"]["app/scripts/templates/signup.ejs"] = function(obj) {
+this["JST"]["app/scripts/templates/signUp.ejs"] = function(obj) {
 obj || (obj = {});
 var __t, __p = '', __e = _.escape;
 with (obj) {
@@ -455,7 +455,7 @@ __p += '\n\n      ';
  if (status && status != '') { ;
 __p += '\n        <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n      ';
  } else { ;
-__p += '\n        <!--<select>\n          <option value="en" selected>English</option>\n          <option value="es">Spanish</option>\n          <option value="fr">French</option>\n          <option value="de">German</option>\n        </select>\n        <button class="button align small primary">Align</button>-->\n        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n\n        <a class="button small" href="/maker/?t=' +
+__p += '\n        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>\n\n        <a class="button small" href="/maker/?t=' +
 ((__t = ( _id)) == null ? '' : __t) +
 '">Edit</a>\n      ';
  } ;
@@ -1337,7 +1337,7 @@ haDash.Views = haDash.Views || {};
         tokenSeparators: [","]
       });
       if (this.notMutable()) {
-        this.$el.find('.tags').select2("readonly", true);
+        // this.$el.find('.tags').select2("readonly", true);
       }
 
       this.$el.find('.channels').select2({
@@ -1346,7 +1346,7 @@ haDash.Views = haDash.Views || {};
         tokenSeparators: [","]
       });
       if (this.notMutable()) {
-        this.$el.find('.channels').select2("readonly", true);
+        // this.$el.find('.channels').select2("readonly", true);
       }
 
       this.$el.find("#transcripts").empty().append(
@@ -2002,7 +2002,7 @@ haDash.Views = haDash.Views || {};
         });
 
         if (this.notMutable()) {
-          this.$el.find('.tags').select2("readonly", true);
+          // this.$el.find('.tags').select2("readonly", true);
         }
 
         this.$el.find('.channels').select2({
@@ -2012,7 +2012,7 @@ haDash.Views = haDash.Views || {};
         });
 
         if (this.notMutable()) {
-          this.$el.find('.channels').select2("readonly", true);
+          // this.$el.find('.channels').select2("readonly", true);
         }
 
         // var mediaIDs = [];//this.model.get('transcripts');
