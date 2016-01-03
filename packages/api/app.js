@@ -1,7 +1,6 @@
 var nconf = require('nconf');
 var fs = require('fs');
 
-var toobusy = require('toobusy');
 var express = require('express');
 
 var http = require('http');
@@ -28,14 +27,6 @@ var app = express();
 
 // all environments
 app.set('port', nconf.get('port') || process.env.PORT || 3000);
-
-app.use(function(req, res, next) {
-  if (toobusy()) {
-    res.send(503, "I'm busy right now, sorry.");
-  } else {
-    next();
-  }
-});
 
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -115,7 +106,7 @@ app.get('/v1', function(req, res) {
 
 app.get('/v1/status', function(req, res) {
   res.json({
-    lag: toobusy.lag()
+    lag: 0
   });
 });
 
@@ -605,6 +596,5 @@ io.on('connection', function (socket) {
 
 process.on('SIGINT', function() {
   server.close();
-  toobusy.shutdown();
   process.exit();
 });
