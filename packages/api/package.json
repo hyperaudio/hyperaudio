@@ -9,7 +9,8 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "echo 'no tests'"
   },
   "dependencies": {
     "express": "3.4.0",
