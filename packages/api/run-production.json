@@ -2,8 +2,9 @@
   {
     "name"       : "api-prod",
     "script"     : "app.js",
-    "instances"  : "1",
-    "port"       : 3005,
+    "instances"  : "2",
+    "exec_mode"  : "cluster_mode",
+    "port"       : 80,
     "error_file" : "./logs/api-prod-err.log",
     "out_file"   : "./logs/api-prod-out.log",
     "pid_file"   : "./logs/api-prod.pid",
