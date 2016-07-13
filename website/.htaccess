@@ -3,8 +3,13 @@ RewriteEngine On
 RewriteRule ^mixes/(.*)$ /dashboard/ [L]
 RewriteRule ^media/(.*)$ /dashboard/ [L]
 RewriteRule ^login/(.*)$ /dashboard/ [L]
+RewriteRule ^settings/(.*)$ /dashboard/ [L]
 RewriteRule ^signout/(.*)$ /dashboard/ [L]
-RewriteRule ^beta-signup/(.*)$ /dashboard/ [L]
+RewriteRule ^signup/(.*)$ /dashboard/ [L]
+RewriteRule ^reset-password/(.*)$ /dashboard/ [L]
+RewriteRule ^choose-password/(.*)$ /dashboard/ [L]
+RewriteRule ^token/(.*)$ /dashboard/ [L]
+RewriteRule ^email/(.*)$ /dashboard/ [L]
 
 #MB Added
 
@@ -31,5 +36,32 @@ RewriteCond %{HTTP_HOST} ^trent.hyperaud.io
 RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
 RewriteRule ^(.*)$ _org/trent/assets/stylesheets/css/custom.css [L]
 
+#studsterkelarchive
 
+RewriteCond %{HTTP_HOST} ^studsterkelarchive.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/studsterkelarchive/ [L]
 
+RewriteCond %{HTTP_HOST} ^studsterkelarchive.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/studsterkelarchive/assets/stylesheets/css/custom.css [L]
+
+#studsterkel
+
+RewriteCond %{HTTP_HOST} ^studsterkel.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/studsterkel/ [L]
+
+RewriteCond %{HTTP_HOST} ^studsterkel.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/studsterkel/assets/stylesheets/css/custom.css [L]
+
+#election2016
+
+RewriteCond %{HTTP_HOST} ^election2016.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/election2016/ [L]
+
+RewriteCond %{HTTP_HOST} ^election2016.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/election2016/assets/stylesheets/css/custom.css [L]
