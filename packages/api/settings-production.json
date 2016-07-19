@@ -17,7 +17,7 @@
     "database": "mongodb://localhost/hyperaudio02",
 
     "mandrill": {
-      "apiKey": "TAfHl2JVtO67GXjCEaOQ0Q",
+      "apiKey": "TXdZXJeqBFmqEu_J2vCH9A",
       "registrationMessage": {
           "html": "<p>Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication.</p> \n<p>Here's your magic activation link <a href='http://hyperaud.io/token/TOKEN'>http://hyperaud.io/token/TOKEN</a> </p>\n<p>(Not really magic.)</p> \n<p>The Hyperaud.io Team</p>",
           "text": "Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication. \nHere's your magic activation link http://hyperaud.io/token/TOKEN \n(Not really magic.) \nThe Hyperaud.io Team",
