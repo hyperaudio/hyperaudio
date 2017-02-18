@@ -1,0 +1,170 @@
+/* =============================================================================
+   Brand Colors
+   ========================================================================== */
+
+$brand-color        : #d74b36;
+$brand-color-light  : #C24431;
+$brand-color-xlight : #f6f3f2;
+$alt-color         : rgba(0,0,0,0.8);
+$alt-color-light   : rgba(0,0,0,0.25);
+
+$dark              : #000;
+$bright            : #fff;
+
+/* =============================================================================
+   Body
+   ========================================================================== */
+
+// Text Selection
+::selection { background: $brand-color-xlight; }      /* Safari */
+::-moz-selection { background: $brand-color-xlight; } /* Firefox */
+
+/* =============================================================================
+   Headings
+   ========================================================================== */
+
+.heading-xl {
+  color: $brand-color ;
+}
+
+.heading-l {
+  color: $alt-color;
+}
+
+h1 { @extend .heading-xl; }
+h2, .call-heading { @extend .heading-l; }
+
+/* =============================================================================
+   Section Head
+   ========================================================================== */
+
+.section-head-heading {
+  @extend .heading-xl;
+}
+.section-head-text {
+  @extend .heading-l;
+}
+
+/* =============================================================================
+   Characteristics
+   ========================================================================== */
+
+.characteristic-heading {
+  color: $alt-color;
+}
+
+/* =============================================================================
+   Links
+   ========================================================================== */
+
+.link,
+.link:hover,
+.link:active {
+  color: $brand-color;
+}
+
+.link {
+  border-bottom: 1px solid transparent;
+  -webkit-transition: background-color 0.3s ease;
+  -moz-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+  &:focus,
+  &:hover,
+  &.active,
+  &:active {
+    border-bottom: 1px solid $brand-color;
+  }
+  &:active {
+    opacity: 0.7
+  }
+}
+
+a {
+  @extend .link
+}
+
+/* =============================================================================
+   Header
+   ========================================================================== */
+
+header .brandmark-label:after {
+  content: " Studs Terkel"
+}
+
+@media only screen and (min-width: 40.063em) and (max-width: 64em) {
+  .header-brandmark {
+    text-align: left;
+    margin-left: 20px;
+  }
+}
+
+.header-navigation-item-blog {
+  display: none;
+}
+
+/* =============================================================================
+   Buttons
+   ========================================================================== */
+
+a.button,
+button.button,
+.button,
+input[type="submit"] {
+  border: 1px solid $alt-color-light;
+  color: $brand-color;
+  &:hover {
+    background: $brand-color;
+  }
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.button.primary {
+  background: $brand-color;
+  border-color: $alt-color-light;
+}
+
+/* =============================================================================
+   Playground
+   ========================================================================== */
+
+.branded {
+  background-color: $brand-color;
+
+  a {
+    color: $bright;
+  }
+
+  .button {
+    border-color: $brand-color-light;
+    text-shadow: none;
+    &:active,
+    &.active {
+      color: $brand-color;
+    }
+    &.active:hover,
+    &:hover {
+      color: $brand-color !important;
+    }
+  }
+  .button.primary {
+    color: $brand-color;
+  }
+}
+
+/* =============================================================================
+   Slider
+   ========================================================================== */
+
+.slider-page {
+  background: transparent;
+  border: 1px solid $bright;
+}
+
+.slider-page.active {
+  background: $bright;
+  height: 12px;
+  margin: 2px 0;
+  width: 12px;
+}

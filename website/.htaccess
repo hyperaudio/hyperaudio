@@ -65,3 +65,13 @@ RewriteRule ^(.*)$ _org/election2016/ [L]
 RewriteCond %{HTTP_HOST} ^election2016.hyperaud.io
 RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
 RewriteRule ^(.*)$ _org/election2016/assets/stylesheets/css/custom.css [L]
+
+#NewsArchive
+
+RewriteCond %{HTTP_HOST} ^newsarchive.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^(.*)$ _org/newsarchive/ [L]
+
+RewriteCond %{HTTP_HOST} ^newsarchive.hyperaud.io
+RewriteCond %{REQUEST_URI} ^/assets/stylesheets/css/custom.css$
+RewriteRule ^(.*)$ _org/newsarchive/assets/stylesheets/css/custom.css [L]
