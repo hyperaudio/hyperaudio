@@ -8,3 +8,5 @@ test/temp
 # app/_bower_components
 .tmp
 test/bower_components/
+
+*.zip
