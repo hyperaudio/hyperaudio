@@ -2,24 +2,22 @@
 Backbone.emulateJSON = false;
 
 
-var namespace = null;
-// var namespace = 'mozilla';
+var namespace = null; // default no namespace
 
 if (document.location.hostname.indexOf('hyperaud') > 0) {
   namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
 }
 
-var prefix = '';
+var prefix = ''; // default no prefix
 if (namespace) prefix = namespace + '.';
 
-var domain;
-// if (document.location.hostname.indexOf('hyperaud.io') > -1) {
-//   domain = 'hyperaud.io';
-// } else {
-//   domain = 'hyperaudio.net';
-// }
+var domain = '127.0.0.1.xip.io'; // default API localhost
+if (document.location.hostname.indexOf('hyperaud.io') > -1) {
+  domain = 'hyperaud.io'; // PROD
+} else if (document.location.hostname.indexOf('hyperaudio.net') > -1) {
+  domain = 'hyperaudio.net'; // DEV
+}
 
-domain = 'hyperaud.io';
 
 window.haDash = {
 
