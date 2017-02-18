@@ -11,7 +11,7 @@ if (document.location.hostname.indexOf('hyperaud') > 0) {
 var prefix = ''; // default no prefix
 if (namespace) prefix = namespace + '.';
 
-var domain = '127.0.0.1.xip.io'; // default API localhost
+var domain = '127.0.0.1.xip.io:8080'; // default API localhost
 if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaud.io'; // PROD
 } else if (document.location.hostname.indexOf('hyperaudio.net') > -1) {
