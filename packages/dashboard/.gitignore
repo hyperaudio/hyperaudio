@@ -10,3 +10,5 @@ test/temp
 test/bower_components/
 
 *.zip
+
+npm-debug.log
