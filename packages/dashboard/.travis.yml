@@ -12,4 +12,4 @@ env:
 #     branch: develop
 
 after_success:
-  ./node_modules/.bin/grunt deploy
+  $TRAVIS_BUILD_DIR/node_modules/.bin/grunt deploy
