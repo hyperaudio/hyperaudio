@@ -1,5 +1,7 @@
 # ha-dash
 
+[![Build Status](https://travis-ci.org/hyperaudio/ha-dash.svg?branch=master)](https://travis-ci.org/hyperaudio/ha-dash)
+
 Hyperaud.io dashboard.
 
 This is the dashboard that binds the whole hyperaud.io system.
