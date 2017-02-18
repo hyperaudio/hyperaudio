@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 _node_modules
+dist
 test/temp
 .sass-cache
 app/bower_components

@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/hyperaudio-dev/ha-dash"
   },
+  "scripts": {
+    "build": "grunt"
+  },
   "private": true,
   "license": "MIT",
   "dependencies": {},
