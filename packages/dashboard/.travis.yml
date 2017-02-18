@@ -8,15 +8,15 @@ install: npm install
 
 script: npm run build
 
-# deploy:
-#   provider: script
-#   script: npm run deploy
-#   skip_cleanup: true
-#   on:
-#     branch: develop
+deploy:
+  provider: script
+  script: npm run deploy
+  skip_cleanup: true
+  on:
+    branch: develop
 
-after_success:
-  $TRAVIS_BUILD_DIR/node_modules/.bin/grunt deploy
+# after_success:
+#   $TRAVIS_BUILD_DIR/node_modules/.bin/grunt deploy
 
 notifications:
   slack:
