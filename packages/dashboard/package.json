@@ -11,7 +11,8 @@
   "scripts": {
     "server": "grunt server",
     "clean": "grunt clean",
-    "build": "grunt"
+    "build": "grunt",
+    "test": "echo 'n/a'"
   },
   "private": true,
   "license": "MIT",
