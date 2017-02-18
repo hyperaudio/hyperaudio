@@ -286,7 +286,7 @@ module.exports = function (grunt) {
               password: process.env.FTP_PASSWORD,
               hideCredentials: true,
             	host: "hyperaud.io",
-            	dest: "webapps/htdocs/dashboard-test/",
+            	dest: "webapps/htdocs/dashboard/",
             	port: 21,
               incrementalUpdates: true,
               // debug: true,

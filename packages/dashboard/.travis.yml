@@ -13,12 +13,7 @@ deploy:
   script: npm run deploy
   skip_cleanup: true
   on:
-    branch: develop
-
-# after_success:
-#   $TRAVIS_BUILD_DIR/node_modules/.bin/grunt deploy
+    branch: master
 
 notifications:
-  slack:
-    secure: ETZzUJd155O+7FTqEyqmMy7jOMoAbaUTtbetkXBA9kWsh89XKMlC2WiE3pg0M8cfl5ANEn/rArXSbhkawCJXY6EodVTXv8qthBX7H7QMCcEZIRKkbifpRj+H4VdZSA61iXBXNhLgWfTPIe1q8cc+sqVlsir0DSsUv6cAQsYFTzz7yZpHDyXsRknKyRZQ/udzI6fOayeAWfAp/pPg6LHfEffbyCdWK/xyhfMTTN/ZMQfV5RWlRAvrY6LTj7PVlOdVItNpcpliXooJR3MQ7/SpMEcCfqhjpqV/7+MAxJ9ZDOEkUYJYabSrRTAp277plfa6+FJBjYPUPl5ok5Y4P7ZhHQtowDN/YMK3H8LTaA4s94jcyDpjNLNzNuvmUFl49KM1gbUYau1O8eXrcFvQ1hUFNMP4Ds6sMwYZR6IcM/HLZCbGg1o6XWTJoMBCShqKxwUeUGIWkQJ2FHdUPt0dSzhDMNcxWb1xhmexRlH3nBRlZnVa7CQqIUYICs85qZ8J35KEfiXndJzxNACclL50W3KpSckGtSKQrLWBimCGAkzVaf5zzjJGrv7XHQRn+5v/cZ9a9lTcUhsHWiscgKz9FD6xVn6eRL6disGsgYVwxNMlmGDTGqoSRj/Poay+Yesm3zJ/hRKcSaZiG8HESZ0cYaQ64SAnkxnB/ifO7RGpR081LoM=
   irc: "chat.freenode.net#hyperaudio"
