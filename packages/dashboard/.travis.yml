@@ -12,4 +12,4 @@ env:
 #     branch: develop
 
 after_success:
-  npm run deploy
+  ./node_modules/.bin/grunt deploy
