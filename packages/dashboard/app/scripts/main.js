@@ -13,11 +13,13 @@ var prefix = '';
 if (namespace) prefix = namespace + '.';
 
 var domain;
-if (document.location.hostname.indexOf('hyperaud.io') > -1) {
-  domain = 'hyperaud.io';
-} else {
-  domain = 'hyperaudio.net';
-}
+// if (document.location.hostname.indexOf('hyperaud.io') > -1) {
+//   domain = 'hyperaud.io';
+// } else {
+//   domain = 'hyperaudio.net';
+// }
+
+domain = 'hyperaud.io';
 
 window.haDash = {
 
