@@ -56,56 +56,59 @@ haDash.Views = haDash.Views || {};
 
       if (ytID) {
         $.ajax({
-          url: "http://gdata.youtube.com/feeds/api/videos/" + ytID + "?v=2&alt=json",
+          url: "https://api.embedly.com/1/oembed?" + $.param({
+            url: url,
+            key: "1db39c7647084d758a34ddd62d2d74e6"
+          }),
           success: function(ytData) {
             console.log(ytData);
 
             //clean yt json
-            var cleanYtData = {};
+            // var cleanYtData = {};
+            //
+            // function ytClone(destination, source) {
+            //   for (var property in source) {
+            //     var prop = property.replace(/\$/g, '_');
+            //     if (typeof source[property] === "object" &&
+            //      source[property] !== null ) {
+            //       destination[prop] = destination[prop] || {};
+            //       ytClone(destination[prop], source[property]);
+            //     } else {
+            //       destination[prop] = source[property];
+            //     }
+            //   }
+            //   return destination;
+            // };
+            //
+            // ytClone(cleanYtData, ytData);
 
-            function ytClone(destination, source) {
-              for (var property in source) {
-                var prop = property.replace(/\$/g, '_');
-                if (typeof source[property] === "object" &&
-                 source[property] !== null ) {
-                  destination[prop] = destination[prop] || {};
-                  ytClone(destination[prop], source[property]);
-                } else {
-                  destination[prop] = source[property];
-                }
-              }
-              return destination;
-            };
-
-            ytClone(cleanYtData, ytData);
-
-            var duration = cleanYtData.entry.media_group.media_content["0"].duration;
-            if (duration > 30*60) {
-              var pass = prompt('Please enter your code to process audio/video longer than 30 minutes','');
-              if (pass != '808080') {
-                return;
-              } 
-            }
+            // var duration = cleanYtData.entry.media_group.media_content["0"].duration;
+            // if (duration > 30*60) {
+            //   var pass = prompt('Please enter your code to process audio/video longer than 30 minutes','');
+            //   if (pass != '808080') {
+            //     return;
+            //   }
+            // }
 
             // model.set('created', haDash.user);
             model.set('owner', haDash.user);
 
-            var title = ytData.entry.title["$t"];
+            var title = ytData.title; // ytData.entry.title["$t"];
             if (!title || title == "") {
               title = "Untitled";
             }
             model.set('label', title);
 
 
-            model.set('desc', ytData.entry["media$group"]["media$description"]["$t"]);
+            model.set('desc', ytData.description);
             model.set('meta', {
-              "youtube": cleanYtData
+              "youtube": ytData
             });
             model.set('source', {
               "youtube": {
                     "type": "video/youtube",
-                    "url": "http://www.youtube.com/watch?v=" + ytID,
-                    "thumbnail": ytData.entry["media$group"]["media$thumbnail"][0].url
+                    "url": ytData.url,
+                    "thumbnail": ytData.thumbnail_url
                }
             });
 
@@ -211,9 +214,9 @@ haDash.Views = haDash.Views || {};
                 type: info['content-type'],
                 url: url
             };
-            
-            
-            
+
+
+
 
             // non YT, hope for the best
             model.set('owner', haDash.user);

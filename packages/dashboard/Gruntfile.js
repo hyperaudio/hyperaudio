@@ -110,7 +110,7 @@ module.exports = function (grunt) {
         },
         open: {
             server: {
-                path: 'http://localhost:<%= connect.options.port %>'
+                path: 'http://localhost:<%= connect.options.port %>/dashboard/'
             }
         },
         clean: {
@@ -261,7 +261,8 @@ module.exports = function (grunt) {
         jst: {
             compile: {
                 files: {
-                    '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
+                  '.tmp/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs'],
+                  '.tmp/dashboard/scripts/templates.js': ['<%= yeoman.app %>/scripts/templates/*.ejs']
                 }
             }
         },
