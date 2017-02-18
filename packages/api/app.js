@@ -97,7 +97,10 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 app.get('/', function(req, res) {
-  res.redirect('http://hyperaud.io/');
+  // res.redirect('http://hyperaud.io/');
+  res.json({
+    lag: 0
+  });
 });
 
 app.get('/v1', function(req, res) {
