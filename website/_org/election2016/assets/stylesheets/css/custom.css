@@ -34,7 +34,7 @@
    Headings
    ========================================================================== */
 .heading-xl, h1, .section-head-heading {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 .heading-l, h2, .call-heading, .section-head-text {
@@ -59,7 +59,7 @@
 a:hover,
 .link:active,
 a:active {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 .link, a {
@@ -69,7 +69,7 @@ a:active {
   transition: background-color 0.3s ease;
 }
 .link:focus, a:focus, .link:hover, a:hover, .link.active, a.active, .link:active, a:active {
-  border-bottom: 1px solid #d74b36;
+  border-bottom: 1px solid #4e5d6c;
 }
 .link:active, a:active {
   opacity: 0.7;
@@ -79,7 +79,7 @@ a:active {
    Header
    ========================================================================== */
 header .brandmark-label:after {
-  content: " Studs Terkel";
+  content: " Election 2016";
 }
 
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -100,13 +100,13 @@ button.button,
 .button,
 input[type="submit"] {
   border: 1px solid rgba(0, 0, 0, 0.25);
-  color: #d74b36;
+  color: #4e5d6c;
 }
 a.button:hover,
 button.button:hover,
 .button:hover,
 input[type="submit"]:hover {
-  background: #d74b36;
+  background: #4e5d6c;
 }
 a.button:active,
 button.button:active,
@@ -116,7 +116,7 @@ input[type="submit"]:active {
 }
 
 .button.primary {
-  background: #d74b36;
+  background: #4e5d6c;
   border-color: rgba(0, 0, 0, 0.25);
 }
 
@@ -124,7 +124,7 @@ input[type="submit"]:active {
    Playground
    ========================================================================== */
 .branded {
-  background-color: #d74b36;
+  background-color: #4e5d6c;
 }
 .branded a {
   color: #fff;
@@ -134,13 +134,13 @@ input[type="submit"]:active {
   text-shadow: none;
 }
 .branded .button:active, .branded .button.active {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 .branded .button.active:hover, .branded .button:hover {
-  color: #d74b36 !important;
+  color: #4e5d6c !important;
 }
 .branded .button.primary {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 /* =============================================================================
@@ -162,7 +162,7 @@ input[type="submit"]:active {
    Headings
    ========================================================================== */
 .heading-xl, h1, .section-head-heading {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 .heading-l, h2, .call-heading, .section-head-text {
@@ -187,7 +187,7 @@ input[type="submit"]:active {
 a:hover,
 .link:active,
 a:active {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 .link, a {
@@ -197,7 +197,7 @@ a:active {
   transition: background-color 0.3s ease;
 }
 .link:focus, a:focus, .link:hover, a:hover, .link.active, a.active, .link:active, a:active {
-  border-bottom: 1px solid #d74b36;
+  border-bottom: 1px solid #4e5d6c;
 }
 .link:active, a:active {
   opacity: 0.7;
@@ -207,7 +207,7 @@ a:active {
    Header
    ========================================================================== */
 header .brandmark-label:after {
-  content: " Studs Terkel";
+  content: " Spin Time TV";
 }
 
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
@@ -228,13 +228,13 @@ button.button,
 .button,
 input[type="submit"] {
   border: 1px solid rgba(0, 0, 0, 0.25);
-  color: #d74b36;
+  color: #4e5d6c;
 }
 a.button:hover,
 button.button:hover,
 .button:hover,
 input[type="submit"]:hover {
-  background: #d74b36;
+  background: #4e5d6c;
 }
 a.button:active,
 button.button:active,
@@ -244,7 +244,7 @@ input[type="submit"]:active {
 }
 
 .button.primary {
-  background: #d74b36;
+  background: #4e5d6c;
   border-color: rgba(0, 0, 0, 0.25);
 }
 
@@ -252,23 +252,23 @@ input[type="submit"]:active {
    Playground
    ========================================================================== */
 .branded {
-  background-color: #d74b36;
+  background-color: #4e5d6c;
 }
 .branded a {
   color: #fff;
 }
 .branded .button {
-  border-color: #C24431;
+  border-color: #ffffff;
   text-shadow: none;
 }
 .branded .button:active, .branded .button.active {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 .branded .button.active:hover, .branded .button:hover {
-  color: #d74b36 !important;
+  color: #4e5d6c !important;
 }
 .branded .button.primary {
-  color: #d74b36;
+  color: #4e5d6c;
 }
 
 /* =============================================================================
