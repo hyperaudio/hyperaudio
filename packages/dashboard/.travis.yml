@@ -6,7 +6,7 @@ env:
 
 deploy:
   provider: script
-  script: sh node_modules/.bin/grunt deploy
+  script: npm run deploy
   skip_cleanup: true
   on:
     branch: develop

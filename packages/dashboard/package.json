@@ -12,6 +12,7 @@
     "server": "grunt server",
     "clean": "grunt clean",
     "build": "grunt",
+    "deploy": "grunt deploy",
     "test": "echo 'n/a'"
   },
   "private": true,
