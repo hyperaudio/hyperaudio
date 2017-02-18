@@ -5,5 +5,6 @@ dist
 test/temp
 .sass-cache
 app/bower_components
+app/_bower_components
 .tmp
 test/bower_components/

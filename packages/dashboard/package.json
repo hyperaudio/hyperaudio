@@ -9,12 +9,13 @@
     "url": "https://github.com/hyperaudio-dev/ha-dash"
   },
   "scripts": {
-    "build": "grunt"
+    "build": "bower install && grunt"
   },
   "private": true,
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "bower": "^1.8.0",
     "connect-livereload": "~0.2.0",
     "grunt": "~0.4.1",
     "grunt-bower-requirejs": "~0.7.0",
