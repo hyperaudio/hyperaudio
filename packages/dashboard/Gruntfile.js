@@ -278,6 +278,29 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        ftp_push: {
+          deploy: {
+            options: {
+              username: process.env.FTP_USER,
+              password: process.env.FTP_PASSWORD,
+              hideCredentials: true,
+            	host: "hyperaud.io",
+            	dest: "webapps/htdocs/dashboard-test/",
+            	port: 21,
+              incrementalUpdates: true,
+              // debug: true,
+            },
+            files: [
+              {
+                expand: true,
+                cwd: 'dist',
+                src: [
+                  "**/*"
+                ]
+              }
+            ]
+          }
         }
     });
 
@@ -346,5 +369,10 @@ module.exports = function (grunt) {
         // 'jshint',
         // 'test',
         'build'
+    ]);
+
+    grunt.loadNpmTasks('grunt-ftp-push');
+    grunt.registerTask('deploy', [
+        'ftp_push'
     ]);
 };
