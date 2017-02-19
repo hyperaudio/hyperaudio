@@ -9,11 +9,20 @@ install: npm install
 script: npm run build
 
 deploy:
-  provider: script
-  script: npm run deploy
-  skip_cleanup: true
-  on:
-    branch: master
+  - provider: script
+    script: npm run deploy
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: s3
+    access_key_id: AKIAIS4ABNSYS5HWUFTA
+    secret_access_key:
+      secure: fUiJ/1ux1sVFj8jMIyyygv8XXQr/0RuyOXlSM2Pak4FpXSb4YLU024GSV4nE1om2ev2lMOPsJC2fGq5nOD/+UxlXjq4RGtaJfPNFWnrpSlIO5CV7rXtcnHTx5OOcu5wq1NBUVsSMC/62CeJmULksBSgUopnKPuSsxA/khRgOR+i3cBM8vbfQpOO565imUDa51OqGL7EcRBBOp3bHxYks+PSknsT8r7PZGWWgpVxQc8GdiMNEusm6Wbh2tfcNB8XWlriLgjyICpM/fBwZaz0jpFWfeuUJELcXBYzrqFtMrXSJeqHrKQKB7MPgUCouRJ6IHYuJe/13i3o9l4DT83X5GUJUeG3mNShtTn8VskJa7ejdkOEzm9gxVXcpMLQo7tCkiIMBUmTTVxsWIs/y1vm11MRsVHS3EGS/GMwfmpWyj8UuLwB/lvdImoBxlkn1RosgfczYAea6AG3qZFTBxxudsZQZeDbbxI49yrkG7tCqayhNPHsCkLTsqvfaffMJ0FGJcr4/Kb+/d1r3TL9sjrQw0AO5jfe4ra11g0g1F6iIePSBM4mw5AlYbabckzur+KFvedgQ4i9NwMVBkWMmckS3pMBJ3A11RcbHZZQG7YPm0TubiLLlkbYQUPfNQFCn03em6rtv4RJf807+jUolnOx21HuRlBr46d9kUmFm7XryCpE=
+    bucket: hyperaudio.net
+    acl: public_read
+    local_dir: dist
+    on:
+      branch: develop
 
 notifications:
   irc: "chat.freenode.net#hyperaudio"
