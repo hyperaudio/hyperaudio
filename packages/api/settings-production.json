@@ -1,5 +1,5 @@
 {
-    "port": 80,
+    "____port": 80,
 
     "sessions": {
       "cookieName": "session",
@@ -14,10 +14,11 @@
       }
     },
 
-    "database": "mongodb://localhost/hyperaudio02",
+    "database": "mongodb://ha-api-v1:vee8gie3shege1Nooquoh9za@ds039125.mlab.com:39125/hyperaudio-dev",
+    "____database": "mongodb://localhost/hyperaudio02",
 
     "mandrill": {
-      "apiKey": "TXdZXJeqBFmqEu_J2vCH9A",
+      "apiKey": "39Bkxh_JND9a7Xd_XGka2w",
       "registrationMessage": {
           "html": "<p>Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication.</p> \n<p>Here's your magic activation link <a href='http://hyperaud.io/token/TOKEN'>http://hyperaud.io/token/TOKEN</a> </p>\n<p>(Not really magic.)</p> \n<p>The Hyperaud.io Team</p>",
           "text": "Hello. You are receiving this email because somebody (hopefully you) submitted your address using the Hyperaud.io sign-up page. If you did not, please feel free to ignore this communication. \nHere's your magic activation link http://hyperaud.io/token/TOKEN \n(Not really magic.) \nThe Hyperaud.io Team",
