@@ -97,7 +97,10 @@ passport.deserializeUser(Account.deserializeUser());
 
 
 app.get('/', function(req, res) {
-  res.redirect('http://hyperaud.io/');
+  // res.redirect('http://hyperaud.io/');
+  res.json({
+    lag: 0
+  });
 });
 
 app.get('/v1', function(req, res) {
@@ -583,16 +586,16 @@ var server = http.createServer(app).listen(app.get('port'), function() {
   console.log('Hyperaudio API server listening on port ' + app.get('port'));
 });
 
-io = require('socket.io')(server);
-var redis = require('socket.io-redis');
-io.adapter(redis({ host: 'localhost', port: 6379 }));
-
-io.on('connection', function (socket) {
-  socket.emit('tx', { status: 'OK' });
-  socket.on('rx', function (data) {
-    console.log(data);
-  });
-});
+// io = require('socket.io')(server);
+// var redis = require('socket.io-redis');
+// io.adapter(redis({ host: 'localhost', port: 6379 }));
+//
+// io.on('connection', function (socket) {
+//   socket.emit('tx', { status: 'OK' });
+//   socket.on('rx', function (data) {
+//     console.log(data);
+//   });
+// });
 
 process.on('SIGINT', function() {
   server.close();

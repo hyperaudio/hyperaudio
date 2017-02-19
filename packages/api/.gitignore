@@ -3,3 +3,8 @@ logs/*
 npm-debug.log
 *.zip
 logs/*.log
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
