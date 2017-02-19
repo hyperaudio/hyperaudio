@@ -6,18 +6,19 @@ env:
 install: npm install
 script: npm run build
 deploy:
-- provider: script
-  script: npm run deploy
-  skip_cleanup: true
-  on:
-    branch: master
-- provider: s3
-  access_key_id: AKIAIS4ABNSYS5HWUFTA
-  secret_access_key:
-    secure: IJuYkoPGmb7ijyPBO9idiFINkrnwn+bggdJO4PbLxA+xks1nLat40vGrYy8s3EMv90DkDncg3msTqdK9+7qXfqJ8lK4fBKDSaSPoNErUWU1aoyPEjslghjZ8AAj8wsEdFKIWhp0B6W2e5a9W8R8B8cb81l+oTPshQh9JTJptBH00k/DEOGlVs2o4fG9dXdXCJLAikD93rmRMJ2yXlB9bvk/VZ+7NGJDvmBaxt0zqd688ucgcQHym5KWtGjojQBtbxhMKEO1TKNM7J8kW/3Im3Ey1giwPl7ayqVDmJXuKzE8k5dWdNG/VNCdX2MTM1fCb2g51R0fcJxYQcoQ6nvoeikEgjB9newdvDM86bR7AdKfmvyjGWH2Kg+psR4DJ55ywPFd7uOU0p7RGz1WYCZAFYAGAJgSFaRimnYmlZayxe2CMq0aHSIhLJWNPLoNzVJYcyVCc+tCEH+3TQFIwDSHZCBpqbzxyXQtlKV9fl3AQMm/6Cu5A1GYHutfzfp0mmhBpULgNA/TIz7LOe+QSsMI2jmmCVIetAXWESqLnIWJeNvcRxR/sc3FEKeGmQiduvXtKnPgpMKvV5s27Fv+mBQAtJ4B57JCML4qWIZvxDT6+mUhF9+dH4M0UIlc82hhc/Dj7ZLYkeDJTdDz9gwndzcfHWi0Qu4h81e9eiFeo60KwfHg=
-  bucket: hyperaudio.net
-  acl: public_read
-  skip_cleanup: true
-  local_dir: dist
-  on:
-    branch: develop
+  - provider: script
+    script: npm run deploy
+    skip_cleanup: true
+    on:
+      branch: master
+  - provider: s3
+    access_key_id: AKIAIS4ABNSYS5HWUFTA
+    secret_access_key:
+      secure: TYrZH7wMscAb8nJlX7j35YEw1h5tI/LwwTxADQomc3g1Vcxqs81m99l6MfochpSWtTfQV4tdxILzUaTpqTvrYOpRpABYNUMAmeyAvPm9/VXIeTgvZEa8Jk9XsEAY2/FpQBK4JZpuIIdUFbWa4A/GAJ4yvHNxvA6rNudhaO7Nb3v18zh5bFyryIoNibNEMx3vdad8XvtnSWEpKoEKm8Q/UUQ156kAYloGpj8uXsqQYCsfqivjqtRkJYWevlRGtDMh4vMjKj1JUaerVRhmbTSCTvqM0pM+owalimTCZOIeCC9UZ4o1raFaw6V1f50SXFXK25ciKOUbQ4b9UQnNZOSQmH1AgMfhlIu+5nds6qUfIuQqFOSjswnH2kwv8cbWjuHwui8oeyFDMmiLFrMVCZpjrXAqkW9xeFukxTSX55/2YLYn02Yjl8xQsfOUOggD1Cid43H4WItplxq4QQpE6cCkAJb6kFAgelepgtR0k4oT7yRoxTry0DvFnr8rUNAVonF6KdHzwL5sYDaS6lJhbX3fMqT8XvjKtA4RxS8MATJnKuHKyZhvWjWB5Vlv7qq8zt+hhY0L+KO7R/mm+s38OOJsx1U0XUVyYqp0Fzvcj6xf6ycYXK9r6XVftgrnki+8HjAQPxv/IT4Mtru1UhWPD8oGtxeLyUtGQvMq3zJA0L4EEy0=
+    bucket: hyperaudio.net
+    acl: public_read
+    skip_cleanup: true
+    local_dir: dist
+    upload-dir: dashboard
+    on:
+      branch: develop
