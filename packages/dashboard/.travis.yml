@@ -3,27 +3,21 @@ env:
   global:
   - secure: pbAr447mgWo9MJCfLA90GA7XDB1IepavFRRDbBkh8FDSu7RG3lujiYeDkETKQ1ZbH6aaRbVZWm9qLkDzsuZVXpJMCg5Ns8LZkeujS5AX/zUTw9aQBlMwH9IJ5xr+9Hn2vei+ZsF95E6h/bl27oEC7fXlVEIWejsnOzRjy0zbNm52lwqKMgiU6C2vhGz1EJdZ/4nBu5wk1mGzkCRjstgkw60PI+ILlxv0Yly1xJ7geKkkO6AeH1WJFnWNjkgrxEfzRuWY84JumHBxce54uw+yy1ahmgOWHLiTFD2tbk2EsQ3QtCAn/GO2+wCm0Q/NKzrxieFykyFKiBO3pk1l6PTzmrOutEb1hOfzPXZhSS8ETK5Q2F/WXqFKX9jPd6AJpAxGgyZNnlRD1cOe+E13olEBn4n8Lsxqr52vXHtuWFfit+bDOZz6Q4ibNxM0Bylle1rcow3QPP4hagyKMRYRt4ccxkbLopt9+B4yrgxfFPHhO5NZ9ybzntkROPwoiTht3XezC0QUk/aiW92ak7U0MSjYnO8zb7/L04q+jzx1ocNXIuhDacav5QCdbjDsrZZ+hMkJw0A4gZ9C0uR+lbCjHVF7BEs+lea2N08V6jjsFaW3p7CbiGYRk/3C8SORbqDwkynxol6pkowpV38VfI5UD/i2TLUrb1om2RJfcoExIZ4rVf4=
   - secure: oXyjBWasiy2tadv8R+mnZ45+TC1STMttArhBLthrmos7rls0N5/p1SxAzbjjM479cK5Fl8eRbJDKJj4XZ5mXA97TN8PzN5KYMYL9LZq/6ag3vUZiufH+DTIwhmySoK3bYNWPmmojC8WH6yDTat3u3roj/bz3QMexWg2O8zH7vHMVCcS0MVju0OBxzd94LS+YY763oyHyQFd2IkehRajaLYDrdmYSPF4atHnlNkhPNyNPN3GHp6TWkvtXtv8EGjt76rIzb53V14xSpJpFNV/UofnPkTgPF0667ccZpc0CrHrfCUoq/c5JLQI81wYoqpjnqCoH2lQJpW31V//t00/50zgJbJY/imvAhwvZ0Y9OO6cESYxTvdyLPy2YIavrH91LVjAPDDVfkTaxHe+GS7iXsJu143LqZy/52NFnZJFMPkZYBED53jlsYaMEQMPSQHnmR5R3GV1pzP6Hp+PN6wVGuP7gAi57PZYZiXZWwSmL/6y8M12exfwYO67jWfe9ERanm1Rux00ddtezgnAhPfuqWP6KKedz2Y1CYDtLR5wH7mbQD7u+1DeLtHGr0lbDsc1ZBQbEbPzcGis9BvTRfAsgvj1UvrwjqhpB1fKFMSsDNOP2lIQRzxnEWQVT63yiAZ8vVh/hIQ3lS5atVcK/cSmPauz/mAAs3NIvQmOuNycHeZs=
-
 install: npm install
-
 script: npm run build
-
 deploy:
-  - provider: script
-    script: npm run deploy
-    skip_cleanup: true
-    on:
-      branch: master
-  - provider: s3
-    access_key_id: AKIAIS4ABNSYS5HWUFTA
-    secret_access_key:
-      secure: lKauRPGFEF26aQGUbUxIYOhQsmy0ruNLVrK46rfw1u17cCvvLlJvBwhp1iZWEEafZhiV8xXnPcIGd4/hY+2KlQEuG5UvItoNqz5RpBnPNz/VKL7pN7ABgrrp61BqVaPNyoDSbscbdzEQOtUEhjqTOKIeHnYa7LOjFLQCCHalruQjtSj3Nd6yqbM6rS3xknKfXX/ZiIBrNnNNDkCmJJ7g976n853+YQyB6F8dJAAanLuw9uTyRGSbIT23N0yCU8iM2+jnMwjybb0pzWzApwNS3kXg88NZMJJ7Ote6EDemeEO6XbZTMOCIvWvjQEEPZ8shJRQgIde4jlEE+oylBwt5YT5wKpptWIjUW9K89KGkGCYOKbK7Hb+/XcbXKrw3zPNpj3oR9nnWgBWloEuhca27yfJ5oHTPt/R2NCmAX9GTRdnw0WekrbsUmX6ry5Mc8UuO0cNZ8nAWf6NGH9YNsl+YgWlJ5FgQVuglGwvC0TbGncTwoBiRhgesv6WfxbvlkinUu7uuVzhkotWCdUEPiXCUYmNmFKUAqmtCmxm2bLljCqoTsBFTvSu02biEOYK/OsiRGfspdVAIEDPh1r6mMiNoaKySGLgp52CjXNGcpiBpfrOiu4++2jVT2sEq5Wvh9u2d9mJ1mCafpuC2v7mSjfK/AISSqr+MoB7X2ca1D0lfL8k=
-    bucket: hyperaudio.net
-    acl: public_read
-    skip_cleanup: true
-    local_dir: dist
-    on:
-      branch: develop
-
-# notifications:
-#   irc: "chat.freenode.net#hyperaudio"
+- provider: script
+  script: npm run deploy
+  skip_cleanup: true
+  on:
+    branch: master
+- provider: s3
+  access_key_id: AKIAIS4ABNSYS5HWUFTA
+  secret_access_key:
+    secure: IJuYkoPGmb7ijyPBO9idiFINkrnwn+bggdJO4PbLxA+xks1nLat40vGrYy8s3EMv90DkDncg3msTqdK9+7qXfqJ8lK4fBKDSaSPoNErUWU1aoyPEjslghjZ8AAj8wsEdFKIWhp0B6W2e5a9W8R8B8cb81l+oTPshQh9JTJptBH00k/DEOGlVs2o4fG9dXdXCJLAikD93rmRMJ2yXlB9bvk/VZ+7NGJDvmBaxt0zqd688ucgcQHym5KWtGjojQBtbxhMKEO1TKNM7J8kW/3Im3Ey1giwPl7ayqVDmJXuKzE8k5dWdNG/VNCdX2MTM1fCb2g51R0fcJxYQcoQ6nvoeikEgjB9newdvDM86bR7AdKfmvyjGWH2Kg+psR4DJ55ywPFd7uOU0p7RGz1WYCZAFYAGAJgSFaRimnYmlZayxe2CMq0aHSIhLJWNPLoNzVJYcyVCc+tCEH+3TQFIwDSHZCBpqbzxyXQtlKV9fl3AQMm/6Cu5A1GYHutfzfp0mmhBpULgNA/TIz7LOe+QSsMI2jmmCVIetAXWESqLnIWJeNvcRxR/sc3FEKeGmQiduvXtKnPgpMKvV5s27Fv+mBQAtJ4B57JCML4qWIZvxDT6+mUhF9+dH4M0UIlc82hhc/Dj7ZLYkeDJTdDz9gwndzcfHWi0Qu4h81e9eiFeo60KwfHg=
+  bucket: hyperaudio.net
+  acl: public_read
+  skip_cleanup: true
+  local_dir: dist
+  on:
+    branch: develop
