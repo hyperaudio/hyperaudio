@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width">
+    <title>Hyperaudio | Remixing Palestine</title>
+    <link href="/assets/fonts/hyperaudio/style.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/assets/stylesheets/css/main.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/assets/stylesheets/hyperaudio.css" media="all" rel="stylesheet" type="text/css" />
+    <link href="/assets/images/inserts/favicon.ico" rel="icon" type="image/x-icon" >
+  </head>
+
+  <body class="tpl_site blog">
+    <header class="header branded">
+      <div class="container row">
+        <div class="small-12 large-3 medium-3 columns">
+          <h1 class="header-brandmark">
+            <a class="brandmark" href="/">
+              <span data-picture class="brandmark-symbol">
+                <span data-src="../assets/images/inserts/logo-hyperaudio.png"></span>
+                <span data-src="../assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"></span>
+                <span data-src="../assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
+              </span>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+        <div class="small-12 large-9 medium-9 columns">
+          <ul class="header-navigation">
+            <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
+            <li class="header-navigation-item"><a href="/blog/">Blog</a></li>
+            <li class="header-navigation-item"><a class="altered" href="/signup/">Sign up</a></li>
+            <li class="header-navigation-item"><a class="button small" href="/login/">Log in</a></li>
+          </ul>
+        </div>
+
+      </div>
+    </header>
+    <section class="blog-article section">
+      <div class="container row">
+        <div class="small-12 medium-8 medium-offset-2 large-6 large-offset-3 columns">
+          <h1 class="article-heading">News from the Hyperaudio front.</h1>
+          <article class="article">
+            <div class="article-head">
+              <h2 class="article-title">Remixing Palestine</h2>
+              <p class="article-meta">Published on <span class="article-date">Wednesday, February 3rd, 2015</span> by <span class="article-author"><a href="http://twitter.com/maboa">Mark Boas</a></span>.</p>
+            </div>
+            <div class="article-body">
+
+            	<figure>
+                <a href="http://palestineremix.com"><img class="" src="assets/palestineremix.png" /></a>
+
+              </figure>
+
+<p>
+The end of last Summer and much of Autumn was spent working on a project which came to be known as Palestine Remix (<a href="http://palestineremix.com">palestineremix.com</a>).
+</p>
+
+<p>
+An ambitious project conceived by Al Jazeera — its remit to take 17 documentaries on the subject of Palestine in four languages, augment them with written narratives and make the material both accessible and remixable.</p>
+
+<p><a href="http://palestineremix.com">PalestineRemix.com</a> was to exist outside the usual confines of a news interactive. The idea was that it would act — in its own way — as an encyclopedic perspective on events and the history of Palestine.
+</p>
+
+<h2 id="enter_hyperaudio">Enter Hyperaudio</h2>
+
+<p>
+In order to make it remixable we decided to use a modified version of <a href="https://github.com/hyperaudio/hyperaudio-lib">hyperaudio.js</a> — a library we developed to create the hyperaud.io application. The idea was to make interactive transcripts and take advantage of the copy, paste, drag and drop functionality of the <a href="http://hyperaud.io/pad/">Hyperaudio Pad</a>. This would allow people to express perspectives by (1) remixing the documentaries from the actual transcripts and/or (2) using social media to share selected parts of the transcripts and associated video.
+</p>
+
+<p>Quite differently to how <a href="http://hyperaud.io">hyperaud.io</a> works, PalestineRemix had to function entirely in the browser — that is to say independently from any server logic. This meant we couldn't store data in a database. Instead we stored the state of a remix in the browser's address bar.
+</p>
+
+              <figure>
+                <img class="" src="assets/palestineremixer.png" />
+                <figcaption>Remixing.
+                </figcaption>
+              </figure>
+
+<p>We also made changes to the drag-and-drop remixing interface, so that by default paragraphs were selected, for fine-tuning these could be split once dropped.</p>
+
+
+<h2 id="mobile">Mobile</h2>
+
+<p>
+One of the requirements was to produce an interface that would well enough on mobile devices and tablets. This turned out to be quite a challenge and fixed deadlines dictated we make some tough calls. One decision was to remove the ability to remix content on mobile, although we do allow viewing and sharing.
+</p>
+
+              <figure>
+                <img class="" src="assets/mobilepalestine.jpg" />
+                <figcaption>Two screens from the mobile version.
+                </figcaption>
+              </figure>
+
+<p>
+There were two issues here — the creation of an alternative user experience that would make editing as intuitive on mobile as it is on desktop — and performance.</p>
+
+<p>Performance was the predominant issue and so we started looking at and writing a lighter version of hyperaudio.js but this was considered beyond scope of this version of the project. We are talking about using something like that at some point.
+</p>
+
+
+<h2 id="tools_and_data">Tools and Data</h2>
+
+
+<p>By far our biggest challenge was creating word-aligned transcripts in English, Arabic, Bosnian and Turkish. While services exist to word-align English (hyperaud.io currently also allows French, Spanish and German) we knew of no service that could deal with our other target languages.</p>
+<p>Word alignment can be an innaccurate process and so results would have to be manually checked and corrected where needed.</p>
+
+<p>So we decided to rely on subtitles and estimate word-level timings from these. Unfortunately some of the original subtitles were only available 'burned on' to the video, in this case Optimal Character Recognition <a href="http://en.wikipedia.org/wiki/Optical_character_recognition">(OCR)</a> based software was created especially to extract those.</p>
+<p>Where subtitles were available in a propriety format we transformed these to a subtitle (<a href="http://en.wikipedia.org/wiki/SubRip#SubRip_text_file_format">SRT</a>) format — a common format that we could then run through the <a href="http://hyperaud.io/converter/">Hyperaudio Converter</a> to get our word timings.</p>
+
+<p>The idea was that this process should be as automatic as possible and could be used for other projects, but there were many many challenges working with, verifying and editing this amount of word data in four languages some of which flowed right to left!</p>
+
+<p>With large quantities of data, search is all important and sp we created a tool that indexes all paragraphs in all documentaries using <a href="http://lunrjs.com/">lunr.js</a> — again all happening in the browser.</p>
+
+
+<h2 id="the_team">The Team</h2>
+
+
+<p>The team working on PalestineRemix include people who'd worked on Hyperaud.io and Al Jazeera staff and contractors. It was a fairly large and coordinated effort worked on by a crazy mix of film-makers, journalists, designers and developers. Much coffee was consumed.</p>
+
+              <figure>
+                <a href="http://interactive.aljazeera.com/aje/PalestineRemix/about.html"><img class="" src="assets/team.jpg" /></a>
+                <figcaption>Palestine Remix Team Caricature courtesy of Al Jazeera Network.
+                </figcaption>
+              </figure>
+
+<h2 id="give_it_a_whirl">Give it a Whirl</h2>
+
+<p>It's worth taking a look at <a href="http://PalestineRemix.com">PalestineRemix.com</a> just for the breadth and depth of the documentaries and narratives. If you use the remix part, please feel free to let us know what does and (more importantly) what doesn't work for you.</p>
+
+<p>If you're interested in using hyperaudio.js in your own projects, don't hesitate to <a href="mailto:mark@hyperaud.io">get in touch.</a></p>
+
+<h2 id="related">Related</h2>
+<p>The Making of PALESTINE REMIX <a href="https://www.youtube.com/watch?v=-8qJ-6IML2g">(30s Video)</a></p>
+<p>Palestine Remix - Piotr Fedorczyk <a href="http://piotrf.pl/made/palestine-remix">(Blog Post)</a></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <hr class="separator" />
+
+    <section class="section">
+      <div class="container row">
+        <div class="large-10 large-offset-1 medium-8 medium-offset-2 small-12 columns">
+          <hgroup class="call">
+            <h1 class="call-heading">Interested in Hyperaudio? <a href="/tour/">Learn more.</a></h1>
+          </hgroup>
+        </div>
+      </div>
+    </section>
+
+    <hr class="separator" />
+
+    <footer class="footer lt_footer">
+      <div class="container row">
+        <div class="small-12 large-9 medium-9 push-3 columns">
+          <ul class="footer-navigation">
+            <li class="footer-navigation-item"><a href="/tour/">Tour</a></li>
+            <li class="footer-navigation-item"><a href="/blog/">Blog</a></li>
+            <li class="footer-navigation-item"><a href="mark" class="email">Contact</a></li>
+            <li class="footer-navigation-item"><a href="https://groups.google.com/forum/#!forum/hyperaudio">Community</a></li>
+            <li class="footer-navigation-item"><a href="https://twitter.com/hyperaud_io">Twitter</a></li>
+          </ul>
+        </div>
+        <div class="small-12 large-3 medium-3 pull-9 columns">
+          <h1 class="footer-brandmark">
+            <a class="brandmark" href="/">
+              <span data-picture class="brandmark-symbol">
+                <span data-src="../assets/images/inserts/logo-hyperaudio.png"></span>
+                <span data-src="../assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"></span>
+                <span data-src="../assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
+              </span>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+      </div>
+      <div class="container">
+        <div class="small-12 medium-8 medium-offset-2 large-10 large-offset-1 columns">
+          <div class="footer-imprint">
+            <p>Hyperaudio <abbr title="Incorporated">Inc</abbr>. is producing Open Source software, established in Rhode Island, USA.</p>
+            <p>&copy; 2012-2015 Hyperaudio Incorporated. All rights reserved.</p>
+            <p class="footer-imprint-links"><a href="/terms-of-service/" class="">Terms of Service</a> | <a href="/licensing" class="">License</a> | <a href="/cla" class="">CLA</a></p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="../assets/vendor/jquery/jquery.js" type="text/javascript"></script>
+    <script src="../assets/vendor/jquery.cycle2.js/index.js" type="text/javascript"></script>
+    <script src="../assets/vendor/picturefill/picturefill.js" type="text/javascript"></script>
+    <script src="../assets/javascripts/main.js" type="text/javascript"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-42809936-1', 'hyperaud.io');
+      ga('send', 'pageview');
+    </script>
+  </body>
+</html>
