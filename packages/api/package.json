@@ -1,0 +1,37 @@
+{
+  "name": "ha-api",
+  "version": "1.0.0",
+  "description": "api.hyperaud.io",
+  "license": "MIT",
+  "homepage": "http://hyperaud.io",
+  "authors": [
+    "Laurian Gridinoc <laurian@gridinoc.name>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyperaudio/ha-api"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node index.js",
+    "start:watch": "nodemon",
+    "prestart:prod": "tsc",
+    "start:prod": "node dist/server.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^4.0.0",
+    "@nestjs/core": "^4.0.0",
+    "@nestjs/microservices": "^4.0.0",
+    "@nestjs/testing": "^4.0.0",
+    "@nestjs/websockets": "^4.0.0",
+    "redis": "^2.7.1",
+    "reflect-metadata": "^0.1.10",
+    "rxjs": "^5.4.0",
+    "typescript": "^2.5.2"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.28",
+    "nodemon": "^1.12.1",
+    "ts-node": "^3.3.0"
+  }
+}
