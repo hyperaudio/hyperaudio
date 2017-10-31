@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
+import { MixesModule } from './mixes/mixes.module';
 
 @Module({
-    modules: [],
+    modules: [MixesModule],
 })
 export class ApplicationModule {}
