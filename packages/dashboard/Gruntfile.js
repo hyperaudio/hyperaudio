@@ -32,14 +32,14 @@ module.exports = function (grunt) {
                 nospawn: true,
                 livereload: true
             },
-            coffee: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
-                tasks: ['coffee:dist']
-            },
-            coffeeTest: {
-                files: ['test/spec/{,*/}*.coffee'],
-                tasks: ['coffee:test']
-            },
+            // coffee: {
+            //     files: ['<%= yeoman.app %>/scripts/{,*/}*.coffee'],
+            //     tasks: ['coffee:dist']
+            // },
+            // coffeeTest: {
+            //     files: ['test/spec/{,*/}*.coffee'],
+            //     tasks: ['coffee:test']
+            // },
             compass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['compass']
@@ -63,10 +63,10 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['jst']
             },
-            test: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.js', 'test/spec/**/*.js'],
-                tasks: ['test']
-            }
+            // test: {
+            //     files: ['<%= yeoman.app %>/scripts/{,*/}*.js', 'test/spec/**/*.js'],
+            //     tasks: ['test']
+            // }
         },
         connect: {
             options: {
@@ -129,36 +129,36 @@ module.exports = function (grunt) {
                 'test/spec/{,*/}*.js'
             ]
         },
-        mocha: {
-            all: {
-                options: {
-                    run: true,
-                    urls: ['http://localhost:<%= connect.test.options.port %>/index.html']
-                }
-            }
-        },
-        coffee: {
-            dist: {
-                files: [{
-                    // rather than compiling multiple files here you should
-                    // require them into your main .coffee file
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/scripts',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '{,*/}*.coffee',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
-            }
-        },
+        // mocha: {
+        //     all: {
+        //         options: {
+        //             run: true,
+        //             urls: ['http://localhost:<%= connect.test.options.port %>/index.html']
+        //         }
+        //     }
+        // },
+        // coffee: {
+        //     dist: {
+        //         files: [{
+        //             // rather than compiling multiple files here you should
+        //             // require them into your main .coffee file
+        //             expand: true,
+        //             cwd: '<%= yeoman.app %>/scripts',
+        //             src: '{,*/}*.coffee',
+        //             dest: '.tmp/scripts',
+        //             ext: '.js'
+        //         }]
+        //     },
+        //     test: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: 'test/spec',
+        //             src: '{,*/}*.coffee',
+        //             dest: '.tmp/spec',
+        //             ext: '.js'
+        //         }]
+        //     }
+        // },
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/styles',
@@ -195,16 +195,16 @@ module.exports = function (grunt) {
                 dirs: ['<%= yeoman.dist %>']
             }
         },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.app %>/images',
-                    src: '{,*/}*.{png,jpg,jpeg}',
-                    dest: '<%= yeoman.dist %>/images'
-                }]
-            }
-        },
+        // imagemin: {
+        //     dist: {
+        //         files: [{
+        //             expand: true,
+        //             cwd: '<%= yeoman.app %>/images',
+        //             src: '{,*/}*.{png,jpg,jpeg}',
+        //             dest: '<%= yeoman.dist %>/images'
+        //         }]
+        //     }
+        // },
         cssmin: {
             dist: {
                 files: {
@@ -279,29 +279,29 @@ module.exports = function (grunt) {
                 }
             }
         },
-        ftp_push: {
-          deploy: {
-            options: {
-              username: process.env.FTP_USER,
-              password: process.env.FTP_PASSWORD,
-              hideCredentials: true,
-            	host: "hyperaud.io",
-            	dest: "webapps/htdocs/dashboard/",
-            	port: 21,
-              incrementalUpdates: true,
-              // debug: true,
-            },
-            files: [
-              {
-                expand: true,
-                cwd: 'dist',
-                src: [
-                  "**/*"
-                ]
-              }
-            ]
-          }
-        }
+        // ftp_push: {
+        //   deploy: {
+        //     options: {
+        //       username: process.env.FTP_USER,
+        //       password: process.env.FTP_PASSWORD,
+        //       hideCredentials: true,
+        //     	host: "hyperaud.io",
+        //     	dest: "webapps/htdocs/dashboard/",
+        //     	port: 21,
+        //       incrementalUpdates: true,
+        //       // debug: true,
+        //     },
+        //     files: [
+        //       {
+        //         expand: true,
+        //         cwd: 'dist',
+        //         src: [
+        //           "**/*"
+        //         ]
+        //       }
+        //     ]
+        //   }
+        // }
     });
 
     grunt.registerTask('createDefaultTemplate', function () {
@@ -316,7 +316,7 @@ module.exports = function (grunt) {
         if (target === 'test') {
             return grunt.task.run([
                 'clean:server',
-                'coffee',
+                // 'coffee',
                 'createDefaultTemplate',
                 'jst',
                 //'compass:server',
@@ -327,7 +327,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
-            'coffee:dist',
+            // 'coffee:dist',
             'createDefaultTemplate',
             'jst',
             //'compass:server',
@@ -339,30 +339,30 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
-        'coffee',
+        // 'coffee',
         'createDefaultTemplate',
         'jst',
         'compass',
         'connect:test',
-        'mocha',
+        // 'mocha',
         'watch:test'
     ]);
 
     grunt.registerTask('build', [
         'clean:dist',
-        'coffee',
+        // 'coffee',
         'createDefaultTemplate',
         'jst',
         //'compass:dist',
         'useminPrepare',
-        'imagemin',
+        // 'imagemin',
         'htmlmin',
         'concat',
-        'cssmin',
+        // 'cssmin',
         // 'uglify',
         'copy',
         'rev',
-        'usemin'
+        // 'usemin'
     ]);
 
     grunt.registerTask('default', [
