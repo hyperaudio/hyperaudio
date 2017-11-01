@@ -32,15 +32,16 @@ export class MixesService {
   }
 
   async find(query: any): Promise<Mix[]> {
+    console.log(query);
     return await this.mixModel.find(query).exec();
   }
 
-  async listChannels(): Promise<any> {
-    return await this.mixModel.distinct('channel').exec();
+  async listChannels(query: any): Promise<any> {
+    return await this.mixModel.distinct('channel', query).exec();
   }
 
-  async listTags(): Promise<any> {
-    return await this.mixModel.distinct('tags').exec();
+  async listTags(query: any): Promise<any> {
+    return await this.mixModel.distinct('tags', query).exec();
   }
 
   async findById(id): Promise<Mix> {
