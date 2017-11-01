@@ -49,19 +49,19 @@ export class MixesController {
   }
 
   @Get('channels')
-  async listChannels(@Res() res) {
+  async listChannels(@Res() res, @Param('user') user) {
     res.send(await this.mixesService.listChannels(this.setupQuery(res)));
   }
 
-  @Get('channels/nochannel')
-  async findNoChannel(@Res() res) {
-    const query = this.setupQuery(res);
-    query['$or'] = [
-      { channel: null },
-      { channel: { $exists: false } }
-    ];
-    res.send(await this.mixesService.find(query));
-  }
+  // @Get('channels/nochannel')
+  // async findNoChannel(@Res() res) {
+  //   const query = this.setupQuery(res);
+  //   query['$or'] = [
+  //     { channel: null },
+  //     { channel: { $exists: false } }
+  //   ];
+  //   res.send(await this.mixesService.find(query));
+  // }
 
   @Get('channels/:channel')
   async findByChannel(@Res() res, @Param('channel') channel) {
@@ -75,15 +75,15 @@ export class MixesController {
     res.send(await this.mixesService.listTags(this.setupQuery(res)));
   }
 
-  @Get('tags/notag')
-  async findNoTag(@Res() res) {
-    const query = this.setupQuery(res);
-    query['$or'] = [
-      { tags: [] },
-      { tags: { $exists: false } }
-    ];
-    res.send(await this.mixesService.find(query));
-  }
+  // @Get('tags/notag')
+  // async findNoTag(@Res() res) {
+  //   const query = this.setupQuery(res);
+  //   query['$or'] = [
+  //     { tags: [] },
+  //     { tags: { $exists: false } }
+  //   ];
+  //   res.send(await this.mixesService.find(query));
+  // }
 
   @Get('tags/:tag')
   async findByTag(@Param('tag') tag): Promise<Mix[]> {
