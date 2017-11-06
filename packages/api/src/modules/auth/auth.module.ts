@@ -22,9 +22,22 @@ export class AuthModule implements NestModule {
     consumer
       .apply(passport.authenticate('jwt', { session: false }))
       .forRoutes(
-        {
-          path: '/auth/authorized', method: RequestMethod.ALL
-        }
+        { path: '/media', method: RequestMethod.POST },
+        { path: '/media/*', method: RequestMethod.DELETE },
+        { path: '/media/*', method: RequestMethod.PUT },
+
+        { path: '/mixes', method: RequestMethod.POST },
+        { path: '/mixes/*', method: RequestMethod.DELETE },
+        { path: '/mixes/*', method: RequestMethod.PUT },
+
+        { path: '/transcripts', method: RequestMethod.POST },
+        { path: '/transcripts/*', method: RequestMethod.DELETE },
+        { path: '/transcripts/*', method: RequestMethod.PUT },
+
+        { path: '/accounts', method: RequestMethod.POST },
+        { path: '/accounts/*', method: RequestMethod.DELETE },
+        { path: '/accounts/*', method: RequestMethod.PUT },
       );
+
   }
 }
