@@ -45,6 +45,6 @@ export class MediaService {
   }
 
   async findById(id): Promise<Media> {
-    return await this.mediaModel.findById(id);
+    return await this.mediaModel.findById(id).populate('meta').exec();
   }
 }
