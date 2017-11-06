@@ -98,4 +98,10 @@ export class MediaController {
   async findById(@Param('id') id ) {
     return this.mediaService.findById(id);
   }
+
+  // @Get(':id/transcripts')
+  // async findById(@Param('id') media ) {
+  //   return this.transcriptsService.find({ media });
+  // }
+
 }
