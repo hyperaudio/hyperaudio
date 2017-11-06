@@ -12,15 +12,15 @@ export class TranscriptsController {
   setupQuery(res: any) {
     const query = {};
     const namespace = res.get('X-Organisation');
-    const owner = res.get('X-User');
+    // const owner = res.get('X-User');
 
     if (namespace) {
       query['namespace'] = namespace;
     }
 
-    if (owner) {
-      query['owner'] = owner;
-    }
+    // if (owner) {
+    //   query['owner'] = owner;
+    // }
 
     return query;
   }

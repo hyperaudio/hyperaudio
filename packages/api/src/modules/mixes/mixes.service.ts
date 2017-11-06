@@ -27,13 +27,9 @@ export class MixesService {
     return await this.mixModel.findByIdAndRemove(id).exec();
   }
 
-  async findAll(): Promise<Mix[]> {
-    return await this.mixModel.find().exec();
-  }
-
   async find(query: any): Promise<Mix[]> {
     console.log(query);
-    return await this.mixModel.find(query).exec();
+    return await this.mixModel.find(query).select('-content').exec();
   }
 
   async listChannels(query: any): Promise<any> {
