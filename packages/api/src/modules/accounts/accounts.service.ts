@@ -23,20 +23,16 @@ export class AccountsService {
     return await updatedAccount.save();
   }
 
-  async remove(id: String): Promise<any> {
-    return await this.accountModel.findByIdAndRemove(id).exec();
-  }
+  // async remove(id: String): Promise<any> {
+  //   return await this.accountModel.findByIdAndRemove(id).exec();
+  // }
 
-  async findAll(): Promise<Account[]> {
-    return await this.accountModel.find().exec();
-  }
-
-  async find(query: any): Promise<Account[]> {
-    console.log(query);
-    return await this.accountModel.find(query).exec();
-  }
+  // async find(query: any): Promise<Account[]> {
+  //   console.log(query);
+  //   return await this.accountModel.find(query).select('-hash -salt -token').exec();
+  // }
 
   async findById(id): Promise<Account> {
-    return await this.accountModel.findById(id);
+    return await this.accountModel.findById(id).select('-hash -salt -token').exec();
   }
 }

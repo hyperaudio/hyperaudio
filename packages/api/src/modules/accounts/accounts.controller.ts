@@ -8,17 +8,6 @@ import { Account } from './interfaces/account.interface';
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
-  setupQuery(res: any) {
-    const query = {};
-    const namespace = res.get('X-Organisation');
-
-    if (namespace) {
-      query['namespace'] = namespace;
-    }
-
-    return query;
-  }
-
   // TODO set ns, owner
   @Post()
   async create(@Body() createAccountDto: CreateAccountDto) {
@@ -29,18 +18,6 @@ export class AccountsController {
   @Put(':id')
   async update(@Param('id') id, @Body() updateAccountDto: UpdateAccountDto) {
     this.accountsService.update(updateAccountDto);
-  }
-
-  // TODO check owner
-  @Delete(':id')
-  async remove(@Param('id') id) {
-    this.accountsService.remove(id);
-  }
-
-  @Get()
-  async findAll(@Res() res) {
-    const query = this.setupQuery(res);
-    res.send(await this.accountsService.find(query));
   }
 
   @Get(':id')

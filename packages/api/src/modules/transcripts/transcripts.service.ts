@@ -27,10 +27,6 @@ export class TranscriptsService {
     return await this.transcriptModel.findByIdAndRemove(id).exec();
   }
 
-  async findAll(): Promise<Transcript[]> {
-    return await this.transcriptModel.find().exec();
-  }
-
   async find(query: any): Promise<Transcript[]> {
     console.log(query);
     return await this.transcriptModel.find(query).select('-meta -content').exec();

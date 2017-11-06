@@ -27,10 +27,6 @@ export class MediaService {
     return await this.mediaModel.findByIdAndRemove(id).exec();
   }
 
-  async findAll(): Promise<Media[]> {
-    return await this.mediaModel.find().exec();
-  }
-
   async find(query: any): Promise<Media[]> {
     console.log(query);
     return await this.mediaModel.find(query).exec();
