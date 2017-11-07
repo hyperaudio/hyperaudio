@@ -13,10 +13,10 @@
   },
   "private": true,
   "scripts": {
-    "start": "node index.js",
+    "start:local": "node index.js",
     "start:watch": "nodemon",
-    "prestart:prod": "tsc",
-    "start:prod": "node dist/server.js"
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@nestjs/common": "^4.0.1",
