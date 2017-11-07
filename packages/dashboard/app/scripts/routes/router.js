@@ -10,7 +10,7 @@ haDash.Routers = haDash.Routers || {};
   haDash.Routers.Router = Backbone.Router.extend({
     //http://sizeableidea.com/adding-google-analytics-to-your-backbone-js-app/
     initialize: function() {
-      this.bind('route', this.pageView);
+      // this.bind('route', this.pageView);
     },
 
     routes: {
@@ -52,6 +52,7 @@ haDash.Routers = haDash.Routers || {};
     },
 
     mixes: function() {
+      console.log('MIXES');
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.mixes').addClass('active');
       document.title = "Hyperaudio Mixes";
@@ -127,25 +128,27 @@ haDash.Routers = haDash.Routers || {};
     signout: function() {
       document.title = "Hyperaudio Logout";
 
-      $.ajax({
-        url: haDash.API + '/logout',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-          _csfr: 'TODO'
-        }),
-        success: function() {
-          // haDash.whoami(function() {
-          //   haDash.router.navigate("mixes/", {trigger: true});
-          // });
-          document.location = '/';
-        }
-      });
-
+      // $.ajax({
+      //   url: haDash.API + '/logout',
+      //   contentType: "application/json; charset=utf-8",
+      //     dataType: "json",
+      //   xhrFields: {
+      //     withCredentials: true
+      //   },
+      //   method: 'post',
+      //   data: JSON.stringify({
+      //     _csfr: 'TODO'
+      //   }),
+      //   success: function() {
+      //     // haDash.whoami(function() {
+      //     //   haDash.router.navigate("mixes/", {trigger: true});
+      //     // });
+      //     document.location = '/';
+      //   }
+      // });
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('user');
+      document.location = '/';
     },
 
     signup: function() {
