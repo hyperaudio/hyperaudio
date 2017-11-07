@@ -57,7 +57,8 @@ haDash.Views = haDash.Views || {};
       );
 
       transcripts.fetch({
-        url: haDash.API + '/media/' + this.model.id + '/transcripts'
+        // url: haDash.API + '/media/' + this.model.id + '/transcripts'
+        url: haDash.API + '/transcripts?media=' + this.model.id
       });
 
       this.$el.data('view', this);
@@ -136,4 +137,3 @@ haDash.Views = haDash.Views || {};
     });
 
 })();
-

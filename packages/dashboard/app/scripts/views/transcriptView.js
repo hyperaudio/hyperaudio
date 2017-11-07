@@ -119,28 +119,28 @@ haDash.Views = haDash.Views || {};
       if (!lang) lang = haDash.lang;
 
       var self = this;
-      $.ajax({
-        url: haDash.API + '/transcripts/' + this.model.id + '/align',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-          lang: lang
-        })
-      })
-      .done(function() {
-          console.log('OK');
-          self.refresh();
-        })
-      .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(errorThrown);
+      // $.ajax({
+      //   url: haDash.API + '/transcripts/' + this.model.id + '/align',
+      //   contentType: "application/json; charset=utf-8",
+      //     dataType: "json",
+      //   xhrFields: {
+      //     withCredentials: true
+      //   },
+      //   method: 'post',
+      //   data: JSON.stringify({
+      //     lang: lang
+      //   })
+      // })
+      // .done(function() {
+      //     console.log('OK');
+      //     self.refresh();
+      //   })
+      // .fail(function(jqXHR, textStatus, errorThrown) {
+      //   console.log(errorThrown);
         alert("We have trouble aligning your media, your file may be too large or in a format we don't understand. Sorry.");
         self.$el.find('button.align').show();
         self.$el.find('button.aligning').hide();
-      });
+      // });
       // spin
       //$('#mediaDetail').data('view').refresh();
       // spin
