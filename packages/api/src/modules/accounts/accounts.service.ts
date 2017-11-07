@@ -1,10 +1,15 @@
 import * as uuid from 'uuid';
 import * as urlSafeBase64 from 'urlsafe-base64';
-import { Model } from 'mongoose';
+import * as jwt from 'jsonwebtoken';
+
+import { Model, PassportLocalDocument } from 'mongoose';
+// import * as passportLocalMongoose from 'passport-local-mongoose';
+// import * as authenticate from 'passport-local-mongoose/authenticate';
 import { Component, Inject } from '@nestjs/common';
 import { Account } from './interfaces/account.interface';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
+
 
 @Component()
 export class AccountsService {
@@ -34,5 +39,42 @@ export class AccountsService {
 
   async findById(id): Promise<Account> {
     return await this.accountModel.findById(id).select('-hash -salt -token').exec();
+  }
+
+  async createToken(username, password) {
+    console.log(username, password);
+    // const user = this.accountModel as Account;
+    // console.log(await this.accountModel.findByUsername('gridinoc').exec());
+
+    const user = await this.accountModel.findOne({ username }).exec();
+    console.log(user);
+    if (! user) {
+      return {};
+    }
+
+    // const authenticated = await user.authenticate(password, (err, res) => {
+    //   return new Promise((resolve, reject) => {
+    //     if (err) return reject(err);
+    //     resolve(res);
+    //   });
+    // });
+
+    const authenticated = await new Promise((resolve, reject) => {
+      user.authenticate(password, (err, res) => {
+        if (err) return reject(err);
+        resolve(res);
+      });
+    });
+
+    if (! authenticated) return {};
+
+    const expiresIn = 60 * 60, secretOrKey = process.env.JWT_SECRET;
+    const payload = {
+      user: username
+    };
+
+    const token = jwt.sign(payload, secretOrKey, { expiresIn });
+    return { expiresIn, token, user: username };
+
   }
 }
