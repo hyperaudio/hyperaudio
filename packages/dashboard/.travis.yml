@@ -6,11 +6,11 @@ env:
 install: npm install
 script: npm run build
 deploy:
-  - provider: script
-    script: npm run deploy
-    skip_cleanup: true
-    on:
-      branch: master
+  # - provider: script
+  #   script: npm run deploy
+  #   skip_cleanup: true
+  #   on:
+  #     branch: master
   - provider: s3
     access_key_id: AKIAIS4ABNSYS5HWUFTA
     secret_access_key:
