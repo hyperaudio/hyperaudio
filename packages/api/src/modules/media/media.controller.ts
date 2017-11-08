@@ -36,7 +36,7 @@ export class MediaController {
   // TODO check id
   @Put(':id')
   async update(@Param('id') id, @Body() updateMediaDto: UpdateMediaDto) {
-    this.mediaService.update(updateMediaDto);
+    return this.mediaService.update(updateMediaDto);
   }
 
   // TODO check owner
