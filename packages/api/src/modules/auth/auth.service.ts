@@ -18,4 +18,13 @@ export class AuthService {
     // for example query user by id / email / username
     return true;
   }
+
+  async whoami(token) {
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      return { user: decoded.user };
+    } catch (err) {
+      return { user: null };
+    }
+  }
 }
