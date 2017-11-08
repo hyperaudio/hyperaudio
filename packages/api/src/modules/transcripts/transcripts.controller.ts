@@ -44,17 +44,18 @@ export class TranscriptsController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('media') media) {
+  async findAll(@Res() res, @Query('media') media, @Query('type') type) {
     const query = this.setupQuery(res);
     if (media) query['media'] = media;
+    if (type) query['type'] = type;
     res.send(await this.transcriptsService.find(query));
   }
 
-  // TODO remove later
-  @Get('channels')
-  async listChannels(@Res() res, @Param('user') user) {
-    res.send(await this.transcriptsService.listChannels(this.setupQuery(res)));
-  }
+  // // TODO remove later
+  // @Get('channels')
+  // async listChannels(@Res() res, @Param('user') user) {
+  //   res.send(await this.transcriptsService.listChannels(this.setupQuery(res)));
+  // }
 
   @Get(':id')
   async findById(@Param('id') id ) {
