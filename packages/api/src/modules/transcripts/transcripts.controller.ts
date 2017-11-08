@@ -5,7 +5,7 @@ import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
 import { Transcript } from './interfaces/transcript.interface';
 
-@Controller('transcripts')
+@Controller(':v?/transcripts')
 export class TranscriptsController {
   constructor(private readonly transcriptsService: TranscriptsService) {}
 

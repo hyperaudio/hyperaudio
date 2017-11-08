@@ -4,7 +4,7 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { AccountsService } from './accounts.service';
 import { Account } from './interfaces/account.interface';
 
-@Controller('accounts')
+@Controller(':v?/accounts')
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 

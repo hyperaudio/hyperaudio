@@ -4,7 +4,7 @@ import { UpdateMixDto } from './dto/update-mix.dto';
 import { MixesService } from './mixes.service';
 import { Mix } from './interfaces/mix.interface';
 
-@Controller('mixes')
+@Controller(':v?/mixes')
 export class MixesController {
   constructor(private readonly mixesService: MixesService) {}
 

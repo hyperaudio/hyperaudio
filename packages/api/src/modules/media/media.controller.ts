@@ -4,7 +4,7 @@ import { UpdateMediaDto } from './dto/update-media.dto';
 import { MediaService } from './media.service';
 import { Media } from './interfaces/media.interface';
 
-@Controller('media')
+@Controller(':v?/media')
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
