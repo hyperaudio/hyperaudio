@@ -16,10 +16,10 @@ export class MediaService {
 
   async create(createMediaDto: CreateMediaDto): Promise<Media> {
     const createdMetadata = await (new this.metadataModel(createMediaDto.meta)).save();
+    createMediaDto.meta = createdMetadata._id;
     const createdMedia = new this.mediaModel(createMediaDto);
     createdMedia._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-    createdMedia.meta = createdMetadata._id;
-    
+
     return await createdMedia.save();
   }
 
