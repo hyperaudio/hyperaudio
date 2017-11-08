@@ -42,7 +42,7 @@ export class MediaController {
   // TODO check owner
   @Delete(':id')
   async remove(@Param('id') id) {
-    this.mediaService.remove(id);
+    return this.mediaService.remove(id);
   }
 
   @Get()

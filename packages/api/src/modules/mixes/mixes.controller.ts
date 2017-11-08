@@ -30,19 +30,19 @@ export class MixesController {
   // TODO set ns, owner
   @Post()
   async create(@Body() createMixDto: CreateMixDto) {
-    this.mixesService.create(createMixDto);
+    return this.mixesService.create(createMixDto);
   }
 
   // TODO check id
   @Put(':id')
   async update(@Param('id') id, @Body() updateMixDto: UpdateMixDto) {
-    this.mixesService.update(updateMixDto);
+    return this.mixesService.update(updateMixDto);
   }
 
   // TODO check owner
   @Delete(':id')
   async remove(@Param('id') id) {
-    this.mixesService.remove(id);
+    return this.mixesService.remove(id);
   }
 
   @Get()

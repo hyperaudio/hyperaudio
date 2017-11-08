@@ -19,7 +19,13 @@ export class TranscriptsService {
   }
 
   async update(updateTranscriptDto: UpdateTranscriptDto): Promise<Transcript> {
-    const updatedTranscript = new this.transcriptModel(updateTranscriptDto);
+    const updatedTranscript = await this.transcriptModel.findById(updateTranscriptDto._id).exec();
+    updatedTranscript.label = updateTranscriptDto.label;
+    updatedTranscript.desc = updateTranscriptDto.desc;
+    updatedTranscript.type = updateTranscriptDto.type;
+    updatedTranscript.meta = updateTranscriptDto.meta;
+    updatedTranscript.media = updateTranscriptDto.media;
+
     return await updatedTranscript.save();
   }
 

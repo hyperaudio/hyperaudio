@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Req, Res, Query } from '@nestjs/common';
-// import * as haJson from 'ha-json';
+import * as haJson from '@hyperaudio/transcript-converter';
 import { CreateTranscriptDto } from './dto/create-transcript.dto';
 import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
@@ -28,19 +28,19 @@ export class TranscriptsController {
   // TODO set ns, owner
   @Post()
   async create(@Body() createTranscriptDto: CreateTranscriptDto) {
-    this.transcriptsService.create(createTranscriptDto);
+    return this.transcriptsService.create(createTranscriptDto);
   }
 
   // TODO check id
   @Put(':id')
   async update(@Param('id') id, @Body() updateTranscriptDto: UpdateTranscriptDto) {
-    this.transcriptsService.update(updateTranscriptDto);
+    return this.transcriptsService.update(updateTranscriptDto);
   }
 
   // TODO check owner
   @Delete(':id')
   async remove(@Param('id') id) {
-    this.transcriptsService.remove(id);
+    return this.transcriptsService.remove(id);
   }
 
   @Get()
@@ -50,12 +50,6 @@ export class TranscriptsController {
     if (type) query['type'] = type;
     res.send(await this.transcriptsService.find(query));
   }
-
-  // // TODO remove later
-  // @Get('channels')
-  // async listChannels(@Res() res, @Param('user') user) {
-  //   res.send(await this.transcriptsService.listChannels(this.setupQuery(res)));
-  // }
 
   @Get(':id')
   async findById(@Param('id') id ) {
@@ -74,10 +68,9 @@ export class TranscriptsController {
     res.send((await this.transcriptsService.findById(id)).content);
   }
 
-  // @Get(':id/json')
-  // async jsonById(@Res() res, @Param('id') id ) {
-  //   const html = (await this.transcriptsService.findById(id)).content;
-  //   res.send(await haJson(html));
-  // }
-
+  @Get(':id/json')
+  async jsonById(@Res() res, @Param('id') id ) {
+    const html = (await this.transcriptsService.findById(id)).content;
+    res.send(await haJson(html));
+  }
 }

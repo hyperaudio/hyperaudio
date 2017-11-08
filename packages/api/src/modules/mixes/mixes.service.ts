@@ -19,7 +19,13 @@ export class MixesService {
   }
 
   async update(updateMixDto: UpdateMixDto): Promise<Mix> {
-    const updatedMix = new this.mixModel(updateMixDto);
+    const updatedMix = await this.mixModel.findById(updateMixDto._id).exec();
+    updatedMix.label = updateMixDto.label;
+    updatedMix.desc = updateMixDto.desc;
+    updatedMix.type = updateMixDto.type;
+    updatedMix.tags = updateMixDto.tags;
+    updatedMix.channel = updateMixDto.channel;
+
     return await updatedMix.save();
   }
 
