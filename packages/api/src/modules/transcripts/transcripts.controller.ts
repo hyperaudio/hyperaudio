@@ -50,6 +50,12 @@ export class TranscriptsController {
     res.send(await this.transcriptsService.find(query));
   }
 
+  // TODO remove later
+  @Get('channels')
+  async listChannels(@Res() res, @Param('user') user) {
+    res.send(await this.transcriptsService.listChannels(this.setupQuery(res)));
+  }
+
   @Get(':id')
   async findById(@Param('id') id ) {
     return this.transcriptsService.findById(id);
