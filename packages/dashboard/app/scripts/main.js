@@ -135,7 +135,10 @@ $(document).ready(function() {
       // options.xhrFields = {
       //         withCredentials: true
       //     };
+      if (window.localStorage.getItem('token')) {
+        jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.localStorage.getItem('token'));
       }
+    }
         //FIXME see http://backbonetutorials.com/cross-domain-sessions/
         // If we have a csrf token send it through with the next request
         // if(typeof that.get('_csrf') !== 'undefined') {
