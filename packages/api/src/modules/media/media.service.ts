@@ -18,13 +18,14 @@ export class MediaService {
   }
 
   async update(updateMediaDto: UpdateMediaDto): Promise<Media> {
-    const updatedMedia = await this.mediaModel.findById(id).exec();
-    updatedMedia.label = UpdateMediaDto.label;
-    updatedMedia.desc = UpdateMediaDto.desc;
-    updatedMedia.type = UpdateMediaDto.type;
-    updatedMedia.source = UpdateMediaDto.source;
-    updatedMedia.tags = UpdateMediaDto.tags;
-    updatedMedia.channel = UpdateMediaDto.channel;
+    // const updatedMedia = new this.mediaModel(updateMediaDto);
+    const updatedMedia = await this.mediaModel.findById(updateMediaDto._id).exec();
+    updatedMedia.label = updateMediaDto.label;
+    updatedMedia.desc = updateMediaDto.desc;
+    updatedMedia.type = updateMediaDto.type;
+    updatedMedia.source = updateMediaDto.source;
+    updatedMedia.tags = updateMediaDto.tags;
+    updatedMedia.channel = updateMediaDto.channel;
 
     return await updatedMedia.save();
   }
