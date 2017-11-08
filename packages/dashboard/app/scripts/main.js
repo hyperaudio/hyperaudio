@@ -27,7 +27,7 @@ window.haDash = {
 
   // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
   // API: 'http://' + prefix + stage,
-  API: 'http://' + prefix + 'api.' + domain + '',
+  API: 'https://' + prefix + 'api.' + domain + '',
   Models: {},
   Collections: {},
   Views: {},
