@@ -3,22 +3,27 @@ import * as urlSafeBase64 from 'urlsafe-base64';
 import { Model } from 'mongoose';
 import { Component, Inject } from '@nestjs/common';
 import { Media } from './interfaces/media.interface';
+import { Metadata } from './interfaces/metadata.interface';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 
 @Component()
 export class MediaService {
   constructor(
-    @Inject('MediaModelToken') private readonly mediaModel: Model<Media>) {}
+    @Inject('MediaModelToken') private readonly mediaModel: Model<Media>,
+    @Inject('MetadataModelToken') private readonly metadataModel: Model<Metadata>
+  ) {}
 
   async create(createMediaDto: CreateMediaDto): Promise<Media> {
+    const createdMetadata = await (new this.metadataModel(createMediaDto.meta)).save();
     const createdMedia = new this.mediaModel(createMediaDto);
     createdMedia._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+    createdMedia.meta = createdMetadata._id;
+    
     return await createdMedia.save();
   }
 
   async update(updateMediaDto: UpdateMediaDto): Promise<Media> {
-    // const updatedMedia = new this.mediaModel(updateMediaDto);
     const updatedMedia = await this.mediaModel.findById(updateMediaDto._id).exec();
     updatedMedia.label = updateMediaDto.label;
     updatedMedia.desc = updateMediaDto.desc;

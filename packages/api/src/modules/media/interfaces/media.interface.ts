@@ -1,7 +1,7 @@
 import { Schema, Document } from 'mongoose';
 
 export interface Media extends Document {
-  //  _id: String;
+   // _id: String;
    label: String;
    desc: String;
    type: String;

@@ -30,10 +30,10 @@ export class MediaController {
   // TODO set ns, owner
   @Post()
   async create(@Body() createMediaDto: CreateMediaDto) {
-    this.mediaService.create(createMediaDto);
+    return this.mediaService.create(createMediaDto);
   }
 
-  // TODO check id
+  // TODO check owner
   @Put(':id')
   async update(@Param('id') id, @Body() updateMediaDto: UpdateMediaDto) {
     return this.mediaService.update(updateMediaDto);
