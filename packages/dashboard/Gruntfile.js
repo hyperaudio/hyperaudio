@@ -362,7 +362,7 @@ module.exports = function (grunt) {
         // 'uglify',
         'copy',
         'rev',
-        // 'usemin'
+        'usemin'
     ]);
 
     grunt.registerTask('default', [
