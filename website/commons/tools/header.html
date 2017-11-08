@@ -103,20 +103,20 @@
         }
       };
 
-      var namespace = null;
-      if (document.location.hostname.indexOf('hyperaud') > 0) {
-        namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
-      }
-
-      var prefix = '';
-      if (namespace) prefix = namespace + '.';
+      // var namespace = null;
+      // if (document.location.hostname.indexOf('hyperaud') > 0) {
+      //   namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
+      // }
+      //
+      // var prefix = '';
+      // if (namespace) prefix = namespace + '.';
 
       //FIXME
       // var domain = 'api.hyperaud.io';
-      var domain = 'api.hyperaudio.net';
+      // var domain = 'api.hyperaudio.net';
       // if ()
 
-      var API = 'https://' + prefix + domain + '/v1';
+      // var API = 'https://' + prefix + domain + '/v1';
 
       // $.ajax({
       //   url: API + '/whoami',
@@ -129,10 +129,6 @@
       //   }
       // });
 
-      if (window.localStorage.getItem('user')) {
-        setUser({user: window.localStorage.getItem('user')});
-      }
-
       function setUser(whoami) {
         if (whoami.user) {
           $('body').removeClass('anonymous').addClass('user');
@@ -143,6 +139,10 @@
           firstTime = false;
           $('ul.header-navigation').fadeIn();
         }
+      }
+
+      if (window.localStorage.getItem('user')) {
+        setUser({user: window.localStorage.getItem('user')});
       }
     });
     </script>

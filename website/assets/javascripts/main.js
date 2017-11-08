@@ -43,18 +43,18 @@ $(document).ready(function() {
 
   // Check for login
 
-  var API = 'http://api.hyperaud.io/v1';
+  // var API = 'http://api.hyperaud.io/v1';
 
-  $.ajax({
-    url: API + '/whoami',
-    xhrFields: {
-      withCredentials: true
-    },
-    timeout: 5000,
-    success: function(whoami) {
-      setUser(whoami);
-    }
-  });
+  // $.ajax({
+  //   url: API + '/whoami',
+  //   xhrFields: {
+  //     withCredentials: true
+  //   },
+  //   timeout: 5000,
+  //   success: function(whoami) {
+  //     setUser(whoami);
+  //   }
+  // });
 
   function setUser(whoami) {
     if (whoami.user) {
@@ -65,6 +65,10 @@ $(document).ready(function() {
       $('.logged-out-state').show();
     }
     $('ul.header-navigation').fadeIn();
+  }
+
+  if (window.localStorage.getItem('user')) {
+    setUser({user: window.localStorage.getItem('user')});
   }
 
 });
