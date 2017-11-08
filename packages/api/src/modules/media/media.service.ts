@@ -14,12 +14,18 @@ export class MediaService {
   async create(createMediaDto: CreateMediaDto): Promise<Media> {
     const createdMedia = new this.mediaModel(createMediaDto);
     createdMedia._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-
     return await createdMedia.save();
   }
 
   async update(updateMediaDto: UpdateMediaDto): Promise<Media> {
-    const updatedMedia = new this.mediaModel(updateMediaDto);
+    const updatedMedia = await this.mediaModel.findById(id).exec();
+    updatedMedia.label = UpdateMediaDto.label;
+    updatedMedia.desc = UpdateMediaDto.desc;
+    updatedMedia.type = UpdateMediaDto.type;
+    updatedMedia.source = UpdateMediaDto.source;
+    updatedMedia.tags = UpdateMediaDto.tags;
+    updatedMedia.channel = UpdateMediaDto.channel;
+
     return await updatedMedia.save();
   }
 
