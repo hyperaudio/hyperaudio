@@ -14,7 +14,8 @@ export class MixesService {
   async create(createMixDto: CreateMixDto): Promise<Mix> {
     const createdMix = new this.mixModel(createMixDto);
     createdMix._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
-
+    createdMix.created = new Date();
+    createdMix.modified = new Date();
     return await createdMix.save();
   }
 
@@ -26,7 +27,7 @@ export class MixesService {
     updatedMix.tags = updateMixDto.tags;
     updatedMix.channel = updateMixDto.channel;
     updatedMix.content = updateMixDto.content;
-
+    updatedMix.modified = new Date();
     return await updatedMix.save();
   }
 

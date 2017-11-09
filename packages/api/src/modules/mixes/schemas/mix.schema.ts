@@ -25,7 +25,7 @@ export const MixSchema = new mongoose.Schema({
 });
 
 
-MixSchema.pre('save', next => {
-  this.modified = new Date();
-  next();
-});
+// MixSchema.pre('save', next => {
+//   this.modified = new Date();
+//   next();
+// });
