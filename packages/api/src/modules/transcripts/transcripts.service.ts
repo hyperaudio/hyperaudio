@@ -38,6 +38,11 @@ export class TranscriptsService {
     return await this.transcriptModel.find(query).select('-meta -content').exec();
   }
 
+  async find2(query: any): Promise<Transcript[]> {
+    console.log(query);
+    return await this.transcriptModel.find(query).select('-meta -content').populate('media').exec();
+  }
+
   async listChannels(query: any): Promise<any> {
     return await this.transcriptModel.distinct('channel', query).exec();
   }

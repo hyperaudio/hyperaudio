@@ -40,12 +40,26 @@ export class TranscriptsController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('media') media, @Query('type') type) {
+  async findAll(@Res() res, @Query('media') media, @Query('type') type, @Query('user') user, @Query('channel') channel) {
     const query = this.setupQuery(res);
     if (media) query['media'] = media;
     if (type) query['type'] = type;
+    if (user) query['owner'] = user;
 
-    res.send(await this.transcriptsService.find(query));
+    if (channel) {
+      const results = await this.transcriptsService.find2(query);
+      res.send(
+        results
+          .filter(result => result.media && result.media['channel'] === channel)
+          .map(result => {
+            const compact = result;
+            compact.media = result.media['_id'];
+            return compact;
+          })
+      );
+    } else {
+      res.send(await this.transcriptsService.find(query));
+    }
   }
 
   @Get(':id')
