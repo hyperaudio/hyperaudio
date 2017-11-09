@@ -89,7 +89,7 @@ window.haDash = {
       var token = window.localStorage.getItem('token');
       var payload = JSON.parse(window.atob(token.split('.')[1]));
       var exp = new Date (payload.exp * 1e3);
-      if (exp.getTime() - new Date().getTime()){
+      if (exp.getTime() - new Date().getTime() <= 0){
         console.log("token expired");
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');
