@@ -4,7 +4,8 @@ import { MediaModule } from './media/media.module';
 import { TranscriptsModule } from './transcripts/transcripts.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { CorsMiddleware } from './middleware/cors.middleware';
-import { OrgsMiddleware } from './middleware/organisations.middleware';
+import { OrgsMiddleware } from './middleware/organisation.middleware';
+import { AuthMiddleware } from './middleware/auth.middleware';
 import { AuthModule } from './auth/auth.module';
 import { RootController } from './root/root.controller';
 
@@ -22,5 +23,10 @@ export class ApplicationModule {
     consumer.apply(OrgsMiddleware).forRoutes({
       path: '/*'
     });
+
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: '/*'
+    });
+
   }
 }
