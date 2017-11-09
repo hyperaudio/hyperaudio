@@ -27,6 +27,7 @@ window.haDash = {
 
   // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
   // API: 'http://' + prefix + stage,
+  // API: 'http://localhost:8080', //'https://' + prefix + 'api.' + domain + '',
   API: 'https://' + prefix + 'api.' + domain + '',
   Models: {},
   Collections: {},
@@ -174,19 +175,19 @@ $(document).ready(function() {
     haDash.init();
   });
 
-  // $(document).foundation();
+  $(document).foundation();
 });
 
-// function applyTooltips() {
-//   $(document).foundation({
-//     tooltips: {
-//       selector : '.has-tip',
-//       additional_inheritable_classes : [],
-//       tooltip_class : '.tooltip',
-//       touch_close_text: 'tap to close',
-//       disable_for_touch: false,
-//       tip_template : function (selector, content) {
-//         return '<span data-selector="' + selector + '" class="' + Foundation.libs.tooltips.settings.tooltipClass.substring(1) + '">' + content + '<span class="nub"></span></span>';
-//     }}
-//   });
-// }
+function applyTooltips() {
+  $(document).foundation({
+    tooltips: {
+      selector : '.has-tip',
+      additional_inheritable_classes : [],
+      tooltip_class : '.tooltip',
+      touch_close_text: 'tap to close',
+      disable_for_touch: false,
+      tip_template : function (selector, content) {
+        return '<span data-selector="' + selector + '" class="' + Foundation.libs.tooltips.settings.tooltipClass.substring(1) + '">' + content + '<span class="nub"></span></span>';
+    }}
+  });
+}

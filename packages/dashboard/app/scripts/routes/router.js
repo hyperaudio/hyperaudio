@@ -10,7 +10,7 @@ haDash.Routers = haDash.Routers || {};
   haDash.Routers.Router = Backbone.Router.extend({
     //http://sizeableidea.com/adding-google-analytics-to-your-backbone-js-app/
     initialize: function() {
-      // this.bind('route', this.pageView);
+      this.bind('route', this.pageView);
     },
 
     routes: {
