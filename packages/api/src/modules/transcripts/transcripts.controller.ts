@@ -18,10 +18,6 @@ export class TranscriptsController {
       query['namespace'] = namespace;
     }
 
-    // if (owner) {
-    //   query['owner'] = owner;
-    // }
-
     return query;
   }
 
@@ -48,6 +44,7 @@ export class TranscriptsController {
     const query = this.setupQuery(res);
     if (media) query['media'] = media;
     if (type) query['type'] = type;
+
     res.send(await this.transcriptsService.find(query));
   }
 

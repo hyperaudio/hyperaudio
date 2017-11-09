@@ -8,7 +8,9 @@ import { Media } from './interfaces/media.interface';
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
-  setupQuery(res: any, channel: any, tag: any) {
+  setupQuery(res: any, channel: any, tag: any, user: any) {
+    console.log(channel, tag, user);
+
     const query = {};
     const namespace = res.get('X-Organisation');
     // const owner = res.get('X-User');
@@ -17,13 +19,11 @@ export class MediaController {
       query['namespace'] = namespace;
     }
 
-    // if (owner) {
-    //   query['owner'] = owner;
-    // }
-
     if (channel) query['channel'] = channel;
     if (tag) query['tags'] = { $in: [tag] };
+    if (user) query['owner'] = user;
 
+    console.log(query);
     return query;
   }
 
@@ -46,19 +46,20 @@ export class MediaController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag) {
-    const query = this.setupQuery(res, channel, tag);
+  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag, @Query('user') user) {
+    const query = this.setupQuery(res, channel, tag, user);
     res.send(await this.mediaService.find(query));
   }
 
   @Get('channels')
-  async listChannels(@Res() res, @Param('user') user) {
-    res.send(await this.mediaService.listChannels(this.setupQuery(res, null, null)));
+  async listChannels(@Res() res, @Query('user') user) {
+    const channels = await this.mediaService.listChannels(this.setupQuery(res, null, null, user));
+    res.send(channels.filter(channel => !!channel));
   }
 
   @Get('tags')
-  async listTags(@Res() res) {
-    res.send(await this.mediaService.listTags(this.setupQuery(res, null, null)));
+  async listTags(@Res() res, @Query('user') user) {
+    res.send(await this.mediaService.listTags(this.setupQuery(res, null, null, user)));
   }
 
 
