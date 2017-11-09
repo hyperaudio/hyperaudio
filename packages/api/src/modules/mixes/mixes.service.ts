@@ -25,6 +25,7 @@ export class MixesService {
     updatedMix.type = updateMixDto.type;
     updatedMix.tags = updateMixDto.tags;
     updatedMix.channel = updateMixDto.channel;
+    updatedMix.content = updateMixDto.content;
 
     return await updatedMix.save();
   }
