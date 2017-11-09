@@ -84,11 +84,26 @@ window.haDash = {
     //   }
     // });
 
+    // check if token is still good
+    try {
+      var token = window.localStorage.getItem('token');
+      var payload = JSON.parse(window.atob(token.split('.')[1]));
+      var exp = new Date (payload.exp * 1e3);
+      if (exp.getTime() - new Date().getTime()){
+        console.log("token expired");
+        window.localStorage.removeItem('token');
+        window.localStorage.removeItem('user');
+        haDash.router.navigate('login/', {trigger: true});
+      }
+    } catch (e) {
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('user');
+    }
 
     if (! window.localStorage.getItem('token')) {
       window.localStorage.removeItem('user');
       haDash.setUser({ user: null });
-    } else if (window.localStorage.getItem('user')) {
+    } else if (window.localStorage.getItem('user') && window.localStorage.getItem('token')) {
       haDash.setUser({ user: window.localStorage.getItem('user') });
     } else {
       window.localStorage.removeItem('token');

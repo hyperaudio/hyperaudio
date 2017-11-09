@@ -1,0 +1,17 @@
+{
+  "name": "base64",
+  "description": "Base64 encoding and decoding",
+  "main": "./base64.js",
+  "license": "WTFPL",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/davidchambers/Base64.js.git"
+  },
+  "ignore": [
+    "**/.*",
+    "Makefile",
+    "coverage/",
+    "scripts/",
+    "test/"
+  ]
+}
