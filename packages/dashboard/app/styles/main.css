@@ -1,12 +1,12 @@
 
-
+/*
 .browsehappy {
   padding: .2em !important;
   margin: 0;
   background: #333;
   color: #fff;
   padding: 0.2em 0;
-  text-align: center; }
+  text-align: center; }*/
 
 body.anonymous .user {
   display: none; }
@@ -37,7 +37,8 @@ table {
   overflow: hidden; }
 
 #loginForm button img, #registerForm button img {
-  display: none; }
+  display: none;
+}
 
 p div.tags, p div.channels {
   min-width: 10em; }

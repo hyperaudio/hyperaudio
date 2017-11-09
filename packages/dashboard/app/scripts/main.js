@@ -1,5 +1,6 @@
 /*global haDash, $*/
 Backbone.emulateJSON = false;
+jQuery.timeago.settings.allowFuture = true;
 
 
 var namespace = null; // default no namespace
@@ -89,6 +90,7 @@ window.haDash = {
       var token = window.localStorage.getItem('token');
       var payload = JSON.parse(window.atob(token.split('.')[1]));
       var exp = new Date (payload.exp * 1e3);
+      $('a.logout').attr('title', 'token expires in ' + $.timeago(exp));
       if (exp.getTime() - new Date().getTime() <= 0){
         console.log("token expired");
         window.localStorage.removeItem('token');

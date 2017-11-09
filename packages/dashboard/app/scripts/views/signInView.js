@@ -9,7 +9,7 @@ haDash.Views = haDash.Views || {};
 
     id: 'signInView',
 
-        template: JST['app/scripts/templates/signIn.ejs'],
+    template: JST['app/scripts/templates/signIn.ejs'],
 
     initialize: function() {
       this.render();
