@@ -19,7 +19,7 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "@hyperaudio/transcript-converter": "0.0.3",
+    "@hyperaudio/transcript-converter": "0.0.4",
     "@nestjs/common": "^4.0.1",
     "@nestjs/core": "^4.0.1",
     "@nestjs/microservices": "^4.0.1",
