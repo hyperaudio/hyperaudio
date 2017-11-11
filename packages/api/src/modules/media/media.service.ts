@@ -26,6 +26,7 @@ export class MediaService {
     createdMedia.modified = new Date();
     createdMedia.owner = user;
     if (namespace) createdMedia.namespace = namespace;
+    if (! createdMedia.label || createdMedia.label === '') createdMedia.label = 'Empty label';
 
     return await createdMedia.save();
   }
@@ -40,6 +41,7 @@ export class MediaService {
       updatedMedia.tags = updateMediaDto.tags;
       updatedMedia.channel = updateMediaDto.channel;
       updatedMedia.modified = new Date();
+      if (! updatedMedia.label || updatedMedia.label === '') updatedMedia.label = 'Empty label';
 
       return await updatedMedia.save();
     }

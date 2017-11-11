@@ -61,7 +61,7 @@ export class TranscriptsController {
   }
 
   @Get(':id')
-  async findById(@Param('id') id ) {
+  async findById(@Param('id') id) {
     return this.transcriptsService.findById(id);
   }
 

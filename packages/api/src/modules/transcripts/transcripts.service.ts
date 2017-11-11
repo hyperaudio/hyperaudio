@@ -28,8 +28,9 @@ export class TranscriptsService {
       updatedTranscript.label = updateTranscriptDto.label;
       updatedTranscript.desc = updateTranscriptDto.desc;
       updatedTranscript.type = updateTranscriptDto.type;
-      updatedTranscript.meta = updateTranscriptDto.meta;
-      updatedTranscript.media = updateTranscriptDto.media;
+      if (updateTranscriptDto.meta) updatedTranscript.meta = updateTranscriptDto.meta;
+      if (updateTranscriptDto.media) updatedTranscript.media = updateTranscriptDto.media;
+      if (updateTranscriptDto.content) updatedTranscript.content = updateTranscriptDto.content;
       updatedTranscript.modified = new Date();
 
       return await updatedTranscript.save();
@@ -52,17 +53,10 @@ export class TranscriptsService {
     return await this.transcriptModel.find(query).select('-meta -content').exec();
   }
 
+  // TODO rename
   async find2(query: any): Promise<Transcript[]> {
     console.log(query);
     return await this.transcriptModel.find(query).select('-meta -content').populate('media').exec();
-  }
-
-  async listChannels(query: any): Promise<any> {
-    return await this.transcriptModel.distinct('channel', query).exec();
-  }
-
-  async listTags(query: any): Promise<any> {
-    return await this.transcriptModel.distinct('tags', query).exec();
   }
 
   async findById(id): Promise<Transcript> {
