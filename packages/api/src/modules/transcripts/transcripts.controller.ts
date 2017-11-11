@@ -12,31 +12,29 @@ export class TranscriptsController {
   setupQuery(res: any) {
     const query = {};
     const namespace = res.get('X-Organisation');
-    // const owner = res.get('X-User');
 
-    if (namespace) {
-      query['namespace'] = namespace;
-    }
+    if (namespace) query['namespace'] = namespace;
 
     return query;
   }
 
-  // TODO set ns, owner
   @Post()
-  async create(@Body() createTranscriptDto: CreateTranscriptDto) {
-    return this.transcriptsService.create(createTranscriptDto);
+  async create(@Res() res, @Body() createTranscriptDto: CreateTranscriptDto) {
+    const namespace = res.get('X-Organisation');
+    const user = res.get('X-User');
+    res.send(await this.transcriptsService.create(createTranscriptDto, namespace, user));
   }
 
-  // TODO check id
   @Put(':id')
-  async update(@Param('id') id, @Body() updateTranscriptDto: UpdateTranscriptDto) {
-    return this.transcriptsService.update(updateTranscriptDto);
+  async update(@Res() res, @Param('id') id, @Body() updateTranscriptDto: UpdateTranscriptDto) {
+    const user = res.get('X-User');
+    res.send(await this.transcriptsService.update(updateTranscriptDto, user));
   }
 
-  // TODO check owner
   @Delete(':id')
-  async remove(@Param('id') id) {
-    return this.transcriptsService.remove(id);
+  async remove(@Res() res, @Param('id') id) {
+    const user = res.get('X-User');
+    res.send(await this.transcriptsService.remove(id, user));
   }
 
   @Get()

@@ -29,7 +29,7 @@ export const TranscriptSchema = new mongoose.Schema({
 });
 
 
-TranscriptSchema.pre('save', next => {
-  this.modified = new Date();
-  next();
-});
+// TranscriptSchema.pre('save', next => {
+//   this.modified = new Date();
+//   next();
+// });

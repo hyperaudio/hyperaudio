@@ -20,7 +20,7 @@ AccountSchema.plugin(passportLocalMongoose, {
   digestAlgorithm: 'sha1'
 });
 
-AccountSchema.pre('save', next => {
-  this.modified = new Date();
-  next();
-});
+// AccountSchema.pre('save', next => {
+//   this.modified = new Date();
+//   next();
+// });

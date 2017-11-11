@@ -11,28 +11,41 @@ export class MixesService {
   constructor(
     @Inject('MixModelToken') private readonly mixModel: Model<Mix>) {}
 
-  async create(createMixDto: CreateMixDto): Promise<Mix> {
+  async create(createMixDto: CreateMixDto, namespace: any, user: String): Promise<Mix> {
     const createdMix = new this.mixModel(createMixDto);
     createdMix._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     createdMix.created = new Date();
     createdMix.modified = new Date();
+    createdMix.owner = user;
+    if (namespace) createdMix.namespace = namespace;
+
     return await createdMix.save();
   }
 
-  async update(updateMixDto: UpdateMixDto): Promise<Mix> {
+  async update(updateMixDto: UpdateMixDto, user: String): Promise<Mix> {
     const updatedMix = await this.mixModel.findById(updateMixDto._id).exec();
-    updatedMix.label = updateMixDto.label;
-    updatedMix.desc = updateMixDto.desc;
-    updatedMix.type = updateMixDto.type;
-    updatedMix.tags = updateMixDto.tags;
-    updatedMix.channel = updateMixDto.channel;
-    updatedMix.content = updateMixDto.content;
-    updatedMix.modified = new Date();
-    return await updatedMix.save();
+    if (updatedMix.owner === user) {
+      updatedMix.label = updateMixDto.label;
+      updatedMix.desc = updateMixDto.desc;
+      updatedMix.type = updateMixDto.type;
+      updatedMix.tags = updateMixDto.tags;
+      updatedMix.channel = updateMixDto.channel;
+      updatedMix.content = updateMixDto.content;
+      updatedMix.modified = new Date();
+
+      return await updatedMix.save();
+    }
+
+    throw Error('not authorized');
   }
 
-  async remove(id: String): Promise<any> {
-    return await this.mixModel.findByIdAndRemove(id).exec();
+  async remove(id: String, user: String): Promise<any> {
+    const removableMix = await this.mixModel.findById(id).exec();
+    if (removableMix.owner === user) {
+      return await this.mixModel.findByIdAndRemove(id).exec();
+    }
+
+    throw Error('not authorized');
   }
 
   async find(query: any): Promise<Mix[]> {

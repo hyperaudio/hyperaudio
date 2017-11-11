@@ -42,22 +42,8 @@ export class AccountsService {
   }
 
   async createToken(username, password) {
-    console.log(username, password);
-    // const user = this.accountModel as Account;
-    // console.log(await this.accountModel.findByUsername('gridinoc').exec());
-
     const user = await this.accountModel.findOne({ username }).exec();
-    console.log(user);
-    if (! user) {
-      return {};
-    }
-
-    // const authenticated = await user.authenticate(password, (err, res) => {
-    //   return new Promise((resolve, reject) => {
-    //     if (err) return reject(err);
-    //     resolve(res);
-    //   });
-    // });
+    if (! user) return {};
 
     const authenticated = await new Promise((resolve, reject) => {
       user.authenticate(password, (err, res) => {
@@ -69,12 +55,8 @@ export class AccountsService {
     if (! authenticated) return {};
 
     const expiresIn = 60 * 60, secretOrKey = process.env.JWT_SECRET;
-    const payload = {
-      user: username
-    };
-
+    const payload = { user: username };
     const token = jwt.sign(payload, secretOrKey, { expiresIn });
     return { expiresIn, token, user: username };
-
   }
 }

@@ -28,7 +28,7 @@ export const MediaSchema = new mongoose.Schema({
 });
 
 
-MediaSchema.pre('save', next => {
-  this.modified = new Date();
-  next();
-});
+// MediaSchema.pre('save', next => {
+//   this.modified = new Date();
+//   next();
+// });

@@ -11,26 +11,40 @@ export class TranscriptsService {
   constructor(
     @Inject('TranscriptModelToken') private readonly transcriptModel: Model<Transcript>) {}
 
-  async create(createTranscriptDto: CreateTranscriptDto): Promise<Transcript> {
+  async create(createTranscriptDto: CreateTranscriptDto, namespace: any, user: String): Promise<Transcript> {
     const createdTranscript = new this.transcriptModel(createTranscriptDto);
     createdTranscript._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
+    createdTranscript.created = new Date();
+    createdTranscript.modified = new Date();
+    createdTranscript.owner = user;
+    if (namespace) createdTranscript.namespace = namespace;
 
     return await createdTranscript.save();
   }
 
-  async update(updateTranscriptDto: UpdateTranscriptDto): Promise<Transcript> {
+  async update(updateTranscriptDto: UpdateTranscriptDto, user: String): Promise<Transcript> {
     const updatedTranscript = await this.transcriptModel.findById(updateTranscriptDto._id).exec();
-    updatedTranscript.label = updateTranscriptDto.label;
-    updatedTranscript.desc = updateTranscriptDto.desc;
-    updatedTranscript.type = updateTranscriptDto.type;
-    updatedTranscript.meta = updateTranscriptDto.meta;
-    updatedTranscript.media = updateTranscriptDto.media;
+    if (updatedTranscript.owner === user) {
+      updatedTranscript.label = updateTranscriptDto.label;
+      updatedTranscript.desc = updateTranscriptDto.desc;
+      updatedTranscript.type = updateTranscriptDto.type;
+      updatedTranscript.meta = updateTranscriptDto.meta;
+      updatedTranscript.media = updateTranscriptDto.media;
+      updatedTranscript.modified = new Date();
 
-    return await updatedTranscript.save();
+      return await updatedTranscript.save();
+    }
+
+    throw Error('not authorized');
   }
 
-  async remove(id: String): Promise<any> {
-    return await this.transcriptModel.findByIdAndRemove(id).exec();
+  async remove(id: String, user: String): Promise<any> {
+    const removableTranscript = await this.transcriptModel.findById(id).exec();
+    if (removableTranscript.owner === user) {
+      return await this.transcriptModel.findByIdAndRemove(id).exec();
+    }
+
+    throw Error('not authorized');
   }
 
   async find(query: any): Promise<Transcript[]> {

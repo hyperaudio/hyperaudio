@@ -32,7 +32,7 @@ export const MetadataSchema = new mongoose.Schema({
 });
 
 
-MetadataSchema.pre('save', next => {
-  this.modified = new Date();
-  next();
-});
+// MetadataSchema.pre('save', next => {
+//   this.modified = new Date();
+//   next();
+// });

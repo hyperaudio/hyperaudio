@@ -12,12 +12,9 @@ export class MediaController {
     console.log(channel, tag, user);
 
     const query = {};
-    const namespace = res.get('X-Organisation');
-    // const owner = res.get('X-User');
 
-    if (namespace) {
-      query['namespace'] = namespace;
-    }
+    const namespace = res.get('X-Organisation');
+    if (namespace) query['namespace'] = namespace;
 
     if (channel) query['channel'] = channel;
     if (tag) query['tags'] = { $in: [tag] };
@@ -27,22 +24,23 @@ export class MediaController {
     return query;
   }
 
-  // TODO set ns, owner
   @Post()
-  async create(@Body() createMediaDto: CreateMediaDto) {
-    return this.mediaService.create(createMediaDto);
+  async create(@Res() res, @Body() createMediaDto: CreateMediaDto) {
+    const namespace = res.get('X-Organisation');
+    const user = res.get('X-User');
+    res.send(await this.mediaService.create(createMediaDto, namespace, user));
   }
 
-  // TODO check owner
   @Put(':id')
-  async update(@Param('id') id, @Body() updateMediaDto: UpdateMediaDto) {
-    return this.mediaService.update(updateMediaDto);
+  async update(@Res() res, @Param('id') id, @Body() updateMediaDto: UpdateMediaDto) {
+    const user = res.get('X-User');
+    res.send(await this.mediaService.update(updateMediaDto, user));
   }
 
-  // TODO check owner
   @Delete(':id')
-  async remove(@Param('id') id) {
-    return this.mediaService.remove(id);
+  async remove(@Res() res, @Param('id') id) {
+    const user = res.get('X-User');
+    res.send(await this.mediaService.remove(id, user));
   }
 
   @Get()

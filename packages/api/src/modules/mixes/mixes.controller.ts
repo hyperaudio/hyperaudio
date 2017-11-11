@@ -9,40 +9,35 @@ export class MixesController {
   constructor(private readonly mixesService: MixesService) {}
 
   setupQuery(res: any, channel: any, tag: any, user: any) {
-    console.log(channel, tag, user);
-
     const query = {};
-    const namespace = res.get('X-Organisation');
-    // const owner = res.get('X-User');
 
-    if (namespace) {
-      query['namespace'] = namespace;
-    }
+    const namespace = res.get('X-Organisation');
+    if (namespace) query['namespace'] = namespace;
 
     if (channel) query['channel'] = channel;
     if (tag) query['tags'] = { $in: [tag] };
     if (user) query['owner'] = user;
 
-    console.log(query);
     return query;
   }
 
-  // TODO set ns, owner
   @Post()
-  async create(@Body() createMixDto: CreateMixDto) {
-    return this.mixesService.create(createMixDto);
+  async create(@Res() res, @Body() createMixDto: CreateMixDto) {
+    const namespace = res.get('X-Organisation');
+    const user = res.get('X-User');
+    res.send(await this.mixesService.create(createMixDto, namespace, user));
   }
 
-  // TODO check id
   @Put(':id')
-  async update(@Param('id') id, @Body() updateMixDto: UpdateMixDto) {
-    return this.mixesService.update(updateMixDto);
+  async update(@Res() res, @Param('id') id, @Body() updateMixDto: UpdateMixDto) {
+    const user = res.get('X-User');
+    res.send(await this.mixesService.update(updateMixDto, user));
   }
 
-  // TODO check owner
   @Delete(':id')
-  async remove(@Param('id') id) {
-    return this.mixesService.remove(id);
+  async remove(@Res() res, @Param('id') id) {
+    const user = res.get('X-User');
+    res.send(await this.mixesService.remove(id, user));
   }
 
   @Get()
