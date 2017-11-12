@@ -40,7 +40,10 @@ export class TranscriptsController {
   @Get()
   async findAll(@Res() res, @Query('media') media, @Query('type') type, @Query('user') user, @Query('channel') channel) {
     const query = this.setupQuery(res);
-    if (media) query['media'] = media;
+    if (media) {
+      query['media'] = media;
+      delete query['namespace'];
+    }
     if (type) query['type'] = type;
     if (user) query['owner'] = user;
 
