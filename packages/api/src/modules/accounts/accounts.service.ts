@@ -54,7 +54,8 @@ export class AccountsService {
 
     if (! authenticated) return {};
 
-    const expiresIn = 60 * 60, secretOrKey = process.env.JWT_SECRET;
+    const expiresIn = 3600 * 24 * 30;
+    const secretOrKey = process.env.JWT_SECRET;
     const payload = { user: username };
     const token = jwt.sign(payload, secretOrKey, { expiresIn });
     return { expiresIn, token, user: username };
