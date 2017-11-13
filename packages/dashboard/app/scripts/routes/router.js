@@ -20,6 +20,7 @@ haDash.Routers = haDash.Routers || {};
       'mixes/:id': 'mixDetail',
       'media/': 'media',
       'media/:id': 'mediaDetail',
+      // 'media/#:id': 'mediaDetail',
 
       'signin/': 'signin',
       'login/': 'signin',
@@ -69,6 +70,10 @@ haDash.Routers = haDash.Routers || {};
     },
 
     media: function() {
+      if (document.location.hash && document.location.hash.length > 5) {
+        return haDash.router.navigate("media/" + document.location.hash.substring(1), {trigger: true});
+      }
+
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.media').addClass('active');
       document.title = "Hyperaudio Media";

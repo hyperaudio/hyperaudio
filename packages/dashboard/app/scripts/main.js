@@ -19,7 +19,6 @@ if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaudio.net'; // DEV
 }
 
-
 window.haDash = {
 
   lang: 'en',
