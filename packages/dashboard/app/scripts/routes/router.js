@@ -49,7 +49,7 @@ haDash.Routers = haDash.Routers || {};
 
     dashboard: function() {
       if (document.location.hash && document.location.hash.length > 5) {
-        return haDash.router.navigate(document.location.hash.substring(1), {trigger: true});
+        return haDash.router.navigate(document.location.hash.substring(2), {trigger: true});
       }
 
       document.location = '/media/';
