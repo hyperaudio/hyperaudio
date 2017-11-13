@@ -48,7 +48,10 @@ haDash.Routers = haDash.Routers || {};
     },
 
     dashboard: function() {
-      // console.log('Dashboard N/A');
+      if (document.location.hash && document.location.hash.length > 5) {
+        return haDash.router.navigate(document.location.hash.substring(1), {trigger: true});
+      }
+
       document.location = '/media/';
     },
 
