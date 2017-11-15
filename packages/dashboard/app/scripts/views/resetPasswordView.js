@@ -32,9 +32,9 @@ haDash.Views = haDash.Views || {};
       $(event.target).find('img').show();
 
       $.ajax({
-        url: haDash.API + '/reset-password',
+        url: haDash.API + '/accounts/reset',
         contentType: "application/json; charset=utf-8",
-          dataType: "json",
+        dataType: "json",
         xhrFields: {
           withCredentials: true
         },

@@ -181,29 +181,52 @@ haDash.Routers = haDash.Routers || {};
     },
 
     signInToken: function (token) {
-      $.ajax({
-          url: haDash.API + '/token-login',
-          contentType: "application/json; charset=utf-8",
+      var payload = JSON.parse(window.atob(token.split('.')[1]));
+
+      if (payload.email) {
+        $.ajax({
+            url: haDash.API + '/accounts/email/' + token,
+            contentType: "application/json; charset=utf-8",
             dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
-          data: JSON.stringify({
-            'access-token': token
+            xhrFields: {
+              withCredentials: true
+            },
+            method: 'put',
+            data: JSON.stringify({})
           })
-        })
-        .done(function(whoami) {
-          console.log(whoami);
-          // changePassword();
-          haDash.setUser(whoami);
-          if (whoami.user) {
-            haDash.router.navigate("choose-password/", {trigger: true});
-          }
-        })
-        .fail(function() {
-          console.log('error');
-        });
+          .done(function(data) {
+            console.log(data);
+            alert('Email address changed to ' + payload.email);
+            haDash.router.navigate("media/", {trigger: true});
+          })
+          .fail(function() {
+            console.log('error');
+          });
+      } else {
+        $.ajax({
+            url: haDash.API + '/auth/whoami/' + token,
+            xhrFields: {
+              withCredentials: true
+            },
+            method: 'get'
+          })
+          .done(function(whoami) {
+            console.log(whoami);
+            haDash.setUser(whoami);
+            if (whoami.user) {
+              window.localStorage.setItem('user', payload.user);
+              window.localStorage.setItem('token', token);
+              if (payload.new){
+                haDash.router.navigate("media/", {trigger: true});
+              } else{
+                haDash.router.navigate("choose-password/", {trigger: true});
+              }
+            }
+          })
+          .fail(function() {
+            console.log('error');
+          });
+      }
     },
 
     pageView : function(){

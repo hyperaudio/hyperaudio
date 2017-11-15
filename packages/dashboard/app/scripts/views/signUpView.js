@@ -34,9 +34,9 @@ haDash.Views = haDash.Views || {};
         $(event.target).find('img').show();
 
         $.ajax({
-          url: haDash.API + '/register',
+          url: haDash.API + '/accounts/register',
           contentType: "application/json; charset=utf-8",
-            dataType: "json",
+          dataType: "json",
           xhrFields: {
             withCredentials: true
           },
@@ -62,7 +62,7 @@ haDash.Views = haDash.Views || {};
           if (e.status == "409") {
             $('#registerEmailError').show();
           }
-          
+
           $(event.target).find('img').hide();
         });
 

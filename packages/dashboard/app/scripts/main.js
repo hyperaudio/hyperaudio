@@ -9,14 +9,17 @@ if (document.location.hostname.indexOf('hyperaud') > 0) {
   namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
 }
 
+var protocol = 'http:'; // default protocol
 var prefix = ''; // default no prefix
 if (namespace) prefix = namespace + '.';
 
-var domain = '127.0.0.1.xip.io:3000'; // default API localhost
+var domain = '127.0.0.1.xip.io:8080'; // default API localhost
 if (document.location.hostname.indexOf('hyperaud.io') > -1) {
   domain = 'hyperaud.io'; // PROD
+  protocol = window.location.protocol;
 } else if (document.location.hostname.indexOf('hyperaudio.net') > -1) {
   domain = 'hyperaudio.net'; // DEV
+  protocol = window.location.protocol;
 }
 
 window.haDash = {
@@ -25,10 +28,7 @@ window.haDash = {
 
   namespace: namespace,
 
-  // API: (document.location.host.indexOf('10.0.54.74') > 0) ? 'http://' + prefix + 'api.hyperaud.io.10.0.54.74.xip.io' : 'http://' + prefix + stage?stage:'api.hyperaud.io/v1',
-  // API: 'http://' + prefix + stage,
-  // API: 'http://localhost:8080', //'https://' + prefix + 'api.' + domain + '',
-  API: 'https://' + prefix + 'api.' + domain + '',
+  API: protocol + '//' + prefix + 'api.' + domain + '',
   Models: {},
   Collections: {},
   Views: {},

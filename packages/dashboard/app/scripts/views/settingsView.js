@@ -34,13 +34,13 @@ haDash.Views = haDash.Views || {};
       $(event.target).find('img').show();
 
       $.ajax({
-        url: haDash.API + '/change-email',
+        url: haDash.API + '/accounts/email',
         contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
+        dataType: "json",
+        // xhrFields: {
+        //   withCredentials: true
+        // },
+        method: 'put',
         data: JSON.stringify({
           email: $('#email').val(),
           password: $('#password-change').val()
@@ -56,43 +56,43 @@ haDash.Views = haDash.Views || {};
       });
     },
 
-    delete: function(event) {
-      event.preventDefault();
-
-      var r = confirm("Are you sure you want to delete your account?");
-      if (r != true) {
-
-        $('.form-alert').hide();
-
-        if ($('#password').val() == $('#password2').val()) {
-          $(event.target).find('img').show();
-
-          $.ajax({
-            url: haDash.API + '/delete-account',
-            contentType: "application/json; charset=utf-8",
-              dataType: "json",
-            xhrFields: {
-              withCredentials: true
-            },
-            method: 'post',
-            data: JSON.stringify({
-              password: $('#password-delete').val()
-            })
-          })
-          .done(function(whoami) {
-            $('#deleteAccountForm').hide();
-            $('#deleteAccountFormConfirm').show();
-          })
-          .fail(function() {
-            $('#deleteAccountFormError').show();
-            $(event.target).find('img').hide();
-          });
-
-        } else {
-          $('#passwordFormError').show();
-        }
-      }
-    }    
+    // delete: function(event) {
+    //   event.preventDefault();
+    //
+    //   var r = confirm("Are you sure you want to delete your account?");
+    //   if (r != true) {
+    //
+    //     $('.form-alert').hide();
+    //
+    //     if ($('#password').val() == $('#password2').val()) {
+    //       $(event.target).find('img').show();
+    //
+    //       $.ajax({
+    //         url: haDash.API + '/delete-account',
+    //         contentType: "application/json; charset=utf-8",
+    //           dataType: "json",
+    //         xhrFields: {
+    //           withCredentials: true
+    //         },
+    //         method: 'post',
+    //         data: JSON.stringify({
+    //           password: $('#password-delete').val()
+    //         })
+    //       })
+    //       .done(function(whoami) {
+    //         $('#deleteAccountForm').hide();
+    //         $('#deleteAccountFormConfirm').show();
+    //       })
+    //       .fail(function() {
+    //         $('#deleteAccountFormError').show();
+    //         $(event.target).find('img').hide();
+    //       });
+    //
+    //     } else {
+    //       $('#passwordFormError').show();
+    //     }
+    //   }
+    // }
 
   });
 
