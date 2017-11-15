@@ -32,7 +32,7 @@ export class CorsMiddleware implements NestMiddleware {
 
       // intercept OPTIONS method
       if (oneof && req.method == 'OPTIONS') {
-        res.send(200);
+        res.sendStatus(200);
       } else {
         next();
       }

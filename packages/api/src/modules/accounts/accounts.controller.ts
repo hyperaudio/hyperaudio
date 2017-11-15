@@ -8,17 +8,35 @@ import { Account } from './interfaces/account.interface';
 export class AccountsController {
   constructor(private readonly accountsService: AccountsService) {}
 
-  // // TODO set ns, owner
   // @Post()
   // async create(@Body() createAccountDto: CreateAccountDto) {
   //   this.accountsService.create(createAccountDto);
   // }
-  //
-  // // TODO check id
-  // @Put(':id')
-  // async update(@Param('id') id, @Body() updateAccountDto: UpdateAccountDto) {
-  //   this.accountsService.update(updateAccountDto);
-  // }
+
+  @Put('email')
+  async updateEmail(@Res() res, @Body('email') email, @Body('password') password) {
+    const id = res.get('X-UserID');
+    const namespace = res.get('X-Organisation');
+    res.send(await this.accountsService.updateEmail(email, password, id, namespace));
+  }
+
+  @Put('email/:token')
+  async updateEmailToken(@Param('token') token) {
+    return await this.accountsService.updateEmailToken(token);
+  }
+
+  @Post('register')
+  async register(@Res() res, @Body('username') username, @Body('password') password, @Body('email') email) {
+    const namespace = res.get('X-Organisation');
+    res.send(await this.accountsService.register(username, password, email, namespace));
+  }
+
+
+  @Post('reset')
+  async resetPassword(@Res() res, @Body('email') email) {
+    const namespace = res.get('X-Organisation');
+    res.send(await this.accountsService.resetPassword(email, namespace));
+  }
 
   @Get(':id')
   async findById(@Param('id') id ) {

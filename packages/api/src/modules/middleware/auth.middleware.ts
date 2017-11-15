@@ -8,7 +8,8 @@ export class AuthMiddleware implements NestMiddleware {
       if (req.get('Authorization')) {
         try {
           const decoded = jwt.verify(req.get('Authorization').split(' ').pop(), process.env.JWT_SECRET);
-          res.set('X-User', decoded.user);
+          if (decoded.user) res.set('X-User', decoded.user);
+          if (decoded.id) res.set('X-UserID', decoded.id);
         } catch (ignored) {}
       }
 
