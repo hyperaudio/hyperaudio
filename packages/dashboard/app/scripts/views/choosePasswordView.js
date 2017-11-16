@@ -34,13 +34,13 @@ haDash.Views = haDash.Views || {};
         $(event.target).find('img').show();
 
         $.ajax({
-          url: haDash.API + '/choose-password',
+          url: haDash.API + '/accounts/password',
           contentType: "application/json; charset=utf-8",
-            dataType: "json",
+          dataType: "json",
           xhrFields: {
             withCredentials: true
           },
-          method: 'post',
+          method: 'put',
           data: JSON.stringify({
             password: $('#password').val()
           })
