@@ -68,7 +68,9 @@ haDash.Routers = haDash.Routers || {};
       'token/:token': 'signInToken',
 
       'add-media/': 'addMedia',
-      'settings/': 'settings'
+      'settings/': 'settings',
+
+      '404/': 'notFound'
     },
 
     addMedia: function() {
@@ -172,6 +174,12 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.login').addClass('active');
       document.title = "Hyperaudio Reset Password";
       $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    notFound: function() {
+      $('.header-navigation a').removeClass('active');
+      document.title = "404 Not Found";
+      $main.empty().append(new haDash.Views.NotFoundView({}).el);
     },
 
     choosePassword: function() {
