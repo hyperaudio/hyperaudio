@@ -203,7 +203,7 @@ export class AccountsService {
     });
   }
 
-  async register(username, password, email, namespace) {
+  async register(username, email, namespace) {
     if (await this.accountModel.findOne({ email }).exec()) {
       return { error: 'duplicate email'};
     }
@@ -214,17 +214,17 @@ export class AccountsService {
     const account = new this.accountModel();
     account._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     account.username = username;
-    await new Promise((resolve, reject) => {
-      account.setPassword(password, (err, res) => {
-        if (err) return reject(err);
-        resolve(res);
-      });
-    });
+    // await new Promise((resolve, reject) => {
+    //   account.setPassword(password, (err, res) => {
+    //     if (err) return reject(err);
+    //     resolve(res);
+    //   });
+    // });
     await account.save();
 
     const expiresIn = 3600 * 24 * 2;
     const secretOrKey = process.env.JWT_SECRET;
-    const payload = { id: account._id, user: account.username, new: true};
+    const payload = { id: account._id, user: account.username };
     const token = jwt.sign(payload, secretOrKey, { expiresIn });
 
     let domain = process.env.DOMAIN;
