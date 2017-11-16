@@ -216,11 +216,7 @@ haDash.Routers = haDash.Routers || {};
             if (whoami.user) {
               window.localStorage.setItem('user', payload.user);
               window.localStorage.setItem('token', token);
-              if (payload.new){
-                haDash.router.navigate("media/", {trigger: true});
-              } else{
-                haDash.router.navigate("choose-password/", {trigger: true});
-              }
+              haDash.router.navigate("choose-password/", {trigger: true});
             }
           })
           .fail(function() {
