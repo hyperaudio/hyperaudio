@@ -47,21 +47,37 @@ haDash.Views = haDash.Views || {};
                 email: $('#email').val(),
             })
         })
-        .done(function(whoami) {
+        .done(function(data) {
           //haDash.router.navigate("signin/", {trigger: true});
-          $(event.target).find('img').hide();
-          $('#signup').hide();
-          $('#registerCheckMail').show();
+
+          if (data.error) {
+            var el = $('#' + data.error);
+            if (el.length > 0) {
+              el.show();
+            } else {
+              var ee = $('<pre></pre>').text(e.stack);
+              $('#genericError').show().text('Server Error: ' + e.message).append(ee);
+            }
+
+          } else {
+            $(event.target).find('img').hide();
+            $('#signup').hide();
+            $('#registerCheckMail').show();
+          }
         })
         .fail(function(e) {
 
-          if (e.status == "401") {
-            $('#registerUsernameError').show();
-          }
+          // if (e.status == "401") {
+          //   $('#registerUsernameError').show();
+          // }
+          //
+          // if (e.status == "409") {
+          //   $('#registerEmailError').show();
+          // }
 
-          if (e.status == "409") {
-            $('#registerEmailError').show();
-          }
+          var ee = $('<pre></pre>').text(e.stack);
+          $('#genericError').show().text('Server Error: ' + e.message).append(ee);
+
 
           $(event.target).find('img').hide();
         });
