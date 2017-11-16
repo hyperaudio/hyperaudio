@@ -249,7 +249,7 @@ haDash.Routers = haDash.Routers || {};
 
     onRouteNotFound: function(){
       console.log("Route not found, redirecting...");
-      Backbone.history.navigate('login/', {trigger: true});
+      Backbone.history.navigate('404/', { trigger: true });
     }
   });
 })();
