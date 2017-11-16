@@ -7,10 +7,43 @@ haDash.Routers = haDash.Routers || {};
 
   var $main = $('#main');
 
+  /////////////////////////////////////////////////////
+  // https://github.com/STRML/backbone.routeNotFound //
+  /////////////////////////////////////////////////////
+  /*global Backbone: true, _:true */
+  (function() {
+    /**
+     * Backbone.routeNotFound
+     *
+     * Simple plugin that listens for false returns on Backbone.history.loadURL and fires an event
+     * to let the application know that no routes matched.
+     *
+     * @author STRML
+     */
+    var oldLoadUrl = Backbone.History.prototype.loadUrl;
+
+    _.extend(Backbone.History.prototype, {
+
+      /**
+       * Override loadUrl & watch return value. Trigger event if no route was matched.
+       * @return {Boolean} True if a route was matched
+       */
+      loadUrl : function() {
+        var matched = oldLoadUrl.apply(this, arguments);
+        if(!matched){
+          this.trigger('routeNotFound', arguments);
+        }
+        return matched;
+      }
+    });
+  }).call(this);
+  /////////////////////////////////////////////////////
+
   haDash.Routers.Router = Backbone.Router.extend({
     //http://sizeableidea.com/adding-google-analytics-to-your-backbone-js-app/
     initialize: function() {
       this.bind('route', this.pageView);
+      this.listenTo(Backbone.history, 'routeNotFound', this.onRouteNotFound);
     },
 
     routes: {
@@ -204,6 +237,11 @@ haDash.Routers = haDash.Routers || {};
       $('.header-navigation a.settings').addClass('active');
       document.title = "Hyperaudio Settings";
       $main.empty().append(new haDash.Views.SettingsView({}).el);
+    },
+
+    onRouteNotFound: function(){
+      console.log("Route not found, redirecting...");
+      Backbone.history.navigate('login/', {trigger: true});
     }
   });
 })();
