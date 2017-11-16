@@ -205,10 +205,10 @@ export class AccountsService {
 
   async register(username, email, namespace) {
     if (await this.accountModel.findOne({ email }).exec()) {
-      return { error: 'duplicate email'};
+      return { error: 'registerEmailError'};
     }
     if (await this.accountModel.findOne({ username }).exec()) {
-      return { error: 'duplicate user'};
+      return { error: 'registerUsernameError'};
     }
 
     const account = new this.accountModel();
