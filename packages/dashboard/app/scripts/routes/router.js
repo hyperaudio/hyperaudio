@@ -20,14 +20,14 @@ haDash.Routers = haDash.Routers || {};
       'mixes/:id': 'mixDetail',
       'media/': 'media',
       'media/:id': 'mediaDetail',
-      // 'media/#:id': 'mediaDetail',
 
       'signin/': 'signin',
       'login/': 'signin',
 
       'signout/': 'signout',
+      'logout/': 'signout',
 
-      'beta-signup/': 'signup',
+      'register/': 'signup',
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
@@ -39,7 +39,6 @@ haDash.Routers = haDash.Routers || {};
     },
 
     addMedia: function() {
-      console.log('ADD MEDIA');
       $main.empty().append(
         new haDash.Views.AddMediaView({
           model: new haDash.Models.MediaModel()
@@ -48,21 +47,18 @@ haDash.Routers = haDash.Routers || {};
     },
 
     dashboard: function() {
-      if (document.location.hash && document.location.hash.length > 5) {
-        return haDash.router.navigate(document.location.hash.substring(2), {trigger: true});
+      if (document.location.hash && document.location.hash.startsWith('#!/')) {
+        return haDash.router.navigate(document.location.hash.substring(2), { trigger: true });
       }
 
       document.location = '/media/';
     },
 
     mixes: function() {
-      console.log('MIXES');
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.mixes').addClass('active');
       document.title = "Hyperaudio Mixes";
-      // if (!haDash.mixCollection) {
-        haDash.mixCollection = new haDash.Collections.MixCollection();
-      // }
+      haDash.mixCollection = new haDash.Collections.MixCollection();
 
       haDash.mixListView = new haDash.Views.MixListView({
         collection: haDash.mixCollection
@@ -73,27 +69,17 @@ haDash.Routers = haDash.Routers || {};
     },
 
     media: function() {
-      if (document.location.hash && document.location.hash.length > 5) {
-        return haDash.router.navigate("media/" + document.location.hash.substring(1), {trigger: true});
-      }
-
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.media').addClass('active');
       document.title = "Hyperaudio Media";
-      // console.log('MEDIA');
+      haDash.mediaCollection = new haDash.Collections.MediaCollection();
 
-      // if (!haDash.mediaCollection) {
-        haDash.mediaCollection = new haDash.Collections.MediaCollection();
-      // }
+      haDash.mediaListView = new haDash.Views.MediaListView({
+        collection: haDash.mediaCollection
+      });
 
-      // if (!haDash.mediaListView) {
-        haDash.mediaListView = new haDash.Views.MediaListView({
-          collection: haDash.mediaCollection
-        });
-      // }
       $main.empty().append(haDash.mediaListView.renderEmpty().el);
       haDash.mediaCollection.fetch();
-
     },
 
     mediaDetail: function(id) {
@@ -136,24 +122,6 @@ haDash.Routers = haDash.Routers || {};
     signout: function() {
       document.title = "Hyperaudio Logout";
 
-      // $.ajax({
-      //   url: haDash.API + '/logout',
-      //   contentType: "application/json; charset=utf-8",
-      //     dataType: "json",
-      //   xhrFields: {
-      //     withCredentials: true
-      //   },
-      //   method: 'post',
-      //   data: JSON.stringify({
-      //     _csfr: 'TODO'
-      //   }),
-      //   success: function() {
-      //     // haDash.whoami(function() {
-      //     //   haDash.router.navigate("mixes/", {trigger: true});
-      //     // });
-      //     document.location = '/';
-      //   }
-      // });
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('user');
       document.location = '/';
@@ -188,9 +156,6 @@ haDash.Routers = haDash.Routers || {};
             url: haDash.API + '/accounts/email/' + token,
             contentType: "application/json; charset=utf-8",
             dataType: "json",
-            xhrFields: {
-              withCredentials: true
-            },
             method: 'put',
             data: JSON.stringify({})
           })
@@ -205,9 +170,6 @@ haDash.Routers = haDash.Routers || {};
       } else {
         $.ajax({
             url: haDash.API + '/auth/whoami/' + token,
-            xhrFields: {
-              withCredentials: true
-            },
             method: 'get'
           })
           .done(function(whoami) {
@@ -243,7 +205,5 @@ haDash.Routers = haDash.Routers || {};
       document.title = "Hyperaudio Settings";
       $main.empty().append(new haDash.Views.SettingsView({}).el);
     }
-
   });
-
 })();

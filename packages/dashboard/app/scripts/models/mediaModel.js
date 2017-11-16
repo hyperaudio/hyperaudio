@@ -6,7 +6,6 @@ haDash.Models = haDash.Models || {};
   'use strict';
 
   haDash.Models.MediaModel = Backbone.Model.extend({
-
       idAttribute: "_id",
 
       defaults: function() {
@@ -25,5 +24,4 @@ haDash.Models = haDash.Models || {};
         };
       }
   });
-
 })();

@@ -2,7 +2,6 @@
 Backbone.emulateJSON = false;
 jQuery.timeago.settings.allowFuture = true;
 
-
 var namespace = null; // default no namespace
 
 if (document.location.hostname.indexOf('hyperaud') > 0) {
@@ -23,11 +22,8 @@ if (document.location.hostname.indexOf('hyperaud.io') > -1) {
 }
 
 window.haDash = {
-
   lang: 'en',
-
   namespace: namespace,
-
   API: protocol + '//' + prefix + 'api.' + domain + '',
   Models: {},
   Collections: {},
@@ -43,8 +39,6 @@ window.haDash = {
       pushState: true
     });
 
-
-    // FUGLY -> TODO create a view?
     $('a.media').click(function(e){
       e.preventDefault();
       haDash.router.navigate('media/', {trigger: true});
@@ -64,13 +58,13 @@ window.haDash = {
       e.preventDefault();
       haDash.router.navigate('login/', {trigger: true});
     });
-
-
   },
 
   user: null,
 
   whoami: function(callback) {
+
+    // TODO refresh token
 
     // $.ajax({
     //   url: this.API + '/whoami',
@@ -112,7 +106,6 @@ window.haDash = {
       haDash.setUser({ user: null });
     }
 
-    // haDash.init();
     if (callback) callback();
   },
 
@@ -129,7 +122,6 @@ window.haDash = {
   },
 
   // socket: null,
-
   socketConnect: function () {
     // if (!window.socket) return;
     // // window.socket = io.connect('//' + prefix + 'api.' + domain + '/');
@@ -150,17 +142,17 @@ $(document).ready(function() {
   $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
     if (options.url.indexOf(haDash.API) == 0) {
       // options.xhrFields = {
-      //         withCredentials: true
-      //     };
+      //    withCredentials: true
+      //  };
       if (window.localStorage.getItem('token')) {
         jqXHR.setRequestHeader('Authorization', 'Bearer ' + window.localStorage.getItem('token'));
       }
     }
-        //FIXME see http://backbonetutorials.com/cross-domain-sessions/
-        // If we have a csrf token send it through with the next request
-        // if(typeof that.get('_csrf') !== 'undefined') {
-        //   jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
-        // }
+    // TBD see http://backbonetutorials.com/cross-domain-sessions/
+    // If we have a csrf token send it through with the next request
+    // if(typeof that.get('_csrf') !== 'undefined') {
+    //   jqXHR.setRequestHeader('X-CSRF-Token', that.get('_csrf'));
+    // }
   });
 
   $(document).ajaxStart(function(){

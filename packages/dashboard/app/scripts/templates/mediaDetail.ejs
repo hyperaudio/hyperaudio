@@ -1,8 +1,6 @@
 <h2 id="titleLabel" class="label editable" data-field="label"><%- label %></h2>
 
-<p>
-
-<%
+<p><%
 if (source.youtube && source.youtube.url) {%>
 <iframe width="420" height="315" frameborder="0" allowfullscreen src="https://www.youtube.com/embed/<%print(_.escape(source.youtube.url.split('=')[1])) %>">
 </iframe>
@@ -14,9 +12,7 @@ if (source.youtube && source.youtube.url) {%>
 </audio>
 <%
 }
-%>
-
-</p>
+%></p>
 
 <p id="descLabel" class="lead desc editable" data-field="desc"><%
   var lines = desc.split("\n");
@@ -32,7 +28,6 @@ if (source.youtube && source.youtube.url) {%>
 <p>Tags : <input type="hidden" class="tags" value="<%
 print(tags.join(','));
 %>"></p>
-
 
 <a class="button primary" href="/maker/?m=<%- _id%>">Create Transcript</a>
 <a class="button primary" href="/converter/?m=<%- _id%>">Convert Transcript</a>

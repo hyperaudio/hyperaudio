@@ -4,7 +4,6 @@ haDash.Collections = haDash.Collections || {};
 
 (function () {
     'use strict';
-
     haDash.Collections.TranscriptCollection = Backbone.Collection.extend({
 
       model: haDash.Models.TranscriptModel,
@@ -16,7 +15,5 @@ haDash.Collections = haDash.Collections || {};
       comparator: function(model) {
          return - new Date(model.get('modified')).getTime();
       }
-
     });
-
 })();

@@ -22,9 +22,7 @@
 </td>
 <td>
   <% if (owner == haDash.user) { %>
-
     <% if (type == "text") { %>
-
       <% if (status && status != '') { %>
         <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
       <% } else { %>
@@ -49,16 +47,13 @@
 
   <% } else if (type == "srt") { %>
     <a class="button small primary" href="/converter/?t=<%= _id%>">Convert</a>
-
   <% } %>
+
     <button class="button tDelete">Delete</button>
 
   <% } else { %>
     <a class="button small primary" href="/pad/viewer/?t=<%= _id%>" target="_new">View</a>
     <a class="button small" href="/pad/?t=<%= _id%>">Mix</a>
     <button class="button tClone">Copy</button>
-
   <% } %>
 </td>
-
-

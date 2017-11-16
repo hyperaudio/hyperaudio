@@ -6,8 +6,7 @@ haDash.Models = haDash.Models || {};
     'use strict';
 
     haDash.Models.TranscriptModel = Backbone.Model.extend({
-
-        idAttribute: "_id",
+      idAttribute: "_id",
 
       defaults: function() {
         return {
@@ -24,5 +23,4 @@ haDash.Models = haDash.Models || {};
         };
       }
     });
-
 })();
