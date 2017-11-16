@@ -269,12 +269,23 @@ export class AccountsService {
       tags: [ 'password-resets' ]
     };
 
-    mandrillClient.messages.send({"message": message, "async": false, "ip_pool": "Main Pool"}, result => {
+    mandrillClient.messages.send({ "message": message, "async": false, "ip_pool": "Main Pool" }, result => {
       console.log(result);
       return result;
     }, error => {
       console.log(error);
       return { error };
+    });
+  }
+
+  async updatePassword(password, id) {
+    const account = await this.accountModel.findById(id).exec();
+
+    return await new Promise((resolve, reject) => {
+      account.setPassword(password, (err, res) => {
+        if (err) return reject(err);
+        resolve(res);
+      });
     });
   }
 }

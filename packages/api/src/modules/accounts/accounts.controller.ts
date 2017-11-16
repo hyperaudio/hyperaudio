@@ -25,10 +25,16 @@ export class AccountsController {
     return await this.accountsService.updateEmailToken(token);
   }
 
+  @Put('password')
+  async updatePassword(@Res() res, @Body('password') password) {
+    const id = res.get('X-UserID');
+    res.send(await this.accountsService.updatePassword(password, id));
+  }
+
   @Post('register')
-  async register(@Res() res, @Body('username') username, @Body('password') password, @Body('email') email) {
+  async register(@Res() res, @Body('username') username, @Body('email') email) {
     const namespace = res.get('X-Organisation');
-    res.send(await this.accountsService.register(username, password, email, namespace));
+    res.send(await this.accountsService.register(username, email, namespace));
   }
 
 
