@@ -4,12 +4,9 @@ haDash.Views = haDash.Views || {};
 
 (function () {
     'use strict';
-
     haDash.Views.ResetPasswordView = Backbone.View.extend({
-
     id: 'passwordView',
-
-        template: JST['app/scripts/templates/resetPassword.ejs'],
+    template: JST['app/scripts/templates/resetPassword.ejs'],
 
     initialize: function() {
       this.render();
@@ -17,7 +14,6 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template());
-
       return this;
     },
 
@@ -43,13 +39,25 @@ haDash.Views = haDash.Views || {};
           email: $('#email').val()
         })
       })
-      .done(function(whoami) {
+      .done(function(data) {
         //console.log(whoami);
-        $('#send').hide();
-        $('#passwordFormConfirm').show();
+        if (data.error) {
+          var el = $('#' + data.error);
+          if (el.length > 0) {
+            el.show();
+          } else {
+            var ee = $('<pre></pre>').text(e.stack);
+            $('#genericError').show().text('Server Error: ' + e.message).append(ee);
+          }
+        } else {
+          $('#send').hide();
+          $('#passwordFormConfirm').show();
+        }
       })
-      .fail(function() {
-        $('#passwordFormError').show();
+      .fail(function(e) {
+        var ee = $('<pre></pre>').text(e.stack);
+        $('#genericError').show().text('Server Error: ' + e.message).append(ee);
+        // $('#passwordFormError').show();
         $(event.target).find('img').hide();
       });
     }

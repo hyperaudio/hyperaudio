@@ -4,12 +4,9 @@ haDash.Views = haDash.Views || {};
 
 (function () {
     'use strict';
-
     haDash.Views.SignUpView = Backbone.View.extend({
-
     id: 'signUpView',
-
-        template: JST['app/scripts/templates/signUp.ejs'],
+    template: JST['app/scripts/templates/signUp.ejs'],
 
     initialize: function() {
       this.render();
@@ -17,7 +14,6 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template());
-
       return this;
     },
 
@@ -48,8 +44,6 @@ haDash.Views = haDash.Views || {};
             })
         })
         .done(function(data) {
-          //haDash.router.navigate("signin/", {trigger: true});
-
           if (data.error) {
             var el = $('#' + data.error);
             if (el.length > 0) {
@@ -66,22 +60,10 @@ haDash.Views = haDash.Views || {};
           }
         })
         .fail(function(e) {
-
-          // if (e.status == "401") {
-          //   $('#registerUsernameError').show();
-          // }
-          //
-          // if (e.status == "409") {
-          //   $('#registerEmailError').show();
-          // }
-
           var ee = $('<pre></pre>').text(e.stack);
           $('#genericError').show().text('Server Error: ' + e.message).append(ee);
-
-
           $(event.target).find('img').hide();
         });
-
       } else {
         $('#registerTermsError').show();
       }

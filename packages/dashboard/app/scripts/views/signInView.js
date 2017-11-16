@@ -3,12 +3,9 @@
 haDash.Views = haDash.Views || {};
 
 (function () {
-  'use strict';
-
-  haDash.Views.SignInView = Backbone.View.extend({
-
+    'use strict';
+    haDash.Views.SignInView = Backbone.View.extend({
     id: 'signInView',
-
     template: JST['app/scripts/templates/signIn.ejs'],
 
     initialize: function() {
@@ -17,7 +14,6 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template());
-
       return this;
     },
 
@@ -34,9 +30,6 @@ haDash.Views = haDash.Views || {};
         url: haDash.API + '/accounts/token',
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        // xhrFields: {
-        //   withCredentials: true
-        // },
         method: 'post',
         data: JSON.stringify({
           username: $('#username').val(),
@@ -54,16 +47,25 @@ haDash.Views = haDash.Views || {};
         if (data.user) {
           haDash.router.navigate("mixes/", {trigger: true});
         } else {
-          $('#loginFormError').show();
+          if (data.error) {
+            var el = $('#' + data.error);
+            if (el.length > 0) {
+              el.show();
+            } else {
+              var ee = $('<pre></pre>').text(e.stack);
+              $('#genericError').show().text('Server Error: ' + e.message).append(ee);
+            }
+          }
+          // $('#loginFormError').show();
           $(event.target).find('img').hide();
         }
       })
-      .fail(function() {
-        $('#loginFormError').show();
+      .fail(function(e) {
+        // $('#loginFormError').show();
+        var ee = $('<pre></pre>').text(e.stack);
+        $('#genericError').show().text('Server Error: ' + e.message).append(ee);
         $(event.target).find('img').hide();
       });
-
     }
   });
-
 })();
