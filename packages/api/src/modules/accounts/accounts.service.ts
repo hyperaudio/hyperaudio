@@ -44,7 +44,7 @@ export class AccountsService {
 
   async createToken(username, password) {
     const user = await this.accountModel.findOne({ username }).exec();
-    if (! user) return {};
+    if (! user) return { error: 'loginFormError' };
 
     const authenticated = await new Promise((resolve, reject) => {
       user.authenticate(password, (err, res) => {
@@ -53,7 +53,7 @@ export class AccountsService {
       });
     });
 
-    if (! authenticated) return {};
+    if (! authenticated) return { error: 'loginFormError' };
 
     const expiresIn = 3600 * 24 * 30;
     const secretOrKey = process.env.JWT_SECRET;
@@ -146,6 +146,7 @@ export class AccountsService {
 
   async resetPassword(email, namespace) {
     const account = await this.accountModel.findOne({ email }).exec();
+    if (! account) return { error: 'passwordFormError' };
 
     const expiresIn = 3600 * 24 * 2;
     const secretOrKey = process.env.JWT_SECRET;
