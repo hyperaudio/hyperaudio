@@ -49,13 +49,13 @@ export class TranscriptsService {
   }
 
   async find(query: any): Promise<Transcript[]> {
-    console.log(query);
+    // console.log(query);
     return await this.transcriptModel.find(query).select('-meta -content').exec();
   }
 
   // TODO rename
   async find2(query: any): Promise<Transcript[]> {
-    console.log(query);
+    // console.log(query);
     return await this.transcriptModel.find(query).select('-meta -content').populate('media').exec();
   }
 

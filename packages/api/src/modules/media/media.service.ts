@@ -59,7 +59,7 @@ export class MediaService {
   }
 
   async find(query: any): Promise<Media[]> {
-    console.log(query);
+    // console.log(query);
     return await this.mediaModel.find(query).exec();
   }
 

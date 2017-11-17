@@ -49,7 +49,7 @@ export class MixesService {
   }
 
   async find(query: any): Promise<Mix[]> {
-    console.log(query);
+    // console.log(query);
     return await this.mixModel.find(query).select('-content').exec();
   }
 

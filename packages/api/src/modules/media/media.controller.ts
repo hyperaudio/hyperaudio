@@ -9,7 +9,7 @@ export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
   setupQuery(res: any, channel: any, tag: any, user: any) {
-    console.log(channel, tag, user);
+    // console.log(channel, tag, user);
 
     const query = {};
 
@@ -20,7 +20,7 @@ export class MediaController {
     if (tag) query['tags'] = { $in: [tag] };
     if (user) query['owner'] = user;
 
-    console.log(query);
+    // console.log(query);
     return query;
   }
 
