@@ -64,7 +64,7 @@ export class AccountsService {
 
   async updateEmail(email, password, id, namespace) {
     if (await this.accountModel.findOne({ email }).exec()) {
-      return { error: 'duplicate email'};
+      return { error: 'changeEmailError'};
     }
 
     const account = await this.accountModel.findById(id).exec();
@@ -75,7 +75,7 @@ export class AccountsService {
       });
     });
 
-    if (! authenticated) return { error: 'wrong password' };
+    if (! authenticated) return { error: 'changeEmailError' };
 
     const expiresIn = 3600 * 24 * 2;
     const secretOrKey = process.env.JWT_SECRET;
@@ -215,12 +215,7 @@ export class AccountsService {
     const account = new this.accountModel();
     account._id = urlSafeBase64.encode(uuid.v4(null, new Buffer(16), 0));
     account.username = username;
-    // await new Promise((resolve, reject) => {
-    //   account.setPassword(password, (err, res) => {
-    //     if (err) return reject(err);
-    //     resolve(res);
-    //   });
-    // });
+    account.email = email;
     await account.save();
 
     const expiresIn = 3600 * 24 * 2;
