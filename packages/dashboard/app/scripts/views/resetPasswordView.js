@@ -33,9 +33,6 @@ haDash.Views = haDash.Views || {};
         url: haDash.API + '/accounts/reset',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json',
-        xhrFields: {
-          withCredentials: true
-        },
         method: 'post',
         data: JSON.stringify({
           email: $('#email').val()

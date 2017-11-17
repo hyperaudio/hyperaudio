@@ -34,9 +34,6 @@ haDash.Views = haDash.Views || {};
           url: haDash.API + '/accounts/password',
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
-          xhrFields: {
-            withCredentials: true
-          },
           method: 'put',
           data: JSON.stringify({
             password: $('#password').val()

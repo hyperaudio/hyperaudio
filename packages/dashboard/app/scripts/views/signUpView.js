@@ -34,9 +34,6 @@ haDash.Views = haDash.Views || {};
           url: haDash.API + '/accounts/register',
           contentType: 'application/json; charset=utf-8',
           dataType: 'json',
-          xhrFields: {
-            withCredentials: true
-          },
           method: 'post',
           data: JSON.stringify({
             username: $('#username').val(),
