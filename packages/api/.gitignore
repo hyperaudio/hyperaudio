@@ -1,8 +1,27 @@
-node_modules/
-logs/*
+# dependencies
+/node_modules
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+
+# misc
 npm-debug.log
-*.zip
-logs/*.log
+
+# example
+/quick-start
+
+# tests
+/test
+/coverage
+/.nyc_output
+
+# dist
+/dist
+*.paw
+
+.env
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
