@@ -277,11 +277,17 @@ export class AccountsService {
   async updatePassword(password, id) {
     const account = await this.accountModel.findById(id).exec();
 
-    return await new Promise((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       account.setPassword(password, (error, res) => {
-        if (error) return reject({ error });
-        resolve(res);
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          resolve(res);
+        }
       });
     });
+
+    return await account.save();
   }
 }
