@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
   // Enable Home Page Slider
 
   $('.slider').cycle({
@@ -26,35 +25,35 @@ $(document).ready(function() {
       var e, i;
       i = $(this).attr('href');
       e = emailize($(this).attr('href'));
-      return $(this).attr('href', "mailto:" + e);
+      return $(this).attr('href', 'mailto:' + e);
     });
   };
   emailize = function(name) {
     var dom;
     dom = 'hyperaud';
-    return "" + (name.toLowerCase()) + "@" + dom + ".io";
+    return '' + name.toLowerCase() + '@' + dom + '.io';
   };
 
-  $('a.email').email()
+  $('a.email').email();
 
   // Speed up touch tap response time
 
-  document.addEventListener("touchstart", function(){}, true);
+  document.addEventListener('touchstart', function() {}, true);
 
   // Check for login
 
-  var API = 'http://api.hyperaud.io/v1';
+  // var API = 'http://api.hyperaud.io/v1';
 
-  $.ajax({
-    url: API + '/whoami',
-    xhrFields: {
-      withCredentials: true
-    },
-    timeout: 5000,
-    success: function(whoami) {
-      setUser(whoami);
-    }
-  });
+  // $.ajax({
+  //   url: API + '/whoami',
+  //   xhrFields: {
+  //     withCredentials: true
+  //   },
+  //   timeout: 5000,
+  //   success: function(whoami) {
+  //     setUser(whoami);
+  //   }
+  // });
 
   function setUser(whoami) {
     if (whoami.user) {
@@ -67,4 +66,7 @@ $(document).ready(function() {
     $('ul.header-navigation').fadeIn();
   }
 
+  if (window.localStorage.getItem('user')) {
+    setUser({ user: window.localStorage.getItem('user') });
+  }
 });
