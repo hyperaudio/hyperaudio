@@ -122,12 +122,12 @@ export class AccountsService {
         tags: [ 'password-resets' ]
       };
 
-    mandrillClient.messages.send({"message": message, "async": false, "ip_pool": "Main Pool"}, result => {
-      console.log(result);
-      return result;
-    }, error => {
-      console.log(error);
-      return { error };
+    return await new Promise((resolve, reject) => {
+      mandrillClient.messages.send({ "message": message, "async": false, "ip_pool": "Main Pool" }, result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      });
     });
   }
 
@@ -195,12 +195,12 @@ export class AccountsService {
       tags: [ 'password-resets' ]
     };
 
-    mandrillClient.messages.send({"message": message, "async": false, "ip_pool": "Main Pool"}, result => {
-      console.log(result);
-      return result;
-    }, error => {
-      console.log(error);
-      return { error };
+    return await new Promise((resolve, reject) => {
+      mandrillClient.messages.send({ "message": message, "async": false, "ip_pool": "Main Pool" }, result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      });
     });
   }
 
@@ -265,12 +265,12 @@ export class AccountsService {
       tags: [ 'password-resets' ]
     };
 
-    mandrillClient.messages.send({ "message": message, "async": false, "ip_pool": "Main Pool" }, result => {
-      console.log(result);
-      return result;
-    }, error => {
-      console.log(error);
-      return { error };
+    return await new Promise((resolve, reject) => {
+      mandrillClient.messages.send({ "message": message, "async": false, "ip_pool": "Main Pool" }, result => {
+        resolve(result);
+      }, error => {
+        reject(error);
+      });
     });
   }
 
@@ -278,8 +278,8 @@ export class AccountsService {
     const account = await this.accountModel.findById(id).exec();
 
     return await new Promise((resolve, reject) => {
-      account.setPassword(password, (err, res) => {
-        if (err) return reject(err);
+      account.setPassword(password, (error, res) => {
+        if (error) return reject({ error });
         resolve(res);
       });
     });
