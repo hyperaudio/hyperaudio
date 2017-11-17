@@ -1,12 +1,12 @@
 
-
+/*
 .browsehappy {
   padding: .2em !important;
   margin: 0;
   background: #333;
   color: #fff;
   padding: 0.2em 0;
-  text-align: center; }
+  text-align: center; }*/
 
 body.anonymous .user {
   display: none; }
@@ -15,14 +15,14 @@ body.user .anonymous {
   display: none; }
 body.user .editable {
   cursor: text; }
-  body.user .editable:hover {
-    background-color: #FFF7DD; }
-  body.user .editable:empty {
-    background-color: #FFF7DD;
-    min-width: 1em;
-    /* min-width: 1em; */
-    min-height: 1.2em;
-    display: inline-block; }
+body.user .editable:hover {
+  background-color: #FFF7DD; }
+body.user .editable:empty {
+  background-color: #FFF7DD;
+  min-width: 1em;
+  /* min-width: 1em; */
+  min-height: 1.2em;
+  display: inline-block; }
 
 table {
   border: none; }
@@ -37,7 +37,8 @@ table {
   overflow: hidden; }
 
 #loginForm button img, #registerForm button img {
-  display: none; }
+  display: none;
+}
 
 p div.tags, p div.channels {
   min-width: 10em; }
@@ -62,5 +63,5 @@ tr.lone {
 
 .loading tr.lone {
   display: none; }
-  .loading tr.lone:only-child {
-    display: table-row; }
+.loading tr.lone:only-child {
+  display: table-row; }

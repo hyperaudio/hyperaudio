@@ -3,6 +3,7 @@
     Sign up
   </h1>
 </hgroup>
+
 <div class="row">
   <div class="large-8 medium-8 small-12 columns large-offset-2 medium-offset-2">
     <form id="registerForm" class="form">
@@ -22,7 +23,7 @@
       </div>
 
       <div class="form-component">
-        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="http://hyperaud.io/terms-of-service/">The Hyperaud.io Terms of Service</a></label>
+        <label for="accept" class="form-label centered"><input id="accept" type="checkbox" name="accept" class="form-input"> I Accept <a class="link" href="/terms-of-service/">The Hyperaud.io Terms of Service</a></label>
         <p id="registerTermsError" style="display:none" class="form-alert">
           Please accept the terms of service.
         </p>
@@ -33,6 +34,9 @@
         <button id="signup" type="submit" class="button large primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Sign up</button>
         <p id="registerCheckMail" style="display:none" class="form-alert">
           Thanks. Instructions are being sent to your email address.
+        </p>
+        <p id="genericError" style="display:none" class="form-alert">
+          Unexpected error
         </p>
       </div>
     </form>

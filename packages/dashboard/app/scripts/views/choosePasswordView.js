@@ -2,15 +2,11 @@
 
 haDash.Views = haDash.Views || {};
 
-
-(function () {
-    'use strict';
-
-    haDash.Views.ChoosePasswordView = Backbone.View.extend({
-
+(function() {
+  'use strict';
+  haDash.Views.ChoosePasswordView = Backbone.View.extend({
     id: 'passwordView',
-
-        template: JST['app/scripts/templates/choosePassword.ejs'],
+    template: JST['app/scripts/templates/choosePassword.ejs'],
 
     initialize: function() {
       this.render();
@@ -18,7 +14,6 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template());
-
       return this;
     },
 
@@ -31,37 +26,52 @@ haDash.Views = haDash.Views || {};
       $('#passwordFormError').hide();
 
       if ($('#password').val() == $('#password2').val()) {
-        $(event.target).find('img').show();
+        $(event.target)
+          .find('img')
+          .show();
 
         $.ajax({
-          url: haDash.API + '/choose-password',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
+          url: haDash.API + '/accounts/password',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'put',
           data: JSON.stringify({
             password: $('#password').val()
           })
         })
-        .done(function(whoami) {
-          /*console.log(whoami);
+          .done(function(data) {
+            /*console.log(whoami);
           $('#passwordForm').hide();
           $('#passwordFormConfirm').show();*/
-          window.location = "/pad/";
-        })
-        .fail(function() {
-          $('#passwordFormError').show();
-          $(event.target).find('img').hide();
-        });
-
+            if (data.error) {
+              var el = $('#' + data.error);
+              if (el.length > 0) {
+                el.show();
+              } else {
+                var ee = $('<pre></pre>').text(e.stack);
+                $('#genericError')
+                  .show()
+                  .text('Server Error: ' + e.message)
+                  .append(ee);
+              }
+            } else {
+              window.location = '/media/';
+            }
+          })
+          .fail(function(e) {
+            // $('#passwordFormError').show();
+            var ee = $('<pre></pre>').text(e.stack);
+            $('#genericError')
+              .show()
+              .text('Server Error: ' + e.message)
+              .append(ee);
+            $(event.target)
+              .find('img')
+              .hide();
+          });
       } else {
         $('#passwordFormError').show();
       }
-
     }
-
   });
-
 })();

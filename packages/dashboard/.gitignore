@@ -12,3 +12,7 @@ test/bower_components/
 *.zip
 
 npm-debug.log
+app/dashboard
+app/media
+app/mixes
+app/settings

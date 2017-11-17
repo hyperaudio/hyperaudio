@@ -1,166 +1,161 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Hyperaudio dashboard*</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <base href="/dashboard/">
-        <link rel="shortcut icon" href="favicon.ico">
-        <!-- <base href="/"> -->
-        <link rel="stylesheet" href="//hyperaud.io/assets/fonts/hyperaudio/style.css">
-        <link rel="stylesheet" href="//hyperaud.io/assets/stylesheets/css/main.css">
-        <link rel="stylesheet" href="//hyperaud.io/assets/stylesheets/hyperaudio.css">
-        <link rel="stylesheet" href="//hyperaud.io/assets/tours/shepherd/css/shepherd-theme-hyperaudio.css" />
-        <!-- build:css(.tmp) styles/main.css -->
-        <link rel="stylesheet" href="styles/select2.css">
-        <link rel="stylesheet" href="styles/main.css">
-        <link rel="stylesheet" href="styles/spinner.css">
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Hyperaudio dashboard</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <base href="/dashboard/">
+    <link rel="shortcut icon" href="favicon.ico">
+    <!-- <base href="/"> -->
+    <link rel="stylesheet" href="/assets/fonts/hyperaudio/style.css">
+    <link rel="stylesheet" href="/assets/stylesheets/css/main.css">
+    <link rel="stylesheet" href="/assets/stylesheets/hyperaudio.css">
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="styles/select2.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/spinner.css">
+    <!-- endbuild -->
 
-        <!-- endbuild -->
-        <link rel="stylesheet" href="/assets/stylesheets/css/custom.css">
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="bower_components/console-polyfill/index.js"></script>
-        <script src="bower_components/tracekit/tracekit.js"></script>
-        <!-- endbuild -->
-        <script type="text/javascript" src="http://hyperaud.io/assets/tours/shepherd/shepherd.min.js"></script>
-    </head>
-    <body class="tpl_site index">
-        <!--[if lt IE 10]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-       <![endif]-->
+    <link rel="stylesheet" href="/assets/stylesheets/css/custom.css">
 
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="bower_components/console-polyfill/index.js"></script>
+    <script src="bower_components/tracekit/tracekit.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body class="tpl_site index">
+    <header class="header branded">
+      <div class="container row">
+        <div class="small-12 large-4 medium-6 columns">
+          <h1 class="header-brandmark">
+            <a class="brandmark" href="/">
+              <span data-picture="" class="brandmark-symbol">
+                <span data-src="/assets/images/inserts/logo-hyperaudio.png"></span>
+                <span data-src="/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"><img src="/assets/images/inserts/logo-hyperaudio@2x.png"></span>
+                <span data-src="/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
+              </span>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+        <div class="small-12 large-8 medium-6 columns">
+          <ul class="header-navigation header-navigation">
+            <li class="header-navigation-item"><a href="/tour/">Tour</a></li>
+            <li class="header-navigation-item header-navigation-item-blog"><a href="/blog/">Blog</a></li>
+            <li class="header-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li>
+            <li class="header-navigation-item"><a class="media" href="/media/">Media</a></li>
+            <li class="header-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
+            <li class="header-navigation-item anonymous"><a class="altered register" href="/signup/">Sign up</a></li>
+            <li class="header-navigation-item anonymous"><a class="button small login" href="/login/">Log in</a></li>
+            <li class="header-navigation-item user"><a class="button small logout" href="/signout/">Log out</a></li>
+          </ul>
+        </div>
+      </div>
+    </header>
 
-        <header class="header branded">
-          <div class="container row">
-            <div class="small-12 large-4 medium-6 columns">
-              <h1 class="header-brandmark">
-                <a class="brandmark" href="/">
-                  <span data-picture="" class="brandmark-symbol">
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio.png"></span>
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"><img src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png"></span>
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
-                  </span>
-                  <span class="brandmark-label">Hyperaudio</span>
-                </a>
-              </h1>
-            </div>
-            <div class="small-12 large-8 medium-6 columns">
-              <ul class="header-navigation header-navigation">
-                <li class="header-navigation-item"><a href="http://hyperaud.io/tour/">Tour</a></li>
-                <li class="header-navigation-item header-navigation-item-blog"><a href="http://hyperaud.io/blog/">Blog</a></li>
-                <li class="header-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li>
-                <li class="header-navigation-item"><a class="media" href="/media/">Media</a></li>
-                <li class="header-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
-                <li class="header-navigation-item anonymous"><a class="altered register" href="/signup/">Sign up</a></li>
-                <li class="header-navigation-item anonymous"><a class="button small login" href="/login/">Log in</a></li>
-                <li class="header-navigation-item user"><a class="button small logout" href="/signout/">Log out</a></li>
-              </ul>
-            </div>
-          </div>
-        </header>
+    <section class="section">
+        <div id="main" class="container">
+            <!-- Loading… -->
+        </div>
+    </section>
 
-        <section class="section">
-            <div id="main" class="container">
-                <!-- Loading… -->
-            </div>
-        </section>
+    <footer class="footer lt_footer">
+      <div class="container row">
+        <div class="small-12 large-9 medium-9 push-3 columns">
+          <ul class="footer-navigation">
+            <li class="footer-navigation-item"><a href="/tour/">Tour</a></li>
+            <li class="footer-navigation-item"><a href="/blog/">Blog</a></li>
+            <li class="footer-navigation-item"><a href="/faq/">FAQ</a></li>
+            <!-- <li class="footer-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li> -->
+            <!-- <li class="footer-navigation-item"><a class="media" href="/media/">Media</a></li> -->
+            <li class="footer-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
+            <li class="footer-navigation-item"><a href="mailto:mark@hyperaud.io" class="email">Contact</a></li>
+            <li class="footer-navigation-item"><a href="https://groups.google.com/forum/#!forum/hyperaudio">Community</a></li>
+            <li class="footer-navigation-item"><a href="https://twitter.com/hyperaud_io">Twitter</a></li>
+            <li class="footer-navigation-item"><a href="https://github.com/hyperaudio">Github</a></li>
+          </ul>
+        </div>
+        <div class="small-12 large-3 medium-3 pull-9 columns">
+          <h1 class="footer-brandmark">
+            <a class="brandmark" href="/">
+              <span data-picture="" class="brandmark-symbol">
+                <span data-src="/assets/images/inserts/logo-hyperaudio.png"></span>
+                <span data-src="/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"><img src="/assets/images/inserts/logo-hyperaudio@2x.png"></span>
+                <span data-src="/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
+              </span>
+              <span class="brandmark-label">Hyperaudio</span>
+            </a>
+          </h1>
+        </div>
+      </div>
+      <div class="container">
+        <div class="footer-imprint">
+          <p>The Hyperaudio Project is a global non-profit group producing Open Source software</p>
+          <p>© 2012-2017 The Hyperaudio Project. All rights reserved.</p>
+          <p class="footer-imprint-links">
+            <a href="/terms-of-service/">Terms of Service</a> | <a href="/licensing">License</a> | <a href="/cla">CLA</a>
+          </p>
+        </p></div>
+      </div>
+    </footer>
 
-        <footer class="footer lt_footer">
-          <div class="container row">
-            <div class="small-12 large-9 medium-9 push-3 columns">
-              <ul class="footer-navigation">
-                <li class="footer-navigation-item"><a href="http://hyperaud.io/tour/">Tour</a></li>
-                <li class="footer-navigation-item"><a href="http://hyperaud.io/blog/">Blog</a></li>
-                <li class="footer-navigation-item"><a class="mixes" href="/mixes/">Mixes</a></li>
-                <li class="footer-navigation-item"><a class="media" href="/media/">Media</a></li>
-                <li class="footer-navigation-item user"><a class="settings" href="/settings/">Settings</a></li>
-                <li class="footer-navigation-item"><a href="mailto:mark@hyperaud.io" class="email">Contact</a></li>
-                <li class="footer-navigation-item"><a href="https://groups.google.com/forum/#!forum/hyperaudio">Community</a></li>
-                <li class="footer-navigation-item"><a href="https://twitter.com/hyperaud_io">Twitter</a></li>
-              </ul>
-            </div>
-            <div class="small-12 large-3 medium-3 pull-9 columns">
-              <h1 class="footer-brandmark">
-                <a class="brandmark" href="http://hyperaud.io/">
-                  <span data-picture="" class="brandmark-symbol">
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio.png"></span>
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(-webkit-min-device-pixel-ratio:2)"><img src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png"></span>
-                    <span data-src="//hyperaud.io/assets/images/inserts/logo-hyperaudio@2x.png" data-media="(min-resolution: 192dpi)"></span>
-                  </span>
-                  <span class="brandmark-label">Hyperaudio</span>
-                </a>
-              </h1>
-            </div>
-          </div>
-          <div class="container">
-            <div class="footer-imprint">
-              <p>Hyperaudio <abbr title="Incorporated">Inc</abbr>. is producing Open Source software, established in Rhode Island, USA.</p>
-              <p>© 2012–2015 Hyperaudio Incorporated. All rights reserved.</p>
-              <p><a href="http://hyperaud.io/terms-of-service/">Terms of Service</a> <!-- | <a href="#">Privacy Policy</a></p> -->
-            </p></div>
-          </div>
-        </footer>
+    <!-- build:js scripts/vendor.js -->
+    <script src="bower_components/jquery/jquery.js"></script>
+    <script src="bower_components/foundation/js/foundation.js"></script>
+    <script src="bower_components/jquery-timeago/jquery.timeago.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/backbone/backbone.js"></script>
+    <script src="bower_components/select2/select2.js"></script>
+    <script src="bower_components/jssha/src/sha1.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
+    <script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
+    <script src="bower_components/base64/base64.js"></script>
+    <!-- endbuild -->
 
-        <!-- build:js scripts/vendor.js -->
-        <script src="bower_components/jquery/jquery.js"></script>
-        <script src="bower_components/foundation/js/foundation.js"></script>
-        <script src="bower_components/foundation/js/foundation/foundation.reveal.js"></script>
-        <script src="bower_components/foundation/js/foundation/foundation.tooltip.js"></script>
-        <script src="bower_components/jquery-timeago/jquery.timeago.js"></script>
-        <script src="bower_components/underscore/underscore.js"></script>
-        <script src="bower_components/backbone/backbone.js"></script>
-        <script src="bower_components/select2/select2.js"></script>
-        <script src="bower_components/jssha/src/sha1.js"></script>
-        <!-- // <script src="bower_components/backbone-query-parameters/backbone-query-parameters.js"></script> -->
+    <!-- // <script src="bower_components/backbone-query-parameters/backbone-query-parameters.js"></script> -->
 
-        <!-- endbuild -->
+    <!-- build:js scripts/plugins.js -->
+    <script src="bower_components/picturefill/picturefill.js"></script>
+    <!-- endbuild -->
 
-        <!-- build:js scripts/plugins.js -->
-        <script src="bower_components/picturefill/picturefill.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <script src="scripts/templates.js"></script>
+    <script src="scripts/models/mixModel.js"></script>
+    <script src="scripts/collections/mixCollection.js"></script>
+    <script src="scripts/routes/router.js"></script>
+    <script src="scripts/views/mixView.js"></script>
+    <script src="scripts/views/mixListView.js"></script>
+    <script src="scripts/views/signInView.js"></script>
+    <script src="scripts/views/signUpView.js"></script>
+    <script src="scripts/models/mediaModel.js"></script>
+    <script src="scripts/collections/mediaCollection.js"></script>
+    <script src="scripts/views/mediaView.js"></script>
+    <script src="scripts/views/mediaListView.js"></script>
+    <script src="scripts/views/mediaDetailView.js"></script>
+    <script src="scripts/views/addMediaView.js"></script>
+    <script src="scripts/models/transcriptModel.js"></script>
+    <script src="scripts/collections/transcriptCollection.js"></script>
+    <script src="scripts/views/transcriptView.js"></script>
+    <script src="scripts/views/transcriptListView.js"></script>
+    <script src="scripts/views/mixDetailView.js"></script>
+    <script src="scripts/views/resetPasswordView.js"></script>
+    <script src="scripts/views/choosePasswordView.js"></script>
+    <script src="scripts/views/settingsView.js"></script>
+    <script src="scripts/views/404.js"></script>
+    <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/main.js -->
-        <script src="scripts/main.js"></script>
-        <script src="scripts/templates.js"></script>
-        <script src="scripts/models/mixModel.js"></script>
-        <script src="scripts/collections/mixCollection.js"></script>
-        <script src="scripts/routes/router.js"></script>
-        <script src="scripts/views/mixView.js"></script>
-        <script src="scripts/views/mixListView.js"></script>
-        <script src="scripts/views/signInView.js"></script>
-        <script src="scripts/views/signUpView.js"></script>
-        <script src="scripts/models/mediaModel.js"></script>
-        <script src="scripts/collections/mediaCollection.js"></script>
-        <script src="scripts/views/mediaView.js"></script>
-        <script src="scripts/views/mediaListView.js"></script>
-        <script src="scripts/views/mediaDetailView.js"></script>
-        <script src="scripts/views/addMediaView.js"></script>
-        <script src="scripts/models/transcriptModel.js"></script>
-        <script src="scripts/collections/transcriptCollection.js"></script>
-        <script src="scripts/views/transcriptView.js"></script>
-        <script src="scripts/views/transcriptListView.js"></script>
-        <script src="scripts/views/mixDetailView.js"></script>
-        <script src="scripts/views/mixDetail.js"></script>
-        <script src="scripts/views/resetPasswordView.js"></script>
-        <script src="scripts/views/choosePasswordView.js"></script>
-        <script src="scripts/views/settingsView.js"></script>
-        <!-- endbuild -->
+    <script src="/commons/tools/analytics/ga.js"></script>
+    <!-- // <script src="//api.hyperaud.io/socket.io/socket.io.js"></script> -->
 
-        <script src="//hyperaud.io/commons/tools/analytics/ga.js"></script>
-
-        <!-- // <script src="//api.hyperaud.io/socket.io/socket.io.js"></script> -->
-
-        <script>
-        // document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
-        </script>
-        <!-- <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script> -->
-        <script>
-        // var socket = io.connect('//' + prefix + 'api.' + domain + '/');
-        </script>
-</body>
+    <script>
+    // document.write('<'+'script src="http://' + prefix + 'api.' + domain + '/socket.io/socket.io.js"><'+'/script>');
+    </script>
+    <!-- <script src="https://cdn.socket.io/socket.io-1.1.0.js"></script> -->
+    <script>
+    // var socket = io.connect('//' + prefix + 'api.' + domain + '/');
+    </script>
+  </body>
 </html>

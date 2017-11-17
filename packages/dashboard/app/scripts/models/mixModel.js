@@ -6,14 +6,13 @@ haDash.Models = haDash.Models || {};
   'use strict';
 
   haDash.Models.MixModel = Backbone.Model.extend({
-
-    idAttribute: "_id",
+    idAttribute: '_id',
 
     defaults: function() {
       return {
-        label: "",
-        desc: "",
-        type: "html",
+        label: '',
+        desc: '',
+        type: 'html',
         created: new Date().toISOString(),
         modified: new Date().toISOString(),
         owner: null,
@@ -23,7 +22,5 @@ haDash.Models = haDash.Models || {};
         channel: null
       };
     }
-
   });
-
 })();

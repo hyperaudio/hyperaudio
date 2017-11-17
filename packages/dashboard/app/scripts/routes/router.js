@@ -7,10 +7,42 @@ haDash.Routers = haDash.Routers || {};
 
   var $main = $('#main');
 
+  /////////////////////////////////////////////////////
+  // https://github.com/STRML/backbone.routeNotFound //
+  /////////////////////////////////////////////////////
+  /*global Backbone: true, _:true */
+  (function() {
+    /**
+     * Backbone.routeNotFound
+     *
+     * Simple plugin that listens for false returns on Backbone.history.loadURL and fires an event
+     * to let the application know that no routes matched.
+     *
+     * @author STRML
+     */
+    var oldLoadUrl = Backbone.History.prototype.loadUrl;
+
+    _.extend(Backbone.History.prototype, {
+      /**
+       * Override loadUrl & watch return value. Trigger event if no route was matched.
+       * @return {Boolean} True if a route was matched
+       */
+      loadUrl: function() {
+        var matched = oldLoadUrl.apply(this, arguments);
+        if (!matched) {
+          this.trigger('routeNotFound', arguments);
+        }
+        return matched;
+      }
+    });
+  }.call(this));
+  /////////////////////////////////////////////////////
+
   haDash.Routers.Router = Backbone.Router.extend({
     //http://sizeableidea.com/adding-google-analytics-to-your-backbone-js-app/
     initialize: function() {
       this.bind('route', this.pageView);
+      this.listenTo(Backbone.history, 'routeNotFound', this.onRouteNotFound);
     },
 
     routes: {
@@ -25,8 +57,9 @@ haDash.Routers = haDash.Routers || {};
       'login/': 'signin',
 
       'signout/': 'signout',
+      'logout/': 'signout',
 
-      'beta-signup/': 'signup',
+      'register/': 'signup',
       'signup/': 'signup',
 
       'reset-password/': 'resetPassword',
@@ -34,11 +67,12 @@ haDash.Routers = haDash.Routers || {};
       'token/:token': 'signInToken',
 
       'add-media/': 'addMedia',
-      'settings/': 'settings'
+      'settings/': 'settings',
+
+      '404/': 'notFound'
     },
 
     addMedia: function() {
-      console.log('ADD MEDIA');
       $main.empty().append(
         new haDash.Views.AddMediaView({
           model: new haDash.Models.MediaModel()
@@ -47,17 +81,18 @@ haDash.Routers = haDash.Routers || {};
     },
 
     dashboard: function() {
-      // console.log('Dashboard N/A');
+      if (document.location.hash && document.location.hash.startsWith('#!/')) {
+        return haDash.router.navigate(document.location.hash.substring(2), { trigger: true });
+      }
+
       document.location = '/media/';
     },
 
     mixes: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.mixes').addClass('active');
-      document.title = "Hyperaudio Mixes";
-      // if (!haDash.mixCollection) {
-        haDash.mixCollection = new haDash.Collections.MixCollection();
-      // }
+      document.title = 'Hyperaudio Mixes';
+      haDash.mixCollection = new haDash.Collections.MixCollection();
 
       haDash.mixListView = new haDash.Views.MixListView({
         collection: haDash.mixCollection
@@ -70,27 +105,21 @@ haDash.Routers = haDash.Routers || {};
     media: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.media').addClass('active');
-      document.title = "Hyperaudio Media";
-      // console.log('MEDIA');
+      document.title = 'Hyperaudio Media';
+      haDash.mediaCollection = new haDash.Collections.MediaCollection();
 
-      // if (!haDash.mediaCollection) {
-        haDash.mediaCollection = new haDash.Collections.MediaCollection();
-      // }
+      haDash.mediaListView = new haDash.Views.MediaListView({
+        collection: haDash.mediaCollection
+      });
 
-      // if (!haDash.mediaListView) {
-        haDash.mediaListView = new haDash.Views.MediaListView({
-          collection: haDash.mediaCollection
-        });
-      // }
       $main.empty().append(haDash.mediaListView.renderEmpty().el);
       haDash.mediaCollection.fetch();
-
     },
 
     mediaDetail: function(id) {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.media').addClass('active');
-      var model = new haDash.Models.MediaModel({_id: id});
+      var model = new haDash.Models.MediaModel({ _id: id });
       model.fetch({
         url: haDash.API + '/media/' + id
       });
@@ -105,7 +134,7 @@ haDash.Routers = haDash.Routers || {};
     mixDetail: function(id) {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.mixes').addClass('active');
-      var model = new haDash.Models.MixModel({_id: id});
+      var model = new haDash.Models.MixModel({ _id: id });
       model.fetch({
         url: haDash.API + '/mixes/' + id
       });
@@ -120,89 +149,92 @@ haDash.Routers = haDash.Routers || {};
     signin: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Login";
+      document.title = 'Hyperaudio Login';
       $main.empty().append(new haDash.Views.SignInView({}).el);
     },
 
     signout: function() {
-      document.title = "Hyperaudio Logout";
+      document.title = 'Hyperaudio Logout';
 
-      $.ajax({
-        url: haDash.API + '/logout',
-        contentType: "application/json; charset=utf-8",
-          dataType: "json",
-        xhrFields: {
-          withCredentials: true
-        },
-        method: 'post',
-        data: JSON.stringify({
-          _csfr: 'TODO'
-        }),
-        success: function() {
-          // haDash.whoami(function() {
-          //   haDash.router.navigate("mixes/", {trigger: true});
-          // });
-          document.location = '/';
-        }
-      });
-
+      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('user');
+      document.location = '/';
     },
 
     signup: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.register').addClass('active');
-      document.title = "Hyperaudio Sign Up";
+      document.title = 'Hyperaudio Sign Up';
       $main.empty().append(new haDash.Views.SignUpView({}).el);
     },
 
     resetPassword: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Reset Password";
+      document.title = 'Hyperaudio Reset Password';
       $main.empty().append(new haDash.Views.ResetPasswordView({}).el);
+    },
+
+    notFound: function() {
+      $('.header-navigation a').removeClass('active');
+      document.title = '404 Not Found';
+      $main.empty().append(new haDash.Views.NotFoundView({}).el);
     },
 
     choosePassword: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.login').addClass('active');
-      document.title = "Hyperaudio Choose a Password";
+      document.title = 'Hyperaudio Choose a Password';
       $main.empty().append(new haDash.Views.ChoosePasswordView({}).el);
     },
 
-    signInToken: function (token) {
-      $.ajax({
-          url: haDash.API + '/token-login',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
-          method: 'post',
-          data: JSON.stringify({
-            'access-token': token
+    signInToken: function(token) {
+      var payload = JSON.parse(window.atob(token.split('.')[1]));
+
+      if (payload.email) {
+        $.ajax({
+          url: haDash.API + '/accounts/email/' + token,
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'put',
+          data: JSON.stringify({})
+        })
+          .done(function(data) {
+            console.log(data);
+            alert('Email address changed to ' + payload.email);
+            haDash.router.navigate('media/', { trigger: true });
           })
+          .fail(function() {
+            console.log('error');
+          });
+      } else {
+        $.ajax({
+          url: haDash.API + '/auth/whoami/' + token,
+          method: 'get'
         })
-        .done(function(whoami) {
-          console.log(whoami);
-          // changePassword();
-          haDash.setUser(whoami);
-          if (whoami.user) {
-            haDash.router.navigate("choose-password/", {trigger: true});
-          }
-        })
-        .fail(function() {
-          console.log('error');
-        });
+          .done(function(whoami) {
+            console.log(whoami);
+            haDash.setUser(whoami);
+            if (whoami.user) {
+              window.localStorage.setItem('user', payload.user);
+              window.localStorage.setItem('token', token);
+              haDash.router.navigate('choose-password/', { trigger: true });
+            }
+          })
+          .fail(function() {
+            console.log('error');
+          });
+      }
     },
 
-    pageView : function(){
+    pageView: function() {
       var url = Backbone.history.getFragment();
 
-      if (!/^\//.test(url) && url != "") {
-          url = "/" + url;
+      if (!/^\//.test(url) && url != '') {
+        url = '/' + url;
       }
 
-      if(! _.isUndefined(window._gaq)){
+      if (!_.isUndefined(window._gaq)) {
         _gaq.push(['_trackPageview', url]);
       }
     },
@@ -210,10 +242,13 @@ haDash.Routers = haDash.Routers || {};
     settings: function() {
       $('.header-navigation a').removeClass('active');
       $('.header-navigation a.settings').addClass('active');
-      document.title = "Hyperaudio Settings";
+      document.title = 'Hyperaudio Settings';
       $main.empty().append(new haDash.Views.SettingsView({}).el);
+    },
+
+    onRouteNotFound: function() {
+      console.log('Route not found, redirecting...');
+      Backbone.history.navigate('404/', { trigger: true });
     }
-
   });
-
 })();

@@ -2,14 +2,11 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
-
-    haDash.Views.SignUpView = Backbone.View.extend({
-
+(function() {
+  'use strict';
+  haDash.Views.SignUpView = Backbone.View.extend({
     id: 'signUpView',
-
-        template: JST['app/scripts/templates/signUp.ejs'],
+    template: JST['app/scripts/templates/signUp.ejs'],
 
     initialize: function() {
       this.render();
@@ -17,7 +14,6 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template());
-
       return this;
     },
 
@@ -29,43 +25,52 @@ haDash.Views = haDash.Views || {};
       event.preventDefault();
       $('.form-alert').hide();
 
-      if($('#accept').is(':checked')) {
-
-        $(event.target).find('img').show();
+      if ($('#accept').is(':checked')) {
+        $(event.target)
+          .find('img')
+          .show();
 
         $.ajax({
-          url: haDash.API + '/register',
-          contentType: "application/json; charset=utf-8",
-            dataType: "json",
-          xhrFields: {
-            withCredentials: true
-          },
+          url: haDash.API + '/accounts/register',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
           method: 'post',
           data: JSON.stringify({
-                username: $('#username').val(),
-                password: $('#password').val(),
-                email: $('#email').val(),
-            })
+            username: $('#username').val(),
+            password: $('#password').val(),
+            email: $('#email').val()
+          })
         })
-        .done(function(whoami) {
-          //haDash.router.navigate("signin/", {trigger: true});
-          $(event.target).find('img').hide();
-          $('#signup').hide();
-          $('#registerCheckMail').show();
-        })
-        .fail(function(e) {
-
-          if (e.status == "401") {
-            $('#registerUsernameError').show();
-          }
-
-          if (e.status == "409") {
-            $('#registerEmailError').show();
-          }
-          
-          $(event.target).find('img').hide();
-        });
-
+          .done(function(data) {
+            if (data.error) {
+              var el = $('#' + data.error);
+              if (el.length > 0) {
+                el.show();
+              } else {
+                var ee = $('<pre></pre>').text(e.stack);
+                $('#genericError')
+                  .show()
+                  .text('Server Error: ' + e.message)
+                  .append(ee);
+              }
+            } else {
+              $(event.target)
+                .find('img')
+                .hide();
+              $('#signup').hide();
+              $('#registerCheckMail').show();
+            }
+          })
+          .fail(function(e) {
+            var ee = $('<pre></pre>').text(e.stack);
+            $('#genericError')
+              .show()
+              .text('Server Error: ' + e.message)
+              .append(ee);
+            $(event.target)
+              .find('img')
+              .hide();
+          });
       } else {
         $('#registerTermsError').show();
       }

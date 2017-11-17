@@ -2,17 +2,16 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.TranscriptListView = Backbone.View.extend({
-
+  haDash.Views.TranscriptListView = Backbone.View.extend({
     id: 'transcriptListView',
 
     template: JST['app/scripts/templates/transcriptList.ejs'],
 
     initialize: function() {
-      console.log("transcriptListView init");
+      console.log('transcriptListView init');
 
       this.listenTo(this.collection, 'add', this.addItem);
       this.listenTo(this.collection, 'reset', this.render);
@@ -30,7 +29,6 @@ haDash.Views = haDash.Views || {};
       this.$el.data('collection', this.collection);
       return this;
     },
-
 
     addItem: function(item) {
       var view = new haDash.Views.TranscriptView({
@@ -51,7 +49,5 @@ haDash.Views = haDash.Views || {};
     addAllItems: function() {
       this.collection.each(this.addItem, this);
     }
-
-    });
-
+  });
 })();

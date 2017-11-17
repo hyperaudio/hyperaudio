@@ -13,7 +13,8 @@
     "picturefill": "1.2.1",
     "jquery-timeago": "*",
     "select2": "2.1.0",
-    "jssha": "*"
+    "jssha": "*",
+    "base64": "*"
   },
   "devDependencies": {}
 }

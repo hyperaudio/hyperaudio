@@ -2,14 +2,13 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.MediaView = Backbone.View.extend({
-
+  haDash.Views.MediaView = Backbone.View.extend({
     tagName: 'tr',
 
-        template: JST['app/scripts/templates/media.ejs'],
+    template: JST['app/scripts/templates/media.ejs'],
 
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
@@ -17,7 +16,7 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$el.find("span.timeago").timeago();
+      this.$el.find('span.timeago').timeago();
 
       this.$el.data('view', this);
       this.$el.data('model', this.model);
@@ -29,9 +28,7 @@ haDash.Views = haDash.Views || {};
     },
 
     mediaDetail: function() {
-      haDash.router.navigate("media/" + this.model.id, {trigger: true});
+      haDash.router.navigate('media/' + this.model.id, { trigger: true });
     }
-
-    });
-
+  });
 })();

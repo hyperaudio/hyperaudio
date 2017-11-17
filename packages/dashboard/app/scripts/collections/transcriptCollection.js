@@ -2,21 +2,17 @@
 
 haDash.Collections = haDash.Collections || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
+  haDash.Collections.TranscriptCollection = Backbone.Collection.extend({
+    model: haDash.Models.TranscriptModel,
 
-    haDash.Collections.TranscriptCollection = Backbone.Collection.extend({
+    // url: function() {
+    //  return haDash.API + '/transcripts';
+    // },
 
-      model: haDash.Models.TranscriptModel,
-
-      // url: function() {
-      //  return haDash.API + '/transcripts';
-      // },
-
-      comparator: function(model) {
-         return - new Date(model.get('modified')).getTime();
-      }
-
-    });
-
+    comparator: function(model) {
+      return -new Date(model.get('modified')).getTime();
+    }
+  });
 })();

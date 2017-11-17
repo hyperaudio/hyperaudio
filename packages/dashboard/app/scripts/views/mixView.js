@@ -6,7 +6,6 @@ haDash.Views = haDash.Views || {};
   'use strict';
 
   haDash.Views.MixView = Backbone.View.extend({
-
     tagName: 'tr',
 
     template: JST['app/scripts/templates/mix.ejs'],
@@ -17,7 +16,7 @@ haDash.Views = haDash.Views || {};
 
     render: function() {
       this.$el.html(this.template(this.model.toJSON()));
-      this.$el.find("span.timeago").timeago();
+      this.$el.find('span.timeago').timeago();
 
       this.$el.data('view', this);
       this.$el.data('model', this.model);
@@ -25,18 +24,17 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click td": "openPad",
-      "click button.details": "mixDetail"
+      'click td': 'openPad',
+      'click button.details': 'mixDetail'
     },
 
     openPad: function() {
-      document.location = "/pad/?m=" + this.model.id;
+      document.location = '/pad/?m=' + this.model.id;
     },
 
     mixDetail: function(event) {
       event.stopPropagation();
-      haDash.router.navigate("mixes/" + this.model.id, {trigger: true});
+      haDash.router.navigate('mixes/' + this.model.id, { trigger: true });
     }
   });
-
 })();

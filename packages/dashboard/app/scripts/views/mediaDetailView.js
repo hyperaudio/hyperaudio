@@ -2,21 +2,20 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.MediaDetailView = Backbone.View.extend({
-
+  haDash.Views.MediaDetailView = Backbone.View.extend({
     id: 'mediaDetail',
 
-        template: JST['app/scripts/templates/mediaDetail.ejs'],
+    template: JST['app/scripts/templates/mediaDetail.ejs'],
 
     initialize: function() {
       this.listenTo(this.model, 'change', this.render);
     },
 
     render: function() {
-      document.title = "Hyperaudio: " + this.model.get('label');
+      document.title = 'Hyperaudio: ' + this.model.get('label');
 
       this.$el.html(this.template(this.model.toJSON()));
 
@@ -34,8 +33,8 @@ haDash.Views = haDash.Views || {};
 
       this.$el.find('.tags').select2({
         // maximumSelectionSize: 1,
-        tags:[],
-        tokenSeparators: [","]
+        tags: [],
+        tokenSeparators: [',']
       });
       if (this.notMutable()) {
         // this.$el.find('.tags').select2("readonly", true);
@@ -43,21 +42,25 @@ haDash.Views = haDash.Views || {};
 
       this.$el.find('.channels').select2({
         maximumSelectionSize: 1,
-        tags:[],
-        tokenSeparators: [","]
+        tags: [],
+        tokenSeparators: [',']
       });
       if (this.notMutable()) {
         // this.$el.find('.channels').select2("readonly", true);
       }
 
-      this.$el.find("#transcripts").empty().append(
-        new haDash.Views.TranscriptListView({
-          collection: transcripts
-        }).render().el
-      );
+      this.$el
+        .find('#transcripts')
+        .empty()
+        .append(
+          new haDash.Views.TranscriptListView({
+            collection: transcripts
+          }).render().el
+        );
 
       transcripts.fetch({
-        url: haDash.API + '/media/' + this.model.id + '/transcripts'
+        // url: haDash.API + '/media/' + this.model.id + '/transcripts'
+        url: haDash.API + '/transcripts?media=' + this.model.id
       });
 
       this.$el.data('view', this);
@@ -66,11 +69,11 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click h2.label, p.desc": "edit",
-      "blur h2.label, p.desc": "save",
-      "click button.delete": "delete",
-      "change .tags": "saveTags",
-      "change .channels": "saveChannels"
+      'click h2.label, p.desc': 'edit',
+      'blur h2.label, p.desc': 'save',
+      'click button.delete': 'delete',
+      'change .tags': 'saveTags',
+      'change .channels': 'saveChannels'
     },
 
     // refresh: function() {
@@ -85,13 +88,20 @@ haDash.Views = haDash.Views || {};
 
     edit: function(event) {
       if (this.notMutable()) return;
-      $(event.target).attr('contenteditable', true).trigger('focus');
+      $(event.target)
+        .attr('contenteditable', true)
+        .trigger('focus');
     },
 
     save: function(event) {
       if (this.notMutable()) return;
       $(event.target).attr('contenteditable', false);
-      this.model.set($(event.target).data('field'), $(event.target).text().trim());
+      this.model.set(
+        $(event.target).data('field'),
+        $(event.target)
+          .text()
+          .trim()
+      );
       this.model.save(null, {
         url: haDash.API + '/media/' + this.model.id
       });
@@ -107,19 +117,19 @@ haDash.Views = haDash.Views || {};
         wait: true,
         success: function(model, response, options) {
           console.log(model, response, options);
-          haDash.router.navigate("/media/", {trigger: true});
+          haDash.router.navigate('/media/', { trigger: true });
         },
         error: function(model, response, options) {
           console.log('error');
           console.log(model, response, options);
-          haDash.router.navigate("/media/", {trigger: true});
+          haDash.router.navigate('/media/', { trigger: true });
         }
       });
     },
 
     saveTags: function() {
       if (this.notMutable()) return;
-      this.model.set('tags', this.$el.find('.tags').select2("val"));
+      this.model.set('tags', this.$el.find('.tags').select2('val'));
       this.model.save(null, {
         url: haDash.API + '/media/' + this.model.id
       });
@@ -127,13 +137,10 @@ haDash.Views = haDash.Views || {};
 
     saveChannels: function() {
       if (this.notMutable()) return;
-      this.model.set('channel', this.$el.find('.channels').select2("val")[0]);
+      this.model.set('channel', this.$el.find('.channels').select2('val')[0]);
       this.model.save(null, {
         url: haDash.API + '/media/' + this.model.id
       });
     }
-
-    });
-
+  });
 })();
-
