@@ -46,6 +46,7 @@ export class MediaController {
   @Get()
   async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag, @Query('user') user) {
     const query = this.setupQuery(res, channel, tag, user);
+    if (user === 'bgm') delete query['namespace'];
     res.send(await this.mediaService.find(query));
   }
 
