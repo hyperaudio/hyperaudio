@@ -6,7 +6,6 @@ haDash.Views = haDash.Views || {};
   'use strict';
 
   haDash.Views.MixListView = Backbone.View.extend({
-
     id: 'mixListView',
 
     template: JST['app/scripts/templates/mixList.ejs'],
@@ -49,12 +48,12 @@ haDash.Views = haDash.Views || {};
       var channelHash = channel;
 
       if (!channel) {
-        channel = "nochannel";
+        channel = 'nochannel';
         channelHash = channel;
       } else {
         // channel = channel.replace(' ', '_');
-        var shaObj = new jsSHA(channel, "TEXT");
-        channelHash = 'sha1-' + shaObj.getHash("SHA-1", "HEX");
+        var shaObj = new jsSHA(channel, 'TEXT');
+        channelHash = 'sha1-' + shaObj.getHash('SHA-1', 'HEX');
       }
 
       if (haDash.user == item.get('owner')) {
@@ -63,9 +62,18 @@ haDash.Views = haDash.Views || {};
           var $table = $(this.$el.find('.your table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel);
-          $clone.find('thead').empty().hide();
-          $clone.find('tbody').empty().hide();
+          $clone
+            .find('caption')
+            .addClass('collapsed')
+            .text(channel);
+          $clone
+            .find('thead')
+            .empty()
+            .hide();
+          $clone
+            .find('tbody')
+            .empty()
+            .hide();
           $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.your tbody.' + channelHash);
         }
@@ -75,9 +83,18 @@ haDash.Views = haDash.Views || {};
           var $table = $(this.$el.find('.other table').get(0));
           var $clone = $table.clone();
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel);
-          $clone.find('thead').empty().hide();
-          $clone.find('tbody').empty().hide();
+          $clone
+            .find('caption')
+            .addClass('collapsed')
+            .text(channel);
+          $clone
+            .find('thead')
+            .empty()
+            .hide();
+          $clone
+            .find('tbody')
+            .empty()
+            .hide();
           $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.other tbody.' + channelHash);
         }
@@ -95,23 +112,36 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click caption.collapsed": "show",
-      "click caption.expanded": "hide"
+      'click caption.collapsed': 'show',
+      'click caption.expanded': 'hide'
     },
 
     show: function(event) {
-      $(event.target).removeClass('collapsed').addClass('expanded');
-      $(event.target).parent().find('thead').show();
-      $(event.target).parent().find('tbody').slideDown();
+      $(event.target)
+        .removeClass('collapsed')
+        .addClass('expanded');
+      $(event.target)
+        .parent()
+        .find('thead')
+        .show();
+      $(event.target)
+        .parent()
+        .find('tbody')
+        .slideDown();
     },
 
     hide: function(event) {
-      $(event.target).removeClass('expanded').addClass('collapsed');
-      $(event.target).parent().find('thead').hide();
-      $(event.target).parent().find('tbody').slideUp();
+      $(event.target)
+        .removeClass('expanded')
+        .addClass('collapsed');
+      $(event.target)
+        .parent()
+        .find('thead')
+        .hide();
+      $(event.target)
+        .parent()
+        .find('tbody')
+        .slideUp();
     }
-
-
   });
-
 })();

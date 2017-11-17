@@ -6,22 +6,22 @@ haDash.Models = haDash.Models || {};
   'use strict';
 
   haDash.Models.MediaModel = Backbone.Model.extend({
-      idAttribute: "_id",
+    idAttribute: '_id',
 
-      defaults: function() {
-        return {
-          label: "Not set",
-          desc: "Not set",
-          type: "video",
-          owner: null,
-          namespace: window.haDash.namespace,
-          source: {},
-          created: new Date().toISOString(),
-          modified: new Date().toISOString(),
-          tags: [],
-          meta: {},
-          channel: null
-        };
-      }
+    defaults: function() {
+      return {
+        label: 'Not set',
+        desc: 'Not set',
+        type: 'video',
+        owner: null,
+        namespace: window.haDash.namespace,
+        source: {},
+        created: new Date().toISOString(),
+        modified: new Date().toISOString(),
+        tags: [],
+        meta: {},
+        channel: null
+      };
+    }
   });
 })();

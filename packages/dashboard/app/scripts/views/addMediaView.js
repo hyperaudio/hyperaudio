@@ -2,14 +2,13 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.AddMediaView = Backbone.View.extend({
-
+  haDash.Views.AddMediaView = Backbone.View.extend({
     id: 'addMediaView',
 
-        template: JST['app/scripts/templates/addMedia.ejs'],
+    template: JST['app/scripts/templates/addMedia.ejs'],
 
     initialize: function() {
       // this.listenTo(this.model, 'change', this.render);
@@ -24,18 +23,17 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click button": "addVideo"
+      'click button': 'addVideo'
     },
 
-    //https://gist.github.com/takien/4077195
-    YouTubeGetID: function (url){
+    // https://gist.github.com/takien/4077195
+    YouTubeGetID: function(url) {
       var ID = '';
-      url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
-      if(url[2] !== undefined) {
+      url = url.replace(/(>|<)/gi, '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+      if (url[2] !== undefined) {
         ID = url[2].split(/[^0-9a-z_-]/i);
         ID = ID[0];
-      }
-      else {
+      } else {
         ID = null;
       }
       return ID;
@@ -43,23 +41,24 @@ haDash.Views = haDash.Views || {};
 
     addVideo: function() {
       if (!haDash.user) {
-        haDash.router.navigate("signin/", {trigger: true});
+        haDash.router.navigate('signin/', { trigger: true });
         this.remove();
       }
 
       var url = this.$el.find('input').val();
       var ytID = this.YouTubeGetID(url);
 
-
       var model = this.model;
       var view = this;
 
       if (ytID) {
         $.ajax({
-          url: "https://api.embedly.com/1/oembed?" + $.param({
-            url: url,
-            key: "1db39c7647084d758a34ddd62d2d74e6"
-          }),
+          url:
+            'https://api.embedly.com/1/oembed?' +
+            $.param({
+              url: url,
+              key: '1db39c7647084d758a34ddd62d2d74e6'
+            }),
           success: function(ytData) {
             console.log(ytData);
 
@@ -94,22 +93,21 @@ haDash.Views = haDash.Views || {};
             model.set('owner', haDash.user);
 
             var title = ytData.title; // ytData.entry.title["$t"];
-            if (!title || title == "") {
-              title = "Untitled";
+            if (!title || title == '') {
+              title = 'Untitled';
             }
             model.set('label', title);
 
-
             model.set('desc', ytData.description);
             model.set('meta', {
-              "youtube": ytData
+              youtube: ytData
             });
             model.set('source', {
-              "youtube": {
-                    "type": "video/youtube",
-                    "url": ytData.url,
-                    "thumbnail": ytData.thumbnail_url
-               }
+              youtube: {
+                type: 'video/youtube',
+                url: ytData.url,
+                thumbnail: ytData.thumbnail_url
+              }
             });
 
             console.log(model);
@@ -118,11 +116,10 @@ haDash.Views = haDash.Views || {};
 
             model.save(null, {
               success: function() {
-                haDash.router.navigate("media/", {trigger: true});
+                haDash.router.navigate('media/', { trigger: true });
                 view.remove();
               }
             });
-
           },
           error: function(ytData) {
             alert('YouTube API threw an error, the video might not exist, or it is private');
@@ -131,17 +128,24 @@ haDash.Views = haDash.Views || {};
       } else if (url.toLowerCase().indexOf('archive.org') >= 0) {
         console.log('IA detected, trying magic.');
 
-
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
         var curl = haDash.API + '/about';
-        $.post(curl, {url: url}, function (page) {
-
-          var title = $(page).filter('meta[property="og:title"]').attr('content');
-          var desc = $(page).filter('meta[property="og:description"]').attr('content');
-          var thumb = $(page).filter('meta[property="og:image"]').attr('content').replace('https://', 'http://');;
-          var video0 = $(page).filter('meta[property="og:video"]').attr('content');
+        $.post(curl, { url: url }, function(page) {
+          var title = $(page)
+            .filter('meta[property="og:title"]')
+            .attr('content');
+          var desc = $(page)
+            .filter('meta[property="og:description"]')
+            .attr('content');
+          var thumb = $(page)
+            .filter('meta[property="og:image"]')
+            .attr('content')
+            .replace('https://', 'http://');
+          var video0 = $(page)
+            .filter('meta[property="og:video"]')
+            .attr('content');
           var ext0 = video0.split('.').pop();
 
           model.set('owner', haDash.user);
@@ -165,7 +169,7 @@ haDash.Views = haDash.Views || {};
           } else {
             source.unknown = {
               url: url
-            }
+            };
           }
 
           model.set('source', source);
@@ -176,74 +180,71 @@ haDash.Views = haDash.Views || {};
 
           model.save(null, {
             success: function() {
-              haDash.router.navigate("media/", {trigger: true});
+              haDash.router.navigate('media/', { trigger: true });
               view.remove();
             }
           });
           ////
         });
-
-
-
       } else {
         //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
-          var curl = haDash.API + '/about';
-          $.post(curl, {url: url}, function (info) {
-            console.log(info);
-            if (typeof info == 'string') {
-              alert('URL points to a page not to a media file');
-              return;
+        var curl = haDash.API + '/about';
+        $.post(curl, { url: url }, function(info) {
+          console.log(info);
+          if (typeof info == 'string') {
+            alert('URL points to a page not to a media file');
+            return;
+          }
+
+          if (
+            info['content-type'].indexOf('video') != 0 &&
+            info['content-type'].indexOf('audio') != 0
+          ) {
+            alert('URL points to ' + info['content-type'] + ' which is not to a media file');
+            return;
+          }
+
+          ///"content-length": "4062859",
+          if (info['content-length'] && parseInt(info['content-length']) > 300000000) {
+            alert(
+              'URL points to a ' +
+                info['content-length'] +
+                'bytes file which is too large for us (please use max 300MB)'
+            );
+            return;
+          }
+
+          var type = info['content-type'].split('/')[1];
+          // source[type] = url;
+          var source = {};
+          source[type] = {
+            type: info['content-type'],
+            url: url
+          };
+
+          // non YT, hope for the best
+          model.set('owner', haDash.user);
+          model.set('label', 'untitled');
+          model.set('desc', url);
+          model.set('meta', {});
+          model.set('source', source);
+
+          console.log(model);
+
+          haDash.mediaListView.collection.add(model);
+
+          model.save(null, {
+            success: function() {
+              haDash.router.navigate('media/', { trigger: true });
+              view.remove();
             }
-
-            if (info['content-type'].indexOf('video') != 0 && info['content-type'].indexOf('audio') != 0 ) {
-              alert('URL points to ' + info['content-type'] + ' which is not to a media file');
-              return;
-            }
-
-            ///"content-length": "4062859",
-            if (info['content-length'] && parseInt(info['content-length']) > 300000000 ) {
-              alert('URL points to a ' + info['content-length'] + 'bytes file which is too large for us (please use max 300MB)');
-              return;
-            }
-
-            var type = info['content-type'].split('/')[1];
-            // source[type] = url;
-            var source = {};
-            source[type] = {
-                type: info['content-type'],
-                url: url
-            };
-
-
-
-
-            // non YT, hope for the best
-            model.set('owner', haDash.user);
-            model.set('label', 'untitled');
-            model.set('desc', url);
-            model.set('meta', {});
-            model.set('source', source);
-
-            console.log(model);
-
-            haDash.mediaListView.collection.add(model);
-
-            model.save(null, {
-              success: function() {
-                haDash.router.navigate("media/", {trigger: true});
-                view.remove();
-              }
-            });
-
-          });//post
+          });
+        }); //post
         //}//confirm
-
-      }//else
+      } //else
     }
-
-    });
-
+  });
 })();
 
 /*

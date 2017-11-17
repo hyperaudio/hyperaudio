@@ -5,7 +5,6 @@ haDash.Collections = haDash.Collections || {};
 (function() {
   'use strict';
   haDash.Collections.MixCollection = Backbone.Collection.extend({
-
     model: haDash.Models.MixModel,
 
     url: function() {
@@ -13,7 +12,7 @@ haDash.Collections = haDash.Collections || {};
     },
 
     comparator: function(model) {
-      return - new Date(model.get('modified')).getTime();
+      return -new Date(model.get('modified')).getTime();
     }
   });
 })();

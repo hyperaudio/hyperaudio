@@ -5,7 +5,10 @@ jQuery.timeago.settings.allowFuture = true;
 var namespace = null; // default no namespace
 
 if (document.location.hostname.indexOf('hyperaud') > 0) {
-  namespace = document.location.hostname.substring(0, document.location.hostname.indexOf('hyperaud') - 1);
+  namespace = document.location.hostname.substring(
+    0,
+    document.location.hostname.indexOf('hyperaud') - 1
+  );
 }
 
 var protocol = 'http:'; // default protocol
@@ -39,31 +42,30 @@ window.haDash = {
       pushState: true
     });
 
-    $('a.media').click(function(e){
+    $('a.media').click(function(e) {
       e.preventDefault();
-      haDash.router.navigate('media/', {trigger: true});
+      haDash.router.navigate('media/', { trigger: true });
     });
 
-    $('a.mixes').click(function(e){
+    $('a.mixes').click(function(e) {
       e.preventDefault();
-      haDash.router.navigate('mixes/', {trigger: true});
+      haDash.router.navigate('mixes/', { trigger: true });
     });
 
-    $('a.logout').click(function(e){
+    $('a.logout').click(function(e) {
       e.preventDefault();
-      haDash.router.navigate('signout/', {trigger: true});
+      haDash.router.navigate('signout/', { trigger: true });
     });
 
-    $('a.login').click(function(e){
+    $('a.login').click(function(e) {
       e.preventDefault();
-      haDash.router.navigate('login/', {trigger: true});
+      haDash.router.navigate('login/', { trigger: true });
     });
   },
 
   user: null,
 
   whoami: function(callback) {
-
     // TODO refresh token
 
     // $.ajax({
@@ -82,20 +84,20 @@ window.haDash = {
     try {
       var token = window.localStorage.getItem('token');
       var payload = JSON.parse(window.atob(token.split('.')[1]));
-      var exp = new Date (payload.exp * 1e3);
+      var exp = new Date(payload.exp * 1e3);
       $('a.logout').attr('title', 'token expires in ' + $.timeago(exp));
-      if (exp.getTime() - new Date().getTime() <= 0){
-        console.log("token expired");
+      if (exp.getTime() - new Date().getTime() <= 0) {
+        console.log('token expired');
         window.localStorage.removeItem('token');
         window.localStorage.removeItem('user');
-        haDash.router.navigate('login/', {trigger: true});
+        haDash.router.navigate('login/', { trigger: true });
       }
     } catch (e) {
       window.localStorage.removeItem('token');
       window.localStorage.removeItem('user');
     }
 
-    if (! window.localStorage.getItem('token')) {
+    if (!window.localStorage.getItem('token')) {
       window.localStorage.removeItem('user');
       haDash.setUser({ user: null });
     } else if (window.localStorage.getItem('user') && window.localStorage.getItem('token')) {
@@ -109,20 +111,24 @@ window.haDash = {
     if (callback) callback();
   },
 
-  setUser: function (whoami) {
+  setUser: function(whoami) {
     if (whoami.user) {
       window.haDash.user = whoami.user;
-      $('body').removeClass('anonymous').addClass('user');
+      $('body')
+        .removeClass('anonymous')
+        .addClass('user');
       haDash.socketConnect();
     } else {
       window.haDash.user = null;
-      $('body').removeClass('user').addClass('anonymous');
+      $('body')
+        .removeClass('user')
+        .addClass('anonymous');
       haDash.socketDisconnect();
     }
   },
 
   // socket: null,
-  socketConnect: function () {
+  socketConnect: function() {
     // if (!window.socket) return;
     // // window.socket = io.connect('//' + prefix + 'api.' + domain + '/');
     //
@@ -131,7 +137,7 @@ window.haDash = {
     // });
   },
 
-  socketDisconnect: function () {
+  socketDisconnect: function() {
     // if (window.socket) haDash.socket.disconnect();
   }
 };
@@ -139,7 +145,7 @@ window.haDash = {
 $(document).ready(function() {
   'use strict';
 
-  $.ajaxPrefilter( function( options, originalOptions, jqXHR ) {
+  $.ajaxPrefilter(function(options, originalOptions, jqXHR) {
     if (options.url.indexOf(haDash.API) == 0) {
       // options.xhrFields = {
       //    withCredentials: true
@@ -155,11 +161,11 @@ $(document).ready(function() {
     // }
   });
 
-  $(document).ajaxStart(function(){
+  $(document).ajaxStart(function() {
     $('body').addClass('ajax');
   });
 
-  $(document).ajaxComplete(function(){
+  $(document).ajaxComplete(function() {
     $('body').removeClass('ajax');
   });
 
@@ -179,7 +185,7 @@ $(document).ready(function() {
   //   });
   // });
 
-  haDash.whoami(function(){
+  haDash.whoami(function() {
     haDash.init();
   });
 
@@ -189,13 +195,22 @@ $(document).ready(function() {
 function applyTooltips() {
   $(document).foundation({
     tooltips: {
-      selector : '.has-tip',
-      additional_inheritable_classes : [],
-      tooltip_class : '.tooltip',
+      selector: '.has-tip',
+      additional_inheritable_classes: [],
+      tooltip_class: '.tooltip',
       touch_close_text: 'tap to close',
       disable_for_touch: false,
-      tip_template : function (selector, content) {
-        return '<span data-selector="' + selector + '" class="' + Foundation.libs.tooltips.settings.tooltipClass.substring(1) + '">' + content + '<span class="nub"></span></span>';
-    }}
+      tip_template: function(selector, content) {
+        return (
+          '<span data-selector="' +
+          selector +
+          '" class="' +
+          Foundation.libs.tooltips.settings.tooltipClass.substring(1) +
+          '">' +
+          content +
+          '<span class="nub"></span></span>'
+        );
+      }
+    }
   });
 }

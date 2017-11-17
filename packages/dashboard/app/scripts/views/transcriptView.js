@@ -2,11 +2,10 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.TranscriptView = Backbone.View.extend({
-
+  haDash.Views.TranscriptView = Backbone.View.extend({
     tagName: 'tr',
 
     template: JST['app/scripts/templates/transcript.ejs'],
@@ -18,7 +17,7 @@ haDash.Views = haDash.Views || {};
     render: function() {
       console.log('render ' + this.model.get('status'));
       this.$el.html(this.template(this.model.toJSON()));
-      this.$el.find("span.timeago").timeago();
+      this.$el.find('span.timeago').timeago();
 
       //
       if (this.model.get('status') && this.model.get('status') != '') {
@@ -32,11 +31,11 @@ haDash.Views = haDash.Views || {};
     },
 
     events: {
-      "click .tLabel, .tDesc": "edit",
-      "blur .tLabel, .tDesc": "save",
-      "click .align": "align",
-      "click .tDelete": "delete",
-      "click .tClone": "clone"
+      'click .tLabel, .tDesc': 'edit',
+      'blur .tLabel, .tDesc': 'save',
+      'click .align': 'align',
+      'click .tDelete': 'delete',
+      'click .tClone': 'clone'
     },
 
     notMutable: function() {
@@ -52,7 +51,12 @@ haDash.Views = haDash.Views || {};
       if (this.notMutable()) return;
       $(event.target).attr('contenteditable', false);
 
-      this.model.set($(event.target).data('field'), $(event.target).text().trim());
+      this.model.set(
+        $(event.target).data('field'),
+        $(event.target)
+          .text()
+          .trim()
+      );
       this.model.save(null, {
         url: haDash.API + '/transcripts/' + this.model.id
       });
@@ -60,7 +64,7 @@ haDash.Views = haDash.Views || {};
 
     clone: function() {
       if (!haDash.user) {
-        haDash.router.navigate("signin/", {trigger: true});
+        haDash.router.navigate('signin/', { trigger: true });
         this.remove();
       }
 
@@ -74,17 +78,20 @@ haDash.Views = haDash.Views || {};
       transcript.save(null, {
         url: haDash.API + '/transcripts',
         success: function() {
-          $('#mediaDetail').data('view').render();
+          $('#mediaDetail')
+            .data('view')
+            .render();
         },
         error: function() {
           //TODO, alert?
-          $('#mediaDetail').data('view').render();
+          $('#mediaDetail')
+            .data('view')
+            .render();
         }
       });
 
       //TODO use it in success above
       // $('#mediaDetail').data('view').render();
-
     },
 
     refresh: function() {
@@ -108,7 +115,7 @@ haDash.Views = haDash.Views || {};
 
     align: function() {
       if (!haDash.user) {
-        haDash.router.navigate("secret-signin/", {trigger: true});
+        haDash.router.navigate('secret-signin/', { trigger: true });
         this.remove();
       }
 
@@ -137,9 +144,11 @@ haDash.Views = haDash.Views || {};
       //   })
       // .fail(function(jqXHR, textStatus, errorThrown) {
       //   console.log(errorThrown);
-        alert("We have trouble aligning your media, your file may be too large or in a format we don't understand. Sorry.");
-        self.$el.find('button.align').show();
-        self.$el.find('button.aligning').hide();
+      alert(
+        "We have trouble aligning your media, your file may be too large or in a format we don't understand. Sorry."
+      );
+      self.$el.find('button.align').show();
+      self.$el.find('button.aligning').hide();
       // });
       // spin
       //$('#mediaDetail').data('view').refresh();
@@ -154,18 +163,20 @@ haDash.Views = haDash.Views || {};
       this.model.destroy({
         url: haDash.API + '/transcripts/' + this.model.id,
         success: function() {
-          $('#mediaDetail').data('view').render();
+          $('#mediaDetail')
+            .data('view')
+            .render();
         },
         error: function() {
           //TODO, alert?
-          $('#mediaDetail').data('view').render();
+          $('#mediaDetail')
+            .data('view')
+            .render();
         }
       });
 
       //TODO use it in success above
       // $('#mediaDetail').data('view').render();
     }
-
-    });
-
+  });
 })();

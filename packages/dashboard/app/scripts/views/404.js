@@ -2,19 +2,19 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.NotFoundView = Backbone.View.extend({
-      template: JST['app/scripts/templates/404.ejs'],
+  haDash.Views.NotFoundView = Backbone.View.extend({
+    template: JST['app/scripts/templates/404.ejs'],
 
-      initialize: function() {
-        this.render();
-      },
+    initialize: function() {
+      this.render();
+    },
 
-      render: function() {
-        this.$el.html(this.template());
-        return this;
-      }
-    });
+    render: function() {
+      this.$el.html(this.template());
+      return this;
+    }
+  });
 })();

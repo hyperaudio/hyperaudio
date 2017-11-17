@@ -2,14 +2,13 @@
 
 haDash.Views = haDash.Views || {};
 
-(function () {
-    'use strict';
+(function() {
+  'use strict';
 
-    haDash.Views.MediaListView = Backbone.View.extend({
-
+  haDash.Views.MediaListView = Backbone.View.extend({
     id: 'mediaListView',
 
-        template: JST['app/scripts/templates/mediaList.ejs'],
+    template: JST['app/scripts/templates/mediaList.ejs'],
 
     initialize: function() {
       // this.render();
@@ -58,11 +57,11 @@ haDash.Views = haDash.Views || {};
       var channelHash = channel;
 
       if (!channel || channel == '') {
-        channel = "nochannel";
+        channel = 'nochannel';
         channelHash = channel;
       } else {
-        var shaObj = new jsSHA(channel, "TEXT");
-        channelHash = 'sha1-' + shaObj.getHash("SHA-1", "HEX");
+        var shaObj = new jsSHA(channel, 'TEXT');
+        channelHash = 'sha1-' + shaObj.getHash('SHA-1', 'HEX');
       }
 
       if (haDash.user == item.get('owner')) {
@@ -72,9 +71,18 @@ haDash.Views = haDash.Views || {};
           // var $clone = $table.clone();
           var $clone = $('<table>' + $table.html() + '</table>');
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel);
-          $clone.find('thead').empty().hide();
-          $clone.find('tbody').empty().hide();
+          $clone
+            .find('caption')
+            .addClass('collapsed')
+            .text(channel);
+          $clone
+            .find('thead')
+            .empty()
+            .hide();
+          $clone
+            .find('tbody')
+            .empty()
+            .hide();
           $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.your tbody.' + channelHash);
         }
@@ -85,16 +93,24 @@ haDash.Views = haDash.Views || {};
           // var $clone = $table.clone();
           var $clone = $('<table>' + $table.html() + '</table>');
           $table.after($clone);
-          $clone.find('caption').addClass('collapsed').text(channel);
-          $clone.find('thead').empty().hide();
-          $clone.find('tbody').empty().hide();
+          $clone
+            .find('caption')
+            .addClass('collapsed')
+            .text(channel);
+          $clone
+            .find('thead')
+            .empty()
+            .hide();
+          $clone
+            .find('tbody')
+            .empty()
+            .hide();
           $clone.find('tbody').attr('class', channelHash);
           $tbody = this.$el.find('.other tbody.' + channelHash);
         }
       }
 
       $tbody.append(view.render().el);
-
     },
 
     addAllItems: function() {
@@ -108,12 +124,12 @@ haDash.Views = haDash.Views || {};
 
     events: {
       'click #addMedia': 'addMedia',
-      "click caption.collapsed": "show",
-      "click caption.expanded": "hide"
+      'click caption.collapsed': 'show',
+      'click caption.expanded': 'hide'
     },
 
     addMedia: function() {
-      haDash.router.navigate("add-media/", {trigger: true});
+      haDash.router.navigate('add-media/', { trigger: true });
       // var view = this;
       // this.$el.slideUp(200, function(){
       //  view.remove();
@@ -122,17 +138,31 @@ haDash.Views = haDash.Views || {};
     },
 
     show: function(event) {
-      $(event.target).removeClass('collapsed').addClass('expanded');
-      $(event.target).parent().find('thead').show();
-      $(event.target).parent().find('tbody').slideDown();
+      $(event.target)
+        .removeClass('collapsed')
+        .addClass('expanded');
+      $(event.target)
+        .parent()
+        .find('thead')
+        .show();
+      $(event.target)
+        .parent()
+        .find('tbody')
+        .slideDown();
     },
 
     hide: function(event) {
-      $(event.target).removeClass('expanded').addClass('collapsed');
-      $(event.target).parent().find('thead').hide();
-      $(event.target).parent().find('tbody').slideUp();
+      $(event.target)
+        .removeClass('expanded')
+        .addClass('collapsed');
+      $(event.target)
+        .parent()
+        .find('thead')
+        .hide();
+      $(event.target)
+        .parent()
+        .find('tbody')
+        .slideUp();
     }
-
-    });
-
+  });
 })();
