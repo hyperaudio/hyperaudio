@@ -1,5 +1,4 @@
 User-agent: *
-Disallow: /
 Disallow: /assets
 Disallow: /styleguide
 Disallow: /dashboard
