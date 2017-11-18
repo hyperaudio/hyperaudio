@@ -2,3 +2,15 @@ User-agent: *
 Disallow: /assets
 Disallow: /styleguide
 Disallow: /dashboard
+Disallow: /thanks
+Disallow: /subscribe
+Disallow: /presskit
+Disallow: /known-bugs
+Disallow: /commons
+Disallow: /beta-getting-started
+Disallow: /_org
+Disallow: /blog
+Disallow: /faq
+Disallow: /terms-of-service
+Disallow: /licensing
+Disallow: /tour
