@@ -131,8 +131,20 @@ haDash.Views = haDash.Views || {};
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
-        var curl = haDash.API + '/about';
-        $.post(curl, { url: url }, function(page) {
+        $.ajax({
+          url: haDash.API + '/media/about',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'post',
+          data: JSON.stringify({
+            url: url
+          })
+        })
+        .done(function(data) {
+        // $.post(curl, {
+        //   url: url
+        // }, function(data) {
+          var page = data.data;
           var title = $(page)
             .filter('meta[property="og:title"]')
             .attr('content');
@@ -185,41 +197,58 @@ haDash.Views = haDash.Views || {};
             }
           });
           ////
+        }).fail(function(e) {
+          var ee = $('<pre></pre>').text(e.stack);
+          $('#genericError')
+            .show()
+            .text('Server Error: ' + e.message)
+            .append(ee);
         });
       } else {
         //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
-        var curl = haDash.API + '/about';
-        $.post(curl, { url: url }, function(info) {
+        // var curl = haDash.API + '/about';
+        // $.post(curl, { url: url }, function(info) {
+        $.ajax({
+          url: haDash.API + '/media/about',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'post',
+          data: JSON.stringify({
+            url: url
+          })
+        })
+        .done(function(info) {
           console.log(info);
-          if (typeof info == 'string') {
+          // if (typeof info == 'string') {
+          if (info.data) {
             alert('URL points to a page not to a media file');
             return;
           }
 
           if (
-            info['content-type'].indexOf('video') != 0 &&
-            info['content-type'].indexOf('audio') != 0
+            info.headers['content-type'].indexOf('video') != 0 &&
+            info.headers['content-type'].indexOf('audio') != 0
           ) {
-            alert('URL points to ' + info['content-type'] + ' which is not to a media file');
+            alert('URL points to ' + info.headers['content-type'] + ' which is not to a media file');
             return;
           }
 
           ///"content-length": "4062859",
-          if (info['content-length'] && parseInt(info['content-length']) > 300000000) {
+          if (info.headers['content-length'] && parseInt(info.headers['content-length']) > 300000000) {
             alert(
               'URL points to a ' +
-                info['content-length'] +
+                info.headers['content-length'] +
                 'bytes file which is too large for us (please use max 300MB)'
             );
             return;
           }
 
-          var type = info['content-type'].split('/')[1];
+          var type = info.headers['content-type'].split('/')[1];
           // source[type] = url;
           var source = {};
           source[type] = {
-            type: info['content-type'],
+            type: info.headers['content-type'],
             url: url
           };
 
@@ -240,6 +269,12 @@ haDash.Views = haDash.Views || {};
               view.remove();
             }
           });
+        }).fail(function(e) {
+          var ee = $('<pre></pre>').text(e.stack);
+          $('#genericError')
+            .show()
+            .text('Server Error: ' + e.message)
+            .append(ee);
         }); //post
         //}//confirm
       } //else
