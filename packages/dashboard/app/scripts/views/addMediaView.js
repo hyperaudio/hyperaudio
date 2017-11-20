@@ -131,8 +131,19 @@ haDash.Views = haDash.Views || {};
         //var curl = 'http://www.corsproxy.com/' + url.replace('http://', '').replace('https://', '');
         // var curl = 'http://cors.hyperaudio.net/proxy.php?csurl=' + escape(url);
         // $.get(curl, function (page) {
-        var curl = haDash.API + '/media/about';
-        $.post(curl, { url: url }, function(data) {
+        $.ajax({
+          url: haDash.API + '/media/about',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'post',
+          data: JSON.stringify({
+            url: url
+          })
+        })
+        .done(function(data) {
+        // $.post(curl, {
+        //   url: url
+        // }, function(data) {
           var page = data.data;
           var title = $(page)
             .filter('meta[property="og:title"]')
@@ -186,12 +197,28 @@ haDash.Views = haDash.Views || {};
             }
           });
           ////
+        }).fail(function(e) {
+          var ee = $('<pre></pre>').text(e.stack);
+          $('#genericError')
+            .show()
+            .text('Server Error: ' + e.message)
+            .append(ee);
         });
       } else {
         //if (confirm('Cannot recognise this URL as an YouTube or Internet Archive Video; choose [cancel] to abort or [ok] to continue')) {
 
-        var curl = haDash.API + '/about';
-        $.post(curl, { url: url }, function(info) {
+        // var curl = haDash.API + '/about';
+        // $.post(curl, { url: url }, function(info) {
+        $.ajax({
+          url: haDash.API + '/media/about',
+          contentType: 'application/json; charset=utf-8',
+          dataType: 'json',
+          method: 'post',
+          data: JSON.stringify({
+            url: url
+          })
+        })
+        .done(function(info) {
           console.log(info);
           // if (typeof info == 'string') {
           if (info.data) {
@@ -242,6 +269,12 @@ haDash.Views = haDash.Views || {};
               view.remove();
             }
           });
+        }).fail(function(e) {
+          var ee = $('<pre></pre>').text(e.stack);
+          $('#genericError')
+            .show()
+            .text('Server Error: ' + e.message)
+            .append(ee);
         }); //post
         //}//confirm
       } //else
