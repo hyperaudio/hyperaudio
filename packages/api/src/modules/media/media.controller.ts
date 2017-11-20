@@ -67,4 +67,8 @@ export class MediaController {
     return this.mediaService.findById(id);
   }
 
+  @Post('about')
+  async aboutURL(@Body('url') url ) {
+    return this.mediaService.aboutURL(url);
+  }
 }

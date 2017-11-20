@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
 import * as urlSafeBase64 from 'urlsafe-base64';
+import * as axios from 'axios';
 import { Model } from 'mongoose';
 import { Component, Inject } from '@nestjs/common';
 import { Media } from './interfaces/media.interface';
@@ -73,5 +74,14 @@ export class MediaService {
 
   async findById(id): Promise<Media> {
     return await this.mediaModel.findById(id).populate('meta').exec();
+  }
+
+  async aboutURL(url) {
+    let response = await axios['head'](url);
+    if (response.headers['content-type'] && response.headers['content-type'].startsWith('text/')) {
+      response = await axios['get'](url);
+      return { headers: response.headers, data: response.data };
+    }
+    return { headers: response.headers };
   }
 }
