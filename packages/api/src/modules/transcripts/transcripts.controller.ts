@@ -9,11 +9,21 @@ import { Transcript } from './interfaces/transcript.interface';
 export class TranscriptsController {
   constructor(private readonly transcriptsService: TranscriptsService) {}
 
-  setupQuery(res: any) {
+  setupQuery(res: any, created: any, modified: any) {
     const query = {};
     const namespace = res.get('X-Organisation');
 
     if (namespace) query['namespace'] = namespace;
+
+    if (created) {
+      const [$gte = new Date(), $lt = new Date()] = created.split(',').map(d => d ? new Date(d) : new Date());
+      query['created'] = { $gte, $lt };
+    }
+
+    if (modified) {
+      const [$gte = new Date(), $lt = new Date()] = modified.split(',').map(d => d ? new Date(d) : new Date());
+      query['modified'] = { $gte, $lt };
+    }
 
     return query;
   }
@@ -38,8 +48,8 @@ export class TranscriptsController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('media') media, @Query('type') type, @Query('user') user, @Query('channel') channel) {
-    const query = this.setupQuery(res);
+  async findAll(@Res() res, @Query('media') media, @Query('type') type, @Query('user') user, @Query('channel') channel, @Query('created') created, @Query('modified') modified, @Query('sort') sort) {
+    const query = this.setupQuery(res, created, modified);
     if (media) {
       query['media'] = media;
       delete query['namespace'];
@@ -48,7 +58,7 @@ export class TranscriptsController {
     if (user) query['owner'] = user;
 
     if (channel) {
-      const results = await this.transcriptsService.find2(query);
+      const results = await this.transcriptsService.find2(query, sort);
       res.send(
         results
           .filter(result => result.media && result.media['channel'] === channel)
@@ -59,7 +69,7 @@ export class TranscriptsController {
           })
       );
     } else {
-      res.send(await this.transcriptsService.find(query));
+      res.send(await this.transcriptsService.find(query, sort));
     }
   }
 

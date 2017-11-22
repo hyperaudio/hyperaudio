@@ -48,8 +48,9 @@ export class MixesService {
     throw Error('not authorized');
   }
 
-  async find(query: any): Promise<Mix[]> {
+  async find(query: any, sort: any): Promise<Mix[]> {
     // console.log(query);
+    if (sort) return await this.mixModel.find(query).select('-content').sort({ [sort]: 1 }).exec();
     return await this.mixModel.find(query).select('-content').exec();
   }
 

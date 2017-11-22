@@ -48,13 +48,14 @@ export class TranscriptsService {
     throw Error('not authorized');
   }
 
-  async find(query: any): Promise<Transcript[]> {
+  async find(query: any, sort: any): Promise<Transcript[]> {
     // console.log(query);
+    if (sort) return await this.transcriptModel.find(query).select('-meta -content').sort({ [sort]: 1 }).exec();
     return await this.transcriptModel.find(query).select('-meta -content').exec();
   }
 
   // TODO rename
-  async find2(query: any): Promise<Transcript[]> {
+  async find2(query: any, sort: any): Promise<Transcript[]> {
     // console.log(query);
     return await this.transcriptModel.find(query).select('-meta -content').populate('media').exec();
   }
