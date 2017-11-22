@@ -4,7 +4,6 @@ import { CreateTranscriptDto } from './dto/create-transcript.dto';
 import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
 import { Transcript } from './interfaces/transcript.interface';
-import {connectableObservableDescriptor} from "rxjs/observable/ConnectableObservable";
 
 @Controller(':v?/transcripts')
 export class TranscriptsController {
