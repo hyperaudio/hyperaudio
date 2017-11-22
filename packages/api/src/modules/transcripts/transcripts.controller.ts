@@ -4,6 +4,7 @@ import { CreateTranscriptDto } from './dto/create-transcript.dto';
 import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
 import { Transcript } from './interfaces/transcript.interface';
+import {connectableObservableDescriptor} from "rxjs/observable/ConnectableObservable";
 
 @Controller(':v?/transcripts')
 export class TranscriptsController {
@@ -74,8 +75,23 @@ export class TranscriptsController {
   }
 
   @Get(':id')
-  async findById(@Param('id') id) {
-    return this.transcriptsService.findById(id);
+  async findById(@Param('id') id, @Query('format') format) {
+    const t = await this.transcriptsService.findById(id);
+    const r = {
+      _id: t._id,
+      label: t.label,
+      type: t.type,
+      owner: t.owner,
+      meta: t.meta,
+      content: t.content,
+      media: t.media,
+      desc: t.desc,
+      modified: t.modified,
+      created: t.created
+    };
+
+    if (format === 'json') r.content = await haJson(t.content);
+    return r;
   }
 
   @Get(':id/text')
