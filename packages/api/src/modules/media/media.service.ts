@@ -59,8 +59,9 @@ export class MediaService {
     throw Error('not authorized');
   }
 
-  async find(query: any): Promise<Media[]> {
-    // console.log(query);
+  async find(query: any, sort: any): Promise<Media[]> {
+    console.log(query);
+    if (sort) return await this.mediaModel.find(query).sort({ [sort]: 1 }).exec();
     return await this.mediaModel.find(query).exec();
   }
 

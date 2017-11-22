@@ -8,7 +8,7 @@ import { Media } from './interfaces/media.interface';
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
-  setupQuery(res: any, channel: any, tag: any, user: any) {
+  setupQuery(res: any, channel: any, tag: any, user: any, created: any, modified: any) {
     // console.log(channel, tag, user);
 
     const query = {};
@@ -19,6 +19,16 @@ export class MediaController {
     if (channel) query['channel'] = channel;
     if (tag) query['tags'] = { $in: [tag] };
     if (user) query['owner'] = user;
+
+    if (created) {
+      const [$gte = new Date(), $lt = new Date()] = created.split(',').map(d => d ? new Date(d) : new Date());
+      query['created'] = { $gte, $lt };
+    }
+
+    if (modified) {
+      const [$gte = new Date(), $lt = new Date()] = modified.split(',').map(d => d ? new Date(d) : new Date());
+      query['modified'] = { $gte, $lt };
+    }
 
     // console.log(query);
     return query;
@@ -44,21 +54,21 @@ export class MediaController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag, @Query('user') user) {
-    const query = this.setupQuery(res, channel, tag, user);
+  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag, @Query('user') user, @Query('created') created, @Query('modified') modified, @Query('sort') sort) {
+    const query = this.setupQuery(res, channel, tag, user, created, modified);
     if (user === 'bgm') delete query['namespace'];
-    res.send(await this.mediaService.find(query));
+    res.send(await this.mediaService.find(query, sort));
   }
 
   @Get('channels')
   async listChannels(@Res() res, @Query('user') user) {
-    const channels = await this.mediaService.listChannels(this.setupQuery(res, null, null, user));
+    const channels = await this.mediaService.listChannels(this.setupQuery(res, null, null, user, null, null));
     res.send(channels.filter(channel => !!channel));
   }
 
   @Get('tags')
   async listTags(@Res() res, @Query('user') user) {
-    res.send(await this.mediaService.listTags(this.setupQuery(res, null, null, user)));
+    res.send(await this.mediaService.listTags(this.setupQuery(res, null, null, user, null, null)));
   }
 
 

@@ -8,7 +8,7 @@ import { Mix } from './interfaces/mix.interface';
 export class MixesController {
   constructor(private readonly mixesService: MixesService) {}
 
-  setupQuery(res: any, channel: any, tag: any, user: any) {
+  setupQuery(res: any, channel: any, tag: any, user: any, created: any, modified: any) {
     const query = {};
 
     const namespace = res.get('X-Organisation');
@@ -17,6 +17,16 @@ export class MixesController {
     if (channel) query['channel'] = channel;
     if (tag) query['tags'] = { $in: [tag] };
     if (user) query['owner'] = user;
+
+    if (created) {
+      const [$gte = new Date(), $lt = new Date()] = created.split(',').map(d => d ? new Date(d) : new Date());
+      query['created'] = { $gte, $lt };
+    }
+
+    if (modified) {
+      const [$gte = new Date(), $lt = new Date()] = modified.split(',').map(d => d ? new Date(d) : new Date());
+      query['modified'] = { $gte, $lt };
+    }
 
     return query;
   }
@@ -41,21 +51,21 @@ export class MixesController {
   }
 
   @Get()
-  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag,  @Query('user') user) {
-    const query = this.setupQuery(res, channel, tag, user);
-    res.send(await this.mixesService.find(query));
+  async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag,  @Query('user') user, @Query('created') created, @Query('modified') modified, @Query('sort') sort) {
+    const query = this.setupQuery(res, channel, tag, user, created, modified);
+    res.send(await this.mixesService.find(query, sort));
   }
 
   @Get('channels')
   async listChannels(@Res() res, @Query('user') user) {
-    const channels = await this.mixesService.listChannels(this.setupQuery(res, null, null, user));
+    const channels = await this.mixesService.listChannels(this.setupQuery(res, null, null, user, null, null));
     res.send(channels.filter(channel => !!channel));
   }
 
 
   @Get('tags')
   async listTags(@Res() res, @Query('user') user) {
-    res.send(await this.mixesService.listTags(this.setupQuery(res, null, null, user)));
+    res.send(await this.mixesService.listTags(this.setupQuery(res, null, null, user, null, null)));
   }
 
   @Get(':id')
