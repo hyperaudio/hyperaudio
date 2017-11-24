@@ -12,5 +12,6 @@ export class CreateTranscriptDto {
   readonly created: Date;
   readonly modified: Date;
   readonly content: String;
+  readonly data: Schema.Types.Mixed;
   readonly media: String;
 }
