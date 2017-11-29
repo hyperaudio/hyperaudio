@@ -4,6 +4,7 @@ import { CreateTranscriptDto } from './dto/create-transcript.dto';
 import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
 import { Transcript } from './interfaces/transcript.interface';
+import {connectableObservableDescriptor} from "rxjs/observable/ConnectableObservable";
 
 @Controller(':v?/transcripts')
 export class TranscriptsController {
@@ -89,17 +90,10 @@ export class TranscriptsController {
       created: t.created
     };
 
-    if (format === 'json') {
-      r.content = t.data ? t.data : await haJson(t.content);
-    } else {
-      // r.content = t.content ? t.content await haHTML(t.data);
-      r.content = 'json->html not implemented'; // TODO
-    }
-
+    if (format === 'json') r.content = await haJson(t.content);
     return r;
   }
 
-  // DEPRECATED
   @Get(':id/text')
   async textById(@Res() res, @Param('id') id ) {
     res.header('Content-Type', 'text/plain');
@@ -108,25 +102,13 @@ export class TranscriptsController {
 
   @Get(':id/html')
   async htmlById(@Res() res, @Param('id') id ) {
-    const transcript = await this.transcriptsService.findById(id);
     res.header('Content-Type', 'text/html');
-
-    if (! transcript.data) {
-      res.send(transcript.content);
-    } else {
-      // res.send(await haHTML(transcript.data));
-      res.send('json->html not implemented'); // TODO
-    }
+    res.send((await this.transcriptsService.findById(id)).content);
   }
 
   @Get(':id/json')
   async jsonById(@Res() res, @Param('id') id ) {
-    const transcript = await this.transcriptsService.findById(id);
-
-    if (transcript.data) {
-      res.send(transcript.data);
-    } else {
-      res.send(await haJson(transcript.content));
-    }
+    const html = (await this.transcriptsService.findById(id)).content;
+    res.send(await haJson(html));
   }
 }
