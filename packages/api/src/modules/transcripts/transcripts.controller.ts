@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Body, Param, Req, Res, Query } from '@nestjs/common';
-import * as haJson from '@hyperaudio/transcript-converter';
+import * as haParser from '@hyperaudio/transcript-parser';
+import * as haRender from '@hyperaudio/transcript-renderer';
+import { JSDOM } from 'jsdom';
 import { CreateTranscriptDto } from './dto/create-transcript.dto';
 import { UpdateTranscriptDto } from './dto/update-transcript.dto';
 import { TranscriptsService } from './transcripts.service';
@@ -90,10 +92,16 @@ export class TranscriptsController {
     };
 
     if (format === 'json') {
-      r.content = t.data ? t.data : await haJson(t.content);
+      r.content = t.data ? t.data : await haParser(t.content);
+    } else if (t.content) {
+      r.content = t.content;
     } else {
-      // r.content = t.content ? t.content await haHTML(t.data);
-      r.content = 'json->html not implemented'; // TODO
+      const dom = new JSDOM('<!DOCTYPE html>');
+      const document = dom.window.document;
+      const root = document.body;
+      haRender(t.data, document, root, format ? format : 'M', false);
+
+      r.content = root.innerHTML;
     }
 
     return r;
@@ -107,15 +115,19 @@ export class TranscriptsController {
   }
 
   @Get(':id/html')
-  async htmlById(@Res() res, @Param('id') id ) {
+  async htmlById(@Res() res, @Param('id') id, @Query('format') format = 'T', @Query('speakers') speakers, @Query('digits') digits) {
     const transcript = await this.transcriptsService.findById(id);
     res.header('Content-Type', 'text/html');
 
     if (! transcript.data) {
       res.send(transcript.content);
     } else {
-      // res.send(await haHTML(transcript.data));
-      res.send('json->html not implemented'); // TODO
+      const dom = new JSDOM('<!DOCTYPE html>');
+      const document = dom.window.document;
+      const root = document.body;
+      haRender(transcript.data, document, root, format, speakers, digits);
+
+      res.send(root.innerHTML);
     }
   }
 
@@ -126,7 +138,7 @@ export class TranscriptsController {
     if (transcript.data) {
       res.send(transcript.data);
     } else {
-      res.send(await haJson(transcript.content));
+      res.send(await haParser(transcript.content));
     }
   }
 }
