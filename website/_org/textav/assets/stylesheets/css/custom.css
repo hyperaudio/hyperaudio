@@ -207,7 +207,7 @@ a:active {
    Header
    ========================================================================== */
 header .brandmark-label:after {
-  content: " Text AV Conference";
+  content: " TextAV Meetup";
 }
 
 @media only screen and (min-width: 40.063em) and (max-width: 64em) {
