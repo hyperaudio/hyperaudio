@@ -19,7 +19,7 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
-    "@hyperaudio/transcript-parser": "0.0.5",
+    "@hyperaudio/transcript-parser": "0.0.6",
     "@hyperaudio/transcript-renderer": "0.0.1",
     "@nestjs/common": "^4.0.1",
     "@nestjs/core": "^4.0.1",

@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@hyperaudio/transcript-parser@0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@hyperaudio/transcript-parser/-/transcript-parser-0.0.5.tgz#30b5714a8044bc121c9bb33921fa07880486ab2a"
+"@hyperaudio/transcript-parser@0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@hyperaudio/transcript-parser/-/transcript-parser-0.0.6.tgz#b559d6b69533715ed7dc24f77c7c3c290cdead90"
   dependencies:
     htmlparser2 "^3.9.2"
 
