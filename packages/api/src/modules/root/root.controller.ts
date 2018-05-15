@@ -5,7 +5,8 @@ export class RootController {
   @Get()
   index() {
     return {
-      status: 'OK'
+      status: 'OK',
+      v: 3
     };
   }
 }

@@ -99,7 +99,7 @@ export class TranscriptsController {
       const dom = new JSDOM('<!DOCTYPE html>');
       const document = dom.window.document;
       const root = document.body;
-      haRender(t.data, document, root, format ? format : 'M', false);
+      haRender(t.data, document, root, format ? format : 'M', true, 3);
 
       r.content = root.innerHTML;
     }
