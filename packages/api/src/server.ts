@@ -6,7 +6,7 @@ import { ApplicationModule } from './modules/app.module';
 async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(ApplicationModule);
-  app.use(bodyParser.json({ limit: '50mb' }));
+  app.use(bodyParser.json({ limit: '120mb' }));
   await app.listen(8080);
 }
 bootstrap();
