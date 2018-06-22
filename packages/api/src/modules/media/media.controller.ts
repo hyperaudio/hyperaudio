@@ -56,7 +56,17 @@ export class MediaController {
   @Get()
   async findAll(@Res() res, @Query('channel') channel, @Query('tag') tag, @Query('user') user, @Query('created') created, @Query('modified') modified, @Query('sort') sort) {
     const query = this.setupQuery(res, channel, tag, user, created, modified);
-    if (user === 'bgm') delete query['namespace'];
+    if (user === 'bgm') {
+      delete query['namespace'];
+      const bgm = await this.mediaService.find(query, sort);
+      res.send(bgm.map((media: Media) => {
+        const data = media.toJSON();
+        data['source']['mp3']['url'] = data['source']['mp3']['url'].replace('http://hyperaud.io', 'https://lab.hyperaud.io');
+        data['source']['ogg']['url'] = data['source']['ogg']['url'].replace('http://hyperaud.io', 'https://lab.hyperaud.io');
+        return data;
+      }));
+    }
+
     res.send(await this.mediaService.find(query, sort));
   }
 
