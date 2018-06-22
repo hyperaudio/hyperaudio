@@ -12,5 +12,6 @@ export interface Transcript extends Document {
   created: Date;
   modified: Date;
   content: String;
+  data: Schema.Types.Mixed;
   media: String;
 }

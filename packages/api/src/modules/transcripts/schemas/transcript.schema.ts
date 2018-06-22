@@ -18,6 +18,7 @@ export const TranscriptSchema = new mongoose.Schema({
     default: Date.now
   },
   content: String,
+  data: mongoose.Schema.Types.Mixed,
   media: {
     type: String,
     ref: 'Media'
