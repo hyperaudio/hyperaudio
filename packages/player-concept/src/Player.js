@@ -18,6 +18,8 @@ class Player extends Component {
 
     switch(this.video.current.nodeName) {
       case 'IFRAME':
+        this.player = new playerjs.Player(this.video.current);
+
         this.receiver.on('play', () => {
           this.player.play();
           this.receiver.emit('play');
@@ -40,7 +42,6 @@ class Player extends Component {
         this.receiver.on('getCurrentTime', callback => this.player.getCurrentTime(currentTime => callback(currentTime)));
         this.receiver.on('setCurrentTime', value => this.player.setCurrentTime(value));
 
-        this.player = new playerjs.Player(this.video.current);
         this.player.addEventListener('ended', () => this.receiver.emit('ended'));
         this.player.addEventListener('timeupdate', () => this.player.getDuration(duration => this.player.getCurrentTime(seconds => this.receiver.emit('timeupdate', { seconds, duration }))));
         break;
@@ -80,7 +81,7 @@ class Player extends Component {
   renderVideo() {
     return (
       <div className="Player">
-        <video ref={this.video} controls src="https://player.vimeo.com/external/120977606.hd.mp4?s=a4e893debe25a954a3110b7e0f054555fac01893&profile_id=113"></video>
+        <video ref={this.video} controls src="https://player.vimeo.com/external/125021045.hd.mp4?s=b9f8ace1d41c11ab5d9f042666a493130ad664c4&profile_id=113"></video>
       </div>
     );
   }
@@ -88,7 +89,7 @@ class Player extends Component {
   renderIframe() {
     return (
       <div className="Player">
-        <iframe ref={this.video} src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F120977606%3Fapp_id%3D122963&dntp=1&url=https%3A%2F%2Fvimeo.com%2F120977606&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F508995728_1280.jpg&key=3ee528c9eb4b4908b268ce1ace120c92&type=text%2Fhtml&schema=vimeo" scrolling="no" allow="autoplay; fullscreen" allowfullscreen="true" frameborder="0"></iframe>
+        <iframe ref={this.video} src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F125021045%3Fapp_id%3D122963&dntp=1&url=https%3A%2F%2Fvimeo.com%2F125021045&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F514964564_1280.jpg&key=3ee528c9eb4b4908b268ce1ace120c92&type=text%2Fhtml&schema=vimeo" scrolling="no" allow="autoplay; fullscreen" allowfullscreen="true" frameborder="0"></iframe>
       </div>
     );
   }
