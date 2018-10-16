@@ -3,10 +3,10 @@ import playerjs from 'player.js';
 
 
 import transcript from './transcript';
-import './Transcript.css';
+import './TranscriptPlayer.css';
 
 
-class Transcript extends Component {
+class TranscriptPlayer extends Component {
   constructor(props) {
     super(props);
 
@@ -50,16 +50,23 @@ class Transcript extends Component {
   }
 
   componentDidMount() {
-    this.setup();
+    // this.setup();
   }
 
   render() {
     return (
-      <div className="Player">
-        <iframe ref={this.video} src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F125021045%3Fapp_id%3D122963&dntp=1&url=https%3A%2F%2Fvimeo.com%2F125021045&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F514964564_1280.jpg&key=3ee528c9eb4b4908b268ce1ace120c92&type=text%2Fhtml&schema=vimeo" scrolling="no" allow="autoplay; fullscreen" allowfullscreen="true" frameborder="0"></iframe>
+      <div className="TranscriptPlayer">
+        { transcript.words.reduce((acc, word) => {
+          if (/[^a-zA-Z0-9]/.test(word.name.split('').pop())) {
+            const p = acc.pop();
+            p.name += word.name;
+            return [...acc, p];
+          }
+          return [...acc, word];
+        }, []).map(word => (<span data-t={word.time} data-d={word.duration}>{word.name} </span>)) }
       </div>
     );
   }
 }
 
-export default Transcript;
+export default TranscriptPlayer;
