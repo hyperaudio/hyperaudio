@@ -1,0 +1,11 @@
+{
+  "name": "@hyperaudio/hyperaudio",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperaudio/hyperaudio.git"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
