@@ -6764,6 +6764,11 @@ pkg-up@2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+player.js@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/player.js/-/player.js-0.1.0.tgz#38a2647f022dbbccf2e97e85e1fddccc9ef498e8"
+  integrity sha1-OKJkfwItu8zy6X6F4f3czJ70mOg=
+
 pluralize@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
