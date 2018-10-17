@@ -5,7 +5,13 @@
     "type": "git",
     "url": "git+https://github.com/hyperaudio/hyperaudio.git"
   },
+  "scripts": {
+    "status": "oao status"
+  },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "oao": "^1.5.1"
+  }
 }
