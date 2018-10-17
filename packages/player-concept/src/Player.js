@@ -38,22 +38,45 @@ class Player extends Component {
           this.receiver.emit('pause');
         });
 
-        this.receiver.on('getDuration', callback => this.player.getDuration(duration => callback(duration)));
-        this.receiver.on('getVolume', callback => this.player.getVolume(volume => callback(volume)));
+        this.receiver.on('getDuration', callback =>
+          this.player.getDuration(duration => callback(duration))
+        );
+        this.receiver.on('getVolume', callback =>
+          this.player.getVolume(volume => callback(volume))
+        );
         this.receiver.on('setVolume', value => this.player.setVolume(value));
         this.receiver.on('mute', () => this.player.mute());
         this.receiver.on('unmute', () => this.player.unmute());
-        this.receiver.on('getMuted', callback => this.player.getMuted(mute => callback(mute)));
-        this.receiver.on('getPaused', callback => this.player.getPaused(paused => callback(paused)));
-        this.receiver.on('getLoop', callback => this.player.getLoop(loop => callback(loop)));
+        this.receiver.on('getMuted', callback =>
+          this.player.getMuted(mute => callback(mute))
+        );
+        this.receiver.on('getPaused', callback =>
+          this.player.getPaused(paused => callback(paused))
+        );
+        this.receiver.on('getLoop', callback =>
+          this.player.getLoop(loop => callback(loop))
+        );
         this.receiver.on('setLoop', value => this.player.setLoop(value));
-        this.receiver.on('getCurrentTime', callback => this.player.getCurrentTime(currentTime => callback(currentTime)));
-        this.receiver.on('setCurrentTime', value => this.player.setCurrentTime(value));
+        this.receiver.on('getCurrentTime', callback =>
+          this.player.getCurrentTime(currentTime => callback(currentTime))
+        );
+        this.receiver.on('setCurrentTime', value =>
+          this.player.setCurrentTime(value)
+        );
 
-        this.player.addEventListener('ended', () => this.receiver.emit('ended'));
-        this.player.addEventListener('timeupdate', () => this.player.getDuration(duration => this.player.getCurrentTime(seconds => this.receiver.emit('timeupdate', { seconds, duration }))));
+        this.player.addEventListener('ended', () =>
+          this.receiver.emit('ended')
+        );
+        this.player.addEventListener('timeupdate', () =>
+          this.player.getDuration(duration =>
+            this.player.getCurrentTime(seconds =>
+              this.receiver.emit('timeupdate', { seconds, duration })
+            )
+          )
+        );
         break;
-      default: // VIDEO + AUDIO
+      default:
+        // VIDEO + AUDIO
         this.receiver.on('play', () => {
           this.media.current.play();
           this.receiver.emit('play');
@@ -64,19 +87,48 @@ class Player extends Component {
           this.receiver.emit('pause');
         });
 
-        this.receiver.on('getDuration', callback => callback(this.media.current.duration));
-        this.receiver.on('getVolume', callback => callback(this.media.current.volume * 100));
-        this.receiver.on('setVolume', (value) => { this.media.current.volume = (value / 100); });
-        this.receiver.on('mute', () => { this.media.current.mute = true; });
-        this.receiver.on('unmute', () => { this.media.current.mute = false; });
-        this.receiver.on('getMuted', callback => callback(this.media.current.mute));
-        this.receiver.on('getPaused', callback => callback(this.media.current.paused));
-        this.receiver.on('getLoop', callback => callback(this.media.current.loop));
-        this.receiver.on('setLoop', (value) => { this.media.current.loop = value; });
-        this.receiver.on('getCurrentTime', callback => callback(this.media.current.currentTime));
-        this.receiver.on('setCurrentTime', (value) => { this.media.current.currentTime = value; });
-        this.media.current.addEventListener('ended', () => this.receiver.emit('ended'));
-        this.media.current.addEventListener('timeupdate', () => this.receiver.emit('timeupdate', { seconds: this.media.current.currentTime, duration: this.media.current.duration }));
+        this.receiver.on('getDuration', callback =>
+          callback(this.media.current.duration)
+        );
+        this.receiver.on('getVolume', callback =>
+          callback(this.media.current.volume * 100)
+        );
+        this.receiver.on('setVolume', value => {
+          this.media.current.volume = value / 100;
+        });
+        this.receiver.on('mute', () => {
+          this.media.current.mute = true;
+        });
+        this.receiver.on('unmute', () => {
+          this.media.current.mute = false;
+        });
+        this.receiver.on('getMuted', callback =>
+          callback(this.media.current.mute)
+        );
+        this.receiver.on('getPaused', callback =>
+          callback(this.media.current.paused)
+        );
+        this.receiver.on('getLoop', callback =>
+          callback(this.media.current.loop)
+        );
+        this.receiver.on('setLoop', value => {
+          this.media.current.loop = value;
+        });
+        this.receiver.on('getCurrentTime', callback =>
+          callback(this.media.current.currentTime)
+        );
+        this.receiver.on('setCurrentTime', value => {
+          this.media.current.currentTime = value;
+        });
+        this.media.current.addEventListener('ended', () =>
+          this.receiver.emit('ended')
+        );
+        this.media.current.addEventListener('timeupdate', () =>
+          this.receiver.emit('timeupdate', {
+            seconds: this.media.current.currentTime,
+            duration: this.media.current.duration
+          })
+        );
     }
 
     this.receiver.ready();
@@ -116,22 +168,25 @@ class Player extends Component {
 
   render() {
     const { children } = this.props;
-    return <div className="Player">{children ? children : this.renderMedia()}</div>;
+    return (
+      <div className="Player">{children ? children : this.renderMedia()}</div>
+    );
   }
 }
 
 Player.defaultProps = {
-  src: 'https://player.vimeo.com/external/125021045.hd.mp4?s=b9f8ace1d41c11ab5d9f042666a493130ad664c4&profile_id=113',
+  src:
+    'https://player.vimeo.com/external/125021045.hd.mp4?s=b9f8ace1d41c11ab5d9f042666a493130ad664c4&profile_id=113',
   controls: true,
   type: 'video/mp4',
-  children: null,
+  children: null
 };
 
 Player.propTypes = {
   src: PropTypes.string,
   type: PropTypes.string,
   controls: PropTypes.bool,
-  children: PropTypes.element,
+  children: PropTypes.element
 };
 
 export default Player;
