@@ -6,8 +6,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import playerjs from 'player.js';
 
-import { VideoPlayer } from 'hyperaudio-ui';
-
 import './Player.css';
 
 class Player extends Component {
@@ -171,7 +169,9 @@ class Player extends Component {
   render() {
     const { children } = this.props;
     return (
-      <div className="Player">{children ? children : this.renderMedia()}</div>
+      <>
+        <div className="Player">{children ? children : this.renderMedia()}</div>
+      </>
     );
   }
 }
