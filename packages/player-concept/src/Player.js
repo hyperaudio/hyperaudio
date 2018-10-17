@@ -6,6 +6,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import playerjs from 'player.js';
 
+import { VideoPlayer } from 'hyperaudio-ui';
+
 import './Player.css';
 
 class Player extends Component {
