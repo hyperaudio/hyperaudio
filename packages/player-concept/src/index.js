@@ -6,8 +6,6 @@ import Player from './Player';
 
 import * as serviceWorker from './serviceWorker';
 
-import './index.css';
-
 ReactDOM.render(<Player />, document.getElementById('root'));
 // ReactDOM.render(<TranscriptPlayer />, document.getElementById('root'));
 

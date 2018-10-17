@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import playerjs from 'player.js';
 
 import transcript from './transcript';
-import './TranscriptPlayer.css';
 
 class TranscriptPlayer extends Component {
   constructor(props) {
