@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import playerjs from 'player.js';
 
 
@@ -12,13 +13,13 @@ class TranscriptPlayer extends Component {
 
     this.player = null;
     this.receiver = null;
-    this.video = React.createRef();
+    this.media = React.createRef();
   }
 
   setup() {
     this.receiver = new playerjs.Receiver();
 
-    this.player = new playerjs.Player(this.video.current);
+    this.player = new playerjs.Player(this.media.current);
 
     this.receiver.on('play', () => {
       this.player.play();
@@ -68,5 +69,18 @@ class TranscriptPlayer extends Component {
     );
   }
 }
+
+TranscriptPlayer.defaultProps = {
+  // src: 'https://player.vimeo.com/external/125021045.hd.mp4?s=b9f8ace1d41c11ab5d9f042666a493130ad664c4&profile_id=113',
+  // controls: true,
+  // type: 'video/mp4',
+};
+
+TranscriptPlayer.propTypes = {
+  // src: PropTypes.string.isRequired,
+  // type: PropTypes.string,
+  // controls: PropTypes.boolean,
+  // children: PropTypes.element,
+};
 
 export default TranscriptPlayer;
