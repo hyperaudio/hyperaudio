@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import playerjs from 'player.js';
 
-import { PlayerChrome } from 'hyperaudio-ui';
+import { PlayerChrome } from '@hyperaudio/ui';
 
 import './Player.css';
 
