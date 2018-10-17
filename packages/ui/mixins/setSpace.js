@@ -1,4 +1,4 @@
-import { space } from "ui/settings";
+import { space } from "../settings";
 import fluidify from "./ofMixins/fluidify";
 
 /* eslint import/prefer-default-export: 0 */
