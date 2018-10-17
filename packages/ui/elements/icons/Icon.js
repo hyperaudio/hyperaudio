@@ -3,10 +3,10 @@ import { shape, string } from "prop-types";
 import React from "react";
 import styled from "styled-components";
 
-import { defaultThm } from "../../themes";
-import { font } from "../../settings";
-import { iconfont } from "../../assets";
-import { setType } from "../../mixins";
+import { defaultThm } from "@hyperaudio/ui/themes";
+import { font } from "@hyperaudio/ui/settings";
+import { iconfont } from "@hyperaudio/ui/assets";
+import { setType } from "@hyperaudio/ui/mixins";
 
 const IconEl = styled.i`
   ${({ size }) => setType(size)};

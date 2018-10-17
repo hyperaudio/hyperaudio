@@ -1,4 +1,4 @@
-import { sizes } from "../settings";
+import { sizes } from "@hyperaudio/ui/settings";
 import fluidify from "./ofMixins/fluidify";
 
 export const setHeight = val =>

@@ -1,4 +1,4 @@
-import { lead, fsize } from "../settings";
+import { lead, fsize } from "@hyperaudio/ui/settings";
 import fluidify from "./ofMixins/fluidify";
 
 /* eslint import/prefer-default-export: 0 */

@@ -1,4 +1,4 @@
-import { space } from "../settings";
+import { space } from "@hyperaudio/ui/settings";
 import fluidify from "./ofMixins/fluidify";
 
 /* eslint import/prefer-default-export: 0 */
