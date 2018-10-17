@@ -1,6 +1,7 @@
 export const lightThm = {
   background: "white",
-  color: "blue"
+  color: "blue",
+  decorColor: "#ececec"
 };
 
 export default lightThm;
