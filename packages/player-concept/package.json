@@ -17,11 +17,8 @@
     "lint": "eslint src"
   },
   "eslintConfig": {
-    "extends": ["airbnb", "plugin:prettier/recommended", "prettier/react"],
+    "extends": ["airbnb"],
     "rules": {
-      "prettier/prettier": ["error", { "singleQuote": true }, {
-        "usePrettierrc": true
-      }],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
     }
   },
@@ -34,11 +31,8 @@
   "devDependencies": {
     "eslint": "^5.7.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^3.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "prettier": "^1.14.3"
+    "eslint-plugin-react": "^7.11.1"
   }
 }
