@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import playerjs from 'player.js';
 
 
@@ -14,6 +14,10 @@ class TranscriptPlayer extends Component {
     this.player = null;
     this.receiver = null;
     this.media = React.createRef();
+  }
+
+  componentDidMount() {
+    // this.setup();
   }
 
   setup() {
@@ -34,7 +38,7 @@ class TranscriptPlayer extends Component {
     this.receiver.on('getDuration', callback => this.player.getDuration(duration => callback(duration)));
     this.receiver.on('getVolume', callback => this.player.getVolume(volume => callback(volume)));
     this.receiver.on('setVolume', value => this.player.setVolume(value));
-    this.receiver.on('mute', () => this.player.mute())
+    this.receiver.on('mute', () => this.player.mute());
     this.receiver.on('unmute', () => this.player.unmute());
     this.receiver.on('getMuted', callback => this.player.getMuted(mute => callback(mute)));
     this.receiver.on('getPaused', callback => this.player.getPaused(paused => callback(paused)));
@@ -50,10 +54,6 @@ class TranscriptPlayer extends Component {
     this.receiver.ready();
   }
 
-  componentDidMount() {
-    // this.setup();
-  }
-
   render() {
     return (
       <div className="TranscriptPlayer">
@@ -64,7 +64,7 @@ class TranscriptPlayer extends Component {
             return [...acc, p];
           }
           return [...acc, word];
-        }, []).map(word => (<span data-t={word.time} data-d={word.duration}>{word.name} </span>)) }
+        }, []).map(word => (<span data-t={word.time} data-d={word.duration}>{`${word.name} `}</span>)) }
       </div>
     );
   }

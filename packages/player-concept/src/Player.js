@@ -1,5 +1,6 @@
 /* eslint jsx-a11y/media-has-caption: 0 */
 /* eslint jsx-a11y/iframe-has-title: 0 */
+/* eslint no-unneeded-ternary: 0 */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -64,18 +65,18 @@ class Player extends Component {
         });
 
         this.receiver.on('getDuration', callback => callback(this.media.current.duration));
-        this.receiver.on('getVolume', callback => callback(this.media.current.volume*100));
-        this.receiver.on('setVolume', value => this.media.current.volume = (value/100));
-        this.receiver.on('mute', () => this.media.current.mute = true)
-        this.receiver.on('unmute', () => this.media.current.mute = false);
+        this.receiver.on('getVolume', callback => callback(this.media.current.volume * 100));
+        this.receiver.on('setVolume', (value) => { this.media.current.volume = (value / 100); });
+        this.receiver.on('mute', () => { this.media.current.mute = true; });
+        this.receiver.on('unmute', () => { this.media.current.mute = false; });
         this.receiver.on('getMuted', callback => callback(this.media.current.mute));
         this.receiver.on('getPaused', callback => callback(this.media.current.paused));
         this.receiver.on('getLoop', callback => callback(this.media.current.loop));
-        this.receiver.on('setLoop', value => this.media.current.loop = value);
+        this.receiver.on('setLoop', (value) => { this.media.current.loop = value; });
         this.receiver.on('getCurrentTime', callback => callback(this.media.current.currentTime));
-        this.receiver.on('setCurrentTime', value => this.media.current.currentTime = value);
+        this.receiver.on('setCurrentTime', (value) => { this.media.current.currentTime = value; });
         this.media.current.addEventListener('ended', () => this.receiver.emit('ended'));
-        this.media.current.addEventListener('timeupdate', () => this.receiver.emit('timeupdate', { seconds: this.media.current.currentTime, duration: this.media.current.duration}));
+        this.media.current.addEventListener('timeupdate', () => this.receiver.emit('timeupdate', { seconds: this.media.current.currentTime, duration: this.media.current.duration }));
     }
 
     this.receiver.ready();
@@ -86,34 +87,38 @@ class Player extends Component {
 
     switch (type.split('/')[0]) {
       case 'iframe': // FIXME
-        return (<iframe ref={this.media} src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F125021045%3Fapp_id%3D122963&dntp=1&url=https%3A%2F%2Fvimeo.com%2F125021045&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F514964564_1280.jpg&key=3ee528c9eb4b4908b268ce1ace120c92&type=text%2Fhtml&schema=vimeo" scrolling="no" allow="autoplay; fullscreen" allowfullscreen="true" frameborder="0" />);
+        return (
+          <iframe
+            ref={this.media}
+            src="http://cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fplayer.vimeo.com%2Fvideo%2F125021045%3Fapp_id%3D122963&dntp=1&url=https%3A%2F%2Fvimeo.com%2F125021045&image=https%3A%2F%2Fi.vimeocdn.com%2Fvideo%2F514964564_1280.jpg&key=3ee528c9eb4b4908b268ce1ace120c92&type=text%2Fhtml&schema=vimeo"
+            scrolling="no"
+            allow="autoplay; fullscreen"
+            allowFullScreen="true"
+            frameBorder="0"
+          />
+        );
       case 'audio':
         return (
           <audio ref={this.media} {...this.props}>
-            <source src={src} type={type}/>
+            <source src={src} type={type} />
           </audio>
         );
       case 'video':
         return (
           <video ref={this.media} {...this.props}>
-            <source src={src} type={type}/>
+            <source src={src} type={type} />
           </video>
         );
       default:
-        return (<p>unknown media type</p>);
+        return <p>unknown media type</p>;
     }
   }
 
   render() {
     const { children } = this.props;
-    return (
-      <div className="Player">
-        { children && this.renderMedia() }
-      </div>
-    );
+    return <div className="Player">{children ? children : this.renderMedia()}</div>;
   }
 }
-
 
 Player.defaultProps = {
   src: 'https://player.vimeo.com/external/125021045.hd.mp4?s=b9f8ace1d41c11ab5d9f042666a493130ad664c4&profile_id=113',
