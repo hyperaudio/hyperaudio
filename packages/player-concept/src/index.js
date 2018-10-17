@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Player from './Player';
-import TranscriptPlayer from './TranscriptPlayer';
+// import TranscriptPlayer from './TranscriptPlayer';
 
 import * as serviceWorker from './serviceWorker';
 
