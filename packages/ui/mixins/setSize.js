@@ -1,4 +1,4 @@
-import { sizes } from "ui/settings";
+import { sizes } from "../settings";
 import fluidify from "./ofMixins/fluidify";
 
 export const setHeight = val =>
