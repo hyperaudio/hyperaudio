@@ -1,9 +1,9 @@
-import { shape, string } from "prop-types";
+import { bool, shape, string } from "prop-types";
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 
 import { font } from "@hyperaudio/ui/settings";
-import { Icon } from "@hyperaudio/ui/elements";
+import { Action, Icon } from "@hyperaudio/ui/elements";
 import { lightThm } from "@hyperaudio/ui/themes";
 import { reset, setHeight, setSpace, setType } from "@hyperaudio/ui/mixins";
 
@@ -52,14 +52,22 @@ const Canvas = styled.div`
 `;
 
 const PlayerChrome = props => {
-  const { children, theme } = props;
+  const { children, conditions, theme } = props;
+  const { isPlaying } = conditions;
   return (
     <ThemeProvider theme={theme}>
       <Chrome>
         <Controls>
           <Playback>
-            <Icon name="play" /> Play
-            <Icon name="pause" /> Pause
+            {isPlaying ? (
+              <Action>
+                <Icon name="pause" /> Pause
+              </Action>
+            ) : (
+              <Action>
+                <Icon name="play" /> Play
+              </Action>
+            )}
           </Playback>
           <Speed>20 / 100</Speed>
           <Progress>20 / 100</Progress>
@@ -76,6 +84,9 @@ const PlayerChrome = props => {
 };
 
 PlayerChrome.propTypes = {
+  conditions: {
+    isPlaying: bool
+  },
   theme: shape({
     background: string,
     decorColor: string
@@ -83,6 +94,9 @@ PlayerChrome.propTypes = {
 };
 
 PlayerChrome.defaultProps = {
+  conditions: {
+    isPlaying: null
+  },
   theme: {
     background: lightThm.background,
     decorColor: lightThm.decorColor
