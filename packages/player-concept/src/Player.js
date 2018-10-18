@@ -170,10 +170,24 @@ class Player extends Component {
     const { children } = this.props;
     return (
       <>
-        <PlayerChrome>
-          <div className="Player">
-            {children ? children : this.renderMedia()}
-          </div>
+        <PlayerChrome
+          handlers={{
+            handlePause: () => console.log('handlePause()'),
+            handlePlay: () => console.log('handlePlay()'),
+            handleProgressChange: () => console.log('handleProgressChange()'),
+            handleSpeed: () => console.log('handleSpeed()'),
+            handleVolumeChange: () => console.log('handleVolumeChange()')
+          }}
+          conditions={{
+            currentTime: 0,
+            duration: 275,
+            isMute: false,
+            isPlaying: false,
+            speedRate: 1,
+            volume: 100
+          }}
+        >
+          {children ? children : this.renderMedia()}
         </PlayerChrome>
       </>
     );
