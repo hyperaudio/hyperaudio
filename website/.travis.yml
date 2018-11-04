@@ -2,25 +2,25 @@ install: echo npm install
 
 script: echo 1
 
-deploy:
-  - provider: s3
-    access_key_id: AKIAIS4ABNSYS5HWUFTA
-    bucket: hyperaud.io
-    acl: public_read
-    skip_cleanup: true
-    secret_access_key:
-      secure: yvsPCBWpmoK41sscBnUgAAf5ij9osjFE1yd4iNvNIp0spu+TWHARx2rWp2/IQuot+alDYMchMTdHiOlQYZS2AHcTHBHIJSoP1RA6VSsXg8A8lcCDrxa9yyQqwWE4sxRMgeNYA4aA85K5TAfj7LRaCIwt6IRY+gSa/ADYvU8gLdyLZYrVE263drp98ztXbSBAHPIh1nVUrIR8INOFINPwX2BH8QG1/i1znXGdN6y7EXoukBsP9lXw7ZCRE1W9MuPabenPf35N+8DDNNJBxvXqPEwhhtflzHpASavDk7Q6Kfmka9Gw9m+6lSxIAlFpOVKWqCH8b/4WMR0t1P8qSa+InOnhXdtFH8l/80y45Ojy7FzroOIjUTzRQT9SJbgb2BebEQtriDOsg0r9xFaXBdt76Gx3sVtLkh1yo2PraUDR49N0KF1YUQVJ4sJH8CN6BYPxX5ZIGwKnmHmDJut7c5fH4o3/Ir2GlRyNocp6J1kiBCl2LA5u+XA6S2Qvy8nb3RHe8vB+3PyA1yAv8UHylTeV/wtgGP1x8y2hydd4X/l8GQpbuLygkTRIkAxDcNOJw//I4R3Nz+TSrnK2TGBfTX2nBonrr/yJpcOpFTAOlVBDLQ+AAGeN9M5H7ndIvKl/LKunWCQx04PWUC7kzj34QVDAXNxJ84DsElD8YNEZFYsdxqI=
-    on:
-      branch: master
-  - provider: s3
-    access_key_id: AKIAIS4ABNSYS5HWUFTA
-    bucket: hyperaudio.net
-    acl: public_read
-    skip_cleanup: true
-    secret_access_key:
-      secure: yvsPCBWpmoK41sscBnUgAAf5ij9osjFE1yd4iNvNIp0spu+TWHARx2rWp2/IQuot+alDYMchMTdHiOlQYZS2AHcTHBHIJSoP1RA6VSsXg8A8lcCDrxa9yyQqwWE4sxRMgeNYA4aA85K5TAfj7LRaCIwt6IRY+gSa/ADYvU8gLdyLZYrVE263drp98ztXbSBAHPIh1nVUrIR8INOFINPwX2BH8QG1/i1znXGdN6y7EXoukBsP9lXw7ZCRE1W9MuPabenPf35N+8DDNNJBxvXqPEwhhtflzHpASavDk7Q6Kfmka9Gw9m+6lSxIAlFpOVKWqCH8b/4WMR0t1P8qSa+InOnhXdtFH8l/80y45Ojy7FzroOIjUTzRQT9SJbgb2BebEQtriDOsg0r9xFaXBdt76Gx3sVtLkh1yo2PraUDR49N0KF1YUQVJ4sJH8CN6BYPxX5ZIGwKnmHmDJut7c5fH4o3/Ir2GlRyNocp6J1kiBCl2LA5u+XA6S2Qvy8nb3RHe8vB+3PyA1yAv8UHylTeV/wtgGP1x8y2hydd4X/l8GQpbuLygkTRIkAxDcNOJw//I4R3Nz+TSrnK2TGBfTX2nBonrr/yJpcOpFTAOlVBDLQ+AAGeN9M5H7ndIvKl/LKunWCQx04PWUC7kzj34QVDAXNxJ84DsElD8YNEZFYsdxqI=
-    on:
-      branch: develop
-
-notifications:
-  irc: chat.freenode.net#hyperaudio
+# deploy:
+#   - provider: s3
+#     access_key_id: AKIAIS4ABNSYS5HWUFTA
+#     bucket: hyperaud.io
+#     acl: public_read
+#     skip_cleanup: true
+#     secret_access_key:
+#       secure: yvsPCBWpmoK41sscBnUgAAf5ij9osjFE1yd4iNvNIp0spu+TWHARx2rWp2/IQuot+alDYMchMTdHiOlQYZS2AHcTHBHIJSoP1RA6VSsXg8A8lcCDrxa9yyQqwWE4sxRMgeNYA4aA85K5TAfj7LRaCIwt6IRY+gSa/ADYvU8gLdyLZYrVE263drp98ztXbSBAHPIh1nVUrIR8INOFINPwX2BH8QG1/i1znXGdN6y7EXoukBsP9lXw7ZCRE1W9MuPabenPf35N+8DDNNJBxvXqPEwhhtflzHpASavDk7Q6Kfmka9Gw9m+6lSxIAlFpOVKWqCH8b/4WMR0t1P8qSa+InOnhXdtFH8l/80y45Ojy7FzroOIjUTzRQT9SJbgb2BebEQtriDOsg0r9xFaXBdt76Gx3sVtLkh1yo2PraUDR49N0KF1YUQVJ4sJH8CN6BYPxX5ZIGwKnmHmDJut7c5fH4o3/Ir2GlRyNocp6J1kiBCl2LA5u+XA6S2Qvy8nb3RHe8vB+3PyA1yAv8UHylTeV/wtgGP1x8y2hydd4X/l8GQpbuLygkTRIkAxDcNOJw//I4R3Nz+TSrnK2TGBfTX2nBonrr/yJpcOpFTAOlVBDLQ+AAGeN9M5H7ndIvKl/LKunWCQx04PWUC7kzj34QVDAXNxJ84DsElD8YNEZFYsdxqI=
+#     on:
+#       branch: master
+#   - provider: s3
+#     access_key_id: AKIAIS4ABNSYS5HWUFTA
+#     bucket: hyperaudio.net
+#     acl: public_read
+#     skip_cleanup: true
+#     secret_access_key:
+#       secure: yvsPCBWpmoK41sscBnUgAAf5ij9osjFE1yd4iNvNIp0spu+TWHARx2rWp2/IQuot+alDYMchMTdHiOlQYZS2AHcTHBHIJSoP1RA6VSsXg8A8lcCDrxa9yyQqwWE4sxRMgeNYA4aA85K5TAfj7LRaCIwt6IRY+gSa/ADYvU8gLdyLZYrVE263drp98ztXbSBAHPIh1nVUrIR8INOFINPwX2BH8QG1/i1znXGdN6y7EXoukBsP9lXw7ZCRE1W9MuPabenPf35N+8DDNNJBxvXqPEwhhtflzHpASavDk7Q6Kfmka9Gw9m+6lSxIAlFpOVKWqCH8b/4WMR0t1P8qSa+InOnhXdtFH8l/80y45Ojy7FzroOIjUTzRQT9SJbgb2BebEQtriDOsg0r9xFaXBdt76Gx3sVtLkh1yo2PraUDR49N0KF1YUQVJ4sJH8CN6BYPxX5ZIGwKnmHmDJut7c5fH4o3/Ir2GlRyNocp6J1kiBCl2LA5u+XA6S2Qvy8nb3RHe8vB+3PyA1yAv8UHylTeV/wtgGP1x8y2hydd4X/l8GQpbuLygkTRIkAxDcNOJw//I4R3Nz+TSrnK2TGBfTX2nBonrr/yJpcOpFTAOlVBDLQ+AAGeN9M5H7ndIvKl/LKunWCQx04PWUC7kzj34QVDAXNxJ84DsElD8YNEZFYsdxqI=
+#     on:
+#       branch: develop
+#
+# notifications:
+#   irc: chat.freenode.net#hyperaudio
