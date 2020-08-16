@@ -1,5 +1,5 @@
 {
-  "name": "ha-dash",
+  "name": "@hyperaudio/dashboard",
   "version": "0.3.0",
   "description": "Hyperaudio dashboard",
   "author": "Laurian Gridinoc <laurian@gridinoc.name>",
