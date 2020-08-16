@@ -1,5 +1,5 @@
 {
-  "name": "@hyperaudio/hyperaudio",
+  "name": "hyperaudio",
   "private": true,
   "repository": {
     "type": "git",
@@ -9,6 +9,7 @@
     "status": "npx oao status"
   },
   "workspaces": [
+    "website",
     "packages/*"
   ]
 }
