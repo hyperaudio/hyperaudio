@@ -1,20 +1,25 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import Head from 'next/head';
 import Link from 'next/link';
+import styled from 'styled-components';
 
-export default function Home() {
+const Title = styled.h1`
+  font-size: 50px;
+  color: ${({ theme }) => theme.colors.primary};
+`;
+
+const Home = () => {
   return (
-    <div className="container">
+    <div>
       <Head>
         <title>Hyperaudio</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main>
-        <h1>Hyperaudio</h1>
+        <Title>Hyperaudio</Title>
 
-        <p>
-          The Hyperaudio Project is a global non-profit group producing Open Source software
-        </p>
+        <p>The Hyperaudio Project is a global non-profit group producing Open Source software</p>
       </main>
 
       <footer>
@@ -42,5 +47,7 @@ export default function Home() {
         </ul>
       </footer>
     </div>
-  )
+  );
 };
+
+export default Home;
