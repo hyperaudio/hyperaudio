@@ -1,5 +1,5 @@
 {
-  "name": "ha-api",
+  "name": "@hyperaudio/api",
   "version": "1.0.0",
   "description": "api.hyperaud.io",
   "license": "MIT",
