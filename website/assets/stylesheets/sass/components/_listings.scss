@@ -1,0 +1,56 @@
+/* Listings
+----------------------------------------------- */
+
+.listing {
+
+}
+.listing-item {
+  @include clearfix;
+  list-style: none;
+  margin-top: $space-h;
+  margin-bottom: 0;
+  padding-bottom: 0;
+  &:first-child {
+    margin-top: 0;
+  }
+}
+.listing-title {
+  display: inline;
+  font-size: $font-m;
+  line-height: $font-l;
+  text-align: left;
+}
+.listing-meta {
+  color: $mono-weak;
+  display: block;
+  float: left;
+  margin-top: $space-x;
+  margin-bottom: 0;
+  min-width: 150px;
+  text-align: left;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small-only} {
+  .listing-item {
+    margin-top: $space-l;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+@media #{$medium-only} {
+  .listing-item {
+    margin-top: $space-l;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+@media #{$large-up} {
+}
+

@@ -1,0 +1,57 @@
+/* Section Head
+----------------------------------------------- */
+
+.section-head {
+  margin-bottom: $space-h;
+  text-align: center;
+}
+.section-head-heading {
+  @extend .heading-xl;
+}
+.section-head-text {
+  @include hyphens(auto);
+  @include hyphenation;
+  @extend .heading-l;
+  font-weight: 400;
+  margin-top: $space-m;
+  -ms-word-break: normal;
+  word-break: normal;
+}
+.section-head-figure {
+  @include clearfix;
+  display: block;
+  margin-top: $space-l;
+}
+.section-head > p {
+  margin-top: $space-l;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small-only} {
+  .section-head {
+    margin-bottom: $space-l;
+  }
+  .section-head-text {
+    margin-top: $space-s;
+  }
+  .section-head-figure {
+    margin-top: $space-m;
+  }
+}
+
+@media #{$medium-only} {
+  .section-head {
+    margin-bottom: $space-l;
+  }
+  .section-head-text {
+    margin-top: $space-m;
+  }
+  .section-head-figure {
+    margin-top: $space-l;
+  }
+}
+
+@media #{$large-only} {
+}

@@ -1,0 +1,37 @@
+/* Inputs
+----------------------------------------------- */
+
+.text-input {
+  @include border-radius($radius-s);
+  background: $bright;
+  border: 1px solid $mono-weak;
+  display: inline-block;
+  font-family: $primary-font;
+  font-size: $font-xs;
+  padding: $space-x;
+  &.large {
+    padding: $space-s;
+    font-size: $font-m;
+  }
+  &.block {
+    @include box-sizing(border-box);
+    width: 100%;
+  }
+  &.centered {
+    text-align: center;
+  }
+  &:focus,
+  &:hover,
+  &:active {
+    // -webkit-transition: all 0.3s;
+    // -moz-transition: all 0.3s;
+    // transition: all 0.3s;
+  }
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"],
+textarea {
+  @extend .text-input
+}

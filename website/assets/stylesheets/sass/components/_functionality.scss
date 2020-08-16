@@ -1,0 +1,49 @@
+/* Functionality
+----------------------------------------------- */
+
+.functionality {
+  @include clearfix;
+  @include border-top-radius($radius-s);
+}
+
+.functionality-heading {
+  display: block;
+  font-size: $font-xl;
+  line-height: $lheight-xs;
+  margin-top: $space-s;
+  margin-bottom: $space-s;
+  @media #{$medium-only} {
+    margin-top: -($space-s);
+    padding-top: 0;
+  }
+}
+.functionality-text {
+  display: block;
+}
+.functionality-detail {
+  color: $mono-mid;
+  color: $flare-strong;
+}
+.functionality-call {
+  margin-top: $space-s;
+}
+.functionality-figure {
+  @include border-top-radius($radius-s);
+  background: $bright;
+  line-height: 0;
+  margin-left: $space-m;
+  overflow: hidden;
+  position: relative;
+  @media #{$small-only} {
+    @include border-bottom-radius($radius-s);
+    margin-left: 0;
+  }
+  @media #{$medium-only} {
+    @include border-bottom-radius($radius-s);
+  }
+}
+.functionality-image {
+  @include box-sizing(border-box);
+  line-height: 0;
+  width: 100%;
+}

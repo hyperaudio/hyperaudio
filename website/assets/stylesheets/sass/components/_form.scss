@@ -1,0 +1,62 @@
+/* Forms
+----------------------------------------------- */
+
+.form {
+  .form-component {
+    margin-top: $space-l;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  .form-component.actions {
+    margin-top: $space-l;
+    text-align: center;
+  }
+}
+
+.form-label-wrapper {
+
+}
+.form-label {
+  display: block;
+  font-size: $font-xs;
+  font-weight: bold;
+  margin-bottom: $space-x;
+  &.centered {
+    text-align: center;
+  }
+}
+.form-input-wrapper {
+
+}
+.form-input {
+
+}
+.form-note {
+  color: $mono-weak;
+  font-size: $font-xs;
+}
+.form-alert {
+  color: $brand-color;
+  display: block;
+  font-weight: bold;
+  text-align: center;
+}
+
+// Form component - horizontal
+
+.form-component.horizontal {
+  @extend .row;
+  .form-label-wrapper {
+    @extend .small-2;
+    @extend .columns;
+  }
+  .form-label {
+    position: relative;
+    top: 2px;
+  }
+  .form-input-wrapper {
+    @extend .small-10;
+    @extend .columns;
+  }
+}

@@ -1,0 +1,87 @@
+/* Feature
+----------------------------------------------- */
+
+.features {
+  margin-bottom: $space-h;
+}
+.feature {
+  @include clearfix;
+  @include border-radius($radius-s);
+  margin-bottom: $space-h;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+.feature-heading {
+  font-size: $font-m;
+  margin-bottom: $space-x;
+}
+.feature-detail {
+  margin: $space-m 0 0;
+}
+.feature-text {
+  display: inline;
+  font-size: $font-s;
+  line-height: $lheight-m;
+}
+.feature-call {
+  font-size: $font-s;
+  margin-top: $space-s;
+}
+.feature-figure {
+  @include border-radius($radius-s);
+  border: 1px solid $alt-color-light;
+  line-height: 0;
+  margin-bottom: $space-s;
+  max-height: 350px;
+  overflow: hidden;
+  position: relative;
+}
+.feature-image {
+  @include box-sizing(border-box);
+  line-height: 0;
+  width: 100%;
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small-up} {
+  .feature-figure {
+    margin-bottom: $space-m;
+  }
+  .feature-heading {
+    font-size: $font-l;
+    margin-top: $space-m;
+    margin-bottom: $space-m;
+  }
+  .feature-text {
+    display: block;
+    font-size: $font-m;
+    line-height: $lheight-m;
+    margin-bottom: 0;
+  }
+  .feature-call {
+    display: inline-block;
+    font-size: $font-s;
+    font-weight: normal;
+    margin-top: $space-m;
+  }
+  .feature.odd {
+    .feature-figure {
+      margin-right: $space-m;
+    }
+  }
+  .feature.even {
+    .feature-figure {
+      margin-left: $space-m;
+    }
+  }
+
+}
+
+@media #{$medium-up} {
+}
+
+@media #{$large-up} {
+}

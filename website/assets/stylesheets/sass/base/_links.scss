@@ -1,0 +1,32 @@
+/* Links
+----------------------------------------------- */
+
+.link,
+.link:hover,
+.link:active {
+  color: $brand-color;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.link {
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
+  &:focus,
+  &:hover,
+  &.active,
+  &:active {
+    border-bottom: 1px solid $brand-color;
+    @include transition(border $dflt-time, opacity $dflt-time)
+  }
+  &:active {
+    opacity: 0.7
+  }
+  &.altered {
+    font-weight: bold !important;
+  }
+}
+
+a {
+  @extend .link
+}

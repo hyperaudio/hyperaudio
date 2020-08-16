@@ -1,0 +1,22 @@
+/* Supporter
+----------------------------------------------- */
+
+.supporters {
+  margin-top: $space-l;
+  text-align: center;
+  @media #{$small-only} {
+    margin-top: $space-m;
+  }
+}
+.supporter {
+  border: none !important;
+  color: $mono-mid;
+  font-size: 80px;
+  margin: 0 $space-m;
+  &:hover {
+    color: $mono-heavy;
+  }
+  @media #{$small-only} {
+    margin: 0 $space-s;
+  }
+}

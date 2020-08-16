@@ -1,0 +1,10 @@
+# Sass cache
+/.sass-cache
+
+# Mac .DS_store file
+.DS_Store
+
+node_modules
+
+# Bower Components
+# assets/vendor

@@ -1,0 +1,9 @@
+{
+  "name": "@hyperaudio/website",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperaudio/website.git"
+  },
+  "license": "MIT"
+}

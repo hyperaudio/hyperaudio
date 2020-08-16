@@ -1,0 +1,112 @@
+/* Article
+----------------------------------------------- */
+
+.article {
+  position: relative;
+}
+.article-head {
+  margin-bottom: $space-l;
+}
+.article-heading {
+  color: $mono-weak;
+  font-size: $font-m;
+  margin-bottom: $space-m;
+  text-align: center;
+}
+.article-title {
+  @extend .heading-xl;
+  margin: 0 $space-s $space-m;
+  text-align: center;
+  text-transform: none;
+  a {
+    display: inline;
+  }
+}
+.article-meta {
+  color: $mono-weak;
+  display: block;
+  font-size: $font-s;
+  font-style: italic;
+  text-align: center;
+}
+.article-date {
+}
+.article-author {
+  color: $mono-weak;
+  font-size: $font-s;
+  font-style: italic;
+}
+
+.article-body {
+  font-size: $font-m;
+  line-height: $lheight-l;
+  blockquote {
+    font-style: italic;
+    margin: $space-l;
+    color: $mono-mid;
+    &:before {
+      content: "“";
+    }
+    &:after {
+      content: "”";
+    }
+  }
+  ul,
+  ol {
+    margin: $space-m;
+  }
+  p {
+  }
+  a {
+    display: inline;
+    white-space: pre-wrap;
+  }
+  figure {
+    border: 1px solid $light;
+    margin-bottom: $space-m;
+    padding: $space-s;
+    text-align: center;
+    > a {
+      border: none !important;
+      display: block;
+      line-height: 0;
+      padding: 0;
+    }
+    img {
+      display: inline-block;
+      width: 100%;
+    }
+    figcaption {
+      color: $mono-mid;
+      font-size: $font-s;
+      line-height: $lheight-s;
+      margin-top: $space-s;
+      text-align: left;
+    }
+  }
+  h2 {
+    @extend .heading-l;
+    font-size: ($font-l - 4px);
+    margin-top: $space-l;
+    margin-bottom: $space-m;
+    text-align: center;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+@media #{$small-only} {
+  .article-heading {
+    font-size: $font-s;
+  }
+  .article-title {
+    font-size: ($font-m + 5px);
+  }
+}
+
+@media #{$medium-only} {
+}
+
+@media #{$large-up} {
+}

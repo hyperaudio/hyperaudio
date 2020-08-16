@@ -1,0 +1,110 @@
+/* Tour
+----------------------------------------------- */
+
+.tour-items {
+  padding-bottom: $space-h;
+  &.compact {
+    padding-bottom: 0;
+    .tour-item-heading {
+      margin-top: 0;
+    }
+  }
+}
+.tour-item {
+  padding-top: $space-h;
+  > .separator.silent {
+    margin: $space-m 0;
+  }
+}
+.tour-item-content {
+  @include hyphens(auto);
+  @include hyphenation;
+  padding-right: $space-m;
+  padding-left: $space-m;
+  text-align: justify;
+  -ms-word-break: normal;
+  word-break: normal;
+}
+.tour-item-heading {
+  @extend .heading-l;
+  margin-top: $space-s;
+  margin-bottom: $space-m;
+  text-align: center;
+}
+.tour-figure {
+  @include border-radius($radius-s);
+  border: 1px solid $alt-color-light;
+  margin-top: $space-s;
+  margin-bottom: $space-s;
+  overflow: hidden;
+  &.clear {
+    border: none;
+  }
+}
+.tour-item-text {
+  font-size: $font-m;
+  line-height: $lheight-m;
+  margin-top: $space-x;
+}
+
+// Compact Variation
+
+.tour-item.compact {
+  padding-bottom: 0;
+  .tour-item-text {
+    font-size: $font-s;
+    line-height: $lheight-m;
+    margin-top: $space-s;
+  }
+}
+
+/* Queries
+----------------------------------------------- */
+
+@media #{$small-only} {
+  .tour-items {
+    padding-bottom: $space-l;
+  }
+  .tour-item {
+    padding-top: $space-l;
+  }
+  .tour-item-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .tour-item-text,
+  .tour-item.compact .tour-item-text {
+    font-size: $font-m;
+    line-height: $lheight-s;
+    margin-top: $space-x;
+  }
+  .tour-items .separator {
+    display: none;
+  }
+  .tour-figure {
+    margin-right: $space-h;
+    margin-left: $space-h;
+  }
+}
+
+@media #{$medium-only} {
+  .tour-items {
+    padding-bottom: $space-l;
+  }
+  .tour-item {
+    padding-top: $space-l;
+  }
+  .tour-item-content {
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .tour-item-text,
+  .tour-item.compact .tour-item-text {
+    font-size: $font-m;
+    line-height: $lheight-s;
+    margin-top: $space-x;
+  }
+}
+
+@media #{$large-only} {
+}

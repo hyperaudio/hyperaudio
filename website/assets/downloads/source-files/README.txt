@@ -1,0 +1,1 @@
+Graphic files are to be opened with Sketch: https://itunes.apple.com/ch/app/sketch/id402476602?l=en&mt=12
