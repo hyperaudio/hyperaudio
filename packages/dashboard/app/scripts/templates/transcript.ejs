@@ -1,0 +1,59 @@
+<td class="span2 label"><span class="tLabel editable" data-field="label"><%- label %></span></td>
+<td class="span3">
+  <span class="tDesc editable" data-field="desc"><%- desc %></span>
+</td>
+<td class="span1"><span class="timeago" title="<%- modified %>"><%- modified %></span></td>
+<td><%- owner %></td>
+<td class="span1">
+
+  <% if (type == "text" && !status) { %>
+    not aligned
+  <% } else if (type == "text" && status) { %>
+    <%- status %>
+  <% } else if (type == "html") { %>
+  aligned
+  <% } else if (type == "srt") { %>
+  not converted
+  <% } else { %>
+  n/a
+  <% } %>
+
+
+</td>
+<td>
+  <% if (owner == haDash.user) { %>
+    <% if (type == "text") { %>
+      <% if (status && status != '') { %>
+        <button class="button aligning small primary"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
+      <% } else { %>
+        <!--<select>
+          <option value="en" selected>English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+        </select>
+        <button class="button align small primary">Align</button>-->
+        <button class="button aligning small primary" style="display: none"><img src="images/ajax-loader-ffffff-on-808080.gif"> Aligning</button>
+
+        <a class="button small" href="/maker/?t=<%= _id%>">Edit</a>
+      <% } %>
+
+
+  <% } else if (type == "html") { %>
+    <a class="button small primary" href="/pad/viewer/?t=<%= _id%>" target="_new">View</a>
+    <a class="button small" href="/pad/?t=<%= _id%>">Mix</a>
+    <a class="button small" href="/cleaner/?t=<%= _id%>">Clean</a>
+
+
+  <% } else if (type == "srt") { %>
+    <a class="button small primary" href="/converter/?t=<%= _id%>">Convert</a>
+  <% } %>
+
+    <button class="button tDelete">Delete</button>
+
+  <% } else { %>
+    <a class="button small primary" href="/pad/viewer/?t=<%= _id%>" target="_new">View</a>
+    <a class="button small" href="/pad/?t=<%= _id%>">Mix</a>
+    <button class="button tClone">Copy</button>
+  <% } %>
+</td>

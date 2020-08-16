@@ -1,0 +1,13 @@
+{
+  "name": "tracekit",
+  "homepage": "https://github.com/devinrhode2/TraceKit",
+  "_release": "6750cdf7fd",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "6750cdf7fdeca2f8179490f2445abf2d40e3cf70"
+  },
+  "_source": "git://github.com/devinrhode2/TraceKit.git",
+  "_target": "*",
+  "_originalSource": "tracekit"
+}

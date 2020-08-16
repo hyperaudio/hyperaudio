@@ -1,0 +1,18 @@
+.DS_Store
+node_modules
+_node_modules
+dist
+test/temp
+.sass-cache
+# app/bower_components
+# app/_bower_components
+.tmp
+test/bower_components/
+
+*.zip
+
+npm-debug.log
+app/dashboard
+app/media
+app/mixes
+app/settings
