@@ -1,8 +1,9 @@
+import Layout from '../../Layout.js';
 import BlogPost from '../../components/BlogPost';
 import { getPostBySlug, getAllPosts } from '../../api';
 
 const PostPage = ({ post }) => (
-  <div>
+  <Layout>
     <pre>
       {`
       title=${post.title}
@@ -13,7 +14,7 @@ const PostPage = ({ post }) => (
     </pre>
 
     <BlogPost post={post} />
-  </div>
+  </Layout>
 );
 
 export async function getStaticProps({ params }) {

@@ -2,13 +2,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import MDX from '@mdx-js/runtime';
 import Link from '../../components/Link';
+import Layout from '../../Layout';
+
 import { getAllPosts } from '../../api';
 
 const Posts = ({ posts, prevPosts, nextPosts }) => {
   const isLocal = process.env.NODE_ENV === 'development';
 
   return (
-    <div>
+    <Layout>
       {posts &&
         posts
           .filter((post) => {
@@ -18,14 +20,14 @@ const Posts = ({ posts, prevPosts, nextPosts }) => {
             <div key={post.slug}>
               <h4>
                 {post.draft && <b>draft:</b>}
-                <Link href={'/' + post.slug} passHref>
+                <Link href={'/blog/' + post.slug} passHref>
                   <a>{post.title}</a>
                 </Link>
               </h4>
               <div>
                 <MDX>{post.excerpt}</MDX>
               </div>
-              <Link href={'/' + post.slug} passHref>
+              <Link href={'/blog/' + post.slug} passHref>
                 <a>Read more...</a>
               </Link>
             </div>
@@ -46,15 +48,12 @@ const Posts = ({ posts, prevPosts, nextPosts }) => {
           )}
         </li>
       </ul>
-    </div>
+    </Layout>
   );
 };
 
 const PostsPage = ({ posts, prevPosts, nextPosts }) => (
-  <div>
-    <h1>Blog</h1>
-    <Posts posts={posts} prevPosts={prevPosts} nextPosts={nextPosts} />
-  </div>
+  <Posts posts={posts} prevPosts={prevPosts} nextPosts={nextPosts} />
 );
 
 export async function getStaticProps() {
