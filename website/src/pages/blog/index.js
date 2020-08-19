@@ -71,7 +71,7 @@ export async function getStaticProps() {
   ]);
 
   const startIndex = 0;
-  const endIndex = 5; // posts per page
+  const endIndex = 100; // posts per page
   const prevPosts = null;
   const nextPosts = endIndex >= posts.length ? null : 2;
 

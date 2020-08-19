@@ -1,4 +1,4 @@
-import Layout from '../../Layout.js';
+import Layout from '../../Layout';
 import BlogPost from '../../components/BlogPost';
 import { getPostBySlug, getAllPosts } from '../../api';
 
