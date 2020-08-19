@@ -16,9 +16,14 @@ const BlogPost = ({ post }) => {
               {post.title}
             </h1>
 
-            <p>Originally published on {new Date(post.date).toLocaleDateString()}</p>
+            <p>
+              Published on {new Date(post.date).toLocaleDateString()} by <a href={post.authorLink}>{post.author}</a>
+            </p>
           </div>
           <MDX>{post.content}</MDX>
+          <p>
+            <a href={post.authorLink}>{post.author}</a>
+          </p>
         </>
       )}
     </div>

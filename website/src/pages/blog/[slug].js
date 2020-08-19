@@ -24,6 +24,7 @@ export async function getStaticProps({ params }) {
     'date',
     'slug',
     'author',
+    'authorLink',
     'content',
     'coverImage',
     'coverImageAlt',
