@@ -1,18 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import App from 'next/app';
-import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-const GlobalStyle = createGlobalStyle`
-  body {
-    font-family: sans-serif;
-  }
-`;
-
-const theme = {
-  colors: {
-    primary: '#0070f3',
-  },
-};
+import theme from './theme';
 
 export default class Application extends App {
   render() {
@@ -20,7 +11,7 @@ export default class Application extends App {
 
     return (
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
+        <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
     );
