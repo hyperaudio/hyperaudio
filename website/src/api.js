@@ -4,11 +4,11 @@ import matter from 'gray-matter';
 
 const postsDirectory = join(process.cwd(), 'src/pages/blog/posts');
 
-export function getPostSlugs() {
+export const getPostSlugs = () => {
   return fs.readdirSync(postsDirectory);
-}
+};
 
-export function getPostBySlug(slug, fields = []) {
+export const getPostBySlug = (slug, fields = []) => {
   const realSlug = slug.replace(/\.mdx$/, '');
   const fullPath = join(postsDirectory, `${realSlug}.mdx`);
   const fileContents = fs.readFileSync(fullPath, 'utf8');
@@ -31,13 +31,13 @@ export function getPostBySlug(slug, fields = []) {
   });
 
   return items;
-}
+};
 
-export function getAllPosts(fields = []) {
+export const getAllPosts = (fields = []) => {
   const slugs = getPostSlugs();
   const posts = slugs
     .map((slug) => getPostBySlug(slug, fields))
     // sort posts by date in descending order
     .sort((post1, post2) => (post1.date > post2.date ? '-1' : '1'));
   return posts;
-}
+};

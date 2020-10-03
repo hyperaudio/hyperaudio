@@ -5,12 +5,12 @@ const BlogPost = ({ post }) => {
   const isLocal = process.env.NODE_ENV === 'development';
 
   return (
-    <div>
+    <article>
       {!isLocal && post.draft ? (
         <p>This post has not yet been published. Please try again later.</p>
       ) : (
         <>
-          <div>
+          <header>
             <h1>
               {post.draft && <b>draft:</b>}
               {post.title}
@@ -19,14 +19,14 @@ const BlogPost = ({ post }) => {
             <p>
               Published on {new Date(post.date).toLocaleDateString()} by <a href={post.authorLink}>{post.author}</a>
             </p>
-          </div>
+          </header>
           <MDX>{post.content}</MDX>
-          <p>
+          <footer>
             <a href={post.authorLink}>{post.author}</a>
-          </p>
+          </footer>
         </>
       )}
-    </div>
+    </article>
   );
 };
 

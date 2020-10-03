@@ -36,7 +36,7 @@ const Layout = ({ children }) => (
             </Link>
           </li>
           <li>
-            <Link href="/License">
+            <Link href="/Licensing">
               <a>License</a>
             </Link>
           </li>
