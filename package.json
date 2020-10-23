@@ -6,7 +6,8 @@
     "url": "git+https://github.com/hyperaudio/hyperaudio.git"
   },
   "scripts": {
-    "status": "npx oao status"
+    "status": "npx oao status",
+    "clean": "npx oao clean"
   },
   "workspaces": [
     "website",
