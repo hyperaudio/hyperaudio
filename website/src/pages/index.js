@@ -65,9 +65,9 @@ export default function Dashboard({ initialData }) {
                   </ListItem>
                 </NextLink>
               ))
-            : Array.from({ length: 5 }, () => Math.floor(Math.random() * 40)).map((element) => {
+            : Array.from({ length: 5 }, () => Math.floor(Math.random() * 40)).map((element, i) => {
                 return (
-                  <ListItem key={`dummy-${element}`}>
+                  <ListItem key={`${element}${i}`}>
                     <ListItemText
                       primary={<Skeleton variant="text" width="50%" />}
                       secondary={<Skeleton variant="text" width="20%" />}
