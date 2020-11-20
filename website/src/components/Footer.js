@@ -1,14 +1,15 @@
 import NextLink from 'next/link';
+import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Link from '@material-ui/core/Link';
 import Toolbar from '@material-ui/core/Toolbar';
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    top: 'auto',
-    bottom: 0,
+    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
   toolbar: {
     justifyContent: 'center',
@@ -16,35 +17,29 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0, 1),
     },
   },
-  push: {
-    ...theme.mixins.toolbar,
-  },
 }));
 
-export default function Footer() {
+export default function Footer(props) {
   const classes = useStyles();
   return (
-    <>
-      <div className={classes.push} />
-      <AppBar className={classes.root} color="transparent" elevation={0}>
-        <Toolbar className={classes.toolbar} variant="dense">
-          <NextLink href="/blog" passHref>
-            <Link>Blog</Link>
-          </NextLink>
-          <NextLink href="/TOS" passHref>
-            <Link>Terms of Service</Link>
-          </NextLink>
-          <NextLink href="/Licensing" passHref>
-            <Link>License</Link>
-          </NextLink>
-          <NextLink href="/CLA" passHref>
-            <Link>CLA</Link>
-          </NextLink>
-          <NextLink href="/COC" passHref>
-            <Link>Code of Conduct</Link>
-          </NextLink>
-        </Toolbar>
-      </AppBar>
-    </>
+    <AppBar className={classes.root} color="transparent" elevation={0} position="static">
+      <Toolbar className={classes.toolbar} variant="dense">
+        <NextLink href="/blog" passHref>
+          <Link color="textSecondary">Blog</Link>
+        </NextLink>
+        <NextLink href="/TOS" passHref>
+          <Link color="textSecondary">Terms of Service</Link>
+        </NextLink>
+        <NextLink href="/Licensing" passHref>
+          <Link color="textSecondary">License</Link>
+        </NextLink>
+        <NextLink href="/CLA" passHref>
+          <Link color="textSecondary">CLA</Link>
+        </NextLink>
+        <NextLink href="/COC" passHref>
+          <Link color="textSecondary">Code of Conduct</Link>
+        </NextLink>
+      </Toolbar>
+    </AppBar>
   );
 }
