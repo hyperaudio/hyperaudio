@@ -10,6 +10,12 @@ const useStyles = makeStyles((theme) => ({
     top: 'auto',
     bottom: 0,
   },
+  toolbar: {
+    justifyContent: 'center',
+    '& > *': {
+      margin: theme.spacing(0, 1),
+    },
+  },
   push: {
     ...theme.mixins.toolbar,
   },
@@ -21,15 +27,15 @@ export default function Footer() {
     <>
       <div className={classes.push} />
       <AppBar className={classes.root} color="transparent" elevation={0}>
-        <Toolbar>
+        <Toolbar className={classes.toolbar} variant="dense">
+          <NextLink href="/blog" passHref>
+            <Link>Blog</Link>
+          </NextLink>
           <NextLink href="/TOS" passHref>
             <Link>Terms of Service</Link>
           </NextLink>
           <NextLink href="/Licensing" passHref>
             <Link>License</Link>
-          </NextLink>
-          <NextLink href="/blog" passHref>
-            <Link>Blog</Link>
           </NextLink>
           <NextLink href="/CLA" passHref>
             <Link>CLA</Link>
