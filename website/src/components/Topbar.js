@@ -1,5 +1,4 @@
 import NextLink from 'next/link';
-import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -25,9 +24,6 @@ export default function Topbar() {
               <Link color="textPrimary">Hyperaudio</Link>
             </NextLink>
           </Typography>
-          <NextLink href="/blog" passHref>
-            <Button variant="text">Blog</Button>
-          </NextLink>
           <NextLink href="/mixes" passHref>
             <Button variant="text">Mixes</Button>
           </NextLink>
