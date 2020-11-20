@@ -67,8 +67,11 @@ export default function Dashboard({ initialData }) {
               ))
             : Array.from({ length: 5 }, () => Math.floor(Math.random() * 40)).map((element) => {
                 return (
-                  <ListItem key={element}>
-                    <Skeleton variant="rect" width="100%" />
+                  <ListItem key={`dummy-${element}`}>
+                    <ListItemText
+                      primary={<Skeleton variant="text" width="50%" />}
+                      secondary={<Skeleton variant="text" width="20%" />}
+                    />
                   </ListItem>
                 );
               })}
