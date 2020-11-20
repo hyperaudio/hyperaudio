@@ -26,13 +26,13 @@ export default function Topbar() {
             </NextLink>
           </Typography>
           <NextLink href="/blog" passHref>
-            <Button>Blog</Button>
+            <Button variant="text">Blog</Button>
           </NextLink>
           <NextLink href="/mixes" passHref>
-            <Button>Mixes</Button>
+            <Button variant="text">Mixes</Button>
           </NextLink>
           <NextLink href="/media" passHref>
-            <Button>Media</Button>
+            <Button variant="text">Media</Button>
           </NextLink>
         </Toolbar>
       </AppBar>
