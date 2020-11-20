@@ -2,8 +2,8 @@ import React from 'react';
 
 import Container from '@material-ui/core/Container';
 
-import Footer from './components/Footer';
-import Topbar from './components/Topbar';
+import Footer from 'src/components/Footer';
+import Topbar from 'src/components/Topbar';
 
 export default function Layout({ children }) {
   return (
