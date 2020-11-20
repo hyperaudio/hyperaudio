@@ -1,5 +1,7 @@
-import useSWR from 'swr';
 import axios from 'axios';
+import useSWR from 'swr';
+
+import Layout from 'src/Layout';
 
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
@@ -8,7 +10,7 @@ const Media = ({ initialData }) => {
   if (error) return <h1>BOOM</h1>;
 
   return (
-    <>
+    <Layout>
       <h1>Media</h1>
       {data ? (
         data.map(({ _id, label }) => (
@@ -19,7 +21,7 @@ const Media = ({ initialData }) => {
       ) : (
         <h6>loading</h6>
       )}
-    </>
+    </Layout>
   );
 };
 

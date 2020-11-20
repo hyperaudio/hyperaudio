@@ -20,33 +20,17 @@ const Posts = ({ posts, prevPosts, nextPosts }) => {
             <div key={post.slug}>
               <h4>
                 {post.draft && <b>draft:</b>}
-                <Link href={'/blog/' + post.slug} passHref>
-                  <a>{post.title}</a>
-                </Link>
+                <Link href={'/blog/' + post.slug}>{post.title}</Link>
               </h4>
               <div>
                 <MDX>{post.excerpt}</MDX>
               </div>
-              <Link href={'/blog/' + post.slug} passHref>
-                <a>Read more...</a>
-              </Link>
+              <Link href={'/blog/' + post.slug}>Read more...</Link>
             </div>
           ))}
       <ul>
-        <li>
-          {prevPosts !== null && (
-            <Link href={'/blog/' + prevPosts} passHref>
-              <a>« see newer posts</a>
-            </Link>
-          )}
-        </li>
-        <li>
-          {nextPosts !== null && (
-            <Link href={'/blog/' + nextPosts} passHref>
-              <a>see older posts »</a>
-            </Link>
-          )}
-        </li>
+        <li>{prevPosts !== null && <Link href={'/blog/' + prevPosts}>« see newer posts</Link>}</li>
+        <li>{nextPosts !== null && <Link href={'/blog/' + nextPosts}>see older posts »</Link>}</li>
       </ul>
     </Layout>
   );

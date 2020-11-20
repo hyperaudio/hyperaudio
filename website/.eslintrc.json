@@ -2,13 +2,13 @@
   "root": true,
   "parser": "babel-eslint",
   "extends": [
+    "airbnb",
     "eslint:recommended",
-    "plugin:react/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
-    "airbnb",
+    "plugin:react/recommended",
     "prettier",
     "prettier/react"
   ],
@@ -26,14 +26,22 @@
     }
   },
   "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "."]
+      }
+    },
     "react": {
       "version": "detect"
     }
   },
   "plugins": [],
   "rules": {
+    "jsx-a11y/anchor-is-valid": 0,
+    "no-console": 0,
     "react/jsx-filename-extension": 0,
-    "react/react-in-jsx-scope": 0,
-    "react/prop-types": 0
+    "react/jsx-props-no-spreading": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
   }
 }
