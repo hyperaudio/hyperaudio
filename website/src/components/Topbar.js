@@ -1,4 +1,5 @@
 import NextLink from 'next/link';
+import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -8,6 +9,8 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import HyperaudioIcon from 'src/assets/hyperaudio-icon.svg';
@@ -23,6 +26,17 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Topbar() {
   const classes = useStyles();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <>
       <AppBar>
@@ -52,10 +66,37 @@ export default function Topbar() {
           </NextLink>
           <div className={classes.grow} />
           <Tooltip title="More options…">
-            <IconButton edge="end" color="inherit" variant="text">
+            <IconButton
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              color="inherit"
+              edge="end"
+              onClick={handleClick}
+              variant="text"
+            >
               <SettingsIcon />
             </IconButton>
           </Tooltip>
+          <Menu
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            getContentAnchorEl={null}
+            id="simple-menu"
+            anchorEl={anchorEl}
+            keepMounted
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Logout</MenuItem>
+          </Menu>
         </Toolbar>
       </AppBar>
       <div className={classes.push} />
