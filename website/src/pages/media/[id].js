@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import axios from 'axios';
 
+import Layout from 'src/Layout';
+
 const fetcher = (url) => axios.get(url).then((res) => res.data);
 
 const MediaPage = () => {
@@ -12,12 +14,12 @@ const MediaPage = () => {
 
   const { label, desc, transcripts } = data;
   return (
-    <>
+    <Layout>
       <h1>{label}</h1>
       <p>{desc}</p>
       <hr />
       {transcripts ? transcripts.map(({ label: l }) => <p>{l}</p>) : <h6>loading</h6>}
-    </>
+    </Layout>
   );
 };
 
