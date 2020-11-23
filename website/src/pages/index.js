@@ -49,11 +49,11 @@ export default function Dashboard({ initialData }) {
       <Paper>
         <List dense>
           {data
-            ? data.map(({ _id, label }) => (
-                <NextLink key={_id} href={`/media/${_id}`}>
+            ? data.map(({ id, title }) => (
+                <NextLink key={id} href={`/media/${id}`}>
                   <ListItem button>
                     <ListItemText
-                      primary={label}
+                      primary={title}
                       secondary={'some info'}
                       primaryTypographyProps={{ color: 'primary' }}
                     />

@@ -1,6 +1,9 @@
+/* eslint-disable no-shadow */
 import { useRouter } from 'next/router';
 import useSWR from 'swr';
 import axios from 'axios';
+
+import ReactPlayer from 'react-player';
 
 import Layout from 'src/Layout';
 
@@ -12,13 +15,25 @@ const MediaPage = () => {
   const { data = {}, error } = useSWR(`/api/v2/media/${id}`, fetcher);
   if (error) return <h1>BOOM</h1>;
 
-  const { label, desc, transcripts } = data;
+  const { title, description, transcripts, source: { url } = {} } = data;
+
   return (
     <Layout>
-      <h1>{label}</h1>
-      <p>{desc}</p>
-      <hr />
-      {transcripts ? transcripts.map(({ label: l }) => <p>{l}</p>) : <h6>loading</h6>}
+      <h1>{title}</h1>
+      <p>{description}</p>
+      <ReactPlayer url={url} controls />
+      <h6>Transcripts</h6>
+      <ol>
+        {transcripts ? (
+          transcripts.map(({ id, title, type }) => (
+            <li key={id}>
+              {title} [{type}]
+            </li>
+          ))
+        ) : (
+          <h6>loading</h6>
+        )}
+      </ol>
     </Layout>
   );
 };

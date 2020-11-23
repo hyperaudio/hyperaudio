@@ -12,8 +12,5 @@
   "workspaces": [
     "website",
     "packages/*"
-  ],
-  "resolutions": {
-    "typeorm": "0.2.28"
-  }
+  ]
 }
