@@ -1,5 +1,6 @@
 import NextLink from 'next/link';
 import React from 'react';
+import { useRouter } from 'next/router';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -26,15 +27,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Topbar() {
   const classes = useStyles();
+  const router = useRouter();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
+  const onMenuClick = (e, href) => {
+    e.preventDefault();
     setAnchorEl(null);
+    router.push(href);
   };
 
   return (
@@ -71,7 +71,7 @@ export default function Topbar() {
               aria-haspopup="true"
               color="inherit"
               edge="end"
-              onClick={handleClick}
+              onClick={(e) => setAnchorEl(e.currentTarget)}
               variant="text"
             >
               <SettingsIcon />
@@ -91,11 +91,10 @@ export default function Topbar() {
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
-            onClose={handleClose}
+            onClose={() => setAnchorEl(null)}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
+            <MenuItem onClick={(e) => onMenuClick(e, '/account')}>My account</MenuItem>
+            <MenuItem onClick={(e) => onMenuClick(e, '/logout')}>Logout</MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
