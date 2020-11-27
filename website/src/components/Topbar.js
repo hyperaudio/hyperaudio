@@ -93,7 +93,9 @@ export default function Topbar() {
             open={Boolean(anchorEl)}
             onClose={() => setAnchorEl(null)}
           >
-            <MenuItem onClick={(e) => onMenuClick(e, '/account')}>My account</MenuItem>
+            <MenuItem onClick={(e) => onMenuClick(e, '/account')} divider>
+              My account
+            </MenuItem>
             <MenuItem onClick={(e) => onMenuClick(e, '/logout')}>Logout</MenuItem>
           </Menu>
         </Toolbar>
