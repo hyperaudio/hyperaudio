@@ -42,9 +42,11 @@ export default function Dashboard({ initialData }) {
           Your media
         </Typography>
         <div className={classes.grow} />
-        <Button variant="contained" color="primary">
-          New Media
-        </Button>
+        <NextLink href="/new/media">
+          <Button variant="contained" color="primary">
+            New Media
+          </Button>
+        </NextLink>
       </Toolbar>
       <Paper>
         <List dense>
