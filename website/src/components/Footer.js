@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Footer(props) {
   const classes = useStyles();
   return (
-    <AppBar className={classes.root} color="transparent" elevation={0} position="static">
+    <AppBar className={classes.root} color="transparent" component="div" elevation={0} position="static">
       <Toolbar className={classes.toolbar} variant="dense">
         <NextLink href="/blog" passHref>
           <Link color="textSecondary">Blog</Link>
