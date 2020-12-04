@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import ReactPlayer from 'react-player';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -32,6 +33,7 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState(data?.url || '');
+  const [isValid, setValid] = useState(false);
 
   useEffect(() => {
     setDescription(data?.description);
@@ -39,6 +41,8 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
     setTags(data?.tags);
     setTitle(data?.title);
   }, [data]);
+
+  useEffect(() => setValid(ReactPlayer.canPlay(url)), [url]);
 
   const handleSubmit = useCallback(() => {
     onSubmit({
@@ -55,7 +59,8 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
       {!data?.url && (
         <TextField
           fullWidth
-          helperText="Enter a valid Youtube URL"
+          error={!isValid}
+          helperText={`Enter a valid URL`}
           label="URL"
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://www.youtube.com/watch?v=xyz"
@@ -115,7 +120,7 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
             value={tags}
           />
           <div className={classes.divider} />
-          <Button color="primary" onClick={handleSubmit} variant="contained">
+          <Button color="primary" onClick={handleSubmit} variant="contained" disabled={!isValid}>
             Save
           </Button>
         </>

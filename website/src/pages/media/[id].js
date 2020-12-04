@@ -1,6 +1,6 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import { DataStore } from '@aws-amplify/datastore';
 import { useRouter } from 'next/router';
