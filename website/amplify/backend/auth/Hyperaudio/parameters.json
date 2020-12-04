@@ -1,6 +1,6 @@
 {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "hypera932195cd",
     "userPoolName": "Hyperaudio",
     "autoVerifiedAttributes": [
@@ -12,8 +12,8 @@
     ],
     "smsAuthenticationMessage": "Your login code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Forgot password code: {####}",
-    "emailVerificationMessage": "Forgot password code: {####}",
+    "emailVerificationSubject": "Hyperaudio authentication code",
+    "emailVerificationMessage": "Authentication code: {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
@@ -54,6 +54,6 @@
     "userPoolGroupList": [],
     "adminQueries": false,
     "thirdPartyAuth": false,
-    "authProviders": [],
-    "dependsOn": []
+    "dependsOn": [],
+    "hostedUI": false
 }

@@ -4,9 +4,11 @@ import { schema } from './schema';
 
 
 
-const { Channel, MediaChannel, Media } = initSchema(schema);
+const { User, UserChannel, Channel, MediaChannel, Media } = initSchema(schema);
 
 export {
+  User,
+  UserChannel,
   Channel,
   MediaChannel,
   Media

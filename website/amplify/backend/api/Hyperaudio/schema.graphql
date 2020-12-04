@@ -1,3 +1,17 @@
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  channels: [UserChannel] @connection(keyName: "byUser", fields: ["id"])
+  ns: [String]
+  type: String
+  metadata: AWSJSON
+  status: String
+  name: String
+  bio: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
 type Channel @model @auth(rules: [{allow: public}]) {
   id: ID!
   ns: String
@@ -10,6 +24,7 @@ type Channel @model @auth(rules: [{allow: public}]) {
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   media: [MediaChannel] @connection(keyName: "byChannel", fields: ["id"])
+  users: [UserChannel] @connection(keyName: "byChannel", fields: ["id"])
 }
 
 type Media @model @auth(rules: [{allow: public}]) {
@@ -34,3 +49,12 @@ type MediaChannel @model(queries: null) @key(name: "byChannel", fields: ["channe
   channel: Channel! @connection(fields: ["channelID"])
   media: Media! @connection(fields: ["mediaID"])
 }
+
+type UserChannel @model(queries: null) @key(name: "byUser", fields: ["userID", "channelID"]) @key(name: "byChannel", fields: ["channelID", "userID"]) @auth(rules: [{allow: public}, {allow: public}]) {
+  id: ID!
+  userID: ID!
+  channelID: ID!
+  user: User! @connection(fields: ["userID"])
+  channel: Channel! @connection(fields: ["channelID"])
+}
+ 
