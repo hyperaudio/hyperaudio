@@ -9,7 +9,10 @@ import Layout from 'src/Layout';
 import MediaForm from 'src/features/MediaForm';
 import { Media } from 'src/models';
 
-const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+const getMedia = async (setMedia, id) => {
+  const media = await DataStore.query(Media, id);
+  if (!Array.isArray(media)) setMedia(media);
+};
 
 const MediaPage = () => {
   const router = useRouter();
@@ -17,7 +20,6 @@ const MediaPage = () => {
 
   const [media, setMedia] = useState({});
   useEffect(() => getMedia(setMedia, id), [setMedia, id]);
-  // console.log(media);
 
   const { title, description, transcripts = [], url } = media;
 
