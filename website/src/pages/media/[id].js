@@ -45,6 +45,14 @@ const useStyles = makeStyles((theme) => ({
       top: 0,
     },
   },
+  tags: {
+    // display: 'flex',
+    // flexWrap: 'wrap',
+    // justifyContent: 'center',
+    '& > *': {
+      margin: theme.spacing(0.5),
+    },
+  },
 }));
 
 const getMedia = async (setMedia, id) => {
@@ -89,6 +97,7 @@ const MediaPage = () => {
   );
 
   const channel = null;
+  console.log({ tags });
 
   return (
     <Layout>
@@ -118,9 +127,11 @@ const MediaPage = () => {
             Added on {createdAt ? formattedCreatedAt : null}
             {channel && `in {channel}`}
           </Typography>
-          {tags?.map((tag) => (
-            <Chip key={tag}>{tag}</Chip>
-          ))}
+          <div className={classes.tags}>
+            {tags?.map((tag) => (
+              <Chip label={tag} key={tag} size="small" />
+            ))}
+          </div>
         </Grid>
         <Grid item xs={12} sm={6}>
           <List
