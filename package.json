@@ -7,10 +7,15 @@
   },
   "scripts": {
     "status": "npx oao status",
-    "clean": "npx oao clean"
+    "clean": "npx oao clean",
+    "postinstall": "patch-package"
   },
   "workspaces": [
     "website",
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0"
+  }
 }
