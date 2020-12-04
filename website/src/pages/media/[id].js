@@ -8,7 +8,10 @@ import ReactPlayer from 'react-player';
 import Layout from 'src/Layout';
 import { Media } from '../../models';
 
-const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+const getMedia = async (setMedia, id) => {
+  const media = await DataStore.query(Media, id);
+  if (!Array.isArray(media)) setMedia(media);
+};
 
 const MediaPage = () => {
   const router = useRouter();
@@ -16,7 +19,6 @@ const MediaPage = () => {
 
   const [media, setMedia] = useState({});
   useEffect(() => getMedia(setMedia, id), [setMedia, id]);
-  // console.log(media);
 
   const { title, description, transcripts = [], url } = media;
 
