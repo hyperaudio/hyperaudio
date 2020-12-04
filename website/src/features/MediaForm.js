@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -27,20 +27,20 @@ const useStyles = makeStyles((theme) => ({
 export default function MediaForm({ allChannels = [], allTags = [], data, onSubmit }) {
   const classes = useStyles();
 
-  const [channels, setChannels] = React.useState([]);
-  const [description, setDescription] = React.useState(data?.description || '');
-  const [tags, setTags] = React.useState([]);
-  const [title, setTitle] = React.useState('');
-  const [url, setUrl] = React.useState(data?.url || '');
+  const [channels, setChannels] = useState([]);
+  const [description, setDescription] = useState(data?.description || '');
+  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState(data?.url || '');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDescription(data?.description);
     setChannels(data?.channels);
     setTags(data?.tags);
     setTitle(data?.title);
   }, [data]);
 
-  const handleSubmit = () => {
+  const handleSubmit = useCallback(() => {
     onSubmit({
       channels,
       description,
@@ -48,7 +48,7 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
       title,
       url,
     });
-  };
+  }, [channels, description, tags, title, url]);
 
   return (
     <form>

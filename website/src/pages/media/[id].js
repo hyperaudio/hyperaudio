@@ -83,7 +83,7 @@ export default function MediaPage() {
         <Grid item xs={12} sm={4}>
           Description
           <br />
-          Tags
+          Tags: {tags.map((tag) => `"${tag}" + `)}
         </Grid>
         <Grid item xs={12} sm={8}>
           <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} />
