@@ -6,7 +6,12 @@ import { DataStore } from '@aws-amplify/datastore';
 import { useRouter } from 'next/router';
 
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
@@ -22,9 +27,19 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  actions: {
+    display: 'none',
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+      '& > *': {
+        marginLeft: theme.spacing(2),
+      },
+    },
+  },
   player: {
     paddingTop: '56.25%',
     position: 'relative',
+    marginBottom: theme.spacing(2),
     '& > *': {
       position: 'absolute',
       top: 0,
@@ -48,12 +63,15 @@ const MediaPage = () => {
 
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [], url } = media;
 
-  if (createdAt) {
-    console.log(createdAt);
-    console.log(new Date(createdAt));
-    console.log(new Date(createdAt).getTime());
-    console.log(Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt)));
-  }
+  const formattedCreatedAt = createdAt
+    ? Intl.DateTimeFormat('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+      }).format(new Date(createdAt))
+    : null;
 
   // EXAMPLE UPDATE MEDIA
   const handleSave = useCallback(
@@ -70,55 +88,62 @@ const MediaPage = () => {
     [media, setMedia],
   );
 
+  const channel = null;
+
   return (
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
-        <Grid container spacing={5}>
-          <Grid item xs={12} sm={8}>
-            <Typography component="h1" gutterBottom variant="h4">
-              {title}
-            </Typography>
-            <Typography color="textSecondary">
-              Published on{' '}
-              {createdAt
-                ? Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt))
-                : null}{' '}
-              in {`Default Channel`}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4}>
-            <Button color="primary" onClick={() => console.log('Import Transcript')}>
-              Import transcript
-            </Button>
-            <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
-              Transcribe
-            </Button>
-          </Grid>
-        </Grid>
+        <Typography component="h1" gutterBottom variant="h4">
+          {title}
+        </Typography>
+        <div className={classes.grow} />
+        <div className={classes.actions}>
+          <Button color="primary" onClick={() => console.log('Import Transcript')}>
+            Import transcript
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
+            Transcribe
+          </Button>
+        </div>
       </Toolbar>
-      <Grid container direction="row-reverse" spacing={5}>
-        <Grid item xs={12} sm={4}>
-          Description
-          <br />
-          Tags: {tags?.map((tag) => `"${tag}" + `)}
-        </Grid>
-        <Grid item xs={12} sm={8}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
           <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} />
+          {description && (
+            <Typography gutterBottom variant="body2">
+              {description}
+            </Typography>
+          )}
+          <Typography color="textSecondary" gutterBottom variant="body2">
+            Added on {createdAt ? formattedCreatedAt : null}
+            {channel && `in {channel}`}
+          </Typography>
+          {tags?.map((tag) => (
+            <Chip key={tag}>{tag}</Chip>
+          ))}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <List
+            component="ul"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
+                Available transcripts:
+              </ListSubheader>
+            }
+          >
+            {transcripts ? ( // TODO: add actionable invitation if length = 0
+              transcripts.map((transcript) => (
+                <ListItem button disableGutters divider key={transcript.id}>
+                  <ListItemText primary={transcript.title} secondary={transcript.type} />
+                </ListItem>
+              ))
+            ) : (
+              <h6>loading</h6>
+            )}
+          </List>
         </Grid>
       </Grid>
-
-      <h6>Transcripts</h6>
-      <ol>
-        {transcripts ? (
-          transcripts.map((transcript) => (
-            <li key={transcript.id}>
-              {transcript.title} [{transcript.type}]
-            </li>
-          ))
-        ) : (
-          <h6>loading</h6>
-        )}
-      </ol>
     </Layout>
   );
 };

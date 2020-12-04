@@ -9,6 +9,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import Divider from '@material-ui/core/Divider';
+import MenuList from '@material-ui/core/MenuList';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -22,6 +24,9 @@ import HyperaudioIcon from 'src/assets/hyperaudio-icon.svg';
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
+  },
+  divider: {
+    margin: theme.spacing(1, 0),
   },
   push: {
     ...theme.mixins.toolbar,
@@ -103,24 +108,24 @@ export default function Topbar() {
               </Tooltip>
 
               <Menu
+                anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: 'bottom',
                   horizontal: 'center',
                 }}
+                getContentAnchorEl={null}
+                id="simple-menu"
+                keepMounted
+                onClose={() => setAnchorEl(null)}
+                open={Boolean(anchorEl)}
                 transformOrigin={{
                   vertical: 'top',
                   horizontal: 'center',
                 }}
-                getContentAnchorEl={null}
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={() => setAnchorEl(null)}
+                variant="menu"
               >
-                <MenuItem onClick={(e) => onMenuClick(e, '/account')} divider>
-                  My account
-                </MenuItem>
+                <MenuItem onClick={(e) => onMenuClick(e, '/account')}>My account</MenuItem>
+                <Divider className={classes.divider} />
                 <MenuItem onClick={() => Auth.signOut()}>Logout</MenuItem>
               </Menu>
             </>
