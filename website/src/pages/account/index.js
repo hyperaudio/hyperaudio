@@ -1,13 +1,16 @@
-import React from 'react';
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-shadow */
+import React, { useState, useCallback, useEffect } from 'react';
 import { Auth } from 'aws-amplify';
+import { DataStore } from '@aws-amplify/datastore';
 import {
   AmplifyAuthenticator,
   AmplifySignIn,
   AmplifySignUp,
-  AmplifyConfirmSignUp,
-  AmplifyConfirmSignIn,
-  AmplifyForgotPassword,
-  AmplifyRequireNewPassword,
+  // AmplifyConfirmSignUp,
+  // AmplifyConfirmSignIn,
+  // AmplifyForgotPassword,
+  // AmplifyRequireNewPassword,
 } from '@aws-amplify/ui-react';
 
 import Container from '@material-ui/core/Container';
@@ -16,8 +19,15 @@ import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Button from '@material-ui/core/Button';
 
 import Layout from 'src/Layout';
+import { User } from 'src/models';
+
+const getUser = async (setUser, id) => {
+  const user = await DataStore.query(User, id);
+  if (!Array.isArray(user)) setUser(user);
+};
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -31,15 +41,44 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
+  divider: {
+    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
+  },
 }));
 
 export default function AccountPage() {
   const classes = useStyles();
 
-  const [name, setName] = React.useState('');
-  const [bio, setBio] = React.useState('');
+  const [user, setUser] = useState();
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
 
-  const handleSave = () => console.log({ name });
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        console.log(user);
+        getUser(setUser, user.attributes.sub);
+      })
+      .catch(() => setUser(null));
+  }, [setUser]);
+
+  useEffect(() => {
+    if (!user) return;
+    setName(user.name);
+    setBio(user.bio);
+  }, [user]);
+
+  console.log({ user });
+
+  const handleSave = useCallback(async () => {
+    await DataStore.save(
+      User.copyOf(user, (updated) => {
+        updated.name = name;
+        updated.bio = bio;
+      }),
+    );
+  }, [name, bio]);
 
   return (
     <AmplifyAuthenticator>
@@ -68,7 +107,6 @@ export default function AccountPage() {
                 fullWidth
                 helperText=""
                 label="Name"
-                onBlur={handleSave}
                 onChange={(e) => setName(e.target.value)}
                 required
                 type="text"
@@ -81,7 +119,6 @@ export default function AccountPage() {
                 multiline
                 helperText=""
                 label="Bio"
-                onBlur={handleSave}
                 onChange={(e) => setBio(e.target.value)}
                 required
                 type="text"
@@ -89,6 +126,10 @@ export default function AccountPage() {
                 variant="outlined"
                 margin="normal"
               />
+              <div className={classes.divider} />
+              <Button color="primary" onClick={handleSave} variant="contained">
+                Save
+              </Button>
             </form>
           </Container>
         </Paper>

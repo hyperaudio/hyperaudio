@@ -43,7 +43,7 @@ export default function Topbar() {
         setUser(user);
       })
       .catch(() => setUser(null));
-  }, []);
+  }, [setUser]);
 
   useEffect(() => {
     return onAuthUIStateChange((nextAuthState, authData) => {
@@ -51,7 +51,7 @@ export default function Topbar() {
       console.log(authData);
       setUser(authData);
     });
-  }, []);
+  }, [setAuthState, setUser]);
 
   const onMenuClick = useCallback((e, href) => {
     e.preventDefault();
