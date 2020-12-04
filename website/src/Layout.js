@@ -7,7 +7,7 @@ export default function Layout({ children }) {
   return (
     <>
       <Topbar />
-      <Container maxWidth={false}>{children}</Container>
+      <Container>{children}</Container>
       <Footer />
     </>
   );
