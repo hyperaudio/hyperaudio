@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaForm({ allChannels = [], allTags = [], data, onSubmit }) {
+const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
   const classes = useStyles();
 
   const [channels, setChannels] = useState([]);
@@ -94,7 +94,7 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
             renderInput={(params) => <TextField {...params} helperText="Add this media to channels" label="Channels" />}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             value={channels}
@@ -109,7 +109,7 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
             renderInput={(params) => <TextField {...params} helperText="Tag your media" label="Tags" />}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             value={tags}
@@ -122,4 +122,6 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
       ) : null}
     </form>
   );
-}
+};
+
+export default MediaForm;

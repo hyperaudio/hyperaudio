@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AccountPage() {
+const AccountPage = () => {
   const classes = useStyles();
 
   const [user, setUser] = useState();
@@ -136,7 +136,9 @@ export default function AccountPage() {
       </Layout>
     </AmplifyAuthenticator>
   );
-}
+};
+
+export default AccountPage;
 
 // <AmplifyConfirmSignUp slot="confirm-sign-up" usernameAlias="email" />
 // <AmplifyConfirmSignIn slot="confirm-sign-in" usernameAlias="email" />

@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddMediaPage() {
+const AddMediaPage = () => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -38,6 +38,7 @@ export default function AddMediaPage() {
     { id: 0, title: 'Music' },
     { id: 0, title: 'Geometry' },
   ]; // TODO: should be passed down
+
   const allTags = [
     { id: 1, title: 'Remix' },
     { id: 1, title: 'Audio' },
@@ -66,4 +67,6 @@ export default function AddMediaPage() {
       </Paper>
     </Layout>
   );
-}
+};
+
+export default AddMediaPage;

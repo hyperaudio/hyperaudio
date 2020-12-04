@@ -35,7 +35,7 @@ const getMedia = async (setMedia, id) => {
   if (!Array.isArray(media)) setMedia(media);
 };
 
-export default function MediaPage() {
+const MediaPage = () => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -104,4 +104,6 @@ export default function MediaPage() {
       </ol>
     </Layout>
   );
-}
+};
+
+export default MediaPage;
