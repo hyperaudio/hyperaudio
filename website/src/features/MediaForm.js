@@ -1,5 +1,7 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ReactPlayer from 'react-player';
+import Embedly from 'embedly';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -43,6 +45,22 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
 
   const isValid = useMemo(() => ReactPlayer.canPlay(url), [url]);
 
+  useEffect(() => {
+    if (!isValid) return;
+
+    const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
+    if (!key) return;
+
+    const embedly = new Embedly({ key });
+    embedly.oembed({ url }, (err, objs = []) => {
+      if (err) return;
+
+      const { title = '', description = '' } = objs.pop();
+      setTitle(title);
+      setDescription(description);
+    });
+  }, [isValid, url, setTitle, setDescription]);
+
   const handleSubmit = useCallback(() => {
     onSubmit({
       channels,
@@ -59,7 +77,7 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
         <TextField
           fullWidth
           error={!isValid}
-          helperText="Enter a valid media URL"
+          helperText={isValid ? null : 'Enter a valid media URL'}
           label="URL"
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://www.youtube.com/watch?v=xyz"
