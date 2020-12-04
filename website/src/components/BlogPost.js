@@ -1,5 +1,4 @@
 import MDX from '@mdx-js/runtime';
-import Link from 'next/link';
 
 const BlogPost = ({ post }) => {
   const isLocal = process.env.NODE_ENV === 'development';
