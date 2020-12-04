@@ -1,4 +1,7 @@
-import React from 'react';
+/* eslint-disable no-shadow */
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import ReactPlayer from 'react-player';
+import Embedly from 'embedly';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -24,23 +27,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaForm({ allChannels = [], allTags = [], data, onSubmit }) {
+const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
   const classes = useStyles();
 
-  const [channels, setChannels] = React.useState([]);
-  const [description, setDescription] = React.useState(data?.description || '');
-  const [tags, setTags] = React.useState([]);
-  const [title, setTitle] = React.useState('');
-  const [url, setUrl] = React.useState(data?.url || '');
+  const [channels, setChannels] = useState([]);
+  const [description, setDescription] = useState(data?.description || '');
+  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState(data?.url || '');
 
-  React.useEffect(() => {
+  useEffect(() => {
     setDescription(data?.description);
     setChannels(data?.channels);
     setTags(data?.tags);
     setTitle(data?.title);
   }, [data]);
 
-  const handleSubmit = () => {
+  const isValid = useMemo(() => ReactPlayer.canPlay(url), [url]);
+
+  useEffect(() => {
+    if (!isValid) return;
+
+    const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
+    if (!key) return;
+
+    const embedly = new Embedly({ key });
+    embedly.oembed({ url }, (err, objs = []) => {
+      if (err) return;
+
+      const { title = '', description = '' } = objs.pop();
+      setTitle(title);
+      setDescription(description);
+    });
+  }, [isValid, url, setTitle, setDescription]);
+
+  const handleSubmit = useCallback(() => {
     onSubmit({
       channels,
       description,
@@ -48,14 +69,15 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
       title,
       url,
     });
-  };
+  }, [channels, description, tags, title, url]);
 
   return (
     <form>
       {!data?.url && (
         <TextField
           fullWidth
-          helperText="Enter a valid Youtube URL"
+          error={!isValid}
+          helperText={isValid ? null : 'Enter a valid media URL'}
           label="URL"
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://www.youtube.com/watch?v=xyz"
@@ -94,7 +116,7 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
             renderInput={(params) => <TextField {...params} helperText="Add this media to channels" label="Channels" />}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             value={channels}
@@ -109,17 +131,19 @@ export default function MediaForm({ allChannels = [], allTags = [], data, onSubm
             renderInput={(params) => <TextField {...params} helperText="Tag your media" label="Tags" />}
             renderTags={(value, getTagProps) =>
               value.map((option, index) => (
-                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={index} />
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
               ))
             }
             value={tags}
           />
           <div className={classes.divider} />
-          <Button color="primary" onClick={handleSubmit} variant="contained">
+          <Button color="primary" onClick={handleSubmit} variant="contained" disabled={!isValid}>
             Save
           </Button>
         </>
       ) : null}
     </form>
   );
-}
+};
+
+export default MediaForm;

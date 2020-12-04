@@ -66,6 +66,7 @@ export declare class Media {
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly channels?: (MediaChannel | null)[];
+  readonly tags?: (string | null)[];
   constructor(init: ModelInit<Media>);
   static copyOf(source: Media, mutator: (draft: MutableModel<Media>) => MutableModel<Media> | void): Media;
 }

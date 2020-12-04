@@ -520,6 +520,14 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "media"
                     }
+                },
+                "tags": {
+                    "name": "tags",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             },
             "syncable": true,
@@ -550,5 +558,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "87cb0024e38633b20da93a8ccf77f6a3"
+    "version": "d55ae665452e1cfd3bd1b632c93eccb6"
 };

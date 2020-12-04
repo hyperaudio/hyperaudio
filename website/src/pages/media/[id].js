@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable no-shadow */
+/* eslint-disable no-param-reassign */
+import React, { useState, useEffect, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import { DataStore } from '@aws-amplify/datastore';
 import { useRouter } from 'next/router';
@@ -35,7 +37,7 @@ const getMedia = async (setMedia, id) => {
   if (!Array.isArray(media)) setMedia(media);
 };
 
-export default function MediaPage() {
+const MediaPage = () => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -56,6 +58,21 @@ export default function MediaPage() {
     console.log(new Date(createdAt).getTime());
     console.log();
   }
+
+  // EXAMPLE UPDATE MEDIA
+  const handleSave = useCallback(
+    async ({ title, description, tags }) =>
+      setMedia(
+        await DataStore.save(
+          Media.copyOf(media, (updated) => {
+            updated.title = title;
+            updated.description = description;
+            updated.tags = tags;
+          }),
+        ),
+      ),
+    [media, setMedia],
+  );
 
   return (
     <Layout>
@@ -83,7 +100,7 @@ export default function MediaPage() {
         <Grid item xs={12} sm={4}>
           Description
           <br />
-          Tags
+          Tags: {tags?.map((tag) => `"${tag}" + `)}
         </Grid>
         <Grid item xs={12} sm={8}>
           <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} />
@@ -104,4 +121,6 @@ export default function MediaPage() {
       </ol>
     </Layout>
   );
-}
+};
+
+export default MediaPage;

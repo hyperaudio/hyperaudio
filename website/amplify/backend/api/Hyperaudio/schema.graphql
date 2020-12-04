@@ -40,6 +40,7 @@ type Media @model @auth(rules: [{allow: public}]) {
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
   channels: [MediaChannel] @connection(keyName: "byMedia", fields: ["id"])
+  tags: [String]
 }
 
 type MediaChannel @model(queries: null) @key(name: "byChannel", fields: ["channelID", "mediaID"]) @key(name: "byMedia", fields: ["mediaID", "channelID"]) @auth(rules: [{allow: public}, {allow: public}]) {

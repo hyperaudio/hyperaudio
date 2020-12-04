@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddMediaPage() {
+const AddMediaPage = () => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -38,19 +38,19 @@ export default function AddMediaPage() {
     { id: 0, title: 'Music' },
     { id: 0, title: 'Geometry' },
   ]; // TODO: should be passed down
+
   const allTags = [
     { id: 1, title: 'Remix' },
     { id: 1, title: 'Audio' },
   ]; // TODO: should be passed down
 
-  const onAddNewMedia = useCallback(
-    async ({ channels, description, tags, title, url }) => {
-      // TODO: channels, tags
-      const media = await DataStore.save(new Media({ url, title, description }));
-      router.push(`/media/${media.id}`);
-    },
-    // [router, url, title, description, channels, tags],
-  );
+  const onAddNewMedia = useCallback(async ({ channels, description, tags, title, url }) => {
+    // TODO: channels
+    console.log({ url, title, description, tags });
+    const media = await DataStore.save(new Media({ url, title, description, tags }));
+    console.log(media);
+    router.push(`/media/${media.id}`);
+  }, []);
 
   return (
     <Layout>
@@ -67,4 +67,6 @@ export default function AddMediaPage() {
       </Paper>
     </Layout>
   );
-}
+};
+
+export default AddMediaPage;
