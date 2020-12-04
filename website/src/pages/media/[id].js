@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable no-param-reassign */
 import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import { DataStore } from '@aws-amplify/datastore';
@@ -52,6 +54,21 @@ const MediaPage = () => {
     console.log(new Date(createdAt).getTime());
     console.log(Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt)));
   }
+
+  // EXAMPLE UPDATE MEDIA
+  const handleSave = useCallback(
+    async ({ title, description, tags }) =>
+      setMedia(
+        await DataStore.save(
+          Media.copyOf(media, (updated) => {
+            updated.title = title;
+            updated.description = description;
+            updated.tags = tags;
+          }),
+        ),
+      ),
+    [media, setMedia],
+  );
 
   return (
     <Layout>
