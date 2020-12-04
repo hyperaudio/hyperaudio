@@ -46,11 +46,15 @@ export default function MediaPage() {
 
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [], url } = media;
 
+  const formattedCreatedAt = createdAt
+    ? Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt))
+    : null;
+
   if (createdAt) {
     console.log(createdAt);
     console.log(new Date(createdAt));
     console.log(new Date(createdAt).getTime());
-    console.log(Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt)));
+    console.log();
   }
 
   return (
@@ -62,11 +66,7 @@ export default function MediaPage() {
               {title}
             </Typography>
             <Typography color="textSecondary">
-              Published on{' '}
-              {createdAt
-                ? Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt))
-                : null}{' '}
-              in {`Default Channel`}
+              Published on {createdAt ? formattedCreatedAt : null} in {`Default Channel`}
             </Typography>
           </Grid>
           <Grid item xs={12} sm={4}>
