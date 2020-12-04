@@ -51,7 +51,8 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
     const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
     if (!key) return;
 
-    const embedly = new Embedly({ key });
+    // TODO use https://api.embed.ly/1/oembed?key=KEY&urls=URL
+    const embedly = new Embedly({ key, secure: true });
     embedly.oembed({ url }, (err, objs = []) => {
       if (err) return;
 
