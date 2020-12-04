@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -33,7 +33,6 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
   const [tags, setTags] = useState([]);
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState(data?.url || '');
-  const [isValid, setValid] = useState(false);
 
   useEffect(() => {
     setDescription(data?.description);
@@ -42,7 +41,7 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
     setTitle(data?.title);
   }, [data]);
 
-  useEffect(() => setValid(ReactPlayer.canPlay(url)), [url]);
+  const isValid = useMemo(() => ReactPlayer.canPlay(url), [url]);
 
   const handleSubmit = useCallback(() => {
     onSubmit({
@@ -60,7 +59,7 @@ const MediaForm = ({ allChannels = [], allTags = [], data, onSubmit }) => {
         <TextField
           fullWidth
           error={!isValid}
-          helperText={`Enter a valid URL`}
+          helperText="Enter a valid media URL"
           label="URL"
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://www.youtube.com/watch?v=xyz"
