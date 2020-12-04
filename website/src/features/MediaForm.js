@@ -24,14 +24,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaForm({ allChannels, allTags, onSubmit }) {
+export default function MediaForm({ allChannels = [], allTags = [], data, onSubmit }) {
   const classes = useStyles();
 
   const [channels, setChannels] = React.useState([]);
-  const [description, setDescription] = React.useState('');
+  const [description, setDescription] = React.useState(data?.description || '');
   const [tags, setTags] = React.useState([]);
   const [title, setTitle] = React.useState('');
-  const [url, setUrl] = React.useState('');
+  const [url, setUrl] = React.useState(data?.url || '');
+
+  React.useEffect(() => {
+    setDescription(data?.description);
+    setChannels(data?.channels);
+    setTags(data?.tags);
+    setTitle(data?.title);
+  }, [data]);
 
   const handleSubmit = () => {
     onSubmit({
@@ -45,17 +52,19 @@ export default function MediaForm({ allChannels, allTags, onSubmit }) {
 
   return (
     <form>
-      <TextField
-        fullWidth
-        helperText="Enter a valid Youtube URL"
-        label="URL"
-        onChange={(e) => setUrl(e.target.value)}
-        placeholder="https://www.youtube.com/watch?v=xyz"
-        required
-        type="url"
-        value={url}
-      />
-      {url?.length > 0 ? (
+      {!data?.url && (
+        <TextField
+          fullWidth
+          helperText="Enter a valid Youtube URL"
+          label="URL"
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="https://www.youtube.com/watch?v=xyz"
+          required
+          type="url"
+          value={url}
+        />
+      )}
+      {data?.url || url?.length > 0 ? (
         <>
           <TextField
             fullWidth
@@ -107,7 +116,7 @@ export default function MediaForm({ allChannels, allTags, onSubmit }) {
           />
           <div className={classes.divider} />
           <Button color="primary" onClick={handleSubmit} variant="contained">
-            Add Media
+            Save
           </Button>
         </>
       ) : null}

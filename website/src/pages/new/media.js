@@ -45,8 +45,6 @@ export default function AddMediaPage() {
 
   const onAddNewMedia = useCallback(
     async ({ channels, description, tags, title, url }) => {
-      console.log('onAddNewMedia', { url, title, description, channels, tags });
-
       // TODO: channels, tags
       const media = await DataStore.save(new Media({ url, title, description }));
       router.push(`/media/${media.id}`);
