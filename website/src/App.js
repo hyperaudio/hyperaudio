@@ -10,7 +10,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import awsconfig from './aws-exports';
 import theme from './theme';
 
-Amplify.configure(awsconfig);
+Amplify.configure({ ...awsconfig, ssr: true });
 
 export default class Application extends App {
   render() {

@@ -1,6 +1,9 @@
+/* eslint-disable no-shadow */
+import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
-import React from 'react';
 import { useRouter } from 'next/router';
+import { Auth } from 'aws-amplify';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -29,13 +32,32 @@ export default function Topbar() {
   const classes = useStyles();
   const router = useRouter();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [authState, setAuthState] = useState();
+  const [user, setUser] = useState();
 
-  const onMenuClick = (e, href) => {
+  useEffect(() => {
+    Auth.currentAuthenticatedUser()
+      .then((user) => {
+        console.log('User: ', user);
+        setUser(user);
+      })
+      .catch(() => setUser(null));
+  }, []);
+
+  useEffect(() => {
+    return onAuthUIStateChange((nextAuthState, authData) => {
+      setAuthState(nextAuthState);
+      console.log(authData);
+      setUser(authData);
+    });
+  }, []);
+
+  const onMenuClick = useCallback((e, href) => {
     e.preventDefault();
     setAnchorEl(null);
     router.push(href);
-  };
+  }, []);
 
   return (
     <>
@@ -65,39 +87,50 @@ export default function Topbar() {
             </Button>
           </NextLink>
           <div className={classes.grow} />
-          <Tooltip title="More options…">
-            <IconButton
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              color="inherit"
-              edge="end"
-              onClick={(e) => setAnchorEl(e.currentTarget)}
-              variant="text"
-            >
-              <SettingsIcon />
-            </IconButton>
-          </Tooltip>
-          <Menu
-            anchorOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            getContentAnchorEl={null}
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={() => setAnchorEl(null)}
-          >
-            <MenuItem onClick={(e) => onMenuClick(e, '/account')} divider>
-              My account
-            </MenuItem>
-            <MenuItem onClick={(e) => onMenuClick(e, '/logout')}>Logout</MenuItem>
-          </Menu>
+          {user ? (
+            <>
+              <Tooltip title="More options…">
+                <IconButton
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  color="inherit"
+                  edge="end"
+                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  variant="text"
+                >
+                  <SettingsIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Menu
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'center',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'center',
+                }}
+                getContentAnchorEl={null}
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={() => setAnchorEl(null)}
+              >
+                <MenuItem onClick={(e) => onMenuClick(e, '/account')} divider>
+                  My account
+                </MenuItem>
+                <MenuItem onClick={() => Auth.signOut()}>Logout</MenuItem>
+              </Menu>
+            </>
+          ) : (
+            <NextLink href="/account" passHref>
+              <Button color="inherit" variant="text">
+                Login
+              </Button>
+            </NextLink>
+          )}
         </Toolbar>
       </AppBar>
       <div className={classes.push} />
