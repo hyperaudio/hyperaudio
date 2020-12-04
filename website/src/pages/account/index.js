@@ -25,10 +25,10 @@ const useStyles = makeStyles((theme) => ({
 export default function AccountPage() {
   const classes = useStyles();
 
-  const [fname, setFname] = React.useState('');
-  const [lname, setLname] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [bio, setBio] = React.useState('');
 
-  const handleSave = () => console.log({ fname, lname });
+  const handleSave = () => console.log({ name });
 
   return (
     <Layout>
@@ -44,24 +44,27 @@ export default function AccountPage() {
             <TextField
               fullWidth
               helperText=""
-              label="First name"
-              onChange={(e) => setFname(e.target.value)}
+              label="Name"
               onBlur={handleSave}
-              placeholder="John"
+              onChange={(e) => setName(e.target.value)}
               required
               type="text"
-              value={fname}
+              value={name}
+              variant="outlined"
+              margin="normal"
             />
             <TextField
               fullWidth
+              multiline
               helperText=""
-              label="Last name"
-              onChange={(e) => setLname(e.target.value)}
+              label="Bio"
               onBlur={handleSave}
-              placeholder="Smith"
+              onChange={(e) => setBio(e.target.value)}
               required
               type="text"
-              value={lname}
+              value={bio}
+              variant="outlined"
+              margin="normal"
             />
           </form>
         </Container>
