@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { DataStore } from '@aws-amplify/datastore';
 import ReactPlayer from 'react-player';
+import { DataStore } from '@aws-amplify/datastore';
+import { useRouter } from 'next/router';
 
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Chip from '@material-ui/core/Chip';
+import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
-import MediaForm from 'src/features/MediaForm';
 import { Media } from 'src/models';
 
 const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(2),
+  },
+  grow: {
+    flexGrow: 1,
+  },
   player: {
     paddingTop: '56.25%',
     position: 'relative',
@@ -37,33 +44,52 @@ export default function MediaPage() {
   const [media, setMedia] = useState({});
   useEffect(() => getMedia(setMedia, id), [setMedia, id]);
 
-  const { description = '', tags = [], title = '', transcripts = [], url } = media;
+  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [], url } = media;
 
-  const onMediaUpdate = (o) => {
-    console.log({ channels: o.channels, description: o.description, tags: o.tags, title: o.title });
-  };
+  if (createdAt) {
+    console.log(createdAt);
+    console.log(new Date(createdAt));
+    console.log(new Date(createdAt).getTime());
+    console.log(Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt)));
+  }
 
   return (
     <Layout>
-      <Grid container direction="row-reverse" spacing={2}>
+      <Toolbar className={classes.toolbar} disableGutters>
+        <Grid container spacing={5}>
+          <Grid item xs={12} sm={8}>
+            <Typography component="h1" gutterBottom variant="h4">
+              {title}
+            </Typography>
+            <Typography color="textSecondary">
+              Published on{' '}
+              {createdAt
+                ? Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeStyle: 'short' }).format(new Date(createdAt))
+                : null}{' '}
+              in {`Default Channel`}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <Button color="primary" onClick={() => console.log('Import Transcript')}>
+              Import transcript
+            </Button>
+            <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
+              Transcribe
+            </Button>
+          </Grid>
+        </Grid>
+      </Toolbar>
+      <Grid container direction="row-reverse" spacing={5}>
         <Grid item xs={12} sm={4}>
-          <Typography variant="h6" component="h1">
-            {title}
-          </Typography>
-          <Typography variant="body1">{description}</Typography>
-          Tags:{' '}
-          {tags?.map((tag) => (
-            <Chip size="small" variant="outlined" key={tag.replace(/ /g, '-')}>
-              {tag}
-            </Chip>
-          ))}
+          Description
+          <br />
+          Tags
         </Grid>
         <Grid item xs={12} sm={8}>
           <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} />
         </Grid>
       </Grid>
 
-      <MediaForm allChannels={[]} allTags={[]} data={{ url, title, description }} onSubmit={onMediaUpdate} />
       <h6>Transcripts</h6>
       <ol>
         {transcripts ? (
