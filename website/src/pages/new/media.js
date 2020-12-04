@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { DataStore } from '@aws-amplify/datastore';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -11,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
+import { Media } from '../../models';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -32,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function AddMediaPage() {
   const classes = useStyles();
+  const router = useRouter();
 
   const [channels, setChannels] = React.useState([]);
   const [description, setDescription] = React.useState('');
@@ -48,9 +52,13 @@ export default function AddMediaPage() {
     { id: 1, title: 'Audio' },
   ]; // TODO: should be passed down
 
-  const onAddNewMedia = () => {
+  const onAddNewMedia = useCallback(async () => {
     console.log('onAddNewMedia', { url, title, description, channels, tags });
-  };
+
+    // TODO: channels, tags
+    const media = await DataStore.save(new Media({ url, title, description }));
+    router.push(`/media/${media.id}`);
+  }, [router, url, title, description, channels, tags]);
 
   return (
     <Layout>

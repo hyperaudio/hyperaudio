@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from 'react';
 import NextLink from 'next/link';
-import axios from 'axios';
-import useSWR from 'swr';
+import { DataStore } from '@aws-amplify/datastore';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,8 +16,10 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
+import { Channel, Media } from '../../models';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
+const listMedia = async (setMedia) => setMedia(await DataStore.query(Media));
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -29,11 +31,57 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaPage({ initialData }) {
+export default function MediaPage() {
   const classes = useStyles();
 
-  const { data, error } = useSWR('/api/v2/media', fetcher, { initialData });
-  if (error) return <h1>BOOM</h1>;
+  const [channels, setChannels] = useState([]);
+  const [media, setMedia] = useState([]);
+
+  useEffect(() => {
+    listChannels(setChannels);
+
+    const subscription = DataStore.observe(Channel).subscribe((msg) => {
+      console.log(msg.model, msg.opType, msg.element);
+      listChannels(setChannels);
+    });
+
+    const handleConnectionChange = () => {
+      const condition = navigator.onLine ? 'online' : 'offline';
+      console.log(condition);
+      if (condition === 'online') {
+        listChannels(setChannels);
+      }
+    };
+
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => subscription.unsubscribe();
+  }, [setChannels]);
+
+  useEffect(() => {
+    listMedia(setMedia);
+
+    const subscription = DataStore.observe(Media).subscribe((msg) => {
+      console.log(msg.model, msg.opType, msg.element);
+      listMedia(setMedia);
+    });
+
+    const handleConnectionChange = () => {
+      const condition = navigator.onLine ? 'online' : 'offline';
+      console.log(condition);
+      if (condition === 'online') {
+        listMedia(setMedia);
+      }
+    };
+
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => subscription.unsubscribe();
+  }, [setMedia]);
+
+  // console.log(media);
 
   return (
     <Layout>
@@ -50,13 +98,13 @@ export default function MediaPage({ initialData }) {
       </Toolbar>
       <Paper>
         <List dense>
-          {data
-            ? data.map(({ id, title }) => (
+          {media
+            ? media.map(({ id, title, description }) => (
                 <NextLink key={id} href={`/media/${id}`}>
                   <ListItem button>
                     <ListItemText
                       primary={title}
-                      secondary={'some info'}
+                      secondary={description}
                       primaryTypographyProps={{ color: 'primary' }}
                     />
                     <ListItemSecondaryAction>
@@ -82,11 +130,3 @@ export default function MediaPage({ initialData }) {
     </Layout>
   );
 }
-
-// TODO
-// export async function getStaticProps() {
-//   // `getStaticProps` is invoked on the server-side,
-//   // so this `fetcher` function will be executed on the server-side.
-//   const initialData = await fetcher('/api/v2/media');
-//   return { props: { initialData } };
-// }

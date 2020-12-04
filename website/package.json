@@ -10,12 +10,15 @@
     "deploy": "serverless"
   },
   "dependencies": {
+    "@aws-amplify/datastore": "^2.9.0",
+    "@aws-amplify/ui-react": "^0.2.31",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@mdx-js/loader": "^1.6.21",
     "@mdx-js/runtime": "^1.6.21",
     "@next/mdx": "^9.5.5",
+    "aws-amplify": "^3.3.11",
     "aws-sdk": "^2.796.0",
     "axios": "^0.21.0",
     "clsx": "^1.1.1",

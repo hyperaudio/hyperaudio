@@ -1,0 +1,36 @@
+type Channel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  media: [MediaChannel] @connection(keyName: "byChannel", fields: ["id"])
+}
+
+type Media @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  url: AWSURL
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  channels: [MediaChannel] @connection(keyName: "byMedia", fields: ["id"])
+}
+
+type MediaChannel @model(queries: null) @key(name: "byChannel", fields: ["channelID", "mediaID"]) @key(name: "byMedia", fields: ["mediaID", "channelID"]) @auth(rules: [{allow: public}, {allow: public}]) {
+  id: ID!
+  channelID: ID!
+  mediaID: ID!
+  channel: Channel! @connection(fields: ["channelID"])
+  media: Media! @connection(fields: ["mediaID"])
+}

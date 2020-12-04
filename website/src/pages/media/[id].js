@@ -1,21 +1,24 @@
 /* eslint-disable no-shadow */
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import useSWR from 'swr';
-import axios from 'axios';
+import { DataStore } from '@aws-amplify/datastore';
 
 import ReactPlayer from 'react-player';
 
 import Layout from 'src/Layout';
+import { Media } from '../../models';
 
-const fetcher = (url) => axios.get(url).then((res) => res.data);
+const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
 const MediaPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { data = {}, error } = useSWR(`/api/v2/media/${id}`, fetcher);
-  if (error) return <h1>BOOM</h1>;
 
-  const { title, description, transcripts, source: { url } = {} } = data;
+  const [media, setMedia] = useState({});
+  useEffect(() => getMedia(setMedia, id), [setMedia, id]);
+  // console.log(media);
+
+  const { title, description, transcripts = [], url } = media;
 
   return (
     <Layout>
@@ -37,13 +40,5 @@ const MediaPage = () => {
     </Layout>
   );
 };
-
-// TODO
-// export async function getStaticProps() {
-//   // `getStaticProps` is invoked on the server-side,
-//   // so this `fetcher` function will be executed on the server-side.
-//   const initialData = await fetcher('/api/v2/media'); +id?
-//   return { props: { initialData } };
-// }
 
 export default MediaPage;
