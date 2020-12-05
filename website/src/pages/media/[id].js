@@ -1,9 +1,10 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { DataStore } from '@aws-amplify/datastore';
 import { useRouter } from 'next/router';
+import Amplify, { Storage } from 'aws-amplify';
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -67,9 +68,21 @@ const MediaPage = () => {
   const { id } = router.query;
 
   const [media, setMedia] = useState({});
+  const [url, setUrl] = useState();
   useEffect(() => getMedia(setMedia, id), [setMedia, id]);
 
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [], url } = media;
+  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media;
+
+  useEffect(async () => {
+    if (!media || !media.url) return;
+
+    const prefix = 's3://hyperpink-data/public/';
+    if (media.url.startsWith(prefix)) {
+      setUrl(await Storage.get(media.url.substring(prefix.length)));
+    } else {
+      setUrl(media.url);
+    }
+  }, [media, setUrl]);
 
   const formattedCreatedAt = createdAt
     ? Intl.DateTimeFormat('en-US', {

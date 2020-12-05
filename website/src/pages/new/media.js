@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { DataStore } from '@aws-amplify/datastore';
 import ReactPlayer from 'react-player';
 import Embedly from 'embedly';
+import Amplify, { Storage } from 'aws-amplify';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +15,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Layout from 'src/Layout';
 import { Media } from '../../models';
@@ -56,8 +58,31 @@ const AddMediaPage = () => {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [extracted, setExtracted] = useState(false);
+  const [file, setFile] = useState();
+  const [progress, setProgress] = useState(0);
 
-  const isValid = useMemo(() => ReactPlayer.canPlay(url), [url]);
+  const isValid = useMemo(() => url.startsWith('s3://hyperpink-data/') || ReactPlayer.canPlay(url), [url]);
+
+  const onFileChange = useCallback(
+    (e) => {
+      setFile(e.target.files[0]);
+      console.log(e.target.files[0]);
+    },
+    [setFile],
+  );
+
+  const upload = useCallback(() => {
+    Storage.put(`test/${file.name}`, file, {
+      // level: 'public',
+      // acl: 'public-read',
+      progressCallback: (progress) => {
+        console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+        setProgress((100 * progress.loaded) / progress.total);
+      },
+    })
+      .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
+      .catch((err) => console.log(err));
+  }, [setProgress, setUrl, file]);
 
   useEffect(() => {
     if (!isValid && extracted) setExtracted(false);
@@ -100,6 +125,11 @@ const AddMediaPage = () => {
       <Paper>
         <Container className={classes.container}>
           <form>
+            <input type="file" accept="audio/*, video/*" onChange={onFileChange} />
+            <Button color="primary" onClick={upload} variant="contained">
+              Upload
+            </Button>
+            <LinearProgress variant="determinate" value={progress} />
             <TextField
               fullWidth
               error={!isValid}
