@@ -55,6 +55,7 @@ const AddMediaPage = () => {
   const [channels, setChannels] = useState([]);
   const [description, setDescription] = useState('');
   const [tags, setTags] = useState([]);
+  const [metadata, setMetadata] = useState({});
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
   const [extracted, setExtracted] = useState(false);
@@ -99,20 +100,24 @@ const AddMediaPage = () => {
     embedly.oembed({ url }, (err, objs = []) => {
       if (err) return;
 
-      const { title = '', description = '', provider_name: platform } = objs.pop();
+      const data = objs.pop();
+      const { title = '', description = '', provider_name: platform } = data;
       setTitle(title);
       setDescription(description);
+      setMetadata({ embedly: data });
       if (platform && !tags.includes(platform)) setTags([...tags, platform]);
     });
-  }, [isValid, url, tags, setTitle, setDescription, setTags, setExtracted]);
+  }, [isValid, url, tags, setTitle, setDescription, setTags, setMetadata, setExtracted]);
 
   const onAddNewMedia = useCallback(async () => {
     // TODO: channels
-    console.log({ url, title, description, tags });
-    const media = await DataStore.save(new Media({ url, title, description, tags }));
+    // console.log({ url, title, description, tags });
+    const media = await DataStore.save(
+      new Media({ url, title, description, tags, metadata: JSON.stringify(metadata) }),
+    );
     console.log(media);
     router.push(`/media/${media.id}`);
-  }, [url, title, description, tags]);
+  }, [url, title, description, tags, metadata]);
 
   return (
     <Layout>
