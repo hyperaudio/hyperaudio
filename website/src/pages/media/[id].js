@@ -1,10 +1,8 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
-import { DataStore } from '@aws-amplify/datastore';
-import { useRouter } from 'next/router';
-import Amplify, { Storage } from 'aws-amplify';
+import { withSSRContext, Storage } from 'aws-amplify';
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -56,22 +54,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getMedia = async (setMedia, id) => {
-  const media = await DataStore.query(Media, id);
-  if (!Array.isArray(media)) setMedia(media);
-};
-
-const MediaPage = () => {
+const MediaPage = ({ media }) => {
   const classes = useStyles();
-  const router = useRouter();
-
-  const { id } = router.query;
-
-  const [media, setMedia] = useState({});
   const [url, setUrl] = useState();
-  useEffect(() => getMedia(setMedia, id), [setMedia, id]);
 
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media;
+  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
 
   useEffect(async () => {
     if (!media || !media.url) return;
@@ -94,20 +81,20 @@ const MediaPage = () => {
       }).format(new Date(createdAt))
     : null;
 
-  // EXAMPLE UPDATE MEDIA
-  const handleSave = useCallback(
-    async ({ title, description, tags }) =>
-      setMedia(
-        await DataStore.save(
-          Media.copyOf(media, (updated) => {
-            updated.title = title;
-            updated.description = description;
-            updated.tags = tags;
-          }),
-        ),
-      ),
-    [media, setMedia],
-  );
+  // EXAMPLE UPDATE MEDIA... FIXME: for SSR
+  // const handleSave = useCallback(
+  //   async ({ title, description, tags }) =>
+  //     setMedia(
+  //       await DataStore.save(
+  //         Media.copyOf(media, (updated) => {
+  //           updated.title = title;
+  //           updated.description = description;
+  //           updated.tags = tags;
+  //         }),
+  //       ),
+  //     ),
+  //   [media, setMedia],
+  // );
 
   const channel = null;
   console.log({ tags });
@@ -130,7 +117,7 @@ const MediaPage = () => {
       </Toolbar>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} />
+          {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
           {description && (
             <Typography gutterBottom variant="body2">
               {description}
@@ -170,6 +157,21 @@ const MediaPage = () => {
       </Grid>
     </Layout>
   );
+};
+
+export const getServerSideProps = async (req) => {
+  const { DataStore } = withSSRContext(req);
+  const {
+    params: { id },
+  } = req;
+
+  const media = await DataStore.query(Media, id);
+
+  return {
+    props: {
+      media: JSON.parse(JSON.stringify(media)),
+    },
+  };
 };
 
 export default MediaPage;

@@ -1,6 +1,7 @@
+/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import NextLink from 'next/link';
-import { DataStore } from '@aws-amplify/datastore';
+import { withSSRContext, DataStore } from 'aws-amplify';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -18,7 +19,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Layout from 'src/Layout';
 import { Channel, Media } from '../../models';
 
-const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
+// const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
 const listMedia = async (setMedia) => setMedia(await DataStore.query(Media));
 
 const useStyles = makeStyles((theme) => ({
@@ -31,33 +32,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MediaPage() {
+const MediaPage = ({ media: media2 }) => {
   const classes = useStyles();
 
-  const [channels, setChannels] = useState([]);
-  const [media, setMedia] = useState([]);
+  // const [channels, setChannels] = useState([]);
+  const [media, setMedia] = useState(media2);
 
-  useEffect(() => {
-    listChannels(setChannels);
+  // useEffect(() => {
+  //   listChannels(setChannels);
 
-    const subscription = DataStore.observe(Channel).subscribe((msg) => {
-      console.log(msg.model, msg.opType, msg.element);
-      listChannels(setChannels);
-    });
+  //   const subscription = DataStore.observe(Channel).subscribe((msg) => {
+  //     console.log(msg.model, msg.opType, msg.element);
+  //     listChannels(setChannels);
+  //   });
 
-    const handleConnectionChange = () => {
-      const condition = navigator.onLine ? 'online' : 'offline';
-      console.log(condition);
-      if (condition === 'online') {
-        listChannels(setChannels);
-      }
-    };
+  //   const handleConnectionChange = () => {
+  //     const condition = navigator.onLine ? 'online' : 'offline';
+  //     console.log(condition);
+  //     if (condition === 'online') {
+  //       listChannels(setChannels);
+  //     }
+  //   };
 
-    window.addEventListener('online', handleConnectionChange);
-    window.addEventListener('offline', handleConnectionChange);
+  //   window.addEventListener('online', handleConnectionChange);
+  //   window.addEventListener('offline', handleConnectionChange);
 
-    return () => subscription.unsubscribe();
-  }, [setChannels]);
+  //   return () => subscription.unsubscribe();
+  // }, [setChannels]);
 
   useEffect(() => {
     listMedia(setMedia);
@@ -80,8 +81,6 @@ export default function MediaPage() {
 
     return () => subscription.unsubscribe();
   }, [setMedia]);
-
-  // console.log(media);
 
   return (
     <Layout>
@@ -129,4 +128,18 @@ export default function MediaPage() {
       </Paper>
     </Layout>
   );
-}
+};
+
+export const getServerSideProps = async (req) => {
+  const { DataStore } = withSSRContext(req);
+
+  const media = await DataStore.query(Media);
+
+  return {
+    props: {
+      media: JSON.parse(JSON.stringify(media)),
+    },
+  };
+};
+
+export default MediaPage;
