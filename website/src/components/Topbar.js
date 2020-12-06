@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Topbar() {
+const Topbar = () => {
   const classes = useStyles();
   const router = useRouter();
 
@@ -141,4 +141,6 @@ export default function Topbar() {
       <div className={classes.push} />
     </>
   );
-}
+};
+
+export default Topbar;

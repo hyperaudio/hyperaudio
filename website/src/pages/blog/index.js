@@ -40,7 +40,7 @@ const PostsPage = ({ posts, prevPosts, nextPosts }) => (
   <Posts posts={posts} prevPosts={prevPosts} nextPosts={nextPosts} />
 );
 
-export async function getStaticProps() {
+export const getStaticProps = async () => {
   const posts = getAllPosts([
     'title',
     'date',
@@ -62,6 +62,6 @@ export async function getStaticProps() {
   return {
     props: { posts: posts.slice(startIndex, endIndex), prevPosts, nextPosts },
   };
-}
+};
 
 export default PostsPage;

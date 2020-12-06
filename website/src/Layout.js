@@ -3,7 +3,7 @@ import Container from '@material-ui/core/Container';
 import Footer from 'src/components/Footer';
 import Topbar from 'src/components/Topbar';
 
-export default function Layout({ children }) {
+const Layout = ({ children }) => {
   return (
     <>
       <Topbar />
@@ -11,4 +11,6 @@ export default function Layout({ children }) {
       <Footer />
     </>
   );
-}
+};
+
+export default Layout;

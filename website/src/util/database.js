@@ -20,7 +20,7 @@ let cached = global.mongo;
 // eslint-disable-next-line no-multi-assign
 if (!cached) cached = global.mongo = {};
 
-export async function connectToDatabase() {
+export const connectToDatabase = async () => {
   if (cached.conn) return cached.conn;
   if (!cached.promise) {
     const conn = {};
@@ -40,6 +40,6 @@ export async function connectToDatabase() {
   }
   await cached.promise;
   return cached.conn;
-}
+};
 
 // based on https://github.com/vercel/next.js/blob/canary/examples/with-mongodb/util/mongodb.js

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Footer(props) {
+const Footer = props => {
   const classes = useStyles();
   return (
     <AppBar className={classes.root} color="transparent" component="div" elevation={0} position="static">
@@ -42,4 +42,6 @@ export default function Footer(props) {
       </Toolbar>
     </AppBar>
   );
-}
+};
+
+export default Footer;

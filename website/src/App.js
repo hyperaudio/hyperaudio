@@ -25,7 +25,7 @@ Analytics.autoTrack('pageView', {
   type: 'SPA',
 });
 
-export default class Application extends App {
+class Application extends App {
   render() {
     const { Component, pageProps } = this.props;
 
@@ -37,3 +37,5 @@ export default class Application extends App {
     );
   }
 }
+
+export default Application;

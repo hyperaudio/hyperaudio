@@ -5,7 +5,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
 
 import theme from './theme';
 
-export default class Doc extends Document {
+class Doc extends Document {
   render() {
     return (
       <Html lang="en">
@@ -39,3 +39,5 @@ Doc.getInitialProps = async ctx => {
     styles: [...React.Children.toArray(initialProps.styles), sheets.getStyleElement()],
   };
 };
+
+export default Doc;

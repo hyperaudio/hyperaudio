@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MixesPage() {
+const MixesPage = () => {
   const classes = useStyles();
 
   return (
@@ -27,4 +27,6 @@ export default function MixesPage() {
       </Toolbar>
     </Layout>
   );
-}
+};
+
+export default MixesPage;
