@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import { withSSRContext, DataStore } from 'aws-amplify';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -31,11 +32,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MediaPage = ({ media: preloadedMedia }) => {
+const MediaPage = initialData => {
   const classes = useStyles();
 
   // const [channels, setChannels] = useState([]);
-  const [media, setMedia] = useState(preloadedMedia);
+  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
 
   // useEffect(() => {
   //   listChannels(setChannels);
@@ -130,12 +131,20 @@ const MediaPage = ({ media: preloadedMedia }) => {
 };
 
 export const getServerSideProps = async req => {
-  const { DataStore } = withSSRContext(req);
+  const { Auth, DataStore } = withSSRContext(req);
   const media = await DataStore.query(Media);
 
+  let user = null;
+
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ignored) {}
+
+  console.log({ user });
   return {
     props: {
-      media: JSON.parse(JSON.stringify(media)),
+      media: serializeModel(media),
+      user,
     },
   };
 };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { withSSRContext, Storage } from 'aws-amplify';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import Head from 'next/head';
 
 import Button from '@material-ui/core/Button';
@@ -53,10 +54,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const MediaPage = ({ media }) => {
+const MediaPage = initialData => {
   const classes = useStyles();
+
+  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [url, setUrl] = useState();
 
+  // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
 
   useEffect(async () => {
@@ -155,16 +159,24 @@ const MediaPage = ({ media }) => {
 };
 
 export const getServerSideProps = async req => {
-  const { DataStore } = withSSRContext(req);
+  const { Auth, DataStore } = withSSRContext(req);
   const {
     params: { id },
   } = req;
 
   const media = await DataStore.query(Media, id);
+  let user = null;
+
+  try {
+    user = await Auth.currentAuthenticatedUser();
+  } catch (ignored) {}
+
+  console.log({ user });
 
   return {
     props: {
-      media: JSON.parse(JSON.stringify(media)),
+      media: serializeModel(media),
+      user,
     },
   };
 };
