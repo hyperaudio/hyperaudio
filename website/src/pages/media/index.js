@@ -17,7 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
-import { Channel, Media } from '../../models';
+import { Channel, Media, User } from '../../models';
 
 // const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
 const listMedia = async setMedia => setMedia(await DataStore.query(Media));
@@ -137,7 +137,10 @@ export const getServerSideProps = async req => {
   let user = null;
 
   try {
-    user = await Auth.currentAuthenticatedUser();
+    const {
+      attributes: { sub },
+    } = await Auth.currentAuthenticatedUser();
+    user = serializeModel(await DataStore.query(User, sub));
   } catch (ignored) {}
 
   console.log({ user });

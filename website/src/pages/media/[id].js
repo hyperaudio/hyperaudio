@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ReactPlayer from 'react-player';
-import { withSSRContext, Storage } from 'aws-amplify';
+import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { useRouter } from 'next/router';
 import Head from 'next/head';
 
 import Button from '@material-ui/core/Button';
@@ -16,7 +17,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
-import { Media } from 'src/models';
+import { Media, User } from 'src/models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -54,14 +55,38 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+
 const MediaPage = initialData => {
   const classes = useStyles();
+
+  const router = useRouter();
+  const { id } = router.query;
 
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [url, setUrl] = useState();
 
-  // FIXME
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
+  useEffect(() => {
+    getMedia(setMedia, id);
+
+    const subscription = DataStore.observe(Media).subscribe(msg => {
+      console.log(msg.model, msg.opType, msg.element);
+      getMedia(setMedia, id);
+    });
+
+    const handleConnectionChange = () => {
+      const condition = navigator.onLine ? 'online' : 'offline';
+      console.log(condition);
+      if (condition === 'online') {
+        getMedia(setMedia, id);
+      }
+    };
+
+    window.addEventListener('online', handleConnectionChange);
+    window.addEventListener('offline', handleConnectionChange);
+
+    return () => subscription.unsubscribe();
+  }, [setMedia, id]);
 
   useEffect(async () => {
     if (!media || !media.url) return;
@@ -73,6 +98,22 @@ const MediaPage = initialData => {
       setUrl(media.url);
     }
   }, [media, setUrl]);
+
+  const editTitle = useCallback(async () => {
+    const title = global.prompt('Edit Title', media.title);
+    if (title) {
+      setMedia(
+        await DataStore.save(
+          Media.copyOf(media, updated => {
+            updated.title = title;
+          }),
+        ),
+      );
+    }
+  }, [media, setMedia]);
+
+  // FIXME
+  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
 
   const formattedCreatedAt = useMemo(
     () =>
@@ -100,7 +141,7 @@ const MediaPage = initialData => {
       </Head>
       <Layout>
         <Toolbar className={classes.toolbar} disableGutters>
-          <Typography component="h1" gutterBottom variant="h4">
+          <Typography component="h1" gutterBottom variant="h4" onDoubleClick={editTitle}>
             {title}
           </Typography>
           <div className={classes.grow} />
@@ -168,7 +209,10 @@ export const getServerSideProps = async req => {
   let user = null;
 
   try {
-    user = await Auth.currentAuthenticatedUser();
+    const {
+      attributes: { sub },
+    } = await Auth.currentAuthenticatedUser();
+    user = serializeModel(await DataStore.query(User, sub));
   } catch (ignored) {}
 
   console.log({ user });
