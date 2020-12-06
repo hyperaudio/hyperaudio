@@ -42,6 +42,7 @@ const AddMediaPage = initialData => {
   const router = useRouter();
 
   const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
+  console.log({ user });
 
   const allChannels = [
     // { id: 0, title: 'Music' },
@@ -218,7 +219,7 @@ export const getServerSideProps = async context => {
 
     return { props: { user } };
   } catch (error) {
-    return { redirect: { destination: '/account', permanent: false } };
+    return { redirect: { destination: '/auth/?redirect=/new/media', permanent: false } };
   }
 };
 

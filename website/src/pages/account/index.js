@@ -1,15 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Auth } from 'aws-amplify';
-import { DataStore } from '@aws-amplify/datastore';
-import {
-  AmplifyAuthenticator,
-  AmplifySignIn,
-  AmplifySignUp,
-  // AmplifyConfirmSignUp,
-  // AmplifyConfirmSignIn,
-  // AmplifyForgotPassword,
-  // AmplifyRequireNewPassword,
-} from '@aws-amplify/ui-react';
+import { Auth, Storage, withSSRContext, DataStore } from 'aws-amplify';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -22,10 +13,10 @@ import Button from '@material-ui/core/Button';
 import Layout from 'src/Layout';
 import { User } from 'src/models';
 
-const getUser = async (setUser, id) => {
-  const user = await DataStore.query(User, id);
-  if (!Array.isArray(user)) setUser(user);
-};
+// const getUser = async (setUser, id) => {
+//   const user = await DataStore.query(User, id);
+//   if (!Array.isArray(user)) setUser(user);
+// };
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -45,21 +36,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AccountPage = () => {
+const AccountPage = initialData => {
   const classes = useStyles();
 
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
 
-  useEffect(() => {
-    Auth.currentAuthenticatedUser()
-      .then(user => {
-        console.log(user);
-        getUser(setUser, user.attributes.sub);
-      })
-      .catch(() => setUser(null));
-  }, [setUser]);
+  // useEffect(() => {
+  //   Auth.currentAuthenticatedUser()
+  //     .then(user => {
+  //       console.log(user);
+  //       getUser(setUser, user.attributes.sub);
+  //     })
+  //     .catch(() => setUser(null));
+  // }, [setUser]);
 
   useEffect(() => {
     if (!user) return;
@@ -70,75 +61,75 @@ const AccountPage = () => {
   console.log({ user });
 
   const handleSave = useCallback(async () => {
-    await DataStore.save(
-      User.copyOf(user, updated => {
-        updated.name = name;
-        updated.bio = bio;
-      }),
+    setUser(
+      await DataStore.save(
+        User.copyOf(user, updated => {
+          updated.name = name;
+          updated.bio = bio;
+        }),
+      ),
     );
   }, [name, bio]);
 
   return (
-    <AmplifyAuthenticator>
-      <style scoped>
-        {`
-        :root {
-          --amplify-primary-color: #0083e8;
-          --amplify-primary-tint: #006ec2;
-          --amplify-primary-shade: #006ec2;
-        }
-        `}
-      </style>
-      <AmplifySignIn slot="sign-in" usernameAlias="email" />
-      <AmplifySignUp slot="sign-up" usernameAlias="email" formFields={[{ type: 'email' }, { type: 'password' }]} />
-      <Layout>
-        <Toolbar className={classes.toolbar} disableGutters>
-          <Typography component="h1" gutterBottom variant="h4">
-            Your account
-          </Typography>
-          <div className={classes.grow} />
-        </Toolbar>
-        <Paper>
-          <Container className={classes.container}>
-            <form>
-              <TextField
-                fullWidth
-                helperText=""
-                label="Name"
-                onChange={e => setName(e.target.value)}
-                required
-                type="text"
-                value={name}
-                variant="outlined"
-                margin="normal"
-              />
-              <TextField
-                fullWidth
-                multiline
-                helperText=""
-                label="Bio"
-                onChange={e => setBio(e.target.value)}
-                required
-                type="text"
-                value={bio}
-                variant="outlined"
-                margin="normal"
-              />
-              <div className={classes.divider} />
-              <Button color="primary" onClick={handleSave} variant="contained">
-                Save
-              </Button>
-            </form>
-          </Container>
-        </Paper>
-      </Layout>
-    </AmplifyAuthenticator>
+    <Layout>
+      <Toolbar className={classes.toolbar} disableGutters>
+        <Typography component="h1" gutterBottom variant="h4">
+          Your account
+        </Typography>
+        <div className={classes.grow} />
+      </Toolbar>
+      <Paper>
+        <Container className={classes.container}>
+          <form>
+            <TextField
+              fullWidth
+              helperText=""
+              label="Name"
+              onChange={e => setName(e.target.value)}
+              required
+              type="text"
+              value={name}
+              variant="outlined"
+              margin="normal"
+            />
+            <TextField
+              fullWidth
+              multiline
+              helperText=""
+              label="Bio"
+              onChange={e => setBio(e.target.value)}
+              required
+              type="text"
+              value={bio}
+              variant="outlined"
+              margin="normal"
+            />
+            <div className={classes.divider} />
+            <Button color="primary" onClick={handleSave} variant="contained">
+              Save
+            </Button>
+          </form>
+        </Container>
+      </Paper>
+    </Layout>
   );
 };
 
-export default AccountPage;
+export const getServerSideProps = async context => {
+  const { Auth, DataStore } = withSSRContext(context);
 
-// <AmplifyConfirmSignUp slot="confirm-sign-up" usernameAlias="email" />
-// <AmplifyConfirmSignIn slot="confirm-sign-in" usernameAlias="email" />
-// <AmplifyForgotPassword slot="forgot-password" usernameAlias="email" />
-// <AmplifyRequireNewPassword slot="require-new-password" usernameAlias="email" />
+  try {
+    const {
+      attributes: { sub },
+    } = await Auth.currentAuthenticatedUser();
+
+    const user = serializeModel(await DataStore.query(User, sub));
+
+    return { props: { user } };
+  } catch (error) {
+    return { redirect: { destination: '/auth/?redirect=/account', permanent: false } };
+  }
+};
+
+export default AccountPage;
