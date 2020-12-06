@@ -1,8 +1,9 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-param-reassign */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { withSSRContext, Storage } from 'aws-amplify';
+import Head from 'next/head';
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -71,91 +72,87 @@ const MediaPage = ({ media }) => {
     }
   }, [media, setUrl]);
 
-  const formattedCreatedAt = createdAt
-    ? Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-      }).format(new Date(createdAt))
-    : null;
-
-  // EXAMPLE UPDATE MEDIA... FIXME: for SSR
-  // const handleSave = useCallback(
-  //   async ({ title, description, tags }) =>
-  //     setMedia(
-  //       await DataStore.save(
-  //         Media.copyOf(media, (updated) => {
-  //           updated.title = title;
-  //           updated.description = description;
-  //           updated.tags = tags;
-  //         }),
-  //       ),
-  //     ),
-  //   [media, setMedia],
-  // );
+  const formattedCreatedAt = useMemo(
+    () =>
+      createdAt
+        ? Intl.DateTimeFormat('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          }).format(new Date(createdAt))
+        : null,
+    [createdAt],
+  );
 
   const channel = null;
   console.log({ tags });
 
   return (
-    <Layout>
-      <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h4">
-          {title}
-        </Typography>
-        <div className={classes.grow} />
-        <div className={classes.actions}>
-          <Button color="primary" onClick={() => console.log('Import Transcript')}>
-            Import transcript
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
-            Transcribe
-          </Button>
-        </div>
-      </Toolbar>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
-          {description && (
-            <Typography gutterBottom variant="body2">
-              {description}
-            </Typography>
-          )}
-          <Typography color="textSecondary" gutterBottom variant="body2">
-            Added on {createdAt ? formattedCreatedAt : null}
-            {channel && `in {channel}`}
+    <>
+      <Head>
+        <title>{title}</title>
+        <meta name="title" content={title} />
+        <meta name="description" content={description} />
+      </Head>
+      <Layout>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Typography component="h1" gutterBottom variant="h4">
+            {title}
           </Typography>
-          <div className={classes.tags}>
-            {tags?.map((tag) => (
-              <Chip label={tag} key={tag} size="small" />
-            ))}
+          <div className={classes.grow} />
+          <div className={classes.actions}>
+            <Button color="primary" onClick={() => console.log('Import Transcript')}>
+              Import transcript
+            </Button>
+            <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
+              Transcribe
+            </Button>
           </div>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <List
-            component="ul"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
-                Available transcripts:
-              </ListSubheader>
-            }
-          >
-            {transcripts ? ( // TODO: add actionable invitation if length = 0
-              transcripts.map((transcript) => (
-                <ListItem button disableGutters divider key={transcript.id}>
-                  <ListItemText primary={transcript.title} secondary={transcript.type} />
-                </ListItem>
-              ))
-            ) : (
-              <h6>loading</h6>
+        </Toolbar>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
+            {description && (
+              <Typography gutterBottom variant="body2">
+                {description}
+              </Typography>
             )}
-          </List>
+            <Typography color="textSecondary" gutterBottom variant="body2">
+              Added on {createdAt ? formattedCreatedAt : null}
+              {channel && `in {channel}`}
+            </Typography>
+            <div className={classes.tags}>
+              {tags?.map((tag) => (
+                <Chip label={tag} key={tag} size="small" />
+              ))}
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <List
+              component="ul"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
+                  Available transcripts:
+                </ListSubheader>
+              }
+            >
+              {transcripts ? ( // TODO: add actionable invitation if length = 0
+                transcripts.map((transcript) => (
+                  <ListItem button disableGutters divider key={transcript.id}>
+                    <ListItemText primary={transcript.title} secondary={transcript.type} />
+                  </ListItem>
+                ))
+              ) : (
+                <h6>loading</h6>
+              )}
+            </List>
+          </Grid>
         </Grid>
-      </Grid>
-    </Layout>
+      </Layout>
+    </>
   );
 };
 
@@ -175,3 +172,21 @@ export const getServerSideProps = async (req) => {
 };
 
 export default MediaPage;
+
+// <meta property="og:type" content="website" />
+// <meta property="og:url" content="https://metatags.io/" />
+// <meta property="og:title" content={title} />
+// <meta property="og:description" content={description} />
+// <meta
+//   property="og:image"
+//   content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+// />
+
+// <meta property="twitter:card" content="summary_large_image" />
+// <meta property="twitter:url" content="https://metatags.io/" />
+// <meta property="twitter:title" content={title} />
+// <meta property="twitter:description" content={description} />
+// <meta
+//   property="twitter:image"
+//   content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
+// />
