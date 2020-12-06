@@ -74,19 +74,11 @@ const MediaPage = initialData => {
       getMedia(setMedia, id);
     });
 
-    const handleConnectionChange = () => {
-      const condition = navigator.onLine ? 'online' : 'offline';
-      console.log(condition);
-      if (condition === 'online') {
-        getMedia(setMedia, id);
-      }
-    };
-
+    const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
     window.addEventListener('online', handleConnectionChange);
-    window.addEventListener('offline', handleConnectionChange);
 
     return () => subscription.unsubscribe();
-  }, [setMedia, id]);
+  }, [id]);
 
   useEffect(async () => {
     if (!media || !media.url) return;
@@ -97,7 +89,7 @@ const MediaPage = initialData => {
     } else {
       setUrl(media.url);
     }
-  }, [media, setUrl]);
+  }, [media]);
 
   const editTitle = useCallback(async () => {
     const title = global.prompt('Edit Title', media.title);
@@ -110,7 +102,7 @@ const MediaPage = initialData => {
         ),
       );
     }
-  }, [media, setMedia]);
+  }, [media]);
 
   // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
@@ -133,79 +125,79 @@ const MediaPage = initialData => {
   console.log({ tags });
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>{title}</title>
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
-      <Layout>
-        <Toolbar className={classes.toolbar} disableGutters>
-          <Typography component="h1" gutterBottom variant="h4" onDoubleClick={editTitle}>
-            {title}
-          </Typography>
-          <div className={classes.grow} />
-          <div className={classes.actions}>
-            <Button color="primary" onClick={() => console.log('Import Transcript')}>
-              Import transcript
-            </Button>
-            <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
-              Transcribe
-            </Button>
-          </div>
-        </Toolbar>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
-            {description && (
-              <Typography gutterBottom variant="body2">
-                {description}
-              </Typography>
-            )}
-            <Typography color="textSecondary" gutterBottom variant="body2">
-              Added on {createdAt ? formattedCreatedAt : null}
-              {channel && `in {channel}`}
+      <Toolbar className={classes.toolbar} disableGutters>
+        <Typography component="h1" gutterBottom variant="h4" onDoubleClick={editTitle}>
+          {title}
+        </Typography>
+        <div className={classes.grow} />
+        <div className={classes.actions}>
+          <Button color="primary" onClick={() => console.log('Import Transcript')}>
+            Import transcript
+          </Button>
+          <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
+            Transcribe
+          </Button>
+        </div>
+      </Toolbar>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
+          {description && (
+            <Typography gutterBottom variant="body2">
+              {description}
             </Typography>
-            <div className={classes.tags}>
-              {tags?.map(tag => (
-                <Chip label={tag} key={tag} size="small" />
-              ))}
-            </div>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <List
-              component="ul"
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
-                  Available transcripts:
-                </ListSubheader>
-              }
-            >
-              {transcripts ? ( // TODO: add actionable invitation if length = 0
-                transcripts.map(transcript => (
-                  <ListItem button disableGutters divider key={transcript.id}>
-                    <ListItemText primary={transcript.title} secondary={transcript.type} />
-                  </ListItem>
-                ))
-              ) : (
-                <h6>loading</h6>
-              )}
-            </List>
-          </Grid>
+          )}
+          <Typography color="textSecondary" gutterBottom variant="body2">
+            Added on {createdAt ? formattedCreatedAt : null}
+            {channel && `in {channel}`}
+          </Typography>
+          <div className={classes.tags}>
+            {tags?.map(tag => (
+              <Chip label={tag} key={tag} size="small" />
+            ))}
+          </div>
         </Grid>
-      </Layout>
-    </>
+        <Grid item xs={12} sm={6}>
+          <List
+            component="ul"
+            aria-labelledby="nested-list-subheader"
+            subheader={
+              <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
+                Available transcripts:
+              </ListSubheader>
+            }
+          >
+            {transcripts /* TODO: add actionable invitation if length = 0 */ ? (
+              transcripts.map(transcript => (
+                <ListItem button disableGutters divider key={transcript.id}>
+                  <ListItemText primary={transcript.title} secondary={transcript.type} />
+                </ListItem>
+              ))
+            ) : (
+              <h6>loading</h6>
+            )}
+          </List>
+        </Grid>
+      </Grid>
+    </Layout>
   );
 };
 
-export const getServerSideProps = async req => {
-  const { Auth, DataStore } = withSSRContext(req);
+export const getServerSideProps = async context => {
+  const { Auth, DataStore } = withSSRContext(context);
   const {
     params: { id },
-  } = req;
+  } = context;
 
   const media = await DataStore.query(Media, id);
+  if (!media) return { notFound: true };
+
   let user = null;
 
   try {

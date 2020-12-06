@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
-import { withSSRContext, DataStore } from 'aws-amplify';
+import { useRouter } from 'next/router';
+import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Button from '@material-ui/core/Button';
@@ -11,16 +12,24 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Paper from '@material-ui/core/Paper';
-import Skeleton from '@material-ui/lab/Skeleton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import Pagination from '@material-ui/lab/Pagination';
 
 import Layout from 'src/Layout';
-import { Channel, Media, User } from '../../models';
+import { Media, User } from '../../models';
 
-// const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
-const listMedia = async setMedia => setMedia(await DataStore.query(Media));
+const PAGINATION_LIMIT = 7;
+
+const listMedia = async (setMedia, page) =>
+  setMedia(
+    await DataStore.query(Media, Predicates.ALL, {
+      page: parseInt(page, 10) - 1,
+      limit: PAGINATION_LIMIT,
+      sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+    }),
+  );
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -35,52 +44,26 @@ const useStyles = makeStyles(theme => ({
 const MediaPage = initialData => {
   const classes = useStyles();
 
-  // const [channels, setChannels] = useState([]);
+  const router = useRouter();
+  const {
+    query: { page = 1 },
+  } = router;
+
+  const { pages } = initialData;
+
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
 
-  // useEffect(() => {
-  //   listChannels(setChannels);
-
-  // const subscription = DataStore.observe(Channel).subscribe((msg) => {
-  //   console.log(msg.model, msg.opType, msg.element);
-  //   listChannels(setChannels);
-  // });
-
-  //   const handleConnectionChange = () => {
-  //     const condition = navigator.onLine ? 'online' : 'offline';
-  //     console.log(condition);
-  //     if (condition === 'online') {
-  //       listChannels(setChannels);
-  //     }
-  //   };
-
-  //   window.addEventListener('online', handleConnectionChange);
-  //   window.addEventListener('offline', handleConnectionChange);
-
-  //   return () => subscription.unsubscribe();
-  // }, [setChannels]);
-
   useEffect(() => {
-    listMedia(setMedia);
+    listMedia(setMedia, page);
+    const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
 
-    const subscription = DataStore.observe(Media).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
-      listMedia(setMedia);
-    });
-
-    const handleConnectionChange = () => {
-      const condition = navigator.onLine ? 'online' : 'offline';
-      console.log(condition);
-      if (condition === 'online') {
-        listMedia(setMedia);
-      }
-    };
-
+    const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
     window.addEventListener('online', handleConnectionChange);
-    window.addEventListener('offline', handleConnectionChange);
 
     return () => subscription.unsubscribe();
-  }, [setMedia]);
+  }, [page]);
+
+  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), []);
 
   return (
     <Layout>
@@ -97,42 +80,38 @@ const MediaPage = initialData => {
       </Toolbar>
       <Paper>
         <List dense>
-          {media
-            ? media.map(({ id, title, description }) => (
-                <NextLink key={id} href={`/media/${id}`}>
-                  <ListItem button>
-                    <ListItemText
-                      primary={title}
-                      secondary={description}
-                      primaryTypographyProps={{ color: 'primary' }}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton edge="end">
-                        <MoreVertIcon fontSize="small" />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </NextLink>
-              ))
-            : Array.from({ length: 5 }, () => Math.floor(Math.random() * 40)).map((element, i) => {
-                return (
-                  <ListItem key={`${element}${i}`}>
-                    <ListItemText
-                      primary={<Skeleton variant="text" width="50%" />}
-                      secondary={<Skeleton variant="text" width="20%" />}
-                    />
-                  </ListItem>
-                );
-              })}
+          {media.map(({ id, title, description }) => (
+            <NextLink key={id} href={`/media/${id}`}>
+              <ListItem button>
+                <ListItemText primary={title} secondary={description} primaryTypographyProps={{ color: 'primary' }} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end">
+                    <MoreVertIcon fontSize="small" />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </NextLink>
+          ))}
         </List>
+        <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
       </Paper>
     </Layout>
   );
 };
 
-export const getServerSideProps = async req => {
-  const { Auth, DataStore } = withSSRContext(req);
-  const media = await DataStore.query(Media);
+export const getServerSideProps = async context => {
+  const { Auth, DataStore } = withSSRContext(context);
+  const {
+    query: { page = 1 },
+  } = context;
+
+  const pages = Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
+
+  const media = await DataStore.query(Media, Predicates.ALL, {
+    page: parseInt(page, 10) - 1,
+    limit: PAGINATION_LIMIT,
+    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  });
 
   let user = null;
 
@@ -148,6 +127,7 @@ export const getServerSideProps = async req => {
     props: {
       media: serializeModel(media),
       user,
+      pages,
     },
   };
 };

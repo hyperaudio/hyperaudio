@@ -1,9 +1,9 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
-import { DataStore } from '@aws-amplify/datastore';
 import ReactPlayer from 'react-player';
 import Embedly from 'embedly';
-import Amplify, { Storage } from 'aws-amplify';
+import { Storage, withSSRContext, DataStore } from 'aws-amplify';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -17,7 +17,7 @@ import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Layout from 'src/Layout';
-import { Media } from '../../models';
+import { Media, User } from '../../models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -37,9 +37,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const AddMediaPage = () => {
+const AddMediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
+
+  const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
 
   const allChannels = [
     // { id: 0, title: 'Music' },
@@ -56,33 +58,26 @@ const AddMediaPage = () => {
   const [tags, setTags] = useState([]);
   const [metadata, setMetadata] = useState({});
   const [title, setTitle] = useState('');
+
   const [url, setUrl] = useState('');
   const [extracted, setExtracted] = useState(false);
+
   const [file, setFile] = useState();
   const [progress, setProgress] = useState(0);
 
   const isValid = useMemo(() => url.startsWith('s3://hyperpink-data/') || ReactPlayer.canPlay(url), [url]);
 
-  const onFileChange = useCallback(
-    e => {
-      setFile(e.target.files[0]);
-      console.log(e.target.files[0]);
-    },
-    [setFile],
-  );
+  const onFileChange = useCallback(({ target: { files } }) => setFile(files[0]), []);
 
-  const upload = useCallback(() => {
-    Storage.put(`test/${file.name}`, file, {
-      // level: 'public',
-      // acl: 'public-read',
-      progressCallback: progress => {
-        console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
-        setProgress((100 * progress.loaded) / progress.total);
-      },
-    })
-      .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
-      .catch(err => console.log(err));
-  }, [setProgress, setUrl, file]);
+  const upload = useCallback(
+    () =>
+      Storage.put(`test/${file.name}`, file, {
+        progressCallback: ({ loaded, total }) => setProgress((100 * loaded) / total),
+      })
+        .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
+        .catch(err => console.log(err)),
+    [file],
+  );
 
   useEffect(() => {
     if (!isValid && extracted) setExtracted(false);
@@ -106,17 +101,17 @@ const AddMediaPage = () => {
       setMetadata({ embedly: data });
       if (platform && !tags.includes(platform)) setTags([...tags, platform]);
     });
-  }, [isValid, url, tags, setTitle, setDescription, setTags, setMetadata, setExtracted]);
+  }, [isValid, url, tags]);
 
   const onAddNewMedia = useCallback(async () => {
     // TODO: channels
     // console.log({ url, title, description, tags });
     const media = await DataStore.save(
-      new Media({ url, title, description, tags, metadata: JSON.stringify(metadata) }),
+      new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
     );
-    console.log(media);
+
     router.push(`/media/${media.id}`);
-  }, [url, title, description, tags, metadata]);
+  }, [url, title, description, tags, metadata, user]);
 
   return (
     <Layout>
@@ -209,6 +204,22 @@ const AddMediaPage = () => {
       </Paper>
     </Layout>
   );
+};
+
+export const getServerSideProps = async context => {
+  const { Auth, DataStore } = withSSRContext(context);
+
+  try {
+    const {
+      attributes: { sub },
+    } = await Auth.currentAuthenticatedUser();
+
+    const user = serializeModel(await DataStore.query(User, sub));
+
+    return { props: { user } };
+  } catch (error) {
+    return { redirect: { destination: '/account', permanent: false } };
+  }
 };
 
 export default AddMediaPage;
