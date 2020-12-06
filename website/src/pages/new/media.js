@@ -4,6 +4,7 @@ import ReactPlayer from 'react-player';
 import Embedly from 'embedly';
 import { Storage, withSSRContext, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -43,6 +44,13 @@ const AddMediaPage = initialData => {
 
   const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
   console.log({ user });
+
+  useEffect(() => {
+    onAuthUIStateChange((authState, authData) => {
+      console.log({ authState, authData });
+      if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/new/media');
+    });
+  }, []);
 
   const allChannels = [
     // { id: 0, title: 'Music' },

@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Auth, Storage, withSSRContext, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { useRouter } from 'next/router';
 
 import Container from '@material-ui/core/Container';
 import Paper from '@material-ui/core/Paper';
@@ -38,6 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 const AccountPage = initialData => {
   const classes = useStyles();
+  const router = useRouter();
 
   const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
   const [name, setName] = useState('');
@@ -51,6 +54,13 @@ const AccountPage = initialData => {
   //     })
   //     .catch(() => setUser(null));
   // }, [setUser]);
+
+  useEffect(() => {
+    onAuthUIStateChange((authState, authData) => {
+      console.log({ authState, authData });
+      if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
+    });
+  }, []);
 
   useEffect(() => {
     if (!user) return;

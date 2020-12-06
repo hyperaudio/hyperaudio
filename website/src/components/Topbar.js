@@ -51,9 +51,9 @@ const Topbar = () => {
   }, [setUser]);
 
   useEffect(() => {
-    return onAuthUIStateChange((nextAuthState, authData) => {
+    onAuthUIStateChange((nextAuthState, authData) => {
       setAuthState(nextAuthState);
-      console.log(authData);
+      console.log({ authData });
       setUser(authData);
     });
   }, [setAuthState, setUser]);
@@ -126,11 +126,11 @@ const Topbar = () => {
               >
                 <MenuItem onClick={e => onMenuClick(e, '/account')}>My account</MenuItem>
                 <Divider className={classes.divider} />
-                <MenuItem onClick={() => Auth.signOut()}>Logout</MenuItem>
+                <MenuItem onClick={() => Auth.signOut({ global: true })}>Logout</MenuItem>
               </Menu>
             </>
           ) : (
-            <NextLink href="/account" passHref>
+            <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
               <Button color="inherit" variant="text">
                 Login
               </Button>
