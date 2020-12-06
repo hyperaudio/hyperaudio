@@ -98,6 +98,7 @@ const MediaPage = initialData => {
         await DataStore.save(
           Media.copyOf(media, updated => {
             updated.title = title;
+            updated.updatedAt = new Date().toISOString();
           }),
         ),
       );

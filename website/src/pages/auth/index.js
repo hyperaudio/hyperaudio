@@ -47,7 +47,7 @@ const AuthPage = () => {
       <style>
         {`
           :root {
-            --amplify-primary-color: #0083e8;
+            --amplify-primary-color: rgb(52, 68, 165);
             --amplify-primary-tint: #006ec2;
             --amplify-primary-shade: #006ec2;
           }
