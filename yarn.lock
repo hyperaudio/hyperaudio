@@ -92,7 +92,7 @@
   dependencies:
     cross-fetch "3.0.5"
 
-"@aws-amplify/analytics@4.0.2":
+"@aws-amplify/analytics@4.0.2", "@aws-amplify/analytics@^4.0.2":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@aws-amplify/analytics/-/analytics-4.0.2.tgz#97987d6712eebbf7085018604409c63883b41533"
   integrity sha512-ZugokqJChhTcPp2RDKd2KeUs1VhBmxjPL4wsS1fDqCWR38zypzxcSDB23jy63E6699QTaCtpRsDDH+CFnXlwZw==

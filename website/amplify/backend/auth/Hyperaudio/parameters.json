@@ -1,6 +1,6 @@
 {
     "identityPoolName": "testAuthIdentityPool",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "hypera932195cd",
     "userPoolName": "Hyperaudio",
     "autoVerifiedAttributes": [

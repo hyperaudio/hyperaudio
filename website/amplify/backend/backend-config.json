@@ -28,5 +28,11 @@
         }
       }
     }
+  },
+  "analytics": {
+    "hyperaudio": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

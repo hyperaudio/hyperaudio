@@ -10,6 +10,7 @@
     "deploy": "serverless"
   },
   "dependencies": {
+    "@aws-amplify/analytics": "^4.0.2",
     "@aws-amplify/datastore": "^2.9.0",
     "@aws-amplify/ui-components": "^0.9.6",
     "@aws-amplify/ui-react": "^0.2.31",
