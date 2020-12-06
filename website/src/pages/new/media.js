@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import { DataStore } from '@aws-amplify/datastore';
@@ -20,7 +19,7 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Layout from 'src/Layout';
 import { Media } from '../../models';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
@@ -65,7 +64,7 @@ const AddMediaPage = () => {
   const isValid = useMemo(() => url.startsWith('s3://hyperpink-data/') || ReactPlayer.canPlay(url), [url]);
 
   const onFileChange = useCallback(
-    (e) => {
+    e => {
       setFile(e.target.files[0]);
       console.log(e.target.files[0]);
     },
@@ -76,13 +75,13 @@ const AddMediaPage = () => {
     Storage.put(`test/${file.name}`, file, {
       // level: 'public',
       // acl: 'public-read',
-      progressCallback: (progress) => {
+      progressCallback: progress => {
         console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
         setProgress((100 * progress.loaded) / progress.total);
       },
     })
       .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err));
   }, [setProgress, setUrl, file]);
 
   useEffect(() => {
@@ -140,7 +139,7 @@ const AddMediaPage = () => {
               error={!isValid}
               helperText={isValid ? null : 'Enter a valid media URL'}
               label="URL"
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={e => setUrl(e.target.value)}
               placeholder="https://www.youtube.com/watch?v=xyz"
               required
               type="url"
@@ -152,7 +151,7 @@ const AddMediaPage = () => {
                 <TextField
                   fullWidth
                   label="Title"
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={e => setTitle(e.target.value)}
                   required
                   type="text"
                   value={title}
@@ -161,7 +160,7 @@ const AddMediaPage = () => {
                   fullWidth
                   label="Description"
                   multiline
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                   rowsMax={3}
                   type="text"
                   value={description}
@@ -172,9 +171,9 @@ const AddMediaPage = () => {
                   id="channels-filled"
                   multiple
                   onChange={(e, v) => setChannels(v)}
-                  onInputChange={(args) => console.log('onInputChange', args)}
-                  options={allChannels.map((option) => option.title)}
-                  renderInput={(params) => (
+                  onInputChange={args => console.log('onInputChange', args)}
+                  options={allChannels.map(option => option.title)}
+                  renderInput={params => (
                     <TextField {...params} helperText="Add this media to channels" label="Channels" />
                   )}
                   renderTags={(value, getTagProps) =>
@@ -189,9 +188,9 @@ const AddMediaPage = () => {
                   id="tags-filled"
                   multiple
                   onChange={(e, v) => setTags(v)}
-                  onInputChange={(args) => console.log('onInputChange', args)}
-                  options={allTags.map((option) => option.title)}
-                  renderInput={(params) => <TextField {...params} helperText="Tag your media" label="Tags" />}
+                  onInputChange={args => console.log('onInputChange', args)}
+                  options={allTags.map(option => option.title)}
+                  renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" />}
                   renderTags={(value, getTagProps) =>
                     value.map((option, index) => (
                       <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />

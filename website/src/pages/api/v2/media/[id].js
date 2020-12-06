@@ -23,7 +23,7 @@ export default async (req, res) => {
   media.type = media.source.type ? media.source.type.split('/')[0] : media.type;
 
   t.sort(({ modified: a }, { modified: b }) => new Date(b).getTime() - new Date(a).getTime());
-  const transcripts = t.map((transcript) => {
+  const transcripts = t.map(transcript => {
     const { _id: id, label: title } = transcript;
 
     delete transcript._id;

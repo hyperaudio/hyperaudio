@@ -13,10 +13,10 @@ const Posts = ({ posts, prevPosts, nextPosts }) => {
     <Layout>
       {posts &&
         posts
-          .filter((post) => {
+          .filter(post => {
             return isLocal || !post.draft;
           })
-          .map((post) => (
+          .map(post => (
             <div key={post.slug}>
               <h4>
                 {post.draft && <b>draft:</b>}

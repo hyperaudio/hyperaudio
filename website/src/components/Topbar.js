@@ -21,7 +21,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import HyperaudioIcon from 'src/assets/hyperaudio-icon.svg';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
@@ -43,7 +43,7 @@ export default function Topbar() {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then((user) => {
+      .then(user => {
         console.log('User: ', user);
         setUser(user);
       })
@@ -100,7 +100,7 @@ export default function Topbar() {
                   aria-haspopup="true"
                   color="inherit"
                   edge="end"
-                  onClick={(e) => setAnchorEl(e.currentTarget)}
+                  onClick={e => setAnchorEl(e.currentTarget)}
                   variant="text"
                 >
                   <SettingsIcon />
@@ -124,7 +124,7 @@ export default function Topbar() {
                 }}
                 variant="menu"
               >
-                <MenuItem onClick={(e) => onMenuClick(e, '/account')}>My account</MenuItem>
+                <MenuItem onClick={e => onMenuClick(e, '/account')}>My account</MenuItem>
                 <Divider className={classes.divider} />
                 <MenuItem onClick={() => Auth.signOut()}>Logout</MenuItem>
               </Menu>

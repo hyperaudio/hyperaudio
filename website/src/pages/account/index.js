@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-shadow */
 import React, { useState, useCallback, useEffect } from 'react';
 import { Auth } from 'aws-amplify';
 import { DataStore } from '@aws-amplify/datastore';
@@ -29,7 +27,7 @@ const getUser = async (setUser, id) => {
   if (!Array.isArray(user)) setUser(user);
 };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
@@ -56,7 +54,7 @@ const AccountPage = () => {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then((user) => {
+      .then(user => {
         console.log(user);
         getUser(setUser, user.attributes.sub);
       })
@@ -73,7 +71,7 @@ const AccountPage = () => {
 
   const handleSave = useCallback(async () => {
     await DataStore.save(
-      User.copyOf(user, (updated) => {
+      User.copyOf(user, updated => {
         updated.name = name;
         updated.bio = bio;
       }),
@@ -107,7 +105,7 @@ const AccountPage = () => {
                 fullWidth
                 helperText=""
                 label="Name"
-                onChange={(e) => setName(e.target.value)}
+                onChange={e => setName(e.target.value)}
                 required
                 type="text"
                 value={name}
@@ -119,7 +117,7 @@ const AccountPage = () => {
                 multiline
                 helperText=""
                 label="Bio"
-                onChange={(e) => setBio(e.target.value)}
+                onChange={e => setBio(e.target.value)}
                 required
                 type="text"
                 value={bio}

@@ -18,7 +18,7 @@ const NextComposed = React.forwardRef(function NextComposed(props, ref) {
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
-const Link = (props) => {
+const Link = props => {
   const { href, activeClassName = 'active', className: classNameProps, innerRef, naked, ...other } = props;
 
   const router = useRouter();

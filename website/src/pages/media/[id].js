@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-param-reassign */
 import React, { useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { withSSRContext, Storage } from 'aws-amplify';
@@ -19,7 +17,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Layout from 'src/Layout';
 import { Media } from 'src/models';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
@@ -124,7 +122,7 @@ const MediaPage = ({ media }) => {
               {channel && `in {channel}`}
             </Typography>
             <div className={classes.tags}>
-              {tags?.map((tag) => (
+              {tags?.map(tag => (
                 <Chip label={tag} key={tag} size="small" />
               ))}
             </div>
@@ -140,7 +138,7 @@ const MediaPage = ({ media }) => {
               }
             >
               {transcripts ? ( // TODO: add actionable invitation if length = 0
-                transcripts.map((transcript) => (
+                transcripts.map(transcript => (
                   <ListItem button disableGutters divider key={transcript.id}>
                     <ListItemText primary={transcript.title} secondary={transcript.type} />
                   </ListItem>
@@ -156,7 +154,7 @@ const MediaPage = ({ media }) => {
   );
 };
 
-export const getServerSideProps = async (req) => {
+export const getServerSideProps = async req => {
   const { DataStore } = withSSRContext(req);
   const {
     params: { id },

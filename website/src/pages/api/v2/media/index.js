@@ -8,7 +8,7 @@ export default async (req, res) => {
 
   data.sort(({ modified: a }, { modified: b }) => new Date(b).getTime() - new Date(a).getTime());
 
-  const result = data.slice(0, 50).map((media) => {
+  const result = data.slice(0, 50).map(media => {
     const { _id: id, label: title, desc: description, source } = media;
 
     delete media._id;

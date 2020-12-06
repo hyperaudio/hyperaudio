@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import { withSSRContext, DataStore } from 'aws-amplify';
@@ -20,9 +19,9 @@ import Layout from 'src/Layout';
 import { Channel, Media } from '../../models';
 
 // const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
-const listMedia = async (setMedia) => setMedia(await DataStore.query(Media));
+const listMedia = async setMedia => setMedia(await DataStore.query(Media));
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
@@ -32,19 +31,19 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MediaPage = ({ media: media2 }) => {
+const MediaPage = ({ media: preloadedMedia }) => {
   const classes = useStyles();
 
   // const [channels, setChannels] = useState([]);
-  const [media, setMedia] = useState(media2);
+  const [media, setMedia] = useState(preloadedMedia);
 
   // useEffect(() => {
   //   listChannels(setChannels);
 
-  //   const subscription = DataStore.observe(Channel).subscribe((msg) => {
-  //     console.log(msg.model, msg.opType, msg.element);
-  //     listChannels(setChannels);
-  //   });
+  // const subscription = DataStore.observe(Channel).subscribe((msg) => {
+  //   console.log(msg.model, msg.opType, msg.element);
+  //   listChannels(setChannels);
+  // });
 
   //   const handleConnectionChange = () => {
   //     const condition = navigator.onLine ? 'online' : 'offline';
@@ -63,7 +62,7 @@ const MediaPage = ({ media: media2 }) => {
   useEffect(() => {
     listMedia(setMedia);
 
-    const subscription = DataStore.observe(Media).subscribe((msg) => {
+    const subscription = DataStore.observe(Media).subscribe(msg => {
       console.log(msg.model, msg.opType, msg.element);
       listMedia(setMedia);
     });
@@ -130,9 +129,8 @@ const MediaPage = ({ media: media2 }) => {
   );
 };
 
-export const getServerSideProps = async (req) => {
+export const getServerSideProps = async req => {
   const { DataStore } = withSSRContext(req);
-
   const media = await DataStore.query(Media);
 
   return {

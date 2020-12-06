@@ -18,10 +18,10 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Layout from 'src/Layout';
 import { Channel, Media } from '../models';
 
-const listChannels = async (setChannels) => setChannels(await DataStore.query(Channel));
-const listMedia = async (setMedia) => setMedia(await DataStore.query(Media));
+const listChannels = async setChannels => setChannels(await DataStore.query(Channel));
+const listMedia = async setMedia => setMedia(await DataStore.query(Media));
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
@@ -40,7 +40,7 @@ export default function Dashboard() {
   useEffect(() => {
     listChannels(setChannels);
 
-    const subscription = DataStore.observe(Channel).subscribe((msg) => {
+    const subscription = DataStore.observe(Channel).subscribe(msg => {
       console.log(msg.model, msg.opType, msg.element);
       listChannels(setChannels);
     });
@@ -62,7 +62,7 @@ export default function Dashboard() {
   useEffect(() => {
     listMedia(setMedia);
 
-    const subscription = DataStore.observe(Media).subscribe((msg) => {
+    const subscription = DataStore.observe(Media).subscribe(msg => {
       console.log(msg.model, msg.opType, msg.element);
       listMedia(setMedia);
     });

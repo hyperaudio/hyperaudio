@@ -29,11 +29,11 @@ export async function connectToDatabase() {
       useUnifiedTopology: true,
     };
     cached.promise = MongoClient.connect(MONGODB_URI, opts)
-      .then((client) => {
+      .then(client => {
         conn.client = client;
         return client.db(MONGODB_DB);
       })
-      .then((db) => {
+      .then(db => {
         conn.db = db;
         cached.conn = conn;
       });

@@ -42,7 +42,7 @@ export async function getStaticPaths() {
   const posts = getAllPosts(['slug']);
 
   return {
-    paths: posts.map((post) => {
+    paths: posts.map(post => {
       return {
         params: { ...post },
       };

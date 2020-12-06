@@ -39,6 +39,8 @@
   "rules": {
     "jsx-a11y/anchor-is-valid": 0,
     "no-console": 0,
+    "no-shadow": 0,
+    "no-param-reassign": 0,
     "react-hooks/exhaustive-deps": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-props-no-spreading": 0,
