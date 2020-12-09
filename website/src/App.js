@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import 'reflect-metadata'; // FIXME: still need this?
-
+// import 'reflect-metadata'; // FIXME: still need this?
 import App from 'next/app';
+import dynamic from 'next/dynamic';
 import Amplify from 'aws-amplify';
 import Analytics from '@aws-amplify/analytics';
 
+import 'nprogress/nprogress.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -25,6 +26,8 @@ Analytics.autoTrack('pageView', {
   type: 'SPA',
 });
 
+const TopProgressBar = dynamic(() => import('./components/TopProgressBar'), { ssr: false });
+
 class Application extends App {
   render() {
     const { Component, pageProps } = this.props;
@@ -32,6 +35,16 @@ class Application extends App {
     return (
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <TopProgressBar />
+        <style>
+          {`#nprogress .bar {
+              background-color: yellow;
+              z-index: 10000;
+              height: 5px;
+            }
+            #nprogress .peg { box-shadow: none; }
+            `}
+        </style>
         <Component {...pageProps} />
       </ThemeProvider>
     );
