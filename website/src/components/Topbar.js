@@ -3,14 +3,13 @@ import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 import { Auth } from 'aws-amplify';
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
 import Divider from '@material-ui/core/Divider';
-import MenuList from '@material-ui/core/MenuList';
 import SettingsIcon from '@material-ui/icons/Settings';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -38,7 +37,7 @@ const Topbar = () => {
   const router = useRouter();
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [authState, setAuthState] = useState();
+  const [, setAuthState] = useState();
   const [user, setUser] = useState();
 
   useEffect(() => {

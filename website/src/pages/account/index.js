@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Auth, Storage, withSSRContext, DataStore } from 'aws-amplify';
+import { withSSRContext, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { useRouter } from 'next/router';
