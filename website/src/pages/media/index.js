@@ -105,7 +105,7 @@ export const getServerSideProps = async context => {
     query: { page = 1 },
   } = context;
 
-  const pages = Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
+  global.pages = global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
 
   const media = await DataStore.query(Media, Predicates.ALL, {
     page: parseInt(page, 10) - 1,
@@ -127,7 +127,7 @@ export const getServerSideProps = async context => {
     props: {
       media: serializeModel(media),
       user,
-      pages,
+      pages: global.pages,
     },
   };
 };
