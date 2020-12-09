@@ -1,27 +1,29 @@
-/* eslint-disable prefer-destructuring */
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-underscore-dangle */
-import axios from 'axios';
+import { withSSRContext, Predicates, SortDirection } from 'aws-amplify';
 
-export default async (req, res) => {
-  const { data } = await axios.get('https://api.hyperaud.io/media');
+import { Media } from 'src/models';
 
-  data.sort(({ modified: a }, { modified: b }) => new Date(b).getTime() - new Date(a).getTime());
+const PAGINATION_LIMIT = 5;
 
-  const result = data.slice(0, 50).map(media => {
-    const { _id: id, label: title, desc: description, source } = media;
+const MediaList = async (req, res) => {
+  const { DataStore } = withSSRContext(req);
+  const {
+    query: { page = 1 },
+  } = req;
 
-    delete media._id;
-    delete media.label;
-    delete media.desc;
-    delete media.meta;
+  global.pages = global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
 
-    media.source = source[Object.keys(source)[0]];
-    media.type = media.source.type ? media.source.type.split('/')[0] : media.type;
-
-    return { id, title, description, ...media };
+  const media = await DataStore.query(Media, Predicates.ALL, {
+    page: parseInt(page, 10) - 1,
+    limit: PAGINATION_LIMIT,
+    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
   });
 
   res.statusCode = 200;
-  res.json(result);
+  res.json({
+    media,
+    page,
+    pages: global.pages,
+  });
 };
+
+export default MediaList;

@@ -127,6 +127,7 @@ export const getServerSideProps = async context => {
     props: {
       media: serializeModel(media),
       user,
+      page,
       pages: global.pages,
     },
   };
