@@ -58,6 +58,11 @@ const Topbar = () => {
     });
   }, [setAuthState, setUser]);
 
+  const signOut = useCallback(async () => {
+    Auth.signOut();
+    router.reload();
+  });
+
   const onMenuClick = useCallback((e, href) => {
     e.preventDefault();
     setAnchorEl(null);
@@ -126,7 +131,7 @@ const Topbar = () => {
               >
                 <MenuItem onClick={e => onMenuClick(e, '/account')}>My account</MenuItem>
                 <Divider className={classes.divider} />
-                <MenuItem onClick={() => Auth.signOut({ global: true })}>Logout</MenuItem>
+                <MenuItem onClick={signOut}>Logout</MenuItem>
               </Menu>
             </>
           ) : (
