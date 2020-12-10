@@ -18,7 +18,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Pagination from '@material-ui/lab/Pagination';
 
 import Layout from 'src/Layout';
-import { Media, User } from '../models';
+import { Channel, Media, User, UserChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
 
@@ -77,6 +77,11 @@ const Dashboard = initialData => {
             New Media
           </Button>
         </NextLink>
+        <NextLink href="/new/channel">
+          <Button variant="contained" color="primary">
+            New Channel
+          </Button>
+        </NextLink>
       </Toolbar>
       <Paper>
         <List dense>
@@ -113,20 +118,32 @@ export const getServerSideProps = async context => {
     sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
   });
 
+  const channels = await DataStore.query(Channel, Predicates.ALL, {
+    // page: parseInt(page, 10) - 1,
+    // limit: PAGINATION_LIMIT,
+    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  });
+
   let user = null;
+  let userChannels = null;
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
-    user = serializeModel(await DataStore.query(User, sub));
+    user = await DataStore.query(User, sub);
+    userChannels = (await DataStore.query(UserChannel))
+      .filter(c => c.user.id === user.id)
+      .map(({ channel }) => channel);
   } catch (ignored) {}
 
   console.log({ user });
   return {
     props: {
       media: serializeModel(media),
-      user,
+      user: serializeModel(user),
+      channels: serializeModel(channels),
+      userChannels: serializeModel(userChannels),
       page,
       pages: global.pages,
     },

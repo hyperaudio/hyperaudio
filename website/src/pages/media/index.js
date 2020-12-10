@@ -77,6 +77,11 @@ const MediaPage = initialData => {
             New Media
           </Button>
         </NextLink>
+        <NextLink href="/new/channel">
+          <Button variant="contained" color="primary">
+            New Channel
+          </Button>
+        </NextLink>
       </Toolbar>
       <Paper>
         <List dense>

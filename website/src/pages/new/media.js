@@ -52,15 +52,19 @@ const AddMediaPage = initialData => {
     });
   }, []);
 
-  const allChannels = [
-    // { id: 0, title: 'Music' },
-    // { id: 0, title: 'Geometry' },
-  ]; // TODO: should be passed down
+  // const allChannels = [
+  //   // { id: 0, title: 'Music' },
+  //   // { id: 0, title: 'Geometry' },
+  // ];
 
+  // curent user's channels
+  const allChannels = user.channels;
+
+  // TBD
   const allTags = [
     // { id: 1, title: 'Remix' },
     // { id: 1, title: 'Audio' },
-  ]; // TODO: should be passed down
+  ];
 
   const [channels, setChannels] = useState([]);
   const [description, setDescription] = useState('');
