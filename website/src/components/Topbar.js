@@ -105,7 +105,6 @@ const Topbar = () => {
                   color="inherit"
                   edge="end"
                   onClick={e => setAnchorEl(e.currentTarget)}
-                  variant="text"
                 >
                   <SettingsIcon />
                 </IconButton>
