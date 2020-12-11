@@ -18,7 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Layout from 'src/Layout';
-import { Media, User } from '../../models';
+import { Media, User, Channel, UserChannel } from '../../models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -228,8 +228,11 @@ export const getServerSideProps = async context => {
     } = await Auth.currentAuthenticatedUser();
 
     const user = serializeModel(await DataStore.query(User, sub));
+    const userChannels = serializeModel(
+      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    );
 
-    return { props: { user } };
+    return { props: { user, userChannels } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/media', permanent: false } };
   }

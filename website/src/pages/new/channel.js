@@ -133,8 +133,11 @@ export const getServerSideProps = async context => {
     } = await Auth.currentAuthenticatedUser();
 
     const user = serializeModel(await DataStore.query(User, sub));
+    const userChannels = serializeModel(
+      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    );
 
-    return { props: { user } };
+    return { props: { user, userChannels } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/channel', permanent: false } };
   }

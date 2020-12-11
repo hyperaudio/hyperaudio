@@ -135,6 +135,8 @@ export const getServerSideProps = async context => {
     userChannels = (await DataStore.query(UserChannel))
       .filter(c => c.user.id === user.id)
       .map(({ channel }) => channel);
+    // userChannels = await DataStore.query(UserChannel);
+    // userChannels = await DataStore.query(UserChannel, uc => uc.parent('eq', user.id));
   } catch (ignored) {}
 
   console.log({ user });
