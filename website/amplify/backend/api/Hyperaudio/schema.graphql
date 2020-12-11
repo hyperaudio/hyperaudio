@@ -25,6 +25,7 @@ type Channel @model @auth(rules: [{allow: public}]) {
   updatedAt: AWSDateTime
   media: [MediaChannel] @connection(keyName: "byChannel", fields: ["id"])
   users: [UserChannel] @connection(keyName: "byChannel", fields: ["id"])
+  tags: [String]
 }
 
 type Media @model @auth(rules: [{allow: public}]) {
