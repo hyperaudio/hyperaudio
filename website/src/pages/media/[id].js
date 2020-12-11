@@ -82,7 +82,9 @@ const MediaPage = initialData => {
   const theme = useTheme();
 
   const router = useRouter();
+
   const { id } = router.query;
+  const { allMediaLink } = initialData;
 
   const [ccActionsAnchorEl, setCCActionsAnchorEl] = useState(null);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
@@ -129,7 +131,7 @@ const MediaPage = initialData => {
   }, [media]);
 
   // FIXME
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ? media : {};
+  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
 
   const formattedCreatedAt = useMemo(
     () =>
@@ -173,7 +175,7 @@ const MediaPage = initialData => {
       <Toolbar className={classes.toolbar} disableGutters>
         <Grid container alignItems="center">
           <Grid item xs={6}>
-            <NextLink href="/" passHref>
+            <NextLink href={allMediaLink} passHref>
               <Button color="primary" startIcon={<ArrowBackIcon />}>
                 All media
               </Button>
@@ -324,8 +326,13 @@ const MediaPage = initialData => {
 export const getServerSideProps = async context => {
   const { Auth, DataStore } = withSSRContext(context);
   const {
+    req: {
+      headers: { referer },
+    },
     params: { id },
   } = context;
+
+  const allMediaLink = `/media${referer && new URL(referer).pathname === '/media' ? new URL(referer).search : ''}`;
 
   const media = await DataStore.query(Media, id);
   if (!media) return { notFound: true };
@@ -345,6 +352,7 @@ export const getServerSideProps = async context => {
     props: {
       media: serializeModel(media),
       user,
+      allMediaLink,
     },
   };
 };

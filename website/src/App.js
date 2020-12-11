@@ -14,6 +14,8 @@ import lightTheme from 'src/themes/lightTheme';
 import awsconfig from './aws-config';
 import awsexports from './aws-exports';
 
+global.Amplify = Amplify;
+
 Amplify.configure({ ...awsexports, ...awsconfig });
 
 Analytics.autoTrack('session', {

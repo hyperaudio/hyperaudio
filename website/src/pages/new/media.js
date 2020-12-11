@@ -58,7 +58,7 @@ const AddMediaPage = initialData => {
   // ];
 
   // curent user's channels
-  const allChannels = user.channels;
+  const allChannels = user.channels ?? [];
 
   // TBD
   const allTags = [
