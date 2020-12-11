@@ -1,44 +1,58 @@
 import Head from 'next/head';
+import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import SubtitlesIcon from '@material-ui/icons/Subtitles';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 import Layout from 'src/Layout';
 import { Media, User } from 'src/models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2),
+    margin: theme.spacing(1, 0),
+    [theme.breakpoints.up('sm')]: {
+      margin: theme.spacing(2, 0),
+    },
   },
   grow: {
     flexGrow: 1,
   },
-  actions: {
-    display: 'none',
+  meta: {
+    order: 2,
+  },
+  metaChunk: {
+    marginBottom: theme.spacing(2),
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
-      '& > *': {
-        marginLeft: theme.spacing(2),
-      },
+      marginBottom: theme.spacing(3),
     },
   },
-  playerWrapper: {
+  theatre: {
+    order: 1,
+  },
+  stage: {
     height: 'auto',
-    marginBottom: theme.spacing(2),
     width: 'auto',
   },
   player: {
@@ -54,6 +68,7 @@ const useStyles = makeStyles(theme => ({
     // display: 'flex',
     // flexWrap: 'wrap',
     // justifyContent: 'center',
+    marginLeft: theme.spacing(0.5) * -1,
     '& > *': {
       margin: theme.spacing(0.5),
     },
@@ -64,11 +79,14 @@ const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, i
 
 const MediaPage = initialData => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const router = useRouter();
   const { id } = router.query;
 
+  const [ccActionsAnchorEl, setCCActionsAnchorEl] = useState(null);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
+  const [moreActionsAnchorEl, setMoreActionsAnchorEl] = useState(null);
   const [url, setUrl] = useState();
 
   useEffect(() => {
@@ -130,6 +148,21 @@ const MediaPage = initialData => {
   const channel = null;
   console.log({ tags });
 
+  const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
+
+  const onToggleCCUpload = e => {
+    setCCActionsAnchorEl(null);
+  };
+  const onToggleCCCreate = e => {
+    setCCActionsAnchorEl(null);
+  };
+  const onToggleEdit = e => {
+    setMoreActionsAnchorEl(null);
+  };
+  const onToggleSomething = e => {
+    setMoreActionsAnchorEl(null);
+  };
+
   return (
     <Layout>
       <Head>
@@ -138,63 +171,154 @@ const MediaPage = initialData => {
         <meta name="description" content={description} />
       </Head>
       <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h4" onDoubleClick={editTitle}>
-          {title}
-        </Typography>
-        <div className={classes.grow} />
-        <div className={classes.actions}>
-          <Button color="primary" onClick={() => console.log('Import Transcript')}>
-            Import transcript
-          </Button>
-          <Button variant="contained" color="primary" onClick={() => console.log('Transcribe')}>
-            Transcribe
-          </Button>
-        </div>
-      </Toolbar>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={6}>
-          {url ? (
-            <div className={classes.playerWrapper}>
-              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
-            </div>
-          ) : null}
-          {description && (
-            <Typography gutterBottom variant="body2">
-              {description}
-            </Typography>
-          )}
-          <Typography color="textSecondary" gutterBottom variant="body2">
-            Added on {createdAt ? formattedCreatedAt : null}
-            {channel && `in {channel}`}
-          </Typography>
-          <div className={classes.tags}>
-            {tags?.map(tag => (
-              <Chip label={tag} key={tag} size="small" />
-            ))}
-          </div>
+        <Grid container alignItems="center">
+          <Grid item xs={6}>
+            <NextLink href="/" passHref>
+              <Button color="primary" startIcon={<ArrowBackIcon />}>
+                All media
+              </Button>
+            </NextLink>
+          </Grid>
+          <Grid item xs={6} align="right">
+            <Tooltip title="Add transcript">
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                color="primary"
+                onClick={e => setCCActionsAnchorEl(e.currentTarget)}
+              >
+                <SubtitlesIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="More actions…">
+              <IconButton
+                edge="end"
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                color="primary"
+                onClick={e => setMoreActionsAnchorEl(e.currentTarget)}
+              >
+                <MoreVertIcon />
+              </IconButton>
+            </Tooltip>
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
-          <List
-            component="ul"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
-                Available transcripts:
-              </ListSubheader>
-            }
-          >
-            {transcripts /* TODO: add actionable invitation if length = 0 */ ? (
-              transcripts.map(transcript => (
+      </Toolbar>
+      <Grid container spacing={isSmall ? 4 : 2}>
+        <Grid container justify="space-between" direction="column" item xs={12} sm={4} className={classes.meta}>
+          <Grid item>
+            <div className={classes.metaChunk}>
+              <Typography gutterBottom component="h1" variant="h6" onDoubleClick={editTitle}>
+                <Tooltip title={title}>
+                  <span>{title}</span>
+                </Tooltip>
+              </Typography>
+              {description && (
+                <Typography gutterBottom variant="body2">
+                  {description}
+                </Typography>
+              )}
+              <Typography color="textSecondary" variant="caption">
+                Added on {createdAt ? formattedCreatedAt : null}
+                {channel && `in {channel}`}
+              </Typography>
+            </div>
+            {tags && (
+              <div className={`${classes.tags} ${classes.metaChunk}`}>
+                {tags?.map(tag => (
+                  <Chip label={tag} key={tag} size="small" />
+                ))}
+              </div>
+            )}
+          </Grid>
+          {transcripts?.length > 0 ? (
+            <List
+              component="ul"
+              aria-labelledby="nested-list-subheader"
+              subheader={
+                <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
+                  Available transcripts:
+                </ListSubheader>
+              }
+            >
+              {transcripts.map(transcript => (
                 <ListItem button disableGutters divider key={transcript.id}>
                   <ListItemText primary={transcript.title} secondary={transcript.type} />
                 </ListItem>
-              ))
-            ) : (
-              <h6>loading</h6>
-            )}
-          </List>
+              ))}
+            </List>
+          ) : (
+            <Grid item>
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                color="primary"
+                fullWidth
+                onClick={e => setCCActionsAnchorEl(e.currentTarget)}
+                startIcon={<SubtitlesIcon />}
+                variant="contained"
+              >
+                Add transcript
+              </Button>
+            </Grid>
+          )}
+        </Grid>
+        <Grid item xs={12} sm={8} className={classes.theatre}>
+          {url ? (
+            <div className={classes.stage}>
+              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
+            </div>
+          ) : null}
         </Grid>
       </Grid>
+      <Menu
+        anchorEl={ccActionsAnchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        getContentAnchorEl={null}
+        id="cc-actions-menu"
+        keepMounted
+        onClose={() => setCCActionsAnchorEl(null)}
+        open={Boolean(ccActionsAnchorEl)}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        variant="menu"
+      >
+        <MenuItem dense onClick={onToggleCCUpload}>
+          Upload
+        </MenuItem>
+        <MenuItem dense onClick={onToggleCCCreate}>
+          Create
+        </MenuItem>
+      </Menu>
+      <Menu
+        anchorEl={moreActionsAnchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        getContentAnchorEl={null}
+        id="more-actions-menu"
+        keepMounted
+        onClose={() => setMoreActionsAnchorEl(null)}
+        open={Boolean(moreActionsAnchorEl)}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        variant="menu"
+      >
+        <MenuItem dense onClick={onToggleEdit}>
+          Edit
+        </MenuItem>
+        <MenuItem dense onClick={onToggleSomething}>
+          Something
+        </MenuItem>
+      </Menu>
     </Layout>
   );
 };
