@@ -10,6 +10,10 @@ const useStyles = makeStyles(theme => ({
   root: {
     marginBottom: theme.spacing(2),
     marginTop: theme.spacing(2),
+    position: 'sticky',
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   toolbar: {
     justifyContent: 'center',

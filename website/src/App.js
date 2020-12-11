@@ -9,9 +9,10 @@ import 'nprogress/nprogress.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import awsexports from './aws-exports';
+import lightTheme from 'src/themes/lightTheme';
+
 import awsconfig from './aws-config';
-import theme from './theme';
+import awsexports from './aws-exports';
 
 global.Amplify = Amplify;
 
@@ -35,7 +36,7 @@ class Application extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={lightTheme}>
         <CssBaseline />
         <TopProgressBar />
         <style>
@@ -45,6 +46,14 @@ class Application extends App {
               height: 5px;
             }
             #nprogress .peg { box-shadow: none; }
+            html, body {
+              height: 100%;
+            }
+            body > * {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            }
             `}
         </style>
         <Component {...pageProps} />
