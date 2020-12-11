@@ -1,9 +1,9 @@
+import Head from 'next/head';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ReactPlayer from 'react-player';
-import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
-import Head from 'next/head';
+import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
@@ -36,13 +36,18 @@ const useStyles = makeStyles(theme => ({
       },
     },
   },
+  playerWrapper: {
+    height: 'auto',
+    marginBottom: theme.spacing(2),
+    width: 'auto',
+  },
   player: {
     paddingTop: '56.25%',
     position: 'relative',
-    marginBottom: theme.spacing(2),
     '& > *': {
       position: 'absolute',
       top: 0,
+      right: 0,
     },
   },
   tags: {
@@ -148,7 +153,11 @@ const MediaPage = initialData => {
       </Toolbar>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          {url ? <ReactPlayer height="auto" width="auto" url={url} controls className={classes.player} /> : null}
+          {url ? (
+            <div className={classes.playerWrapper}>
+              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
+            </div>
+          ) : null}
           {description && (
             <Typography gutterBottom variant="body2">
               {description}
