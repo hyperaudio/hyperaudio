@@ -209,9 +209,7 @@ const MediaPage = initialData => {
           <Grid item>
             <div className={classes.metaChunk}>
               <Typography gutterBottom component="h1" variant="h6" onDoubleClick={editTitle}>
-                <Tooltip title={title}>
-                  <span>{title}</span>
-                </Tooltip>
+                {title}
               </Typography>
               {description && (
                 <Typography gutterBottom variant="body2">

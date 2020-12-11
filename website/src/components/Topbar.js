@@ -62,11 +62,7 @@ const Topbar = () => {
     router.reload();
   });
 
-  const onMenuClick = useCallback((e, href) => {
-    e.preventDefault();
-    setAnchorEl(null);
-    router.push(href);
-  }, []);
+  const onMenuClick = () => setAnchorEl(null);
 
   return (
     <>
@@ -127,9 +123,15 @@ const Topbar = () => {
                 }}
                 variant="menu"
               >
-                <MenuItem onClick={e => onMenuClick(e, '/account')}>My account</MenuItem>
+                <NextLink href="/account" passHref>
+                  <MenuItem dense onClick={onMenuClick}>
+                    My account
+                  </MenuItem>
+                </NextLink>
                 <Divider className={classes.divider} />
-                <MenuItem onClick={signOut}>Logout</MenuItem>
+                <MenuItem dense onClick={signOut}>
+                  Logout
+                </MenuItem>
               </Menu>
             </>
           ) : (
