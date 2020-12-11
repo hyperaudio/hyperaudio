@@ -182,7 +182,7 @@ const MediaPage = initialData => {
           <Grid item xs={6} align="right">
             <Tooltip title="Add transcript">
               <IconButton
-                aria-controls="simple-menu"
+                aria-controls="cc-actions-menu"
                 aria-haspopup="true"
                 color="primary"
                 onClick={e => setCCActionsAnchorEl(e.currentTarget)}
@@ -193,7 +193,7 @@ const MediaPage = initialData => {
             <Tooltip title="More actions…">
               <IconButton
                 edge="end"
-                aria-controls="simple-menu"
+                aria-controls="more-actions-menu"
                 aria-haspopup="true"
                 color="primary"
                 onClick={e => setMoreActionsAnchorEl(e.currentTarget)}

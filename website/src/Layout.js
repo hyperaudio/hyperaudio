@@ -4,7 +4,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Footer from 'src/components/Footer';
 import Topbar from 'src/components/Topbar';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   content: {
     flex: '1 0 auto',
   },
