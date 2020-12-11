@@ -134,12 +134,20 @@ const Dashboard = initialData => {
         </NextLink>
       </Toolbar>
       <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
-        {media.map(({ id, title, description }) => (
+        {media.map(({ id, title, description, metadata }) => (
           <Grid className={classes.item} component="li" item key={id} md={3} sm={4} xs={6}>
             <Card className={classes.card} elevation={0} square raised={false}>
               <NextLink href={`/media/${id}`}>
                 <CardActionArea>
-                  <CardMedia className={classes.cardMedia} image="http://placekitten.com/320/180" title={title} />
+                  {metadata ? (
+                    <CardMedia
+                      className={classes.cardMedia}
+                      image={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'http://placekitten.com/320/180'}
+                      title={title}
+                    />
+                  ) : (
+                    <CardMedia className={classes.cardMedia} image="http://placekitten.com/320/180" title={title} />
+                  )}
                 </CardActionArea>
               </NextLink>
               <CardContent className={classes.cardContent}>
