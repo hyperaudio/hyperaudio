@@ -44,12 +44,13 @@ class Application extends App {
               height: 5px;
             }
             #nprogress .peg { box-shadow: none; }
-            html, body, body > * {
+            html, body {
               height: 100%;
             }
             body > * {
               display: flex;
               flex-direction: column;
+              height: 100%;
             }
             `}
         </style>
