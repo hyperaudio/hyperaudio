@@ -65,7 +65,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
   },
   cardMedia: {
-    height: 180,
+    width: '100%',
   },
   cardContent: {
     padding: theme.spacing(1, 0.5),
@@ -142,11 +142,17 @@ const Dashboard = initialData => {
                   {metadata ? (
                     <CardMedia
                       className={classes.cardMedia}
-                      image={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'http://placekitten.com/320/180'}
+                      component="img"
+                      src={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'http://placekitten.com/320/180'}
                       title={title}
                     />
                   ) : (
-                    <CardMedia className={classes.cardMedia} image="http://placekitten.com/320/180" title={title} />
+                    <CardMedia
+                      className={classes.cardMedia}
+                      component="img"
+                      src="http://placekitten.com/320/180"
+                      title={title}
+                    />
                   )}
                 </CardActionArea>
               </NextLink>
