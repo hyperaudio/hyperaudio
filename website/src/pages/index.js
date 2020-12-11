@@ -5,17 +5,22 @@ import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplif
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemText from '@material-ui/core/ListItemText';
+import Link from '@material-ui/core/Link';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Paper from '@material-ui/core/Paper';
+import Pagination from '@material-ui/lab/Pagination';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import Pagination from '@material-ui/lab/Pagination';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 import Layout from 'src/Layout';
 import { Channel, Media, User, UserChannel } from '../models';
@@ -39,10 +44,58 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
+  items: {
+    listStyle: 'none',
+    paddingLeft: 0,
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+  },
+  item: {
+    listStyle: 'none',
+    position: 'relative',
+  },
+  head: {
+    cursor: 'pointer',
+  },
+  card: {
+    height: '100%',
+  },
+  thumb: {
+    marginBottom: theme.spacing(1),
+    position: 'relative',
+  },
+  cardMedia: {
+    height: 180,
+  },
+  cardContent: {
+    padding: theme.spacing(1, 0.5),
+  },
+  cardActions: {
+    position: 'absolute',
+    right: theme.spacing(1),
+    top: theme.spacing(1),
+    left: theme.spacing(1),
+    display: 'flex',
+    justifyContent: 'flex-end',
+    zIndex: theme.zIndex.drawer,
+    [theme.breakpoints.up('sm')]: {
+      top: theme.spacing(2),
+      right: theme.spacing(2),
+    },
+  },
+  paginationParent: {
+    marginTop: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'center',
+    [theme.breakpoints.up('sm')]: {
+      marginTop: theme.spacing(4),
+    },
+  },
 }));
 
 const Dashboard = initialData => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const router = useRouter();
   const {
@@ -52,6 +105,7 @@ const Dashboard = initialData => {
   const { pages } = initialData;
 
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
+  const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
   useEffect(() => {
     listMedia(setMedia, page);
@@ -68,38 +122,52 @@ const Dashboard = initialData => {
   return (
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h4">
+        <Typography component="h1" gutterBottom variant="h5">
           Your media
         </Typography>
         <div className={classes.grow} />
         <NextLink href="/new/media">
-          <Button variant="contained" color="primary">
-            New Media
-          </Button>
+          <Button color="primary">New Media</Button>
         </NextLink>
         <NextLink href="/new/channel">
-          <Button variant="contained" color="primary">
-            New Channel
-          </Button>
+          <Button color="primary">New Channel</Button>
         </NextLink>
       </Toolbar>
-      <Paper>
-        <List dense>
-          {media.map(({ id, title, description }) => (
-            <NextLink key={id} href={`/media/${id}`}>
-              <ListItem button>
-                <ListItemText primary={title} secondary={description} primaryTypographyProps={{ color: 'primary' }} />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end">
+      <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
+        {media.map(({ id, title, description }) => (
+          <Grid className={classes.item} component="li" item key={id} md={3} sm={4} xs={6}>
+            <Card className={classes.card} elevation={0} square raised={false}>
+              <NextLink href={`/media/${id}`}>
+                <CardActionArea>
+                  <CardMedia className={classes.cardMedia} image="http://placekitten.com/320/180" title={title} />
+                </CardActionArea>
+              </NextLink>
+              <CardContent className={classes.cardContent}>
+                <NextLink href={`/media/${id}`}>
+                  <Typography component="h3" noWrap>
+                    <Link href="#" variant="subtitle2">
+                      {title}
+                    </Link>
+                  </Typography>
+                </NextLink>
+                <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
+                  {description}
+                </Typography>
+              </CardContent>
+              <CardActions className={classes.cardActions} disableSpacing>
+                <Tooltip title="Actions…">
+                  <IconButton color="secondary" size="small">
                     <MoreVertIcon fontSize="small" />
                   </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </NextLink>
-          ))}
-        </List>
+                </Tooltip>
+              </CardActions>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <div className={classes.paginationParent}>
         <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
-      </Paper>
+      </div>
     </Layout>
   );
 };

@@ -47,7 +47,7 @@ class Application extends App {
             html, body {
               height: 100%;
             }
-            body > * {
+            #__next {
               display: flex;
               flex-direction: column;
               height: 100%;
