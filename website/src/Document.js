@@ -41,3 +41,5 @@ Doc.getInitialProps = async ctx => {
 };
 
 export default Doc;
+
+// <meta name="referrer" content="same-origin" />
