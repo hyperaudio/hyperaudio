@@ -142,11 +142,11 @@ const Dashboard = initialData => {
                   {metadata ? (
                     <CardMedia
                       className={classes.cardMedia}
-                      image={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'http://placekitten.com/320/180'}
+                      image={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'https://placekitten.com/320/180'}
                       title={title}
                     />
                   ) : (
-                    <CardMedia className={classes.cardMedia} image="http://placekitten.com/320/180" title={title} />
+                    <CardMedia className={classes.cardMedia} image="https://placekitten.com/320/180" title={title} />
                   )}
                 </CardActionArea>
               </NextLink>
