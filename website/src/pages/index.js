@@ -143,7 +143,11 @@ const Dashboard = initialData => {
                     <CardMedia
                       className={classes.cardMedia}
                       component="img"
-                      src={JSON.parse(metadata)?.embedly?.thumbnail_url ?? 'http://placekitten.com/320/180'}
+                      src={
+                        JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                        JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                        'http://placekitten.com/320/180'
+                      }
                       title={title}
                     />
                   ) : (

@@ -1,6 +1,7 @@
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
+import axios from 'axios';
 import Embedly from 'embedly';
 import { Storage, withSSRContext, DataStore } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
@@ -19,6 +20,16 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 
 import Layout from 'src/Layout';
 import { Media, User, Channel, UserChannel } from '../../models';
+
+// https://github.com/cookpete/react-player/blob/master/src/patterns.js
+const MATCH_URL_YOUTUBE = /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+const MATCH_URL_SOUNDCLOUD = /(?:soundcloud\.com|snd\.sc)\/[^.]+$/;
+const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
+const AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
+const VIDEO_EXTENSIONS = /\.(mp4|og[gv]|webm|mov|m4v)($|\?)/i;
+const HLS_EXTENSIONS = /\.(m3u8)($|\?)/i;
+const DASH_EXTENSIONS = /\.(mpd)($|\?)/i;
+const FLV_EXTENSIONS = /\.(flv)($|\?)/i;
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -92,12 +103,66 @@ const AddMediaPage = initialData => {
     [file],
   );
 
-  useEffect(() => {
+  useEffect(async () => {
     if (!isValid && extracted) setExtracted(false);
     if (!isValid) return;
     if (extracted) return;
 
     setExtracted(true);
+
+    if (MATCH_URL_YOUTUBE.test(url)) {
+      const { data } = await axios.request({
+        method: 'get',
+        url: '/api/oembed/youtube',
+        params: { url },
+      });
+
+      const { title = '', description = '', provider_name: platform } = data;
+      setTitle(title);
+      setDescription(description);
+      setMetadata({ oembed: data });
+      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+      return;
+    }
+
+    if (MATCH_URL_VIMEO.test(url)) {
+      const { data } = await axios.request({
+        method: 'get',
+        url: 'https://vimeo.com/api/oembed.json',
+        params: { url },
+      });
+
+      const { title = '', description = '', provider_name: platform } = data;
+      setTitle(title);
+      setDescription(description);
+      setMetadata({ oembed: data });
+      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+      return;
+    }
+
+    if (MATCH_URL_SOUNDCLOUD.test(url)) {
+      const { data } = await axios.request({
+        method: 'get',
+        url: 'https://soundcloud.com/oembed',
+        params: { url, format: 'json' },
+      });
+
+      const { title = '', description = '', provider_name: platform } = data;
+      setTitle(title);
+      setDescription(description);
+      setMetadata({ oembed: data });
+      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+      return;
+    }
+
+    const file = [AUDIO_EXTENSIONS, VIDEO_EXTENSIONS, HLS_EXTENSIONS, DASH_EXTENSIONS, FLV_EXTENSIONS].find(pattern =>
+      pattern.test(url),
+    );
+
+    if (file) return;
 
     const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
     if (!key) return;
