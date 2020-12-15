@@ -259,6 +259,7 @@ const MediaPage = initialData => {
                 color="primary"
                 fullWidth
                 onClick={e => setCCActionsAnchorEl(e.currentTarget)}
+                size="large"
                 startIcon={<SubtitlesIcon />}
                 variant="contained"
               >
