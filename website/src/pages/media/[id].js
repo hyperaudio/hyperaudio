@@ -52,8 +52,13 @@ const useStyles = makeStyles(theme => ({
     order: 1,
   },
   stage: {
-    height: 'auto',
-    width: 'auto',
+    alignContent: 'center',
+    alignItems: 'center',
+    background: theme.palette.text.primary,
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    justifyContent: 'center',
   },
   player: {
     paddingTop: '56.25%',
