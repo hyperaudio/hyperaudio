@@ -134,7 +134,7 @@ const MediaPage = initialData => {
         ),
       );
     }
-  }, [media]);
+  }, [media, user.id]);
 
   // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
