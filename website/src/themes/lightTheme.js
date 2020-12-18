@@ -1,7 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import grey from '@material-ui/core/colors/grey';
-
 const lightTheme = createMuiTheme({
   props: {
     MuiButtonBase: {
@@ -11,6 +9,29 @@ const lightTheme = createMuiTheme({
   palette: {
     background: {
       default: 'white',
+    },
+  },
+  overrides: {
+    MuiInputBase: {
+      root: {
+        '&$disabled': {
+          color: 'inherit',
+        },
+      },
+    },
+    MuiInput: {
+      underline: {
+        '&:after': {
+          pointerEvents: 'default',
+        },
+        '&:before': {
+          pointerEvents: 'default',
+        },
+        '&$disabled:before': {
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'transparent',
+        },
+      },
     },
   },
 });
