@@ -68,7 +68,7 @@ const AddChannelPage = initialData => {
     await DataStore.save(new UserChannel({ user, channel }));
 
     router.push(`/media/?channel=${channel.id}`);
-  }, [title, description, tags, metadata, user]);
+  }, [title, description, tags, metadata, user, router]);
 
   return (
     <Layout>

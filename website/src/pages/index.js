@@ -117,7 +117,7 @@ const Dashboard = initialData => {
     return () => subscription.unsubscribe();
   }, [page]);
 
-  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), []);
+  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
   return (
     <Layout>

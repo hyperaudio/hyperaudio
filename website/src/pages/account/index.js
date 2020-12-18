@@ -60,7 +60,7 @@ const AccountPage = initialData => {
       console.log({ authState, authData });
       if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
     });
-  }, []);
+  }, [router]);
 
   useEffect(() => {
     if (!user) return;
@@ -79,7 +79,7 @@ const AccountPage = initialData => {
         }),
       ),
     );
-  }, [name, bio]);
+  }, [name, bio, user]);
 
   return (
     <Layout>

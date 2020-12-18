@@ -61,7 +61,7 @@ const AddMediaPage = initialData => {
       console.log({ authState, authData });
       if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/new/media');
     });
-  }, []);
+  }, [router]);
 
   // const allChannels = [
   //   // { id: 0, title: 'Music' },
@@ -103,83 +103,87 @@ const AddMediaPage = initialData => {
     [file],
   );
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!isValid && extracted) setExtracted(false);
     if (!isValid) return;
     if (extracted) return;
 
     setExtracted(true);
 
-    if (MATCH_URL_YOUTUBE.test(url)) {
-      const { data } = await axios.request({
-        method: 'get',
-        url: '/api/oembed/youtube',
-        params: { url },
+    const oembed = async () => {
+      if (MATCH_URL_YOUTUBE.test(url)) {
+        const { data } = await axios.request({
+          method: 'get',
+          url: '/api/oembed/youtube',
+          params: { url },
+        });
+
+        const { title = '', description = '', provider_name: platform } = data;
+        setTitle(title);
+        setDescription(description);
+        setMetadata({ oembed: data });
+        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+        return;
+      }
+
+      if (MATCH_URL_VIMEO.test(url)) {
+        const { data } = await axios.request({
+          method: 'get',
+          url: 'https://vimeo.com/api/oembed.json',
+          params: { url },
+        });
+
+        const { title = '', description = '', provider_name: platform } = data;
+        setTitle(title);
+        setDescription(description);
+        setMetadata({ oembed: data });
+        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+        return;
+      }
+
+      if (MATCH_URL_SOUNDCLOUD.test(url)) {
+        const { data } = await axios.request({
+          method: 'get',
+          url: 'https://soundcloud.com/oembed',
+          params: { url, format: 'json' },
+        });
+
+        const { title = '', description = '', provider_name: platform } = data;
+        setTitle(title);
+        setDescription(description);
+        setMetadata({ oembed: data });
+        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+
+        return;
+      }
+
+      const file = [AUDIO_EXTENSIONS, VIDEO_EXTENSIONS, HLS_EXTENSIONS, DASH_EXTENSIONS, FLV_EXTENSIONS].find(pattern =>
+        pattern.test(url),
+      );
+
+      if (file) return;
+
+      const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
+      if (!key) return;
+
+      // TODO use https://api.embed.ly/1/oembed?key=KEY&urls=URL
+      const embedly = new Embedly({ key, secure: true });
+      embedly.oembed({ url }, (err, objs = []) => {
+        if (err) return;
+
+        const data = objs.pop();
+        const { title = '', description = '', provider_name: platform } = data;
+        setTitle(title);
+        setDescription(description);
+        setMetadata({ embedly: data });
+        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
       });
+    };
 
-      const { title = '', description = '', provider_name: platform } = data;
-      setTitle(title);
-      setDescription(description);
-      setMetadata({ oembed: data });
-      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-
-      return;
-    }
-
-    if (MATCH_URL_VIMEO.test(url)) {
-      const { data } = await axios.request({
-        method: 'get',
-        url: 'https://vimeo.com/api/oembed.json',
-        params: { url },
-      });
-
-      const { title = '', description = '', provider_name: platform } = data;
-      setTitle(title);
-      setDescription(description);
-      setMetadata({ oembed: data });
-      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-
-      return;
-    }
-
-    if (MATCH_URL_SOUNDCLOUD.test(url)) {
-      const { data } = await axios.request({
-        method: 'get',
-        url: 'https://soundcloud.com/oembed',
-        params: { url, format: 'json' },
-      });
-
-      const { title = '', description = '', provider_name: platform } = data;
-      setTitle(title);
-      setDescription(description);
-      setMetadata({ oembed: data });
-      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-
-      return;
-    }
-
-    const file = [AUDIO_EXTENSIONS, VIDEO_EXTENSIONS, HLS_EXTENSIONS, DASH_EXTENSIONS, FLV_EXTENSIONS].find(pattern =>
-      pattern.test(url),
-    );
-
-    if (file) return;
-
-    const { NEXT_PUBLIC_EMBEDLY_KEY: key } = process.env;
-    if (!key) return;
-
-    // TODO use https://api.embed.ly/1/oembed?key=KEY&urls=URL
-    const embedly = new Embedly({ key, secure: true });
-    embedly.oembed({ url }, (err, objs = []) => {
-      if (err) return;
-
-      const data = objs.pop();
-      const { title = '', description = '', provider_name: platform } = data;
-      setTitle(title);
-      setDescription(description);
-      setMetadata({ embedly: data });
-      if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-    });
-  }, [isValid, url, tags]);
+    oembed();
+  }, [isValid, url, tags, extracted]);
 
   const onAddNewMedia = useCallback(async () => {
     // TODO: channels
@@ -189,7 +193,7 @@ const AddMediaPage = initialData => {
     );
 
     router.push(`/media/${media.id}`);
-  }, [url, title, description, tags, metadata, user]);
+  }, [url, title, description, tags, metadata, user, router]);
 
   return (
     <Layout>
