@@ -19,6 +19,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';
+import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -69,6 +70,14 @@ const useStyles = makeStyles(theme => ({
       right: 0,
     },
   },
+  title: {
+    ...theme.typography.h6,
+    cursor: 'text',
+  },
+  description: {
+    ...theme.typography.body2,
+    cursor: 'text',
+  },
   tags: {
     // display: 'flex',
     // flexWrap: 'wrap',
@@ -92,6 +101,7 @@ const MediaPage = initialData => {
   const { user } = initialData;
 
   const [ccActionsAnchorEl, setCCActionsAnchorEl] = useState(null);
+  const [editable, setEditable] = useState(null);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [moreActionsAnchorEl, setMoreActionsAnchorEl] = useState(null);
   const [url, setUrl] = useState();
@@ -121,20 +131,20 @@ const MediaPage = initialData => {
     }
   }, [media]);
 
-  const editTitle = useCallback(async () => {
-    if (media.owner !== user.id) return alert('not your media!');
-    const title = global.prompt('Edit Title', media.title);
-    if (title) {
-      setMedia(
-        await DataStore.save(
-          Media.copyOf(media, updated => {
-            updated.title = title;
-            updated.updatedAt = new Date().toISOString();
-          }),
-        ),
-      );
-    }
-  }, [media, user.id]);
+  // const editTitle = useCallback(async () => {
+  //   if (media.owner !== user.id) return alert('not your media!');
+  //   const title = global.prompt('Edit Title', media.title);
+  //   if (title) {
+  //     setMedia(
+  //       await DataStore.save(
+  //         Media.copyOf(media, updated => {
+  //           updated.title = title;
+  //           updated.updatedAt = new Date().toISOString();
+  //         }),
+  //       ),
+  //     );
+  //   }
+  // }, [media]);
 
   // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
@@ -164,11 +174,31 @@ const MediaPage = initialData => {
   const onToggleCCCreate = e => {
     setCCActionsAnchorEl(null);
   };
-  const onToggleEdit = e => {
-    setMoreActionsAnchorEl(null);
-  };
+  // const onToggleEdit = e => {
+  //   setMoreActionsAnchorEl(null);
+  // };
   const onToggleSomething = e => {
     setMoreActionsAnchorEl(null);
+  };
+
+  const onToggleEdit = e => {
+    if (!isOwner) return;
+    console.log('onToggleEdit', e.target.name);
+    setEditable(e.target.name);
+  };
+  const onSaveEdit = e => {
+    const { name, value } = e.target;
+    console.log('onSaveEdit: ', name, value);
+    setEditable(null);
+
+    // setMedia(
+    //   await DataStore.save(
+    //     Media.copyOf(media, updated => {
+    //       updated.title = title;
+    //       updated.updatedAt = new Date().toISOString();
+    //     }),
+    //   ),
+    // );
   };
 
   return (
@@ -216,14 +246,25 @@ const MediaPage = initialData => {
         <Grid container justify="space-between" direction="column" item xs={12} sm={4} className={classes.meta}>
           <Grid item>
             <div className={classes.metaChunk}>
-              <Typography gutterBottom component="h1" variant="h6" onDoubleClick={editTitle}>
-                {title}
-              </Typography>
               {description && (
                 <Typography gutterBottom variant="body2">
                   {description}
                 </Typography>
               )}
+              <TextField
+                defaultValue={title}
+                disabled={editable !== 'title'}
+                fullWidth
+                inputProps={{
+                  className: classes.title,
+                }}
+                margin="none"
+                multiline
+                name="title"
+                onBlur={onSaveEdit}
+                onClick={onToggleEdit}
+                size="small"
+              />
               <Typography color="textSecondary" variant="caption">
                 Added on {createdAt ? formattedCreatedAt : null}
                 {channel && `in {channel}`}
@@ -319,9 +360,9 @@ const MediaPage = initialData => {
         }}
         variant="menu"
       >
-        <MenuItem dense onClick={onToggleEdit}>
+        {/* <MenuItem dense onClick={onToggleEdit}>
           Edit
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem dense onClick={onToggleSomething}>
           Something
         </MenuItem>
