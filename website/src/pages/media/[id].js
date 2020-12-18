@@ -89,6 +89,7 @@ const MediaPage = initialData => {
   const router = useRouter();
 
   const { id } = router.query;
+  const { user } = initialData;
 
   const [ccActionsAnchorEl, setCCActionsAnchorEl] = useState(null);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
@@ -121,6 +122,7 @@ const MediaPage = initialData => {
   }, [media]);
 
   const editTitle = useCallback(async () => {
+    if (media.owner !== user.id) return alert('not your media!');
     const title = global.prompt('Edit Title', media.title);
     if (title) {
       setMedia(
