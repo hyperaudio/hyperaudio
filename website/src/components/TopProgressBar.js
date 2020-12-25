@@ -2,6 +2,7 @@
 // https://dev.to/vvo/show-a-top-progress-bar-on-fetch-and-router-events-in-next-js-4df3
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import { listen } from 'quicklink';
 
 window.NProgress = NProgress;
 
@@ -14,10 +15,16 @@ const delay = 250;
 //   showSpinner: false,
 // });
 
+let quicklink = null;
+
 const load = () => {
   if (state === 'loading') {
     return;
   }
+
+  if (quicklink) {
+    quicklink();
+  } else quicklink = listen();
 
   state = 'loading';
 
@@ -63,4 +70,6 @@ window.fetch = async (...args) => {
   }
 };
 
-export default () => null;
+const TopProgressBar = () => null;
+
+export default TopProgressBar;
