@@ -9,11 +9,14 @@ import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import CloseIcon from '@material-ui/icons/Close';
+import DescriptionIcon from '@material-ui/icons/Description';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import LabelIcon from '@material-ui/icons/Label';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -31,6 +34,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import Layout from 'src/Layout';
 import { Media, User } from 'src/models';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -41,18 +45,6 @@ const useStyles = makeStyles(theme => ({
   },
   grow: {
     flexGrow: 1,
-  },
-  meta: {
-    order: 2,
-  },
-  metaChunk: {
-    marginBottom: theme.spacing(1),
-    [theme.breakpoints.up('sm')]: {
-      marginBottom: theme.spacing(2),
-    },
-  },
-  theatre: {
-    order: 1,
   },
   stage: {
     alignContent: 'center',
@@ -73,7 +65,10 @@ const useStyles = makeStyles(theme => ({
     },
   },
   textField: {
-    marginBottom: theme.spacing(1),
+    marginBottom: theme.spacing(0.5),
+    [theme.breakpoints.up('small')]: {
+      marginBottom: theme.spacing(1),
+    },
   },
   title: {
     ...theme.typography.h6,
@@ -88,9 +83,11 @@ const useStyles = makeStyles(theme => ({
   },
   primaryButton: {
     backgroundColor: theme.palette.primary.main,
+    boxShadow: theme.shadows[2],
     color: theme.palette.primary.contrastText,
     '&:hover': {
       backgroundColor: theme.palette.primary.main,
+      boxShadow: theme.shadows[2],
       color: theme.palette.primary.contrastText,
     },
   },
@@ -185,7 +182,7 @@ const MediaPage = initialData => {
 
   const channel = null;
 
-  const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.up('md'));
 
   const onToggleTranscriptUpload = e => {
     setTranscriptActionsAnchorEl(null);
@@ -226,21 +223,30 @@ const MediaPage = initialData => {
                 <SubtitlesIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
-              <IconButton
-                className={editable ? classes.primaryButton : null}
-                color="primary"
-                edge="end"
-                onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
-              >
-                {editable ? <DoneIcon /> : <EditIcon />}
-              </IconButton>
-            </Tooltip>
+            {isOwner && (
+              <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
+                <IconButton
+                  className={editable ? classes.primaryButton : null}
+                  color="primary"
+                  edge="end"
+                  onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
+                >
+                  {editable ? <DoneIcon /> : <EditIcon />}
+                </IconButton>
+              </Tooltip>
+            )}
           </Grid>
         </Grid>
       </Toolbar>
       <Grid container spacing={isSmall ? 4 : 2}>
-        <Grid container justify="space-between" direction="column" item xs={12} sm={4} className={classes.meta}>
+        <Grid item xs={12} md={8}>
+          {url ? (
+            <div className={classes.stage}>
+              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
+            </div>
+          ) : null}
+        </Grid>
+        <Grid item container xs={12} md={4} direction="column" justify="space-between" spacing={2}>
           <Grid item>
             <TextField
               inputProps={{
@@ -258,73 +264,93 @@ const MediaPage = initialData => {
               size="small"
               type="text"
             />
-            <TextField
-              inputProps={{
-                className: classes.description,
-              }}
-              className={classes.textField}
-              color="primary"
-              defaultValue={description}
-              disabled={!editable}
-              fullWidth
-              multiline
-              name="description"
-              placeholder="Add description"
-              required
-              size="small"
-              type="text"
-            />
-            <Autocomplete
-              ChipProps={{
-                className: classes.chip,
-                deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
-                size: 'small',
-                variant: 'outlined',
-              }}
-              autoComplete
-              autoHighlight
-              clearOnBlur
-              clearOnEscape
-              disabled={!editable}
-              freeSolo
-              id="tags-filled"
-              multiple
-              onChange={(e, v) => setLocalTags(v)}
-              options={allTags.map(option => option.title)}
-              renderInput={params => {
-                console.log({ params });
-                return (
-                  <TextField
-                    {...params}
-                    className={classes.textField}
-                    placeholder={tags.length === 0 ? 'Add tag' : null}
-                    size="small"
-                  />
-                );
-              }}
-              defaultValue={tags}
-            />
-            <Typography color="textSecondary" gutterBottom variant="caption">
-              Added on {createdAt ? formattedCreatedAt : null}
-              {channel && `in {channel}`}
-            </Typography>
+            <Grid container spacing={1} alignItems="center" className={classes.textField}>
+              <Grid item>
+                <DescriptionIcon fontSize="small" color="disabled" />
+              </Grid>
+              <Grid item xs>
+                <TextField
+                  inputProps={{
+                    className: classes.description,
+                  }}
+                  color="primary"
+                  defaultValue={description}
+                  disabled={!editable}
+                  fullWidth
+                  multiline
+                  name="description"
+                  placeholder="Add description"
+                  required
+                  size="small"
+                  type="text"
+                />
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} alignItems="center" className={classes.textField}>
+              <Grid item>
+                <LabelIcon fontSize="small" color="disabled" />
+              </Grid>
+              <Grid item xs>
+                <Autocomplete
+                  ChipProps={{
+                    className: classes.chip,
+                    deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                    size: 'small',
+                    variant: 'outlined',
+                  }}
+                  autoComplete
+                  autoHighlight
+                  clearOnBlur
+                  clearOnEscape
+                  disabled={!editable}
+                  freeSolo
+                  id="tags-filled"
+                  multiple
+                  onChange={(e, v) => setLocalTags(v)}
+                  options={allTags.map(option => option.title)}
+                  renderInput={params => (
+                    <TextField
+                      {...params}
+                      className={classes.textField}
+                      placeholder={tags.length === 0 ? 'Add tag' : null}
+                      size="small"
+                    />
+                  )}
+                  defaultValue={tags}
+                />
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={1} alignItems="center" className={classes.textField}>
+              <Grid item>
+                <CalendarTodayIcon fontSize="small" color="disabled" />
+              </Grid>
+              <Grid item>
+                <Typography color="textSecondary" variant="caption">
+                  Added on {createdAt ? formattedCreatedAt : null}
+                  {channel && `in {channel}`}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
           {transcripts?.length > 0 ? (
-            <List
-              component="ul"
-              aria-labelledby="nested-list-subheader"
-              subheader={
-                <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
-                  Available transcripts:
-                </ListSubheader>
-              }
-            >
-              {transcripts.map(transcript => (
-                <ListItem button disableGutters divider key={transcript.id}>
-                  <ListItemText primary={transcript.title} secondary={transcript.type} />
-                </ListItem>
-              ))}
-            </List>
+            <Grid item>
+              <List
+                component="ul"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                  <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
+                    Available transcripts:
+                  </ListSubheader>
+                }
+              >
+                {transcripts.map(transcript => (
+                  <ListItem button disableGutters divider key={transcript.id}>
+                    <ListItemText primary={transcript.title} secondary={transcript.type} />
+                  </ListItem>
+                ))}
+              </List>
+            </Grid>
           ) : (
             <Grid item>
               <Button
@@ -341,13 +367,6 @@ const MediaPage = initialData => {
               </Button>
             </Grid>
           )}
-        </Grid>
-        <Grid item xs={12} sm={8} className={classes.theatre}>
-          {url ? (
-            <div className={classes.stage}>
-              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
-            </div>
-          ) : null}
         </Grid>
       </Grid>
       <Menu
