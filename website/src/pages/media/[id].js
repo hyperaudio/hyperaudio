@@ -9,14 +9,11 @@ import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import CloseIcon from '@material-ui/icons/Close';
-import DescriptionIcon from '@material-ui/icons/Description';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import LabelIcon from '@material-ui/icons/Label';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -34,7 +31,6 @@ import { useTheme } from '@material-ui/core/styles';
 
 import Layout from 'src/Layout';
 import { Media, User } from 'src/models';
-import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -252,7 +248,7 @@ const MediaPage = initialData => {
               inputProps={{
                 className: classes.title,
               }}
-              className={classes.textField}
+              classes={{ root: classes.textField }}
               color="primary"
               defaultValue={title}
               disabled={!editable}
@@ -264,74 +260,54 @@ const MediaPage = initialData => {
               size="small"
               type="text"
             />
-            <Grid container spacing={1} alignItems="center" className={classes.textField}>
-              <Grid item>
-                <DescriptionIcon fontSize="small" color="disabled" />
-              </Grid>
-              <Grid item xs>
+            <TextField
+              inputProps={{
+                className: classes.description,
+              }}
+              classes={{ root: classes.textField }}
+              color="primary"
+              defaultValue={description}
+              disabled={!editable}
+              fullWidth
+              multiline
+              name="description"
+              placeholder="Add description"
+              required
+              size="small"
+              type="text"
+            />
+            <Autocomplete
+              ChipProps={{
+                className: classes.chip,
+                deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                size: 'small',
+                variant: 'outlined',
+              }}
+              autoComplete
+              autoHighlight
+              classes={{ root: classes.textField }}
+              clearOnBlur
+              clearOnEscape
+              disabled={!editable}
+              freeSolo
+              id="tags-filled"
+              multiple
+              onChange={(e, v) => setLocalTags(v)}
+              options={allTags.map(option => option.title)}
+              renderInput={params => (
                 <TextField
-                  inputProps={{
-                    className: classes.description,
-                  }}
-                  color="primary"
-                  defaultValue={description}
-                  disabled={!editable}
-                  fullWidth
-                  multiline
-                  name="description"
-                  placeholder="Add description"
-                  required
+                  {...params}
+                  className={classes.textField}
+                  placeholder={tags.length === 0 ? 'Add tag' : null}
                   size="small"
-                  type="text"
                 />
-              </Grid>
-            </Grid>
-            <Grid container spacing={1} alignItems="center" className={classes.textField}>
-              <Grid item>
-                <LabelIcon fontSize="small" color="disabled" />
-              </Grid>
-              <Grid item xs>
-                <Autocomplete
-                  ChipProps={{
-                    className: classes.chip,
-                    deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
-                    size: 'small',
-                    variant: 'outlined',
-                  }}
-                  autoComplete
-                  autoHighlight
-                  clearOnBlur
-                  clearOnEscape
-                  disabled={!editable}
-                  freeSolo
-                  id="tags-filled"
-                  multiple
-                  onChange={(e, v) => setLocalTags(v)}
-                  options={allTags.map(option => option.title)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      className={classes.textField}
-                      placeholder={tags.length === 0 ? 'Add tag' : null}
-                      size="small"
-                    />
-                  )}
-                  defaultValue={tags}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={1} alignItems="center" className={classes.textField}>
-              <Grid item>
-                <CalendarTodayIcon fontSize="small" color="disabled" />
-              </Grid>
-              <Grid item>
-                <Typography color="textSecondary" variant="caption">
-                  Added on {createdAt ? formattedCreatedAt : null}
-                  {channel && `in {channel}`}
-                </Typography>
-              </Grid>
-            </Grid>
+              )}
+              defaultValue={tags}
+            />
+            <Typography color="textSecondary" variant="caption">
+              Added on {createdAt ? formattedCreatedAt : null}
+              {channel && `in {channel}`}
+            </Typography>
           </Grid>
           {transcripts?.length > 0 ? (
             <Grid item>
