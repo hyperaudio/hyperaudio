@@ -1,14 +1,17 @@
 import Head from 'next/head';
 import NextLink from 'next/link';
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
+import CloseIcon from '@material-ui/icons/Close';
+import DoneIcon from '@material-ui/icons/Done';
+import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -17,7 +20,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -44,9 +46,9 @@ const useStyles = makeStyles(theme => ({
     order: 2,
   },
   metaChunk: {
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.up('sm')]: {
-      marginBottom: theme.spacing(3),
+      marginBottom: theme.spacing(2),
     },
   },
   theatre: {
@@ -70,6 +72,9 @@ const useStyles = makeStyles(theme => ({
       right: 0,
     },
   },
+  textField: {
+    marginBottom: theme.spacing(1),
+  },
   title: {
     ...theme.typography.h6,
     cursor: 'text',
@@ -79,13 +84,18 @@ const useStyles = makeStyles(theme => ({
     cursor: 'text',
   },
   tags: {
-    // display: 'flex',
-    // flexWrap: 'wrap',
-    // justifyContent: 'center',
-    marginLeft: theme.spacing(0.5) * -1,
-    '& > *': {
-      margin: theme.spacing(0.5),
+    ...theme.typography.caption,
+  },
+  primaryButton: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
     },
+  },
+  chip: {
+    margin: theme.spacing(0.3, 0.3, 0.3, 0),
   },
 }));
 
@@ -93,18 +103,19 @@ const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, i
 
 const MediaPage = initialData => {
   const classes = useStyles();
-  const theme = useTheme();
-
   const router = useRouter();
+  const theme = useTheme();
 
   const { id } = router.query;
   const { user } = initialData;
 
-  const [ccActionsAnchorEl, setCCActionsAnchorEl] = useState(null);
   const [editable, setEditable] = useState(null);
+  const [localTags, setLocalTags] = useState([]);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
-  const [moreActionsAnchorEl, setMoreActionsAnchorEl] = useState(null);
+  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
   const [url, setUrl] = useState();
+
+  const isOwner = user?.id === media.owner;
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -129,6 +140,9 @@ const MediaPage = initialData => {
     } else {
       setUrl(media.url);
     }
+
+    // TODO: should it be here?
+    setLocalTags(media.tags);
   }, [media]);
 
   // const editTitle = useCallback(async () => {
@@ -149,6 +163,11 @@ const MediaPage = initialData => {
   // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
 
+  const allTags = [
+    { id: 1, title: 'Remix' },
+    { id: 1, title: 'Audio' },
+  ];
+
   const formattedCreatedAt = useMemo(
     () =>
       createdAt
@@ -164,41 +183,19 @@ const MediaPage = initialData => {
   );
 
   const channel = null;
-  console.log({ tags });
 
   const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
-  const onToggleCCUpload = e => {
-    setCCActionsAnchorEl(null);
+  const onToggleTranscriptUpload = e => {
+    setTranscriptActionsAnchorEl(null);
   };
-  const onToggleCCCreate = e => {
-    setCCActionsAnchorEl(null);
-  };
-  // const onToggleEdit = e => {
-  //   setMoreActionsAnchorEl(null);
-  // };
-  const onToggleSomething = e => {
-    setMoreActionsAnchorEl(null);
+  const onToggleTranscriptCreate = e => {
+    setTranscriptActionsAnchorEl(null);
   };
 
-  const onToggleEdit = e => {
-    if (!isOwner) return;
-    console.log('onToggleEdit', e.target.name);
-    setEditable(e.target.name);
-  };
-  const onSaveEdit = e => {
-    const { name, value } = e.target;
-    console.log('onSaveEdit: ', name, value);
-    setEditable(null);
-
-    // setMedia(
-    //   await DataStore.save(
-    //     Media.copyOf(media, updated => {
-    //       updated.title = title;
-    //       updated.updatedAt = new Date().toISOString();
-    //     }),
-    //   ),
-    // );
+  const onSave = () => {
+    console.log('onSave:', { title }, { description }, { localTags });
+    setEditable(false);
   };
 
   return (
@@ -223,20 +220,19 @@ const MediaPage = initialData => {
                 aria-controls="cc-actions-menu"
                 aria-haspopup="true"
                 color="primary"
-                onClick={e => setCCActionsAnchorEl(e.currentTarget)}
+                onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
               >
                 <SubtitlesIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="More actions…">
+            <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
               <IconButton
-                edge="end"
-                aria-controls="more-actions-menu"
-                aria-haspopup="true"
+                className={editable ? classes.primaryButton : null}
                 color="primary"
-                onClick={e => setMoreActionsAnchorEl(e.currentTarget)}
+                edge="end"
+                onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
               >
-                <MoreVertIcon />
+                {editable ? <DoneIcon /> : <EditIcon />}
               </IconButton>
             </Tooltip>
           </Grid>
@@ -245,38 +241,72 @@ const MediaPage = initialData => {
       <Grid container spacing={isSmall ? 4 : 2}>
         <Grid container justify="space-between" direction="column" item xs={12} sm={4} className={classes.meta}>
           <Grid item>
-            <div className={classes.metaChunk}>
-              {description && (
-                <Typography gutterBottom variant="body2">
-                  {description}
-                </Typography>
-              )}
-              <TextField
-                defaultValue={title}
-                disabled={editable !== 'title'}
-                fullWidth
-                inputProps={{
-                  className: classes.title,
-                }}
-                margin="none"
-                multiline
-                name="title"
-                onBlur={onSaveEdit}
-                onClick={onToggleEdit}
-                size="small"
-              />
-              <Typography color="textSecondary" variant="caption">
-                Added on {createdAt ? formattedCreatedAt : null}
-                {channel && `in {channel}`}
-              </Typography>
-            </div>
-            {tags && (
-              <div className={`${classes.tags} ${classes.metaChunk}`}>
-                {tags?.map(tag => (
-                  <Chip label={tag} key={tag} size="small" />
-                ))}
-              </div>
-            )}
+            <TextField
+              inputProps={{
+                className: classes.title,
+              }}
+              className={classes.textField}
+              color="primary"
+              defaultValue={title}
+              disabled={!editable}
+              fullWidth
+              margin="none"
+              multiline
+              name="title"
+              required
+              size="small"
+              type="text"
+            />
+            <TextField
+              inputProps={{
+                className: classes.description,
+              }}
+              className={classes.textField}
+              color="primary"
+              defaultValue={description}
+              disabled={!editable}
+              fullWidth
+              multiline
+              name="description"
+              placeholder="Add description"
+              required
+              size="small"
+              type="text"
+            />
+            <Autocomplete
+              ChipProps={{
+                className: classes.chip,
+                deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                size: 'small',
+                variant: 'outlined',
+              }}
+              autoComplete
+              autoHighlight
+              clearOnBlur
+              clearOnEscape
+              disabled={!editable}
+              freeSolo
+              id="tags-filled"
+              multiple
+              onChange={(e, v) => setLocalTags(v)}
+              options={allTags.map(option => option.title)}
+              renderInput={params => {
+                console.log({ params });
+                return (
+                  <TextField
+                    {...params}
+                    className={classes.textField}
+                    placeholder={tags.length === 0 ? 'Add tag' : null}
+                    size="small"
+                  />
+                );
+              }}
+              defaultValue={tags}
+            />
+            <Typography color="textSecondary" gutterBottom variant="caption">
+              Added on {createdAt ? formattedCreatedAt : null}
+              {channel && `in {channel}`}
+            </Typography>
           </Grid>
           {transcripts?.length > 0 ? (
             <List
@@ -301,7 +331,7 @@ const MediaPage = initialData => {
                 aria-haspopup="true"
                 color="primary"
                 fullWidth
-                onClick={e => setCCActionsAnchorEl(e.currentTarget)}
+                onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
                 size="large"
                 startIcon={<SubtitlesIcon />}
                 variant="contained"
@@ -320,7 +350,7 @@ const MediaPage = initialData => {
         </Grid>
       </Grid>
       <Menu
-        anchorEl={ccActionsAnchorEl}
+        anchorEl={transcriptActionsAnchorEl}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'center',
@@ -328,43 +358,19 @@ const MediaPage = initialData => {
         getContentAnchorEl={null}
         id="cc-actions-menu"
         keepMounted
-        onClose={() => setCCActionsAnchorEl(null)}
-        open={Boolean(ccActionsAnchorEl)}
+        onClose={() => setTranscriptActionsAnchorEl(null)}
+        open={Boolean(transcriptActionsAnchorEl)}
         transformOrigin={{
           vertical: 'top',
           horizontal: 'center',
         }}
         variant="menu"
       >
-        <MenuItem dense onClick={onToggleCCUpload}>
+        <MenuItem dense onClick={onToggleTranscriptUpload}>
           Upload
         </MenuItem>
-        <MenuItem dense onClick={onToggleCCCreate}>
+        <MenuItem dense onClick={onToggleTranscriptCreate}>
           Create
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={moreActionsAnchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        getContentAnchorEl={null}
-        id="more-actions-menu"
-        keepMounted
-        onClose={() => setMoreActionsAnchorEl(null)}
-        open={Boolean(moreActionsAnchorEl)}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        variant="menu"
-      >
-        {/* <MenuItem dense onClick={onToggleEdit}>
-          Edit
-        </MenuItem> */}
-        <MenuItem dense onClick={onToggleSomething}>
-          Something
         </MenuItem>
       </Menu>
     </Layout>
