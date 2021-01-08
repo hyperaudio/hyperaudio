@@ -1,4 +1,9 @@
 import MDX from '@mdx-js/runtime';
+import Image from 'next/image';
+
+const components = {
+  // img: Image,
+};
 
 const BlogPost = ({ post }) => {
   const isLocal = process.env.NODE_ENV === 'development';
@@ -19,7 +24,7 @@ const BlogPost = ({ post }) => {
               Published on {new Date(post.date).toLocaleDateString()} by <a href={post.authorLink}>{post.author}</a>
             </p>
           </header>
-          <MDX>{post.content}</MDX>
+          <MDX components={components}>{post.content}</MDX>
           <footer>
             <a href={post.authorLink}>{post.author}</a>
           </footer>

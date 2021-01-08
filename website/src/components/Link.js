@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import MuiLink from '@material-ui/core/Link';
 
+// eslint-disable-next-line prefer-arrow-callback
 const NextComposed = React.forwardRef(function NextComposed(props, ref) {
   const { as, href, ...other } = props;
 

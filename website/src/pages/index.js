@@ -117,7 +117,7 @@ const Dashboard = initialData => {
     return () => subscription.unsubscribe();
   }, [page]);
 
-  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), []);
+  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
   return (
     <Layout>
@@ -163,7 +163,7 @@ const Dashboard = initialData => {
               <CardContent className={classes.cardContent}>
                 <NextLink href={`/media/${id}`}>
                   <Typography component="h3" noWrap>
-                    <Link href="#" variant="subtitle2">
+                    <Link href={`/media/${id}`} variant="subtitle2">
                       {title}
                     </Link>
                   </Typography>

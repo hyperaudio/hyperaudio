@@ -131,17 +131,18 @@ const MediaPage = initialData => {
     return () => subscription.unsubscribe();
   }, [id]);
 
-  useEffect(async () => {
+  useEffect(() => {
     if (!media || !media.url) return;
+    const signURL = async () => {
+      const prefix = 's3://hyperpink-data/public/';
+      if (media.url.startsWith(prefix)) {
+        setUrl(await Storage.get(media.url.substring(prefix.length)));
+      } else {
+        setUrl(media.url);
+      }
+    };
 
-    const prefix = 's3://hyperpink-data/public/';
-    if (media.url.startsWith(prefix)) {
-      setUrl(await Storage.get(media.url.substring(prefix.length)));
-    } else {
-      setUrl(media.url);
-    }
-
-    // TODO: should it be here?
+    signURL();
     setLocalTags(media.tags);
   }, [media]);
 
@@ -158,7 +159,7 @@ const MediaPage = initialData => {
   //       ),
   //     );
   //   }
-  // }, [media]);
+  // }, [media, user]);
 
   // FIXME
   const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};

@@ -20,7 +20,7 @@ const Redirect = () => {
 
   useEffect(() => {
     router.push(redirect);
-  }, [redirect]);
+  }, [redirect, router]);
 
   return (
     <p>

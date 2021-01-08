@@ -57,10 +57,12 @@ const Topbar = () => {
     });
   }, [setAuthState, setUser]);
 
-  const signOut = useCallback(async () => {
-    Auth.signOut();
-    router.reload();
-  });
+  const signOut = useCallback(() => {
+    (async () => {
+      Auth.signOut();
+      router.reload();
+    })();
+  }, [router]);
 
   const onMenuClick = () => setAnchorEl(null);
 
