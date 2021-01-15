@@ -520,11 +520,11 @@ export default function MediaPage(initialData) {
         <MenuItem className={classes.primaryButton} dense onClick={onToggleTranscriptTranscribe}>
           Auto-transcribe
         </MenuItem>
-        <MenuItem dense onClick={onToggleTranscriptUpload}>
-          Upload existing
+        <MenuItem dense divider onClick={onToggleTranscriptCreate}>
+          Transcribe manually
         </MenuItem>
-        <MenuItem dense onClick={onToggleTranscriptCreate}>
-          Type in manually
+        <MenuItem dense onClick={onToggleTranscriptUpload}>
+          Upload transcript
         </MenuItem>
       </Menu>
       <Menu
