@@ -12,7 +12,6 @@ import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
@@ -122,9 +121,6 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(2, 0),
     },
   },
-  grow: {
-    flexGrow: 1,
-  },
   stage: {
     alignContent: 'center',
     alignItems: 'center',
@@ -143,12 +139,6 @@ const useStyles = makeStyles(theme => ({
       right: 0,
     },
   },
-  textField: {
-    marginBottom: theme.spacing(0.5),
-    [theme.breakpoints.up('small')]: {
-      marginBottom: theme.spacing(1),
-    },
-  },
   title: {
     ...theme.typography.h6,
     cursor: 'text',
@@ -160,34 +150,28 @@ const useStyles = makeStyles(theme => ({
   tags: {
     ...theme.typography.caption,
   },
-  primaryButton: {
-    backgroundColor: theme.palette.primary.main,
-    boxShadow: theme.shadows[2],
-    color: theme.palette.primary.contrastText,
-    '&:hover': {
-      backgroundColor: theme.palette.primary.main,
-      boxShadow: theme.shadows[2],
-      color: theme.palette.primary.contrastText,
-    },
+  date: {
+    marginTop: theme.spacing(1),
   },
   chip: {
     margin: theme.spacing(0.3, 0.3, 0.3, 0),
   },
-  primaryMenuItem: {
+  primaryButton: {
     background: theme.palette.primary.main,
+    boxShadow: theme.shadows[2],
     color: theme.palette.primary.contrastText,
     '&:hover': {
-      background: theme.palette.primary.main,
+      background: theme.palette.primary.dark,
       color: theme.palette.primary.contrastText,
     },
   },
-  transcriptList: {
+  transcripts: {
     borderBottom: `1px solid ${theme.palette.divider}`,
     marginBottom: theme.spacing(2),
     maxHeight: '200px',
     overflowY: 'auto',
   },
-  transcriptListSubh: {
+  transcriptsSubheader: {
     background: rgba(theme.palette.background.default, 0.75),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
@@ -398,12 +382,12 @@ export default function MediaPage(initialData) {
               inputProps={{
                 className: classes.title,
               }}
-              classes={{ root: classes.textField }}
+              // classes={{ root: classes.textField }}
+              margin="none"
               color="primary"
               value={title}
               disabled={!editable}
               fullWidth
-              margin="none"
               multiline
               name="title"
               required
@@ -416,7 +400,8 @@ export default function MediaPage(initialData) {
                 inputProps={{
                   className: classes.description,
                 }}
-                classes={{ root: classes.textField }}
+                // classes={{ root: classes.textField }}
+                margin="dense"
                 color="primary"
                 value={description}
                 disabled={!editable}
@@ -434,13 +419,12 @@ export default function MediaPage(initialData) {
               <Autocomplete
                 ChipProps={{
                   className: classes.chip,
-                  deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                  deleteIcon: <></>,
                   size: 'small',
                   variant: 'outlined',
                 }}
                 autoComplete
                 autoHighlight
-                classes={{ root: classes.textField }}
                 clearOnBlur
                 clearOnEscape
                 disabled={!editable}
@@ -452,7 +436,7 @@ export default function MediaPage(initialData) {
                 renderInput={params => (
                   <TextField
                     {...params}
-                    className={classes.textField}
+                    margin="dense"
                     placeholder={tags.length === 0 ? 'Add tag' : null}
                     size="small"
                   />
@@ -460,7 +444,7 @@ export default function MediaPage(initialData) {
                 defaultValue={tags}
               />
             )}
-            <Typography color="textSecondary" variant="caption">
+            <Typography className={classes.date} color="textSecondary" display="block" variant="caption">
               Added on {createdAt ? formattedCreatedAt : null}
               {channel && `in {channel}`}
             </Typography>
@@ -470,12 +454,12 @@ export default function MediaPage(initialData) {
             {TRANSCRIPTS?.length > 0 && (
               <List
                 aria-labelledby="nested-list-subheader"
-                className={classes.transcriptList}
+                className={classes.transcripts}
                 component="ul"
                 dense
                 disablePadding
                 subheader={
-                  <ListSubheader disableGutters className={classes.transcriptListSubh} id="nested-list-subheader">
+                  <ListSubheader disableGutters className={classes.transcriptsSubheader} id="nested-list-subheader">
                     <Typography variant="overline">Available transcripts</Typography>
                   </ListSubheader>
                 }
@@ -533,7 +517,7 @@ export default function MediaPage(initialData) {
         open={Boolean(newTAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryMenuItem} dense onClick={onToggleTranscriptTranscribe}>
+        <MenuItem className={classes.primaryButton} dense onClick={onToggleTranscriptTranscribe}>
           Auto-transcribe
         </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptUpload}>
@@ -550,7 +534,7 @@ export default function MediaPage(initialData) {
         open={Boolean(tActionsAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryMenuItem} dense onClick={onMixTClick}>
+        <MenuItem className={classes.primaryButton} dense onClick={onMixTClick}>
           Mix
         </MenuItem>
         {isOwner && (

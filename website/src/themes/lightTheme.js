@@ -37,6 +37,11 @@ const lightTheme = createMuiTheme({
         },
       },
     },
+    MuiListItemIcon: {
+      root: {
+        minWidth: 42,
+      },
+    },
     MuiInput: {
       underline: {
         '&$disabled:before': {
