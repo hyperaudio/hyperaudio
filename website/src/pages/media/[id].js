@@ -120,7 +120,31 @@ const MediaPage = initialData => {
   const isOwner = user?.id === media.owner;
 
   // FIXME
-  const { channels = [], createdAt, transcripts = [] } = media ?? {};
+  const { channels = [], createdAt } = media ?? {};
+  const transcripts = [
+    {
+      id: '4567898767853567',
+      title: 'Transcript 1',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      lang: 'en-US',
+      status: 'transcribed',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '9878898767853567',
+      title: 'Transcript test',
+      description: 'foo bar baz',
+      lang: 'en-GB',
+      type: 'TBD',
+      status: 'transcribing', // status.endsWith('ing') -> spinner
+      createdAt: '2021-01-04T12:25:29.646Z',
+      updatedAt: '2021-01-07T13:25:29.646Z',
+    },
+  ];
+
+  console.log({ transcripts });
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -373,6 +397,17 @@ const MediaPage = initialData => {
           )}
         </Grid>
       </Grid>
+      <hr />
+      <table>
+        {transcripts.map(({ id, title, lang, status }) => (
+          <tr key={id}>
+            <td>{title}</td>
+            <td>{lang}</td>
+            <td>{status}</td>
+          </tr>
+        ))}
+      </table>
+      <hr />
       <Menu
         anchorEl={transcriptActionsAnchorEl}
         anchorOrigin={{
