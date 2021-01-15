@@ -476,19 +476,23 @@ export default function MediaPage(initialData) {
                       onClick={!isDisabled ? () => gotoTranscript(id) : null}
                       selected={t === id}
                     >
-                      <ListItemIcon>
+                      {/* <ListItemIcon>
                         <Tooltip title={statusMessage || ''}>
                           <span>
                             <StatusFlag status={status} />
                           </span>
                         </Tooltip>
-                      </ListItemIcon>
+                      </ListItemIcon> */}
                       <ListItemText primary={title} secondary={lang} />
                       <ListItemSecondaryAction>
-                        <Tooltip title="Transcript actions">
+                        <Tooltip title={isDisabled ? statusMessage || '' : 'Transcript Actions'}>
                           <span>
-                            <IconButton size="small" onClick={e => onTActionsClick(e, id)}>
-                              <MoreHorizIcon fontSize="small" />
+                            <IconButton
+                              disabled={isDisabled}
+                              onClick={!isDisabled ? e => onTActionsClick(e, id) : null}
+                              size="small"
+                            >
+                              {isDisabled ? <StatusFlag status={status} /> : <MoreHorizIcon fontSize="small" />}
                             </IconButton>
                           </span>
                         </Tooltip>
