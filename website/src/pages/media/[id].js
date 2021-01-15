@@ -126,6 +126,7 @@ const MediaPage = initialData => {
       id: '4567898767853567',
       title: 'Transcript 1',
       description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
       lang: 'en-US',
       status: 'transcribed',
       type: 'TBD',
@@ -136,6 +137,7 @@ const MediaPage = initialData => {
       id: '9878898767853567',
       title: 'Transcript test',
       description: 'foo bar baz',
+      tags: [],
       lang: 'en-GB',
       type: 'TBD',
       status: 'transcribing', // status.endsWith('ing') -> spinner
