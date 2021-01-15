@@ -199,7 +199,7 @@ const AddMediaPage = initialData => {
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
         <Typography component="h1" gutterBottom variant="h4">
-          Add new media
+          New audio
         </Typography>
         <div className={classes.grow} />
       </Toolbar>

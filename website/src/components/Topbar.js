@@ -87,7 +87,7 @@ const Topbar = () => {
           </NextLink>
           <NextLink href="/media" passHref>
             <Button color="primary" variant="text">
-              Media
+              Audio
             </Button>
           </NextLink>
           <NextLink href="/mixes" passHref>
