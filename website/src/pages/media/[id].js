@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import NextLink from 'next/link';
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
@@ -89,6 +89,9 @@ const useStyles = makeStyles(theme => ({
   },
   chip: {
     margin: theme.spacing(0.3, 0.3, 0.3, 0),
+  },
+  primaryMenuItem: {
+    color: theme.palette.primary.main,
   },
 }));
 
@@ -387,11 +390,14 @@ const MediaPage = initialData => {
         }}
         variant="menu"
       >
+        <MenuItem divider className={classes.primaryMenuItem} dense onClick={onToggleTranscriptUpload}>
+          Auto-transcribe
+        </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptUpload}>
-          Upload
+          Upload existing
         </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptCreate}>
-          Create
+          Type in manually
         </MenuItem>
       </Menu>
     </Layout>
