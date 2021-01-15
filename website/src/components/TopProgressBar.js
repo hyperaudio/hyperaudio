@@ -11,9 +11,9 @@ let state;
 let activeRequests = 0;
 const delay = 250;
 
-// NProgress.configure({
-//   showSpinner: false,
-// });
+NProgress.configure({
+  showSpinner: false,
+});
 
 let quicklink = null;
 

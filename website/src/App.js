@@ -41,7 +41,7 @@ class Application extends App {
         <TopProgressBar />
         <style>
           {`#nprogress .bar {
-              background-color: yellow;
+              background-color: ${lightTheme.palette.primary.main};
               z-index: 10000;
               height: 5px;
             }
