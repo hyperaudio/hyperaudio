@@ -9,17 +9,16 @@ import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import DoneIcon from '@material-ui/icons/Done';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -157,7 +156,7 @@ const useStyles = makeStyles(theme => ({
   chip: {
     margin: theme.spacing(0.3, 0.3, 0.3, 0),
   },
-  primaryButton: {
+  speedDial: {
     background: theme.palette.primary.main,
     boxShadow: theme.shadows[2],
     color: theme.palette.primary.contrastText,
@@ -165,6 +164,10 @@ const useStyles = makeStyles(theme => ({
       background: theme.palette.primary.dark,
       color: theme.palette.primary.contrastText,
     },
+  },
+  primary: {
+    color: theme.palette.primary.main,
+    background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
   },
   transcripts: {
     backgroundColor: theme.palette.background.well,
@@ -343,7 +346,7 @@ export default function MediaPage(initialData) {
               <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
                 <span>
                   <IconButton
-                    className={editable ? classes.primaryButton : null}
+                    className={editable ? classes.speedDial : null}
                     color="primary"
                     edge="end"
                     onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
@@ -476,13 +479,6 @@ export default function MediaPage(initialData) {
                       onClick={!isDisabled ? () => gotoTranscript(id) : null}
                       selected={t === id}
                     >
-                      {/* <ListItemIcon>
-                        <Tooltip title={statusMessage || ''}>
-                          <span>
-                            <StatusFlag status={status} />
-                          </span>
-                        </Tooltip>
-                      </ListItemIcon> */}
                       <ListItemText primary={title} secondary={lang} />
                       <ListItemSecondaryAction>
                         <Tooltip title={isDisabled ? statusMessage || '' : 'Transcript Actions'}>
@@ -526,7 +522,7 @@ export default function MediaPage(initialData) {
         open={Boolean(newTAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryButton} dense onClick={onToggleTranscriptTranscribe}>
+        <MenuItem className={classes.primary} dense onClick={onToggleTranscriptTranscribe}>
           Auto-transcribe
         </MenuItem>
         <MenuItem dense divider onClick={onToggleTranscriptCreate}>
@@ -543,7 +539,7 @@ export default function MediaPage(initialData) {
         open={Boolean(tActionsAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryButton} dense onClick={onMixTClick}>
+        <MenuItem className={classes.primary} dense divider onClick={onMixTClick}>
           Mix
         </MenuItem>
         {isOwner && (
