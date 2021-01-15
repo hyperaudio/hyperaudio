@@ -272,7 +272,7 @@ const MediaPage = initialData => {
               }}
               classes={{ root: classes.textField }}
               color="primary"
-              defaultValue={title}
+              value={title}
               disabled={!editable}
               fullWidth
               margin="none"
@@ -289,7 +289,7 @@ const MediaPage = initialData => {
               }}
               classes={{ root: classes.textField }}
               color="primary"
-              defaultValue={description}
+              value={description}
               disabled={!editable}
               fullWidth
               multiline
