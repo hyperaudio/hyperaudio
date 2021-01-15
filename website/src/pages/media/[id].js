@@ -353,27 +353,30 @@ const MediaPage = initialData => {
             </NextLink>
           </Grid>
           <Grid item xs={6} align="right">
-            <Tooltip title="Add transcript">
-              <IconButton
-                aria-controls="cc-actions-menu"
-                aria-haspopup="true"
-                color="primary"
-                onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
-              >
-                <SubtitlesIcon />
-              </IconButton>
-            </Tooltip>
             {isOwner && (
-              <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
-                <IconButton
-                  className={editable ? classes.primaryButton : null}
-                  color="primary"
-                  edge="end"
-                  onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
-                >
-                  {editable ? <DoneIcon /> : <EditIcon />}
-                </IconButton>
-              </Tooltip>
+              <>
+                <Tooltip title="Add transcript">
+                  <IconButton
+                    aria-controls="cc-actions-menu"
+                    aria-haspopup="true"
+                    color="primary"
+                    onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
+                  >
+                    <SubtitlesIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
+                  <IconButton
+                    className={editable ? classes.primaryButton : null}
+                    color="primary"
+                    edge="end"
+                    onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
+                  >
+                    {editable ? <DoneIcon /> : <EditIcon />}
+                  </IconButton>
+                </Tooltip>
+              </>
             )}
           </Grid>
         </Grid>
