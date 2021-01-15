@@ -102,13 +102,22 @@ const MediaPage = initialData => {
   const { id } = router.query;
   const { user } = initialData;
 
-  const [editable, setEditable] = useState(null);
-  const [localTags, setLocalTags] = useState([]);
-  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
-  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
+  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
+
+  const [media, setMedia] = useState(initialMedia);
   const [url, setUrl] = useState();
 
+  const [editable, setEditable] = useState(null);
+  const [title, setTitle] = useState(initialMedia.title);
+  const [description, setDescription] = useState(initialMedia.description);
+  const [tags, setTags] = useState(initialMedia.tags);
+
+  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
+
   const isOwner = user?.id === media.owner;
+
+  // FIXME
+  const { channels = [], createdAt, transcripts = [] } = media ?? {};
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -136,7 +145,13 @@ const MediaPage = initialData => {
     };
 
     signURL();
-    setLocalTags(media.tags);
+  }, [media]);
+
+  useEffect(() => {
+    if (!media) return;
+    setTitle(media.title);
+    setDescription(media.description);
+    setTags(media.tags);
   }, [media]);
 
   // const editTitle = useCallback(async () => {
@@ -154,9 +169,7 @@ const MediaPage = initialData => {
   //   }
   // }, [media, user]);
 
-  // FIXME
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
-
+  // TODO where to get them? all tags of the user?
   const allTags = [
     { id: 1, title: 'Remix' },
     { id: 1, title: 'Audio' },
@@ -180,17 +193,27 @@ const MediaPage = initialData => {
 
   const isSmall = useMediaQuery(theme.breakpoints.up('md'));
 
-  const onToggleTranscriptUpload = e => {
-    setTranscriptActionsAnchorEl(null);
-  };
-  const onToggleTranscriptCreate = e => {
+  const onToggleTranscriptUpload = () => {
     setTranscriptActionsAnchorEl(null);
   };
 
-  const onSave = () => {
-    console.log('onSave:', { title }, { description }, { localTags });
-    setEditable(false);
+  const onToggleTranscriptCreate = () => {
+    setTranscriptActionsAnchorEl(null);
   };
+
+  const onSave = useCallback(async () => {
+    console.log('onSave:', { title }, { description }, { tags });
+
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.title = title;
+        updated.description = description;
+        updated.tags = tags;
+      }),
+    );
+
+    setEditable(false);
+  }, [media, title, description, tags]);
 
   return (
     <Layout>
@@ -250,7 +273,7 @@ const MediaPage = initialData => {
               }}
               classes={{ root: classes.textField }}
               color="primary"
-              defaultValue={title}
+              value={title}
               disabled={!editable}
               fullWidth
               margin="none"
@@ -259,57 +282,53 @@ const MediaPage = initialData => {
               required
               size="small"
               type="text"
+              onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
             />
-            {isOwner ||
-              (description?.length > 0 && (
+            <TextField
+              inputProps={{
+                className: classes.description,
+              }}
+              classes={{ root: classes.textField }}
+              color="primary"
+              value={description}
+              disabled={!editable}
+              fullWidth
+              multiline
+              name="description"
+              placeholder="Add description"
+              required
+              size="small"
+              type="text"
+              onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
+            />
+            <Autocomplete
+              ChipProps={{
+                className: classes.chip,
+                deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                size: 'small',
+                variant: 'outlined',
+              }}
+              autoComplete
+              autoHighlight
+              classes={{ root: classes.textField }}
+              clearOnBlur
+              clearOnEscape
+              disabled={!editable}
+              freeSolo
+              id="tags-filled"
+              multiple
+              onChange={(e, v) => setTags(v)} // TODO useCallback
+              options={allTags.map(option => option.title)}
+              renderInput={params => (
                 <TextField
-                  inputProps={{
-                    className: classes.description,
-                  }}
-                  classes={{ root: classes.textField }}
-                  color="primary"
-                  defaultValue={description}
-                  disabled={!editable}
-                  fullWidth
-                  multiline
-                  name="description"
-                  placeholder="Add description"
-                  required
+                  {...params}
+                  className={classes.textField}
+                  placeholder={tags.length === 0 ? 'Add tag' : null}
                   size="small"
-                  type="text"
                 />
-              ))}
-            {isOwner ||
-              (tags?.length > 0 && (
-                <Autocomplete
-                  ChipProps={{
-                    className: classes.chip,
-                    deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
-                    size: 'small',
-                    variant: 'outlined',
-                  }}
-                  autoComplete
-                  autoHighlight
-                  classes={{ root: classes.textField }}
-                  clearOnBlur
-                  clearOnEscape
-                  disabled={!editable}
-                  freeSolo
-                  id="tags-filled"
-                  multiple
-                  onChange={(e, v) => setLocalTags(v)}
-                  options={allTags.map(option => option.title)}
-                  renderInput={params => (
-                    <TextField
-                      {...params}
-                      className={classes.textField}
-                      placeholder={tags.length === 0 ? 'Add tag' : null}
-                      size="small"
-                    />
-                  )}
-                  defaultValue={tags}
-                />
-              ))}
+              )}
+              defaultValue={tags}
+            />
             <Typography color="textSecondary" variant="caption">
               Added on {createdAt ? formattedCreatedAt : null}
               {channel && `in {channel}`}
