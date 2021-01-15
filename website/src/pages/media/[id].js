@@ -585,7 +585,7 @@ const MediaPage = initialData => {
         open={Boolean(newTAnchor)}
         {...menuProps}
       >
-        <MenuItem divider className={classes.primaryMenuItem} dense onClick={onToggleTranscriptUpload}>
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onToggleTranscriptUpload}>
           Auto-transcribe
         </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptUpload}>
@@ -602,12 +602,14 @@ const MediaPage = initialData => {
         open={Boolean(tActionsAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryMenuItem} divider dense onClick={onMixTClick}>
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onMixTClick}>
           Mix
         </MenuItem>
-        <MenuItem dense onClick={onDeleteTClick}>
-          Delete
-        </MenuItem>
+        {isOwner && (
+          <MenuItem dense onClick={onDeleteTClick}>
+            Delete
+          </MenuItem>
+        )}
       </Menu>
     </Layout>
   );
