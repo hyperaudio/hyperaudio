@@ -1,4 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
 
 const lightTheme = createMuiTheme({
   props: {
@@ -9,6 +10,7 @@ const lightTheme = createMuiTheme({
   palette: {
     background: {
       default: 'white',
+      well: grey[50],
     },
     primary: {
       light: '#B07FEF',
