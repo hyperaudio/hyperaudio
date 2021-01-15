@@ -287,51 +287,55 @@ const MediaPage = initialData => {
               type="text"
               onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
             />
-            <TextField
-              inputProps={{
-                className: classes.description,
-              }}
-              classes={{ root: classes.textField }}
-              color="primary"
-              value={description}
-              disabled={!editable}
-              fullWidth
-              multiline
-              name="description"
-              placeholder="Add description"
-              required
-              size="small"
-              type="text"
-              onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
-            />
-            <Autocomplete
-              ChipProps={{
-                className: classes.chip,
-                deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
-                size: 'small',
-                variant: 'outlined',
-              }}
-              autoComplete
-              autoHighlight
-              classes={{ root: classes.textField }}
-              clearOnBlur
-              clearOnEscape
-              disabled={!editable}
-              freeSolo
-              id="tags-filled"
-              multiple
-              onChange={(e, v) => setTags(v)} // TODO useCallback
-              options={allTags.map(option => option.title)}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  className={classes.textField}
-                  placeholder={tags.length === 0 ? 'Add tag' : null}
-                  size="small"
-                />
-              )}
-              defaultValue={tags}
-            />
+            {(isOwner || description.length > 1) && (
+              <TextField
+                inputProps={{
+                  className: classes.description,
+                }}
+                classes={{ root: classes.textField }}
+                color="primary"
+                value={description}
+                disabled={!editable}
+                fullWidth
+                multiline
+                name="description"
+                placeholder="Add description"
+                required
+                size="small"
+                type="text"
+                onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
+              />
+            )}
+            {(isOwner || tags.length > 0) && (
+              <Autocomplete
+                ChipProps={{
+                  className: classes.chip,
+                  deleteIcon: editable ? <CloseIcon fontSize="small" /> : <></>,
+                  size: 'small',
+                  variant: 'outlined',
+                }}
+                autoComplete
+                autoHighlight
+                classes={{ root: classes.textField }}
+                clearOnBlur
+                clearOnEscape
+                disabled={!editable}
+                freeSolo
+                id="tags-filled"
+                multiple
+                onChange={(e, v) => setTags(v)} // TODO useCallback
+                options={allTags.map(option => option.title)}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    className={classes.textField}
+                    placeholder={tags.length === 0 ? 'Add tag' : null}
+                    size="small"
+                  />
+                )}
+                defaultValue={tags}
+              />
+            )}
             <Typography color="textSecondary" variant="caption">
               Added on {createdAt ? formattedCreatedAt : null}
               {channel && `in {channel}`}
