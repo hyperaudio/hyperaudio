@@ -539,7 +539,7 @@ export default function MediaPage(initialData) {
         open={Boolean(tActionsAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primary} dense divider onClick={onMixTClick}>
+        <MenuItem className={classes.primary} dense divider={isOwner} onClick={onMixTClick}>
           Mix
         </MenuItem>
         {isOwner && (
