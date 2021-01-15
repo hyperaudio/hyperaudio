@@ -41,6 +41,9 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
   },
+  toolbarButtons: {
+    marginLeft: theme.spacing(2),
+  },
   grow: {
     flexGrow: 1,
   },
@@ -122,15 +125,19 @@ const Dashboard = initialData => {
   return (
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h5">
+        <Typography component="h1" gutterBottom variant="h4">
           Your media
         </Typography>
         <div className={classes.grow} />
-        <NextLink href="/new/media">
-          <Button color="primary">New Media</Button>
+        <NextLink href="/new/channel" passHref>
+          <Button className={classes.toolbarButtons} color="primary">
+            New Channel
+          </Button>
         </NextLink>
-        <NextLink href="/new/channel">
-          <Button color="primary">New Channel</Button>
+        <NextLink href="/new/media" passHref>
+          <Button className={classes.toolbarButtons} color="primary" variant="contained">
+            New Media
+          </Button>
         </NextLink>
       </Toolbar>
       <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
