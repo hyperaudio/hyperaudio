@@ -102,13 +102,22 @@ const MediaPage = initialData => {
   const { id } = router.query;
   const { user } = initialData;
 
-  const [editable, setEditable] = useState(null);
-  const [localTags, setLocalTags] = useState([]);
-  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
-  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
+  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media));
+
+  const [media, setMedia] = useState(initialMedia);
   const [url, setUrl] = useState();
 
+  const [editable, setEditable] = useState(null);
+  const [title, setTitle] = useState(initialMedia.title);
+  const [description, setDescription] = useState(initialMedia.description);
+  const [tags, setTags] = useState(initialMedia.tags);
+
+  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
+
   const isOwner = user?.id === media.owner;
+
+  // FIXME
+  const { channels = [], createdAt, transcripts = [] } = media ?? {};
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -136,7 +145,14 @@ const MediaPage = initialData => {
     };
 
     signURL();
-    setLocalTags(media.tags);
+    setTags(media.tags);
+  }, [media]);
+
+  useEffect(() => {
+    if (!media) return;
+    setTitle(media.title);
+    setDescription(media.description);
+    setTags(media.tags);
   }, [media]);
 
   // const editTitle = useCallback(async () => {
@@ -153,9 +169,6 @@ const MediaPage = initialData => {
   //     );
   //   }
   // }, [media, user]);
-
-  // FIXME
-  const { channels = [], createdAt, description = '', tags = [], title = '', transcripts = [] } = media ?? {};
 
   const allTags = [
     { id: 1, title: 'Remix' },
@@ -187,10 +200,19 @@ const MediaPage = initialData => {
     setTranscriptActionsAnchorEl(null);
   };
 
-  const onSave = () => {
-    console.log('onSave:', { title }, { description }, { localTags });
+  const onSave = useCallback(async () => {
+    console.log('onSave:', { title }, { description }, { tags });
+
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.title = title;
+        updated.description = description;
+        updated.tags = tags;
+      }),
+    );
+
     setEditable(false);
-  };
+  }, [media, title, description, tags]);
 
   return (
     <Layout>
@@ -259,6 +281,7 @@ const MediaPage = initialData => {
               required
               size="small"
               type="text"
+              onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
             />
             <TextField
               inputProps={{
@@ -275,6 +298,7 @@ const MediaPage = initialData => {
               required
               size="small"
               type="text"
+              onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
             />
             <Autocomplete
               ChipProps={{
@@ -292,7 +316,7 @@ const MediaPage = initialData => {
               freeSolo
               id="tags-filled"
               multiple
-              onChange={(e, v) => setLocalTags(v)}
+              onChange={(e, v) => setTags(v)} // TODO useCallback
               options={allTags.map(option => option.title)}
               renderInput={params => (
                 <TextField
