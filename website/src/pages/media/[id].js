@@ -13,6 +13,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import DoneIcon from '@material-ui/icons/Done';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import EditIcon from '@material-ui/icons/Edit';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -69,17 +70,6 @@ const TRANSCRIPTS = [
     updatedAt: '2020-12-07T19:25:29.646Z',
   },
   {
-    id: '4567673567',
-    title: 'Aligned transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'aligned',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
     id: '45678987567',
     title: 'Aligning transcript',
     description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
@@ -111,6 +101,17 @@ const TRANSCRIPTS = [
     status: 'transcribing', // status.endsWith('ing') -> spinner
     createdAt: '2021-01-04T12:25:29.646Z',
     updatedAt: '2021-01-07T13:25:29.646Z',
+  },
+  {
+    id: '4567673567',
+    title: 'Aligned transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'aligned',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
   },
 ];
 
@@ -166,9 +167,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   transcripts: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    marginBottom: theme.spacing(2),
-    maxHeight: '200px',
+    // borderBottom: `1px solid ${theme.palette.divider}`,
+    maxHeight: '240px',
     overflowY: 'auto',
   },
   transcriptsSubheader: {
@@ -339,18 +339,6 @@ export default function MediaPage(initialData) {
             </NextLink>
           </Grid>
           <Grid item xs={6} align="right">
-            <Tooltip title="Add transcript">
-              <span>
-                <IconButton
-                  aria-controls="new-transcript-actions"
-                  aria-haspopup="true"
-                  color="primary"
-                  onClick={e => setNewTAnchor(e.currentTarget)}
-                >
-                  <SubtitlesIcon />
-                </IconButton>
-              </span>
-            </Tooltip>
             {isOwner && (
               <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
                 <span>
@@ -460,7 +448,22 @@ export default function MediaPage(initialData) {
                 disablePadding
                 subheader={
                   <ListSubheader disableGutters className={classes.transcriptsSubheader} id="nested-list-subheader">
-                    <Typography variant="overline">Available transcripts</Typography>
+                    <Typography variant="overline">Transcripts</Typography>
+                    <ListItemSecondaryAction>
+                      <Tooltip title="Add transcript">
+                        <span>
+                          <IconButton
+                            aria-controls="new-transcript-actions"
+                            aria-haspopup="true"
+                            color="primary"
+                            size="small"
+                            onClick={e => setNewTAnchor(e.currentTarget)}
+                          >
+                            <AddCircleOutlineIcon fontSize="small" />
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
                   </ListSubheader>
                 }
               >
@@ -495,18 +498,20 @@ export default function MediaPage(initialData) {
                 })}
               </List>
             )}
-            <Button
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              color="primary"
-              fullWidth
-              onClick={e => setNewTAnchor(e.currentTarget)}
-              size="large"
-              startIcon={<SubtitlesIcon />}
-              variant="contained"
-            >
-              Add transcript
-            </Button>
+            {TRANSCRIPTS.length < 1 && (
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                color="primary"
+                fullWidth
+                onClick={e => setNewTAnchor(e.currentTarget)}
+                size="large"
+                startIcon={<SubtitlesIcon />}
+                variant="contained"
+              >
+                Add transcript
+              </Button>
+            )}
           </Grid>
         </Grid>
       </Grid>
