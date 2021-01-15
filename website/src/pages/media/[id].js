@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Head from 'next/head';
 import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
@@ -102,7 +104,7 @@ const MediaPage = initialData => {
   const router = useRouter();
   const theme = useTheme();
 
-  const { id } = router.query;
+  const { id, t } = router.query;
   const { user } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
@@ -243,6 +245,19 @@ const MediaPage = initialData => {
 
     setEditable(false);
   }, [media, title, description, tags]);
+
+  const gotoTranscript = useCallback(
+    transcript =>
+      router.push(
+        {
+          pathname: `/media/${id}`,
+          query: { t: transcript },
+        },
+        undefined,
+        { shallow: true },
+      ),
+    [router, id],
+  );
 
   return (
     <Layout>
@@ -400,15 +415,21 @@ const MediaPage = initialData => {
         </Grid>
       </Grid>
       <hr />
-      <table>
-        {transcripts.map(({ id, title, lang, status }) => (
-          <tr key={id}>
-            <td>{title}</td>
-            <td>{lang}</td>
-            <td>{status}</td>
-          </tr>
-        ))}
-      </table>
+      {t ? (
+        <h1>Transcript {t} View</h1>
+      ) : (
+        <table>
+          {transcripts.map(({ id, title, lang, status }) => (
+            <tr key={id}>
+              <td>
+                <span onClick={() => gotoTranscript(id)}>{title}</span>
+              </td>
+              <td>{lang}</td>
+              <td>{status}</td>
+            </tr>
+          ))}
+        </table>
+      )}
       <hr />
       <Menu
         anchorEl={transcriptActionsAnchorEl}
