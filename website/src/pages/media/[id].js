@@ -100,7 +100,12 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(0.3, 0.3, 0.3, 0),
   },
   primaryMenuItem: {
-    color: theme.palette.primary.main,
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      background: theme.palette.primary.main,
+      color: theme.palette.primary.contrastText,
+    },
   },
   transcriptList: {
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -150,7 +155,9 @@ const MediaPage = initialData => {
   const [description, setDescription] = useState(initialMedia.description);
   const [tags, setTags] = useState(initialMedia.tags);
 
-  const [transcriptActionsAnchorEl, setTranscriptActionsAnchorEl] = useState(null);
+  const [tActions, setTActions] = useState(null);
+  const [newTAnchor, setNewTAnchor] = useState(null);
+  const [tActionsAnchor, setTActionsAnchor] = useState(null);
 
   const isOwner = user?.id === media.owner;
 
@@ -225,7 +232,7 @@ const MediaPage = initialData => {
     },
   ];
 
-  console.log({ transcripts });
+  // console.log({ transcripts });
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -302,11 +309,11 @@ const MediaPage = initialData => {
   const isSmall = useMediaQuery(theme.breakpoints.up('md'));
 
   const onToggleTranscriptUpload = () => {
-    setTranscriptActionsAnchorEl(null);
+    setNewTAnchor(null);
   };
 
   const onToggleTranscriptCreate = () => {
-    setTranscriptActionsAnchorEl(null);
+    setNewTAnchor(null);
   };
 
   const onSave = useCallback(async () => {
@@ -335,7 +342,38 @@ const MediaPage = initialData => {
       ),
     [router, id],
   );
-  console.log({ t });
+
+  const onTActionsClick = (e, id) => {
+    e.stopPropagation();
+    setTActionsAnchor(e.currentTarget);
+    setTActions(id);
+  };
+  const onMixTClick = () => {
+    if (!tActions) return;
+    console.log('onMixTClick', tActions);
+    setTActions(null);
+    setTActionsAnchor(null);
+  };
+  const onDeleteTClick = () => {
+    if (!tActions) return;
+    console.log('onDeleteTClick', tActions);
+    setTActions(null);
+    setTActionsAnchor(null);
+  };
+
+  const menuProps = {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'center',
+    },
+    getContentAnchorEl: null,
+    keepMounted: true,
+    transformOrigin: {
+      vertical: 'top',
+      horizontal: 'center',
+    },
+    variant: 'menu',
+  };
 
   return (
     <Layout>
@@ -355,25 +393,29 @@ const MediaPage = initialData => {
           </Grid>
           <Grid item xs={6} align="right">
             <Tooltip title="Add transcript">
-              <IconButton
-                aria-controls="cc-actions-menu"
-                aria-haspopup="true"
-                color="primary"
-                onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
-              >
-                <SubtitlesIcon />
-              </IconButton>
+              <span>
+                <IconButton
+                  aria-controls="new-transcript-actions"
+                  aria-haspopup="true"
+                  color="primary"
+                  onClick={e => setNewTAnchor(e.currentTarget)}
+                >
+                  <SubtitlesIcon />
+                </IconButton>
+              </span>
             </Tooltip>
             {isOwner && (
               <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
-                <IconButton
-                  className={editable ? classes.primaryButton : null}
-                  color="primary"
-                  edge="end"
-                  onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
-                >
-                  {editable ? <DoneIcon /> : <EditIcon />}
-                </IconButton>
+                <span>
+                  <IconButton
+                    className={editable ? classes.primaryButton : null}
+                    color="primary"
+                    edge="end"
+                    onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
+                  >
+                    {editable ? <DoneIcon /> : <EditIcon />}
+                  </IconButton>
+                </span>
               </Tooltip>
             )}
           </Grid>
@@ -464,29 +506,46 @@ const MediaPage = initialData => {
           <Grid item>
             {transcripts?.length > 0 && (
               <List
+                aria-labelledby="nested-list-subheader"
                 className={classes.transcriptList}
                 component="ul"
-                aria-labelledby="nested-list-subheader"
                 dense
+                disablePadding
                 subheader={
                   <ListSubheader disableGutters className={classes.transcriptListSubh} id="nested-list-subheader">
                     <Typography variant="overline">Available transcripts</Typography>
                   </ListSubheader>
                 }
               >
-                {transcripts.map(({ id, title, lang, status }) => (
-                  <ListItem button key={id} onClick={() => gotoTranscript(id)} selected={t === id}>
-                    <ListItemIcon>
-                      <DisplayStatus status={status} />
-                    </ListItemIcon>
-                    <ListItemText primary={title} secondary={lang} />
-                    <ListItemSecondaryAction>
-                      <IconButton size="small">
-                        <MoreHorizIcon fontSize="small" />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))}
+                {transcripts.map(({ id, title, lang, status, statusMessage }) => {
+                  const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
+                  return (
+                    <ListItem
+                      button={!isDisabled}
+                      key={id}
+                      onClick={!isDisabled ? () => gotoTranscript(id) : null}
+                      selected={t === id}
+                    >
+                      <ListItemIcon>
+                        <Tooltip title={statusMessage || ''}>
+                          <span>
+                            <DisplayStatus status={status} />
+                          </span>
+                        </Tooltip>
+                      </ListItemIcon>
+                      <ListItemText primary={title} secondary={lang} />
+                      <ListItemSecondaryAction>
+                        <Tooltip title="Transcript actions">
+                          <span>
+                            <IconButton size="small" onClick={e => onTActionsClick(e, id)}>
+                              <MoreHorizIcon fontSize="small" />
+                            </IconButton>
+                          </span>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
               </List>
             )}
             <Button
@@ -494,7 +553,7 @@ const MediaPage = initialData => {
               aria-haspopup="true"
               color="primary"
               fullWidth
-              onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
+              onClick={e => setNewTAnchor(e.currentTarget)}
               size="large"
               startIcon={<SubtitlesIcon />}
               variant="contained"
@@ -520,21 +579,11 @@ const MediaPage = initialData => {
         </table>
       )} */}
       <Menu
-        anchorEl={transcriptActionsAnchorEl}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        getContentAnchorEl={null}
-        id="cc-actions-menu"
-        keepMounted
-        onClose={() => setTranscriptActionsAnchorEl(null)}
-        open={Boolean(transcriptActionsAnchorEl)}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-        variant="menu"
+        anchorEl={newTAnchor}
+        id="new-transcript-actions"
+        onClose={() => setNewTAnchor(null)}
+        open={Boolean(newTAnchor)}
+        {...menuProps}
       >
         <MenuItem divider className={classes.primaryMenuItem} dense onClick={onToggleTranscriptUpload}>
           Auto-transcribe
@@ -544,6 +593,20 @@ const MediaPage = initialData => {
         </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptCreate}>
           Type in manually
+        </MenuItem>
+      </Menu>
+      <Menu
+        anchorEl={tActionsAnchor}
+        id="transcript-actions"
+        onClose={() => setTActionsAnchor(null)}
+        open={Boolean(tActionsAnchor)}
+        {...menuProps}
+      >
+        <MenuItem className={classes.primaryMenuItem} divider dense onClick={onMixTClick}>
+          Mix
+        </MenuItem>
+        <MenuItem dense onClick={onDeleteTClick}>
+          Delete
         </MenuItem>
       </Menu>
     </Layout>
