@@ -97,8 +97,8 @@ const Topbar = () => {
           </NextLink>
           <div className={classes.grow} />
           {user ? (
-            <>
-              <Tooltip title="More options…">
+            <Tooltip title="More options…">
+              <span>
                 <IconButton
                   aria-controls="simple-menu"
                   aria-haspopup="true"
@@ -108,35 +108,8 @@ const Topbar = () => {
                 >
                   <SettingsIcon />
                 </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'center',
-                }}
-                getContentAnchorEl={null}
-                id="simple-menu"
-                keepMounted
-                onClose={() => setAnchorEl(null)}
-                open={Boolean(anchorEl)}
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'center',
-                }}
-                variant="menu"
-              >
-                <NextLink href="/account" passHref>
-                  <MenuItem dense onClick={onMenuClick}>
-                    My account
-                  </MenuItem>
-                </NextLink>
-                <Divider className={classes.divider} />
-                <MenuItem dense onClick={signOut}>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </>
+              </span>
+            </Tooltip>
           ) : (
             <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
               <Button color="inherit" variant="text">
@@ -147,6 +120,35 @@ const Topbar = () => {
         </Toolbar>
       </AppBar>
       <div className={classes.push} />
+      <Menu
+        anchorEl={anchorEl}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        getContentAnchorEl={null}
+        id="simple-menu"
+        keepMounted
+        onClose={() => setAnchorEl(null)}
+        open={Boolean(anchorEl)}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+        variant="menu"
+      >
+        <span>
+          <NextLink href="/account" passHref>
+            <MenuItem dense onClick={onMenuClick}>
+              My account
+            </MenuItem>
+          </NextLink>
+        </span>
+        <Divider className={classes.divider} />
+        <MenuItem dense onClick={signOut}>
+          Logout
+        </MenuItem>
+      </Menu>
     </>
   );
 };
