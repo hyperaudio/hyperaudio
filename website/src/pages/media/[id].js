@@ -450,8 +450,8 @@ export default function MediaPage(initialData) {
                 dense
                 disablePadding
                 subheader={
-                  <ListSubheader disableGutters className={classes.transcriptsSubheader} id="nested-list-subheader">
-                    <Typography variant="overline">Transcripts</Typography>
+                  <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
+                    <Typography variant="overline">Available transcripts:</Typography>
                     <ListItemSecondaryAction>
                       <Tooltip title="Add transcript">
                         <span>
