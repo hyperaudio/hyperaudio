@@ -112,7 +112,7 @@ const Topbar = () => {
             </Tooltip>
           ) : (
             <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
-              <Button color="inherit" variant="text">
+              <Button color="primary" variant="text">
                 Login
               </Button>
             </NextLink>
