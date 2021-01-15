@@ -167,7 +167,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   transcripts: {
-    // borderBottom: `1px solid ${theme.palette.divider}`,
     backgroundColor: theme.palette.background.well,
     maxHeight: '240px',
     overflowY: 'auto',
