@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Head from 'next/head';
 import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
@@ -102,7 +104,7 @@ const MediaPage = initialData => {
   const router = useRouter();
   const theme = useTheme();
 
-  const { id } = router.query;
+  const { id, t } = router.query;
   const { user } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
@@ -120,7 +122,33 @@ const MediaPage = initialData => {
   const isOwner = user?.id === media.owner;
 
   // FIXME
-  const { channels = [], createdAt, transcripts = [] } = media ?? {};
+  const { channels = [], createdAt } = media ?? {};
+  const transcripts = [
+    {
+      id: '4567898767853567',
+      title: 'Transcript 1',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
+      lang: 'en-US',
+      status: 'transcribed',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '9878898767853567',
+      title: 'Transcript test',
+      description: 'foo bar baz',
+      tags: [],
+      lang: 'en-GB',
+      type: 'TBD',
+      status: 'transcribing', // status.endsWith('ing') -> spinner
+      createdAt: '2021-01-04T12:25:29.646Z',
+      updatedAt: '2021-01-07T13:25:29.646Z',
+    },
+  ];
+
+  console.log({ transcripts });
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -217,6 +245,19 @@ const MediaPage = initialData => {
 
     setEditable(false);
   }, [media, title, description, tags]);
+
+  const gotoTranscript = useCallback(
+    transcript =>
+      router.push(
+        {
+          pathname: `/media/${id}`,
+          query: { t: transcript },
+        },
+        undefined,
+        { shallow: true },
+      ),
+    [router, id],
+  );
 
   return (
     <Layout>
@@ -377,6 +418,23 @@ const MediaPage = initialData => {
           )}
         </Grid>
       </Grid>
+      <hr />
+      {t ? (
+        <h1>Transcript {t} View</h1>
+      ) : (
+        <table>
+          {transcripts.map(({ id, title, lang, status }) => (
+            <tr key={id}>
+              <td>
+                <span onClick={() => gotoTranscript(id)}>{title}</span>
+              </td>
+              <td>{lang}</td>
+              <td>{status}</td>
+            </tr>
+          ))}
+        </table>
+      )}
+      <hr />
       <Menu
         anchorEl={transcriptActionsAnchorEl}
         anchorOrigin={{
