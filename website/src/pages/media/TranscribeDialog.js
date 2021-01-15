@@ -150,7 +150,13 @@ export default function TranscribeDialog({ onConfirm, onCancel, open }) {
   }, [open]);
 
   return (
-    <Dialog open={open} onClose={onCancel} aria-labelledby="dialog-title" maxWidth="xs">
+    <Dialog
+      PaperProps={{ style: { width: '100%' } }}
+      aria-labelledby="dialog-title"
+      maxWidth="xs"
+      onClose={onCancel}
+      open={open}
+    >
       <DialogTitle id="dialog-title">Auto-transcribe</DialogTitle>
       <DialogContent>
         <DialogContentText>Automatically transcribe spoken word in this audio</DialogContentText>

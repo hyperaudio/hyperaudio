@@ -34,10 +34,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User } from 'src/models';
+import DeleteDialog from './DeleteDialog';
 import Layout from 'src/Layout';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
+import { Media, User } from 'src/models';
 
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = [
@@ -193,15 +194,17 @@ export default function MediaPage(initialData) {
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
 
   const [description, setDescription] = useState(initialMedia.description);
-  const [tDialogOpen, setTDialogOpen] = React.useState(false);
   const [editable, setEditable] = useState(null);
   const [media, setMedia] = useState(initialMedia);
-  const [newTAnchor, setNewTAnchor] = useState(null);
-  const [tActions, setTActions] = useState(null);
-  const [tActionsAnchor, setTActionsAnchor] = useState(null);
+  const [tActionsAnchor, setTranscriptMenuAnchor] = useState(null);
   const [tags, setTags] = useState(initialMedia.tags);
   const [title, setTitle] = useState(initialMedia.title);
   const [url, setUrl] = useState();
+
+  const [actionableTranscript, setActionableTranscript] = useState();
+  const [transcribeDialogOpen, setTranscribeDialogOpen] = React.useState();
+  const [transcribeMenuAnchor, setTranscribeMenuAnchor] = useState(null);
+  const [transcriptDeleteDialogOpen, setTranscriptDeleteDialogOpen] = React.useState();
 
   const isOwner = user?.id === media.owner;
   const isSmall = useMediaQuery(theme.breakpoints.up('md'));
@@ -222,37 +225,43 @@ export default function MediaPage(initialData) {
     [createdAt],
   );
 
-  const onToggleTranscriptUpload = () => {
-    setNewTAnchor(null);
+  // NEW
+  const onReset = () => {
+    setActionableTranscript(null);
+    setTranscribeDialogOpen(false);
+    setTranscribeMenuAnchor(null);
+    setTranscriptDeleteDialogOpen(false);
+    setTranscriptMenuAnchor(null);
   };
-  const onToggleTranscriptCreate = () => {
-    setNewTAnchor(null);
+  const onTranscriptMenuOpen = id => e => {
+    if (e) e.stopPropagation();
+    setActionableTranscript(TRANSCRIPTS.find(o => o.id === id));
+    setTranscriptMenuAnchor(e.currentTarget);
   };
-  const onToggleTranscriptTranscribe = () => {
-    setNewTAnchor(null);
-    setTDialogOpen(true);
+  const onTranscriptMenuClose = () => onReset();
+  const onRemixClick = () => {
+    if (!actionableTranscript) return;
+    console.log('onRemixClick', { actionableTranscript });
+    onReset();
   };
-  const onTActionsClick = (e, id) => {
-    e.stopPropagation();
-    setTActionsAnchor(e.currentTarget);
-    setTActions(id);
+  const onDeleteTranscriptClick = () => {
+    if (!actionableTranscript) return;
+    setTranscriptDeleteDialogOpen(true);
   };
-  const onMixTClick = () => {
-    if (!tActions) return;
-    console.log('onMixTClick', tActions);
-    setTActions(null);
-    setTActionsAnchor(null);
+  const onDeleteCancel = () => onReset();
+  const onDeleteConfirm = () => {
+    console.log('onDeleteConfirm', actionableTranscript);
+    onReset();
   };
-  const onDeleteTClick = () => {
-    if (!tActions) return;
-    console.log('onDeleteTClick', tActions);
-    setTActions(null);
-    setTActionsAnchor(null);
+  const onTranscribeClick = () => {
+    setTranscribeDialogOpen(true);
+    setTranscribeMenuAnchor(null);
   };
-  const onTranscribe = payload => {
+  const onTranscribeCancel = () => onReset();
+  const onTranscribeConfirm = payload => {
     const { language, speakers } = payload;
-    console.log('onTranscribe', { language }, { speakers });
-    setTDialogOpen(false);
+    console.log('onTranscribeConfirm', { language }, { speakers });
+    onReset();
   };
 
   const onSave = useCallback(async () => {
@@ -460,7 +469,7 @@ export default function MediaPage(initialData) {
                             aria-haspopup="true"
                             color="primary"
                             size="small"
-                            onClick={e => setNewTAnchor(e.currentTarget)}
+                            onClick={e => setTranscribeMenuAnchor(e.currentTarget)}
                           >
                             <AddCircleOutlineIcon fontSize="small" />
                           </IconButton>
@@ -485,7 +494,7 @@ export default function MediaPage(initialData) {
                           <span>
                             <IconButton
                               disabled={isDisabled}
-                              onClick={!isDisabled ? e => onTActionsClick(e, id) : null}
+                              onClick={!isDisabled ? onTranscriptMenuOpen(id) : null}
                               size="small"
                             >
                               {isDisabled ? <StatusFlag status={status} /> : <MoreHorizIcon fontSize="small" />}
@@ -504,7 +513,7 @@ export default function MediaPage(initialData) {
                 aria-haspopup="true"
                 color="primary"
                 fullWidth
-                onClick={e => setNewTAnchor(e.currentTarget)}
+                onClick={e => setTranscribeMenuAnchor(e.currentTarget)}
                 size="large"
                 startIcon={<SubtitlesIcon />}
                 variant="contained"
@@ -516,39 +525,45 @@ export default function MediaPage(initialData) {
         </Grid>
       </Grid>
       <Menu
-        anchorEl={newTAnchor}
+        anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
-        onClose={() => setNewTAnchor(null)}
-        open={Boolean(newTAnchor)}
+        // onClose={onTranscriptMenuClose}
+        open={Boolean(transcribeMenuAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primary} dense onClick={onToggleTranscriptTranscribe}>
+        <MenuItem className={classes.primary} dense onClick={onTranscribeClick}>
           Auto-transcribe
         </MenuItem>
-        <MenuItem dense divider onClick={onToggleTranscriptCreate}>
+        <MenuItem dense divider onClick={() => console.log('onTypeInTranscriptClick')}>
           Transcribe manually
         </MenuItem>
-        <MenuItem dense onClick={onToggleTranscriptUpload}>
+        <MenuItem dense onClick={() => console.log('onUploadTranscriptClick')}>
           Upload transcript
         </MenuItem>
       </Menu>
       <Menu
         anchorEl={tActionsAnchor}
         id="transcript-actions"
-        onClose={() => setTActionsAnchor(null)}
+        onClose={onTranscriptMenuClose}
         open={Boolean(tActionsAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primary} dense divider={isOwner} onClick={onMixTClick}>
+        <MenuItem className={classes.primary} dense divider={isOwner} onClick={onRemixClick}>
           Mix
         </MenuItem>
         {isOwner && (
-          <MenuItem dense onClick={onDeleteTClick}>
+          <MenuItem dense onClick={onDeleteTranscriptClick}>
             Delete
           </MenuItem>
         )}
       </Menu>
-      <TranscribeDialog onCancel={() => setTDialogOpen(false)} onConfirm={onTranscribe} open={tDialogOpen} />
+      <DeleteDialog
+        onCancel={onDeleteCancel}
+        onConfirm={onDeleteConfirm}
+        open={transcriptDeleteDialogOpen}
+        transcript={actionableTranscript}
+      />
+      <TranscribeDialog onCancel={onTranscribeCancel} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
     </Layout>
   );
 }
