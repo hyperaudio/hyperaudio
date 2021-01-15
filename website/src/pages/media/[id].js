@@ -12,12 +12,9 @@ import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
-import CheckIcon from '@material-ui/icons/Check';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -38,8 +35,85 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import Layout from 'src/Layout';
 import { Media, User } from 'src/models';
+import Layout from 'src/Layout';
+import StatusFlag from './StatusFlag';
+import TranscribeDialog from './TranscribeDialog';
+
+// TODO where to get them? all tags of the user?
+const ALL_TAGS = [
+  { id: 1, title: 'Remix' },
+  { id: 1, title: 'Audio' },
+];
+
+const TRANSCRIPTS = [
+  {
+    id: '456787853567',
+    title: 'Transcribed transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'transcribed',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
+  {
+    id: '456789877',
+    title: 'New transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'new',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
+  {
+    id: '4567673567',
+    title: 'Aligned transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'aligned',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
+  {
+    id: '45678987567',
+    title: 'Aligning transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'aligning',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
+  {
+    id: '4567897853533347',
+    title: 'Error transcript',
+    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+    tags: [],
+    lang: 'en-US',
+    status: 'error',
+    type: 'TBD',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
+  {
+    id: '98788983567',
+    title: 'Transcribing transcript',
+    description: 'foo bar baz',
+    tags: [],
+    lang: 'en-GB',
+    type: 'TBD',
+    status: 'transcribing', // status.endsWith('ing') -> spinner
+    createdAt: '2021-01-04T12:25:29.646Z',
+    updatedAt: '2021-01-07T13:25:29.646Z',
+  },
+];
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -121,23 +195,7 @@ const useStyles = makeStyles(theme => ({
 
 const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
-const DisplayStatus = ({ status }) => {
-  switch (status) {
-    case 'transcribing':
-    case 'aligning':
-      return <CircularProgress size={16} color="inherit" />;
-    case 'transcribed':
-    case 'aligned':
-    case 'new':
-      return <CheckIcon fontSize="small" />;
-    case 'error':
-      return <ErrorOutlineIcon fontSize="small" />;
-    default:
-      return <EditIcon fontSize="small" />;
-  }
-};
-
-const MediaPage = initialData => {
+export default function MediaPage(initialData) {
   const classes = useStyles();
   const router = useRouter();
   const theme = useTheme();
@@ -147,148 +205,21 @@ const MediaPage = initialData => {
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
 
+  const [description, setDescription] = useState(initialMedia.description);
+  const [tDialogOpen, setTDialogOpen] = React.useState(false);
+  const [editable, setEditable] = useState(null);
   const [media, setMedia] = useState(initialMedia);
+  const [newTAnchor, setNewTAnchor] = useState(null);
+  const [tActions, setTActions] = useState(null);
+  const [tActionsAnchor, setTActionsAnchor] = useState(null);
+  const [tags, setTags] = useState(initialMedia.tags);
+  const [title, setTitle] = useState(initialMedia.title);
   const [url, setUrl] = useState();
 
-  const [editable, setEditable] = useState(null);
-  const [title, setTitle] = useState(initialMedia.title);
-  const [description, setDescription] = useState(initialMedia.description);
-  const [tags, setTags] = useState(initialMedia.tags);
-
-  const [tActions, setTActions] = useState(null);
-  const [newTAnchor, setNewTAnchor] = useState(null);
-  const [tActionsAnchor, setTActionsAnchor] = useState(null);
-
   const isOwner = user?.id === media.owner;
-
-  // FIXME
-  const { channels = [], createdAt } = media ?? {};
-  const transcripts = [
-    {
-      id: '456787853567',
-      title: 'Transcribed transcript',
-      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-      tags: [],
-      lang: 'en-US',
-      status: 'transcribed',
-      type: 'TBD',
-      createdAt: '2020-12-04T14:25:29.646Z',
-      updatedAt: '2020-12-07T19:25:29.646Z',
-    },
-    {
-      id: '456789877',
-      title: 'New transcript',
-      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-      tags: [],
-      lang: 'en-US',
-      status: 'new',
-      type: 'TBD',
-      createdAt: '2020-12-04T14:25:29.646Z',
-      updatedAt: '2020-12-07T19:25:29.646Z',
-    },
-    {
-      id: '4567673567',
-      title: 'Aligned transcript',
-      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-      tags: [],
-      lang: 'en-US',
-      status: 'aligned',
-      type: 'TBD',
-      createdAt: '2020-12-04T14:25:29.646Z',
-      updatedAt: '2020-12-07T19:25:29.646Z',
-    },
-    {
-      id: '45678987567',
-      title: 'Aligning transcript',
-      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-      tags: [],
-      lang: 'en-US',
-      status: 'aligning',
-      type: 'TBD',
-      createdAt: '2020-12-04T14:25:29.646Z',
-      updatedAt: '2020-12-07T19:25:29.646Z',
-    },
-    {
-      id: '4567897853533347',
-      title: 'Error transcript',
-      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-      tags: [],
-      lang: 'en-US',
-      status: 'error',
-      type: 'TBD',
-      createdAt: '2020-12-04T14:25:29.646Z',
-      updatedAt: '2020-12-07T19:25:29.646Z',
-    },
-    {
-      id: '98788983567',
-      title: 'Transcribing transcript',
-      description: 'foo bar baz',
-      tags: [],
-      lang: 'en-GB',
-      type: 'TBD',
-      status: 'transcribing', // status.endsWith('ing') -> spinner
-      createdAt: '2021-01-04T12:25:29.646Z',
-      updatedAt: '2021-01-07T13:25:29.646Z',
-    },
-  ];
-
-  // console.log({ transcripts });
-
-  useEffect(() => {
-    getMedia(setMedia, id);
-
-    const subscription = DataStore.observe(Media).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
-      getMedia(setMedia, id);
-    });
-
-    const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
-    window.addEventListener('online', handleConnectionChange);
-
-    return () => subscription.unsubscribe();
-  }, [id]);
-
-  useEffect(() => {
-    if (!media || !media.url) return;
-    const signURL = async () => {
-      const prefix = 's3://hyperpink-data/public/';
-      if (media.url.startsWith(prefix)) {
-        setUrl(await Storage.get(media.url.substring(prefix.length)));
-      } else {
-        setUrl(media.url);
-      }
-    };
-
-    signURL();
-  }, [media]);
-
-  useEffect(() => {
-    if (!media) return;
-    setTitle(media.title);
-    setDescription(media.description);
-    setTags(media.tags);
-  }, [media]);
-
-  // const editTitle = useCallback(async () => {
-  //   if (media.owner !== user.id) return alert('not your media!');
-  //   const title = global.prompt('Edit Title', media.title);
-  //   if (title) {
-  //     setMedia(
-  //       await DataStore.save(
-  //         Media.copyOf(media, updated => {
-  //           updated.title = title;
-  //           updated.updatedAt = new Date().toISOString();
-  //         }),
-  //       ),
-  //     );
-  //   }
-  // }, [media, user]);
-
-  // TODO where to get them? all tags of the user?
-  const allTags = [
-    { id: 1, title: 'Remix' },
-    { id: 1, title: 'Audio' },
-  ];
+  const isSmall = useMediaQuery(theme.breakpoints.up('md'));
+  const { channels = [], createdAt } = media ?? {}; // FIXME
+  const channel = null;
 
   const formattedCreatedAt = useMemo(
     () =>
@@ -304,45 +235,16 @@ const MediaPage = initialData => {
     [createdAt],
   );
 
-  const channel = null;
-
-  const isSmall = useMediaQuery(theme.breakpoints.up('md'));
-
   const onToggleTranscriptUpload = () => {
     setNewTAnchor(null);
   };
-
   const onToggleTranscriptCreate = () => {
     setNewTAnchor(null);
   };
-
-  const onSave = useCallback(async () => {
-    console.log('onSave:', { title }, { description }, { tags });
-
-    await DataStore.save(
-      Media.copyOf(media, updated => {
-        updated.title = title;
-        updated.description = description;
-        updated.tags = tags;
-      }),
-    );
-
-    setEditable(false);
-  }, [media, title, description, tags]);
-
-  const gotoTranscript = useCallback(
-    transcript =>
-      router.push(
-        {
-          pathname: `/media/${id}`,
-          query: { t: transcript },
-        },
-        undefined,
-        { shallow: true },
-      ),
-    [router, id],
-  );
-
+  const onToggleTranscriptTranscribe = () => {
+    setNewTAnchor(null);
+    setTDialogOpen(true);
+  };
   const onTActionsClick = (e, id) => {
     e.stopPropagation();
     setTActionsAnchor(e.currentTarget);
@@ -360,6 +262,67 @@ const MediaPage = initialData => {
     setTActions(null);
     setTActionsAnchor(null);
   };
+  const onTranscribe = payload => {
+    const { language, speakers } = payload;
+    console.log('onTranscribe', { language }, { speakers });
+    setTDialogOpen(false);
+  };
+
+  const onSave = useCallback(async () => {
+    console.log('onSave:', { title }, { description }, { tags });
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.title = title;
+        updated.description = description;
+        updated.tags = tags;
+      }),
+    );
+    setEditable(false);
+  }, [media, title, description, tags]);
+
+  const gotoTranscript = useCallback(
+    transcript =>
+      router.push(
+        {
+          pathname: `/media/${id}`,
+          query: { t: transcript },
+        },
+        undefined,
+        { shallow: true },
+      ),
+    [router, id],
+  );
+
+  useEffect(() => {
+    getMedia(setMedia, id);
+    const subscription = DataStore.observe(Media).subscribe(msg => {
+      console.log(msg.model, msg.opType, msg.element);
+      getMedia(setMedia, id);
+    });
+    const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
+    window.addEventListener('online', handleConnectionChange);
+    return () => subscription.unsubscribe();
+  }, [id]);
+
+  useEffect(() => {
+    if (!media || !media.url) return;
+    const signURL = async () => {
+      const prefix = 's3://hyperpink-data/public/';
+      if (media.url.startsWith(prefix)) {
+        setUrl(await Storage.get(media.url.substring(prefix.length)));
+      } else {
+        setUrl(media.url);
+      }
+    };
+    signURL();
+  }, [media]);
+
+  useEffect(() => {
+    if (!media) return;
+    setTitle(media.title);
+    setDescription(media.description);
+    setTags(media.tags);
+  }, [media]);
 
   const menuProps = {
     anchorOrigin: {
@@ -387,7 +350,7 @@ const MediaPage = initialData => {
           <Grid item xs={6}>
             <NextLink href="/media" passHref>
               <Button color="primary" startIcon={<ArrowBackIcon />}>
-                All media
+                All audio
               </Button>
             </NextLink>
           </Grid>
@@ -485,7 +448,7 @@ const MediaPage = initialData => {
                 id="tags-filled"
                 multiple
                 onChange={(e, v) => setTags(v)} // TODO useCallback
-                options={allTags.map(option => option.title)}
+                options={ALL_TAGS.map(option => option.title)}
                 renderInput={params => (
                   <TextField
                     {...params}
@@ -504,7 +467,7 @@ const MediaPage = initialData => {
           </Grid>
 
           <Grid item>
-            {transcripts?.length > 0 && (
+            {TRANSCRIPTS?.length > 0 && (
               <List
                 aria-labelledby="nested-list-subheader"
                 className={classes.transcriptList}
@@ -517,7 +480,7 @@ const MediaPage = initialData => {
                   </ListSubheader>
                 }
               >
-                {transcripts.map(({ id, title, lang, status, statusMessage }) => {
+                {TRANSCRIPTS.map(({ id, title, lang, status, statusMessage }) => {
                   const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
                   return (
                     <ListItem
@@ -529,7 +492,7 @@ const MediaPage = initialData => {
                       <ListItemIcon>
                         <Tooltip title={statusMessage || ''}>
                           <span>
-                            <DisplayStatus status={status} />
+                            <StatusFlag status={status} />
                           </span>
                         </Tooltip>
                       </ListItemIcon>
@@ -563,21 +526,6 @@ const MediaPage = initialData => {
           </Grid>
         </Grid>
       </Grid>
-      {/* {t ? (
-        <h1>Transcript {t} View</h1>
-      ) : (
-        <table>
-          {transcripts.map(({ id, title, lang, status }) => (
-            <tr key={id}>
-              <td>
-                <span onClick={() => gotoTranscript(id)}>{title}</span>
-              </td>
-              <td>{lang}</td>
-              <td>{status}</td>
-            </tr>
-          ))}
-        </table>
-      )} */}
       <Menu
         anchorEl={newTAnchor}
         id="new-transcript-actions"
@@ -585,7 +533,7 @@ const MediaPage = initialData => {
         open={Boolean(newTAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryMenuItem} dense onClick={onToggleTranscriptUpload}>
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onToggleTranscriptTranscribe}>
           Auto-transcribe
         </MenuItem>
         <MenuItem dense onClick={onToggleTranscriptUpload}>
@@ -611,9 +559,10 @@ const MediaPage = initialData => {
           </MenuItem>
         )}
       </Menu>
+      <TranscribeDialog onCancel={() => setTDialogOpen(false)} onConfirm={onTranscribe} open={tDialogOpen} />
     </Layout>
   );
-};
+}
 
 export const getServerSideProps = async context => {
   const { Auth, DataStore } = withSSRContext(context);
@@ -642,23 +591,3 @@ export const getServerSideProps = async context => {
     },
   };
 };
-
-export default MediaPage;
-
-// <meta property="og:type" content="website" />
-// <meta property="og:url" content="https://metatags.io/" />
-// <meta property="og:title" content={title} />
-// <meta property="og:description" content={description} />
-// <meta
-//   property="og:image"
-//   content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
-// />
-
-// <meta property="twitter:card" content="summary_large_image" />
-// <meta property="twitter:url" content="https://metatags.io/" />
-// <meta property="twitter:title" content={title} />
-// <meta property="twitter:description" content={description} />
-// <meta
-//   property="twitter:image"
-//   content="https://metatags.io/assets/meta-tags-16a33a6a8531e519cc0936fbba0ad904e52d35f34a46c97a2c9f6f7dd7d336f2.png"
-// />
