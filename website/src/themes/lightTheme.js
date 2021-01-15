@@ -39,12 +39,6 @@ const lightTheme = createMuiTheme({
     },
     MuiInput: {
       underline: {
-        '&:after': {
-          pointerEvents: 'auto',
-        },
-        '&:before': {
-          pointerEvents: 'auto',
-        },
         '&$disabled:before': {
           borderBottomStyle: 'solid',
           borderBottomColor: 'transparent',
