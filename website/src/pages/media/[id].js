@@ -102,7 +102,7 @@ const MediaPage = initialData => {
   const { id } = router.query;
   const { user } = initialData;
 
-  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media));
+  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
 
   const [media, setMedia] = useState(initialMedia);
   const [url, setUrl] = useState();
@@ -145,7 +145,6 @@ const MediaPage = initialData => {
     };
 
     signURL();
-    setTags(media.tags);
   }, [media]);
 
   useEffect(() => {
@@ -170,6 +169,7 @@ const MediaPage = initialData => {
   //   }
   // }, [media, user]);
 
+  // TODO where to get them? all tags of the user?
   const allTags = [
     { id: 1, title: 'Remix' },
     { id: 1, title: 'Audio' },
@@ -193,10 +193,11 @@ const MediaPage = initialData => {
 
   const isSmall = useMediaQuery(theme.breakpoints.up('md'));
 
-  const onToggleTranscriptUpload = e => {
+  const onToggleTranscriptUpload = () => {
     setTranscriptActionsAnchorEl(null);
   };
-  const onToggleTranscriptCreate = e => {
+
+  const onToggleTranscriptCreate = () => {
     setTranscriptActionsAnchorEl(null);
   };
 
