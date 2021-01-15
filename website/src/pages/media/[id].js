@@ -4,6 +4,7 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import ReactPlayer from 'react-player';
+import { rgba } from 'polished';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, Storage, DataStore } from 'aws-amplify';
@@ -11,17 +12,23 @@ import { withSSRContext, Storage, DataStore } from 'aws-amplify';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
+import CheckIcon from '@material-ui/icons/Check';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -95,9 +102,34 @@ const useStyles = makeStyles(theme => ({
   primaryMenuItem: {
     color: theme.palette.primary.main,
   },
+  transcriptList: {
+    marginBottom: theme.spacing(2),
+    maxHeight: '200px',
+    overflowY: 'auto',
+  },
+  transcriptListSubh: {
+    background: rgba(theme.palette.background.default, 0.75),
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
 }));
 
 const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+
+const DisplayStatus = ({ status }) => {
+  switch (status) {
+    case 'transcribing':
+    case 'aligning':
+      return <CircularProgress size={16} color="inherit" />;
+    case 'transcribed':
+    case 'aligned':
+    case 'new':
+      return <CheckIcon fontSize="small" />;
+    case 'error':
+      return <ErrorOutlineIcon fontSize="small" />;
+    default:
+      return <EditIcon fontSize="small" />;
+  }
+};
 
 const MediaPage = initialData => {
   const classes = useStyles();
@@ -125,8 +157,8 @@ const MediaPage = initialData => {
   const { channels = [], createdAt } = media ?? {};
   const transcripts = [
     {
-      id: '4567898767853567',
-      title: 'Transcript 1',
+      id: '456787853567',
+      title: 'Transcribed transcript',
       description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
       tags: [],
       lang: 'en-US',
@@ -136,8 +168,52 @@ const MediaPage = initialData => {
       updatedAt: '2020-12-07T19:25:29.646Z',
     },
     {
-      id: '9878898767853567',
-      title: 'Transcript test',
+      id: '456789877',
+      title: 'New transcript',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
+      lang: 'en-US',
+      status: 'new',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '4567673567',
+      title: 'Aligned transcript',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
+      lang: 'en-US',
+      status: 'aligned',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '45678987567',
+      title: 'Aligning transcript',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
+      lang: 'en-US',
+      status: 'aligning',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '4567897853533347',
+      title: 'Error transcript',
+      description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
+      tags: [],
+      lang: 'en-US',
+      status: 'error',
+      type: 'TBD',
+      createdAt: '2020-12-04T14:25:29.646Z',
+      updatedAt: '2020-12-07T19:25:29.646Z',
+    },
+    {
+      id: '98788983567',
+      title: 'Transcribing transcript',
       description: 'foo bar baz',
       tags: [],
       lang: 'en-GB',
@@ -258,6 +334,7 @@ const MediaPage = initialData => {
       ),
     [router, id],
   );
+  console.log({ t });
 
   return (
     <Layout>
@@ -310,7 +387,7 @@ const MediaPage = initialData => {
           ) : null}
         </Grid>
         <Grid item container xs={12} md={4} direction="column" justify="space-between" spacing={2}>
-          <Grid item>
+          <Grid item xs>
             <TextField
               inputProps={{
                 className: classes.title,
@@ -382,44 +459,51 @@ const MediaPage = initialData => {
               {channel && `in {channel}`}
             </Typography>
           </Grid>
-          {transcripts?.length > 0 ? (
-            <Grid item>
+
+          <Grid item>
+            {transcripts?.length > 0 && (
               <List
+                className={classes.transcriptList}
                 component="ul"
                 aria-labelledby="nested-list-subheader"
+                dense
                 subheader={
-                  <ListSubheader component="div" disableGutters disableSticky id="nested-list-subheader">
-                    Available transcripts:
+                  <ListSubheader disableGutters className={classes.transcriptListSubh} id="nested-list-subheader">
+                    <Typography variant="overline">Available transcripts</Typography>
                   </ListSubheader>
                 }
               >
-                {transcripts.map(transcript => (
-                  <ListItem button disableGutters divider key={transcript.id}>
-                    <ListItemText primary={transcript.title} secondary={transcript.type} />
+                {transcripts.map(({ id, title, lang, status }) => (
+                  <ListItem button key={id} onClick={() => gotoTranscript(id)} selected={t === id}>
+                    <ListItemIcon>
+                      <DisplayStatus status={status} />
+                    </ListItemIcon>
+                    <ListItemText primary={title} secondary={lang} />
+                    <ListItemSecondaryAction>
+                      <IconButton size="small">
+                        <MoreHorizIcon fontSize="small" />
+                      </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 ))}
               </List>
-            </Grid>
-          ) : (
-            <Grid item>
-              <Button
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                color="primary"
-                fullWidth
-                onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
-                size="large"
-                startIcon={<SubtitlesIcon />}
-                variant="contained"
-              >
-                Add transcript
-              </Button>
-            </Grid>
-          )}
+            )}
+            <Button
+              aria-controls="simple-menu"
+              aria-haspopup="true"
+              color="primary"
+              fullWidth
+              onClick={e => setTranscriptActionsAnchorEl(e.currentTarget)}
+              size="large"
+              startIcon={<SubtitlesIcon />}
+              variant="contained"
+            >
+              Add transcript
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
-      <hr />
-      {t ? (
+      {/* {t ? (
         <h1>Transcript {t} View</h1>
       ) : (
         <table>
@@ -433,8 +517,7 @@ const MediaPage = initialData => {
             </tr>
           ))}
         </table>
-      )}
-      <hr />
+      )} */}
       <Menu
         anchorEl={transcriptActionsAnchorEl}
         anchorOrigin={{
