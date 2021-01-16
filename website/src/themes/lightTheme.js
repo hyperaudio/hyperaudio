@@ -10,6 +10,7 @@ const lightTheme = createMuiTheme({
   palette: {
     background: {
       default: 'white',
+      defaultOpacity: 0.95,
       well: grey[50],
     },
     primary: {

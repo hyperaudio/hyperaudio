@@ -1,9 +1,10 @@
 /* eslint-disable no-shadow */
-import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
-import { useRouter } from 'next/router';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Auth } from 'aws-amplify';
 import { onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { rgba } from 'polished';
+import { useRouter } from 'next/router';
 
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
@@ -22,6 +23,7 @@ import HyperaudioIcon from 'src/assets/icons/HaIcon';
 const useStyles = makeStyles(theme => ({
   root: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    background: rgba(theme.palette.background.default, theme.palette.background.defaultOpacity),
   },
   grow: {
     flexGrow: 1,

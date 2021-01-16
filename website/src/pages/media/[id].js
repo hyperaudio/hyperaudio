@@ -177,7 +177,7 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'auto',
   },
   transcriptsSubheader: {
-    background: rgba(theme.palette.background.default, 0.75),
+    background: rgba(theme.palette.background.default, theme.palette.background.defaultOpacity),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
 }));
