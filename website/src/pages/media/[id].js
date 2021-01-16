@@ -389,7 +389,7 @@ export default function MediaPage(initialData) {
               required
               value={title}
             />
-            {(isOwner || description.length > 1) && (
+            {(isOwner || description.length > 0) && (
               <TextField
                 {...textFieldProps}
                 inputProps={{
