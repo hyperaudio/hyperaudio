@@ -324,6 +324,15 @@ export default function MediaPage(initialData) {
     },
     variant: 'menu',
   };
+  const textFieldProps = {
+    color: 'primary',
+    disabled: !editable,
+    fullWidth: true,
+    margin: 'none',
+    multiline: true,
+    size: 'small',
+    type: 'text',
+  };
 
   return (
     <Layout>
@@ -370,40 +379,28 @@ export default function MediaPage(initialData) {
         <Grid item container xs={12} md={4} direction="column" justify="space-between" spacing={2}>
           <Grid item xs>
             <TextField
+              {...textFieldProps}
               inputProps={{
                 className: classes.title,
               }}
-              // classes={{ root: classes.textField }}
               margin="none"
-              color="primary"
-              value={title}
-              disabled={!editable}
-              fullWidth
-              multiline
               name="title"
-              required
-              size="small"
-              type="text"
               onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
+              required
+              value={title}
             />
             {(isOwner || description.length > 1) && (
               <TextField
+                {...textFieldProps}
                 inputProps={{
                   className: classes.description,
                 }}
-                // classes={{ root: classes.textField }}
                 margin="dense"
-                color="primary"
-                value={description}
-                disabled={!editable}
-                fullWidth
-                multiline
                 name="description"
+                onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
                 placeholder="Add description"
                 required
-                size="small"
-                type="text"
-                onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
+                value={description}
               />
             )}
             {(isOwner || tags.length > 0) && (
@@ -440,7 +437,6 @@ export default function MediaPage(initialData) {
               {channel && `in {channel}`}
             </Typography>
           </Grid>
-
           <Grid item>
             {TRANSCRIPTS?.length > 0 && (
               <List

@@ -19,7 +19,11 @@ export default function DeleteDialog({ onConfirm, onCancel, open, transcript }) 
       <DialogTitle id="dialog-title">Delete transcript?</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Selected transcript: <strong>{transcript?.title}</strong> will be deleted irreversibly.
+          Selected transcript:{' '}
+          <strong>
+            {transcript?.title} ({transcript?.lang})
+          </strong>{' '}
+          will be deleted irreversibly.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
