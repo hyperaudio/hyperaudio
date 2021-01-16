@@ -193,18 +193,18 @@ export default function MediaPage(initialData) {
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
 
-  const [description, setDescription] = useState(initialMedia.description);
   const [editable, setEditable] = useState(null);
+  const [description, setDescription] = useState(initialMedia.description);
   const [media, setMedia] = useState(initialMedia);
-  const [tActionsAnchor, setTranscriptMenuAnchor] = useState(null);
   const [tags, setTags] = useState(initialMedia.tags);
   const [title, setTitle] = useState(initialMedia.title);
   const [url, setUrl] = useState();
 
   const [actionableTranscript, setActionableTranscript] = useState();
   const [transcribeDialogOpen, setTranscribeDialogOpen] = React.useState();
-  const [transcribeMenuAnchor, setTranscribeMenuAnchor] = useState(null);
+  const [transcribeMenuAnchor, setTranscribeMenuAnchor] = useState();
   const [transcriptDeleteDialogOpen, setTranscriptDeleteDialogOpen] = React.useState();
+  const [transcriptMenuAnchor, setTranscriptMenuAnchor] = useState();
 
   const isOwner = user?.id === media.owner;
   const isSmall = useMediaQuery(theme.breakpoints.up('md'));
@@ -225,7 +225,6 @@ export default function MediaPage(initialData) {
     [createdAt],
   );
 
-  // NEW
   const onReset = () => {
     setActionableTranscript(null);
     setTranscribeDialogOpen(false);
@@ -234,21 +233,13 @@ export default function MediaPage(initialData) {
     setTranscriptMenuAnchor(null);
   };
   const onTranscriptMenuOpen = id => e => {
-    if (e) e.stopPropagation();
     setActionableTranscript(TRANSCRIPTS.find(o => o.id === id));
     setTranscriptMenuAnchor(e.currentTarget);
   };
-  const onTranscriptMenuClose = () => onReset();
   const onRemixClick = () => {
-    if (!actionableTranscript) return;
     console.log('onRemixClick', { actionableTranscript });
     onReset();
   };
-  const onDeleteTranscriptClick = () => {
-    if (!actionableTranscript) return;
-    setTranscriptDeleteDialogOpen(true);
-  };
-  const onDeleteCancel = () => onReset();
   const onDeleteConfirm = () => {
     console.log('onDeleteConfirm', actionableTranscript);
     onReset();
@@ -257,7 +248,6 @@ export default function MediaPage(initialData) {
     setTranscribeDialogOpen(true);
     setTranscribeMenuAnchor(null);
   };
-  const onTranscribeCancel = () => onReset();
   const onTranscribeConfirm = payload => {
     const { language, speakers } = payload;
     console.log('onTranscribeConfirm', { language }, { speakers });
@@ -527,7 +517,7 @@ export default function MediaPage(initialData) {
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
-        // onClose={onTranscriptMenuClose}
+        onClose={onReset}
         open={Boolean(transcribeMenuAnchor)}
         {...menuProps}
       >
@@ -542,28 +532,28 @@ export default function MediaPage(initialData) {
         </MenuItem>
       </Menu>
       <Menu
-        anchorEl={tActionsAnchor}
+        anchorEl={transcriptMenuAnchor}
         id="transcript-actions"
-        onClose={onTranscriptMenuClose}
-        open={Boolean(tActionsAnchor)}
+        onClose={onReset}
+        open={Boolean(transcriptMenuAnchor)}
         {...menuProps}
       >
         <MenuItem className={classes.primary} dense divider={isOwner} onClick={onRemixClick}>
           Mix
         </MenuItem>
         {isOwner && (
-          <MenuItem dense onClick={onDeleteTranscriptClick}>
+          <MenuItem dense onClick={actionableTranscript ? () => setTranscriptDeleteDialogOpen(true) : null}>
             Delete
           </MenuItem>
         )}
       </Menu>
       <DeleteDialog
-        onCancel={onDeleteCancel}
+        onCancel={onReset}
         onConfirm={onDeleteConfirm}
         open={transcriptDeleteDialogOpen}
         transcript={actionableTranscript}
       />
-      <TranscribeDialog onCancel={onTranscribeCancel} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
+      <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
     </Layout>
   );
 }
