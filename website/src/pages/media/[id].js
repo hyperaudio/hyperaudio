@@ -34,11 +34,12 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import DeleteDialog from './DeleteDialog';
+import { Media, User } from 'src/models';
 import Layout from 'src/Layout';
+
+import DeleteDialog from './DeleteDialog';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
-import { Media, User } from 'src/models';
 
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = [
