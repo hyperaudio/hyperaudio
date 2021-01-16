@@ -126,7 +126,7 @@ const Dashboard = initialData => {
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
         <Typography component="h1" gutterBottom variant="h4">
-          Your audio
+          Your media
         </Typography>
         <div className={classes.grow} />
         <NextLink href="/new/channel" passHref>
@@ -136,7 +136,7 @@ const Dashboard = initialData => {
         </NextLink>
         <NextLink href="/new/media" passHref>
           <Button className={classes.toolbarButtons} color="primary" variant="contained">
-            New Audio
+            New Media
           </Button>
         </NextLink>
       </Toolbar>
