@@ -346,7 +346,7 @@ export default function MediaPage(initialData) {
           <Grid item xs={6}>
             <NextLink href="/media" passHref>
               <Button color="primary" startIcon={<ArrowBackIcon />}>
-                All audio
+                All media
               </Button>
             </NextLink>
           </Grid>
@@ -447,7 +447,7 @@ export default function MediaPage(initialData) {
                 disablePadding
                 subheader={
                   <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
-                    <Typography variant="overline">Available transcripts:</Typography>
+                    <Typography variant="overline">Available transcripts</Typography>
                     <ListItemSecondaryAction>
                       <Tooltip title="Add transcript">
                         <span>

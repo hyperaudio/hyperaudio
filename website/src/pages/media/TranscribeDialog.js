@@ -159,7 +159,7 @@ export default function TranscribeDialog({ onConfirm, onCancel, open }) {
     >
       <DialogTitle id="dialog-title">Auto-transcribe</DialogTitle>
       <DialogContent>
-        <DialogContentText>Automatically transcribe spoken word in this audio</DialogContentText>
+        <DialogContentText>Automatically transcribe spoken word in this media</DialogContentText>
         <TextField
           fullWidth
           helperText="Select an appropriate transcription algorithm"

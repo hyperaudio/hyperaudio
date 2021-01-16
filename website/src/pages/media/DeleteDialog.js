@@ -19,7 +19,7 @@ export default function DeleteDialog({ onConfirm, onCancel, open, transcript }) 
       <DialogTitle id="dialog-title">Delete transcript?</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Selected transcript:{' '}
+          Selected transcript{' '}
           <strong>
             {transcript?.title} ({transcript?.lang})
           </strong>{' '}
