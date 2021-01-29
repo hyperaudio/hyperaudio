@@ -340,11 +340,9 @@ export default function AddMediaPage(initialData) {
                 <>
                   <CardHeader
                     action={
-                      !isUploading && (
-                        <IconButton onClick={onReset}>
-                          <CloseIcon fontSize="small" />
-                        </IconButton>
-                      )
+                      <IconButton onClick={onReset}>
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
                     }
                     className={classes.cardHeader}
                   />
