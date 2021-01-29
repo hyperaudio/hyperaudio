@@ -112,21 +112,23 @@ const MetaForm = ({
           autoFocus
           fullWidth
           label="Title"
+          margin="dense"
           onChange={e => setTitle(e.target.value)}
           required
+          size="small"
           type="text"
           value={title}
-          size="small"
         />
         <TextField
           fullWidth
           label="Description"
+          margin="dense"
           multiline
           onChange={e => setDescription(e.target.value)}
           rowsMax={3}
+          size="small"
           type="text"
           value={description}
-          size="small"
         />
         <Autocomplete
           freeSolo
@@ -135,12 +137,10 @@ const MetaForm = ({
           onChange={(e, v) => setChannels(v)}
           onInputChange={args => console.log('onInputChange', args)}
           options={allChannels.map(option => option.title)}
-          renderInput={params => (
-            <TextField {...params} helperText="Add this media to channels" label="Channels" size="small" />
-          )}
+          renderInput={params => <TextField {...params} label="Add to channels" margin="dense" size="small" />}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
             ))
           }
           value={channels}
@@ -152,10 +152,10 @@ const MetaForm = ({
           onChange={(e, v) => setTags(v)}
           onInputChange={args => console.log('onInputChange', args)}
           options={allTags.map(option => option.title)}
-          renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" size="small" />}
+          renderInput={params => <TextField {...params} label="Add tags" margin="dense" size="small" />}
           renderTags={(value, getTagProps) =>
             value.map((option, index) => (
-              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
             ))
           }
           value={tags}
