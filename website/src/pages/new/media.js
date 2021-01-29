@@ -71,13 +71,22 @@ const useStyles = () =>
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
-      minHeight: '320px',
+      padding: theme.spacing(2.5),
       textAlign: 'center',
+      [theme.breakpoints.up('md')]: {
+        minHeight: '360px',
+        padding: theme.spacing(5),
+      },
     },
     cardIcon: {
       marginBottom: theme.spacing(1),
     },
     cardPrompt: { marginBottom: theme.spacing(2) },
+    actionbar: {
+      '& > *': {
+        marginRight: theme.spacing(1),
+      },
+    },
   }));
 
 const MetaForm = ({
@@ -87,69 +96,80 @@ const MetaForm = ({
   description,
   isValid,
   onAddNewMedia,
+  onReset,
   setChannels,
   setDescription,
   setTags,
   setTitle,
   tags,
   title,
-}) => (
-  <form>
-    <>
-      <TextField
-        autoFocus
-        fullWidth
-        label="Title"
-        onChange={e => setTitle(e.target.value)}
-        required
-        type="text"
-        value={title}
-      />
-      <TextField
-        fullWidth
-        label="Description"
-        multiline
-        onChange={e => setDescription(e.target.value)}
-        rowsMax={3}
-        type="text"
-        value={description}
-      />
-      <Autocomplete
-        freeSolo
-        id="channels-filled"
-        multiple
-        onChange={(e, v) => setChannels(v)}
-        onInputChange={args => console.log('onInputChange', args)}
-        options={allChannels.map(option => option.title)}
-        renderInput={params => <TextField {...params} helperText="Add this media to channels" label="Channels" />}
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-          ))
-        }
-        value={channels}
-      />
-      <Autocomplete
-        freeSolo
-        id="tags-filled"
-        multiple
-        onChange={(e, v) => setTags(v)}
-        onInputChange={args => console.log('onInputChange', args)}
-        options={allTags.map(option => option.title)}
-        renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" />}
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-          ))
-        }
-        value={tags}
-      />
-      <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained">
-        Finish
-      </Button>
-    </>
-  </form>
-);
+}) => {
+  const classes = useStyles()();
+  return (
+    <form>
+      <>
+        <TextField
+          autoFocus
+          fullWidth
+          label="Title"
+          onChange={e => setTitle(e.target.value)}
+          required
+          type="text"
+          value={title}
+          size="small"
+        />
+        <TextField
+          fullWidth
+          label="Description"
+          multiline
+          onChange={e => setDescription(e.target.value)}
+          rowsMax={3}
+          type="text"
+          value={description}
+          size="small"
+        />
+        <Autocomplete
+          freeSolo
+          id="channels-filled"
+          multiple
+          onChange={(e, v) => setChannels(v)}
+          onInputChange={args => console.log('onInputChange', args)}
+          options={allChannels.map(option => option.title)}
+          renderInput={params => (
+            <TextField {...params} helperText="Add this media to channels" label="Channels" size="small" />
+          )}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+            ))
+          }
+          value={channels}
+        />
+        <Autocomplete
+          freeSolo
+          id="tags-filled"
+          multiple
+          onChange={(e, v) => setTags(v)}
+          onInputChange={args => console.log('onInputChange', args)}
+          options={allTags.map(option => option.title)}
+          renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" size="small" />}
+          renderTags={(value, getTagProps) =>
+            value.map((option, index) => (
+              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+            ))
+          }
+          value={tags}
+        />
+        <Toolbar disableGutters className={classes.actionbar}>
+          <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained">
+            Finish
+          </Button>
+          <Button onClick={onReset}>Cancel</Button>
+        </Toolbar>
+      </>
+    </form>
+  );
+};
 
 export default function AddMediaPage(initialData) {
   const router = useRouter();
@@ -180,16 +200,14 @@ export default function AddMediaPage(initialData) {
 
   const [channels, setChannels] = useState([]);
   const [description, setDescription] = useState('');
-  const [title, setTitle] = useState('');
-  const [tags, setTags] = useState([]);
-  const [metadata, setMetadata] = useState({});
-  const [source, setSource] = useState(null);
-
-  const [url, setUrl] = useState('');
   const [extracted, setExtracted] = useState(false);
-
   const [file, setFile] = useState();
+  const [metadata, setMetadata] = useState({});
   const [progress, setProgress] = useState(0);
+  const [source, setSource] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
 
   const isValid = useMemo(() => url.startsWith('s3://hyperpink-data/') || ReactPlayer.canPlay(url), [url]);
 
@@ -297,8 +315,10 @@ export default function AddMediaPage(initialData) {
   }, [url, title, description, tags, metadata, user, router]);
 
   const onReset = () => {
-    setSource(null);
     setFile(null);
+    setProgress(null);
+    setSource(null);
+    // TODO: Reset things for good
   };
 
   const isUploading = Boolean(file) && progress > 0;
@@ -339,6 +359,7 @@ export default function AddMediaPage(initialData) {
                           description={description}
                           isValid={isValid}
                           onAddNewMedia={onAddNewMedia}
+                          onReset={onReset}
                           setChannels={setChannels}
                           setDescription={setDescription}
                           setTags={setTags}
@@ -390,7 +411,12 @@ export default function AddMediaPage(initialData) {
                   </CardContent>
                 </>
               ) : (
-                <CardActionArea onClick={() => setSource('upload')}>
+                <CardActionArea
+                  className={`${classes.cardActionArea} ${
+                    source === 'url' && url.length > 0 ? classes.cardActionAreaDisabled : ''
+                  }`}
+                  onClick={() => setSource('upload')}
+                >
                   <CardContent className={classes.cardContent}>
                     <div>
                       <CloudUploadIcon fontSize="large" className={classes.cardIcon} />
@@ -431,23 +457,41 @@ export default function AddMediaPage(initialData) {
                     className={classes.cardHeader}
                   />
                   <CardContent className={classes.cardContent}>
-                    <TextField
-                      fullWidth
-                      error={!isValid}
-                      helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
-                      label="Enter a valid media URL"
-                      onChange={e => setUrl(e.target.value)}
-                      placeholder="https://www.youtube.com/watch?v=xyz"
-                      required
-                      type="url"
-                      value={url}
-                    />
+                    {url.length > 0 ? (
+                      <MetaForm
+                        allChannels={allChannels}
+                        allTags={allTags}
+                        channels={channels}
+                        description={description}
+                        isValid={isValid}
+                        onAddNewMedia={onAddNewMedia}
+                        onReset={onReset}
+                        setChannels={setChannels}
+                        setDescription={setDescription}
+                        setTags={setTags}
+                        setTitle={setTitle}
+                        tags={tags}
+                        title={title}
+                      />
+                    ) : (
+                      <TextField
+                        error={!isValid}
+                        fullWidth
+                        helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
+                        label="Enter a valid media URL"
+                        onChange={e => setUrl(e.target.value)}
+                        placeholder="https://www.youtube.com/watch?v=xyz"
+                        required
+                        type="url"
+                        value={url}
+                      />
+                    )}
                   </CardContent>
                 </>
               ) : (
                 <CardActionArea
                   className={`${classes.cardActionArea} ${isUploading ? classes.cardActionAreaDisabled : ''}`}
-                  onClick={progress > 0 ? null : () => setSource('url')}
+                  onClick={() => setSource('url')}
                 >
                   <CardContent className={classes.cardContent}>
                     <div>
