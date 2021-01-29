@@ -26,6 +26,7 @@
     "clsx": "^1.1.1",
     "embedly": "^2.1.1",
     "gray-matter": "^4.0.2",
+    "lodash": "^4.17.20",
     "mongodb": "^3.6.3",
     "next": "10.0.3",
     "nprogress": "^0.2.0",
