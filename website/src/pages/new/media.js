@@ -42,46 +42,116 @@ const HLS_EXTENSIONS = /\.(m3u8)($|\?)/i;
 const DASH_EXTENSIONS = /\.(mpd)($|\?)/i;
 const FLV_EXTENSIONS = /\.(flv)($|\?)/i;
 
-const useStyles = makeStyles(theme => ({
-  toolbar: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2),
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  container: {},
-  card: { position: 'relative' },
-  progress: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  cardHeader: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-  },
-  cardContent: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    minHeight: '300px',
-    textAlign: 'center',
-  },
-  cardIcon: {
-    marginBottom: theme.spacing(1),
-  },
-  cardPrompt: { marginBottom: theme.spacing(2) },
-  divider: {
-    marginBottom: theme.spacing(3),
-    marginTop: theme.spacing(3),
-  },
-}));
+const useStyles = () =>
+  makeStyles(theme => ({
+    toolbar: {
+      marginTop: theme.spacing(4),
+      marginBottom: theme.spacing(2),
+    },
+    grow: {
+      flexGrow: 1,
+    },
+    container: {},
+    card: { position: 'relative' },
+    progress: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+    },
+    cardHeader: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+    },
+    cardActionArea: {},
+    cardActionAreaDisabled: { opacity: '0.5', pointerEvents: 'none' },
+    cardContent: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      minHeight: '320px',
+      textAlign: 'center',
+    },
+    cardIcon: {
+      marginBottom: theme.spacing(1),
+    },
+    cardPrompt: { marginBottom: theme.spacing(2) },
+  }));
 
-const AddMediaPage = initialData => {
+const MetaForm = ({
+  allChannels,
+  allTags,
+  channels,
+  description,
+  isValid,
+  onAddNewMedia,
+  setChannels,
+  setDescription,
+  setTags,
+  setTitle,
+  tags,
+  title,
+}) => (
+  <form>
+    <>
+      <TextField
+        autoFocus
+        fullWidth
+        label="Title"
+        onChange={e => setTitle(e.target.value)}
+        required
+        type="text"
+        value={title}
+      />
+      <TextField
+        fullWidth
+        label="Description"
+        multiline
+        onChange={e => setDescription(e.target.value)}
+        rowsMax={3}
+        type="text"
+        value={description}
+      />
+      <Autocomplete
+        freeSolo
+        id="channels-filled"
+        multiple
+        onChange={(e, v) => setChannels(v)}
+        onInputChange={args => console.log('onInputChange', args)}
+        options={allChannels.map(option => option.title)}
+        renderInput={params => <TextField {...params} helperText="Add this media to channels" label="Channels" />}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+          ))
+        }
+        value={channels}
+      />
+      <Autocomplete
+        freeSolo
+        id="tags-filled"
+        multiple
+        onChange={(e, v) => setTags(v)}
+        onInputChange={args => console.log('onInputChange', args)}
+        options={allTags.map(option => option.title)}
+        renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" />}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
+          ))
+        }
+        value={tags}
+      />
+      <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained">
+        Finish
+      </Button>
+    </>
+  </form>
+);
+
+export default function AddMediaPage(initialData) {
   const router = useRouter();
 
   const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
@@ -110,9 +180,9 @@ const AddMediaPage = initialData => {
 
   const [channels, setChannels] = useState([]);
   const [description, setDescription] = useState('');
+  const [title, setTitle] = useState('');
   const [tags, setTags] = useState([]);
   const [metadata, setMetadata] = useState({});
-  const [title, setTitle] = useState('');
   const [source, setSource] = useState(null);
 
   const [url, setUrl] = useState('');
@@ -125,15 +195,14 @@ const AddMediaPage = initialData => {
 
   const onFileChange = useCallback(({ target: { files } }) => setFile(files[0]), []);
 
-  const upload = useCallback(
-    () =>
-      Storage.put(`test/${file.name}`, file, {
-        progressCallback: ({ loaded, total }) => setProgress((100 * loaded) / total),
-      })
-        .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
-        .catch(err => console.log(err)),
-    [file],
-  );
+  const onUpload = useCallback(() => {
+    setTitle(file.name);
+    Storage.put(`test/${file.name}`, file, {
+      progressCallback: ({ loaded, total }) => setProgress((100 * loaded) / total),
+    })
+      .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
+      .catch(err => console.log(err));
+  }, [file]);
 
   useEffect(() => {
     if (!isValid && extracted) setExtracted(false);
@@ -233,7 +302,7 @@ const AddMediaPage = initialData => {
   };
 
   const isUploading = Boolean(file) && progress > 0;
-  const classes = useStyles();
+  const classes = useStyles()();
 
   return (
     <Layout>
@@ -244,217 +313,174 @@ const AddMediaPage = initialData => {
         <div className={classes.grow} />
       </Toolbar>
       <Container className={classes.container} disableGutters>
-        <form>
-          <Grid container spacing={5}>
-            <Grid item xs={12} md={6}>
-              <Card className={classes.card}>
-                {source === 'upload' ? (
-                  <>
-                    <CardHeader
-                      action={
-                        !isUploading && (
-                          <IconButton onClick={onReset}>
-                            <CloseIcon fontSize="small" />
-                          </IconButton>
-                        )
-                      }
-                      className={classes.cardHeader}
-                    />
-                    {isUploading && (
-                      <LinearProgress variant="determinate" value={progress} className={classes.progress} />
-                    )}
-                    <CardContent className={classes.cardContent}>
-                      <Typography
-                        className={classes.cardPrompt}
-                        color="textSecondary"
-                        gutterBottom
-                        noWrap
-                        variant="body1"
-                      >
-                        {file ? file.name : 'Choose a file to continue…'}
-                      </Typography>
-                      <Grid container spacing={2} justify="center">
-                        <Grid item>
-                          <FileInput
-                            buttonProps={{
-                              color: file ? 'default' : 'primary',
-                              disabled: progress > 0,
-                              size: 'small',
-                              variant: 'contained',
-                            }}
-                            inputProps={{}}
-                            label={file ? 'Choose different…' : 'Choose…'}
-                            labelProps={{}}
-                            onChange={onFileChange}
-                          />
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            color={file ? 'primary' : 'default'}
-                            disabled={!file || progress > 0}
-                            onClick={upload}
-                            size="small"
-                            variant="contained"
-                          >
-                            Upload
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </>
-                ) : (
-                  <CardActionArea onClick={() => setSource('upload')}>
-                    <CardContent className={classes.cardContent}>
-                      <div>
-                        <CloudUploadIcon fontSize="large" className={classes.cardIcon} />
-                        <Typography component="h2" variant="h6" gutterBottom>
-                          Upload media
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                          Upload a valid{' '}
-                          <Tooltip title="m4a, mp4a, mpga, mp2, mp2a, mp3, m2a, m3a, wav, weba, aac, oga, spx">
-                            <Link color="inherit" underline="always">
-                              audio
-                            </Link>
-                          </Tooltip>{' '}
-                          or{' '}
-                          <Tooltip title="mp4, og[gv], webm, mov, m4v">
-                            <Link color="inherit" underline="always">
-                              video
-                            </Link>
-                          </Tooltip>{' '}
-                          file from your device.
-                        </Typography>
-                      </div>
-                    </CardContent>
-                  </CardActionArea>
-                )}
-              </Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Card className={classes.card}>
-                {source === 'url' ? (
-                  <>
-                    <CardHeader
-                      action={
-                        <IconButton onClick={() => setSource(null)}>
+        <Grid container spacing={5}>
+          <Grid item xs={12} md={6}>
+            <Card className={classes.card}>
+              {source === 'upload' ? (
+                <>
+                  <CardHeader
+                    action={
+                      !isUploading && (
+                        <IconButton onClick={onReset}>
                           <CloseIcon fontSize="small" />
                         </IconButton>
-                      }
-                      className={classes.cardHeader}
-                      title="Source from Web"
-                      titleTypographyProps={{
-                        component: 'h2',
-                        variant: 'h6',
-                      }}
-                    />
-                    <CardContent className={classes.cardContent}>
-                      <TextField
-                        fullWidth
-                        error={!isValid}
-                        helperText={isValid ? null : 'Enter a valid media URL'}
-                        label="URL"
-                        onChange={e => setUrl(e.target.value)}
-                        placeholder="https://www.youtube.com/watch?v=xyz"
-                        required
-                        type="url"
-                        value={url}
-                      />
-                    </CardContent>
-                  </>
-                ) : (
-                  <CardActionArea onClick={progress > 0 ? null : () => setSource('url')}>
-                    <CardContent className={classes.cardContent}>
+                      )
+                    }
+                    className={classes.cardHeader}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    {isUploading ? (
+                      <>
+                        <LinearProgress variant="determinate" value={progress} className={classes.progress} />
+                        <MetaForm
+                          allChannels={allChannels}
+                          allTags={allTags}
+                          channels={channels}
+                          description={description}
+                          isValid={isValid}
+                          onAddNewMedia={onAddNewMedia}
+                          setChannels={setChannels}
+                          setDescription={setDescription}
+                          setTags={setTags}
+                          setTitle={setTitle}
+                          tags={tags}
+                          title={title}
+                        />
+                      </>
+                    ) : (
                       <div>
-                        <OndemandVideoIcon fontSize="large" className={classes.cardIcon} />
-                        <Typography component="h2" variant="h6" gutterBottom>
-                          Source from Web
+                        <Typography
+                          className={classes.cardPrompt}
+                          color="textSecondary"
+                          gutterBottom
+                          noWrap
+                          variant="body1"
+                        >
+                          {file ? file.name : 'Choose a file to continue…'}
                         </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                          Source{' '}
-                          <Tooltip title="Youtube, Vimeo, SoundCloud">
-                            <Link color="inherit" underline="always">
-                              publicly available media
-                            </Link>
-                          </Tooltip>{' '}
-                          or{' '}
-                          <Tooltip title="m4a, mp4a, mpga, mp2, mp2a, mp3, m2a, m3a, wav, weba, aac, oga, spx, mp4, og[gv], webm, mov, m4v">
-                            <Link color="inherit" underline="always">
-                              accepted file type
-                            </Link>
-                          </Tooltip>{' '}
-                          links.
-                        </Typography>
+                        <Grid container spacing={2} justify="center">
+                          <Grid item>
+                            <FileInput
+                              buttonProps={{
+                                color: file ? 'default' : 'primary',
+                                disabled: progress > 0,
+                                size: 'small',
+                                variant: 'contained',
+                              }}
+                              inputProps={{}}
+                              label={file ? 'Choose different…' : 'Choose…'}
+                              labelProps={{}}
+                              onChange={onFileChange}
+                            />
+                          </Grid>
+                          <Grid item>
+                            <Button
+                              color={file ? 'primary' : 'default'}
+                              disabled={!file || progress > 0}
+                              onClick={onUpload}
+                              size="small"
+                              variant="contained"
+                            >
+                              Upload
+                            </Button>
+                          </Grid>
+                        </Grid>
                       </div>
-                    </CardContent>
-                  </CardActionArea>
-                )}
-              </Card>
-            </Grid>
+                    )}
+                  </CardContent>
+                </>
+              ) : (
+                <CardActionArea onClick={() => setSource('upload')}>
+                  <CardContent className={classes.cardContent}>
+                    <div>
+                      <CloudUploadIcon fontSize="large" className={classes.cardIcon} />
+                      <Typography component="h2" variant="h6" gutterBottom>
+                        Upload media
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        Upload a valid{' '}
+                        <Tooltip title="m4a, mp4a, mpga, mp2, mp2a, mp3, m2a, m3a, wav, weba, aac, oga, spx">
+                          <Link color="inherit" underline="always">
+                            audio
+                          </Link>
+                        </Tooltip>{' '}
+                        or{' '}
+                        <Tooltip title="mp4, og[gv], webm, mov, m4v">
+                          <Link color="inherit" underline="always">
+                            video
+                          </Link>
+                        </Tooltip>{' '}
+                        file from your device.
+                      </Typography>
+                    </div>
+                  </CardContent>
+                </CardActionArea>
+              )}
+            </Card>
           </Grid>
-          {url?.length > 0 ? (
-            <>
-              <TextField
-                fullWidth
-                label="Title"
-                onChange={e => setTitle(e.target.value)}
-                required
-                type="text"
-                value={title}
-              />
-              <TextField
-                fullWidth
-                label="Description"
-                multiline
-                onChange={e => setDescription(e.target.value)}
-                rowsMax={3}
-                type="text"
-                value={description}
-              />
-              <div className={classes.divider} />
-              <Autocomplete
-                freeSolo
-                id="channels-filled"
-                multiple
-                onChange={(e, v) => setChannels(v)}
-                onInputChange={args => console.log('onInputChange', args)}
-                options={allChannels.map(option => option.title)}
-                renderInput={params => (
-                  <TextField {...params} helperText="Add this media to channels" label="Channels" />
-                )}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                  ))
-                }
-                value={channels}
-              />
-              <Autocomplete
-                freeSolo
-                id="tags-filled"
-                multiple
-                onChange={(e, v) => setTags(v)}
-                onInputChange={args => console.log('onInputChange', args)}
-                options={allTags.map(option => option.title)}
-                renderInput={params => <TextField {...params} helperText="Tag your media" label="Tags" />}
-                renderTags={(value, getTagProps) =>
-                  value.map((option, index) => (
-                    <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} />
-                  ))
-                }
-                value={tags}
-              />
-              <div className={classes.divider} />
-              <Button color="primary" onClick={onAddNewMedia} variant="contained" disabled={!isValid}>
-                Save
-              </Button>
-            </>
-          ) : null}
-        </form>
+          <Grid item xs={12} md={6}>
+            <Card className={classes.card}>
+              {source === 'url' ? (
+                <>
+                  <CardHeader
+                    action={
+                      <IconButton onClick={() => setSource(null)}>
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    }
+                    className={classes.cardHeader}
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <TextField
+                      fullWidth
+                      error={!isValid}
+                      helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
+                      label="Enter a valid media URL"
+                      onChange={e => setUrl(e.target.value)}
+                      placeholder="https://www.youtube.com/watch?v=xyz"
+                      required
+                      type="url"
+                      value={url}
+                    />
+                  </CardContent>
+                </>
+              ) : (
+                <CardActionArea
+                  className={`${classes.cardActionArea} ${isUploading ? classes.cardActionAreaDisabled : ''}`}
+                  onClick={progress > 0 ? null : () => setSource('url')}
+                >
+                  <CardContent className={classes.cardContent}>
+                    <div>
+                      <OndemandVideoIcon fontSize="large" className={classes.cardIcon} />
+                      <Typography component="h2" variant="h6" gutterBottom>
+                        Source from Web
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary" component="p">
+                        Source{' '}
+                        <Tooltip title="Youtube, Vimeo, SoundCloud">
+                          <Link color="inherit" underline="always">
+                            publicly available media
+                          </Link>
+                        </Tooltip>{' '}
+                        or{' '}
+                        <Tooltip title="m4a, mp4a, mpga, mp2, mp2a, mp3, m2a, m3a, wav, weba, aac, oga, spx, mp4, og[gv], webm, mov, m4v">
+                          <Link color="inherit" underline="always">
+                            accepted file type
+                          </Link>
+                        </Tooltip>{' '}
+                        links.
+                      </Typography>
+                    </div>
+                  </CardContent>
+                </CardActionArea>
+              )}
+            </Card>
+          </Grid>
+        </Grid>
       </Container>
     </Layout>
   );
-};
+}
 
 export const getServerSideProps = async context => {
   const { Auth, DataStore } = withSSRContext(context);
@@ -474,5 +500,3 @@ export const getServerSideProps = async context => {
     return { redirect: { destination: '/auth/?redirect=/new/media', permanent: false } };
   }
 };
-
-export default AddMediaPage;
