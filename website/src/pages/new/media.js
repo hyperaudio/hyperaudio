@@ -315,9 +315,10 @@ export default function AddMediaPage(initialData) {
   }, [url, title, description, tags, metadata, user, router]);
 
   const onReset = () => {
-    setFile(null);
-    setProgress(null);
+    setFile(undefined);
+    setProgress(0);
     setSource(null);
+    setUrl('');
     // TODO: Reset things for good
   };
 
@@ -448,7 +449,7 @@ export default function AddMediaPage(initialData) {
                 <>
                   <CardHeader
                     action={
-                      <IconButton onClick={() => setSource(null)}>
+                      <IconButton onClick={onReset}>
                         <CloseIcon fontSize="small" />
                       </IconButton>
                     }
@@ -473,7 +474,8 @@ export default function AddMediaPage(initialData) {
                       />
                     ) : (
                       <TextField
-                        error={!isValid}
+                        autoFocus
+                        // error={!isValid}
                         fullWidth
                         helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
                         label="Enter a valid media URL"
