@@ -84,7 +84,7 @@ const useStyles = () =>
     cardPrompt: { marginBottom: theme.spacing(2) },
     actionbar: {
       '& > *': {
-        marginRight: theme.spacing(1),
+        marginRight: theme.spacing(1.5),
       },
     },
   }));
@@ -161,10 +161,12 @@ const MetaForm = ({
           value={tags}
         />
         <Toolbar disableGutters className={classes.actionbar}>
-          <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained">
+          <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained" size="small">
             Finish
           </Button>
-          <Button onClick={onReset}>Cancel</Button>
+          <Button onClick={onReset} size="small">
+            Cancel
+          </Button>
         </Toolbar>
       </>
     </form>
@@ -317,6 +319,7 @@ export default function AddMediaPage(initialData) {
 
   const onReset = () => {
     setFile(undefined);
+    setHasUrl(false);
     setProgress(0);
     setSource(null);
     setUrl('');
@@ -412,9 +415,7 @@ export default function AddMediaPage(initialData) {
                 </>
               ) : (
                 <CardActionArea
-                  className={`${classes.cardActionArea} ${
-                    source === 'url' && url.length > 0 ? classes.cardActionAreaDisabled : ''
-                  }`}
+                  className={`${classes.cardActionArea} ${hasUrl ? classes.cardActionAreaDisabled : ''}`}
                   onClick={() => setSource('upload')}
                 >
                   <CardContent className={classes.cardContent}>
@@ -477,7 +478,7 @@ export default function AddMediaPage(initialData) {
                       <form>
                         <TextField
                           autoFocus
-                          // error={!isValid}
+                          error={url.length > 0 && !isValid}
                           fullWidth
                           helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
                           label="Enter a valid media URL"
@@ -492,9 +493,13 @@ export default function AddMediaPage(initialData) {
                             color="primary"
                             disabled={!isValid}
                             onClick={() => setHasUrl(true)}
+                            size="small"
                             variant="contained"
                           >
                             Confirm
+                          </Button>
+                          <Button onClick={onReset} size="small">
+                            Cancel
                           </Button>
                         </Toolbar>
                       </form>
