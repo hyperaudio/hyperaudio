@@ -500,7 +500,7 @@ export default function AddMediaPage(initialData) {
                               size="small"
                               variant="contained"
                             >
-                              Confirm
+                              Continue
                             </Button>
                             <Button onClick={onReset} size="small">
                               Cancel
