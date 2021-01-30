@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
+import React, { useState, useEffect, useCallback } from 'react';
+import { rgba } from 'polished';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -44,6 +44,10 @@ const useStyles = makeStyles(theme => ({
   toolbar: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
+  },
+  primaryMenuItem: {
+    color: theme.palette.primary.main,
+    background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
   },
   toolbarButtons: {
     marginLeft: theme.spacing(2),
@@ -99,6 +103,7 @@ const useStyles = makeStyles(theme => ({
       right: theme.spacing(2),
     },
   },
+
   paginationParent: {
     marginTop: theme.spacing(2),
     display: 'flex',
@@ -230,7 +235,9 @@ const Dashboard = initialData => {
         open={Boolean(newAnchor)}
       >
         <NextLink href="/new/media" passHref>
-          <MenuItem dense>Media</MenuItem>
+          <MenuItem className={classes.primaryMenuItem} dense>
+            Media
+          </MenuItem>
         </NextLink>
         <NextLink href="/new/channel" passHref>
           <MenuItem dense>Channel</MenuItem>

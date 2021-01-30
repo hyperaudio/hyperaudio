@@ -167,7 +167,7 @@ const useStyles = makeStyles(theme => ({
       color: theme.palette.primary.contrastText,
     },
   },
-  primary: {
+  primaryMenuItem: {
     color: theme.palette.primary.main,
     background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
   },
@@ -518,7 +518,7 @@ export default function MediaPage(initialData) {
         open={Boolean(transcribeMenuAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primary} dense onClick={onTranscribeClick}>
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onTranscribeClick}>
           Auto-transcribe
         </MenuItem>
         <MenuItem dense divider onClick={() => console.log('onTypeInTranscriptClick')}>
@@ -535,7 +535,7 @@ export default function MediaPage(initialData) {
         open={Boolean(transcriptMenuAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primary} dense divider={isOwner} onClick={onRemixClick}>
+        <MenuItem className={classes.primaryMenuItem} dense divider={isOwner} onClick={onRemixClick}>
           Mix
         </MenuItem>
         {isOwner && (
