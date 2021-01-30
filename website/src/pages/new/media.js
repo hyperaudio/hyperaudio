@@ -10,15 +10,15 @@ import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
-import CloseIcon from '@material-ui/icons/Close';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import Chip from '@material-ui/core/Chip';
-import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Link from '@material-ui/core/Link';
 import OndemandVideoIcon from '@material-ui/icons/OndemandVideo';
@@ -27,6 +27,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
 
 import FileInput from 'src/components/FileInput';
 import Layout from 'src/Layout';
@@ -327,6 +329,8 @@ export default function AddMediaPage(initialData) {
 
   const isUploading = Boolean(file) && progress > 0;
   const classes = useStyles()();
+  const theme = useTheme();
+  const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
   return (
     <Layout>
@@ -337,7 +341,7 @@ export default function AddMediaPage(initialData) {
         <div className={classes.grow} />
       </Toolbar>
       <Container disableGutters>
-        <Grid container spacing={5}>
+        <Grid container spacing={mdUp ? 5 : 2}>
           <Grid item xs={12} md={6}>
             <Card className={classes.card}>
               {source === 'upload' ? (
