@@ -7,10 +7,11 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    position: 'sticky',
-    padding: theme.spacing(1),
     bottom: 0,
     left: 0,
+    marginTop: theme.spacing(4),
+    padding: theme.spacing(1),
+    position: 'sticky',
     right: 0,
   },
   content: {

@@ -208,7 +208,7 @@ export default function MediaPage(initialData) {
   const [transcriptMenuAnchor, setTranscriptMenuAnchor] = useState();
 
   const isOwner = user?.id === media.owner;
-  const isSmall = useMediaQuery(theme.breakpoints.up('md'));
+  const isMedium = useMediaQuery(theme.breakpoints.up('md'));
   const { channels = [], createdAt } = media ?? {}; // FIXME
   const channel = null;
 
@@ -314,13 +314,13 @@ export default function MediaPage(initialData) {
   const menuProps = {
     anchorOrigin: {
       vertical: 'bottom',
-      horizontal: 'center',
+      horizontal: 'left',
     },
     getContentAnchorEl: null,
     keepMounted: true,
     transformOrigin: {
       vertical: 'top',
-      horizontal: 'center',
+      horizontal: 'left',
     },
     variant: 'menu',
   };
@@ -368,7 +368,7 @@ export default function MediaPage(initialData) {
           </Grid>
         </Grid>
       </Toolbar>
-      <Grid container spacing={isSmall ? 4 : 2}>
+      <Grid container spacing={isMedium ? 4 : 2}>
         <Grid item xs={12} md={8}>
           {url ? (
             <div className={classes.stage}>

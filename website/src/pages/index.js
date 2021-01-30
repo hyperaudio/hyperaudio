@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -13,6 +15,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Link from '@material-ui/core/Link';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Pagination from '@material-ui/lab/Pagination';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -43,6 +47,15 @@ const useStyles = makeStyles(theme => ({
   },
   toolbarButtons: {
     marginLeft: theme.spacing(2),
+  },
+  speedDial: {
+    background: theme.palette.primary.main,
+    boxShadow: theme.shadows[2],
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      background: theme.palette.primary.dark,
+      color: theme.palette.primary.contrastText,
+    },
   },
   grow: {
     flexGrow: 1,
@@ -108,6 +121,8 @@ const Dashboard = initialData => {
   const { pages } = initialData;
 
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
+  const [newAnchor, setNewAnchor] = useState(null);
+
   const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
   useEffect(() => {
@@ -122,78 +137,106 @@ const Dashboard = initialData => {
 
   const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
+  const menuProps = {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
+    getContentAnchorEl: null,
+    keepMounted: true,
+    transformOrigin: {
+      vertical: 'top',
+      horizontal: 'left',
+    },
+    variant: 'menu',
+  };
+
   return (
-    <Layout>
-      <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h4">
-          Your media
-        </Typography>
-        <div className={classes.grow} />
-        <NextLink href="/new/channel" passHref>
-          <Button className={classes.toolbarButtons} color="primary">
-            New Channel
+    <>
+      <Layout>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Typography component="h1" variant="h4">
+            Your media
+          </Typography>
+          <div className={classes.grow} />
+          <Button
+            color="primary"
+            onClick={e => setNewAnchor(e.currentTarget)}
+            startIcon={<AddCircleIcon />}
+            variant="contained"
+          >
+            New…
           </Button>
-        </NextLink>
-        <NextLink href="/new/media" passHref>
-          <Button className={classes.toolbarButtons} color="primary" variant="contained">
-            New Media
-          </Button>
-        </NextLink>
-      </Toolbar>
-      <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
-        {media.map(({ id, title, description, metadata }) => (
-          <Grid className={classes.item} component="li" item key={id} md={3} sm={4} xs={6}>
-            <Card className={classes.card} elevation={0} square raised={false}>
-              <NextLink href={`/media/${id}`}>
-                <CardActionArea>
-                  {metadata ? (
-                    <CardMedia
-                      className={classes.cardMedia}
-                      component="img"
-                      src={
-                        JSON.parse(metadata)?.embedly?.thumbnail_url ??
-                        JSON.parse(metadata)?.oembed?.thumbnail_url ??
-                        'http://placekitten.com/320/180'
-                      }
-                      title={title}
-                    />
-                  ) : (
-                    <CardMedia
-                      className={classes.cardMedia}
-                      component="img"
-                      src="http://placekitten.com/320/180"
-                      title={title}
-                    />
-                  )}
-                </CardActionArea>
-              </NextLink>
-              <CardContent className={classes.cardContent}>
+        </Toolbar>
+        <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
+          {media.map(({ id, title, description, metadata }) => (
+            <Grid className={classes.item} component="li" item key={id} xs={6} sm={4} md={3}>
+              <Card className={classes.card} elevation={0} square raised={false}>
                 <NextLink href={`/media/${id}`}>
-                  <Typography component="h3" noWrap>
-                    <Link href={`/media/${id}`} variant="subtitle2">
-                      {title}
-                    </Link>
-                  </Typography>
+                  <CardActionArea>
+                    {metadata ? (
+                      <CardMedia
+                        className={classes.cardMedia}
+                        component="img"
+                        src={
+                          JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                          JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                          'http://placekitten.com/320/180'
+                        }
+                        title={title}
+                      />
+                    ) : (
+                      <CardMedia
+                        className={classes.cardMedia}
+                        component="img"
+                        src="http://placekitten.com/320/180"
+                        title={title}
+                      />
+                    )}
+                  </CardActionArea>
                 </NextLink>
-                <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
-                  {description}
-                </Typography>
-              </CardContent>
-              <CardActions className={classes.cardActions} disableSpacing>
-                <Tooltip title="Actions…">
-                  <IconButton color="secondary" size="small">
-                    <MoreVertIcon fontSize="small" />
-                  </IconButton>
-                </Tooltip>
-              </CardActions>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      <div className={classes.paginationParent}>
-        <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
-      </div>
-    </Layout>
+                <CardContent className={classes.cardContent}>
+                  <NextLink href={`/media/${id}`}>
+                    <Typography component="h3" noWrap>
+                      <Link href={`/media/${id}`} variant="subtitle2">
+                        {title}
+                      </Link>
+                    </Typography>
+                  </NextLink>
+                  <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
+                    {description}
+                  </Typography>
+                </CardContent>
+                <CardActions className={classes.cardActions} disableSpacing>
+                  <Tooltip title="Actions…">
+                    <IconButton color="secondary" size="small">
+                      <MoreVertIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+        <div className={classes.paginationParent}>
+          <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
+        </div>
+      </Layout>
+      <Menu
+        {...menuProps}
+        anchorEl={newAnchor}
+        id="new-actions"
+        onClose={() => setNewAnchor(null)}
+        open={Boolean(newAnchor)}
+      >
+        <NextLink href="/new/media" passHref>
+          <MenuItem dense>Media</MenuItem>
+        </NextLink>
+        <NextLink href="/new/channel" passHref>
+          <MenuItem dense>Channel</MenuItem>
+        </NextLink>
+      </Menu>
+    </>
   );
 };
 
