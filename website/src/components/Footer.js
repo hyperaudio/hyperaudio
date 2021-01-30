@@ -3,31 +3,31 @@ import React from 'react';
 
 import AppBar from '@material-ui/core/AppBar';
 import Link from '@material-ui/core/Link';
-import Toolbar from '@material-ui/core/Toolbar';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginBottom: theme.spacing(2),
-    marginTop: theme.spacing(2),
     position: 'sticky',
+    padding: theme.spacing(1),
     bottom: 0,
     left: 0,
     right: 0,
   },
-  toolbar: {
-    justifyContent: 'center',
+  content: {
+    textAlign: 'center',
     '& > *': {
-      margin: theme.spacing(0, 1),
+      clear: 'both',
+      display: 'inline-block',
+      margin: theme.spacing(1),
     },
   },
 }));
 
-const Footer = props => {
+export default function Footer() {
   const classes = useStyles();
   return (
     <AppBar className={classes.root} color="transparent" component="div" elevation={0} position="static">
-      <Toolbar className={classes.toolbar} variant="dense">
+      <div className={classes.content} variant="dense">
         <NextLink href="/blog" passHref>
           <Link color="textSecondary">Blog</Link>
         </NextLink>
@@ -43,9 +43,7 @@ const Footer = props => {
         <NextLink href="/COC" passHref>
           <Link color="textSecondary">Code of Conduct</Link>
         </NextLink>
-      </Toolbar>
+      </div>
     </AppBar>
   );
-};
-
-export default Footer;
+}

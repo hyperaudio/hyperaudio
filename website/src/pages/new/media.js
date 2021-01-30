@@ -51,7 +51,6 @@ const useStyles = () =>
     grow: {
       flexGrow: 1,
     },
-    container: {},
     card: { position: 'relative' },
     progress: {
       position: 'absolute',
@@ -337,7 +336,7 @@ export default function AddMediaPage(initialData) {
         </Typography>
         <div className={classes.grow} />
       </Toolbar>
-      <Container className={classes.container} disableGutters>
+      <Container disableGutters>
         <Grid container spacing={5}>
           <Grid item xs={12} md={6}>
             <Card className={classes.card}>
