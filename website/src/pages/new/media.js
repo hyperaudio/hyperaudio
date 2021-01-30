@@ -202,6 +202,7 @@ export default function AddMediaPage(initialData) {
   const [description, setDescription] = useState('');
   const [extracted, setExtracted] = useState(false);
   const [file, setFile] = useState();
+  const [hasUrl, setHasUrl] = useState(false);
   const [metadata, setMetadata] = useState({});
   const [progress, setProgress] = useState(0);
   const [source, setSource] = useState(null);
@@ -456,7 +457,7 @@ export default function AddMediaPage(initialData) {
                     className={classes.cardHeader}
                   />
                   <CardContent className={classes.cardContent}>
-                    {url.length > 0 ? (
+                    {hasUrl ? (
                       <MetaForm
                         allChannels={allChannels}
                         allTags={allTags}
@@ -473,18 +474,30 @@ export default function AddMediaPage(initialData) {
                         title={title}
                       />
                     ) : (
-                      <TextField
-                        autoFocus
-                        // error={!isValid}
-                        fullWidth
-                        helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
-                        label="Enter a valid media URL"
-                        onChange={e => setUrl(e.target.value)}
-                        placeholder="https://www.youtube.com/watch?v=xyz"
-                        required
-                        type="url"
-                        value={url}
-                      />
+                      <form>
+                        <TextField
+                          autoFocus
+                          // error={!isValid}
+                          fullWidth
+                          helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
+                          label="Enter a valid media URL"
+                          onChange={e => setUrl(e.target.value)}
+                          placeholder="https://www.youtube.com/watch?v=xyz"
+                          required
+                          type="url"
+                          value={url}
+                        />
+                        <Toolbar disableGutters className={classes.actionbar}>
+                          <Button
+                            color="primary"
+                            disabled={!isValid}
+                            onClick={() => setHasUrl(true)}
+                            variant="contained"
+                          >
+                            Confirm
+                          </Button>
+                        </Toolbar>
+                      </form>
                     )}
                   </CardContent>
                 </>
