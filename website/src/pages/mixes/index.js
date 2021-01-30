@@ -20,7 +20,7 @@ const MixesPage = () => {
   return (
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" gutterBottom variant="h4">
+        <Typography component="h1" variant="h4">
           All your mixes
         </Typography>
         <div className={classes.grow} />
