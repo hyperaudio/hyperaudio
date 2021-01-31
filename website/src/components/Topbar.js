@@ -82,9 +82,9 @@ const Topbar = () => {
             </NextLink>
           </Typography>
           <div className={classes.grow} />
-          <NextLink href="/" passHref>
+          <NextLink href="/channels" passHref>
             <Button color="primary" variant="text">
-              Home
+              Channels
             </Button>
           </NextLink>
           <NextLink href="/media" passHref>
