@@ -5,7 +5,7 @@ import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -27,6 +27,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 import Layout from 'src/Layout';
+import NewChannelDialog from 'src/pages/channels/NewChannelDialog';
 import { Channel, Media, User, UserChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
@@ -127,6 +128,7 @@ const Dashboard = initialData => {
 
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [newAnchor, setNewAnchor] = useState(null);
+  const [newChannelDialog, setNewChannelDialog] = useState(null);
 
   const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -167,7 +169,7 @@ const Dashboard = initialData => {
           <Button
             color="primary"
             onClick={e => setNewAnchor(e.currentTarget)}
-            startIcon={<AddCircleIcon />}
+            startIcon={<AddCircleOutlineIcon />}
             variant="contained"
           >
             New…
@@ -239,10 +241,21 @@ const Dashboard = initialData => {
             Media
           </MenuItem>
         </NextLink>
-        <NextLink href="/new/channel" passHref>
-          <MenuItem dense>Channel</MenuItem>
-        </NextLink>
+        <MenuItem
+          dense
+          onClick={() => {
+            setNewAnchor(null);
+            setNewChannelDialog(true);
+          }}
+        >
+          Channel
+        </MenuItem>
       </Menu>
+      <NewChannelDialog
+        onCancel={() => setNewChannelDialog(false)}
+        onConfirm={() => setNewChannelDialog(false)}
+        open={newChannelDialog}
+      />
     </>
   );
 };

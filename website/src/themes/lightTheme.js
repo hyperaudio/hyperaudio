@@ -45,6 +45,11 @@ const lightTheme = createMuiTheme({
         minWidth: 42,
       },
     },
+    MuiTableCell: {
+      root: {
+        verticalAlign: 'baseline',
+      },
+    },
     MuiInput: {
       underline: {
         '&$disabled:before': {

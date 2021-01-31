@@ -1,24 +1,28 @@
 import NextLink from 'next/link';
 import React from 'react';
 
-import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import makeStyles from '@material-ui/core/styles/makeStyles';
+import IconButton from '@material-ui/core/IconButton';
+import Link from '@material-ui/core/Link';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import TableHead from '@material-ui/core/TableHead';
-import IconButton from '@material-ui/core/IconButton';
-import Link from '@material-ui/core/Link';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
+
+import NewChannelDialog from './NewChannelDialog';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -87,13 +91,31 @@ export default function Channels() {
     },
   ];
 
+  const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
+  const [newChannelDialog, setNewChannelDialog] = React.useState(null);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
 
-  const createSortHandler = property => () => {
+  const onOrderBy = property => () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
+  };
+
+  console.log({ order }, { orderBy });
+
+  const menuProps = {
+    anchorOrigin: {
+      vertical: 'bottom',
+      horizontal: 'left',
+    },
+    getContentAnchorEl: null,
+    keepMounted: true,
+    transformOrigin: {
+      vertical: 'top',
+      horizontal: 'left',
+    },
+    variant: 'menu',
   };
 
   return (
@@ -106,8 +128,8 @@ export default function Channels() {
           <div className={classes.grow} />
           <Button
             color="primary"
-            // onClick={e => setNewAnchor(e.currentTarget)}
-            startIcon={<AddCircleIcon />}
+            onClick={() => setNewChannelDialog(true)}
+            startIcon={<AddCircleOutlineIcon />}
             variant="contained"
           >
             New
@@ -123,7 +145,7 @@ export default function Channels() {
                       <TableSortLabel
                         active={orderBy === 'name'}
                         direction={orderBy === 'name' ? order : 'asc'}
-                        onClick={createSortHandler('name')}
+                        onClick={onOrderBy('name')}
                       >
                         Name{' '}
                         {orderBy === 'name' ? (
@@ -140,25 +162,43 @@ export default function Channels() {
                 </TableHead>
                 <TableBody>
                   {stableSort(channels, getComparator(order, orderBy)).map(
-                    ({ id, description, editors, tags, title }) => {
-                      return (
-                        <TableRow key={id}>
-                          <TableCell>
-                            <Typography variant="body1">{title}</Typography>
-                            <Typography variant="caption" color="textSecondary">
-                              {description}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>{tags.map((tag, i) => (i === tags.length - 1 ? tag : `${tag}, `))}</TableCell>
-                          <TableCell>{editors.map(editor => editor)}</TableCell>
-                          <TableCell align="right">
-                            <IconButton edge="end" size="small">
-                              <MoreHorizIcon fontSize="small" />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    },
+                    ({ id, description, editors, tags, title }) => (
+                      <TableRow key={id}>
+                        <TableCell>
+                          <Typography noWrap>
+                            <NextLink href="/mixes" passHref>
+                              <Link noWrap variant="body1">
+                                {title}
+                              </Link>
+                            </NextLink>
+                          </Typography>
+                          <Typography color="textSecondary" noWrap variant="caption">
+                            {description}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          {tags.map((tag, i) => {
+                            const Tag = () => (
+                              <NextLink href="/mixes" passHref>
+                                <Link>{tag}</Link>
+                              </NextLink>
+                            );
+                            return (
+                              <>
+                                <Tag key={tag} />
+                                {i !== tags.length - 1 && <>, </>}
+                              </>
+                            );
+                          })}
+                        </TableCell>
+                        <TableCell>{editors.map(editor => editor)}</TableCell>
+                        <TableCell align="right">
+                          <IconButton edge="end" size="small" onClick={e => setMoreMenuAnchor(e.target)}>
+                            <MoreHorizIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ),
                   )}
                 </TableBody>
               </Table>
@@ -168,6 +208,43 @@ export default function Channels() {
           )}
         </Container>
       </Layout>
+      <Menu
+        anchorEl={moreMenuAnchor}
+        id="transcript-actions"
+        onClose={() => setMoreMenuAnchor(null)}
+        open={Boolean(moreMenuAnchor)}
+        {...menuProps}
+      >
+        <MenuItem
+          className={classes.primaryMenuItem}
+          dense
+          // onClick={onRemixClick}
+        >
+          Edit details
+        </MenuItem>
+        <MenuItem
+          className={classes.primaryMenuItem}
+          dense
+          divider
+          // onClick={onRemixClick}
+        >
+          Manage editors
+        </MenuItem>
+        <MenuItem
+          className={classes.primaryMenuItem}
+          dense
+          // onClick={onRemixClick}
+        >
+          Delete
+        </MenuItem>
+      </Menu>
+      {newChannelDialog && (
+        <NewChannelDialog
+          onCancel={() => setNewChannelDialog(false)}
+          onConfirm={payload => console.log('onCreateChannel:', { payload })}
+          open={newChannelDialog}
+        />
+      )}
     </>
   );
 }
