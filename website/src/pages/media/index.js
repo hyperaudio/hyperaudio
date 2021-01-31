@@ -69,7 +69,7 @@ const MediaPage = initialData => {
     <Layout>
       <Toolbar className={classes.toolbar} disableGutters>
         <Typography component="h1" variant="h4">
-          All your media
+          Your media
         </Typography>
         <div className={classes.grow} />
         <NextLink href="/new/media">

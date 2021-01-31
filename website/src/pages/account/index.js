@@ -25,10 +25,6 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(2),
   },
-  container: {
-    paddingBottom: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-  },
   grow: {
     flexGrow: 1,
   },
@@ -42,9 +38,10 @@ const AccountPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
-  const [name, setName] = useState('');
   const [bio, setBio] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [name, setName] = useState('');
+  const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
 
   // useEffect(() => {
   //   Auth.currentAuthenticatedUser()
@@ -64,8 +61,9 @@ const AccountPage = initialData => {
 
   useEffect(() => {
     if (!user) return;
-    setName(user.name);
     setBio(user.bio);
+    setDisplayName(user.displayName);
+    setName(user.name);
   }, [user]);
 
   console.log({ user });
@@ -74,8 +72,9 @@ const AccountPage = initialData => {
     setUser(
       await DataStore.save(
         User.copyOf(user, updated => {
-          updated.name = name;
           updated.bio = bio;
+          updated.displayName = displayName;
+          updated.name = name;
         }),
       ),
     );
@@ -89,39 +88,48 @@ const AccountPage = initialData => {
         </Typography>
         <div className={classes.grow} />
       </Toolbar>
-      <Paper>
-        <Container className={classes.container}>
-          <form>
-            <TextField
-              fullWidth
-              helperText=""
-              label="Name"
-              onChange={e => setName(e.target.value)}
-              required
-              type="text"
-              value={name}
-              variant="outlined"
-              margin="normal"
-            />
-            <TextField
-              fullWidth
-              multiline
-              helperText=""
-              label="Bio"
-              onChange={e => setBio(e.target.value)}
-              required
-              type="text"
-              value={bio}
-              variant="outlined"
-              margin="normal"
-            />
-            <div className={classes.divider} />
-            <Button color="primary" onClick={handleSave} variant="contained">
-              Save
-            </Button>
-          </form>
-        </Container>
-      </Paper>
+      <Container disableGutters>
+        <form>
+          <TextField
+            fullWidth
+            label="Name"
+            margin="normal"
+            onChange={e => setName(e.target.value)}
+            required
+            type="text"
+            value={name}
+          />
+          <TextField
+            fullWidth
+            label="Display name"
+            margin="normal"
+            onChange={e => setDisplayName(e.target.value)}
+            required
+            type="text"
+            value={displayName}
+          />
+          <TextField
+            fullWidth
+            helperText=""
+            label="Bio"
+            margin="normal"
+            multiline
+            onChange={e => setBio(e.target.value)}
+            required
+            type="text"
+            value={bio}
+          />
+          <div className={classes.divider} />
+          <Button
+            color="primary"
+            disabled={user.bio === bio && user.displayName === displayName && user.name === name}
+            onClick={handleSave}
+            variant="contained"
+          >
+            Save
+          </Button>
+        </form>
+      </Container>
     </Layout>
   );
 };

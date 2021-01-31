@@ -337,7 +337,7 @@ export default function AddMediaPage(initialData) {
       <Layout>
         <Toolbar className={classes.toolbar} disableGutters>
           <Typography component="h1" variant="h4">
-            Add new media
+            New media
           </Typography>
           <div className={classes.grow} />
         </Toolbar>
@@ -426,7 +426,7 @@ export default function AddMediaPage(initialData) {
                       <div>
                         <CloudUploadIcon fontSize="large" className={classes.cardIcon} />
                         <Typography component="h2" variant="h6" gutterBottom>
-                          Upload media
+                          Upload
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                           Upload a valid{' '}
@@ -484,7 +484,7 @@ export default function AddMediaPage(initialData) {
                             autoFocus
                             error={url.length > 0 && !isValid}
                             fullWidth
-                            helperText="Youtube, Vimeo, Soundcloud or direct links to media files"
+                            helperText="Youtube, Vimeo, Soundcloud or direct link to a media file"
                             label="Enter a valid media URL"
                             onChange={e => setUrl(e.target.value)}
                             placeholder="https://www.youtube.com/watch?v=xyz"
