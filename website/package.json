@@ -29,6 +29,7 @@
     "lodash": "^4.17.20",
     "mongodb": "^3.6.3",
     "next": "10.0.3",
+    "next-safe": "^2.0.0",
     "nprogress": "^0.2.0",
     "polished": "^4.0.5",
     "quicklink": "^2.0.0",

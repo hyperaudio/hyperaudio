@@ -3,6 +3,10 @@ const withMDX = require('@next/mdx')({
   extension: /\.mdx?$/,
 });
 
+const { default: nextSafe } = require('next-safe');
+
+const isDev = process.env.NODE_ENV !== 'production';
+
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'mdx'],
   webpack: (config, { isServer, webpack }) => {
@@ -22,5 +26,42 @@ module.exports = withMDX({
     config.plugins.push(new webpack.IgnorePlugin(/^hiredis$/));
 
     return config;
+  },
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains', // TBD '; preload'
+          },
+          ...nextSafe({
+            // contentTypeOptions,
+            contentSecurityPolicy: {
+              'default-src': "'self'",
+              'base-uri': "'self'",
+              'prefetch-src': "'self'",
+              'script-src': "'self' 'unsafe-inline' *",
+              'style-src': "'self' 'unsafe-inline' *",
+              'object-src': "'none'",
+              'connect-src': "'self' *",
+              'font-src': "'self' *",
+              'frame-src': "'self' *",
+              'img-src': "'self' data: *",
+              'manifest-src': "'self'",
+              'media-src': "'self' *",
+              'worker-src': 'blob:',
+            },
+            // frameOptions,
+            // permissionsPolicy,
+            // permissionsPolicyDirectiveSupport,
+            isDev,
+            // referrerPolicy,
+            // xssProtection,
+          }),
+        ],
+      },
+    ];
   },
 });
