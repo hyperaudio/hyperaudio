@@ -8,6 +8,7 @@ import { rgba } from 'polished';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, Storage, DataStore } from 'aws-amplify';
+import axios from 'axios';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -48,6 +49,18 @@ const ALL_TAGS = [
 ];
 
 const TRANSCRIPTS = [
+  {
+    id: '3e0d9557-b0cb-4bb3-b5f0-01ed1316c269',
+    title: 'Joe Rogan Experience #1169 - Elon Musk',
+    description: '',
+    tags: [],
+    lang: 'en-US',
+    status: 'transcribed',
+    type: 'TBD',
+    transcript: 'https://badideafactory-bbc.s3.eu-west-2.amazonaws.com/perf/EM.json',
+    createdAt: '2020-12-04T14:25:29.646Z',
+    updatedAt: '2020-12-07T19:25:29.646Z',
+  },
   {
     id: '456787853567',
     title: 'Transcribed transcript',
@@ -511,7 +524,7 @@ export default function MediaPage(initialData) {
           </Grid>
         </Grid>
       </Grid>
-      {transcript ? <h4>Transcript {transcript} View</h4> : null}
+      {transcript ? <Transcript id={transcript} /> : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
@@ -557,6 +570,31 @@ export default function MediaPage(initialData) {
     </Layout>
   );
 }
+
+const Transcript = ({ id }) => {
+  const metadata = useMemo(() => TRANSCRIPTS.find(({ id: _id }) => _id === id), [id]);
+  const [transcript, setTranscript] = useState();
+
+  useEffect(() => {
+    if (!metadata.transcript) return;
+    const loadTranscript = async () => {
+      const { data } = await axios.request({
+        method: 'get',
+        url: metadata.transcript,
+      });
+
+      setTranscript(data);
+    };
+    loadTranscript();
+  }, [metadata]);
+
+  return metadata ? (
+    <div>
+      <h1>{metadata.title}</h1>
+      {transcript ? transcript.map(({ speaker, items }) => <p>{items.map(([text]) => text).join(' ')}</p>) : null}
+    </div>
+  ) : null;
+};
 
 export const getServerSideProps = async context => {
   const { Auth, DataStore } = withSSRContext(context);
