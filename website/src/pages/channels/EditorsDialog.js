@@ -9,12 +9,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
-export default function EditorsDialog({ users = [], data: { editors }, onConfirm, onCancel, open = false }) {
-  React.useEffect(() => {
-    console.log('do somehting');
-  }, [editors]);
+export default function EditorsDialog({ users = [], data, onConfirm, onCancel, open = false }) {
+  const [editors, setEditors] = React.useState();
 
-  console.log({ users, editors });
+  React.useEffect(() => {
+    setEditors(data?.editors);
+  }, [data?.editors]);
+
+  console.log({ users });
 
   return (
     <Dialog
@@ -26,7 +28,30 @@ export default function EditorsDialog({ users = [], data: { editors }, onConfirm
     >
       <DialogTitle id="dialog-title">Manage editors</DialogTitle>
       <form>
-        <DialogContent>{editors?.length > 0 ? 'list' : 'add new'}</DialogContent>
+        <DialogContent>
+          {/* <Autocomplete
+            freeSolo
+            id="channels-filled"
+            limitTags={3}
+            multiple
+            onChange={(e, v) => setEditors(v)}
+            options={users}
+            renderInput={params => <TextField {...params} fullWidth label="Users" margin="dense" />}
+            renderTags={(value, getTagProps) =>
+              value?.map((option, index) => (
+                <Chip
+                  {...getTagProps({ index })}
+                  key={option.id}
+                  label={option.username}
+                  size="small"
+                  variant="outlined"
+                />
+              ))
+            }
+            value={editors}
+          /> */}
+          {editors?.length > 0 ? 'list' : 'add new'}
+        </DialogContent>
         <DialogActions>
           <Button onClick={onConfirm} color="primary" variant="contained">
             Done

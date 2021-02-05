@@ -174,6 +174,7 @@ export default function Channels({ user, userChannels, users }) {
   const onReset = () => {
     setChannelDialog(false);
     setDeleteDialog(false);
+    setEditorsDialog(false);
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
