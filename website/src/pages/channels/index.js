@@ -28,6 +28,7 @@ import Layout from 'src/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
+import EditorsDialog from './EditorsDialog';
 import ChannelDialog from './ChannelDialog';
 import DeleteDialog from 'src/dialogs/DeleteDialog';
 
@@ -111,6 +112,7 @@ export default function Channels({ user, userChannels, users }) {
 
   const [channelDialog, setChannelDialog] = React.useState();
   const [deleteDialog, setDeleteDialog] = React.useState();
+  const [editorsDialog, setEditorsDialog] = React.useState();
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -159,7 +161,10 @@ export default function Channels({ user, userChannels, users }) {
   const onEditClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
     setChannelDialog(true);
-    setMoreMenuAnchor(null);
+  };
+  const onEditorsClick = () => {
+    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
+    setEditorsDialog(true);
   };
   const onDeleteClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
@@ -169,6 +174,7 @@ export default function Channels({ user, userChannels, users }) {
   const onReset = () => {
     setChannelDialog(false);
     setDeleteDialog(false);
+    setEditorsDialog(false);
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
@@ -294,12 +300,7 @@ export default function Channels({ user, userChannels, users }) {
         <MenuItem className={classes.primaryMenuItem} dense onClick={onEditClick}>
           Edit details
         </MenuItem>
-        <MenuItem
-          className={classes.primaryMenuItem}
-          dense
-          divider
-          // onClick={onRemixClick}
-        >
+        <MenuItem className={classes.primaryMenuItem} dense divider onClick={onEditorsClick}>
           Manage editors
         </MenuItem>
         <MenuItem className={classes.primaryMenuItem} dense onClick={onDeleteClick}>
@@ -308,6 +309,15 @@ export default function Channels({ user, userChannels, users }) {
       </Menu>
       {channelDialog && (
         <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSave} open={channelDialog} />
+      )}
+      {editorsDialog && (
+        <EditorsDialog
+          data={selectedChannel}
+          onCancel={onReset}
+          onConfirm={onSave}
+          open={editorsDialog}
+          users={users}
+        />
       )}
       {deleteDialog && (
         <DeleteDialog
