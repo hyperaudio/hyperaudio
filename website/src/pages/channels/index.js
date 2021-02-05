@@ -150,9 +150,6 @@ export default function Channels({ user, userChannels, users }) {
     variant: 'menu',
   };
 
-  console.log({ channels });
-  console.log({ selectedChannel });
-
   return (
     <>
       <Layout>

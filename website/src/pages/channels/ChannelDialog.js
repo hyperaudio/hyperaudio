@@ -2,6 +2,7 @@ import React from 'react';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
+import Chip from '@material-ui/core/Chip';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,7 +15,12 @@ export default function ChannelDialog({ allTags = [], data, onConfirm, onCancel,
   const [title, setTitle] = React.useState();
 
   const onSubmit = () => {
-    onConfirm({ description, tags, title });
+    const payload = {
+      description: description.trim(),
+      tags: tags.map(tag => tag.trim()),
+      title: title.trim(),
+    };
+    onConfirm(payload);
   };
 
   React.useEffect(() => {
@@ -45,37 +51,17 @@ export default function ChannelDialog({ allTags = [], data, onConfirm, onCancel,
           />
           <Autocomplete
             freeSolo
-            onChange={(event, newValue) => {
-              console.log({ newValue });
-              if (typeof newValue === 'string') {
-                setTags({
-                  title: newValue,
-                });
-              } else if (newValue && newValue.inputValue) {
-                // Create a new value from the user input
-                setTags({
-                  title: newValue.inputValue,
-                });
-              } else {
-                setTags(newValue);
-              }
-            }}
+            id="channels-filled"
+            limitTags={3}
+            multiple
+            onChange={(e, v) => setTags(v)}
             options={allTags}
-            getOptionLabel={option => {
-              // Value selected with enter, right from the input
-              if (typeof option === 'string') {
-                return option;
-              }
-              // Add "xxx" option created dynamically
-              if (option.inputValue) {
-                return option.inputValue;
-              }
-              // Regular option
-              // return option.title;
-              return option.toString();
-            }}
-            renderInput={params => <TextField {...params} label="Tags" margin="dense" fullWidth />}
-            // renderOption={option => option.toString()}
+            renderInput={params => <TextField {...params} fullWidth label="Tags" margin="dense" />}
+            renderTags={(value, getTagProps) =>
+              value?.map((option, index) => (
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
+              ))
+            }
             value={tags}
           />
         </DialogContent>
