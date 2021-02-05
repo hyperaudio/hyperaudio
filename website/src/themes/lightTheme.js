@@ -6,6 +6,9 @@ const lightTheme = createMuiTheme({
     MuiButtonBase: {
       disableRipple: true,
     },
+    MuiButton: {
+      disableElevation: true,
+    },
   },
   palette: {
     background: {
