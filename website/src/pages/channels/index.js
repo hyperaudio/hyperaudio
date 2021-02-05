@@ -155,6 +155,8 @@ export default function Channels({ user, userChannels, users }) {
     );
   }, []);
 
+  const deleteChannel = useCallback(() => console.log('delete TODO'), []);
+
   const menuProps = {
     anchorOrigin: {
       vertical: 'bottom',

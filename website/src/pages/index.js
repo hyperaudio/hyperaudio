@@ -124,7 +124,7 @@ const Dashboard = initialData => {
     query: { page = 1 },
   } = router;
 
-  const { pages } = initialData;
+  const { pages, user } = initialData;
 
   const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
@@ -148,6 +148,27 @@ const Dashboard = initialData => {
     console.log('onChannelCreate:', { payload });
     setChannelDialog(false);
   };
+
+  const addNewChannel = useCallback(
+    async ({ title, description, tags = [], editors = [], metadata = {} }) => {
+      const channel = await DataStore.save(
+        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
+      );
+
+      await DataStore.save(new UserChannel({ user, channel }));
+    },
+    [user],
+  );
+
+  const updateChannel = useCallback(async (channel, { title, description, tags = [] }) => {
+    await DataStore.save(
+      Channel.copyOf(channel, updated => {
+        updated.title = title;
+        updated.description = description;
+        updated.tags = tags;
+      }),
+    );
+  }, []);
 
   const menuProps = {
     anchorOrigin: {
