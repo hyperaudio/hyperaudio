@@ -37,7 +37,7 @@ import { useTheme } from '@material-ui/core/styles';
 import { Media, User } from 'src/models';
 import Layout from 'src/Layout';
 
-import DeleteDialog from './DeleteDialog';
+import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
 
@@ -545,12 +545,14 @@ export default function MediaPage(initialData) {
           </MenuItem>
         )}
       </Menu>
-      <DeleteDialog
-        onCancel={onReset}
-        onConfirm={onDeleteConfirm}
-        open={transcriptDeleteDialogOpen}
-        transcript={actionableTranscript}
-      />
+      {transcriptDeleteDialogOpen && (
+        <DeleteDialog
+          onCancel={onReset}
+          onConfirm={onDeleteConfirm}
+          open={transcriptDeleteDialogOpen}
+          data={{ entity: 'transcript', title: actionableTranscript.title }}
+        />
+      )}
       <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
     </Layout>
   );
