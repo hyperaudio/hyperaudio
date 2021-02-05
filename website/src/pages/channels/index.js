@@ -97,11 +97,11 @@ export default function Channels({ user, userChannels }) {
     return () => subscription.unsubscribe();
   }, [user]);
 
-  const [channelDialog, setChannelDialog] = React.useState(null);
-  const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
+  const [channelDialog, setChannelDialog] = React.useState();
+  const [moreMenuAnchor, setMoreMenuAnchor] = React.useState();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
-  const [selectedChannel, setSelectedChannel] = React.useState(null);
+  const [selectedChannel, setSelectedChannel] = React.useState();
 
   const onOrderBy = property => () => {
     const isAsc = orderBy === property && order === 'asc';
