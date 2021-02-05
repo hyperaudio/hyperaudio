@@ -144,11 +144,6 @@ const Dashboard = initialData => {
 
   const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
-  const onChannelCreate = payload => {
-    console.log('onChannelCreate:', { payload });
-    setChannelDialog(false);
-  };
-
   const addNewChannel = useCallback(
     async ({ title, description, tags = [], editors = [], metadata = {} }) => {
       const channel = await DataStore.save(
@@ -169,6 +164,12 @@ const Dashboard = initialData => {
       }),
     );
   }, []);
+
+  const onChannelCreate = payload => {
+    addNewChannel(payload);
+    setChannelDialog(false);
+    router.push('/channels');
+  };
 
   const menuProps = {
     anchorOrigin: {
