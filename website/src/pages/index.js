@@ -126,9 +126,9 @@ const Dashboard = initialData => {
 
   const { pages } = initialData;
 
+  const [channelDialog, setChannelDialog] = useState(null);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [newAnchor, setNewAnchor] = useState(null);
-  const [newChannelDialog, setChannelDialog] = useState(null);
 
   const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -253,8 +253,8 @@ const Dashboard = initialData => {
       </Menu>
       <ChannelDialog
         onCancel={() => setChannelDialog(false)}
-        onConfirm={() => setChannelDialog(false)}
-        open={newChannelDialog}
+        onConfirm={payload => console.log('onConfirm', { payload })}
+        open={channelDialog}
       />
     </>
   );
