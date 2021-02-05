@@ -322,6 +322,14 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
+                },
+                "editors": {
+                    "name": "editors",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
                 }
             },
             "syncable": true,
@@ -573,5 +581,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "69851148ab18f57516c707cf8f057565"
+    "version": "0ce4957a9f48e05e9ec4d17709547d26"
 };
