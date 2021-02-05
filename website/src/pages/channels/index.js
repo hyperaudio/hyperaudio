@@ -80,11 +80,11 @@ function stableSort(array, comparator) {
 const getUserChannels = async (setChannels, user) =>
   setChannels((await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel));
 
-export default function Channels({ user, userChannels }) {
+export default function Channels({ user, userChannels, users }) {
   const classes = useStyles();
 
   const [channels, setChannels] = useState(userChannels ? deserializeModel(Channel, userChannels) : []);
-  console.log({ user, channels });
+  console.log({ user, channels, users });
 
   useEffect(() => {
     getUserChannels(setChannels, user);
@@ -284,7 +284,9 @@ export const getServerSideProps = async context => {
       (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
     );
 
-    return { props: { user, userChannels } };
+    const users = serializeModel(await DataStore.query(User));
+
+    return { props: { user, userChannels, users } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/channel', permanent: false } };
   }
