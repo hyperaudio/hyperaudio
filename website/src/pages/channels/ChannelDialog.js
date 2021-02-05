@@ -13,8 +13,13 @@ export default function ChannelDialog({ allTags = [], data, onConfirm, onCancel,
   const [description, setDescription] = React.useState();
   const [tags, setTags] = React.useState();
   const [title, setTitle] = React.useState();
+  const [titleError, setTitleError] = React.useState();
 
   const onSubmit = () => {
+    if (title.length === 0) {
+      setTitleError('Please give your new channel a title');
+      return;
+    }
     const payload = {
       description: description.trim(),
       tags: tags.map(tag => tag.trim()),
@@ -40,7 +45,15 @@ export default function ChannelDialog({ allTags = [], data, onConfirm, onCancel,
       <DialogTitle id="dialog-title">{data?.title ? 'Edit channel' : 'New channel'}</DialogTitle>
       <form>
         <DialogContent>
-          <TextField fullWidth label="Title" margin="dense" onChange={e => setTitle(e.target.value)} value={title} />
+          <TextField
+            error={titleError?.length > 0}
+            fullWidth
+            helperText={titleError}
+            label="Title"
+            margin="dense"
+            onChange={e => setTitle(e.target.value)}
+            value={title}
+          />
           <TextField
             fullWidth
             label="Description"
