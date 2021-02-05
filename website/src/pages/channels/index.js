@@ -162,15 +162,17 @@ export default function Channels({ user, userChannels, users }) {
     setSelectedChannel(null);
   };
   const onSave = payload => {
-    console.log('onSave:', { payload });
+    if (selectedChannel) {
+      updateChannel(selectedChannel, payload);
+    } else {
+      addNewChannel(payload);
+    }
     onReset();
   };
   const onDelete = () => {
     deleteChannel(selectedChannel);
     onReset();
   };
-
-  console.log({ selectedChannel });
 
   const menuProps = {
     anchorOrigin: {
