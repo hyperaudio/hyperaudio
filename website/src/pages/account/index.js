@@ -38,9 +38,9 @@ const AccountPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [bio, setBio] = useState('');
-  const [displayName, setDisplayName] = useState('');
-  const [name, setName] = useState('');
+  const [bio, setBio] = useState(initialData.user.bio ?? '');
+  const [username, setUsername] = useState(initialData.user.username ?? '');
+  const [displayName, setDisplayName] = useState(initialData.user.name ?? '');
   const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
 
   // useEffect(() => {
@@ -62,8 +62,8 @@ const AccountPage = initialData => {
   useEffect(() => {
     if (!user) return;
     setBio(user.bio);
-    setDisplayName(user.displayName);
-    setName(user.name);
+    setDisplayName(user.name);
+    setUsername(user.username);
   }, [user]);
 
   console.log({ user });
@@ -73,12 +73,12 @@ const AccountPage = initialData => {
       await DataStore.save(
         User.copyOf(user, updated => {
           updated.bio = bio;
-          updated.displayName = displayName;
-          updated.name = name;
+          updated.name = displayName;
+          updated.username = username;
         }),
       ),
     );
-  }, [name, bio, user]);
+  }, [username, displayName, bio, user]);
 
   return (
     <Layout>
@@ -92,12 +92,12 @@ const AccountPage = initialData => {
         <form>
           <TextField
             fullWidth
-            label="Name"
+            label="Username"
             margin="normal"
-            onChange={e => setName(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
             required
             type="text"
-            value={name}
+            value={username}
           />
           <TextField
             fullWidth

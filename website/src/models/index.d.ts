@@ -16,6 +16,7 @@ export declare class User {
   readonly owner?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
+  readonly username?: string;
   constructor(init: ModelInit<User>);
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }

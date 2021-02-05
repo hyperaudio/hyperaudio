@@ -87,6 +87,13 @@ export const schema = {
                     "type": "AWSDateTime",
                     "isRequired": false,
                     "attributes": []
+                },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -566,5 +573,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "c9e66a3a4dd78545bd80fc7eb6f16e5d"
+    "version": "69851148ab18f57516c707cf8f057565"
 };
