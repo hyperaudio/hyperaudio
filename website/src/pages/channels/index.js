@@ -22,7 +22,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
 
-import NewChannelDialog from './NewChannelDialog';
+import ChannelDialog from './ChannelDialog';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -91,10 +91,11 @@ export default function Channels() {
     },
   ];
 
+  const [channelDialog, setChannelDialog] = React.useState(null);
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
-  const [newChannelDialog, setNewChannelDialog] = React.useState(null);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
+  const [selectedChannel, setSelectedChannel] = React.useState(null);
 
   const onOrderBy = property => () => {
     const isAsc = orderBy === property && order === 'asc';
@@ -102,7 +103,22 @@ export default function Channels() {
     setOrderBy(property);
   };
 
-  console.log({ order }, { orderBy });
+  const onClickEdit = () => {
+    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
+    setChannelDialog(true);
+    setMoreMenuAnchor(null);
+  };
+
+  const onReset = () => {
+    setChannelDialog(false);
+    setMoreMenuAnchor(null);
+    setSelectedChannel(null);
+  };
+
+  const onSave = payload => {
+    console.log('onSave:', { payload });
+    onReset();
+  };
 
   const menuProps = {
     anchorOrigin: {
@@ -118,6 +134,8 @@ export default function Channels() {
     variant: 'menu',
   };
 
+  console.log({ selectedChannel });
+
   return (
     <>
       <Layout>
@@ -128,7 +146,7 @@ export default function Channels() {
           <div className={classes.grow} />
           <Button
             color="primary"
-            onClick={() => setNewChannelDialog(true)}
+            onClick={() => setChannelDialog(true)}
             startIcon={<AddCircleOutlineIcon />}
             variant="contained"
           >
@@ -193,7 +211,7 @@ export default function Channels() {
                         </TableCell>
                         <TableCell>{editors.map(editor => editor)}</TableCell>
                         <TableCell align="right">
-                          <IconButton edge="end" size="small" onClick={e => setMoreMenuAnchor(e.target)}>
+                          <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
                           </IconButton>
                         </TableCell>
@@ -209,17 +227,13 @@ export default function Channels() {
         </Container>
       </Layout>
       <Menu
-        anchorEl={moreMenuAnchor}
+        anchorEl={moreMenuAnchor?.el}
         id="transcript-actions"
-        onClose={() => setMoreMenuAnchor(null)}
+        onClose={onReset}
         open={Boolean(moreMenuAnchor)}
         {...menuProps}
       >
-        <MenuItem
-          className={classes.primaryMenuItem}
-          dense
-          // onClick={onRemixClick}
-        >
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onClickEdit}>
           Edit details
         </MenuItem>
         <MenuItem
@@ -238,12 +252,8 @@ export default function Channels() {
           Delete
         </MenuItem>
       </Menu>
-      {newChannelDialog && (
-        <NewChannelDialog
-          onCancel={() => setNewChannelDialog(false)}
-          onConfirm={payload => console.log('onCreateChannel:', { payload })}
-          open={newChannelDialog}
-        />
+      {channelDialog && (
+        <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSave} open={channelDialog} />
       )}
     </>
   );

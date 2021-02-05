@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
-export default function NewChannelDialog({ allTags = [], onConfirm, onCancel, open }) {
+export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, onCancel, open }) {
   const [description, setDescription] = React.useState('');
   const [tags, setTags] = React.useState([]);
   const [title, setTitle] = React.useState('');
@@ -16,6 +16,12 @@ export default function NewChannelDialog({ allTags = [], onConfirm, onCancel, op
   const onSubmit = () => {
     onConfirm({ description, tags, title });
   };
+
+  React.useEffect(() => {
+    setDescription(data.description);
+    setTags(data.tags);
+    setTitle(data.title);
+  }, [data]);
 
   return (
     <Dialog
@@ -25,7 +31,7 @@ export default function NewChannelDialog({ allTags = [], onConfirm, onCancel, op
       onClose={onCancel}
       open={open}
     >
-      <DialogTitle id="dialog-title">New channel</DialogTitle>
+      <DialogTitle id="dialog-title">{data.title ? 'Edit channel' : 'New channel'}</DialogTitle>
       <form>
         <DialogContent>
           <TextField fullWidth label="Title" margin="dense" onChange={e => setTitle(e.target.value)} value={title} />
@@ -51,7 +57,7 @@ export default function NewChannelDialog({ allTags = [], onConfirm, onCancel, op
             Cancel
           </Button>
           <Button onClick={onSubmit} color="primary" variant="contained">
-            Create
+            {data ? 'Save' : 'Create'}
           </Button>
         </DialogActions>
       </form>

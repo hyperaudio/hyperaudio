@@ -26,8 +26,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
+import ChannelDialog from 'src/pages/channels/ChannelDialog';
 import Layout from 'src/Layout';
-import NewChannelDialog from 'src/pages/channels/NewChannelDialog';
 import { Channel, Media, User, UserChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
@@ -128,7 +128,7 @@ const Dashboard = initialData => {
 
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [newAnchor, setNewAnchor] = useState(null);
-  const [newChannelDialog, setNewChannelDialog] = useState(null);
+  const [newChannelDialog, setChannelDialog] = useState(null);
 
   const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
 
@@ -245,15 +245,15 @@ const Dashboard = initialData => {
           dense
           onClick={() => {
             setNewAnchor(null);
-            setNewChannelDialog(true);
+            setChannelDialog(true);
           }}
         >
           Channel
         </MenuItem>
       </Menu>
-      <NewChannelDialog
-        onCancel={() => setNewChannelDialog(false)}
-        onConfirm={() => setNewChannelDialog(false)}
+      <ChannelDialog
+        onCancel={() => setChannelDialog(false)}
+        onConfirm={() => setChannelDialog(false)}
         open={newChannelDialog}
       />
     </>
