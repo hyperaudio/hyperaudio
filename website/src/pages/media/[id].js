@@ -189,7 +189,7 @@ export default function MediaPage(initialData) {
   const router = useRouter();
   const theme = useTheme();
 
-  const { id, t } = router.query;
+  const { id, transcript } = router.query;
   const { user } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
@@ -272,7 +272,7 @@ export default function MediaPage(initialData) {
       router.push(
         {
           pathname: `/media/${id}`,
-          query: { t: transcript },
+          query: { transcript },
         },
         undefined,
         { shallow: true },
@@ -473,7 +473,7 @@ export default function MediaPage(initialData) {
                       button={!isDisabled}
                       key={id}
                       onClick={!isDisabled ? () => gotoTranscript(id) : null}
-                      selected={t === id}
+                      selected={transcript === id}
                     >
                       <ListItemText primary={title} secondary={lang} />
                       <ListItemSecondaryAction>
@@ -511,6 +511,7 @@ export default function MediaPage(initialData) {
           </Grid>
         </Grid>
       </Grid>
+      {transcript ? <h4>Transcript {transcript} View</h4> : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
