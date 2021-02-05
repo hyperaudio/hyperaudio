@@ -126,7 +126,7 @@ const Dashboard = initialData => {
 
   const { pages } = initialData;
 
-  const [channelDialog, setChannelDialog] = useState(null);
+  const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [newAnchor, setNewAnchor] = useState(null);
 
@@ -143,6 +143,11 @@ const Dashboard = initialData => {
   }, [page]);
 
   const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
+
+  const onChannelCreate = payload => {
+    console.log('onChannelCreate:', { payload });
+    setChannelDialog(false);
+  };
 
   const menuProps = {
     anchorOrigin: {
@@ -251,11 +256,7 @@ const Dashboard = initialData => {
           Channel
         </MenuItem>
       </Menu>
-      <ChannelDialog
-        onCancel={() => setChannelDialog(false)}
-        onConfirm={payload => console.log('onConfirm', { payload })}
-        open={channelDialog}
-      />
+      <ChannelDialog onCancel={() => setChannelDialog(false)} onConfirm={onChannelCreate} open={channelDialog} />
     </>
   );
 };
