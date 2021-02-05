@@ -59,7 +59,7 @@ module.exports = withMDX({
               // "upgrade-insecure-requests": [],
             },
             // frameOptions,
-            permissionsPolicy,
+            // permissionsPolicy,
             permissionsPolicyDirectiveSupport: ['proposed', 'standard'],
             isDev,
             // referrerPolicy,
