@@ -195,19 +195,14 @@ export default function Channels() {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          {tags.map((tag, i) => {
-                            const Tag = () => (
+                          {tags.map((tag, i) => (
+                            <span key={tag}>
                               <NextLink href="/mixes" passHref>
                                 <Link>{tag}</Link>
                               </NextLink>
-                            );
-                            return (
-                              <>
-                                <Tag key={tag} />
-                                {i !== tags.length - 1 && <>, </>}
-                              </>
-                            );
-                          })}
+                              {i !== tags.length - 1 && <>, </>}
+                            </span>
+                          ))}
                         </TableCell>
                         <TableCell>{editors.map(editor => editor)}</TableCell>
                         <TableCell align="right">
