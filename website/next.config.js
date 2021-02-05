@@ -9,6 +9,7 @@ const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = withMDX({
   pageExtensions: ['js', 'jsx', 'mdx'],
+
   webpack: (config, { isServer, webpack }) => {
     // Fixes npm packages (mdx) that depend on `fs` module
     config.module.rules.push({
@@ -27,6 +28,9 @@ module.exports = withMDX({
 
     return config;
   },
+
+  poweredByHeader: false,
+
   async headers() {
     return [
       {
@@ -39,23 +43,24 @@ module.exports = withMDX({
           ...nextSafe({
             // contentTypeOptions,
             contentSecurityPolicy: {
-              'default-src': "'self'",
-              'base-uri': "'self'",
-              'prefetch-src': "'self'",
-              'script-src': "'self' 'unsafe-inline' *",
-              'style-src': "'self' 'unsafe-inline' *",
-              'object-src': "'none'",
-              'connect-src': "'self' *",
-              'font-src': "'self' *",
-              'frame-src': "'self' *",
-              'img-src': "'self' data: *",
-              'manifest-src': "'self'",
-              'media-src': "'self' *",
-              'worker-src': 'blob:',
+              'default-src': ["'self'"],
+              'base-uri': ["'self'"],
+              'prefetch-src': ["'self'"],
+              'script-src': ["'self'", "'unsafe-inline'", '*'],
+              'style-src': ["'self'", "'unsafe-inline'", '*'],
+              'object-src': ["'none'"],
+              'connect-src': ["'self'", '*'],
+              'font-src': ["'self'", '*'],
+              'frame-src': ["'self'", '*'],
+              'img-src': ["'self'", 'data:', '*'],
+              'manifest-src': ["'self'"],
+              'media-src': ["'self'", '*'],
+              'worker-src': ['blob:'],
+              // "upgrade-insecure-requests": [],
             },
             // frameOptions,
-            // permissionsPolicy,
-            // permissionsPolicyDirectiveSupport,
+            permissionsPolicy,
+            permissionsPolicyDirectiveSupport: ['proposed', 'standard'],
             isDev,
             // referrerPolicy,
             // xssProtection,
