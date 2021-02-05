@@ -8,19 +8,19 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 
-export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, onCancel, open }) {
-  const [description, setDescription] = React.useState('');
-  const [tags, setTags] = React.useState([]);
-  const [title, setTitle] = React.useState('');
+export default function ChannelDialog({ allTags = [], data, onConfirm, onCancel, open = false }) {
+  const [description, setDescription] = React.useState();
+  const [tags, setTags] = React.useState();
+  const [title, setTitle] = React.useState();
 
   const onSubmit = () => {
     onConfirm({ description, tags, title });
   };
 
   React.useEffect(() => {
-    setDescription(data?.description);
-    setTags(data?.tags);
-    setTitle(data?.title);
+    setDescription(data?.description || '');
+    setTags(data?.tags || []);
+    setTitle(data?.title || '');
   }, [data]);
 
   return (
@@ -45,14 +45,37 @@ export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, on
           />
           <Autocomplete
             freeSolo
-            onChange={(e, value) => setTags(value)}
+            onChange={(event, newValue) => {
+              console.log({ newValue });
+              if (typeof newValue === 'string') {
+                setTags({
+                  title: newValue,
+                });
+              } else if (newValue && newValue.inputValue) {
+                // Create a new value from the user input
+                setTags({
+                  title: newValue.inputValue,
+                });
+              } else {
+                setTags(newValue);
+              }
+            }}
             options={allTags}
             getOptionLabel={option => {
-              console.log('getOptionLabel', option);
-              return option;
+              // Value selected with enter, right from the input
+              if (typeof option === 'string') {
+                return option;
+              }
+              // Add "xxx" option created dynamically
+              if (option.inputValue) {
+                return option.inputValue;
+              }
+              // Regular option
+              // return option.title;
+              return option.toString();
             }}
             renderInput={params => <TextField {...params} label="Tags" margin="dense" fullWidth />}
-            // renderOption={option => option}
+            // renderOption={option => option.toString()}
             value={tags}
           />
         </DialogContent>
