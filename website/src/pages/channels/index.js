@@ -98,6 +98,17 @@ export default function Channels({ user, userChannels, users }) {
     return () => subscription.unsubscribe();
   }, [user]);
 
+  useEffect(() => {
+    getUserChannels(setChannels, user);
+    const subscription = DataStore.observe(Channel).subscribe(msg => {
+      console.log(msg.model, msg.opType, msg.element);
+      getUserChannels(setChannels, user);
+    });
+    const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
+    window.addEventListener('online', handleConnectionChange);
+    return () => subscription.unsubscribe();
+  }, [user]);
+
   const [channelDialog, setChannelDialog] = React.useState();
   const [deleteDialog, setDeleteDialog] = React.useState();
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState();
