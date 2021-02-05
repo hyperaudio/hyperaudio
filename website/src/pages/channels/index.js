@@ -97,23 +97,6 @@ export default function Channels({ user, userChannels }) {
     return () => subscription.unsubscribe();
   }, [user]);
 
-  // const channels = [
-  //   {
-  //     description: 'A description',
-  //     editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
-  //     id: 0,
-  //     tags: ['a tag', 'another tag'],
-  //     title: 'Channel title',
-  //   },
-  //   {
-  //     description: 'A description',
-  //     editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
-  //     id: 1,
-  //     tags: [],
-  //     title: 'Title of a channel',
-  //   },
-  // ];
-
   const [channelDialog, setChannelDialog] = React.useState(null);
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
   const [order, setOrder] = React.useState('asc');
@@ -167,6 +150,7 @@ export default function Channels({ user, userChannels }) {
     variant: 'menu',
   };
 
+  console.log({ channels });
   console.log({ selectedChannel });
 
   return (
@@ -228,7 +212,7 @@ export default function Channels({ user, userChannels }) {
                           </Typography>
                         </TableCell>
                         <TableCell>
-                          {tags.map((tag, i) => (
+                          {tags?.map((tag, i) => (
                             <span key={tag}>
                               <NextLink href="/mixes" passHref>
                                 <Link>{tag}</Link>
@@ -237,7 +221,7 @@ export default function Channels({ user, userChannels }) {
                             </span>
                           ))}
                         </TableCell>
-                        <TableCell>{editors ? editors.map(editor => editor) : null}</TableCell>
+                        <TableCell>{editors?.map(editor => editor)}</TableCell>
                         <TableCell align="right">
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />

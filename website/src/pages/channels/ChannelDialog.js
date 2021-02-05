@@ -18,9 +18,9 @@ export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, on
   };
 
   React.useEffect(() => {
-    setDescription(data.description);
-    setTags(data.tags);
-    setTitle(data.title);
+    setDescription(data?.description);
+    setTags(data?.tags);
+    setTitle(data?.title);
   }, [data]);
 
   return (
@@ -31,7 +31,7 @@ export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, on
       onClose={onCancel}
       open={open}
     >
-      <DialogTitle id="dialog-title">{data.title ? 'Edit channel' : 'New channel'}</DialogTitle>
+      <DialogTitle id="dialog-title">{data?.title ? 'Edit channel' : 'New channel'}</DialogTitle>
       <form>
         <DialogContent>
           <TextField fullWidth label="Title" margin="dense" onChange={e => setTitle(e.target.value)} value={title} />
@@ -47,8 +47,12 @@ export default function ChannelDetailsDialog({ allTags = [], data, onConfirm, on
             freeSolo
             onChange={(e, value) => setTags(value)}
             options={allTags}
+            getOptionLabel={option => {
+              console.log('getOptionLabel', option);
+              return option;
+            }}
             renderInput={params => <TextField {...params} label="Tags" margin="dense" fullWidth />}
-            renderOption={option => option.title}
+            // renderOption={option => option}
             value={tags}
           />
         </DialogContent>
