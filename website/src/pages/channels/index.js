@@ -143,11 +143,34 @@ export default function Channels({ user, userChannels, users }) {
   //   const channel = await DataStore.save(
   //     new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
   //   );
+  const addNewChannel = useCallback(
+    async ({ title, description, tags = [], editors = [], metadata = {} }) => {
+      const channel = await DataStore.save(
+        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
+      );
 
-  //   await DataStore.save(new UserChannel({ user, channel }));
+      await DataStore.save(new UserChannel({ user, channel }));
+    },
+    [user],
+  );
 
-  //   router.push(`/media/?channel=${channel.id}`);
-  // }, [title, description, tags, metadata, user, router]);
+  const updateChannel = useCallback(async (channel, { title, description, tags = [] }) => {
+    await DataStore.save(
+      Channel.copyOf(channel, updated => {
+        updated.title = title;
+        updated.description = description;
+        updated.tags = tags;
+      }),
+    );
+  }, []);
+
+  const updateChannelEditors = useCallback(async (channel, editors = []) => {
+    await DataStore.save(
+      Channel.copyOf(channel, updated => {
+        updated.editors = editors;
+      }),
+    );
+  }, []);
 
   const menuProps = {
     anchorOrigin: {

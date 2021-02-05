@@ -27,6 +27,7 @@ type Channel @model @auth(rules: [{allow: public}]) {
   media: [MediaChannel] @connection(keyName: "byChannel", fields: ["id"])
   users: [UserChannel] @connection(keyName: "byChannel", fields: ["id"])
   tags: [String]
+  editors: [String]
 }
 
 type Media @model @auth(rules: [{allow: public}]) {
