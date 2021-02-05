@@ -29,6 +29,7 @@ import Layout from 'src/Layout';
 import { Channel, User, UserChannel } from '../../models';
 
 import ChannelDialog from './ChannelDialog';
+import DeleteDialog from 'src/dialogs/DeleteDialog';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -98,6 +99,7 @@ export default function Channels({ user, userChannels, users }) {
   }, [user]);
 
   const [channelDialog, setChannelDialog] = React.useState();
+  const [deleteDialog, setDeleteDialog] = React.useState();
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('name');
@@ -109,20 +111,31 @@ export default function Channels({ user, userChannels, users }) {
     setOrderBy(property);
   };
 
-  const onClickEdit = () => {
+  const onEditClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
     setChannelDialog(true);
     setMoreMenuAnchor(null);
   };
 
+  const onDeleteClick = () => {
+    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
+    setDeleteDialog(true);
+  };
+
   const onReset = () => {
     setChannelDialog(false);
+    setDeleteDialog(false);
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
 
   const onSave = payload => {
     console.log('onSave:', { payload });
+    onReset();
+  };
+
+  const onDelete = payload => {
+    console.log('onDelete:', { payload });
     onReset();
   };
 
@@ -242,7 +255,7 @@ export default function Channels({ user, userChannels, users }) {
         open={Boolean(moreMenuAnchor)}
         {...menuProps}
       >
-        <MenuItem className={classes.primaryMenuItem} dense onClick={onClickEdit}>
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onEditClick}>
           Edit details
         </MenuItem>
         <MenuItem
@@ -253,16 +266,20 @@ export default function Channels({ user, userChannels, users }) {
         >
           Manage editors
         </MenuItem>
-        <MenuItem
-          className={classes.primaryMenuItem}
-          dense
-          // onClick={onRemixClick}
-        >
+        <MenuItem className={classes.primaryMenuItem} dense onClick={onDeleteClick}>
           Delete
         </MenuItem>
       </Menu>
       {channelDialog && (
         <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSave} open={channelDialog} />
+      )}
+      {deleteDialog && (
+        <DeleteDialog
+          data={{ entity: 'channel', title: selectedChannel.title }}
+          onCancel={onReset}
+          onConfirm={onDelete}
+          open={deleteDialog}
+        />
       )}
     </>
   );
