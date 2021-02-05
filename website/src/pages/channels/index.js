@@ -105,40 +105,6 @@ export default function Channels({ user, userChannels, users }) {
   const [orderBy, setOrderBy] = React.useState('name');
   const [selectedChannel, setSelectedChannel] = React.useState();
 
-  const onOrderBy = property => () => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const onEditClick = () => {
-    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
-    setChannelDialog(true);
-    setMoreMenuAnchor(null);
-  };
-
-  const onDeleteClick = () => {
-    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
-    setDeleteDialog(true);
-  };
-
-  const onReset = () => {
-    setChannelDialog(false);
-    setDeleteDialog(false);
-    setMoreMenuAnchor(null);
-    setSelectedChannel(null);
-  };
-
-  const onSave = payload => {
-    console.log('onSave:', { payload });
-    onReset();
-  };
-
-  const onDelete = payload => {
-    console.log('onDelete:', { payload });
-    onReset();
-  };
-
   // const onAddNewChannel = useCallback(async () => {
   //   const channel = await DataStore.save(
   //     new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
@@ -173,6 +139,38 @@ export default function Channels({ user, userChannels, users }) {
   }, []);
 
   const deleteChannel = useCallback(channel => DataStore.delete(channel), []);
+
+  const onOrderByClick = property => () => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+  const onEditClick = () => {
+    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
+    setChannelDialog(true);
+    setMoreMenuAnchor(null);
+  };
+  const onDeleteClick = () => {
+    setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
+    setDeleteDialog(true);
+  };
+
+  const onReset = () => {
+    setChannelDialog(false);
+    setDeleteDialog(false);
+    setMoreMenuAnchor(null);
+    setSelectedChannel(null);
+  };
+  const onSave = payload => {
+    console.log('onSave:', { payload });
+    onReset();
+  };
+  const onDelete = () => {
+    deleteChannel(selectedChannel);
+    onReset();
+  };
+
+  console.log({ selectedChannel });
 
   const menuProps = {
     anchorOrigin: {
@@ -215,7 +213,7 @@ export default function Channels({ user, userChannels, users }) {
                       <TableSortLabel
                         active={orderBy === 'name'}
                         direction={orderBy === 'name' ? order : 'asc'}
-                        onClick={onOrderBy('name')}
+                        onClick={onOrderByClick('name')}
                       >
                         Name{' '}
                         {orderBy === 'name' ? (
