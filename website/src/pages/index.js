@@ -256,7 +256,9 @@ const Dashboard = initialData => {
           Channel
         </MenuItem>
       </Menu>
-      <ChannelDialog onCancel={() => setChannelDialog(false)} onConfirm={onChannelCreate} open={channelDialog} />
+      {channelDialog && (
+        <ChannelDialog onCancel={() => setChannelDialog(false)} onConfirm={onChannelCreate} open={channelDialog} />
+      )}
     </>
   );
 };
