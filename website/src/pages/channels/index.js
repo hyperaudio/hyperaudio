@@ -172,7 +172,7 @@ export default function Channels({ user, userChannels, users }) {
     );
   }, []);
 
-  const deleteChannel = useCallback(() => console.log('delete TODO'), []);
+  const deleteChannel = useCallback(channel => DataStore.delete(channel), []);
 
   const menuProps = {
     anchorOrigin: {
