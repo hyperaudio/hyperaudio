@@ -1,5 +1,9 @@
+import React, { useCallback, useState, useEffect } from 'react';
 import NextLink from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/router';
+import { withSSRContext, DataStore } from 'aws-amplify';
+import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@material-ui/core/Button';
@@ -21,6 +25,8 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import Layout from 'src/Layout';
+
+import { Channel, User, UserChannel } from '../../models';
 
 import ChannelDialog from './ChannelDialog';
 
@@ -71,25 +77,42 @@ function stableSort(array, comparator) {
   return stabilizedThis.map(el => el[0]);
 }
 
-export default function Channels() {
+const getUserChannels = async (setChannels, user) =>
+  setChannels((await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel));
+
+export default function Channels({ user, userChannels }) {
   const classes = useStyles();
 
-  const channels = [
-    {
-      description: 'A description',
-      editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
-      id: 0,
-      tags: ['a tag', 'another tag'],
-      title: 'Channel title',
-    },
-    {
-      description: 'A description',
-      editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
-      id: 1,
-      tags: [],
-      title: 'Title of a channel',
-    },
-  ];
+  const [channels, setChannels] = useState(userChannels ? deserializeModel(Channel, userChannels) : []);
+  console.log({ user, channels });
+
+  useEffect(() => {
+    getUserChannels(setChannels, user);
+    const subscription = DataStore.observe(UserChannel).subscribe(msg => {
+      console.log(msg.model, msg.opType, msg.element);
+      getUserChannels(setChannels, user);
+    });
+    const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
+    window.addEventListener('online', handleConnectionChange);
+    return () => subscription.unsubscribe();
+  }, [user]);
+
+  // const channels = [
+  //   {
+  //     description: 'A description',
+  //     editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
+  //     id: 0,
+  //     tags: ['a tag', 'another tag'],
+  //     title: 'Channel title',
+  //   },
+  //   {
+  //     description: 'A description',
+  //     editors: ['190d5865-d881-443d-863b-b1a00ee9ddf2'],
+  //     id: 1,
+  //     tags: [],
+  //     title: 'Title of a channel',
+  //   },
+  // ];
 
   const [channelDialog, setChannelDialog] = React.useState(null);
   const [moreMenuAnchor, setMoreMenuAnchor] = React.useState(null);
@@ -119,6 +142,16 @@ export default function Channels() {
     console.log('onSave:', { payload });
     onReset();
   };
+
+  // const onAddNewChannel = useCallback(async () => {
+  //   const channel = await DataStore.save(
+  //     new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
+  //   );
+
+  //   await DataStore.save(new UserChannel({ user, channel }));
+
+  //   router.push(`/media/?channel=${channel.id}`);
+  // }, [title, description, tags, metadata, user, router]);
 
   const menuProps = {
     anchorOrigin: {
@@ -204,7 +237,7 @@ export default function Channels() {
                             </span>
                           ))}
                         </TableCell>
-                        <TableCell>{editors.map(editor => editor)}</TableCell>
+                        <TableCell>{editors ? editors.map(editor => editor) : null}</TableCell>
                         <TableCell align="right">
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
@@ -253,3 +286,22 @@ export default function Channels() {
     </>
   );
 }
+
+export const getServerSideProps = async context => {
+  const { Auth, DataStore } = withSSRContext(context);
+
+  try {
+    const {
+      attributes: { sub },
+    } = await Auth.currentAuthenticatedUser();
+
+    const user = serializeModel(await DataStore.query(User, sub));
+    const userChannels = serializeModel(
+      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    );
+
+    return { props: { user, userChannels } };
+  } catch (error) {
+    return { redirect: { destination: '/auth/?redirect=/new/channel', permanent: false } };
+  }
+};
