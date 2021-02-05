@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Head from 'next/head';
 import NextLink from 'next/link';
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { rgba } from 'polished';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
@@ -197,7 +197,7 @@ const useStyles = makeStyles(theme => ({
 
 const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
-export default function MediaPage(initialData) {
+const MediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
   const theme = useTheme();
@@ -215,10 +215,36 @@ export default function MediaPage(initialData) {
   const [url, setUrl] = useState();
 
   const [actionableTranscript, setActionableTranscript] = useState();
-  const [transcribeDialogOpen, setTranscribeDialogOpen] = React.useState();
+  const [transcribeDialogOpen, setTranscribeDialogOpen] = useState();
   const [transcribeMenuAnchor, setTranscribeMenuAnchor] = useState();
-  const [transcriptDeleteDialogOpen, setTranscriptDeleteDialogOpen] = React.useState();
+  const [transcriptDeleteDialogOpen, setTranscriptDeleteDialogOpen] = useState();
   const [transcriptMenuAnchor, setTranscriptMenuAnchor] = useState();
+
+  // FIXME
+  const type = 'video';
+  const config = useMemo(
+    () => ({
+      file: {
+        forceAudio: type === 'audio',
+        forceVideo: type === 'video',
+      },
+    }),
+    [type],
+  );
+
+  const player = useRef();
+  const [duration, setDuration] = useState(0);
+  const [progress, setProgress] = useState();
+  const [ready, setReady] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [playbackRate] = useState(1);
+
+  const onPlay = useCallback(() => setPlaying(true), [setPlaying]);
+  const onPause = useCallback(() => setPlaying(false), [setPlaying]);
+  const onDuration = useCallback(d => setDuration(d), [setDuration]);
+  const onProgress = useCallback(({ playedSeconds }) => setProgress(playedSeconds), [setProgress]);
+  const onReady = useCallback(() => setReady(true), [setReady]);
+  const onError = useCallback(() => setReady(false), [setReady]);
 
   const isOwner = user?.id === media.owner;
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
@@ -246,22 +272,27 @@ export default function MediaPage(initialData) {
     setTranscriptDeleteDialogOpen(false);
     setTranscriptMenuAnchor(null);
   };
+
   const onTranscriptMenuOpen = id => e => {
     setActionableTranscript(TRANSCRIPTS.find(o => o.id === id));
     setTranscriptMenuAnchor(e.currentTarget);
   };
+
   const onRemixClick = () => {
     console.log('onRemixClick', { actionableTranscript });
     onReset();
   };
+
   const onDeleteConfirm = () => {
     console.log('onDeleteConfirm', actionableTranscript);
     onReset();
   };
+
   const onTranscribeClick = () => {
     setTranscribeDialogOpen(true);
     setTranscribeMenuAnchor(null);
   };
+
   const onTranscribeConfirm = payload => {
     const { language, speakers } = payload;
     console.log('onTranscribeConfirm', { language }, { speakers });
@@ -324,28 +355,35 @@ export default function MediaPage(initialData) {
     setTags(media.tags);
   }, [media]);
 
-  const menuProps = {
-    anchorOrigin: {
-      vertical: 'bottom',
-      horizontal: 'left',
-    },
-    getContentAnchorEl: null,
-    keepMounted: true,
-    transformOrigin: {
-      vertical: 'top',
-      horizontal: 'left',
-    },
-    variant: 'menu',
-  };
-  const textFieldProps = {
-    color: 'primary',
-    disabled: !editable,
-    fullWidth: true,
-    margin: 'none',
-    multiline: true,
-    size: 'small',
-    type: 'text',
-  };
+  const menuProps = useMemo(
+    () => ({
+      anchorOrigin: {
+        vertical: 'bottom',
+        horizontal: 'left',
+      },
+      getContentAnchorEl: null,
+      keepMounted: true,
+      transformOrigin: {
+        vertical: 'top',
+        horizontal: 'left',
+      },
+      variant: 'menu',
+    }),
+    [],
+  );
+
+  const textFieldProps = useMemo(
+    () => ({
+      color: 'primary',
+      disabled: !editable,
+      fullWidth: true,
+      margin: 'none',
+      multiline: true,
+      size: 'small',
+      type: 'text',
+    }),
+    [editable],
+  );
 
   return (
     <Layout>
@@ -385,7 +423,26 @@ export default function MediaPage(initialData) {
         <Grid item xs={12} md={8}>
           {url ? (
             <div className={classes.stage}>
-              <ReactPlayer height="auto" width="100%" url={url} controls className={classes.player} />
+              <ReactPlayer
+                controls
+                ref={player}
+                height="auto"
+                width="100%"
+                className={classes.player}
+                progressInterval={75}
+                {...{
+                  url,
+                  config,
+                  playing,
+                  onPlay,
+                  onPause,
+                  onDuration,
+                  onProgress,
+                  onReady,
+                  onError,
+                  playbackRate,
+                }}
+              />
             </div>
           ) : null}
         </Grid>
@@ -524,7 +581,10 @@ export default function MediaPage(initialData) {
           </Grid>
         </Grid>
       </Grid>
-      {transcript ? <Transcript id={transcript} /> : null}
+      <h6>
+        {progress} / {duration}
+      </h6>
+      {transcript ? <Transcript id={transcript} time={progress} player={player} /> : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
@@ -569,14 +629,14 @@ export default function MediaPage(initialData) {
       <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
     </Layout>
   );
-}
+};
 
 const Transcript = ({ id }) => {
   const metadata = useMemo(() => TRANSCRIPTS.find(({ id: _id }) => _id === id), [id]);
   const [transcript, setTranscript] = useState();
 
   useEffect(() => {
-    if (!metadata.transcript) return;
+    if (!metadata.transcript) return setTranscript(null);
     const loadTranscript = async () => {
       const { data } = await axios.request({
         method: 'get',
@@ -623,3 +683,5 @@ export const getServerSideProps = async context => {
     },
   };
 };
+
+export default MediaPage;
