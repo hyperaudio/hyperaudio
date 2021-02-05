@@ -10,6 +10,7 @@ type User @model @auth(rules: [{allow: public}]) {
   owner: String
   createdAt: AWSDateTime
   updatedAt: AWSDateTime
+  username: String
 }
 
 type Channel @model @auth(rules: [{allow: public}]) {
