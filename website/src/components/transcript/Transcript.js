@@ -2,57 +2,47 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-use-before-define */
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
 import { Editor, EditorState, ContentState, CompositeDecorator, EditorBlock, convertFromRaw } from 'draft-js';
 import { nanoid } from 'nanoid';
-
-// import './transcript.css';
 
 const Transcript = ({ transcript, time = 0, player }) => {
   const editor = useRef();
   useEffect(() => editor.current && editor.current.focus(), [editor]);
 
-  const composeDecorators = useCallback(
-    time =>
-      new CompositeDecorator([
-        // ...decorators,
-        {
-          strategy: (contentBlock, callback, contentState) =>
-            playheadDecorator.strategy(contentBlock, callback, contentState, time),
-          component: playheadDecorator.component,
-        },
-      ]),
-    [],
+  const [interval, setInterval] = useState([0, 0]);
+  const intervals = useMemo(
+    () => transcript.flatMap(({ items }) => items.map(([, start, duration]) => [start, start + duration])),
+    [transcript],
   );
+
+  useEffect(() => {
+    const [start, end] = interval;
+    if (start <= time && time < end) return;
+
+    const nextInterval = intervals.find(([start, end]) => start <= time && time < end);
+    nextInterval && setInterval(nextInterval);
+  }, [time, interval, intervals]);
+
+  const tick = interval[0];
+  // console.log(tick);
 
   const [editorState, setEditorState] = useState(
     transcript
       ? EditorState.createWithContent(
           convertFromRaw({ blocks: createFromTranscript(transcript), entityMap: createEntityMap([]) }),
-          composeDecorators(time),
+          composeDecorators(tick),
         )
       : EditorState.createEmpty(),
   );
   const [playedBlocks, setPlayedBlocks] = useState([]);
 
-  const customBlockRenderer = contentBlock => {
-    const type = contentBlock.getType();
-    if (type === 'paragraph') {
-      return {
-        component: CustomBlock,
-        editable: type === 'paragraph',
-        props: {
-          setEditorState,
-          editorState,
-        },
-      };
-    }
-    return null;
-  };
-
   const handleChange = useCallback(changedEditorState => setEditorState(changedEditorState), []);
 
   useEffect(() => {
+    if (!tick) return;
+    // console.log(tick);
+
     setPlayedBlocks(
       editorState
         .getCurrentContent()
@@ -60,17 +50,17 @@ const Transcript = ({ transcript, time = 0, player }) => {
         .filter(block => {
           const data = block.getData();
 
-          return data.get('start') <= time;
+          return data.get('start') <= tick;
         })
         .map(block => block.getKey()),
     );
 
     setEditorState(
       EditorState.set(editorState, {
-        decorator: composeDecorators(time),
+        decorator: composeDecorators(tick),
       }),
     );
-  }, [time]);
+  }, [tick]);
 
   const handleClick = useCallback(() => {
     const selectionState = editorState.getSelection();
@@ -115,30 +105,55 @@ const Transcript = ({ transcript, time = 0, player }) => {
       .playhead ~ span {
         color: grey;
       }`}</style>
-      <Editor ref={editor} editorState={editorState} onChange={handleChange} />
+      <Editor ref={editor} editorState={editorState} onChange={handleChange} blockRendererFn={customBlockRenderer} />
     </div>
   );
 };
-// blockRendererFn={customBlockRenderer}
+
+const customBlockRenderer = contentBlock => {
+  const type = contentBlock.getType();
+  if (type === 'paragraph') {
+    return {
+      component: CustomBlock,
+      editable: type === 'paragraph',
+      props: {},
+    };
+  }
+  return null;
+};
+
+const composeDecorators = time =>
+  new CompositeDecorator([
+    // ...decorators,
+    {
+      strategy: (contentBlock, callback, contentState) =>
+        playheadDecorator.strategy(contentBlock, callback, contentState, time),
+      component: playheadDecorator.component,
+    },
+  ]);
+
 const PlayheadSpan = ({ children }) => <span className="playhead">{children}</span>;
 
-// const CustomBlock = props => {
-//   const {
-//     contentState,
-//     block,
-//     // blockProps: { editorState, setEditorState },
-//   } = props;
+const CustomBlock = props => {
+  const {
+    block,
+    // blockProps: { editorState, setEditorState },
+  } = props;
 
-//   return (
-//     <div className="customBlock">
-//       <div contentEditable={false} style={{ userSelect: 'none' }}></div>
-//       <EditorBlock {...props} />
-//     </div>
-//   );
-// };
+  const speaker = useMemo(() => block.getData().get('speaker'), [block]);
+
+  return (
+    <div className="customBlock">
+      <div contentEditable={false} style={{ userSelect: 'none' }}>
+        <span>{speaker}</span>
+      </div>
+      <EditorBlock {...props} />
+    </div>
+  );
+};
 
 const createFromTranscript = transcript =>
-  transcript.map(({ start, duration, speaker, items }) => ({
+  transcript.slice(0, 50).map(({ start, duration, speaker, items }) => ({
     key: `b_${nanoid(5)}`,
     type: 'paragraph',
     text: items.map(([text]) => text).join(' '),
@@ -176,16 +191,11 @@ const createEntityMap = blocks =>
 
 const playheadDecorator = {
   strategy: (contentBlock, callback, contentState, time) => {
-    const data = contentBlock.getData();
-    const start = data.get('start');
-    const end = data.get('end');
+    const { start, end, items } = contentBlock.getData().toJS();
 
     if (start <= time && time < end) {
-      const items = data.get('items');
       const item = items?.filter(({ start }) => start <= time).pop();
-      if (!item) return;
-
-      callback(item.offset, item.offset + item.length);
+      item && callback(item.offset, item.offset + item.length);
     }
   },
   component: PlayheadSpan,
