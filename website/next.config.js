@@ -31,42 +31,42 @@ module.exports = withMDX({
 
   poweredByHeader: false,
 
-  async headers() {
-    return [
-      {
-        source: '/:path*',
-        headers: [
-          {
-            key: 'Strict-Transport-Security',
-            value: 'max-age=31536000; includeSubDomains', // TBD '; preload'
-          },
-          ...nextSafe({
-            // contentTypeOptions,
-            contentSecurityPolicy: {
-              'default-src': ["'self'"],
-              'base-uri': ["'self'"],
-              'prefetch-src': ["'self'"],
-              'script-src': ["'self'", "'unsafe-inline'", '*'],
-              'style-src': ["'self'", "'unsafe-inline'", '*'],
-              'object-src': ["'none'"],
-              'connect-src': ["'self'", '*'],
-              'font-src': ["'self'", '*'],
-              'frame-src': ["'self'", '*'],
-              'img-src': ["'self'", 'data:', '*'],
-              'manifest-src': ["'self'"],
-              'media-src': ["'self'", '*'],
-              'worker-src': ['blob:'],
-              // "upgrade-insecure-requests": [],
-            },
-            // frameOptions,
-            // permissionsPolicy,
-            permissionsPolicyDirectiveSupport: ['proposed', 'standard'],
-            isDev,
-            // referrerPolicy,
-            // xssProtection,
-          }),
-        ],
-      },
-    ];
-  },
+  // async headers() {
+  //   return [
+  //     {
+  //       source: '/:path*',
+  //       headers: [
+  //         {
+  //           key: 'Strict-Transport-Security',
+  //           value: 'max-age=31536000; includeSubDomains', // TBD '; preload'
+  //         },
+  //         ...nextSafe({
+  //           // contentTypeOptions,
+  //           contentSecurityPolicy: {
+  //             'default-src': ["'self'"],
+  //             'base-uri': ["'self'"],
+  //             'prefetch-src': ["'self'"],
+  //             'script-src': ["'self'", "'unsafe-inline'", '*'],
+  //             'style-src': ["'self'", "'unsafe-inline'", '*'],
+  //             'object-src': ["'none'"],
+  //             'connect-src': ["'self'", '*'],
+  //             'font-src': ["'self'", '*'],
+  //             'frame-src': ["'self'", '*'],
+  //             'img-src': ["'self'", 'data:', '*'],
+  //             'manifest-src': ["'self'"],
+  //             'media-src': ["'self'", '*'],
+  //             'worker-src': ['blob:'],
+  //             // "upgrade-insecure-requests": [],
+  //           },
+  //           // frameOptions,
+  //           // permissionsPolicy,
+  //           permissionsPolicyDirectiveSupport: ['proposed', 'standard'],
+  //           isDev,
+  //           // referrerPolicy,
+  //           // xssProtection,
+  //         }),
+  //       ],
+  //     },
+  //   ];
+  // },
 });

@@ -108,77 +108,73 @@ const MetaForm = ({
   const classes = useStyles()();
   return (
     <form>
-      <>
-        <TextField
-          autoFocus
-          fullWidth
-          label="Title"
-          margin="dense"
-          onChange={e => setTitle(e.target.value)}
-          required
-          size="small"
-          type="text"
-          value={title}
-        />
-        <TextField
-          fullWidth
-          label="Description"
-          margin="dense"
-          multiline
-          onChange={e => setDescription(e.target.value)}
-          rowsMax={3}
-          size="small"
-          type="text"
-          value={description}
-        />
-        <Autocomplete
-          freeSolo
-          id="channels-filled"
-          multiple
-          onChange={(e, v) => setChannels(v)}
-          onInputChange={args => console.log('onInputChange', args)}
-          options={allChannels.map(option => option.title)}
-          renderInput={params => <TextField {...params} label="Add to channels" margin="dense" size="small" />}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
-            ))
-          }
-          value={channels}
-        />
-        <Autocomplete
-          freeSolo
-          id="tags-filled"
-          multiple
-          onChange={(e, v) => setTags(v)}
-          onInputChange={args => console.log('onInputChange', args)}
-          options={allTags.map(option => option.title)}
-          renderInput={params => <TextField {...params} label="Add tags" margin="dense" size="small" />}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
-            ))
-          }
-          value={tags}
-        />
-        <Toolbar disableGutters className={classes.actionbar}>
-          <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained" size="small">
-            Finish
-          </Button>
-          <Button onClick={onReset} size="small">
-            Cancel
-          </Button>
-        </Toolbar>
-      </>
+      <TextField
+        autoFocus
+        fullWidth
+        label="Title"
+        margin="dense"
+        onChange={e => setTitle(e.target.value)}
+        required
+        size="small"
+        type="text"
+        value={title}
+      />
+      <TextField
+        fullWidth
+        label="Description"
+        margin="dense"
+        multiline
+        onChange={e => setDescription(e.target.value)}
+        rowsMax={3}
+        size="small"
+        type="text"
+        value={description}
+      />
+      <Autocomplete
+        freeSolo
+        id="channels-filled"
+        multiple
+        onChange={(e, v) => setChannels(v)}
+        onInputChange={args => console.log('onInputChange', args)}
+        options={allChannels.map(option => option.title)}
+        renderInput={params => <TextField {...params} label="Add to channels" margin="dense" size="small" />}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
+          ))
+        }
+        value={channels}
+      />
+      <Autocomplete
+        freeSolo
+        id="tags-filled"
+        multiple
+        onChange={(e, v) => setTags(v)}
+        onInputChange={args => console.log('onInputChange', args)}
+        options={allTags.map(option => option.title)}
+        renderInput={params => <TextField {...params} label="Add tags" margin="dense" size="small" />}
+        renderTags={(value, getTagProps) =>
+          value.map((option, index) => (
+            <Chip variant="outlined" label={option} {...getTagProps({ index })} key={option} size="small" />
+          ))
+        }
+        value={tags}
+      />
+      <Toolbar disableGutters className={classes.actionbar}>
+        <Button color="primary" disabled={!isValid} onClick={onAddNewMedia} variant="contained" size="small">
+          Finish
+        </Button>
+        <Button onClick={onReset} size="small">
+          Cancel
+        </Button>
+      </Toolbar>
     </form>
   );
 };
 
 export default function AddMediaPage(initialData) {
   const router = useRouter();
-
   const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
-  console.log({ user });
 
   useEffect(() => {
     onAuthUIStateChange((authState, authData) => {
@@ -315,7 +311,9 @@ export default function AddMediaPage(initialData) {
       new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
     );
 
-    router.push(`/media/${media.id}`);
+    console.log({ media });
+
+    // router.push(`/media/${media.id}`);
   }, [url, title, description, tags, metadata, user, router]);
 
   const onReset = () => {

@@ -42,6 +42,8 @@ import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
 
+import Transcript from '../../components/transcript/Transcript';
+
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = [
   { id: 1, title: 'Remix' },
@@ -581,10 +583,7 @@ const MediaPage = initialData => {
           </Grid>
         </Grid>
       </Grid>
-      <h6>
-        {progress} / {duration}
-      </h6>
-      {transcript ? <Transcript id={transcript} time={progress} player={player} /> : null}
+      {transcript ? <TranscriptLoader id={transcript} time={progress} player={player} /> : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
@@ -631,7 +630,7 @@ const MediaPage = initialData => {
   );
 };
 
-const Transcript = ({ id }) => {
+const TranscriptLoader = ({ id, time, player }) => {
   const metadata = useMemo(() => TRANSCRIPTS.find(({ id: _id }) => _id === id), [id]);
   const [transcript, setTranscript] = useState();
 
@@ -651,7 +650,7 @@ const Transcript = ({ id }) => {
   return metadata ? (
     <div>
       <h1>{metadata.title}</h1>
-      {transcript ? transcript.map(({ speaker, items }) => <p>{items.map(([text]) => text).join(' ')}</p>) : null}
+      {transcript ? <Transcript transcript={transcript} time={time} player={player} /> : null}
     </div>
   ) : null;
 };
