@@ -6,6 +6,7 @@ import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +22,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
@@ -50,6 +52,23 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 20,
     width: 1,
+  },
+  editors: {
+    display: 'flex',
+    margin: 0,
+    padding: 0,
+  },
+  editor: {
+    marginRight: theme.spacing(0.25),
+    listStyle: 'none',
+  },
+  avatar: {
+    background: theme.palette.primary.light,
+    fontSize: theme.typography.pxToRem(16),
+    height: theme.spacing(4),
+    lineHeight: theme.spacing(4),
+    textTransform: 'uppercase',
+    width: theme.spacing(4),
   },
 }));
 
@@ -91,7 +110,7 @@ export default function Channels({ user, userChannels, users }) {
   useEffect(() => {
     getUserChannels(setChannels, user);
     const subscription = DataStore.observe(UserChannel).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
+      // console.log(msg.model, msg.opType, msg.element);
       getUserChannels(setChannels, user);
     });
     const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
@@ -102,7 +121,7 @@ export default function Channels({ user, userChannels, users }) {
   useEffect(() => {
     getUserChannels(setChannels, user);
     const subscription = DataStore.observe(Channel).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
+      // console.log(msg.model, msg.opType, msg.element);
       getUserChannels(setChannels, user);
     });
     const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
@@ -178,7 +197,11 @@ export default function Channels({ user, userChannels, users }) {
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
-  const onSave = payload => {
+  const onSaveEditors = editors => {
+    updateChannelEditors(selectedChannel, editors);
+    onReset();
+  };
+  const onSaveDetails = payload => {
     if (selectedChannel) {
       updateChannel(selectedChannel, payload);
     } else {
@@ -273,7 +296,19 @@ export default function Channels({ user, userChannels, users }) {
                             </span>
                           ))}
                         </TableCell>
-                        <TableCell>{editors?.map(editor => editor)}</TableCell>
+                        <TableCell>
+                          <ul className={classes.editors}>
+                            {users
+                              .filter(o => editors?.includes(o.id))
+                              .map(({ username }) => (
+                                <li className={classes.editor}>
+                                  <Tooltip title={username}>
+                                    <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
+                                  </Tooltip>
+                                </li>
+                              ))}
+                          </ul>
+                        </TableCell>
                         <TableCell align="right">
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
@@ -308,13 +343,13 @@ export default function Channels({ user, userChannels, users }) {
         </MenuItem>
       </Menu>
       {channelDialog && (
-        <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSave} open={channelDialog} />
+        <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSaveDetails} open={channelDialog} />
       )}
       {editorsDialog && (
         <EditorsDialog
           data={selectedChannel}
           onCancel={onReset}
-          onConfirm={onSave}
+          onConfirm={onSaveEditors}
           open={editorsDialog}
           users={users}
         />

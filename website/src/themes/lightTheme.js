@@ -3,6 +3,9 @@ import grey from '@material-ui/core/colors/grey';
 
 const lightTheme = createMuiTheme({
   props: {
+    MuiAvatar: {
+      variant: 'circular',
+    },
     MuiButtonBase: {
       disableRipple: true,
     },
