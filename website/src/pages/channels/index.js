@@ -300,9 +300,9 @@ export default function Channels({ user, userChannels, users }) {
                           <ul className={classes.editors}>
                             {users
                               .filter(o => editors?.includes(o.id))
-                              .map(({ username }) => (
+                              .map(({ name, username }) => (
                                 <li className={classes.editor}>
-                                  <Tooltip title={username}>
+                                  <Tooltip title={`${name} (${username})`}>
                                     <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
                                   </Tooltip>
                                 </li>
@@ -351,6 +351,7 @@ export default function Channels({ user, userChannels, users }) {
           onCancel={onReset}
           onConfirm={onSaveEditors}
           open={editorsDialog}
+          user={user}
           users={users}
         />
       )}

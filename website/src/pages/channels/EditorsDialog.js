@@ -35,13 +35,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function EditorsDialog({ users = [], data, onConfirm, onCancel, open = false }) {
+export default function EditorsDialog({ users = [], user, data, onConfirm, onCancel, open = false }) {
   const classes = useStyles();
 
   const [editors, setEditors] = React.useState([]);
-
-  // const editors = users.filter(o => data.editors.includes(o.id));
-  // const options = users.map(({ id, username }) => ({ id, username }));
 
   const sortList = arr =>
     arr?.sort((a, b) => {
@@ -55,17 +52,12 @@ export default function EditorsDialog({ users = [], data, onConfirm, onCancel, o
     }) || [];
 
   const onRemoveEditor = id => () => {
-    console.log({ id });
     const arr = editors;
     const i = arr?.findIndex(o => o.id === id);
-    console.log({ i });
     if (i > -1) {
-      console.log('onRemoveEditor');
       arr.splice(i, 1);
-      console.log({ arr });
-      setEditors(arr);
+      setEditors([...arr]);
     }
-    // return i > -1 ?  : null;
   };
 
   const onDone = () => onConfirm(editors.map(({ id }) => id));
@@ -90,24 +82,30 @@ export default function EditorsDialog({ users = [], data, onConfirm, onCancel, o
         <DialogContent>
           <Autocomplete
             autoHighlight
+            disableClearable
+            filterSelectedOptions
             fullWidth
             getOptionLabel={o => o?.username || ''}
-            disableClearable
             id="editors"
             multiple
-            // inputValue=""
             onChange={(e, v) => setEditors(v)}
-            filterSelectedOptions
-            options={users}
-            renderTags={() => null}
+            options={users.filter(o => o.id !== user.id)}
             renderInput={params => (
-              <TextField {...params} fullWidth label="Add editor…" margin="dense" placeholder="Look up by username" />
+              <TextField
+                {...params}
+                autoFocus
+                fullWidth
+                label="Add editor…"
+                margin="dense"
+                placeholder="Look up by username"
+              />
             )}
+            renderTags={() => null}
             value={editors}
           />
-          {editors?.length > 0 ? (
-            <List className={classes.list} dense>
-              {sortList(editors).map(({ id, name, username }) => (
+          <List className={classes.list} dense>
+            {editors?.length > 0 ? (
+              sortList(editors).map(({ id, name, username }) => (
                 <ListItem disableGutters divider key={id}>
                   <ListItemAvatar>
                     <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
@@ -121,11 +119,16 @@ export default function EditorsDialog({ users = [], data, onConfirm, onCancel, o
                     </Tooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
-              ))}
-            </List>
-          ) : (
-            <Typography>No editors assigned to this channel.</Typography>
-          )}
+              ))
+            ) : (
+              <ListItem disableGutters>
+                <ListItemText
+                  primary="No editors assigned to this channel. Add some…"
+                  primaryTypographyProps={{ color: 'textSecondary' }}
+                />
+              </ListItem>
+            )}
+          </List>
         </DialogContent>
         <DialogActions>
           <Button onClick={onCancel} color="primary">
