@@ -5,36 +5,44 @@
 import React, { useRef, useMemo, useCallback, useState, useEffect } from 'react';
 import { Editor, EditorState, ContentState, CompositeDecorator, EditorBlock, convertFromRaw } from 'draft-js';
 import { nanoid } from 'nanoid';
+import * as cldrSegmentation from 'cldr-segmentation';
 
 const Transcript = ({ transcript, time = 0, player }) => {
   const editor = useRef();
   useEffect(() => editor.current && editor.current.focus(), [editor]);
 
-  const [interval, setInterval] = useState([0, 0]);
-  const intervals = useMemo(
-    () => transcript.flatMap(({ items }) => items.map(([, start, duration]) => [start, start + duration])),
+  // const [interval, setInterval] = useState([0, 0]);
+  // const intervals = useMemo(
+  //   () => transcript.flatMap(({ items }) => items.map(([, start, duration]) => [start, start + duration])),
+  //   [transcript],
+  // );
+
+  // useEffect(() => {
+  //   const [start, end] = interval;
+  //   if (start <= time && time < end) return;
+
+  //   const nextInterval = intervals.find(([start, end]) => start <= time && time < end);
+  //   nextInterval && setInterval(nextInterval);
+  // }, [time, interval, intervals]);
+
+  // const tick = interval[0];
+  // console.log(tick);
+
+  const tick = time;
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
+  useEffect(
+    () =>
+      transcript &&
+      setEditorState(
+        EditorState.createWithContent(
+          convertFromRaw({ blocks: createFromTranscript(transcript), entityMap: createEntityMap([]) }),
+          composeDecorators(tick),
+        ),
+      ),
     [transcript],
   );
 
-  useEffect(() => {
-    const [start, end] = interval;
-    if (start <= time && time < end) return;
-
-    const nextInterval = intervals.find(([start, end]) => start <= time && time < end);
-    nextInterval && setInterval(nextInterval);
-  }, [time, interval, intervals]);
-
-  const tick = interval[0];
-  // console.log(tick);
-
-  const [editorState, setEditorState] = useState(
-    transcript
-      ? EditorState.createWithContent(
-          convertFromRaw({ blocks: createFromTranscript(transcript), entityMap: createEntityMap([]) }),
-          composeDecorators(tick),
-        )
-      : EditorState.createEmpty(),
-  );
   const [playedBlocks, setPlayedBlocks] = useState([]);
 
   const handleChange = useCallback(changedEditorState => setEditorState(changedEditorState), []);
@@ -153,7 +161,10 @@ const CustomBlock = props => {
 };
 
 const createFromTranscript = transcript =>
-  transcript.slice(0, 50).map(({ start, duration, speaker, items }) => ({
+  transcript.transcript ? createFromTranscriptItems(transcript.transcript) : createFromTranscriptBlocks(transcript);
+
+const createFromTranscriptBlocks = transcript =>
+  transcript.map(({ start, duration, speaker, items }) => ({
     key: `b_${nanoid(5)}`,
     type: 'paragraph',
     text: items.map(([text]) => text).join(' '),
@@ -199,6 +210,161 @@ const playheadDecorator = {
     }
   },
   component: PlayheadSpan,
+};
+export const createFromTranscriptItems = (
+  transcript,
+  {
+    language = 'en_GB',
+    start = null,
+    end = null,
+    maxSentences = 7,
+    maxGap = 2,
+    suppressions = cldrSegmentation.suppressions.all,
+    entityKey = 'pilcrow',
+  } = {},
+) => {
+  const items = transcript.items
+    // parse timings
+    .map(({ start, end, type, alternatives: [{ content: text }] }) => ({
+      start: parseFloat(start, 10),
+      end: parseFloat(end, 10),
+      type,
+      text,
+    }))
+    // filter by start/end if any
+    .filter(item => (!start || start <= item.start) && (!end || item.end <= end))
+    // merge punctuation, tag End-Of-Sentence (eos)
+    .map((item, i, arr) => {
+      if (i === 0 || item.type === 'word') return item;
+
+      // append punctuation to previous item
+      // TODO determine which punctuation needs prepending (¿item)
+      arr[i - 1].text += item.text;
+      arr[i - 1].punct = item.text;
+
+      // determine sentence break with next word
+      if (
+        i === arr.length - 1 ||
+        cldrSegmentation.sentenceSplit(`${arr[i - 1].text} ${arr[i + 1].text}`, suppressions).length > 1
+      )
+        arr[i - 1].eos = true;
+      // TODO determine sentence break with previous word for prepended punctuation
+      return item;
+    })
+    // remove punctuation
+    .filter(({ type }) => type === 'word')
+    // compute gaps
+    .map((item, i, arr) => ({
+      ...item,
+      gap: i === arr.length - 1 ? 0 : arr[i + 1].start - item.end,
+    }));
+
+  console.log(items);
+
+  const blocks = items
+    .reduce(
+      (acc, { start, end, gap, text, punct, eos }) => {
+        const block = acc.pop();
+
+        if (block.data.items.length === 0) block.data.start = start;
+        block.data.end = end;
+
+        block.data.items.push({
+          key: `i_${nanoid(5)}`,
+          start,
+          end,
+          gap,
+          text,
+          punct,
+          eos,
+          length: text.length,
+          offset: block.text.length === 0 ? 0 : block.text.length + 1,
+        });
+
+        block.text += block.text !== '' ? ` ${text}` : text;
+
+        if (eos) {
+          block.data.sentences++;
+
+          if (block.data.sentences % maxSentences === 0 || gap > maxGap)
+            return [
+              ...acc,
+              block,
+              {
+                key: `b_${nanoid(5)}`,
+                text: '',
+                type: 'paragraph',
+                entityRanges: [],
+                inlineStyleRanges: [],
+                data: {
+                  items: [],
+                  sentences: 1,
+                },
+              },
+            ];
+        }
+
+        return [...acc, block];
+      },
+      [
+        {
+          key: `b_${nanoid(5)}`,
+          text: '',
+          type: 'paragraph',
+          entityRanges: [],
+          inlineStyleRanges: [],
+          data: {
+            items: [],
+            sentences: 1,
+          },
+        },
+      ],
+    )
+    // filter out empty blocks
+    .filter(({ text }) => text.length > 0)
+    // compute subtitle breaks
+    .map(block => {
+      const items = block.data.items;
+      const lastItem = items[items.length - 1];
+      let lastBreak = 0;
+
+      while (lastBreak < lastItem.offset + lastItem.length) {
+        const i = items.findIndex(({ offset, length }) => offset + length - lastBreak >= 37 * 2);
+        if (i === -1) break;
+
+        // find candidates under the total char length
+        const candidates = items.slice(i - 5 < 0 ? 0 : i - 5, i);
+
+        // select the last eos or last punctuation or last candidate (note the array was reversed)
+        let item =
+          candidates.reverse().find(({ eos }) => eos) ?? candidates.find(({ punct }) => punct) ?? candidates[0];
+
+        // avoid widows
+        if (i < items.length - 5) {
+          // look ahead 2 items for punctuation
+          item = items.slice(i, i + 2).find(({ punct }) => punct) ?? item;
+        } else if (i >= items.length - 5) {
+          // we have few items left, use first candidates (eos, punct or first)
+          item = candidates.reverse().find(({ eos }) => eos) ?? candidates.find(({ punct }) => punct) ?? candidates[0];
+        }
+
+        item.pilcrow = true;
+        lastBreak = item.offset + item.length + 1;
+      }
+
+      lastItem.pilcrow = true;
+
+      return block;
+    })
+    // make each entityKey (pilcrow) an entity
+    .map(block => ({
+      ...block,
+      entityRanges: block.data.items.filter(item => !!item[entityKey]).map(item => ({ ...item, type: entityKey })),
+    }));
+
+  console.log(blocks);
+
+  return blocks;
 };
 
 export default Transcript;
