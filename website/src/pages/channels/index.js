@@ -80,7 +80,6 @@ const useStyles = makeStyles(theme => ({
   },
   editorsColumn: { widht: '30%' },
   responsiveContent: {
-    marginTop: theme.spacing(1),
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -243,6 +242,8 @@ export default function Channels({ user, userChannels, users }) {
     variant: 'menu',
   };
 
+  console.log('sort', { orderBy, order });
+
   return (
     <>
       <Layout>
@@ -290,29 +291,45 @@ export default function Channels({ user, userChannels, users }) {
                     ({ id, description, editors, tags, title }) => (
                       <TableRow key={id}>
                         <TableCell className={classes.nameColumn}>
-                          <Typography noWrap>
+                          <Typography gutterBottom noWrap>
                             <NextLink href="/mixes" passHref>
                               <Link noWrap variant="body1">
                                 {title}
                               </Link>
                             </NextLink>
                           </Typography>
-                          <Typography color="textSecondary" noWrap variant="caption">
-                            {description}
+                          <Typography
+                            color={description ? 'textPrimary' : 'textSecondary'}
+                            display="block"
+                            gutterBottom
+                            noWrap
+                            variant="caption"
+                          >
+                            {description || 'Add description'}
                           </Typography>
                           <div className={classes.responsiveContent}>
-                            <Typography variant="caption" color="textSecondary">
-                              {tags?.map((tag, i) => (
-                                <span key={tag}>
-                                  {tag}
-                                  {i !== tags.length - 1 && <>, </>}
-                                </span>
-                              ))}
+                            <Typography
+                              color={tags?.length > 0 ? 'textPrimary' : 'textSecondary'}
+                              display="block"
+                              variant="caption"
+                            >
+                              {tags?.length > 0
+                                ? tags.map((tag, i) => (
+                                    <span key={tag}>
+                                      {tag}
+                                      {i !== tags.length - 1 && <>, </>}
+                                    </span>
+                                  ))
+                                : 'Add tags'}
                             </Typography>
                           </div>
                         </TableCell>
                         <TableCell className={classes.tagsColumn}>
-                          <Typography variant="caption" color="textSecondary">
+                          <Typography
+                            color={tags?.length > 0 ? 'textPrimary' : 'textSecondary'}
+                            display="block"
+                            variant="caption"
+                          >
                             {tags?.map((tag, i) => (
                               <span key={tag}>
                                 {tag}
