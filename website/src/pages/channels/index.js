@@ -301,25 +301,25 @@ export default function Channels({ user, userChannels, users }) {
                             {description}
                           </Typography>
                           <div className={classes.responsiveContent}>
-                            {tags?.map((tag, i) => (
-                              <span key={tag}>
-                                <NextLink href="/mixes" passHref>
-                                  <Link variant="caption">{tag}</Link>
-                                </NextLink>
-                                {i !== tags.length - 1 && <>, </>}
-                              </span>
-                            ))}
+                            <Typography variant="caption" color="textSecondary">
+                              {tags?.map((tag, i) => (
+                                <span key={tag}>
+                                  {tag}
+                                  {i !== tags.length - 1 && <>, </>}
+                                </span>
+                              ))}
+                            </Typography>
                           </div>
                         </TableCell>
                         <TableCell className={classes.tagsColumn}>
-                          {tags?.map((tag, i) => (
-                            <span key={tag}>
-                              <NextLink href="/mixes" passHref>
-                                <Link variant="caption">{tag}</Link>
-                              </NextLink>
-                              {i !== tags.length - 1 && <>, </>}
-                            </span>
-                          ))}
+                          <Typography variant="caption" color="textSecondary">
+                            {tags?.map((tag, i) => (
+                              <span key={tag}>
+                                {tag}
+                                {i !== tags.length - 1 && <>, </>}
+                              </span>
+                            ))}
+                          </Typography>
                         </TableCell>
                         <TableCell className={classes.editorsColumn}>
                           <ul className={classes.editors}>
