@@ -6,6 +6,7 @@ import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
@@ -21,6 +22,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
@@ -50,6 +52,37 @@ const useStyles = makeStyles(theme => ({
     position: 'absolute',
     top: 20,
     width: 1,
+  },
+  editors: {
+    display: 'flex',
+    margin: 0,
+    padding: 0,
+  },
+  editor: {
+    marginRight: theme.spacing(0.25),
+    listStyle: 'none',
+  },
+  avatar: {
+    background: theme.palette.primary.light,
+    fontSize: theme.typography.pxToRem(12),
+    height: theme.spacing(3),
+    lineHeight: theme.spacing(3),
+    textTransform: 'uppercase',
+    width: theme.spacing(3),
+  },
+  nameColumn: { width: '40%' },
+  tagsColumn: {
+    display: 'none',
+    width: '30%',
+    [theme.breakpoints.up('md')]: {
+      display: 'table-cell',
+    },
+  },
+  editorsColumn: { widht: '30%' },
+  responsiveContent: {
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
   },
 }));
 
@@ -91,7 +124,7 @@ export default function Channels({ user, userChannels, users }) {
   useEffect(() => {
     getUserChannels(setChannels, user);
     const subscription = DataStore.observe(UserChannel).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
+      // console.log(msg.model, msg.opType, msg.element);
       getUserChannels(setChannels, user);
     });
     const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
@@ -102,7 +135,7 @@ export default function Channels({ user, userChannels, users }) {
   useEffect(() => {
     getUserChannels(setChannels, user);
     const subscription = DataStore.observe(Channel).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
+      // console.log(msg.model, msg.opType, msg.element);
       getUserChannels(setChannels, user);
     });
     const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
@@ -178,7 +211,11 @@ export default function Channels({ user, userChannels, users }) {
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
-  const onSave = payload => {
+  const onSaveEditors = editors => {
+    updateChannelEditors(selectedChannel, editors);
+    onReset();
+  };
+  const onSaveDetails = payload => {
     if (selectedChannel) {
       updateChannel(selectedChannel, payload);
     } else {
@@ -205,6 +242,8 @@ export default function Channels({ user, userChannels, users }) {
     variant: 'menu',
   };
 
+  console.log('sort', { orderBy, order });
+
   return (
     <>
       <Layout>
@@ -228,7 +267,7 @@ export default function Channels({ user, userChannels, users }) {
               <Table aria-labelledby="tableTitle" aria-label="enhanced table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>
+                    <TableCell className={classes.nameColumn}>
                       <TableSortLabel
                         active={orderBy === 'name'}
                         direction={orderBy === 'name' ? order : 'asc'}
@@ -242,8 +281,8 @@ export default function Channels({ user, userChannels, users }) {
                         ) : null}
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell>Tags</TableCell>
-                    <TableCell>Editors</TableCell>
+                    <TableCell className={classes.tagsColumn}>Tags</TableCell>
+                    <TableCell className={classes.editorsColumn}>Editors</TableCell>
                     <TableCell />
                   </TableRow>
                 </TableHead>
@@ -251,29 +290,67 @@ export default function Channels({ user, userChannels, users }) {
                   {stableSort(channels, getComparator(order, orderBy)).map(
                     ({ id, description, editors, tags, title }) => (
                       <TableRow key={id}>
-                        <TableCell>
-                          <Typography noWrap>
+                        <TableCell className={classes.nameColumn}>
+                          <Typography gutterBottom noWrap>
                             <NextLink href="/mixes" passHref>
                               <Link noWrap variant="body1">
                                 {title}
                               </Link>
                             </NextLink>
                           </Typography>
-                          <Typography color="textSecondary" noWrap variant="caption">
-                            {description}
+                          <Typography
+                            color={description ? 'textPrimary' : 'textSecondary'}
+                            display="block"
+                            gutterBottom
+                            noWrap
+                            variant="caption"
+                          >
+                            {description || 'Add description'}
+                          </Typography>
+                          <div className={classes.responsiveContent}>
+                            <Typography
+                              color={tags?.length > 0 ? 'textPrimary' : 'textSecondary'}
+                              display="block"
+                              variant="caption"
+                            >
+                              {tags?.length > 0
+                                ? tags.map((tag, i) => (
+                                    <span key={tag}>
+                                      {tag}
+                                      {i !== tags.length - 1 && <>, </>}
+                                    </span>
+                                  ))
+                                : 'Add tags'}
+                            </Typography>
+                          </div>
+                        </TableCell>
+                        <TableCell className={classes.tagsColumn}>
+                          <Typography
+                            color={tags?.length > 0 ? 'textPrimary' : 'textSecondary'}
+                            display="block"
+                            variant="caption"
+                          >
+                            {tags?.map((tag, i) => (
+                              <span key={tag}>
+                                {tag}
+                                {i !== tags.length - 1 && <>, </>}
+                              </span>
+                            ))}
                           </Typography>
                         </TableCell>
-                        <TableCell>
-                          {tags?.map((tag, i) => (
-                            <span key={tag}>
-                              <NextLink href="/mixes" passHref>
-                                <Link>{tag}</Link>
-                              </NextLink>
-                              {i !== tags.length - 1 && <>, </>}
-                            </span>
-                          ))}
+                        <TableCell className={classes.editorsColumn}>
+                          <ul className={classes.editors}>
+                            {users
+                              .filter(o => editors?.includes(o.id))
+                              .map(({ id, name, username }) => (
+                                <li className={classes.editor} key={id}>
+                                  <Tooltip title={`${name} (${username})`}>
+                                    <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
+                                  </Tooltip>
+                                </li>
+                              ))}
+                          </ul>
                         </TableCell>
-                        <TableCell>{editors?.map(editor => editor)}</TableCell>
                         <TableCell align="right">
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
@@ -308,14 +385,15 @@ export default function Channels({ user, userChannels, users }) {
         </MenuItem>
       </Menu>
       {channelDialog && (
-        <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSave} open={channelDialog} />
+        <ChannelDialog data={selectedChannel} onCancel={onReset} onConfirm={onSaveDetails} open={channelDialog} />
       )}
       {editorsDialog && (
         <EditorsDialog
           data={selectedChannel}
           onCancel={onReset}
-          onConfirm={onSave}
+          onConfirm={onSaveEditors}
           open={editorsDialog}
+          user={user}
           users={users}
         />
       )}
