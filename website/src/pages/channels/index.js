@@ -70,6 +70,9 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     width: theme.spacing(4),
   },
+  nameColumn: { width: '40%' },
+  tagsColumn: { width: '30%' },
+  editorsColumn: { widht: '30%' },
 }));
 
 function descendingComparator(a, b, orderBy) {
@@ -251,7 +254,7 @@ export default function Channels({ user, userChannels, users }) {
               <Table aria-labelledby="tableTitle" aria-label="enhanced table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>
+                    <TableCell className={classes.nameColumn}>
                       <TableSortLabel
                         active={orderBy === 'name'}
                         direction={orderBy === 'name' ? order : 'asc'}
@@ -265,8 +268,8 @@ export default function Channels({ user, userChannels, users }) {
                         ) : null}
                       </TableSortLabel>
                     </TableCell>
-                    <TableCell>Tags</TableCell>
-                    <TableCell>Editors</TableCell>
+                    <TableCell className={classes.tagsColumn}>Tags</TableCell>
+                    <TableCell className={classes.editorsColumn}>Editors</TableCell>
                     <TableCell />
                   </TableRow>
                 </TableHead>
@@ -274,7 +277,7 @@ export default function Channels({ user, userChannels, users }) {
                   {stableSort(channels, getComparator(order, orderBy)).map(
                     ({ id, description, editors, tags, title }) => (
                       <TableRow key={id}>
-                        <TableCell>
+                        <TableCell className={classes.nameColumn}>
                           <Typography noWrap>
                             <NextLink href="/mixes" passHref>
                               <Link noWrap variant="body1">
@@ -286,7 +289,7 @@ export default function Channels({ user, userChannels, users }) {
                             {description}
                           </Typography>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.tagsColumn}>
                           {tags?.map((tag, i) => (
                             <span key={tag}>
                               <NextLink href="/mixes" passHref>
@@ -296,12 +299,12 @@ export default function Channels({ user, userChannels, users }) {
                             </span>
                           ))}
                         </TableCell>
-                        <TableCell>
+                        <TableCell className={classes.editorsColumn}>
                           <ul className={classes.editors}>
                             {users
                               .filter(o => editors?.includes(o.id))
-                              .map(({ name, username }) => (
-                                <li className={classes.editor}>
+                              .map(({ id, name, username }) => (
+                                <li className={classes.editor} key={id}>
                                   <Tooltip title={`${name} (${username})`}>
                                     <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
                                   </Tooltip>
