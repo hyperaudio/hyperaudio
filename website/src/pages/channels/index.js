@@ -64,15 +64,27 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     background: theme.palette.primary.light,
-    fontSize: theme.typography.pxToRem(16),
-    height: theme.spacing(4),
-    lineHeight: theme.spacing(4),
+    fontSize: theme.typography.pxToRem(12),
+    height: theme.spacing(3),
+    lineHeight: theme.spacing(3),
     textTransform: 'uppercase',
-    width: theme.spacing(4),
+    width: theme.spacing(3),
   },
   nameColumn: { width: '40%' },
-  tagsColumn: { width: '30%' },
+  tagsColumn: {
+    display: 'none',
+    width: '30%',
+    [theme.breakpoints.up('md')]: {
+      display: 'table-cell',
+    },
+  },
   editorsColumn: { widht: '30%' },
+  responsiveContent: {
+    marginTop: theme.spacing(1),
+    [theme.breakpoints.up('md')]: {
+      display: 'none',
+    },
+  },
 }));
 
 function descendingComparator(a, b, orderBy) {
@@ -288,12 +300,22 @@ export default function Channels({ user, userChannels, users }) {
                           <Typography color="textSecondary" noWrap variant="caption">
                             {description}
                           </Typography>
+                          <div className={classes.responsiveContent}>
+                            {tags?.map((tag, i) => (
+                              <span key={tag}>
+                                <NextLink href="/mixes" passHref>
+                                  <Link variant="caption">{tag}</Link>
+                                </NextLink>
+                                {i !== tags.length - 1 && <>, </>}
+                              </span>
+                            ))}
+                          </div>
                         </TableCell>
                         <TableCell className={classes.tagsColumn}>
                           {tags?.map((tag, i) => (
                             <span key={tag}>
                               <NextLink href="/mixes" passHref>
-                                <Link>{tag}</Link>
+                                <Link variant="caption">{tag}</Link>
                               </NextLink>
                               {i !== tags.length - 1 && <>, </>}
                             </span>
