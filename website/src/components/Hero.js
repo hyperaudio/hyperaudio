@@ -5,7 +5,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 const useStyles = size =>
   makeStyles(theme => ({
     root: {
-      background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%);`,
+      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%);`,
       color: theme.palette.primary.contrastText,
       paddingBottom: theme.spacing(size === 'small' ? 1 : 10),
       paddingTop: theme.spacing(size === 'small' ? 1 : 10),
@@ -21,7 +21,7 @@ export default function Hero({ org, size }) {
   return (
     <div className={classes.root}>
       <Container>
-        <Typography className={classes.title} component="h1" variant="h2">
+        <Typography className={classes.title} component="h1" variant="h3">
           {org.meta.name}
         </Typography>
       </Container>
