@@ -497,7 +497,7 @@ const MediaPage = initialData => {
               required
               value={title}
             />
-            {(isOwner || description.length > 0) && (
+            {(isOwner || description?.length > 0) && (
               <TextField
                 {...textFieldProps}
                 inputProps={{
@@ -621,7 +621,7 @@ const MediaPage = initialData => {
                 })}
               </List>
             )}
-            {TRANSCRIPTS.length < 1 && (
+            {TRANSCRIPTS?.length < 1 && (
               <Button
                 aria-controls="simple-menu"
                 aria-haspopup="true"
