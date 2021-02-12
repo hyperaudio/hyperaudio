@@ -326,10 +326,13 @@ export const getServerSideProps = async context => {
       serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
         const entry = acc[channel.id] ?? { channel, media: [] };
         entry.media.push(media);
+        entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(a).getTime() - new Date(b).getTime());
 
         acc[channel.id] = entry;
         return acc;
       }, {}),
+    ).sort(
+      ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(a).getTime() - new Date(b).getTime(),
     );
   } catch (ignored) {}
 
