@@ -215,7 +215,7 @@ const MediaPage = initialData => {
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
   console.log({ userChannels, mediaChannel });
 
-  const [channel, setChannel] = useState(initialMedia.channel || null);
+  const [channel, setChannel] = useState(mediaChannel?.channel || null);
   const [description, setDescription] = useState(initialMedia.description || null);
   const [editable, setEditable] = useState(false);
   const [media, setMedia] = useState(initialMedia);
