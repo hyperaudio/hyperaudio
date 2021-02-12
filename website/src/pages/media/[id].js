@@ -45,10 +45,7 @@ import TranscribeDialog from './TranscribeDialog';
 import Transcript from '../../components/transcript/Transcript';
 
 // TODO where to get them? all tags of the user?
-const ALL_TAGS = [
-  { id: 1, title: 'Remix' },
-  { id: 1, title: 'Audio' },
-];
+const ALL_TAGS = ['Remix', 'Audio'];
 
 const TRANSCRIPTS = [
   {
@@ -173,18 +170,12 @@ const useStyles = makeStyles(theme => ({
     cursor: 'text',
   },
   description: {
-    ...theme.typography.body2,
     cursor: 'text',
-  },
-  tags: {
-    ...theme.typography.caption,
   },
   date: {
     marginTop: theme.spacing(1),
   },
-  chip: {
-    margin: theme.spacing(0.3, 0.3, 0.3, 0),
-  },
+  chip: { margin: theme.spacing(0.3, 0.3, 0.3, 0) },
   speedDial: {
     background: theme.palette.primary.main,
     boxShadow: theme.shadows[2],
@@ -224,10 +215,11 @@ const MediaPage = initialData => {
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
   console.log({ userChannels, mediaChannel });
 
-  const [editable, setEditable] = useState(null);
-  const [description, setDescription] = useState(initialMedia.description);
+  const [channel, setChannel] = useState(initialMedia.channel || null);
+  const [description, setDescription] = useState(initialMedia.description || null);
+  const [editable, setEditable] = useState(false);
   const [media, setMedia] = useState(initialMedia);
-  const [tags, setTags] = useState(initialMedia.tags);
+  const [tags, setTags] = useState(initialMedia.tags || null);
   const [title, setTitle] = useState(initialMedia.title);
   const [url, setUrl] = useState();
 
@@ -266,7 +258,7 @@ const MediaPage = initialData => {
   const isOwner = user?.id === media.owner;
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
   const { createdAt } = media ?? {}; // FIXME
-  const channel = null;
+  // const channel = null;
 
   const formattedCreatedAt = useMemo(
     () =>
@@ -343,8 +335,17 @@ const MediaPage = initialData => {
         updated.tags = tags;
       }),
     );
+    if (channel && !mediaChannel) {
+      await DataStore.save(new MediaChannel({ media, channel }));
+    } else if (channel) {
+      await DataStore.save(
+        MediaChannel.copyOf(media, updated => {
+          updated.channel = channel;
+        }),
+      );
+    }
     setEditable(false);
-  }, [media, title, description, tags]);
+  }, [media, title, description, tags, channel, mediaChannel]);
 
   const gotoTranscript = useCallback(
     transcript =>
@@ -419,6 +420,8 @@ const MediaPage = initialData => {
     }),
     [editable],
   );
+
+  console.log({ initialMedia, tags });
 
   return (
     <Layout>
@@ -500,46 +503,65 @@ const MediaPage = initialData => {
                 inputProps={{
                   className: classes.description,
                 }}
+                label="Description"
                 margin="dense"
                 name="description"
                 onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
                 placeholder="Add description"
-                required
                 value={description}
               />
             )}
-            {(isOwner || tags.length > 0) && (
-              <Autocomplete
-                ChipProps={{
-                  className: classes.chip,
-                  deleteIcon: <></>,
-                  size: 'small',
-                  variant: 'outlined',
-                }}
-                autoComplete
-                autoHighlight
-                clearOnBlur
-                clearOnEscape
-                disabled={!editable}
-                freeSolo
-                id="tags-filled"
-                multiple
-                onChange={(e, v) => setTags(v)} // TODO useCallback
-                options={ALL_TAGS.map(option => option.title)}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    margin="dense"
-                    placeholder={tags.length === 0 ? 'Add tag' : null}
-                    size="small"
-                  />
-                )}
-                defaultValue={tags}
-              />
-            )}
+            <Autocomplete
+              autoComplete
+              autoHighlight
+              clearOnBlur
+              clearOnEscape
+              disabled={!editable}
+              getOptionLabel={option => `${option.title}`}
+              id="channel"
+              onChange={(event, newValue) => setChannel(newValue)}
+              options={userChannels}
+              popupIcon={<></>}
+              renderInput={params => (
+                <TextField {...params} label="Channel" margin="dense" placeholder={!channel && 'Assign to channel'} />
+              )}
+              selectOnFocus
+              size="small"
+              value={channel}
+            />
+            <Autocomplete
+              ChipProps={{
+                className: classes.chip,
+                deleteIcon: <></>,
+                size: 'small',
+                variant: 'outlined',
+              }}
+              autoComplete
+              autoHighlight
+              clearOnBlur
+              clearOnEscape
+              disabled={!editable}
+              freeSolo
+              getOptionLabel={option => `${option}`}
+              id="tags"
+              multiple
+              onChange={(event, newValue) => setTags(newValue)}
+              options={ALL_TAGS}
+              popupIcon={<></>}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  label="Tags"
+                  margin="dense"
+                  placeholder={(!tags || tags?.length === 0) && 'Add tags'}
+                />
+              )}
+              selectOnFocus
+              size="small"
+              value={tags}
+            />
             <Typography className={classes.date} color="textSecondary" display="block" variant="caption">
               Added on {createdAt ? formattedCreatedAt : null}
-              {channel && `in {channel}`}
             </Typography>
           </Grid>
           <Grid item>
