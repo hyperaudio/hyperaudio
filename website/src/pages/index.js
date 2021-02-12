@@ -213,7 +213,7 @@ const Dashboard = initialData => {
         </Toolbar>
 
         {mediaChannels.map(mc => {
-          if (mc.media.length === 0 || mc.channel.title.length === 0) return;
+          if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
           return (
             <>
               <div className={classes.block}>
@@ -221,7 +221,7 @@ const Dashboard = initialData => {
                   {mc.channel.title}
                 </Typography>
                 <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
-                  {mc.media.map(({ id, title, description, metadata }) => (
+                  {mc.media?.map(({ id, title, description, metadata }) => (
                     <Grid className={classes.item} component="li" item key={id} xs={6} sm={4} md={3}>
                       <Card className={classes.card} elevation={0} square raised={false}>
                         <NextLink href={`/media/${id}`}>

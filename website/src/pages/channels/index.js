@@ -302,7 +302,7 @@ export default function Channels({ user, userChannels, users }) {
                         <TableCell className={classes.nameColumn}>
                           <Typography gutterBottom noWrap>
                             <NextLink href="/mixes" passHref>
-                              <Link noWrap variant="body1">
+                              <Link noWrap variant="subtitle2">
                                 {title}
                               </Link>
                             </NextLink>

@@ -10,8 +10,11 @@ class Doc extends Document {
         <Head>
           <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
           <link rel="shortcut icon" href="/favicon.svg" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" />
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Roboto&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
