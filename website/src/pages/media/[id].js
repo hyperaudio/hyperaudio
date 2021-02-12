@@ -35,7 +35,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User } from 'src/models';
+import { Media, User, UserChannel, MediaChannel } from 'src/models';
 import Layout from 'src/Layout';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
@@ -220,6 +220,9 @@ const MediaPage = initialData => {
   const { user } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
+  const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
+  const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
+  console.log({ userChannels, mediaChannel });
 
   const [editable, setEditable] = useState(null);
   const [description, setDescription] = useState(initialMedia.description);
@@ -262,7 +265,7 @@ const MediaPage = initialData => {
 
   const isOwner = user?.id === media.owner;
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
-  const { channels = [], createdAt } = media ?? {}; // FIXME
+  const { createdAt } = media ?? {}; // FIXME
   const channel = null;
 
   const formattedCreatedAt = useMemo(
@@ -312,6 +315,24 @@ const MediaPage = initialData => {
     console.log('onTranscribeConfirm', { language }, { speakers });
     onReset();
   };
+
+  const addToChannel = useCallback(
+    async channel => {
+      let result;
+      if (!mediaChannel) {
+        result = await DataStore.save(new MediaChannel({ media, channel }));
+      } else {
+        await DataStore.save(
+          MediaChannel.copyOf(media, updated => {
+            updated.channel = channel;
+          }),
+        );
+      }
+
+      console.log({ result });
+    },
+    [media, mediaChannel],
+  );
 
   const onSave = useCallback(async () => {
     console.log('onSave:', { title }, { description }, { tags });
@@ -677,12 +698,20 @@ export const getServerSideProps = async context => {
   if (!media) return { notFound: true };
 
   let user = null;
+  let userChannels = [];
+  let mediaChannel = null;
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
     user = serializeModel(await DataStore.query(User, sub));
+
+    userChannels = serializeModel(
+      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    );
+
+    mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
   } catch (ignored) {}
 
   console.log({ user });
@@ -691,6 +720,8 @@ export const getServerSideProps = async context => {
     props: {
       media: serializeModel(media),
       user,
+      userChannels,
+      mediaChannel,
     },
   };
 };
