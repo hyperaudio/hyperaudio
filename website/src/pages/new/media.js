@@ -314,7 +314,7 @@ export default function AddMediaPage(initialData) {
 
     console.log({ media });
 
-    // router.push(`/media/${media.id}`);
+    router.push(`/media/${media.id}`);
   }, [url, title, description, tags, metadata, user, router]);
 
   const onReset = () => {
