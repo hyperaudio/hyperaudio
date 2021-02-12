@@ -9,7 +9,7 @@ import Hero from 'src/components/Hero';
 
 import ORG from 'src/config/organization.json'; // TODO: Don’t just use JSON here, check for mozfest.hyper.audio?
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   content: {
     flex: '1 0 auto',
   },

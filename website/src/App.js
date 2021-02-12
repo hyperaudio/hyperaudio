@@ -44,7 +44,11 @@ class Application extends App {
         <CssBaseline />
         <TopProgressBar />
         <style>
-          {`#nprogress .bar {
+          {`
+            html, body {
+              backgorund: ${theme.palette.primary.main};
+            }
+            #nprogress .bar {
               background-color: ${theme.palette.primary.main};
               z-index: 10000;
               height: 5px;

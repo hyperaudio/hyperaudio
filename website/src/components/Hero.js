@@ -7,8 +7,8 @@ const useStyles = size =>
     root: {
       background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%);`,
       color: theme.palette.primary.contrastText,
-      paddingBottom: theme.spacing(size === 'small' ? 1 : 10),
-      paddingTop: theme.spacing(size === 'small' ? 1 : 10),
+      paddingBottom: theme.spacing(size === 'small' ? 0.5 : 20),
+      paddingTop: theme.spacing(size === 'small' ? 0.5 : 20),
       textAlign: 'center',
     },
     title: {
