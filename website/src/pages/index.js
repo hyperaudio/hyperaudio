@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 import NextLink from 'next/link';
 import React, { useState, useEffect, useCallback } from 'react';
 import { rgba } from 'polished';
@@ -347,7 +348,7 @@ export const getServerSideProps = async context => {
     mediaChannels = Object.values(
       serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
         const entry = acc[channel.id] ?? { channel, media: [] };
-        entry.media.push(media);
+        if (!entry.media.find(m => m.id === media.id)) entry.media.push(media);
         entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(a).getTime() - new Date(b).getTime());
 
         acc[channel.id] = entry;
