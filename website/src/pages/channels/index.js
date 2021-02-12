@@ -30,9 +30,9 @@ import Layout from 'src/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
-import EditorsDialog from './EditorsDialog';
 import ChannelDialog from './ChannelDialog';
 import DeleteDialog from 'src/dialogs/DeleteDialog';
+import EditorsDialog from './EditorsDialog';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -78,8 +78,17 @@ const useStyles = makeStyles(theme => ({
       display: 'table-cell',
     },
   },
-  editorsColumn: { widht: '30%' },
+  editorsColumn: {
+    display: 'none',
+    widht: '30%',
+    [theme.breakpoints.up('md')]: {
+      display: 'table-cell',
+    },
+  },
   responsiveContent: {
+    '& > ul': {
+      marginTop: theme.spacing(1),
+    },
     [theme.breakpoints.up('md')]: {
       display: 'none',
     },
@@ -322,6 +331,17 @@ export default function Channels({ user, userChannels, users }) {
                                   ))
                                 : 'Add tags'}
                             </Typography>
+                            <ul className={classes.editors}>
+                              {users
+                                .filter(o => editors?.includes(o.id))
+                                .map(({ id, name, username }) => (
+                                  <li className={classes.editor} key={id}>
+                                    <Tooltip title={`${name} (${username})`}>
+                                      <Avatar className={classes.avatar}>{username.charAt(0)}</Avatar>
+                                    </Tooltip>
+                                  </li>
+                                ))}
+                            </ul>
                           </div>
                         </TableCell>
                         <TableCell className={classes.tagsColumn}>
