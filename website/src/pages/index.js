@@ -7,6 +7,7 @@ import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplif
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -18,7 +19,7 @@ import Link from '@material-ui/core/Link';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-import Pagination from '@material-ui/lab/Pagination';
+// import Pagination from '@material-ui/lab/Pagination';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
@@ -65,6 +66,12 @@ const useStyles = makeStyles(theme => ({
   },
   grow: {
     flexGrow: 1,
+  },
+  block: {
+    margin: theme.spacing(5, 0),
+  },
+  blockTitle: {
+    marginBottom: theme.spacing(5),
   },
   items: {
     listStyle: 'none',
@@ -204,59 +211,74 @@ const Dashboard = initialData => {
             New…
           </Button>
         </Toolbar>
-        <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
-          {media.map(({ id, title, description, metadata }) => (
-            <Grid className={classes.item} component="li" item key={id} xs={6} sm={4} md={3}>
-              <Card className={classes.card} elevation={0} square raised={false}>
-                <NextLink href={`/media/${id}`}>
-                  <CardActionArea>
-                    {metadata ? (
-                      <CardMedia
-                        className={classes.cardMedia}
-                        component="img"
-                        src={
-                          JSON.parse(metadata)?.embedly?.thumbnail_url ??
-                          JSON.parse(metadata)?.oembed?.thumbnail_url ??
-                          'http://placekitten.com/320/180'
-                        }
-                        title={title}
-                      />
-                    ) : (
-                      <CardMedia
-                        className={classes.cardMedia}
-                        component="img"
-                        src="http://placekitten.com/320/180"
-                        title={title}
-                      />
-                    )}
-                  </CardActionArea>
-                </NextLink>
-                <CardContent className={classes.cardContent}>
-                  <NextLink href={`/media/${id}`}>
-                    <Typography component="h3" noWrap>
-                      <Link href={`/media/${id}`} variant="subtitle2">
-                        {title}
-                      </Link>
-                    </Typography>
-                  </NextLink>
-                  <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
-                    {description}
-                  </Typography>
-                </CardContent>
-                <CardActions className={classes.cardActions} disableSpacing>
-                  <Tooltip title="Actions…">
-                    <IconButton color="secondary" size="small">
-                      <MoreVertIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-        <div className={classes.paginationParent}>
+
+        {mediaChannels.map(mc => {
+          if (mc.media.length === 0 || mc.channel.title.length === 0) return;
+          return (
+            <>
+              <div className={classes.block}>
+                <Typography className={classes.blockTitle} variant="h5" component="h2">
+                  {mc.channel.title}
+                </Typography>
+                <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
+                  {mc.media.map(({ id, title, description, metadata }) => (
+                    <Grid className={classes.item} component="li" item key={id} xs={6} sm={4} md={3}>
+                      <Card className={classes.card} elevation={0} square raised={false}>
+                        <NextLink href={`/media/${id}`}>
+                          <CardActionArea>
+                            {metadata ? (
+                              <CardMedia
+                                className={classes.cardMedia}
+                                component="img"
+                                src={
+                                  JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                                  JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                                  'http://placekitten.com/320/180'
+                                }
+                                title={title}
+                              />
+                            ) : (
+                              <CardMedia
+                                className={classes.cardMedia}
+                                component="img"
+                                src="http://placekitten.com/320/180"
+                                title={title}
+                              />
+                            )}
+                          </CardActionArea>
+                        </NextLink>
+                        <CardContent className={classes.cardContent}>
+                          <NextLink href={`/media/${id}`}>
+                            <Typography component="h3" noWrap>
+                              <Link href={`/media/${id}`} variant="subtitle2">
+                                {title}
+                              </Link>
+                            </Typography>
+                          </NextLink>
+                          <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
+                            {description}
+                          </Typography>
+                        </CardContent>
+                        <CardActions className={classes.cardActions} disableSpacing>
+                          <Tooltip title="Actions…">
+                            <IconButton color="secondary" size="small">
+                              <MoreVertIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </CardActions>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+              <Divider />
+            </>
+          );
+        })}
+
+        {/* <div className={classes.paginationParent}>
           <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
-        </div>
+        </div> */}
       </Layout>
       <Menu
         {...menuProps}
