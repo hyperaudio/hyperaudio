@@ -29,7 +29,7 @@ import { useTheme } from '@material-ui/core/styles';
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
 import Layout from 'src/Layout';
 
-import { Channel, Media, User, UserChannel } from '../models';
+import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
 
@@ -125,7 +125,8 @@ const Dashboard = initialData => {
     query: { page = 1 },
   } = router;
 
-  const { channels, pages, user } = initialData;
+  const { channels, pages, user, userChannels, mediaChannels } = initialData;
+  console.log({ channels, pages, user, userChannels, mediaChannels });
 
   const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
@@ -308,6 +309,7 @@ export const getServerSideProps = async context => {
 
   let user = null;
   let userChannels = null;
+  let mediaChannels = null;
 
   try {
     const {
@@ -319,6 +321,16 @@ export const getServerSideProps = async context => {
       .map(({ channel }) => channel);
     // userChannels = await DataStore.query(UserChannel);
     // userChannels = await DataStore.query(UserChannel, uc => uc.parent('eq', user.id));
+
+    mediaChannels = Object.values(
+      serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
+        const entry = acc[channel.id] ?? { channel, media: [] };
+        entry.media.push(media);
+
+        acc[channel.id] = entry;
+        return acc;
+      }, {}),
+    );
   } catch (ignored) {}
 
   console.log({ user });
@@ -328,6 +340,7 @@ export const getServerSideProps = async context => {
       user: serializeModel(user),
       channels: serializeModel(channels),
       userChannels: serializeModel(userChannels),
+      mediaChannels,
       page,
       pages: global.pages,
     },
