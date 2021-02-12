@@ -1,4 +1,6 @@
-import theme from 'src/themes/lightTheme';
+import getTheme from 'src/themes/getTheme';
+
+const theme = getTheme();
 
 const Wrapper = ({ children }) => (
   <div className="mdx">

@@ -3,14 +3,11 @@ import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { ServerStyleSheets } from '@material-ui/core/styles';
 
-import theme from 'src/themes/lightTheme';
-
 class Doc extends Document {
   render() {
     return (
       <Html lang="en">
         <Head>
-          <meta name="theme-color" content={theme.palette.primary.main} />
           <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
           <link rel="shortcut icon" href="/favicon.svg" />
           <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&display=swap" />
