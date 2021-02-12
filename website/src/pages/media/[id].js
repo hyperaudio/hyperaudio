@@ -308,24 +308,6 @@ const MediaPage = initialData => {
     onReset();
   };
 
-  const addToChannel = useCallback(
-    async channel => {
-      let result;
-      if (!mediaChannel) {
-        result = await DataStore.save(new MediaChannel({ media, channel }));
-      } else {
-        await DataStore.save(
-          MediaChannel.copyOf(media, updated => {
-            updated.channel = channel;
-          }),
-        );
-      }
-
-      console.log({ result });
-    },
-    [media, mediaChannel],
-  );
-
   const onSave = useCallback(async () => {
     console.log('onSave:', { title }, { description }, { tags });
     await DataStore.save(
@@ -339,7 +321,7 @@ const MediaPage = initialData => {
       await DataStore.save(new MediaChannel({ media, channel }));
     } else if (channel) {
       await DataStore.save(
-        MediaChannel.copyOf(media, updated => {
+        MediaChannel.copyOf(mediaChannel, updated => {
           updated.channel = channel;
         }),
       );
