@@ -28,6 +28,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
 import Layout from 'src/Layout';
+
 import { Channel, Media, User, UserChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
@@ -124,7 +125,7 @@ const Dashboard = initialData => {
     query: { page = 1 },
   } = router;
 
-  const { pages, user } = initialData;
+  const { channels, pages, user } = initialData;
 
   const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));

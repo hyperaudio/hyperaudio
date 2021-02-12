@@ -9,7 +9,9 @@ import 'nprogress/nprogress.css';
 import { ThemeProvider } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import lightTheme from 'src/themes/lightTheme';
+import getTheme from 'src/themes/getTheme';
+
+import ORG from 'src/config/organization.json'; // TODO: Don’t just use JSON here, check for mozfest.hyper.audio?
 
 import awsconfig from './aws-config';
 import awsexports from './aws-exports';
@@ -35,13 +37,15 @@ class Application extends App {
   render() {
     const { Component, pageProps } = this.props;
 
+    const theme = getTheme(ORG.palette);
+
     return (
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         <TopProgressBar />
         <style>
           {`#nprogress .bar {
-              background-color: ${lightTheme.palette.primary.main};
+              background-color: ${theme.palette.primary.main};
               z-index: 10000;
               height: 5px;
             }
