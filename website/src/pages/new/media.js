@@ -32,7 +32,7 @@ import { useTheme } from '@material-ui/core/styles';
 
 import FileInput from 'src/components/FileInput';
 import Layout from 'src/Layout';
-import { Media, User, Channel, UserChannel } from '../../models';
+import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
 const MATCH_URL_YOUTUBE = /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
@@ -177,6 +177,8 @@ export default function AddMediaPage(initialData) {
   const router = useRouter();
   const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
 
+  const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
+
   useEffect(() => {
     onAuthUIStateChange((authState, authData) => {
       console.log({ authState, authData });
@@ -198,7 +200,8 @@ export default function AddMediaPage(initialData) {
     // { id: 1, title: 'Audio' },
   ];
 
-  const [channels, setChannels] = useState([]);
+  const [channel, setChannel] = useState(); // USE THIS (single channel)
+  const [channels, setChannels] = useState(); // NOT THIS
   const [description, setDescription] = useState('');
   const [extracted, setExtracted] = useState(false);
   const [file, setFile] = useState();
@@ -305,17 +308,20 @@ export default function AddMediaPage(initialData) {
     oembed();
   }, [isValid, url, tags, extracted]);
 
-  const onAddNewMedia = useCallback(async () => {
-    // TODO: channels
-    // console.log({ url, title, description, tags });
-    const media = await DataStore.save(
-      new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
-    );
+  const onAddNewMedia = useCallback(
+    async channel => {
+      // TODO: channels
+      // console.log({ url, title, description, tags });
+      const media = await DataStore.save(
+        new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
+      );
 
-    console.log({ media });
+      if (channel) await DataStore.save(new MediaChannel({ media, channel }));
 
-    router.push(`/media/${media.id}`);
-  }, [url, title, description, tags, metadata, user, router]);
+      router.push(`/media/${media.id}`);
+    },
+    [url, title, description, tags, metadata, user, router],
+  );
 
   const onReset = () => {
     setFile(undefined);
