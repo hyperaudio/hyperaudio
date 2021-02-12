@@ -511,55 +511,59 @@ const MediaPage = initialData => {
                 value={description}
               />
             )}
-            <Autocomplete
-              autoComplete
-              autoHighlight
-              clearOnBlur
-              clearOnEscape
-              disabled={!editable}
-              getOptionLabel={option => `${option.title}`}
-              id="channel"
-              onChange={(event, newValue) => setChannel(newValue)}
-              options={userChannels}
-              popupIcon={<></>}
-              renderInput={params => (
-                <TextField {...params} label="Channel" margin="dense" placeholder={!channel && 'Assign to channel'} />
-              )}
-              selectOnFocus
-              size="small"
-              value={channel}
-            />
-            <Autocomplete
-              ChipProps={{
-                className: classes.chip,
-                deleteIcon: <></>,
-                size: 'small',
-                variant: 'outlined',
-              }}
-              autoComplete
-              autoHighlight
-              clearOnBlur
-              clearOnEscape
-              disabled={!editable}
-              freeSolo
-              getOptionLabel={option => `${option}`}
-              id="tags"
-              multiple
-              onChange={(event, newValue) => setTags(newValue)}
-              options={ALL_TAGS}
-              popupIcon={<></>}
-              renderInput={params => (
-                <TextField
-                  {...params}
-                  label="Tags"
-                  margin="dense"
-                  placeholder={(!tags || tags?.length === 0) && 'Add tags'}
-                />
-              )}
-              selectOnFocus
-              size="small"
-              value={tags}
-            />
+            {(isOwner || channel?.length > 0) && (
+              <Autocomplete
+                autoComplete
+                autoHighlight
+                clearOnBlur
+                clearOnEscape
+                disabled={!editable}
+                getOptionLabel={option => `${option.title}`}
+                id="channel"
+                onChange={(event, newValue) => setChannel(newValue)}
+                options={userChannels}
+                popupIcon={<></>}
+                renderInput={params => (
+                  <TextField {...params} label="Channel" margin="dense" placeholder={!channel && 'Assign to channel'} />
+                )}
+                selectOnFocus
+                size="small"
+                value={channel}
+              />
+            )}
+            {(isOwner || tags?.length > 0) && (
+              <Autocomplete
+                ChipProps={{
+                  className: classes.chip,
+                  deleteIcon: <></>,
+                  size: 'small',
+                  variant: 'outlined',
+                }}
+                autoComplete
+                autoHighlight
+                clearOnBlur
+                clearOnEscape
+                disabled={!editable}
+                freeSolo
+                getOptionLabel={option => `${option}`}
+                id="tags"
+                multiple
+                onChange={(event, newValue) => setTags(newValue)}
+                options={ALL_TAGS}
+                popupIcon={<></>}
+                renderInput={params => (
+                  <TextField
+                    {...params}
+                    label="Tags"
+                    margin="dense"
+                    placeholder={(!tags || tags?.length === 0) && 'Add tags'}
+                  />
+                )}
+                selectOnFocus
+                size="small"
+                value={tags}
+              />
+            )}
             <Typography className={classes.date} color="textSecondary" display="block" variant="caption">
               Added on {createdAt ? formattedCreatedAt : null}
             </Typography>
