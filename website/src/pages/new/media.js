@@ -80,7 +80,8 @@ const useStyles = () =>
       },
     },
     cardIcon: {
-      marginBottom: theme.spacing(1),
+      marginBottom: theme.spacing(0.5),
+      color: theme.palette.primary.main,
     },
     cardPrompt: { marginBottom: theme.spacing(2) },
     actionbar: {
@@ -423,7 +424,7 @@ export default function AddMediaPage(initialData) {
                     <CardContent className={classes.cardContent}>
                       <div>
                         <CloudUploadIcon fontSize="large" className={classes.cardIcon} />
-                        <Typography component="h2" variant="h6" gutterBottom>
+                        <Typography component="h2" variant="h6" gutterBottom color="primary">
                           Upload
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
@@ -516,7 +517,7 @@ export default function AddMediaPage(initialData) {
                     <CardContent className={classes.cardContent}>
                       <div>
                         <OndemandVideoIcon fontSize="large" className={classes.cardIcon} />
-                        <Typography component="h2" variant="h6" gutterBottom>
+                        <Typography component="h2" variant="h6" gutterBottom color="primary">
                           Source from Web
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
