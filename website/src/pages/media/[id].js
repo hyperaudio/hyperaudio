@@ -325,6 +325,8 @@ const MediaPage = initialData => {
           updated.channel = channel;
         }),
       );
+    } else if (!channel && mediaChannel) {
+      await DataStore.delete(mediaChannel);
     }
     setEditable(false);
   }, [media, title, description, tags, channel, mediaChannel]);
