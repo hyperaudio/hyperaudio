@@ -720,11 +720,11 @@ export const getServerSideProps = async context => {
     userChannels = serializeModel(
       (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
     );
-
-    mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
   } catch (ignored) {}
 
-  console.log({ user });
+  mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
+
+  // console.log({ user });
 
   return {
     props: {

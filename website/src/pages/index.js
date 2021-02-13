@@ -134,7 +134,6 @@ const Dashboard = initialData => {
   } = router;
 
   const { channels, pages, user, userChannels, mediaChannels } = initialData;
-  console.log({ channels, pages, user, userChannels, mediaChannels });
 
   const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
@@ -331,8 +330,8 @@ export const getServerSideProps = async context => {
   });
 
   let user = null;
-  let userChannels = null;
-  let mediaChannels = null;
+  let userChannels = [];
+  let mediaChannels = [];
 
   try {
     const {
@@ -344,22 +343,21 @@ export const getServerSideProps = async context => {
       .map(({ channel }) => channel);
     // userChannels = await DataStore.query(UserChannel);
     // userChannels = await DataStore.query(UserChannel, uc => uc.parent('eq', user.id));
-
-    mediaChannels = Object.values(
-      serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
-        const entry = acc[channel.id] ?? { channel, media: [] };
-        if (!entry.media.find(m => m.id === media.id)) entry.media.push(media);
-        entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(b).getTime() - new Date(a).getTime());
-
-        acc[channel.id] = entry;
-        return acc;
-      }, {}),
-    ).sort(
-      ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(b).getTime() - new Date(a).getTime(),
-    );
   } catch (ignored) {}
 
-  console.log({ user });
+  mediaChannels = Object.values(
+    serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
+      const entry = acc[channel.id] ?? { channel, media: [] };
+      if (!entry.media.find(m => m.id === media.id)) entry.media.push(media);
+      entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(b).getTime() - new Date(a).getTime());
+
+      acc[channel.id] = entry;
+      return acc;
+    }, {}),
+  ).sort(
+    ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(b).getTime() - new Date(a).getTime(),
+  );
+
   return {
     props: {
       media: serializeModel(media),
