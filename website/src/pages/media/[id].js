@@ -213,7 +213,7 @@ const MediaPage = initialData => {
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
   const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
-  console.log({ userChannels, mediaChannel });
+  // console.log({ userChannels, mediaChannel });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
   const [description, setDescription] = useState(initialMedia.description || null);
@@ -405,7 +405,7 @@ const MediaPage = initialData => {
     [editable],
   );
 
-  console.log({ initialMedia, tags });
+  // console.log({ initialMedia, tags });
 
   return (
     <Layout>
@@ -492,7 +492,7 @@ const MediaPage = initialData => {
                 name="description"
                 onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
                 placeholder="Add description"
-                value={description}
+                value={description ?? ''}
               />
             )}
             {(isOwner || channel?.length > 0) && (
@@ -508,7 +508,12 @@ const MediaPage = initialData => {
                 options={userChannels}
                 popupIcon={<></>}
                 renderInput={params => (
-                  <TextField {...params} label="Channel" margin="dense" placeholder={!channel && 'Assign to channel'} />
+                  <TextField
+                    {...params}
+                    label="Channel"
+                    margin="dense"
+                    placeholder={!channel ? 'Assign to channel' : ''}
+                  />
                 )}
                 selectOnFocus
                 size="small"
@@ -540,7 +545,7 @@ const MediaPage = initialData => {
                     {...params}
                     label="Tags"
                     margin="dense"
-                    placeholder={(!tags || tags?.length === 0) && 'Add tags'}
+                    placeholder={!tags || tags?.length === 0 ? 'Add tags' : ''}
                   />
                 )}
                 selectOnFocus

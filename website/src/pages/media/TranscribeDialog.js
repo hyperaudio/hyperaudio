@@ -140,7 +140,7 @@ const OTHER_LANGUAGES = [
   },
 ];
 
-export default function TranscribeDialog({ onConfirm, onCancel, open }) {
+export default function TranscribeDialog({ onConfirm, onCancel, open = false }) {
   const [language, setLanguage] = React.useState();
   const [speakers, setSpeakers] = React.useState();
 

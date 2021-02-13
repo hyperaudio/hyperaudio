@@ -215,7 +215,7 @@ const Dashboard = initialData => {
         {mediaChannels.map(mc => {
           if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
           return (
-            <>
+            <React.Fragment key={mc.channel.id}>
               <div className={classes.block}>
                 <Typography className={classes.blockTitle} variant="h5" component="h2">
                   {mc.channel.title}
@@ -272,7 +272,7 @@ const Dashboard = initialData => {
                 </Grid>
               </div>
               <Divider />
-            </>
+            </React.Fragment>
           );
         })}
 
