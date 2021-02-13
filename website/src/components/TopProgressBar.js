@@ -22,9 +22,9 @@ const load = () => {
     return;
   }
 
-  if (quicklink) {
-    quicklink();
-  } else quicklink = listen();
+  // if (quicklink) {
+  //   quicklink();
+  // } else quicklink = listen();
 
   state = 'loading';
 
