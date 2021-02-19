@@ -7,7 +7,7 @@ import ReactPlayer from 'react-player';
 import { rgba } from 'polished';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
-import { withSSRContext, Storage, DataStore } from 'aws-amplify';
+import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import axios from 'axios';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -35,7 +35,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User, UserChannel, MediaChannel } from 'src/models';
+import { Media, User, UserChannel, MediaChannel, Channel } from 'src/models';
 import Layout from 'src/Layout';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
@@ -208,12 +208,12 @@ const MediaPage = initialData => {
   const theme = useTheme();
 
   const { id, transcript } = router.query;
-  const { user } = initialData;
+  const { user, channels } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
   const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
-  // console.log({ userChannels, mediaChannel });
+  console.log({ userChannels, mediaChannel, channels });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
   const [description, setDescription] = useState(initialMedia.description || null);
@@ -713,6 +713,7 @@ export const getServerSideProps = async context => {
   if (!media) return { notFound: true };
 
   let user = null;
+  let channels = [];
   let userChannels = [];
   let mediaChannel = null;
 
@@ -722,9 +723,19 @@ export const getServerSideProps = async context => {
     } = await Auth.currentAuthenticatedUser();
     user = serializeModel(await DataStore.query(User, sub));
 
+    channels = serializeModel(
+      (
+        await DataStore.query(Channel, Predicates.ALL, {
+          // page: parseInt(page, 10) - 1,
+          // limit: PAGINATION_LIMIT,
+          sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+        })
+      ).filter(({ editors }) => editors?.includes(user.id)),
+    );
+
     userChannels = serializeModel(
       (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    );
+    ).concat(channels);
   } catch (ignored) {}
 
   mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
@@ -735,6 +746,7 @@ export const getServerSideProps = async context => {
     props: {
       media: serializeModel(media),
       user,
+      channels,
       userChannels,
       mediaChannel,
     },
