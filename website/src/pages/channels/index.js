@@ -75,8 +75,12 @@ const useStyles = makeStyles(theme => ({
     width: '40%',
     position: 'relative',
     '& > *': {
-      width: '500px',
-      maxWidth: '100%',
+      width: '275px',
+      maxWidth: '80%',
+      [theme.breakpoints.up('md')]: {
+        width: '500px',
+        maxWidth: '100%',
+      },
     },
   },
   tagsColumn: {
@@ -92,6 +96,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'table-cell',
     },
+  },
+  dotsColumn: {
+    width: '40px',
   },
   responsiveContent: {
     '& > ul': {
@@ -300,7 +307,7 @@ export default function Channels({ user, userChannels, users }) {
                     </TableCell>
                     <TableCell className={classes.tagsColumn}>Tags</TableCell>
                     <TableCell className={classes.editorsColumn}>Editors</TableCell>
-                    <TableCell />
+                    <TableCell className={classes.dotsColumn} />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -379,7 +386,7 @@ export default function Channels({ user, userChannels, users }) {
                               ))}
                           </ul>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="right" className={classes.dotsColumn}>
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
                           </IconButton>
