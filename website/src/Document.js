@@ -15,10 +15,16 @@ class Doc extends Document {
             href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Roboto&display=swap"
             rel="stylesheet"
           />
+          <link rel="stylesheet" href="/ha-lite/css/hyperaudio-lite-player.css" />
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.js"> </script>
+          <script src="https://platform.twitter.com/widgets.js"> </script>
         </Head>
         <body>
           <Main />
           <NextScript />
+          <script src="/ha-lite/js/hyperaudio-lite.js"> </script>
+          <script src="/ha-lite/js/share-this.js"> </script>
+          <script src="/ha-lite/js/share-this-twitter.js"> </script>
         </body>
       </Html>
     );

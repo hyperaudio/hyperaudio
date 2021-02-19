@@ -4,6 +4,25 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+export declare class Transcript {
+  readonly id: string;
+  readonly ns?: string;
+  readonly type?: string;
+  readonly metadata?: string;
+  readonly status?: string;
+  readonly title?: string;
+  readonly description?: string;
+  readonly owner?: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  readonly tags?: (string | null)[];
+  readonly url?: string;
+  readonly lang?: string;
+  readonly media?: string;
+  constructor(init: ModelInit<Transcript>);
+  static copyOf(source: Transcript, mutator: (draft: MutableModel<Transcript>) => MutableModel<Transcript> | void): Transcript;
+}
+
 export declare class User {
   readonly id: string;
   readonly channels?: (UserChannel | null)[];

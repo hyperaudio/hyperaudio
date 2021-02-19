@@ -1,3 +1,20 @@
+type Transcript @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  tags: [String]
+  url: AWSURL
+  lang: String
+  media: String
+}
+
 type User @model @auth(rules: [{allow: public}]) {
   id: ID!
   channels: [UserChannel] @connection(keyName: "byUser", fields: ["id"])

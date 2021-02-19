@@ -1,0 +1,81 @@
+/*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
+
+.hyperaudio-transcript .strikethrough {
+  text-decoration: line-through;
+}
+
+.hyperaudio-transcript .annotation, .hyperaudio-transcript .parannotation{
+  opacity: 0.7;
+}
+
+.hyperaudio-transcript .highlight {
+  background-color: yellow !important;
+}
+
+.hyperaudio-transcript .highlight.active {
+  background-color: lightGreen !important;
+}
+
+.hyperaudio-transcript  header {
+  font-size: 200%;
+}
+
+/*.hyperaudio-transcript a {
+  cursor: pointer;
+  color: #000;
+}*/
+/*
+.hyperaudio-transcript .active ~ span {
+  color: #999;
+}
+
+.hyperaudio-transcript p.active ~ p span {
+  color: #999;
+}
+*/
+
+.hyperaudio-transcript a, a.link {
+  border: 0px;
+}
+
+.hyperaudio-transcript .read {
+  color: #000 !important;
+}
+
+.hyperaudio-transcript .unread {
+  color: #999 !important;
+}
+
+.hyperaudio-transcript .search-match {
+  background-color: pink !important;
+}
+
+.hyperaudio-transcript .share-match {
+  background-color: #66ffad !important;
+}
+
+.hyperaudio-transcript sub:before {
+  content: '\231C';
+}
+
+.hyperaudio-transcript sub.highlight-duration:before {
+  content: '\231D';
+}
+
+.hyperaudio-transcript h5 {
+  font-size: 130%;
+}
+
+[data-m] {
+  cursor: pointer;
+}
+
+
+body {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+  line-height: 1.5;
+}
+
+.speaker {
+  font-weight: bold;
+}
