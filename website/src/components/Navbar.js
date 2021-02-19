@@ -34,6 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectedAction: {
     background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
   },
 }));
 
