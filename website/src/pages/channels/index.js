@@ -30,8 +30,9 @@ import Layout from 'src/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
-import ChannelDialog from './ChannelDialog';
 import DeleteDialog from 'src/dialogs/DeleteDialog';
+
+import ChannelDialog from './ChannelDialog';
 import EditorsDialog from './EditorsDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -70,7 +71,18 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     width: theme.spacing(3),
   },
-  nameColumn: { width: '40%' },
+  nameColumn: {
+    width: '40%',
+    position: 'relative',
+    '& > *': {
+      width: '275px',
+      maxWidth: '80%',
+      [theme.breakpoints.up('md')]: {
+        width: '500px',
+        maxWidth: '100%',
+      },
+    },
+  },
   tagsColumn: {
     display: 'none',
     width: '30%',
@@ -84,6 +96,9 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       display: 'table-cell',
     },
+  },
+  dotsColumn: {
+    width: '40px',
   },
   responsiveContent: {
     '& > ul': {
@@ -292,7 +307,7 @@ export default function Channels({ user, userChannels, users }) {
                     </TableCell>
                     <TableCell className={classes.tagsColumn}>Tags</TableCell>
                     <TableCell className={classes.editorsColumn}>Editors</TableCell>
-                    <TableCell />
+                    <TableCell className={classes.dotsColumn} />
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -371,7 +386,7 @@ export default function Channels({ user, userChannels, users }) {
                               ))}
                           </ul>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="right" className={classes.dotsColumn}>
                           <IconButton edge="end" onClick={e => setMoreMenuAnchor({ el: e.target, id })} size="small">
                             <MoreHorizIcon fontSize="small" />
                           </IconButton>
