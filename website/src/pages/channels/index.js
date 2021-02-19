@@ -30,8 +30,9 @@ import Layout from 'src/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
-import ChannelDialog from './ChannelDialog';
 import DeleteDialog from 'src/dialogs/DeleteDialog';
+
+import ChannelDialog from './ChannelDialog';
 import EditorsDialog from './EditorsDialog';
 
 const useStyles = makeStyles(theme => ({
@@ -70,7 +71,14 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
     width: theme.spacing(3),
   },
-  nameColumn: { width: '40%' },
+  nameColumn: {
+    width: '40%',
+    position: 'relative',
+    '& > *': {
+      width: '500px',
+      maxWidth: '100%',
+    },
+  },
   tagsColumn: {
     display: 'none',
     width: '30%',
