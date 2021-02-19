@@ -283,13 +283,13 @@ const Dashboard = initialData => {
                               {description}
                             </Typography>
                           </CardContent>
-                          <CardActions className={classes.cardActions} disableSpacing>
+                          {/* <CardActions className={classes.cardActions} disableSpacing> // TODO: Resurrect this
                             <Tooltip title="Actions…">
                               <IconButton color="secondary" size="small">
                                 <MoreVertIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
-                          </CardActions>
+                          </CardActions> */}
                         </Card>
                       </Grid>
                     ))}
