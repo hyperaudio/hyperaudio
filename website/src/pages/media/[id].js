@@ -712,7 +712,6 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
 
   useEffect(() => {
     if (!metadata.url) return setTranscript(null);
-    console.log({ player });
 
     const loadTranscript = async () => {
       const { data } = await axios.request({
@@ -752,12 +751,9 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
   }, [time]);
 
   useEffect(() => {
-    // console.log({ playing, onPlay, onPause });
     if (playing && onPlay.current) onPlay.current();
     if (!playing && onPause.current) onPause.current();
   }, [playing]);
-
-  // const tdom = window.document.querySelector('span[data-m]');
 
   useEffect(() => {
     if (ht1.current) return;
