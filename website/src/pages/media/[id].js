@@ -651,7 +651,14 @@ const MediaPage = initialData => {
         </Grid>
       </Grid>
       {transcript ? (
-        <TranscriptLoader transcripts={transcripts} id={transcript} time={progress} playing={playing} player={player} />
+        <TranscriptLoader
+          transcripts={transcripts}
+          id={transcript}
+          time={progress}
+          playing={playing}
+          setPlaying={setPlaying}
+          player={player}
+        />
       ) : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
@@ -699,7 +706,7 @@ const MediaPage = initialData => {
   );
 };
 
-const TranscriptLoader = ({ transcripts, id, time, player, playing }) => {
+const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }) => {
   const metadata = useMemo(() => transcripts.find(({ id: _id }) => _id === id), [id, transcripts]);
   const [transcript, setTranscript] = useState();
 
@@ -729,8 +736,8 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing }) => {
     seekTo: t => {
       player.current?.seekTo(t, 'seconds');
     },
-    play: () => {},
-    pause: () => {},
+    play: () => setPlaying(true),
+    pause: () => setPlaying(false),
     onPlay: cb => {
       onPlay.current = cb;
     },
@@ -745,41 +752,40 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing }) => {
   }, [time]);
 
   useEffect(() => {
-    console.log({ playing, onPlay, onPause });
+    // console.log({ playing, onPlay, onPause });
     if (playing && onPlay.current) onPlay.current();
     if (!playing && onPause.current) onPause.current();
   }, [playing]);
 
+  // const tdom = window.document.querySelector('span[data-m]');
+
   useEffect(() => {
+    if (ht1.current) return;
+    if (!transcript) return;
+    if (!document.querySelector('span[data-m]')) return;
+
     ht1.current = window.hyperaudiolite();
     // ht1.current.setScrollParameters(<duration>, <delay>, <offset>, <container>);
     ht1.current.setScrollParameters(800, 0, -284, null);
-
-    setTimeout(() => {
-      ht1.current.init('hypertranscript', hypermedia, false, true);
-    }, 5000);
-  }, [transcript]);
+    ht1.current.init('hypertranscript', hypermedia, false, true);
+  }, [transcript, ht1]);
 
   return metadata ? (
-    <div>
-      <h1>{metadata.title}</h1>
-
-      <div id="hypertranscript" className="hyperaudio-transcript">
-        <article>
-          <section>
-            {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }, i) => (
-              <p key={`${i}-${start}-${end}`}>
-                <span data-m={start * 1e3} data-d={0} className="speaker">
-                  {speaker}:{' '}
-                </span>
-                {words.map(({ start, end, text }, i) => (
-                  <span data-m={start} data-d={end - start} key={`${i}-${start}-${end}`}>{`${text} `}</span>
-                ))}
-              </p>
-            ))}
-          </section>
-        </article>
-      </div>
+    <div id="hypertranscript" className="hyperaudio-transcript">
+      <article>
+        <section>
+          {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }, i) => (
+            <p key={`${i}-${start}-${end}`}>
+              <span data-m={start * 1e3} data-d={0} className="speaker">
+                {speaker}:{' '}
+              </span>
+              {words.map(({ start, end, text }, i) => (
+                <span data-m={start} data-d={end - start} key={`${i}-${start}-${end}`}>{`${text} `}</span>
+              ))}
+            </p>
+          ))}
+        </section>
+      </article>
     </div>
   ) : null;
 };

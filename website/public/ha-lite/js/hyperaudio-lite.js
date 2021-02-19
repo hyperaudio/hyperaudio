@@ -165,7 +165,7 @@ var hyperaudiolite = function () {
         player.seekTo(start * 1000);
       } else if (playerType == 'ha2') {
         player.seekTo(start);
-        player.play();
+        setTimeout(() => player.play(), 2000);
       } else {
         // Assume YouTube
         window.onYouTubeIframeAPIReady = function () {
