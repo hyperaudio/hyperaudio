@@ -2,7 +2,8 @@
   "logo": "/assets/logos/mozfest.svg",
   "meta": {
     "name": "Mozilla Festival",
-    "url": "https://www.mozillafestival.org"
+    "url": "https://www.mozillafestival.org",
+    "text": "Welcome lorem ipsum"
   },
   "palette": {
     "primary": "#0d10bf",
