@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import Head from 'next/head';
@@ -35,14 +36,14 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User, UserChannel, MediaChannel, Channel } from 'src/models';
+import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 import Layout from 'src/Layout';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
 
-import Transcript from '../../components/transcript/Transcript';
+// import Transcript from '../../components/transcript/Transcript';
 
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = ['Remix', 'Audio'];
@@ -208,12 +209,12 @@ const MediaPage = initialData => {
   const theme = useTheme();
 
   const { id, transcript } = router.query;
-  const { user, channels } = initialData;
+  const { user, channels, transcripts = [] } = initialData;
 
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
   const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
-  console.log({ userChannels, mediaChannel, channels });
+  console.log({ userChannels, mediaChannel, channels, transcripts });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
   const [description, setDescription] = useState(initialMedia.description || null);
@@ -283,7 +284,7 @@ const MediaPage = initialData => {
   };
 
   const onTranscriptMenuOpen = id => e => {
-    setActionableTranscript(TRANSCRIPTS.find(o => o.id === id));
+    setActionableTranscript(transcripts.find(o => o.id === id));
     setTranscriptMenuAnchor(e.currentTarget);
   };
 
@@ -348,7 +349,7 @@ const MediaPage = initialData => {
   useEffect(() => {
     if (transcript) return;
 
-    const t = TRANSCRIPTS.find(({ lang, status }) => lang === 'en-US' && status === 'transcribed');
+    const t = transcripts.find(({ lang, status }) => lang === 'en-US' && status === 'transcribed');
     if (!t) return;
 
     router.push(
@@ -575,7 +576,7 @@ const MediaPage = initialData => {
             </Typography>
           </Grid>
           <Grid item>
-            {TRANSCRIPTS?.length > 0 && (
+            {transcripts?.length > 0 && (
               <List
                 aria-labelledby="nested-list-subheader"
                 className={classes.transcripts}
@@ -603,7 +604,7 @@ const MediaPage = initialData => {
                   </ListSubheader>
                 }
               >
-                {TRANSCRIPTS.map(({ id, title, lang, status, statusMessage }) => {
+                {transcripts.map(({ id, title, lang, status, statusMessage }) => {
                   const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
                   return (
                     <ListItem
@@ -631,7 +632,7 @@ const MediaPage = initialData => {
                 })}
               </List>
             )}
-            {TRANSCRIPTS?.length < 1 && (
+            {transcripts?.length < 1 && (
               <Button
                 aria-controls="simple-menu"
                 aria-haspopup="true"
@@ -648,7 +649,9 @@ const MediaPage = initialData => {
           </Grid>
         </Grid>
       </Grid>
-      {transcript ? <TranscriptLoader id={transcript} time={progress} player={player} /> : null}
+      {transcript ? (
+        <TranscriptLoader transcripts={transcripts} id={transcript} time={progress} player={player} />
+      ) : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
         id="new-transcript-actions"
@@ -695,16 +698,17 @@ const MediaPage = initialData => {
   );
 };
 
-const TranscriptLoader = ({ id, time, player }) => {
-  const metadata = useMemo(() => TRANSCRIPTS.find(({ id: _id }) => _id === id), [id]);
+const TranscriptLoader = ({ transcripts, id, time, player }) => {
+  const metadata = useMemo(() => transcripts.find(({ id: _id }) => _id === id), [id, transcripts]);
   const [transcript, setTranscript] = useState();
 
   useEffect(() => {
-    if (!metadata.transcript) return setTranscript(null);
+    if (!metadata.url) return setTranscript(null);
+
     const loadTranscript = async () => {
       const { data } = await axios.request({
         method: 'get',
-        url: metadata.transcript,
+        url: metadata.url,
       });
 
       setTranscript(data);
@@ -712,10 +716,32 @@ const TranscriptLoader = ({ id, time, player }) => {
     loadTranscript();
   }, [metadata]);
 
+  const ht1 = useRef();
+  // useEffect(() => {
+  //   ht1.current = window.hyperaudiolite();
+  //   ht1.current.init('hypertranscript', 'hyperplayer', false, true);
+  // }, [transcript]);
+
   return metadata ? (
     <div>
       <h1>{metadata.title}</h1>
-      {transcript ? <Transcript transcript={transcript} time={time} player={player} /> : null}
+
+      <div id="hypertranscript" className="hyperaudio-transcript">
+        <article>
+          <section>
+            {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }) => (
+              <p key={`${start}-${end}`}>
+                <span data-m={start * 1e3} data-d={0} className="speaker">
+                  {speaker}:{' '}
+                </span>
+                {words.map(({ start, end, text }) => (
+                  <span data-m={start} data-d={end - start} key={`${start}-${end}`}>{`${text} `}</span>
+                ))}
+              </p>
+            ))}
+          </section>
+        </article>
+      </div>
     </div>
   ) : null;
 };
@@ -733,6 +759,7 @@ export const getServerSideProps = async context => {
   let channels = [];
   let userChannels = [];
   let mediaChannel = null;
+  let transcripts = [];
 
   try {
     const {
@@ -756,7 +783,7 @@ export const getServerSideProps = async context => {
   } catch (ignored) {}
 
   mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
-
+  transcripts = serializeModel((await DataStore.query(Transcript)).filter(({ media }) => media === id));
   // console.log({ user });
 
   return {
@@ -764,6 +791,7 @@ export const getServerSideProps = async context => {
       media: serializeModel(media),
       user,
       channels,
+      transcripts,
       userChannels,
       mediaChannel,
     },

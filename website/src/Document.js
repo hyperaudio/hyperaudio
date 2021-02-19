@@ -25,6 +25,7 @@ class Doc extends Document {
           <script src="/ha-lite/js/hyperaudio-lite.js"> </script>
           <script src="/ha-lite/js/share-this.js"> </script>
           <script src="/ha-lite/js/share-this-twitter.js"> </script>
+          <script src="/ha-lite/js/ha-lite.js"> </script>
         </body>
       </Html>
     );
