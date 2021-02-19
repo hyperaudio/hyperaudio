@@ -88,7 +88,8 @@ var hyperaudiolite = function () {
 
     paras = transcript.getElementsByTagName('p');
 
-    player = document.getElementById(mediaElementId);
+    // player = document.getElementById(mediaElementId);
+    player = typeof mediaElementId === 'string' ? document.getElementById(mediaElementId) : mediaElementId;
 
     if (player.tagName == 'VIDEO' || player.tagName == 'AUDIO') {
       //native HTML media elements
@@ -106,6 +107,10 @@ var hyperaudiolite = function () {
       player = SC.Widget(mediaElementId);
       player.bind(SC.Widget.Events.PAUSE, clearTimer);
       player.bind(SC.Widget.Events.PLAY, checkPlayHead);
+    } else if (playerType == 'ha2') {
+      // pause/play events?
+      player.onPlay(checkPlayHead);
+      player.onPause(clearTimer);
     } else {
       // assume YouTube
       var tag = document.createElement('script');
@@ -158,6 +163,9 @@ var hyperaudiolite = function () {
       } else if (playerType == 'soundcloud') {
         // SoundCloud
         player.seekTo(start * 1000);
+      } else if (playerType == 'ha2') {
+        player.seekTo(start);
+        player.play();
       } else {
         // Assume YouTube
         window.onYouTubeIframeAPIReady = function () {
@@ -260,6 +268,9 @@ var hyperaudiolite = function () {
       } else if (playerType == 'soundcloud') {
         player.seekTo(timeSecs * 1000);
         player.play();
+      } else if (playerType == 'ha2') {
+        player.seekTo(timeSecs);
+        player.play();
       } else {
         //assume YouTube
         player.seekTo(timeSecs, true);
@@ -281,6 +292,10 @@ var hyperaudiolite = function () {
       player.getPosition(function (ms) {
         currentTime = ms / 1000;
       });
+    } else if (playerType == 'ha2') {
+      currentTime = window.currentTime;
+      // currentTime = player.currentTime;
+      // currentTime = player.getCurrentTime();
     } else {
       // assume YouTube
       currentTime = player.getCurrentTime();
@@ -374,22 +389,28 @@ var hyperaudiolite = function () {
         }
 
         if (currentParaIndex != paraIndex) {
-          if (typeof scroller !== 'undefined' && autoscroll === true) {
-            if (typeof scrollerContainer !== 'undefined' && scrollerContainer !== null) {
-              scroller(scrollNode, 'scroll', {
-                container: scrollerContainer,
-                duration: scrollerDuration,
-                delay: scrollerDelay,
-                offset: scrollerOffset,
-              });
-            } else {
-              scroller(scrollNode, 'scroll', {
-                duration: scrollerDuration,
-                delay: scrollerDelay,
-                offset: scrollerOffset,
-              });
-            }
-          }
+          scroller(scrollNode, 'scroll', {
+            duration: scrollerDuration,
+            delay: scrollerDelay,
+            offset: scrollerOffset,
+          });
+
+          // if (typeof scroller !== 'undefined' && autoscroll === true) {
+          //   if (typeof scrollerContainer !== 'undefined' && scrollerContainer !== null) {
+          //     scroller(scrollNode, 'scroll', {
+          //       container: scrollerContainer,
+          //       duration: scrollerDuration,
+          //       delay: scrollerDelay,
+          //       offset: scrollerOffset,
+          //     });
+          //   } else {
+          //     scroller(scrollNode, 'scroll', {
+          //       duration: scrollerDuration,
+          //       delay: scrollerDelay,
+          //       offset: scrollerOffset,
+          //     });
+          //   }
+          // }
 
           newPara = true;
 
@@ -422,9 +443,9 @@ var hyperaudiolite = function () {
         }
       }
 
-      timer = setTimeout(function () {
-        checkPlayHead();
-      }, interval + 1); // +1 to avoid rounding issues (better to be over than under)
+      // timer = setTimeout(function () {
+      //   checkPlayHead();
+      // }, interval + 1); // +1 to avoid rounding issues (better to be over than under)
     }
   }
 

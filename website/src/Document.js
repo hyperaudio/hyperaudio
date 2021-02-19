@@ -16,6 +16,7 @@ class Doc extends Document {
             rel="stylesheet"
           />
           <link rel="stylesheet" href="/ha-lite/css/hyperaudio-lite-player.css" />
+          <link rel="stylesheet" href="/ha-lite/css/share-this.css" />
           <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.0/velocity.js"> </script>
           <script src="https://platform.twitter.com/widgets.js"> </script>
         </Head>

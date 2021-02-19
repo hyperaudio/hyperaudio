@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -214,7 +215,7 @@ const MediaPage = initialData => {
   const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
   const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
   const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
-  console.log({ userChannels, mediaChannel, channels, transcripts });
+  // console.log({ userChannels, mediaChannel, channels, transcripts });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
   const [description, setDescription] = useState(initialMedia.description || null);
@@ -650,7 +651,7 @@ const MediaPage = initialData => {
         </Grid>
       </Grid>
       {transcript ? (
-        <TranscriptLoader transcripts={transcripts} id={transcript} time={progress} player={player} />
+        <TranscriptLoader transcripts={transcripts} id={transcript} time={progress} playing={playing} player={player} />
       ) : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
@@ -698,12 +699,13 @@ const MediaPage = initialData => {
   );
 };
 
-const TranscriptLoader = ({ transcripts, id, time, player }) => {
+const TranscriptLoader = ({ transcripts, id, time, player, playing }) => {
   const metadata = useMemo(() => transcripts.find(({ id: _id }) => _id === id), [id, transcripts]);
   const [transcript, setTranscript] = useState();
 
   useEffect(() => {
     if (!metadata.url) return setTranscript(null);
+    console.log({ player });
 
     const loadTranscript = async () => {
       const { data } = await axios.request({
@@ -717,10 +719,46 @@ const TranscriptLoader = ({ transcripts, id, time, player }) => {
   }, [metadata]);
 
   const ht1 = useRef();
-  // useEffect(() => {
-  //   ht1.current = window.hyperaudiolite();
-  //   ht1.current.init('hypertranscript', 'hyperplayer', false, true);
-  // }, [transcript]);
+  const onPlay = useRef();
+  const onPause = useRef();
+
+  const hypermedia = {
+    getAttribute: () => 'ha2',
+    currentTime: time,
+    getCurrentTime: () => time,
+    seekTo: t => {
+      player.current?.seekTo(t, 'seconds');
+    },
+    play: () => {},
+    pause: () => {},
+    onPlay: cb => {
+      onPlay.current = cb;
+    },
+    onPause: cb => {
+      onPause.current = cb;
+    },
+  };
+
+  useEffect(() => {
+    window.currentTime = time;
+    if (onPlay.current) onPlay.current();
+  }, [time]);
+
+  useEffect(() => {
+    console.log({ playing, onPlay, onPause });
+    if (playing && onPlay.current) onPlay.current();
+    if (!playing && onPause.current) onPause.current();
+  }, [playing]);
+
+  useEffect(() => {
+    ht1.current = window.hyperaudiolite();
+    // ht1.current.setScrollParameters(<duration>, <delay>, <offset>, <container>);
+    ht1.current.setScrollParameters(800, 0, -284, null);
+
+    setTimeout(() => {
+      ht1.current.init('hypertranscript', hypermedia, false, true);
+    }, 5000);
+  }, [transcript]);
 
   return metadata ? (
     <div>
@@ -729,13 +767,13 @@ const TranscriptLoader = ({ transcripts, id, time, player }) => {
       <div id="hypertranscript" className="hyperaudio-transcript">
         <article>
           <section>
-            {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }) => (
-              <p key={`${start}-${end}`}>
+            {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }, i) => (
+              <p key={`${i}-${start}-${end}`}>
                 <span data-m={start * 1e3} data-d={0} className="speaker">
                   {speaker}:{' '}
                 </span>
-                {words.map(({ start, end, text }) => (
-                  <span data-m={start} data-d={end - start} key={`${start}-${end}`}>{`${text} `}</span>
+                {words.map(({ start, end, text }, i) => (
+                  <span data-m={start} data-d={end - start} key={`${i}-${start}-${end}`}>{`${text} `}</span>
                 ))}
               </p>
             ))}
