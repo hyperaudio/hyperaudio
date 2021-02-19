@@ -344,6 +344,23 @@ const MediaPage = initialData => {
     [router, id],
   );
 
+  // find 1st lang: 'en-US', status: 'transcribed' and navigate
+  useEffect(() => {
+    if (transcript) return;
+
+    const t = TRANSCRIPTS.find(({ lang, status }) => lang === 'en-US' && status === 'transcribed');
+    if (!t) return;
+
+    router.push(
+      {
+        pathname: `/media/${id}`,
+        query: { transcript: t.id },
+      },
+      undefined,
+      { shallow: true },
+    );
+  }, [transcript, id, router]);
+
   useEffect(() => {
     getMedia(setMedia, id);
     const subscription = DataStore.observe(Media).subscribe(msg => {
