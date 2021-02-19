@@ -46,8 +46,8 @@ const listMedia = async (setMedia, page) =>
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(2),
+    marginTop: theme.spacing(5),
+    // marginBottom: theme.spacing(2),
   },
   primaryMenuItem: {
     color: theme.palette.primary.main,
@@ -69,14 +69,17 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   block: {
-    margin: theme.spacing(5, 0),
+    background: theme.palette.background.paper,
+    margin: theme.spacing(3, 0),
+    padding: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(5),
+      margin: theme.spacing(5, 0),
+    },
   },
-  blockTitle: {
-    marginBottom: theme.spacing(5),
-  },
+  blockTitle: {},
   items: {
     listStyle: 'none',
-    paddingLeft: 0,
     alignContent: 'stretch',
     alignItems: 'stretch',
   },
@@ -139,7 +142,7 @@ const Dashboard = initialData => {
   const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
   const [newAnchor, setNewAnchor] = useState(null);
 
-  const isSmall = useMediaQuery(theme.breakpoints.up('sm'));
+  const isMedium = useMediaQuery(theme.breakpoints.up('md'));
 
   useEffect(() => {
     listMedia(setMedia, page);
@@ -199,17 +202,17 @@ const Dashboard = initialData => {
       <Layout>
         <Toolbar className={classes.toolbar} disableGutters>
           <Typography component="h1" variant="h4">
-            Your media
+            All media
           </Typography>
           <div className={classes.grow} />
-          <Button
+          {/* <Button // TODO: Resurrect this
             color="primary"
             onClick={e => setNewAnchor(e.currentTarget)}
             startIcon={<AddCircleOutlineIcon />}
             variant="contained"
           >
             New…
-          </Button>
+          </Button> */}
         </Toolbar>
 
         {mediaChannels.map(mc => {
@@ -217,61 +220,83 @@ const Dashboard = initialData => {
           return (
             <React.Fragment key={mc.channel.id}>
               <div className={classes.block}>
-                <Typography className={classes.blockTitle} variant="h5" component="h2">
-                  {mc.channel.title}
-                </Typography>
-                <Grid className={classes.items} component="ol" container spacing={isSmall ? 4 : 2}>
-                  {mc.media?.map(({ id, title, description, metadata }) => (
-                    <Grid className={classes.item} component="li" item key={id} xs={6} sm={4} md={3}>
-                      <Card className={classes.card} elevation={0} square raised={false}>
-                        <NextLink href={`/media/${id}`}>
-                          <CardActionArea>
-                            {metadata ? (
-                              <CardMedia
-                                className={classes.cardMedia}
-                                component="img"
-                                src={
-                                  JSON.parse(metadata)?.embedly?.thumbnail_url ??
-                                  JSON.parse(metadata)?.oembed?.thumbnail_url ??
-                                  'http://placekitten.com/320/180'
-                                }
-                                title={title}
-                              />
-                            ) : (
-                              <CardMedia
-                                className={classes.cardMedia}
-                                component="img"
-                                src="http://placekitten.com/320/180"
-                                title={title}
-                              />
-                            )}
-                          </CardActionArea>
-                        </NextLink>
-                        <CardContent className={classes.cardContent}>
+                <Grid container spacing={isMedium ? 8 : 4}>
+                  <Grid item xs={12} md={4}>
+                    <Typography className={classes.blockTitle} gutterBottom variant="h5" component="h2">
+                      {mc.channel.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {mc.channel.description}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    className={classes.items}
+                    // component="ol"
+                    container
+                    item
+                    md={8}
+                    spacing={isMedium ? 4 : 2}
+                    xs={12}
+                  >
+                    {mc.media?.map(({ id, title, description, metadata }) => (
+                      <Grid
+                        className={classes.item}
+                        // component="li"
+                        item
+                        key={id}
+                        xs={6}
+                        sm={4}
+                      >
+                        <Card className={classes.card} elevation={0} square raised={false}>
                           <NextLink href={`/media/${id}`}>
-                            <Typography component="h3" noWrap>
-                              <Link href={`/media/${id}`} variant="subtitle2">
-                                {title}
-                              </Link>
-                            </Typography>
+                            <CardActionArea>
+                              {metadata ? (
+                                <CardMedia
+                                  className={classes.cardMedia}
+                                  component="img"
+                                  src={
+                                    JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                                    JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                                    'http://placekitten.com/320/180'
+                                  }
+                                  title={title}
+                                />
+                              ) : (
+                                <CardMedia
+                                  className={classes.cardMedia}
+                                  component="img"
+                                  src="http://placekitten.com/320/180"
+                                  title={title}
+                                />
+                              )}
+                            </CardActionArea>
                           </NextLink>
-                          <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
-                            {description}
-                          </Typography>
-                        </CardContent>
-                        <CardActions className={classes.cardActions} disableSpacing>
-                          <Tooltip title="Actions…">
-                            <IconButton color="secondary" size="small">
-                              <MoreVertIcon fontSize="small" />
-                            </IconButton>
-                          </Tooltip>
-                        </CardActions>
-                      </Card>
-                    </Grid>
-                  ))}
+                          <CardContent className={classes.cardContent}>
+                            <NextLink href={`/media/${id}`}>
+                              <Typography component="h3" noWrap>
+                                <Link href={`/media/${id}`} variant="subtitle2">
+                                  {title}
+                                </Link>
+                              </Typography>
+                            </NextLink>
+                            <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
+                              {description}
+                            </Typography>
+                          </CardContent>
+                          <CardActions className={classes.cardActions} disableSpacing>
+                            <Tooltip title="Actions…">
+                              <IconButton color="secondary" size="small">
+                                <MoreVertIcon fontSize="small" />
+                              </IconButton>
+                            </Tooltip>
+                          </CardActions>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </Grid>
               </div>
-              <Divider />
+              {/* <Divider /> */}
             </React.Fragment>
           );
         })}

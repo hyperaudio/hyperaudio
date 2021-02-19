@@ -35,6 +35,7 @@ export default function getTheme(palette) {
       background: {
         default: 'white',
         defaultOpacity: 0.95,
+        paper: grey[50],
         well: grey[50],
       },
       primary: getPaletteObj(palette?.primary || '#6000DE'),
