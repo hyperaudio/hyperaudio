@@ -316,7 +316,9 @@ export default function AddMediaPage(initialData) {
         new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
       );
 
-      if (channel) await DataStore.save(new MediaChannel({ media, channel }));
+      console.log({ media });
+
+      // if (channel) await DataStore.save(new MediaChannel({ media, channel }));
 
       router.push(`/media/${media.id}`);
     },
