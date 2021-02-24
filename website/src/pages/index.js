@@ -200,20 +200,20 @@ const Dashboard = initialData => {
   return (
     <>
       <Layout>
-        <Toolbar className={classes.toolbar} disableGutters>
+        {/* <Toolbar className={classes.toolbar} disableGutters> // TODO: Resurrect this
           <Typography component="h1" variant="h4">
             All media
           </Typography>
           <div className={classes.grow} />
-          {/* <Button // TODO: Resurrect this
+          <Button
             color="primary"
             onClick={e => setNewAnchor(e.currentTarget)}
             startIcon={<AddCircleOutlineIcon />}
             variant="contained"
           >
             New…
-          </Button> */}
-        </Toolbar>
+          </Button>
+        </Toolbar> */}
 
         {mediaChannels.map(mc => {
           if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
