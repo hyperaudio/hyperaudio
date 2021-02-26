@@ -3,6 +3,7 @@ import { lighten, darken } from 'polished';
 import grey from '@material-ui/core/colors/grey';
 
 import setType from 'src/themes/setType';
+import { colors } from '@material-ui/core';
 
 const theme = createMuiTheme();
 
@@ -32,14 +33,27 @@ export default function getTheme(palette) {
       },
     },
     palette: {
+      common: {
+        black: '#000',
+        white: '#fff',
+      },
+      type: 'dark',
       background: {
         dark: 'black',
-        default: 'white',
+        default: 'black',
         defaultOpacity: 0.95,
         paper: grey[50],
       },
       primary: getPaletteObj(palette?.primary || '#6000DE'),
       secondary: getPaletteObj(palette?.secondary || '#2DC8BD'),
+      text: {
+        primary: grey[300],
+        secondary: grey[500],
+        disabled: grey[500],
+        hint: grey[400],
+      },
+      divider: grey[600],
+      action: {},
     },
     overrides: {
       MuiInputBase: {

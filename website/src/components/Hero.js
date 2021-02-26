@@ -4,51 +4,41 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import { Button } from '@material-ui/core';
 
-const useStyles = size =>
-  makeStyles(theme => ({
-    root: {
-      background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%);`,
-      color: theme.palette.primary.contrastText,
-      paddingBottom: theme.spacing(size === 'small' ? 0.3 : 10),
-      paddingTop: theme.spacing(size === 'small' ? 0.3 : 10),
-      paddingLeft: theme.spacing(4),
-      paddingRight: theme.spacing(4),
-      // textAlign: 'center',
+const useStyles = makeStyles(theme => ({
+  root: {
+    background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%);`,
+    color: theme.palette.primary.contrastText,
+    padding: theme.spacing(10, 0),
+  },
+  title: {},
+  text: {
+    marginBottom: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      marginBottom: theme.spacing(4),
+      maxWidth: '66%',
     },
-    title: {
-      display: size === 'small' ? 'none' : 'block',
-    },
-    text: {
-      display: size === 'small' ? 'none' : 'block',
-      marginBottom: theme.spacing(2),
-      [theme.breakpoints.up('md')]: {
-        marginBottom: theme.spacing(4),
-        maxWidth: '66%',
-      },
-    },
-    button: {
-      display: size === 'small' ? 'none' : 'inline-block',
-    },
-  }));
+  },
+  button: {},
+}));
 
-export default function Hero({ org, size }) {
-  const classes = useStyles(size)();
+const Hero = ({ org }) => {
+  const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Container>
-        <Container>
-          <Typography className={classes.title} gutterBottom component="h1" variant="h4">
-            {org.meta.name}
-          </Typography>
-          <Typography className={classes.text} gutterBottom component="p" variant="h6">
-            {org.meta.text}
-          </Typography>
-          <Button className={classes.button} href={org.meta.url} color="inherit" variant="outlined">
-            Visit {org.meta.name}
-          </Button>
-        </Container>
+        <Typography className={classes.title} gutterBottom component="h1" variant="h4">
+          {org.meta.name}
+        </Typography>
+        <Typography className={classes.text} gutterBottom component="p" variant="h6">
+          {org.meta.text}
+        </Typography>
+        <Button className={classes.button} href={org.meta.url} color="inherit" variant="outlined">
+          Visit {org.meta.name}
+        </Button>
       </Container>
     </div>
   );
-}
+};
+
+export default Hero;

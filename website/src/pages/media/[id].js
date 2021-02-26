@@ -16,10 +16,11 @@ import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -34,12 +35,15 @@ import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import grey from '@material-ui/core/colors/grey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
 
 import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 import Layout from 'src/Layout';
+import getDarkTheme from 'src/themes/getDarkTheme';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
@@ -50,114 +54,59 @@ import TranscribeDialog from './TranscribeDialog';
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = ['Remix', 'Audio'];
 
-const TRANSCRIPTS = [
-  {
-    id: '3e0d9557-b0cb-4bb3-b5f0-01ed1316c269',
-    title: 'Joe Rogan Experience #1169 - Elon Musk',
-    description: '',
-    tags: [],
-    lang: 'en-US',
-    status: 'transcribed',
-    type: 'TBD',
-    transcript: 'https://badideafactory-bbc.s3.eu-west-2.amazonaws.com/perf/EM.json',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '5e0d9557-b0cb-4bb3-5bb3-01ed1316c269',
-    title: 'BBC 0600 R4 TODAY Thu, 26.11.2020',
-    description: '',
-    tags: [],
-    lang: 'en-US',
-    status: 'transcribed',
-    type: 'TBD',
-    transcript: 'https://modconhack2020-assets.s3.amazonaws.com/26427.transcript.json',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '456787853567',
-    title: 'Transcribed transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'transcribed',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '456789877',
-    title: 'New transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'new',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '45678987567',
-    title: 'Aligning transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'aligning',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '4567897853533347',
-    title: 'Error transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'error',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-  {
-    id: '98788983567',
-    title: 'Transcribing transcript',
-    description: 'foo bar baz',
-    tags: [],
-    lang: 'en-GB',
-    type: 'TBD',
-    status: 'transcribing', // status.endsWith('ing') -> spinner
-    createdAt: '2021-01-04T12:25:29.646Z',
-    updatedAt: '2021-01-07T13:25:29.646Z',
-  },
-  {
-    id: '4567673567',
-    title: 'Aligned transcript',
-    description: 'title and desc would be gleaned from media, but can be in different language on translation, etc',
-    tags: [],
-    lang: 'en-US',
-    status: 'aligned',
-    type: 'TBD',
-    createdAt: '2020-12-04T14:25:29.646Z',
-    updatedAt: '2020-12-07T19:25:29.646Z',
-  },
-];
-
 const useStyles = makeStyles(theme => ({
+  root: {},
+  push: {
+    ...theme.mixins.toolbar,
+  },
+  theatre: {
+    background: theme.palette.background.dark,
+    left: 0,
+    position: 'fixed',
+    right: 0,
+    top: 0,
+  },
+  stage: {
+    // background: theme.palette.background.paper,
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    lineHeight: 0,
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
+  playerWrapper: {
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0, 2, 0, 0),
+      flex: `0 0 ${(100 / 3) * 2}%`,
+    },
+  },
+  meta: {
+    color: theme.palette.background.paper,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: theme.spacing(2),
+    '& > *': {
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      flex: `0 0 ${100 / 3}%`,
+    },
+  },
+  metaHd: {},
+  metaFt: {},
+  transcript: {},
+
+  //
+
   toolbar: {
     margin: theme.spacing(1, 0),
     [theme.breakpoints.up('sm')]: {
       margin: theme.spacing(2, 0),
     },
-  },
-  stage: {
-    alignContent: 'center',
-    alignItems: 'center',
-    background: theme.palette.text.primary,
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    justifyContent: 'center',
   },
   player: {
     paddingTop: '56.25%',
@@ -193,12 +142,11 @@ const useStyles = makeStyles(theme => ({
     background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
   },
   transcripts: {
-    backgroundColor: theme.palette.background.well,
     maxHeight: '240px',
     overflowY: 'auto',
   },
   transcriptsSubheader: {
-    background: rgba(theme.palette.background.default, theme.palette.background.defaultOpacity),
+    background: rgba(theme.palette.background.dark, theme.palette.background.defaultOpacity),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
 }));
@@ -208,7 +156,7 @@ const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, i
 const MediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
-  const theme = useTheme();
+  const darkTheme = getDarkTheme();
 
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
@@ -259,7 +207,6 @@ const MediaPage = initialData => {
   const onError = useCallback(() => setReady(false), [setReady]);
 
   const isOwner = user?.id === media.owner;
-  const isMedium = useMediaQuery(theme.breakpoints.up('md'));
   const { createdAt } = media ?? {}; // FIXME
   // const channel = null;
 
@@ -434,7 +381,7 @@ const MediaPage = initialData => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
-      <Toolbar className={classes.toolbar} disableGutters>
+      {/* <Toolbar className={classes.toolbar} disableGutters> // TODO: Resurrect this
         <Grid container alignItems="center">
           <Grid item xs={6}>
             <NextLink href="/" passHref>
@@ -460,135 +407,144 @@ const MediaPage = initialData => {
             )}
           </Grid>
         </Grid>
-      </Toolbar>
-      <Grid container spacing={isMedium ? 4 : 2}>
-        <Grid item xs={12} md={8}>
-          {url ? (
-            <div className={classes.stage}>
-              <ReactPlayer
-                controls
-                ref={player}
-                height="auto"
-                width="100%"
-                className={classes.player}
-                progressInterval={75}
-                {...{
-                  url,
-                  config,
-                  playing,
-                  onPlay,
-                  onPause,
-                  onDuration,
-                  onProgress,
-                  onReady,
-                  onError,
-                  playbackRate,
-                }}
-              />
-            </div>
-          ) : null}
-        </Grid>
-        <Grid item container xs={12} md={4} direction="column" justify="space-between" spacing={2}>
-          <Grid item xs>
-            <TextField
-              {...textFieldProps}
-              inputProps={{
-                className: classes.title,
-              }}
-              margin="none"
-              name="title"
-              onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
-              required
-              value={title}
-            />
-            {(isOwner || description?.length > 0) && (
-              <TextField
-                {...textFieldProps}
-                inputProps={{
-                  className: classes.description,
-                }}
-                label="Description"
-                margin="dense"
-                name="description"
-                onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
-                placeholder="Add description"
-                value={description ?? ''}
-              />
-            )}
-            {(isOwner || channel?.length > 0) && (
-              <Autocomplete
-                autoComplete
-                autoHighlight
-                clearOnBlur
-                clearOnEscape
-                disabled={!editable}
-                getOptionLabel={option => `${option.title}`}
-                id="channel"
-                onChange={(event, newValue) => setChannel(newValue)}
-                options={userChannels}
-                popupIcon={<></>}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Channel"
-                    margin="dense"
-                    placeholder={!channel ? 'Assign to channel' : ''}
-                  />
-                )}
-                selectOnFocus
-                size="small"
-                value={channel}
-              />
-            )}
-            {(isOwner || tags?.length > 0) && (
-              <Autocomplete
-                ChipProps={{
-                  className: classes.chip,
-                  deleteIcon: <></>,
-                  size: 'small',
-                  variant: 'outlined',
-                }}
-                autoComplete
-                autoHighlight
-                clearOnBlur
-                clearOnEscape
-                disabled={!editable}
-                freeSolo
-                getOptionLabel={option => `${option}`}
-                id="tags"
-                multiple
-                onChange={(event, newValue) => setTags(newValue)}
-                options={ALL_TAGS}
-                popupIcon={<></>}
-                renderInput={params => (
-                  <TextField
-                    {...params}
-                    label="Tags"
-                    margin="dense"
-                    placeholder={!tags || tags?.length === 0 ? 'Add tags' : ''}
-                  />
-                )}
-                selectOnFocus
-                size="small"
-                value={tags}
-              />
-            )}
-            <Typography className={classes.date} color="textSecondary" display="block" variant="caption">
-              Added on {createdAt ? formattedCreatedAt : null}
-            </Typography>
-          </Grid>
-          <Grid item>
-            {transcripts?.length > 0 && (
-              <List
-                aria-labelledby="nested-list-subheader"
-                className={classes.transcripts}
-                component="ul"
-                dense
-                disablePadding
-                subheader={
-                  <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
-                    <Typography variant="overline">Available transcripts</Typography>
-                    {/* <ListItemSecondaryAction> // TODO: Resurrect this
+      </Toolbar> */}
+      <div className={classes.root}>
+        <ThemeProvider theme={darkTheme}>
+          <div className={classes.theatre}>
+            <div className={classes.push} />
+            <Container disableGutters>
+              <div className={classes.stage}>
+                <div className={classes.playerWrapper}>
+                  {url ? (
+                    <ReactPlayer
+                      controls
+                      ref={player}
+                      height="auto"
+                      width="100%"
+                      className={classes.player}
+                      progressInterval={75}
+                      {...{
+                        url,
+                        config,
+                        playing,
+                        onPlay,
+                        onPause,
+                        onDuration,
+                        onProgress,
+                        onReady,
+                        onError,
+                        playbackRate,
+                      }}
+                    />
+                  ) : null}
+                </div>
+                <div className={classes.meta}>
+                  <div className={classes.metaHd}>
+                    <div>
+                      <TextField
+                        {...textFieldProps}
+                        inputProps={{
+                          className: classes.title,
+                        }}
+                        margin="none"
+                        name="title"
+                        onChange={({ target: { value } }) => setTitle(value)} // TODO useCallback
+                        required
+                        value={title}
+                      />
+                      <Hidden smDown>
+                        {(isOwner || description?.length > 0) && (
+                          <TextField
+                            {...textFieldProps}
+                            inputProps={{
+                              className: classes.description,
+                            }}
+                            label="Description:"
+                            margin="dense"
+                            name="description"
+                            onChange={({ target: { value } }) => setDescription(value)} // TODO useCallback
+                            placeholder="Add description"
+                            value={description ?? ''}
+                          />
+                        )}
+                        {(isOwner || channel?.length > 0) && (
+                          <Autocomplete
+                            autoComplete
+                            autoHighlight
+                            clearOnBlur
+                            clearOnEscape
+                            disabled={!editable}
+                            getOptionLabel={option => `${option.title}`}
+                            id="channel"
+                            onChange={(event, newValue) => setChannel(newValue)}
+                            options={userChannels}
+                            popupIcon={<></>}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Channel"
+                                margin="dense"
+                                placeholder={!channel ? 'Assign to channel' : ''}
+                              />
+                            )}
+                            selectOnFocus
+                            size="small"
+                            value={channel}
+                          />
+                        )}
+                        {(isOwner || tags?.length > 0) && (
+                          <Autocomplete
+                            ChipProps={{
+                              className: classes.chip,
+                              deleteIcon: <></>,
+                              size: 'small',
+                              variant: 'outlined',
+                            }}
+                            autoComplete
+                            autoHighlight
+                            clearOnBlur
+                            clearOnEscape
+                            disabled={!editable}
+                            freeSolo
+                            getOptionLabel={option => `${option}`}
+                            id="tags"
+                            multiple
+                            onChange={(event, newValue) => setTags(newValue)}
+                            options={ALL_TAGS}
+                            popupIcon={<></>}
+                            renderInput={params => (
+                              <TextField
+                                {...params}
+                                label="Tags:"
+                                margin="dense"
+                                placeholder={!tags || tags?.length === 0 ? 'Add tags' : ''}
+                              />
+                            )}
+                            selectOnFocus
+                            size="small"
+                            value={tags}
+                          />
+                        )}
+                        <Typography className={classes.date} color="textSecondary" display="block" variant="caption">
+                          Added on {createdAt ? formattedCreatedAt : null}
+                        </Typography>
+                      </Hidden>
+                    </div>
+                  </div>
+                  <div className={classes.metaFt}>
+                    {transcripts?.length > 0 && (
+                      <List
+                        aria-labelledby="nested-list-subheader"
+                        className={classes.transcripts}
+                        component="ul"
+                        dense
+                        disablePadding
+                        subheader={
+                          <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
+                            <Typography variant="overline" color="inherit">
+                              Available transcripts
+                            </Typography>
+                            {/* <ListItemSecondaryAction> // TODO: Resurrect this
                       <Tooltip title="Add transcript">
                         <span>
                           <IconButton
@@ -603,40 +559,40 @@ const MediaPage = initialData => {
                         </span>
                       </Tooltip>
                     </ListItemSecondaryAction> */}
-                  </ListSubheader>
-                }
-              >
-                {transcripts.map(({ id, title, lang, status, statusMessage }) => {
-                  const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
-                  return (
-                    <ListItem
-                      button={!isDisabled}
-                      key={id}
-                      onClick={!isDisabled ? () => gotoTranscript(id) : null}
-                      selected={transcript === id}
-                    >
-                      <ListItemText primary={title} secondary={lang} />
-                      <ListItemSecondaryAction>
-                        <Tooltip title={isDisabled ? statusMessage || '' : 'Transcript Actions'}>
-                          <span>
-                            <IconButton
-                              disabled={isDisabled}
-                              onClick={!isDisabled ? onTranscriptMenuOpen(id) : null}
-                              size="small"
+                          </ListSubheader>
+                        }
+                      >
+                        {transcripts.map(({ id, title, lang, status, statusMessage }) => {
+                          const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
+                          return (
+                            <ListItem
+                              button={!isDisabled}
+                              key={id}
+                              onClick={!isDisabled ? () => gotoTranscript(id) : null}
+                              selected={transcript === id}
                             >
-                              {isDisabled ? <StatusFlag status={status} /> : <MoreHorizIcon fontSize="small" />}
-                            </IconButton>
-                          </span>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  );
-                })}
-              </List>
-            )}
-            {transcripts?.length < 1 && (
-              <>
-                {/* <Button // TODO: Resurrect this
+                              <ListItemText primary={title} secondary={lang} />
+                              {/* <ListItemSecondaryAction> // TODO: Resurrect this
+                            <Tooltip title={isDisabled ? statusMessage || '' : 'Transcript Actions'}>
+                              <span>
+                                <IconButton
+                                  disabled={isDisabled}
+                                  onClick={!isDisabled ? onTranscriptMenuOpen(id) : null}
+                                  size="small"
+                                >
+                                  {isDisabled ? <StatusFlag status={status} /> : <MoreHorizIcon fontSize="small" />}
+                                </IconButton>
+                              </span>
+                            </Tooltip>
+                          </ListItemSecondaryAction> */}
+                            </ListItem>
+                          );
+                        })}
+                      </List>
+                    )}
+                    {transcripts?.length < 1 && (
+                      <>
+                        {/* <Button // TODO: Resurrect this
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 color="primary"
@@ -648,65 +604,71 @@ const MediaPage = initialData => {
               >
                 Add transcript
               </Button> */}
-              </>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
-      {transcript ? (
-        <Container maxWidth="sm">
-          <TranscriptLoader
-            transcripts={transcripts}
-            id={transcript}
-            time={progress}
-            playing={playing}
-            setPlaying={setPlaying}
-            player={player}
-          />
-        </Container>
-      ) : null}
-      <Menu
-        anchorEl={transcribeMenuAnchor}
-        id="new-transcript-actions"
-        onClose={onReset}
-        open={Boolean(transcribeMenuAnchor)}
-        {...menuProps}
-      >
-        <MenuItem className={classes.primaryMenuItem} dense onClick={onTranscribeClick}>
-          Auto-transcribe
-        </MenuItem>
-        <MenuItem dense divider onClick={() => console.log('onTypeInTranscriptClick')}>
-          Transcribe manually
-        </MenuItem>
-        <MenuItem dense onClick={() => console.log('onUploadTranscriptClick')}>
-          Upload transcript
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={transcriptMenuAnchor}
-        id="transcript-actions"
-        onClose={onReset}
-        open={Boolean(transcriptMenuAnchor)}
-        {...menuProps}
-      >
-        <MenuItem className={classes.primaryMenuItem} dense divider={isOwner} onClick={onRemixClick}>
-          Mix
-        </MenuItem>
-        {isOwner && (
-          <MenuItem dense onClick={actionableTranscript ? () => setTranscriptDeleteDialogOpen(true) : null}>
-            Delete
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Container>
+          </div>
+        </ThemeProvider>
+        {transcript ? (
+          <div className={classes.transcript}>
+            <Container maxWidth="sm">
+              <TranscriptLoader
+                transcripts={transcripts}
+                id={transcript}
+                time={progress}
+                playing={playing}
+                setPlaying={setPlaying}
+                player={player}
+              />
+            </Container>
+          </div>
+        ) : null}
+        <Menu
+          anchorEl={transcribeMenuAnchor}
+          id="new-transcript-actions"
+          onClose={onReset}
+          open={Boolean(transcribeMenuAnchor)}
+          {...menuProps}
+        >
+          <MenuItem className={classes.primaryMenuItem} dense onClick={onTranscribeClick}>
+            Auto-transcribe
           </MenuItem>
+          <MenuItem dense divider onClick={() => console.log('onTypeInTranscriptClick')}>
+            Transcribe manually
+          </MenuItem>
+          <MenuItem dense onClick={() => console.log('onUploadTranscriptClick')}>
+            Upload transcript
+          </MenuItem>
+        </Menu>
+        <Menu
+          anchorEl={transcriptMenuAnchor}
+          id="transcript-actions"
+          onClose={onReset}
+          open={Boolean(transcriptMenuAnchor)}
+          {...menuProps}
+        >
+          <MenuItem className={classes.primaryMenuItem} dense divider={isOwner} onClick={onRemixClick}>
+            Mix
+          </MenuItem>
+          {isOwner && (
+            <MenuItem dense onClick={actionableTranscript ? () => setTranscriptDeleteDialogOpen(true) : null}>
+              Delete
+            </MenuItem>
+          )}
+        </Menu>
+        {transcriptDeleteDialogOpen && (
+          <DeleteDialog
+            onCancel={onReset}
+            onConfirm={onDeleteConfirm}
+            open={transcriptDeleteDialogOpen}
+            data={{ entity: 'transcript', title: actionableTranscript.title }}
+          />
         )}
-      </Menu>
-      {transcriptDeleteDialogOpen && (
-        <DeleteDialog
-          onCancel={onReset}
-          onConfirm={onDeleteConfirm}
-          open={transcriptDeleteDialogOpen}
-          data={{ entity: 'transcript', title: actionableTranscript.title }}
-        />
-      )}
-      <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
+        <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
+      </div>
     </Layout>
   );
 };

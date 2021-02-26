@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
@@ -76,9 +77,9 @@ const Topbar = ({ org }) => {
 
   return (
     <>
-      <Slide appear={false} direction="down" in={!trigger}>
-        <AppBar color="transparent" className={classes.root} elevation={0}>
-          <Toolbar>
+      <AppBar position="fixed" color="transparent" className={classes.root} elevation={0}>
+        <Container maxWidth="xl">
+          <Toolbar disableGutters>
             <Grid container alignItems="center" alignContent="center">
               <Grid item xs={3}>
                 <Typography component="h1" variant="button">
@@ -90,7 +91,7 @@ const Topbar = ({ org }) => {
                 </Typography>
               </Grid>
               <Grid item container justify="center" alignItems="center" xs={6}>
-                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="34" />}
+                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
                 {/* <Hidden smDown> // TODO: Resurrect this
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">
@@ -136,8 +137,8 @@ const Topbar = ({ org }) => {
               </Grid>
             </Grid>
           </Toolbar>
-        </AppBar>
-      </Slide>
+        </Container>
+      </AppBar>
       <div className={classes.push} />
       <Menu
         anchorEl={anchorEl}

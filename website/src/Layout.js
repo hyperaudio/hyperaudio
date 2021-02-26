@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 
-import Container from '@material-ui/core/Container';
+// import Container from '@material-ui/core/Container';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import Navbar from 'src/components/Navbar';
+// import Navbar from 'src/components/Navbar';
 import Footer from 'src/components/Footer';
 import Topbar from 'src/components/Topbar';
 import Hero from 'src/components/Hero';
@@ -27,8 +27,8 @@ export default function Layout({ children }) {
     <>
       <div className={classes.content}>
         <Topbar org={ORG} />
-        {Boolean(ORG) && <Hero org={ORG} size={router.pathname === '/' ? 'large' : 'small'} />}
-        <Container>{children}</Container>
+        {Boolean(ORG) && router.pathname === '/' && <Hero org={ORG} />}
+        {children}
       </div>
       <div className={classes.footer}>
         <Footer />

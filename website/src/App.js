@@ -62,6 +62,12 @@ class Application extends App {
               flex-direction: column;
               height: 100%;
             }
+            video: {
+              outline: none;
+            }
+            video:focus {
+              outline: none;
+            }
             `}
         </style>
         <Component {...pageProps} />
