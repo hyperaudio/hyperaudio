@@ -587,7 +587,7 @@ const MediaPage = initialData => {
                 subheader={
                   <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
                     <Typography variant="overline">Available transcripts</Typography>
-                    <ListItemSecondaryAction>
+                    {/* <ListItemSecondaryAction> // TODO: Resurrect this
                       <Tooltip title="Add transcript">
                         <span>
                           <IconButton
@@ -601,7 +601,7 @@ const MediaPage = initialData => {
                           </IconButton>
                         </span>
                       </Tooltip>
-                    </ListItemSecondaryAction>
+                    </ListItemSecondaryAction> */}
                   </ListSubheader>
                 }
               >
@@ -634,7 +634,8 @@ const MediaPage = initialData => {
               </List>
             )}
             {transcripts?.length < 1 && (
-              <Button
+              <>
+                {/* <Button // TODO: Resurrect this
                 aria-controls="simple-menu"
                 aria-haspopup="true"
                 color="primary"
@@ -645,7 +646,8 @@ const MediaPage = initialData => {
                 variant="contained"
               >
                 Add transcript
-              </Button>
+              </Button> */}
+              </>
             )}
           </Grid>
         </Grid>
