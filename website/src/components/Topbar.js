@@ -23,7 +23,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import HyperaudioIcon from 'src/assets/icons/HaIcon';
-import ForXIcon from 'src/assets/icons/ForXIcon';
 // import MozfestLogo from 'src/assets/mozfest-logo.svg';
 
 const useStyles = makeStyles(theme => ({
@@ -37,17 +36,7 @@ const useStyles = makeStyles(theme => ({
   push: {
     ...theme.mixins.toolbar,
   },
-  brandmark: {
-    alignContent: 'center',
-    alignItems: 'center',
-    display: 'flex',
-    '& > .x': {
-      margin: theme.spacing(0, 1, 0, 0.5),
-      [theme.breakpoints.up('md')]: {
-        margin: theme.spacing(0, 2, 0, 1),
-      },
-    },
-  },
+  brandmark: {},
 }));
 
 const Topbar = ({ org }) => {
@@ -92,21 +81,16 @@ const Topbar = ({ org }) => {
           <Toolbar>
             <Grid container alignItems="center" alignContent="center">
               <Grid item xs={3}>
-                <Typography variant="h4" component="h1" className={classes.brandmark}>
+                <Typography component="h1" variant="button">
                   <NextLink href="/" passHref>
-                    <IconButton color="primary" edge="start">
-                      <HyperaudioIcon />
-                    </IconButton>
+                    <Button className={classes.brandmark} color="primary" startIcon={<HyperaudioIcon />}>
+                      hyperaudio
+                    </Button>
                   </NextLink>
-                  {Boolean(org?.logo) && (
-                    <>
-                      <ForXIcon color="primary" className="x" />
-                      <img src={org.logo} alt="Mozilla Festival" height="34" />
-                    </>
-                  )}
                 </Typography>
               </Grid>
-              <Grid item xs={6} style={{ textAlign: 'center' }}>
+              <Grid item container justify="center" alignItems="center" xs={6}>
+                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="34" />}
                 {/* <Hidden smDown> // TODO: Resurrect this
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">
