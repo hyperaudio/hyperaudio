@@ -18,6 +18,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
+import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
@@ -653,14 +654,16 @@ const MediaPage = initialData => {
         </Grid>
       </Grid>
       {transcript ? (
-        <TranscriptLoader
-          transcripts={transcripts}
-          id={transcript}
-          time={progress}
-          playing={playing}
-          setPlaying={setPlaying}
-          player={player}
-        />
+        <Container maxWidth="sm">
+          <TranscriptLoader
+            transcripts={transcripts}
+            id={transcript}
+            time={progress}
+            playing={playing}
+            setPlaying={setPlaying}
+            player={player}
+          />
+        </Container>
       ) : null}
       <Menu
         anchorEl={transcribeMenuAnchor}
