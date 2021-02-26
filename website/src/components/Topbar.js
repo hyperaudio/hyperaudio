@@ -141,11 +141,13 @@ const Topbar = ({ org }) => {
                     </span>
                   </Tooltip>
                 ) : (
-                  <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
+                  <>
+                    {/* <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
                     <Button color="primary" variant="text">
                       Login
                     </Button>
-                  </NextLink>
+                  </NextLink> */}
+                  </>
                 )}
               </Grid>
             </Grid>
