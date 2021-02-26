@@ -436,9 +436,9 @@ const MediaPage = initialData => {
       <Toolbar className={classes.toolbar} disableGutters>
         <Grid container alignItems="center">
           <Grid item xs={6}>
-            <NextLink href="/media" passHref>
+            <NextLink href="/" passHref>
               <Button color="primary" startIcon={<ArrowBackIcon />}>
-                All media
+                Return home
               </Button>
             </NextLink>
           </Grid>
