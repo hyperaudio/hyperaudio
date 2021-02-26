@@ -107,7 +107,7 @@ const Topbar = ({ org }) => {
                 </Typography>
               </Grid>
               <Grid item xs={6} style={{ textAlign: 'center' }}>
-                <Hidden smDown>
+                {/* <Hidden smDown> // TODO: Resurrect this
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">
                       Channels
@@ -123,7 +123,7 @@ const Topbar = ({ org }) => {
                       Mixes
                     </Button>
                   </NextLink>
-                </Hidden>
+                </Hidden> */}
               </Grid>
               <Grid item xs={3} style={{ textAlign: 'right' }}>
                 {user ? (

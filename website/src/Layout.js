@@ -32,7 +32,7 @@ export default function Layout({ children }) {
       </div>
       <div className={classes.footer}>
         <Footer />
-        <Navbar pathname={router.pathname} />
+        {/* <Navbar pathname={router.pathname} /> // TODO: Resurrect this */}
       </div>
     </>
   );
