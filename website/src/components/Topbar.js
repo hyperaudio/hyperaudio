@@ -37,7 +37,6 @@ const useStyles = makeStyles(theme => ({
   push: {
     ...theme.mixins.toolbar,
   },
-  brandmark: {},
 }));
 
 const Topbar = ({ org }) => {
@@ -82,16 +81,16 @@ const Topbar = ({ org }) => {
           <Toolbar disableGutters>
             <Grid container alignItems="center" alignContent="center">
               <Grid item xs={3}>
+                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
+              </Grid>
+              <Grid item container justify="center" alignItems="center" xs={6}>
                 <Typography component="h1" variant="button">
                   <NextLink href="/" passHref>
-                    <Button className={classes.brandmark} color="primary" startIcon={<HyperaudioIcon />}>
+                    <Button color="primary" startIcon={<HyperaudioIcon />}>
                       hyperaudio
                     </Button>
                   </NextLink>
                 </Typography>
-              </Grid>
-              <Grid item container justify="center" alignItems="center" xs={6}>
-                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
                 {/* <Hidden smDown> // TODO: Resurrect this
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">
