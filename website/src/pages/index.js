@@ -28,10 +28,12 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/core/styles';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
-import Footer from 'src/components/Footer';
 import Layout from 'src/Layout';
+import getDarkTheme from 'src/themes/getDarkTheme';
 
 import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
 
@@ -71,18 +73,19 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   block: {
-    margin: theme.spacing(3, 0),
-    // // padding: theme.spacing(3),
+    background: theme.palette.background.paper,
+    overflow: 'hidden',
+    clear: 'both',
+    padding: theme.spacing(5, 0),
     [theme.breakpoints.up('md')]: {
-      // padding: theme.spacing(5),
-      margin: theme.spacing(5, 0),
+      padding: theme.spacing(10, 0),
     },
   },
   blockTitle: {},
   items: {
-    listStyle: 'none',
     alignContent: 'stretch',
     alignItems: 'stretch',
+    listStyle: 'none',
   },
   item: {
     listStyle: 'none',
@@ -129,19 +132,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Dashboard = initialData => {
+const Dashboard = props => {
   const classes = useStyles();
   const theme = useTheme();
+  const darkTheme = getDarkTheme();
+
+  const isMdUp = isWidthUp('md', props.width);
+  const isSmUp = isWidthUp('sm', props.width);
 
   const router = useRouter();
   const {
     query: { page = 1 },
   } = router;
 
-  const { channels, pages, user, userChannels, mediaChannels } = initialData;
+  const { channels, pages, user, userChannels, mediaChannels } = props;
 
   const [channelDialog, setChannelDialog] = useState(false);
-  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
+  const [media, setMedia] = useState(deserializeModel(Media, props.media));
   const [newAnchor, setNewAnchor] = useState(null);
 
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
@@ -216,12 +223,12 @@ const Dashboard = initialData => {
             New…
           </Button>
         </Toolbar> */}
-        <Container>
-          {mediaChannels.map(mc => {
-            if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
-            return (
-              <React.Fragment key={mc.channel.id}>
-                <div className={classes.block}>
+        {mediaChannels.map(mc => {
+          if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
+          return (
+            <React.Fragment key={mc.channel.id}>
+              <div className={classes.block}>
+                <Container maxWidth={isMdUp ? 'lg' : isSmUp ? 'sm' : 'xs'}>
                   <Grid container spacing={isMedium ? 8 : 4}>
                     <Grid item xs={12} md={4}>
                       <Typography className={classes.blockTitle} gutterBottom variant="h5" component="h2">
@@ -234,79 +241,82 @@ const Dashboard = initialData => {
                     <Grid
                       className={classes.items}
                       // component="ol"
-                      container
                       item
                       md={8}
                       spacing={isMedium ? 4 : 2}
                       xs={12}
                     >
-                      {mc.media?.map(({ id, title, description, metadata }) => (
-                        <Grid
-                          className={classes.item}
-                          // component="li"
-                          item
-                          key={id}
-                          xs={6}
-                          sm={4}
-                        >
-                          <Card className={classes.card} elevation={0} square raised={false}>
-                            <NextLink href={`/media/${id}`}>
-                              <CardActionArea>
-                                {metadata ? (
-                                  <CardMedia
-                                    className={classes.cardMedia}
-                                    component="img"
-                                    src={
-                                      JSON.parse(metadata)?.embedly?.thumbnail_url ??
-                                      JSON.parse(metadata)?.oembed?.thumbnail_url ??
-                                      'http://placekitten.com/320/180'
-                                    }
-                                    title={title}
-                                  />
-                                ) : (
-                                  <CardMedia
-                                    className={classes.cardMedia}
-                                    component="img"
-                                    src="http://placekitten.com/320/180"
-                                    title={title}
-                                  />
-                                )}
-                              </CardActionArea>
-                            </NextLink>
-                            <CardContent className={classes.cardContent}>
-                              <NextLink href={`/media/${id}`}>
-                                <Typography component="h3" noWrap>
-                                  <Link href={`/media/${id}`} variant="subtitle2">
-                                    {title}
-                                  </Link>
-                                </Typography>
-                              </NextLink>
-                              <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
-                                {description}
-                              </Typography>
-                            </CardContent>
-                            {/* <CardActions className={classes.cardActions} disableSpacing> // TODO: Resurrect this
+                      <ThemeProvider theme={darkTheme}>
+                        <Grid container spacing={isMedium ? 4 : 2}>
+                          {mc.media?.map(({ id, title, description, metadata }) => (
+                            <Grid
+                              className={classes.item}
+                              // component="li"
+                              item
+                              key={id}
+                              xs={6}
+                              sm={4}
+                            >
+                              <Card className={classes.card} elevation={0} square raised={false}>
+                                <NextLink href={`/media/${id}`}>
+                                  <CardActionArea>
+                                    {metadata ? (
+                                      <CardMedia
+                                        className={classes.cardMedia}
+                                        component="img"
+                                        src={
+                                          JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                                          JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                                          'http://placekitten.com/320/180'
+                                        }
+                                        title={title}
+                                      />
+                                    ) : (
+                                      <CardMedia
+                                        className={classes.cardMedia}
+                                        component="img"
+                                        src="http://placekitten.com/320/180"
+                                        title={title}
+                                      />
+                                    )}
+                                  </CardActionArea>
+                                </NextLink>
+                                <CardContent className={classes.cardContent}>
+                                  <NextLink href={`/media/${id}`}>
+                                    <Typography component="h3" noWrap>
+                                      <Link href={`/media/${id}`} variant="subtitle2">
+                                        {title}
+                                      </Link>
+                                    </Typography>
+                                  </NextLink>
+                                  <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
+                                    {description}
+                                  </Typography>
+                                </CardContent>
+                                {/* <CardActions className={classes.cardActions} disableSpacing> // TODO: Resurrect this
                             <Tooltip title="Actions…">
                               <IconButton color="secondary" size="small">
                                 <MoreVertIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </CardActions> */}
-                          </Card>
+                              </Card>
+                            </Grid>
+                          ))}
                         </Grid>
-                      ))}
+                      </ThemeProvider>
                     </Grid>
                   </Grid>
-                </div>
-                {/* <Divider /> */}
-              </React.Fragment>
-            );
-          })}
+                </Container>
+              </div>
+              <Divider />
+            </React.Fragment>
+          );
+        })}
 
-          {/* <div className={classes.paginationParent}>
+        {/* <div className={classes.paginationParent}>
           <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
         </div> */}
-        </Container>
       </Layout>
       <Menu
         {...menuProps}
@@ -399,4 +409,4 @@ export const getServerSideProps = async context => {
   };
 };
 
-export default Dashboard;
+export default withWidth()(Dashboard);

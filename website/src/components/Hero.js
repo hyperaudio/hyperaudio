@@ -1,6 +1,7 @@
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
+import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 import { Button } from '@material-ui/core';
 
@@ -21,12 +22,15 @@ const useStyles = makeStyles(theme => ({
   button: {},
 }));
 
-const Hero = ({ org }) => {
+const Hero = ({ org, width }) => {
   const classes = useStyles();
+
+  const isMdUp = isWidthUp('md', width);
+  const isSmUp = isWidthUp('sm', width);
 
   return (
     <div className={classes.root}>
-      <Container>
+      <Container maxWidth={isMdUp ? 'lg' : isSmUp ? 'sm' : 'xs'}>
         <Typography className={classes.title} gutterBottom component="h1" variant="h4">
           {org.meta.name}
         </Typography>
@@ -41,4 +45,4 @@ const Hero = ({ org }) => {
   );
 };
 
-export default Hero;
+export default withWidth()(Hero);
