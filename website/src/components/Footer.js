@@ -10,12 +10,12 @@ import HyperaudioIcon from 'src/assets/icons/HaIcon';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    bottom: 0,
-    left: 0,
-    marginTop: theme.spacing(4),
+    // bottom: 0,
+    // left: 0,
+    // marginTop: theme.spacing(4),
     padding: theme.spacing(1),
-    position: 'sticky',
-    right: 0,
+    // position: 'sticky',
+    // right: 0,
   },
   brand: {
     textAlign: 'center',
@@ -35,25 +35,37 @@ export default function Footer() {
   return (
     <AppBar className={classes.root} color="transparent" component="div" elevation={0} position="static">
       <div className={classes.brand}>
-        <Button className={classes.brandmark} color="primary" startIcon={<HyperaudioIcon />}>
-          hyperaudio
-        </Button>
+        <NextLink href="/" passHref>
+          <Button className={classes.brandmark} color="primary" startIcon={<HyperaudioIcon />}>
+            hyperaudio
+          </Button>
+        </NextLink>
       </div>
       <div className={classes.content}>
         <NextLink href="/blog" passHref>
-          <Link color="textSecondary">Blog</Link>
+          <Link color="textSecondary" variant="caption">
+            Blog
+          </Link>
         </NextLink>
         <NextLink href="/TOS" passHref>
-          <Link color="textSecondary">Terms of Service</Link>
+          <Link color="textSecondary" variant="caption">
+            Terms of Service
+          </Link>
         </NextLink>
         <NextLink href="/Licensing" passHref>
-          <Link color="textSecondary">License</Link>
+          <Link color="textSecondary" variant="caption">
+            License
+          </Link>
         </NextLink>
         <NextLink href="/CLA" passHref>
-          <Link color="textSecondary">CLA</Link>
+          <Link color="textSecondary" variant="caption">
+            CLA
+          </Link>
         </NextLink>
         <NextLink href="/COC" passHref>
-          <Link color="textSecondary">Code of Conduct</Link>
+          <Link color="textSecondary" variant="caption">
+            Code of Conduct
+          </Link>
         </NextLink>
       </div>
     </AppBar>

@@ -12,6 +12,7 @@ import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -29,7 +30,6 @@ import HyperaudioIcon from 'src/assets/icons/HaIcon';
 const useStyles = makeStyles(theme => ({
   root: {
     background: rgba(theme.palette.background.default, theme.palette.background.defaultOpacity),
-    boxShadow: theme.shadows[3],
   },
   divider: {
     margin: theme.spacing(1, 0),
@@ -76,21 +76,34 @@ const Topbar = ({ org }) => {
 
   return (
     <>
-      <AppBar position="fixed" color="transparent" className={classes.root} elevation={0}>
+      <AppBar position="fixed" color="transparent" className={classes.root} elevation={2}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Grid container alignItems="center" alignContent="center">
               <Grid item xs={3}>
-                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
+                {router.pathname === '/' ? (
+                  <NextLink href="/" passHref>
+                    <IconButton color="primary" edge="start">
+                      <HyperaudioIcon />
+                    </IconButton>
+                  </NextLink>
+                ) : (
+                  <NextLink href="/" passHref>
+                    <IconButton color="primary" edge="start">
+                      <ArrowBackIcon />
+                    </IconButton>
+                  </NextLink>
+                )}
               </Grid>
               <Grid item container justify="center" alignItems="center" xs={6}>
-                <Typography component="h1" variant="button">
+                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
+                {/* <Typography component="h1" variant="button">
                   <NextLink href="/" passHref>
                     <Button color="primary" startIcon={<HyperaudioIcon />}>
                       hyperaudio
                     </Button>
                   </NextLink>
-                </Typography>
+                </Typography> */}
                 {/* <Hidden smDown> // TODO: Resurrect this
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">

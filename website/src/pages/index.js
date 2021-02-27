@@ -30,6 +30,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
+import Footer from 'src/components/Footer';
 import Layout from 'src/Layout';
 
 import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
@@ -70,11 +71,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   block: {
-    background: theme.palette.background.paper,
     margin: theme.spacing(3, 0),
-    padding: theme.spacing(3),
+    // // padding: theme.spacing(3),
     [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(5),
+      // padding: theme.spacing(5),
       margin: theme.spacing(5, 0),
     },
   },
@@ -92,6 +92,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
   },
   card: {
+    background: 'transparent',
     height: '100%',
   },
   thumb: {

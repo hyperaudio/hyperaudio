@@ -19,13 +19,9 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import DoneIcon from '@material-ui/icons/Done';
 import EditIcon from '@material-ui/icons/Edit';
-import FormControl from '@material-ui/core/FormControl';
-import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import InputLabel from '@material-ui/core/InputLabel';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
@@ -34,8 +30,6 @@ import ListSubheader from '@material-ui/core/ListSubheader';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import NativeSelect from '@material-ui/core/NativeSelect';
-import Select from '@material-ui/core/Select';
 import SubtitlesIcon from '@material-ui/icons/Subtitles';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -44,7 +38,6 @@ import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import withStyles from '@material-ui/core/styles/makeStyles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
@@ -54,7 +47,6 @@ import getDarkTheme from 'src/themes/getDarkTheme';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
-import Footer from 'src/components/Footer';
 import TranscribeDialog from './TranscribeDialog';
 
 // import Transcript from '../../components/transcript/Transcript';
@@ -63,81 +55,69 @@ import TranscribeDialog from './TranscribeDialog';
 const ALL_TAGS = ['Remix', 'Audio'];
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    bottom: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    left: 0,
-    position: 'fixed',
-    right: 0,
-    top: 0,
-  },
-  theatre: {
-    // left: 0,
-    // position: 'absolute',
-    // right: 0,
-    // top: 0,
-    background: theme.palette.background.dark,
-    lineHeight: 0,
-  },
-  theatreChild: {
-    [theme.breakpoints.down('sm')]: {
-      padding: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
-  },
-  stage: {
-    position: 'relative',
-    // background: 'yellow',
-    [theme.breakpoints.up('md')]: {
-      flex: `0 0 ${(100 / 3) * 2}%`,
-    },
-  },
-  player: {
-    opacity: 0.5,
-    '& > *': {
-      paddingTop: '56.25%',
-      position: 'relative',
-    },
-    '& > * > *': {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(2, 1),
-    },
-  },
-  titles: {
-    [theme.breakpoints.up('md')]: {
-      color: theme.palette.background.paper,
-      display: 'flex',
-      flex: `0 0 ${100 / 3}%`,
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      padding: theme.spacing(2, 1),
-      '& > *': {
-        width: '100%',
-      },
-    },
-    padding: theme.spacing(1),
-  },
-  transcript: {
-    overflowY: 'auto',
-  },
+  root: {},
   push: {
     ...theme.mixins.toolbar,
   },
+  theatre: {
+    background: theme.palette.background.dark,
+    left: 0,
+    position: 'fixed',
+    opacity: 0.5,
+    right: 0,
+    top: 0,
+  },
+  stage: {
+    // background: theme.palette.background.paper,
+    alignContent: 'stretch',
+    alignItems: 'stretch',
+    display: 'flex',
+    flexDirection: 'column',
+    lineHeight: 0,
+    position: 'relative',
+    [theme.breakpoints.up('md')]: {
+      flexDirection: 'row',
+    },
+  },
+  playerWrapper: {
+    position: 'absolute',
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(0, 2, 0, 0),
+      flex: `0 0 ${(100 / 3) * 2}%`,
+    },
+  },
+  meta: {
+    color: theme.palette.background.paper,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: theme.spacing(2),
+    '& > *': {
+      width: '100%',
+    },
+    [theme.breakpoints.up('md')]: {
+      flex: `0 0 ${100 / 3}%`,
+    },
+  },
+  metaHd: {},
+  metaFt: {},
+  transcript: {},
 
-  // OLD
+  //
 
   toolbar: {
     margin: theme.spacing(1, 0),
     [theme.breakpoints.up('sm')]: {
       margin: theme.spacing(2, 0),
+    },
+  },
+  player: {
+    // paddingTop: '56.25%',
+    // position: 'relative',
+    '& > *': {
+      position: 'absolute',
+      top: 0,
+      right: 0,
     },
   },
   title: {
@@ -180,6 +160,7 @@ const MediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
   const darkTheme = getDarkTheme();
+  const theatreRef = React.useRef();
 
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
@@ -196,6 +177,7 @@ const MediaPage = initialData => {
   const [tags, setTags] = useState(initialMedia.tags || null);
   const [title, setTitle] = useState(initialMedia.title);
   const [url, setUrl] = useState();
+  const [theatreHeight, setTheatreHeight] = useState(0);
 
   const [actionableTranscript, setActionableTranscript] = useState();
   const [transcribeDialogOpen, setTranscribeDialogOpen] = useState();
@@ -395,6 +377,24 @@ const MediaPage = initialData => {
     [editable],
   );
 
+  const handleResize = () => setTheatreHeight(theatreRef.current.getBoundingClientRect().height);
+
+  useEffect(() => {
+    // Handler to call on window resize
+
+    // Add event listener
+    window.addEventListener('resize', handleResize);
+
+    // Call handler right away so state gets updated with initial window size
+    handleResize();
+
+    // Remove event listener on cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []); // Empty array ensures that effect is only run on mount
+
+  // console.log({ initialMedia, tags });
+  console.log({ theatreHeight });
+
   return (
     <Layout>
       <Head>
@@ -402,42 +402,67 @@ const MediaPage = initialData => {
         <meta name="title" content={title} />
         <meta name="description" content={description} />
       </Head>
+      {/* <Toolbar className={classes.toolbar} disableGutters> // TODO: Resurrect this
+        <Grid container alignItems="center">
+          <Grid item xs={6}>
+            <NextLink href="/" passHref>
+              <Button color="primary" startIcon={<ArrowBackIcon />}>
+                Return home
+              </Button>
+            </NextLink>
+          </Grid>
+          <Grid item xs={6} align="right">
+            {isOwner && (
+              <Tooltip title={editable ? 'Save changes' : 'Edit information'}>
+                <span>
+                  <IconButton
+                    className={editable ? classes.speedDial : null}
+                    color="primary"
+                    edge="end"
+                    onClick={editable ? onSave : () => setEditable(prevState => !prevState)}
+                  >
+                    {editable ? <DoneIcon /> : <EditIcon />}
+                  </IconButton>
+                </span>
+              </Tooltip>
+            )}
+          </Grid>
+        </Grid>
+      </Toolbar> */}
       <div className={classes.root}>
+        {/* <div style={{ height: theatreHeight, background: 'yellow' }} /> */}
         <ThemeProvider theme={darkTheme}>
-          <div className={classes.push} />
-          <div className={classes.theatre}>
-            <Container className={classes.theatreChild}>
+          <div className={classes.theatre} ref={theatreRef}>
+            <div className={classes.push} />
+            <Container disableGutters>
               <div className={classes.stage}>
-                {Boolean(url) && (
-                  <>
-                    {/* <img src="/assets/stage-16x9.png" width="100%" alt="" /> */}
-                    <div className={classes.player}>
-                      <ReactPlayer
-                        controls
-                        ref={player}
-                        height="auto"
-                        width="100%"
-                        progressInterval={75}
-                        {...{
-                          url,
-                          config,
-                          playing,
-                          onPlay,
-                          onPause,
-                          onDuration,
-                          onProgress,
-                          onReady,
-                          onError,
-                          playbackRate,
-                        }}
-                      />
-                    </div>
-                  </>
-                )}
-              </div>
-              <div className={classes.titles}>
-                <Hidden smDown>
-                  <div className={classes.titlesHd}>
+                <div className={classes.playerWrapper}>
+                  <img src="/assets/stage-16x9.png" width="100%" />
+                  {url ? (
+                    <ReactPlayer
+                      controls
+                      ref={player}
+                      height="auto"
+                      width="100%"
+                      className={classes.player}
+                      progressInterval={75}
+                      {...{
+                        url,
+                        config,
+                        playing,
+                        onPlay,
+                        onPause,
+                        onDuration,
+                        onProgress,
+                        onReady,
+                        onError,
+                        playbackRate,
+                      }}
+                    />
+                  ) : null}
+                </div>
+                <div className={classes.meta}>
+                  <div className={classes.metaHd}>
                     <div>
                       <TextField
                         {...textFieldProps}
@@ -529,7 +554,7 @@ const MediaPage = initialData => {
                       </Hidden>
                     </div>
                   </div>
-                  <div className={classes.titlesFt}>
+                  <div className={classes.metaFt}>
                     {transcripts?.length > 0 && (
                       <List
                         aria-labelledby="nested-list-subheader"
@@ -605,43 +630,13 @@ const MediaPage = initialData => {
                       </>
                     )}
                   </div>
-                </Hidden>
-                <Hidden mdUp>
-                  {transcript?.length > 0 && (
-                    <TextField
-                      fullWidth
-                      id="outlined-select-currency"
-                      margin="none"
-                      onChange={e => gotoTranscript(e.target)}
-                      required
-                      select
-                      value={transcript}
-                      variant="outlined"
-                      SelectProps={{
-                        MenuProps: {
-                          MenuListProps: {
-                            dense: true,
-                          },
-                        },
-                      }}
-                      size="small"
-                    >
-                      {transcripts.map(({ id, title, lang, status, statusMessage }) => (
-                        <MenuItem key={id} selected={transcript === id} value={id}>
-                          <ListItemText primary={`${lang}: ${title}`} />
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  )}
-                </Hidden>
+                </div>
               </div>
             </Container>
           </div>
         </ThemeProvider>
-        <div className={classes.transcript}>
-          {/* <div className={classes.push} /> */}
-          {/* <img src="/assets/stage-16x9.png" style={{ width: '100%' }} alt="" /> */}
-          {Boolean(transcript) && (
+        {transcript ? (
+          <div className={classes.transcript}>
             <Container maxWidth="sm">
               <TranscriptLoader
                 transcripts={transcripts}
@@ -652,8 +647,50 @@ const MediaPage = initialData => {
                 player={player}
               />
             </Container>
+          </div>
+        ) : null}
+        <Menu
+          anchorEl={transcribeMenuAnchor}
+          id="new-transcript-actions"
+          onClose={onReset}
+          open={Boolean(transcribeMenuAnchor)}
+          {...menuProps}
+        >
+          <MenuItem className={classes.primaryMenuItem} dense onClick={onTranscribeClick}>
+            Auto-transcribe
+          </MenuItem>
+          <MenuItem dense divider onClick={() => console.log('onTypeInTranscriptClick')}>
+            Transcribe manually
+          </MenuItem>
+          <MenuItem dense onClick={() => console.log('onUploadTranscriptClick')}>
+            Upload transcript
+          </MenuItem>
+        </Menu>
+        <Menu
+          anchorEl={transcriptMenuAnchor}
+          id="transcript-actions"
+          onClose={onReset}
+          open={Boolean(transcriptMenuAnchor)}
+          {...menuProps}
+        >
+          <MenuItem className={classes.primaryMenuItem} dense divider={isOwner} onClick={onRemixClick}>
+            Mix
+          </MenuItem>
+          {isOwner && (
+            <MenuItem dense onClick={actionableTranscript ? () => setTranscriptDeleteDialogOpen(true) : null}>
+              Delete
+            </MenuItem>
           )}
-        </div>
+        </Menu>
+        {transcriptDeleteDialogOpen && (
+          <DeleteDialog
+            onCancel={onReset}
+            onConfirm={onDeleteConfirm}
+            open={transcriptDeleteDialogOpen}
+            data={{ entity: 'transcript', title: actionableTranscript.title }}
+          />
+        )}
+        <TranscribeDialog onCancel={onReset} onConfirm={onTranscribeConfirm} open={transcribeDialogOpen} />
       </div>
     </Layout>
   );

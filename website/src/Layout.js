@@ -30,10 +30,12 @@ export default function Layout({ children }) {
         {Boolean(ORG) && router.pathname === '/' && <Hero org={ORG} />}
         {children}
       </div>
-      <div className={classes.footer}>
-        <Footer />
-        {/* <Navbar pathname={router.pathname} /> // TODO: Resurrect this */}
-      </div>
+      {router.pathname === '/' && (
+        <div className={classes.footer}>
+          <Footer />
+          {/* <Navbar pathname={router.pathname} /> // TODO: Resurrect this */}
+        </div>
+      )}
     </>
   );
 }
