@@ -216,6 +216,7 @@ const MediaPage = initialData => {
   );
 
   const player = useRef();
+  const wrapperRef = useRef();
   const [duration, setDuration] = useState(0);
   const [progress, setProgress] = useState();
   const [ready, setReady] = useState(false);
@@ -638,7 +639,7 @@ const MediaPage = initialData => {
             </Container>
           </div>
         </ThemeProvider>
-        <div className={classes.transcript}>
+        <div className={classes.transcript} ref={wrapperRef}>
           {/* <div className={classes.push} /> */}
           {/* <img src="/assets/stage-16x9.png" style={{ width: '100%' }} alt="" /> */}
           {Boolean(transcript) && (
@@ -650,6 +651,7 @@ const MediaPage = initialData => {
                 playing={playing}
                 setPlaying={setPlaying}
                 player={player}
+                wrapperRef={wrapperRef}
               />
             </Container>
           )}
@@ -659,7 +661,7 @@ const MediaPage = initialData => {
   );
 };
 
-const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }) => {
+const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying, wrapperRef }) => {
   const metadata = useMemo(() => transcripts.find(({ id: _id }) => _id === id), [id, transcripts]);
   const [transcript, setTranscript] = useState();
 
@@ -715,9 +717,10 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
 
     ht1.current = window.hyperaudiolite();
     // ht1.current.setScrollParameters(<duration>, <delay>, <offset>, <container>);
-    ht1.current.setScrollParameters(800, 0, -284, null);
+    console.log(wrapperRef.current);
+    ht1.current.setScrollParameters(800, 0, -600, wrapperRef.current);
     ht1.current.init('hypertranscript', hypermedia, false, true);
-  }, [transcript, ht1]);
+  }, [transcript, ht1, wrapperRef]);
 
   return metadata ? (
     <div id="hypertranscript" className="hyperaudio-transcript">

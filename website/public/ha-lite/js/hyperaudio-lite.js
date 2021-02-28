@@ -57,8 +57,8 @@ var hyperaudiolite = function () {
     wordIndex = 0;
 
     autoscroll = a;
-    scrollerContainer = transcript;
-    scrollerOffset = 0;
+    // scrollerContainer = transcript;
+    // scrollerOffset = 0;
     scrollerDuration = 800;
     scrollerDelay = 0;
 
@@ -389,7 +389,21 @@ var hyperaudiolite = function () {
         }
 
         if (currentParaIndex != paraIndex) {
+          // scroller(scrollNode, 'scroll', {
+          //   duration: scrollerDuration,
+          //   delay: scrollerDelay,
+          //   offset: scrollerOffset,
+          // });
+
+          // console.log({
+          //   container: scrollerContainer,
+          //   duration: scrollerDuration,
+          //   delay: scrollerDelay,
+          //   offset: scrollerOffset,
+          // });
+
           scroller(scrollNode, 'scroll', {
+            container: scrollerContainer,
             duration: scrollerDuration,
             delay: scrollerDelay,
             offset: scrollerOffset,
