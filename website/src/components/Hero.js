@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
   title: {},
   text: {
     marginBottom: theme.spacing(2),
+    fontWeight: 'normal',
     [theme.breakpoints.up('md')]: {
       marginBottom: theme.spacing(4),
       maxWidth: '66%',
@@ -34,7 +35,7 @@ const Hero = ({ org, width }) => {
         <Typography className={classes.title} gutterBottom component="h1" variant="h4">
           {org.meta.name}
         </Typography>
-        <Typography className={classes.text} gutterBottom component="p" variant="h6">
+        <Typography className={classes.text} gutterBottom component="p" variant="h5">
           {org.meta.text}
         </Typography>
         <Button className={classes.button} href={org.meta.url} color="inherit" variant="outlined">

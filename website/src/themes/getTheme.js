@@ -79,7 +79,7 @@ export default function getTheme(palette) {
       h3: { ...setType(700), fontFamily: fonts.head, fontWeight: '700' },
       h4: { ...setType(600), fontFamily: fonts.head, fontWeight: '700' },
       h5: { ...setType(500), fontFamily: fonts.head, fontWeight: '700' },
-      h6: { ...setType(500), fontFamily: fonts.head, fontWeight: '400' },
+      h6: { ...setType(400), fontFamily: fonts.head, fontWeight: '700' },
       overline: { ...setType(100), fontFamily: fonts.body, fontWeight: '500', letterSpacing: '0.1em' },
       caption: { ...setType(100), fontFamily: fonts.body, fontWeight: '400' },
       subtitle1: { ...setType(400), fontFamily: fonts.head, fontWeight: '700' },
