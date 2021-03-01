@@ -415,6 +415,7 @@ const MediaPage = initialData => {
                     <div className={classes.player}>
                       <ReactPlayer
                         controls
+                        playsinline
                         ref={player}
                         height="auto"
                         width="100%"
