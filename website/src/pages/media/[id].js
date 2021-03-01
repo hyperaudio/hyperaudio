@@ -97,7 +97,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
   player: {
-    opacity: 0.5,
     '& > *': {
       paddingTop: '56.25%',
       position: 'relative',
