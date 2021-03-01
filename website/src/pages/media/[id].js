@@ -141,7 +141,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   title: {
-    ...theme.typography.h5,
+    ...theme.typography.h6,
     cursor: 'text',
   },
   description: {
