@@ -93,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     position: 'relative',
     // background: 'yellow',
     [theme.breakpoints.up('md')]: {
-      flex: `0 0 ${(100 / 3) * 2}%`,
+      flex: `0 0 ${100 / 2}%`,
     },
   },
   player: {
@@ -114,7 +114,7 @@ const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       color: theme.palette.background.paper,
       display: 'flex',
-      flex: `0 0 ${100 / 3}%`,
+      flex: `0 0 ${100 / 2}%`,
       flexDirection: 'column',
       justifyContent: 'space-between',
       padding: theme.spacing(2, 1),
@@ -405,7 +405,7 @@ const MediaPage = initialData => {
         <ThemeProvider theme={darkTheme}>
           <div className={classes.push} />
           <div className={classes.theatre}>
-            <Container className={classes.theatreChild} maxWidth="md">
+            <Container className={classes.theatreChild}>
               <div className={classes.stage}>
                 {Boolean(url) && (
                   <>
@@ -530,63 +530,31 @@ const MediaPage = initialData => {
                     </div>
                   </div>
                   <div className={classes.titlesFt}>
-                    {transcripts?.length > 0 && (
-                      <List
-                        aria-labelledby="nested-list-subheader"
-                        className={classes.transcripts}
-                        component="ul"
-                        dense
-                        disablePadding
-                        subheader={
-                          <ListSubheader className={classes.transcriptsSubheader} id="nested-list-subheader">
-                            <Typography variant="overline" color="inherit">
-                              Available transcripts
-                            </Typography>
-                            {/* <ListItemSecondaryAction> // TODO: Resurrect this
-                      <Tooltip title="Add transcript">
-                        <span>
-                          <IconButton
-                            aria-controls="new-transcript-actions"
-                            aria-haspopup="true"
-                            color="primary"
-                            size="small"
-                            onClick={e => setTranscribeMenuAnchor(e.currentTarget)}
-                          >
-                            <AddCircleOutlineIcon fontSize="small" />
-                          </IconButton>
-                        </span>
-                      </Tooltip>
-                    </ListItemSecondaryAction> */}
-                          </ListSubheader>
-                        }
+                    {transcript?.length > 0 && (
+                      <TextField
+                        fullWidth
+                        id="outlined-select-currency"
+                        margin="none"
+                        label="Select transcript:"
+                        onChange={e => gotoTranscript(e.target)}
+                        select
+                        value={transcript}
+                        variant="outlined"
+                        SelectProps={{
+                          MenuProps: {
+                            MenuListProps: {
+                              dense: true,
+                            },
+                          },
+                        }}
+                        size="small"
                       >
-                        {transcripts.map(({ id, title, lang, status, statusMessage }) => {
-                          const isDisabled = ['transcribing', 'aligning', 'error'].includes(status);
-                          return (
-                            <ListItem
-                              button={!isDisabled}
-                              key={id}
-                              onClick={!isDisabled ? () => gotoTranscript(id) : null}
-                              selected={transcript === id}
-                            >
-                              <ListItemText primary={title} secondary={lang} />
-                              {/* <ListItemSecondaryAction> // TODO: Resurrect this
-                            <Tooltip title={isDisabled ? statusMessage || '' : 'Transcript Actions'}>
-                              <span>
-                                <IconButton
-                                  disabled={isDisabled}
-                                  onClick={!isDisabled ? onTranscriptMenuOpen(id) : null}
-                                  size="small"
-                                >
-                                  {isDisabled ? <StatusFlag status={status} /> : <MoreHorizIcon fontSize="small" />}
-                                </IconButton>
-                              </span>
-                            </Tooltip>
-                          </ListItemSecondaryAction> */}
-                            </ListItem>
-                          );
-                        })}
-                      </List>
+                        {transcripts.map(({ id, title, lang, status, statusMessage }) => (
+                          <MenuItem key={id} selected={transcript === id} value={id}>
+                            <ListItemText primary={`${lang}: ${title}`} />
+                          </MenuItem>
+                        ))}
+                      </TextField>
                     )}
                     {transcripts?.length < 1 && (
                       <>
