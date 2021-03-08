@@ -228,7 +228,7 @@ const MediaPage = initialData => {
   const onReady = useCallback(() => setReady(true), [setReady]);
   const onError = useCallback(() => setReady(false), [setReady]);
 
-  const isOwner = user?.id === media.owner;
+  const isOwner = media && user?.id === media?.owner;
   const { createdAt } = media ?? {}; // FIXME
   // const channel = null;
 

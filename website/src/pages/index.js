@@ -146,6 +146,7 @@ const Dashboard = props => {
   } = router;
 
   const { channels, pages, user, userChannels, mediaChannels } = props;
+  console.log({ mediaChannels });
 
   const [channelDialog, setChannelDialog] = useState(false);
   const [media, setMedia] = useState(deserializeModel(Media, props.media));
@@ -153,15 +154,15 @@ const Dashboard = props => {
 
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
 
-  useEffect(() => {
-    listMedia(setMedia, page);
-    const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
+  // useEffect(() => {
+  //   listMedia(setMedia, page);
+  //   const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
 
-    const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
-    window.addEventListener('online', handleConnectionChange);
+  //   const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
+  //   window.addEventListener('online', handleConnectionChange);
 
-    return () => subscription.unsubscribe();
-  }, [page]);
+  //   return () => subscription.unsubscribe();
+  // }, [page]);
 
   const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
@@ -353,6 +354,8 @@ export const getServerSideProps = async context => {
     query: { page = 1 },
   } = context;
 
+  // console.log(context.req.headers.host)
+
   global.pages = global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
 
   const media = await DataStore.query(Media, Predicates.ALL, {
@@ -394,7 +397,7 @@ export const getServerSideProps = async context => {
     }, {}),
   ).sort(
     ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(b).getTime() - new Date(a).getTime(),
-  );
+  ).filter(({ channel: { ns } }) => ns === 'mozfest');
 
   return {
     props: {

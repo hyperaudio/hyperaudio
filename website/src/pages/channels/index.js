@@ -137,7 +137,9 @@ function stableSort(array, comparator) {
 }
 
 const getUserChannels = async (setChannels, user) =>
-  setChannels((await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel));
+  setChannels(
+    (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel).filter(({ ns }) => ns === 'mozfest')
+    );
 
 export default function Channels({ user, userChannels, users }) {
   const classes = useStyles();
@@ -182,7 +184,7 @@ export default function Channels({ user, userChannels, users }) {
   const addNewChannel = useCallback(
     async ({ title, description, tags = [], editors = [], metadata = {} }) => {
       const channel = await DataStore.save(
-        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
+        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id, ns: 'mozfest' }),
       );
 
       await DataStore.save(new UserChannel({ user, channel }));
@@ -454,7 +456,7 @@ export const getServerSideProps = async context => {
 
     const user = serializeModel(await DataStore.query(User, sub));
     const userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel).filter(({ ns }) => ns === 'mozfest'),
     );
 
     const users = serializeModel(await DataStore.query(User));

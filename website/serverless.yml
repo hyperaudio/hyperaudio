@@ -1,23 +1,24 @@
 myNextApplication:
   component: "@sls-next/serverless-component@1.18.0"
   inputs:
-    domain: ["hyper.pink"]
-    bucketName: "hyperpink"
+    # domain: ["mozfest.hyper.audio"]
+    domain: ["mozfest", "hyper.audio"]
+    bucketName: "mozfest-hyperaudio"
     bucketRegion: "eu-west-1"
 
-    description: "HA-DEV Lambda@Edge"
+    description: "HA-MOZ Lambda@Edge"
     # policy: "arn:aws:iam::585082712647:policy/ha-lambda@edge"
     name:
-      defaultLambda: HA-DEV-default
-      apiLambda: HA-DEV-API
+      defaultLambda: HA-MOZ-default
+      apiLambda: HA-MOZ-API
 
     # cloudfront:
     #   aliases: ["hyper.pink"]
 
     certificate:
       cloudFrontDefaultCertificate: false
-      acmCertificateArn: "arn:aws:acm:us-east-1:585082712647:certificate/98275a5a-177a-46a0-aaad-0d816b1e3da0"
-      iamCertificateId: "98275a5a-177a-46a0-aaad-0d816b1e3da0"
+      acmCertificateArn: "arn:aws:acm:us-east-1:585082712647:certificate/359be8e6-225d-4536-bfdc-cb08e6cb4670"
+      iamCertificateId: "359be8e6-225d-4536-bfdc-cb08e6cb4670"
 
 
 
