@@ -35,11 +35,15 @@ export default function Footer() {
   return (
     <AppBar className={classes.root} color="transparent" component="div" elevation={0} position="static">
       <div className={classes.brand}>
-        <NextLink href="/" passHref>
-          <Button className={classes.brandmark} color="primary" startIcon={<HyperaudioIcon />}>
-            hyperaudio
-          </Button>
-        </NextLink>
+        <Button
+          className={classes.brandmark}
+          color="primary"
+          component="a"
+          href="https://hyper.audio"
+          startIcon={<HyperaudioIcon />}
+        >
+          hyperaudio
+        </Button>
       </div>
       <div className={classes.content}>
         <NextLink href="/blog" passHref>
