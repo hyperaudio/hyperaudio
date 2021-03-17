@@ -557,7 +557,7 @@ const MediaPage = initialData => {
                       >
                         {transcripts.map(({ id, title, lang, status, statusMessage }) => (
                           <MenuItem key={id} selected={transcript === id} value={id}>
-                            <ListItemText primary={`${lang}: ${title}`} />
+                            <ListItemText style={{ whiteSpace: 'normal' }} primary={`${lang}: ${title}`} />
                           </MenuItem>
                         ))}
                       </TextField>
