@@ -53,9 +53,9 @@ import Layout from 'src/Layout';
 import getDarkTheme from 'src/themes/getDarkTheme';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
-import StatusFlag from './StatusFlag';
+import StatusFlag from '../StatusFlag';
 import Footer from 'src/components/Footer';
-import TranscribeDialog from './TranscribeDialog';
+import TranscribeDialog from '../TranscribeDialog';
 
 // import Transcript from '../../components/transcript/Transcript';
 
@@ -305,6 +305,7 @@ const MediaPage = initialData => {
 
   const gotoTranscript = useCallback(
     transcript => {
+      // console.log(transcript);
       window.location = `/media/${id}/${transcript}`;
       // router.push(
       //   {
