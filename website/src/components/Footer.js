@@ -10,12 +10,7 @@ import HyperaudioIcon from 'src/assets/icons/HaIcon';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    // bottom: 0,
-    // left: 0,
-    // marginTop: theme.spacing(4),
     padding: theme.spacing(1),
-    // position: 'sticky',
-    // right: 0,
   },
   brand: {
     textAlign: 'center',

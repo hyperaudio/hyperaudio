@@ -7,25 +7,21 @@ import { rgba } from 'polished';
 import { useRouter } from 'next/router';
 
 import AppBar from '@material-ui/core/AppBar';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import Container from '@material-ui/core/Container';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import SettingsIcon from '@material-ui/icons/Settings';
-import Slide from '@material-ui/core/Slide';
 import Toolbar from '@material-ui/core/Toolbar';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 
 import HyperaudioIcon from 'src/assets/icons/HaIcon';
-// import MozfestLogo from 'src/assets/mozfest-logo.svg';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -39,10 +35,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Topbar = ({ org }) => {
+export default function Topbar({ org }) {
   const classes = useStyles();
   const router = useRouter();
-  const trigger = useScrollTrigger();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [, setAuthState] = useState();
@@ -96,15 +91,7 @@ const Topbar = ({ org }) => {
                 )}
               </Grid>
               <Grid item container justify="center" alignItems="center" xs={6}>
-                {Boolean(org?.logo) && <img src={org.logo} alt="Mozilla Festival" height="32" />}
-                {/* <Typography component="h1" variant="button">
-                  <NextLink href="/" passHref>
-                    <Button color="primary" startIcon={<HyperaudioIcon />}>
-                      hyperaudio
-                    </Button>
-                  </NextLink>
-                </Typography> */}
-                {/* <Hidden smDown> // TODO: Resurrect this
+                <Hidden smDown>
                   <NextLink href="/channels" passHref>
                     <Button color="primary" variant="text">
                       Channels
@@ -120,7 +107,7 @@ const Topbar = ({ org }) => {
                       Mixes
                     </Button>
                   </NextLink>
-                </Hidden> */}
+                </Hidden>
               </Grid>
               <Grid item xs={3} style={{ textAlign: 'right' }}>
                 {user ? (
@@ -138,13 +125,11 @@ const Topbar = ({ org }) => {
                     </span>
                   </Tooltip>
                 ) : (
-                  <>
-                    {/* <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
+                  <NextLink href={`/auth/?redirect=${router.asPath}`} passHref>
                     <Button color="primary" variant="text">
                       Login
                     </Button>
-                  </NextLink> */}
-                  </>
+                  </NextLink>
                 )}
               </Grid>
             </Grid>
@@ -183,6 +168,4 @@ const Topbar = ({ org }) => {
       </Menu>
     </>
   );
-};
-
-export default Topbar;
+}
