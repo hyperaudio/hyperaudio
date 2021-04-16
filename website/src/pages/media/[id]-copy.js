@@ -6,11 +6,11 @@ import Head from 'next/head';
 import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import axios from 'axios';
 import { rgba } from 'polished';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
 import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
-import axios from 'axios';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -39,11 +39,10 @@ import grey from '@material-ui/core/colors/grey';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 import Layout from 'src/components/Layout';
-import getDarkTheme from 'src/themes/getDarkTheme';
+import useTheme from 'src/hooks/useTheme';
+import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
 import StatusFlag from './StatusFlag';
@@ -159,8 +158,8 @@ const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, i
 const MediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
-  const darkTheme = getDarkTheme();
   const theatreRef = React.useRef();
+  const theme = useTheme();
 
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
@@ -431,7 +430,7 @@ const MediaPage = initialData => {
       </Toolbar> */}
       <div className={classes.root}>
         {/* <div style={{ height: theatreHeight, background: 'yellow' }} /> */}
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <div className={classes.theatre} ref={theatreRef}>
             <div className={classes.push} />
             <Container disableGutters>

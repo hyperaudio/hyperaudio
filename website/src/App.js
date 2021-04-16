@@ -4,7 +4,9 @@ import App from 'next/app';
 import Amplify from 'aws-amplify';
 import Analytics from '@aws-amplify/analytics';
 
-import Provider from 'src/components/Provider';
+import { ThemeProvider } from '@material-ui/core/styles';
+
+import useTheme from 'src/hooks/useTheme';
 
 import awsconfig from './aws-config';
 import awsexports from './aws-exports';
@@ -23,6 +25,11 @@ Analytics.autoTrack('pageView', {
   // you need to change it to 'SPA' if your app is a single-page app like React
   type: 'SPA',
 });
+
+const Provider = props => {
+  const theme = useTheme();
+  return <ThemeProvider {...props} theme={theme} />;
+};
 
 class Application extends App {
   render() {

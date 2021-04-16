@@ -1,7 +1,7 @@
 import { lighten, darken } from 'polished';
 
-import { createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 import setType from 'src/functions/setType';
 import useOrganization from 'src/hooks/useOrganization';
@@ -13,15 +13,36 @@ export const fonts = {
   head: '"Nunito", sans-serif',
 };
 
-const constructPaletteObject = hex => ({
+const makeColorObj = hex => ({
   contrastText: theme.palette.getContrastText(hex),
   dark: darken(0.2, hex),
   light: lighten(0.2, hex),
   main: hex,
 });
 
-export default function useTheme() {
+export default function useTheme(mode = 'light') {
   const organization = useOrganization();
+
+  const dm = mode === 'dark';
+
+  // make main color objects
+  const primary = organization?.palette?.primary || '#6000DE';
+  const secondary = organization?.palette?.secondary || '#2DC8BD';
+
+  // diff palette by mode (dark vs. light)
+  const type = dm ? 'dark' : 'light';
+  const divider = dm ? grey[800] : grey[300];
+  const background = {
+    default: dm ? grey[900] : 'white',
+    defaultOpacity: 0.95,
+    paper: dm ? 'black' : 'white',
+  };
+  const text = {
+    disabled: grey[dm ? 500 : 500],
+    hint: grey[dm ? 400 : 600],
+    primary: grey[dm ? 300 : 800],
+    secondary: grey[dm ? 500 : 600],
+  };
 
   return createMuiTheme({
     props: {
@@ -36,14 +57,12 @@ export default function useTheme() {
       },
     },
     palette: {
-      background: {
-        dark: 'black',
-        default: 'white',
-        defaultOpacity: 0.95,
-        paper: grey[50],
-      },
-      primary: constructPaletteObject(organization?.palette?.primary || '#6000DE'),
-      secondary: constructPaletteObject(organization?.palette?.secondary || '#2DC8BD'),
+      background,
+      divider,
+      primary: makeColorObj(primary),
+      secondary: makeColorObj(secondary),
+      text,
+      type,
     },
     overrides: {
       MuiInputBase: {
@@ -61,6 +80,7 @@ export default function useTheme() {
       MuiTableCell: {
         root: {
           verticalAlign: 'baseline',
+          borderBottom: `1px solid ${divider}`,
         },
       },
       MuiInput: {

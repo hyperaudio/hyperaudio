@@ -28,10 +28,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
 
 import FileInput from 'src/components/FileInput';
 import Layout from 'src/components/Layout';
+import useTheme from 'src/hooks/useTheme';
 import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js

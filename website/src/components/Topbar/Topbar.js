@@ -1,6 +1,7 @@
 /* eslint-disable no-shadow */
 import NextLink from 'next/link';
 import React, { useState, useEffect, useCallback } from 'react';
+import _ from 'lodash';
 import { Auth } from 'aws-amplify';
 import { onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { rgba } from 'polished';
@@ -25,6 +26,7 @@ import HyperaudioIcon from 'src/assets/icons/HaIcon';
 const useStyles = makeStyles(theme => ({
   root: {
     background: rgba(theme.palette.background.default, theme.palette.background.defaultOpacity),
+    borderBottom: `1px solid ${theme.palette.divider}`,
   },
   divider: {
     margin: theme.spacing(1, 0),
@@ -32,15 +34,19 @@ const useStyles = makeStyles(theme => ({
   push: {
     ...theme.mixins.toolbar,
   },
+  ...console.log({ theme }),
 }));
 
 export default function Topbar() {
   const classes = useStyles();
   const router = useRouter();
 
-  const [anchorEl, setAnchorEl] = useState(null);
   const [, setAuthState] = useState();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [raised, setRaised] = React.useState(false);
   const [user, setUser] = useState();
+
+  const handleScroll = () => setRaised(window?.scrollY > 10);
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
@@ -59,6 +65,13 @@ export default function Topbar() {
     });
   }, [setAuthState, setUser]);
 
+  useEffect(() => {
+    window?.addEventListener('scroll', _.throttle(handleScroll, 350));
+    return () => {
+      window?.removeEventListener('scroll', _.throttle(handleScroll, 350));
+    };
+  }, []);
+
   const signOut = useCallback(() => {
     (async () => {
       Auth.signOut();
@@ -70,7 +83,7 @@ export default function Topbar() {
 
   return (
     <>
-      <AppBar position="fixed" color="transparent" className={classes.root} elevation={2}>
+      <AppBar className={classes.root} color="transparent" elevation={raised ? 1 : 0} position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <Grid container alignItems="center" alignContent="center">

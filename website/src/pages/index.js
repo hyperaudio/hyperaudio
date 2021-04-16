@@ -27,13 +27,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/core/styles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
 import Layout from 'src/components/Layout';
-import getDarkTheme from 'src/themes/getDarkTheme';
+import useTheme from 'src/hooks/useTheme';
 
 import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
 
@@ -133,8 +132,7 @@ const useStyles = makeStyles(theme => ({
 
 const Dashboard = props => {
   const classes = useStyles();
-  const theme = useTheme();
-  const darkTheme = getDarkTheme();
+  const theme = useTheme('dark');
 
   const isMdUp = isWidthUp('md', props.width);
   const isSmUp = isWidthUp('sm', props.width);
@@ -246,7 +244,7 @@ const Dashboard = props => {
                         spacing={isMedium ? 4 : 2}
                         xs={12}
                       >
-                        <ThemeProvider theme={darkTheme}>
+                        <ThemeProvider theme={theme}>
                           <Grid container spacing={isMedium ? 4 : 2}>
                             {mc.media?.map(({ id, title, description, metadata }) => (
                               <Grid

@@ -46,15 +46,14 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import withStyles from '@material-ui/core/styles/makeStyles';
 import { ThemeProvider } from '@material-ui/core/styles';
-import { useTheme } from '@material-ui/core/styles';
 
-import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 import Layout from 'src/components/Layout';
-import getDarkTheme from 'src/themes/getDarkTheme';
+import useTheme from 'src/hooks/useTheme';
+import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
-import StatusFlag from './StatusFlag';
 import Footer from 'src/components/Footer';
+import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
 
 // import Transcript from '../../components/transcript/Transcript';
@@ -62,123 +61,126 @@ import TranscribeDialog from './TranscribeDialog';
 // TODO where to get them? all tags of the user?
 const ALL_TAGS = ['Remix', 'Audio'];
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    bottom: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    left: 0,
-    position: 'fixed',
-    right: 0,
-    top: 0,
-  },
-  theatre: {
-    // left: 0,
-    // position: 'absolute',
-    // right: 0,
-    // top: 0,
-    background: theme.palette.background.dark,
-    lineHeight: 0,
-  },
-  theatreChild: {
-    [theme.breakpoints.down('sm')]: {
-      padding: 0,
-    },
-    [theme.breakpoints.up('md')]: {
+const useStyles = makeStyles(theme => {
+  const darkTheme = useTheme('dark');
+  return {
+    root: {
+      bottom: 0,
       display: 'flex',
-    },
-  },
-  stage: {
-    position: 'relative',
-    // background: 'yellow',
-    [theme.breakpoints.up('md')]: {
-      flex: `0 0 ${100 / 2}%`,
-    },
-  },
-  player: {
-    '& > *': {
-      paddingTop: '56.25%',
-      position: 'relative',
-    },
-    '& > * > *': {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(2, 1),
-    },
-  },
-  titles: {
-    [theme.breakpoints.up('md')]: {
-      color: theme.palette.background.paper,
-      display: 'flex',
-      flex: `0 0 ${100 / 2}%`,
       flexDirection: 'column',
-      justifyContent: 'space-between',
-      padding: theme.spacing(2, 1),
-      '& > *': {
-        width: '100%',
+      height: '100%',
+      left: 0,
+      position: 'fixed',
+      right: 0,
+      top: 0,
+    },
+    theatre: {
+      // left: 0,
+      // position: 'absolute',
+      // right: 0,
+      // top: 0,
+      background: darkTheme.palette.background.default,
+      lineHeight: 0,
+    },
+    theatreChild: {
+      [theme.breakpoints.down('sm')]: {
+        padding: 0,
+      },
+      [theme.breakpoints.up('md')]: {
+        display: 'flex',
       },
     },
-    padding: theme.spacing(1),
-  },
-  transcript: {
-    overflowY: 'auto',
-  },
-  push: {
-    ...theme.mixins.toolbar,
-  },
-
-  // OLD
-
-  toolbar: {
-    margin: theme.spacing(1, 0),
-    [theme.breakpoints.up('sm')]: {
-      margin: theme.spacing(2, 0),
+    stage: {
+      position: 'relative',
+      // background: 'yellow',
+      [theme.breakpoints.up('md')]: {
+        flex: `0 0 ${100 / 2}%`,
+      },
     },
-  },
-  title: {
-    ...theme.typography.h6,
-    cursor: 'text',
-  },
-  description: {
-    cursor: 'text',
-  },
-  date: {
-    marginTop: theme.spacing(1),
-  },
-  chip: { margin: theme.spacing(0.3, 0.3, 0.3, 0) },
-  speedDial: {
-    background: theme.palette.primary.main,
-    boxShadow: theme.shadows[2],
-    color: theme.palette.primary.contrastText,
-    '&:hover': {
-      background: theme.palette.primary.dark,
+    player: {
+      '& > *': {
+        paddingTop: '56.25%',
+        position: 'relative',
+      },
+      '& > * > *': {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+      },
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(2, 1),
+      },
+    },
+    titles: {
+      [theme.breakpoints.up('md')]: {
+        color: theme.palette.background.paper,
+        display: 'flex',
+        flex: `0 0 ${100 / 2}%`,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        padding: theme.spacing(2, 1),
+        '& > *': {
+          width: '100%',
+        },
+      },
+      padding: theme.spacing(1),
+    },
+    transcript: {
+      overflowY: 'auto',
+    },
+    push: {
+      ...theme.mixins.toolbar,
+    },
+
+    // OLD
+
+    toolbar: {
+      margin: theme.spacing(1, 0),
+      [theme.breakpoints.up('sm')]: {
+        margin: theme.spacing(2, 0),
+      },
+    },
+    title: {
+      ...theme.typography.h6,
+      cursor: 'text',
+    },
+    description: {
+      cursor: 'text',
+    },
+    date: {
+      marginTop: theme.spacing(1),
+    },
+    chip: { margin: theme.spacing(0.3, 0.3, 0.3, 0) },
+    speedDial: {
+      background: theme.palette.primary.main,
+      boxShadow: theme.shadows[2],
       color: theme.palette.primary.contrastText,
+      '&:hover': {
+        background: theme.palette.primary.dark,
+        color: theme.palette.primary.contrastText,
+      },
     },
-  },
-  primaryMenuItem: {
-    color: theme.palette.primary.main,
-    background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
-  },
-  transcripts: {
-    maxHeight: '240px',
-    overflowY: 'auto',
-  },
-  transcriptsSubheader: {
-    background: rgba(theme.palette.background.dark, theme.palette.background.defaultOpacity),
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-}));
+    primaryMenuItem: {
+      color: theme.palette.primary.main,
+      background: rgba(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+    },
+    transcripts: {
+      maxHeight: '240px',
+      overflowY: 'auto',
+    },
+    transcriptsSubheader: {
+      background: rgba(darkTheme.palette.background.default, theme.palette.background.defaultOpacity),
+      borderBottom: `1px solid ${theme.palette.divider}`,
+    },
+  };
+});
 
 const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
 const MediaPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
-  const darkTheme = getDarkTheme();
+  const theme = useTheme('dark');
 
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
@@ -402,7 +404,7 @@ const MediaPage = initialData => {
         <meta name="description" content={description} />
       </Head>
       <div className={classes.root}>
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <div className={classes.push} />
           <div className={classes.theatre}>
             <Container className={classes.theatreChild}>
