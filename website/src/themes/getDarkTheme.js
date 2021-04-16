@@ -1,9 +1,9 @@
-import { createMuiTheme } from '@material-ui/core/styles';
 import { lighten, darken } from 'polished';
+
+import { createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
-import setType from 'src/themes/setType';
-import { colors } from '@material-ui/core';
+import setType from 'src/functions/setType';
 
 const theme = createMuiTheme();
 
@@ -42,7 +42,7 @@ export default function getTheme(palette) {
         dark: 'black',
         default: 'black',
         defaultOpacity: 0.95,
-        paper: grey[50],
+        paper: grey[900],
       },
       primary: getPaletteObj(palette?.primary || '#6000DE'),
       secondary: getPaletteObj(palette?.secondary || '#2DC8BD'),

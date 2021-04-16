@@ -1,6 +1,7 @@
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 
 import Toolbar from '@material-ui/core/Toolbar';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
@@ -19,12 +20,14 @@ const MixesPage = () => {
 
   return (
     <Layout>
-      <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" variant="h4">
-          All your mixes
-        </Typography>
-        <div className={classes.grow} />
-      </Toolbar>
+      <Container>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Typography component="h1" variant="h4">
+            All your mixes
+          </Typography>
+          <div className={classes.grow} />
+        </Toolbar>
+      </Container>
     </Layout>
   );
 };

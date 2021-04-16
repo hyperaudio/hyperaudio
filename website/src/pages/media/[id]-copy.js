@@ -42,7 +42,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
 import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import getDarkTheme from 'src/themes/getDarkTheme';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';

@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Button from '@material-ui/core/Button';
 
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import { User } from 'src/models';
 
 // const getUser = async (setUser, id) => {

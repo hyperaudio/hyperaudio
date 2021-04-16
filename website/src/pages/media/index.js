@@ -7,6 +7,7 @@ import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
+import Container from '@material-ui/core/Container';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -17,7 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 import Pagination from '@material-ui/lab/Pagination';
 
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import { Media, User, Channel, UserChannel } from '../../models';
 
 const PAGINATION_LIMIT = 7;
@@ -67,39 +68,41 @@ const MediaPage = initialData => {
 
   return (
     <Layout>
-      <Toolbar className={classes.toolbar} disableGutters>
-        <Typography component="h1" variant="h4">
-          Your media
-        </Typography>
-        <div className={classes.grow} />
-        <NextLink href="/new/media">
-          <Button variant="contained" color="primary">
-            New Media
-          </Button>
-        </NextLink>
-        <NextLink href="/new/channel">
-          <Button variant="contained" color="primary">
-            New Channel
-          </Button>
-        </NextLink>
-      </Toolbar>
-      <Paper>
-        <List dense>
-          {media.map(({ id, title, description }) => (
-            <NextLink key={id} href={`/media/${id}`}>
-              <ListItem button>
-                <ListItemText primary={title} secondary={description} primaryTypographyProps={{ color: 'primary' }} />
-                <ListItemSecondaryAction>
-                  <IconButton edge="end">
-                    <MoreVertIcon fontSize="small" />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </NextLink>
-          ))}
-        </List>
-        <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
-      </Paper>
+      <Container>
+        <Toolbar className={classes.toolbar} disableGutters>
+          <Typography component="h1" variant="h4">
+            Your media
+          </Typography>
+          <div className={classes.grow} />
+          <NextLink href="/new/media">
+            <Button variant="contained" color="primary">
+              New Media
+            </Button>
+          </NextLink>
+          <NextLink href="/new/channel">
+            <Button variant="contained" color="primary">
+              New Channel
+            </Button>
+          </NextLink>
+        </Toolbar>
+        <Paper>
+          <List dense>
+            {media.map(({ id, title, description }) => (
+              <NextLink key={id} href={`/media/${id}`}>
+                <ListItem button>
+                  <ListItemText primary={title} secondary={description} primaryTypographyProps={{ color: 'primary' }} />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end">
+                      <MoreVertIcon fontSize="small" />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </NextLink>
+            ))}
+          </List>
+          <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
+        </Paper>
+      </Container>
     </Layout>
   );
 };

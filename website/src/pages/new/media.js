@@ -31,7 +31,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
 
 import FileInput from 'src/components/FileInput';
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js

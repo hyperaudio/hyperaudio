@@ -1,17 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 // import 'reflect-metadata'; // FIXME: still need this?
 import App from 'next/app';
-import dynamic from 'next/dynamic';
 import Amplify from 'aws-amplify';
 import Analytics from '@aws-amplify/analytics';
 
-import 'nprogress/nprogress.css';
-import { ThemeProvider } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-
-import getTheme from 'src/themes/getTheme';
-
-import ORG from 'src/config/organization.json'; // TODO: Don’t just use JSON here, check for mozfest.hyper.audio?
+import Provider from 'src/components/Provider';
 
 import awsconfig from './aws-config';
 import awsexports from './aws-exports';
@@ -31,47 +24,13 @@ Analytics.autoTrack('pageView', {
   type: 'SPA',
 });
 
-const TopProgressBar = dynamic(() => import('./components/TopProgressBar'), { ssr: false });
-
 class Application extends App {
   render() {
     const { Component, pageProps } = this.props;
-
-    const theme = getTheme(ORG.palette);
-
     return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <TopProgressBar />
-        <style>
-          {`
-            html, body {
-              backgorund: ${theme.palette.primary.main};
-            }
-            #nprogress .bar {
-              background-color: ${theme.palette.primary.main};
-              z-index: 10000;
-              height: 5px;
-            }
-            #nprogress .peg { box-shadow: none; }
-            html, body {
-              height: 100%;
-            }
-            #__next {
-              display: flex;
-              flex-direction: column;
-              height: 100%;
-            }
-            video: {
-              outline: none;
-            }
-            video:focus {
-              outline: none;
-            }
-            `}
-        </style>
+      <Provider>
         <Component {...pageProps} />
-      </ThemeProvider>
+      </Provider>
     );
   }
 }

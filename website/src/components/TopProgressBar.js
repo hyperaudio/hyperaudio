@@ -41,6 +41,7 @@ const stop = () => {
   state = 'stop';
 
   clearTimeout(timer);
+
   NProgress.done();
 };
 

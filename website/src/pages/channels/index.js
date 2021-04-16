@@ -26,7 +26,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
@@ -271,21 +271,21 @@ export default function Channels({ user, userChannels, users }) {
   return (
     <>
       <Layout>
-        <Toolbar className={classes.toolbar} disableGutters>
-          <Typography component="h1" variant="h4">
-            Your channels
-          </Typography>
-          <div className={classes.grow} />
-          <Button
-            color="primary"
-            onClick={() => setChannelDialog(true)}
-            startIcon={<AddCircleOutlineIcon />}
-            variant="contained"
-          >
-            New
-          </Button>
-        </Toolbar>
-        <Container disableGutters>
+        <Container>
+          <Toolbar className={classes.toolbar} disableGutters>
+            <Typography component="h1" variant="h4">
+              Your channels
+            </Typography>
+            <div className={classes.grow} />
+            <Button
+              color="primary"
+              onClick={() => setChannelDialog(true)}
+              startIcon={<AddCircleOutlineIcon />}
+              variant="contained"
+            >
+              New
+            </Button>
+          </Toolbar>
           {channels?.length > 0 ? (
             <TableContainer>
               <Table aria-labelledby="tableTitle" aria-label="enhanced table">

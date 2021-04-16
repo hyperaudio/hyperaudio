@@ -1,11 +1,11 @@
-import getTheme from 'src/themes/getTheme';
+import useTheme from 'src/hooks/useTheme';
 
-const theme = getTheme();
-
-const Wrapper = ({ children }) => (
-  <div className="mdx">
-    <style scoped>
-      {`
+export default function Wrapper({ children }) {
+  const theme = useTheme();
+  return (
+    <div className="mdx">
+      <style scoped>
+        {`
       .mdx h1,
       .mdx h2,
       .mdx h3,
@@ -16,9 +16,8 @@ const Wrapper = ({ children }) => (
         color: ${theme.palette.primary.main};
       }
     `}
-    </style>
-    {children}
-  </div>
-);
-
-export default Wrapper;
+      </style>
+      {children}
+    </div>
+  );
+}

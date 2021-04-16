@@ -32,7 +32,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import withWidth, { isWidthUp } from '@material-ui/core/withWidth';
 
 import ChannelDialog from 'src/pages/channels/ChannelDialog';
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import getDarkTheme from 'src/themes/getDarkTheme';
 
 import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
@@ -73,7 +73,6 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   block: {
-    background: theme.palette.background.paper,
     overflow: 'hidden',
     clear: 'both',
     padding: theme.spacing(5, 0),
@@ -209,111 +208,118 @@ const Dashboard = props => {
   return (
     <>
       <Layout>
-        {/* <Toolbar className={classes.toolbar} disableGutters> // TODO: Resurrect this
-          <Typography component="h1" variant="h4">
-            All media
-          </Typography>
-          <div className={classes.grow} />
-          <Button
-            color="primary"
-            onClick={e => setNewAnchor(e.currentTarget)}
-            startIcon={<AddCircleOutlineIcon />}
-            variant="contained"
-          >
-            New…
-          </Button>
-        </Toolbar> */}
-        {mediaChannels.map(mc => {
-          if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
-          return (
-            <React.Fragment key={mc.channel.id}>
-              <div className={classes.block}>
-                <Container maxWidth={isMdUp ? 'lg' : isSmUp ? 'sm' : 'xs'}>
-                  <Grid container spacing={isMedium ? 8 : 4}>
-                    <Grid item xs={12} md={4}>
-                      <Typography className={classes.blockTitle} gutterBottom variant="h5" component="h2">
-                        {mc.channel.title}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        {mc.channel.description}
-                      </Typography>
-                    </Grid>
-                    <Grid
-                      className={classes.items}
-                      // component="ol"
-                      item
-                      md={8}
-                      spacing={isMedium ? 4 : 2}
-                      xs={12}
-                    >
-                      <ThemeProvider theme={darkTheme}>
-                        <Grid container spacing={isMedium ? 4 : 2}>
-                          {mc.media?.map(({ id, title, description, metadata }) => (
-                            <Grid
-                              className={classes.item}
-                              // component="li"
-                              item
-                              key={id}
-                              xs={6}
-                              sm={4}
-                            >
-                              <Card className={classes.card} elevation={0} square raised={false}>
-                                <NextLink href={`/media/${id}`}>
-                                  <CardActionArea>
-                                    {metadata ? (
-                                      <CardMedia
-                                        className={classes.cardMedia}
-                                        component="img"
-                                        src={
-                                          JSON.parse(metadata)?.embedly?.thumbnail_url ??
-                                          JSON.parse(metadata)?.oembed?.thumbnail_url ??
-                                          'http://placekitten.com/320/180'
-                                        }
-                                        title={title}
-                                      />
-                                    ) : (
-                                      <CardMedia
-                                        className={classes.cardMedia}
-                                        component="img"
-                                        src="http://placekitten.com/320/180"
-                                        title={title}
-                                      />
-                                    )}
-                                  </CardActionArea>
-                                </NextLink>
-                                <CardContent className={classes.cardContent}>
+        <Container>
+          <Toolbar className={classes.toolbar} disableGutters>
+            <Typography component="h1" variant="h4">
+              All media
+            </Typography>
+            <div className={classes.grow} />
+            <Button
+              color="primary"
+              onClick={e => setNewAnchor(e.currentTarget)}
+              startIcon={<AddCircleOutlineIcon />}
+              variant="contained"
+            >
+              New…
+            </Button>
+          </Toolbar>
+          {mediaChannels.map(mc => {
+            if (mc.media.length === 0 || mc.channel.title.length === 0) return null;
+            return (
+              <React.Fragment key={mc.channel.id}>
+                <div className={classes.block}>
+                  <Container maxWidth={isMdUp ? 'lg' : isSmUp ? 'sm' : 'xs'}>
+                    <Grid container spacing={isMedium ? 8 : 4}>
+                      <Grid item xs={12} md={4}>
+                        <Typography className={classes.blockTitle} gutterBottom variant="h5" component="h2">
+                          {mc.channel.title}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                          {mc.channel.description}
+                        </Typography>
+                      </Grid>
+                      <Grid
+                        className={classes.items}
+                        // component="ol"
+                        item
+                        md={8}
+                        spacing={isMedium ? 4 : 2}
+                        xs={12}
+                      >
+                        <ThemeProvider theme={darkTheme}>
+                          <Grid container spacing={isMedium ? 4 : 2}>
+                            {mc.media?.map(({ id, title, description, metadata }) => (
+                              <Grid
+                                className={classes.item}
+                                // component="li"
+                                item
+                                key={id}
+                                xs={6}
+                                sm={4}
+                              >
+                                <Card className={classes.card} elevation={0} square raised={false}>
                                   <NextLink href={`/media/${id}`}>
-                                    <Typography component="h3" noWrap>
-                                      <Link href={`/media/${id}`} variant="subtitle2">
-                                        {title}
-                                      </Link>
-                                    </Typography>
+                                    <CardActionArea>
+                                      {metadata ? (
+                                        <CardMedia
+                                          className={classes.cardMedia}
+                                          component="img"
+                                          src={
+                                            JSON.parse(metadata)?.embedly?.thumbnail_url ??
+                                            JSON.parse(metadata)?.oembed?.thumbnail_url ??
+                                            'http://placekitten.com/320/180'
+                                          }
+                                          title={title}
+                                        />
+                                      ) : (
+                                        <CardMedia
+                                          className={classes.cardMedia}
+                                          component="img"
+                                          src="http://placekitten.com/320/180"
+                                          title={title}
+                                        />
+                                      )}
+                                    </CardActionArea>
                                   </NextLink>
-                                  <Typography color="textSecondary" component="p" gutterBottom noWrap variant="caption">
-                                    {description}
-                                  </Typography>
-                                </CardContent>
-                                {/* <CardActions className={classes.cardActions} disableSpacing> // TODO: Resurrect this
+                                  <CardContent className={classes.cardContent}>
+                                    <NextLink href={`/media/${id}`}>
+                                      <Typography component="h3" noWrap>
+                                        <Link href={`/media/${id}`} variant="subtitle2">
+                                          {title}
+                                        </Link>
+                                      </Typography>
+                                    </NextLink>
+                                    <Typography
+                                      color="textSecondary"
+                                      component="p"
+                                      gutterBottom
+                                      noWrap
+                                      variant="caption"
+                                    >
+                                      {description}
+                                    </Typography>
+                                  </CardContent>
+                                  {/* <CardActions className={classes.cardActions} disableSpacing> // TODO: Resurrect this
                             <Tooltip title="Actions…">
                               <IconButton color="secondary" size="small">
                                 <MoreVertIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </CardActions> */}
-                              </Card>
-                            </Grid>
-                          ))}
-                        </Grid>
-                      </ThemeProvider>
+                                </Card>
+                              </Grid>
+                            ))}
+                          </Grid>
+                        </ThemeProvider>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Container>
-              </div>
-              <Divider />
-            </React.Fragment>
-          );
-        })}
-
+                  </Container>
+                </div>
+                <Divider />
+              </React.Fragment>
+            );
+          })}
+        </Container>
         {/* <div className={classes.paginationParent}>
           <Pagination count={pages} defaultPage={1} page={parseInt(page, 10)} onChange={gotoPage} />
         </div> */}

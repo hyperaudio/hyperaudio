@@ -49,7 +49,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import { useTheme } from '@material-ui/core/styles';
 
 import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
-import Layout from 'src/Layout';
+import Layout from 'src/components/Layout';
 import getDarkTheme from 'src/themes/getDarkTheme';
 
 import DeleteDialog from 'src/dialogs/DeleteDialog';
@@ -596,7 +596,7 @@ const MediaPage = initialData => {
                     >
                       {transcripts.map(({ id, title, lang, status, statusMessage }) => (
                         <MenuItem key={id} selected={transcript === id} value={id}>
-                          <ListItemText primary={`${lang}: ${title}`} />
+                          <ListItemText style={{ whiteSpace: 'normal' }} primary={`${lang}: ${title}`} />
                         </MenuItem>
                       ))}
                     </TextField>

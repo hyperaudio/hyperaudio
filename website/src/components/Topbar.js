@@ -7,7 +7,6 @@ import { rgba } from 'polished';
 import { useRouter } from 'next/router';
 
 import AppBar from '@material-ui/core/AppBar';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Divider from '@material-ui/core/Divider';
@@ -35,7 +34,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Topbar({ org }) {
+export default function Topbar() {
   const classes = useStyles();
   const router = useRouter();
 
@@ -76,19 +75,11 @@ export default function Topbar({ org }) {
           <Toolbar disableGutters>
             <Grid container alignItems="center" alignContent="center">
               <Grid item xs={3}>
-                {router.pathname === '/' ? (
-                  <NextLink href="/" passHref>
-                    <IconButton color="primary" edge="start">
-                      <HyperaudioIcon />
-                    </IconButton>
-                  </NextLink>
-                ) : (
-                  <NextLink href="/" passHref>
-                    <IconButton color="primary" edge="start">
-                      <ArrowBackIcon />
-                    </IconButton>
-                  </NextLink>
-                )}
+                <NextLink href="/" passHref>
+                  <IconButton color="primary" edge="start">
+                    <HyperaudioIcon />
+                  </IconButton>
+                </NextLink>
               </Grid>
               <Grid item container justify="center" alignItems="center" xs={6}>
                 <Hidden smDown>

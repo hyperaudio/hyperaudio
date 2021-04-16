@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import MDX from '@mdx-js/runtime';
 import Link from '../../components/Link';
-import Layout from '../../Layout';
+import Layout from 'src/components/Layout';
 
 import { getAllPosts } from '../../api';
 

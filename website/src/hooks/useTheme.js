@@ -1,8 +1,10 @@
-import { createMuiTheme } from '@material-ui/core/styles';
 import { lighten, darken } from 'polished';
+
+import { createMuiTheme } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
 
-import setType from 'src/themes/setType';
+import setType from 'src/functions/setType';
+import useOrganization from 'src/hooks/useOrganization';
 
 const theme = createMuiTheme();
 
@@ -11,13 +13,15 @@ export const fonts = {
   head: '"Nunito", sans-serif',
 };
 
-export default function getTheme(palette) {
-  const getPaletteObj = hex => ({
-    contrastText: theme.palette.getContrastText(hex),
-    dark: darken(0.2, hex),
-    light: lighten(0.2, hex),
-    main: hex,
-  });
+const constructPaletteObject = hex => ({
+  contrastText: theme.palette.getContrastText(hex),
+  dark: darken(0.2, hex),
+  light: lighten(0.2, hex),
+  main: hex,
+});
+
+export default function useTheme() {
+  const organization = useOrganization();
 
   return createMuiTheme({
     props: {
@@ -38,8 +42,8 @@ export default function getTheme(palette) {
         defaultOpacity: 0.95,
         paper: grey[50],
       },
-      primary: getPaletteObj(palette?.primary || '#6000DE'),
-      secondary: getPaletteObj(palette?.secondary || '#2DC8BD'),
+      primary: constructPaletteObject(organization?.palette?.primary || '#6000DE'),
+      secondary: constructPaletteObject(organization?.palette?.secondary || '#2DC8BD'),
     },
     overrides: {
       MuiInputBase: {
