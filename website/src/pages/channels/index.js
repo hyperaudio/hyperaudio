@@ -30,7 +30,7 @@ import Layout from 'src/components/Layout';
 
 import { Channel, User, UserChannel } from '../../models';
 
-import DeleteDialog from 'src/dialogs/DeleteDialog';
+import DeleteDialog from 'src/components/DeleteDialog';
 
 import ChannelDialog from './ChannelDialog';
 import EditorsDialog from './EditorsDialog';

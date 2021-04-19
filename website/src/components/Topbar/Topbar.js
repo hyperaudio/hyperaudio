@@ -34,7 +34,6 @@ const useStyles = makeStyles(theme => ({
   push: {
     ...theme.mixins.toolbar,
   },
-  ...console.log({ theme }),
 }));
 
 export default function Topbar() {

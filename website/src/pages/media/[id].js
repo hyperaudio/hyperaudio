@@ -51,7 +51,7 @@ import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
 import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
-import DeleteDialog from 'src/dialogs/DeleteDialog';
+import DeleteDialog from 'src/components/DeleteDialog';
 import Footer from 'src/components/Footer';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
@@ -560,18 +560,18 @@ const MediaPage = initialData => {
                     )}
                     {transcripts?.length < 1 && (
                       <>
-                        {/* <Button // TODO: Resurrect this
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                color="primary"
-                fullWidth
-                onClick={e => setTranscribeMenuAnchor(e.currentTarget)}
-                size="large"
-                startIcon={<SubtitlesIcon />}
-                variant="contained"
-              >
-                Add transcript
-              </Button> */}
+                        <Button
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          // color="primary"
+                          fullWidth
+                          onClick={e => setTranscribeMenuAnchor(e.currentTarget)}
+                          size="large"
+                          startIcon={<SubtitlesIcon />}
+                          variant="contained"
+                        >
+                          Add transcript
+                        </Button>
                       </>
                     )}
                   </div>

@@ -97,7 +97,7 @@ export default function Navbar({ pathname, ...props }) {
             to="/media"
             value="/media"
           />
-          <BottomNavigationAction // TODO: Resurrect this
+          <BottomNavigationAction
             classes={{
               root: classes.action,
               selected: classes.selectedAction,

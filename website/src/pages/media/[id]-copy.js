@@ -44,7 +44,7 @@ import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
 import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
-import DeleteDialog from 'src/dialogs/DeleteDialog';
+import DeleteDialog from 'src/components/DeleteDialog';
 import StatusFlag from './StatusFlag';
 import TranscribeDialog from './TranscribeDialog';
 
