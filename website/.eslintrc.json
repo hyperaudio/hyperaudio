@@ -1,6 +1,6 @@
 {
   "root": true,
-  "parser": "babel-eslint",
+  "parser": "typescript-eslint/parser",
   "extends": [
     "airbnb",
     "eslint:recommended",
@@ -9,6 +9,7 @@
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
     "prettier",
     "prettier/react"
   ],
@@ -35,7 +36,7 @@
       "version": "detect"
     }
   },
-  "plugins": [],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "jsx-a11y/anchor-is-valid": 0,
     "no-console": 0,

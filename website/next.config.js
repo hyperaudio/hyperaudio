@@ -8,6 +8,10 @@ const { default: nextSafe } = require('next-safe');
 const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = withMDX({
+  future: {
+    webpack5: true,
+  },
+
   pageExtensions: ['js', 'jsx', 'mdx'],
 
   webpack: (config, { isServer, webpack }) => {
