@@ -164,8 +164,10 @@ var hyperaudiolite = function () {
         // SoundCloud
         player.seekTo(start * 1000);
       } else if (playerType == 'ha2') {
-        player.seekTo(start);
-        setTimeout(() => player.play(), 2000);
+        //player.seekTo(start);
+        //setTimeout(() => player.play(), 2000);
+        setTimeout(() => player.seekTo(start), 5000);
+        setTimeout(() => player.play(), 6000);
       } else {
         // Assume YouTube
         window.onYouTubeIframeAPIReady = function () {
