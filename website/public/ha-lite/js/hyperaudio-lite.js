@@ -56,9 +56,9 @@ var hyperaudiolite = function () {
     textShot = '';
     wordIndex = 0;
 
-    autoscroll = a;
-    // scrollerContainer = transcript;
-    // scrollerOffset = 0;
+    autoscroll = true;
+    scrollerContainer = transcript.parentElement.parentElement;
+    scrollerOffset = (document.getElementsByClassName('makeStyles-player-5')[0].parentElement.parentElement.clientHeight + 64) * -1;
     scrollerDuration = 800;
     scrollerDelay = 0;
 
