@@ -56,9 +56,9 @@ var hyperaudiolite = function () {
     textShot = '';
     wordIndex = 0;
 
-    autoscroll = a;
-    // scrollerContainer = transcript;
-    // scrollerOffset = 0;
+    autoscroll = true;
+    scrollerContainer = transcript.parentElement.parentElement;
+    //scrollerOffset = (document.getElementsByClassName('makeStyles-player-5')[0].parentElement.parentElement.clientHeight + 64) * -1;
     scrollerDuration = 800;
     scrollerDelay = 0;
 
@@ -164,8 +164,10 @@ var hyperaudiolite = function () {
         // SoundCloud
         player.seekTo(start * 1000);
       } else if (playerType == 'ha2') {
-        player.seekTo(start);
-        setTimeout(() => player.play(), 2000);
+        //player.seekTo(start);
+        //setTimeout(() => player.play(), 2000);
+        setTimeout(() => player.seekTo(start), 5000);
+        setTimeout(() => player.play(), 6000);
       } else {
         // Assume YouTube
         window.onYouTubeIframeAPIReady = function () {
@@ -401,6 +403,8 @@ var hyperaudiolite = function () {
           //   delay: scrollerDelay,
           //   offset: scrollerOffset,
           // });
+          
+          scrollerOffset = (document.getElementsByTagName('iframe')[0].parentElement.parentElement.parentElement.clientHeight + 64) * -1;
 
           scroller(scrollNode, 'scroll', {
             container: scrollerContainer,
