@@ -1,17 +1,14 @@
 {
   "root": true,
-  "parser": "typescript-eslint/parser",
+  "parser": "@typescript-eslint/parser",
   "extends": [
-    "airbnb",
+    "next",
+    "next/core-web-vitals",
     "eslint:recommended",
-    "plugin:import/errors",
-    "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
     "plugin:react/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "prettier/react"
+    "prettier"
   ],
   "env": {
     "browser": true,
