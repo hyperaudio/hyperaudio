@@ -1,9 +1,10 @@
 import { withSSRContext } from 'aws-amplify';
+import { serializeModel } from '@aws-amplify/datastore/ssr';
 
 import { User } from '../../../models';
 
 const whoami = async (req, res) => {
-  const { Auth, DataStore } = withSSRContext(req);
+  const { Auth, DataStore } = withSSRContext({ req });
 
   let user = null;
 
@@ -11,8 +12,8 @@ const whoami = async (req, res) => {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
-    user = await DataStore.query(User, sub);
-    console.log({ user });
+    user = serializeModel(await DataStore.query(User, sub));
+    // console.log({ user, sub });
   } catch (error) {
     console.error(error);
   }
