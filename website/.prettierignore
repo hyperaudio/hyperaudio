@@ -1,0 +1,6 @@
+.next
+dist
+node_modules
+
+src/models
+src/aws-exports.js

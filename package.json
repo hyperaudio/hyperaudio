@@ -1,14 +1,21 @@
 {
-  "name": "@hyperaudio/hyperaudio",
+  "name": "hyperaudio",
   "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hyperaudio/hyperaudio.git"
   },
   "scripts": {
-    "status": "npx oao status"
+    "status": "npx oao status",
+    "clean": "npx oao clean",
+    "postinstall": "patch-package"
   },
   "workspaces": [
+    "website",
     "packages/*"
-  ]
+  ],
+  "devDependencies": {
+    "patch-package": "^6.4.7",
+    "postinstall-postinstall": "^2.1.0"
+  }
 }

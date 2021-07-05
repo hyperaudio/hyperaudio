@@ -1,0 +1,81 @@
+type Transcript @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  tags: [String]
+  url: AWSURL
+  lang: String
+  media: String
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  channels: [UserChannel] @connection(keyName: "byUser", fields: ["id"])
+  ns: [String]
+  type: String
+  metadata: AWSJSON
+  status: String
+  name: String
+  bio: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  username: String
+}
+
+type Channel @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  media: [MediaChannel] @connection(keyName: "byChannel", fields: ["id"])
+  users: [UserChannel] @connection(keyName: "byChannel", fields: ["id"])
+  tags: [String]
+  editors: [String]
+}
+
+type Media @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  ns: String
+  type: String
+  url: AWSURL
+  metadata: AWSJSON
+  status: String
+  title: String
+  description: String
+  owner: String
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+  channels: [MediaChannel] @connection(keyName: "byMedia", fields: ["id"])
+  tags: [String]
+}
+
+type MediaChannel @model(queries: null) @key(name: "byChannel", fields: ["channelID", "mediaID"]) @key(name: "byMedia", fields: ["mediaID", "channelID"]) @auth(rules: [{allow: public}, {allow: public}]) {
+  id: ID!
+  channelID: ID!
+  mediaID: ID!
+  channel: Channel! @connection(fields: ["channelID"])
+  media: Media! @connection(fields: ["mediaID"])
+}
+
+type UserChannel @model(queries: null) @key(name: "byUser", fields: ["userID", "channelID"]) @key(name: "byChannel", fields: ["channelID", "userID"]) @auth(rules: [{allow: public}, {allow: public}]) {
+  id: ID!
+  userID: ID!
+  channelID: ID!
+  user: User! @connection(fields: ["userID"])
+  channel: Channel! @connection(fields: ["channelID"])
+}
+ 

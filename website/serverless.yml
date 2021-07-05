@@ -1,0 +1,27 @@
+myNextApplication:
+  component: "@sls-next/serverless-component@1.18.0"
+  inputs:
+    domain: ["hyper.pink"]
+    bucketName: "hyperpink"
+    bucketRegion: "eu-west-1"
+
+    description: "HA-DEV Lambda@Edge"
+    # policy: "arn:aws:iam::585082712647:policy/ha-lambda@edge"
+    name:
+      defaultLambda: HA-DEV-default
+      apiLambda: HA-DEV-API
+
+    # cloudfront:
+    #   aliases: ["hyper.pink"]
+
+    certificate:
+      cloudFrontDefaultCertificate: false
+      acmCertificateArn: "arn:aws:acm:us-east-1:585082712647:certificate/98275a5a-177a-46a0-aaad-0d816b1e3da0"
+      iamCertificateId: "98275a5a-177a-46a0-aaad-0d816b1e3da0"
+
+
+
+# custom:
+#   serverless-nextjs:
+#     createAssetBucket: false
+
