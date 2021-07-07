@@ -1,11 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { withSSRContext, DataStore } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { withSSRContext } from 'aws-amplify';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 import Container from '@material-ui/core/Container';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -13,12 +12,7 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Button from '@material-ui/core/Button';
 
 import Layout from 'src/components/Layout';
-import { User } from 'src/models';
-
-// const getUser = async (setUser, id) => {
-//   const user = await DataStore.query(User, id);
-//   if (!Array.isArray(user)) setUser(user);
-// };
+import { getItem } from 'src/util/api';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -34,24 +28,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const saveUser = user => axios.put(`/api/v2/users/${user.pk}`, user);
+
 const AccountPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [bio, setBio] = useState(initialData.user.bio ?? '');
+  const [user, setUser] = useState(initialData.user ?? null);
   const [username, setUsername] = useState(initialData.user.username ?? '');
   const [displayName, setDisplayName] = useState(initialData.user.name ?? '');
-  const [user, setUser] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
+  const [bio, setBio] = useState(initialData.user.bio ?? '');
 
-  // useEffect(() => {
-  //   Auth.currentAuthenticatedUser()
-  //     .then(user => {
-  //       console.log(user);
-  //       getUser(setUser, user.attributes.sub);
-  //     })
-  //     .catch(() => setUser(null));
-  // }, [setUser]);
-
+  // TODO test this:
   useEffect(() => {
     onAuthUIStateChange((authState, authData) => {
       console.log({ authState, authData });
@@ -59,26 +47,23 @@ const AccountPage = initialData => {
     });
   }, [router]);
 
-  useEffect(() => {
-    if (!user) return;
-    setBio(user.bio);
-    setDisplayName(user.name);
-    setUsername(user.username);
-  }, [user]);
-
   console.log({ user });
 
   const handleSave = useCallback(async () => {
-    setUser(
-      await DataStore.save(
-        User.copyOf(user, updated => {
-          updated.bio = bio;
-          updated.name = displayName;
-          updated.username = username;
-        }),
-      ),
-    );
-  }, [username, displayName, bio, user]);
+    user.bio = bio;
+    user.name = displayName;
+    user.username = username;
+    await saveUser(user);
+    // setUser(
+    //   await DataStore.save(
+    //     User.copyOf(user, updated => {
+    //       updated.bio = bio;
+    //       updated.name = displayName;
+    //       updated.username = username;
+    //     }),
+    //   ),
+    // );
+  }, [user, username, displayName, bio]);
 
   return (
     <Layout>
@@ -135,14 +120,14 @@ const AccountPage = initialData => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    const user = serializeModel(await DataStore.query(User, sub));
+    const { Item: user } = await getItem(sub, 'v0_metadata');
 
     return { props: { user } };
   } catch (error) {

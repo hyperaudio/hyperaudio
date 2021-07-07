@@ -1,6 +1,6 @@
 import Layout from 'src/components/Layout';
 import BlogPost from '../../components/BlogPost';
-import { getPostBySlug, getAllPosts } from '../../api';
+import { getPostBySlug, getAllPosts } from 'src/util/blog';
 
 const PostPage = ({ post }) => (
   <Layout>

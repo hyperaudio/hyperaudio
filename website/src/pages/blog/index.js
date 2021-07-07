@@ -4,7 +4,7 @@ import MDX from '@mdx-js/runtime';
 import Link from '../../components/Link';
 import Layout from 'src/components/Layout';
 
-import { getAllPosts } from '../../api';
+import { getAllPosts } from 'src/util/blog';
 
 const Posts = ({ posts, prevPosts, nextPosts }) => {
   const isLocal = process.env.NODE_ENV === 'development';
