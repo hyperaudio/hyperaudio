@@ -8,7 +8,7 @@ class Doc extends Document {
     return (
       <Html lang="en">
         <Head>
-          <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
+          {/* <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" /> */}
           <link rel="shortcut icon" href="/favicon.svg" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link

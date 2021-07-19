@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { withSSRContext } from 'aws-amplify';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import produce from 'immer';
 
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
@@ -12,7 +12,8 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Button from '@material-ui/core/Button';
 
 import Layout from 'src/components/Layout';
-import { getItem } from 'src/util/api';
+import { wash, getUser, setUser as saveUser } from 'src/api';
+import { User } from 'src/api/models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -28,16 +29,23 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const saveUser = user => axios.put(`/api/v2/users/${user.pk}`, user);
-
 const AccountPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [user, setUser] = useState(initialData.user ?? null);
-  const [username, setUsername] = useState(initialData.user.username ?? '');
-  const [displayName, setDisplayName] = useState(initialData.user.name ?? '');
-  const [bio, setBio] = useState(initialData.user.bio ?? '');
+  const [user, setUser] = useState(() => new User(initialData.user) ?? null);
+  const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+
+  useEffect(() => {
+    if (!user) return;
+    console.log(user);
+
+    setUsername(user.username);
+    setDisplayName(user.name);
+    setBio(user.bio);
+  }, [user]);
 
   // TODO test this:
   useEffect(() => {
@@ -47,22 +55,14 @@ const AccountPage = initialData => {
     });
   }, [router]);
 
-  console.log({ user });
-
   const handleSave = useCallback(async () => {
-    user.bio = bio;
-    user.name = displayName;
-    user.username = username;
-    await saveUser(user);
-    // setUser(
-    //   await DataStore.save(
-    //     User.copyOf(user, updated => {
-    //       updated.bio = bio;
-    //       updated.name = displayName;
-    //       updated.username = username;
-    //     }),
-    //   ),
-    // );
+    const nextUserState = produce(user, draftUser => {
+      draftUser.bio = bio;
+      draftUser.name = displayName;
+      draftUser.username = username;
+    });
+
+    setUser(await saveUser(nextUserState));
   }, [user, username, displayName, bio]);
 
   return (
@@ -127,7 +127,7 @@ export const getServerSideProps = async context => {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    const { Item: user } = await getItem(sub, 'v0_metadata');
+    const user = wash(await getUser(sub));
 
     return { props: { user } };
   } catch (error) {

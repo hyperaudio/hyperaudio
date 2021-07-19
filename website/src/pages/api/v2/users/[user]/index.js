@@ -1,6 +1,7 @@
 import { withSSRContext } from 'aws-amplify';
 
-import { getItem, setItem } from 'src/util/api';
+import { wash, getUser, setUser } from 'src/api';
+import { User } from 'src/api/models';
 
 const handler = async (req, res) => {
   try {
@@ -21,15 +22,13 @@ const handler = async (req, res) => {
       case 'GET':
         if (sub !== pk) {
           res.status(403).end('User mismatch');
-        } else res.status(200).json({ data: (await getItem(pk, sk))?.Item });
+        } else res.status(200).json(await getUser(sub));
         break;
       case 'PUT':
         if (sub !== pk) {
           res.status(403).end('User mismatch');
         } else {
-          res.status(200).json({
-            data: await setItem(pk, sk, body, sub),
-          });
+          res.status(200).json(await setUser(new User(body), sub));
         }
         break;
       default:
