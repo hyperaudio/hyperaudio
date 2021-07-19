@@ -1,15 +1,23 @@
 {
-  "staging": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-hyperaudio-staging-165035-authRole",
-      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-165035-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-165035-authRole",
-      "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
-      "UnauthRoleName": "amplify-hyperaudio-staging-165035-unauthRole",
-      "StackName": "amplify-hyperaudio-staging-165035",
-      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-165035/709b6660-e8b1-11eb-ad67-020ab79c3fc3",
-      "AmplifyAppId": "d1lz2tv80jtrev"
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-hyperaudio-staging-165035-authRole",
+            "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-165035-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-165035-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
+            "UnauthRoleName": "amplify-hyperaudio-staging-165035-unauthRole",
+            "StackName": "amplify-hyperaudio-staging-165035",
+            "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-165035/709b6660-e8b1-11eb-ad67-020ab79c3fc3",
+            "AmplifyAppId": "d1lz2tv80jtrev"
+        },
+        "categories": {
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d1lz2tv80jtrev",
+                    "type": "cicd"
+                }
+            }
+        }
     }
-  }
 }
