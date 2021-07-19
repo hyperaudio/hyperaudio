@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { withSSRContext } from 'aws-amplify';
+// import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,18 +20,18 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 import Pagination from '@material-ui/lab/Pagination';
 
 import Layout from 'src/components/Layout';
-import { Media, User, Channel, UserChannel } from '../../models';
+// import { Media, User, Channel, UserChannel } from '../../models';
 
 const PAGINATION_LIMIT = 7;
 
-const listMedia = async (setMedia, page) =>
-  setMedia(
-    await DataStore.query(Media, Predicates.ALL, {
-      page: parseInt(page, 10) - 1,
-      limit: PAGINATION_LIMIT,
-      sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-    }),
-  );
+// const listMedia = async (setMedia, page) =>
+//   setMedia(
+//     await DataStore.query(Media, Predicates.ALL, {
+//       page: parseInt(page, 10) - 1,
+//       limit: PAGINATION_LIMIT,
+//       sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+//     }),
+//   );
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -52,17 +53,17 @@ const MediaPage = initialData => {
 
   const { pages } = initialData;
 
-  const [media, setMedia] = useState(deserializeModel(Media, initialData.media));
+  const [media, setMedia] = useState(initialData.media);
 
-  useEffect(() => {
-    listMedia(setMedia, page);
-    const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
+  // useEffect(() => {
+  //   listMedia(setMedia, page);
+  //   const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
 
-    const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
-    window.addEventListener('online', handleConnectionChange);
+  //   const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
+  //   window.addEventListener('online', handleConnectionChange);
 
-    return () => subscription.unsubscribe();
-  }, [page]);
+  //   return () => subscription.unsubscribe();
+  // }, [page]);
 
   const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), []);
 
@@ -108,45 +109,46 @@ const MediaPage = initialData => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  // eslint-disable-next-line no-unused-vars
+  const { Auth } = withSSRContext(context);
   const {
     query: { page = 1 },
   } = context;
 
-  global.pages = global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
+  global.pages = 0; // global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
 
-  const media = await DataStore.query(Media, Predicates.ALL, {
-    page: parseInt(page, 10) - 1,
-    limit: PAGINATION_LIMIT,
-    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-  });
+  // const media = await DataStore.query(Media, Predicates.ALL, {
+  //   page: parseInt(page, 10) - 1,
+  //   limit: PAGINATION_LIMIT,
+  //   sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  // });
 
-  const channels = await DataStore.query(Channel, Predicates.ALL, {
-    // page: parseInt(page, 10) - 1,
-    // limit: PAGINATION_LIMIT,
-    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-  });
+  // const channels = await DataStore.query(Channel, Predicates.ALL, {
+  //   // page: parseInt(page, 10) - 1,
+  //   // limit: PAGINATION_LIMIT,
+  //   sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  // });
 
   let user = null;
   let userChannels = null;
 
-  try {
-    const {
-      attributes: { sub },
-    } = await Auth.currentAuthenticatedUser();
-    user = serializeModel(await DataStore.query(User, sub));
-    userChannels = (await DataStore.query(UserChannel))
-      .filter(c => c.user.id === user.id)
-      .map(({ channel }) => channel);
-  } catch (ignored) {}
+  // try {
+  //   const {
+  //     attributes: { sub },
+  //   } = await Auth.currentAuthenticatedUser();
+  //   user = serializeModel(await DataStore.query(User, sub));
+  //   userChannels = (await DataStore.query(UserChannel))
+  //     .filter(c => c.user.id === user.id)
+  //     .map(({ channel }) => channel);
+  // } catch (ignored) {}
 
   console.log({ user });
   return {
     props: {
-      media: serializeModel(media),
+      media: {},
       user,
-      channels: serializeModel(channels),
-      userChannels: serializeModel(userChannels),
+      channels: [],
+      userChannels: userChannels,
       page,
       pages: global.pages,
     },

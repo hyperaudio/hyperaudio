@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { withSSRContext } from 'aws-amplify';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import Container from '@material-ui/core/Container';
@@ -15,7 +15,6 @@ import Chip from '@material-ui/core/Chip';
 import TextField from '@material-ui/core/TextField';
 
 import Layout from 'src/components/Layout';
-import { Channel, User, UserChannel } from '../../models';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -39,7 +38,7 @@ const AddChannelPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
+  const [user] = useState(initialData.user ? initialData.user : null);
   console.log({ user });
 
   useEffect(() => {
@@ -61,13 +60,11 @@ const AddChannelPage = initialData => {
   const [metadata, setMetadata] = useState({});
 
   const onAddNewChannel = useCallback(async () => {
-    const channel = await DataStore.save(
-      new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
-    );
-
-    await DataStore.save(new UserChannel({ user, channel }));
-
-    router.push(`/media/?channel=${channel.id}`);
+    // const channel = await DataStore.save(
+    //   new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
+    // );
+    // await DataStore.save(new UserChannel({ user, channel }));
+    // router.push(`/media/?channel=${channel.id}`);
   }, [title, description, tags, metadata, user, router]);
 
   return (
@@ -125,19 +122,19 @@ const AddChannelPage = initialData => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    const user = serializeModel(await DataStore.query(User, sub));
-    const userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    );
+    // const user = serializeModel(await DataStore.query(User, sub));
+    // const userChannels = serializeModel(
+    //   (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    // );
 
-    return { props: { user, userChannels } };
+    return { props: { user: null, userChannels: [] } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/channel', permanent: false } };
   }

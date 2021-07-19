@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
@@ -26,8 +27,6 @@ import makeStyles from '@material-ui/core/styles/makeStyles';
 
 import { getItem, listItemsByParent, listItemsByType } from 'src/util/api';
 import Layout from 'src/components/Layout';
-
-import { Channel, User, UserChannel } from '../../models';
 
 import DeleteDialog from 'src/components/DeleteDialog';
 

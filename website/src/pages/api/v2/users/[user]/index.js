@@ -1,12 +1,12 @@
 import { withSSRContext } from 'aws-amplify';
 
-import { wash, getUser, setUser } from 'src/api';
+import { getUser, setUser } from 'src/api';
 import { User } from 'src/api/models';
 
 const handler = async (req, res) => {
   try {
     const {
-      query: { user: pk, sk = 'v0_metadata' },
+      query: { user: pk },
       method,
       body,
     } = req;

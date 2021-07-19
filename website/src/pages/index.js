@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable consistent-return */
 import NextLink from 'next/link';
 import React, { useState, useEffect, useCallback } from 'react';
 import { rgba } from 'polished';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+// import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { withSSRContext } from 'aws-amplify';
 
 // import Pagination from '@material-ui/lab/Pagination';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -30,18 +31,18 @@ import ChannelDialog from 'src/pages/channels/ChannelDialog';
 import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
 
-import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
+// import { Channel, Media, User, UserChannel, MediaChannel } from '../models';
 
 const PAGINATION_LIMIT = 7;
 
-const listMedia = async (setMedia, page) =>
-  setMedia(
-    await DataStore.query(Media, Predicates.ALL, {
-      page: parseInt(page, 10) - 1,
-      limit: PAGINATION_LIMIT,
-      sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-    }),
-  );
+// const listMedia = async (setMedia, page) =>
+//   setMedia(
+//     await DataStore.query(Media, Predicates.ALL, {
+//       page: parseInt(page, 10) - 1,
+//       limit: PAGINATION_LIMIT,
+//       sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+//     }),
+//   );
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -128,46 +129,46 @@ const Dashboard = props => {
   const { channels, pages, user, userChannels, mediaChannels } = props;
 
   const [channelDialog, setChannelDialog] = useState(false);
-  const [media, setMedia] = useState(deserializeModel(Media, props.media));
+  const [media, setMedia] = useState(props.media);
   const [newAnchor, setNewAnchor] = useState(null);
 
   const isMedium = useMediaQuery(theme.breakpoints.up('md'));
 
-  useEffect(() => {
-    listMedia(setMedia, page);
-    const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
+  // useEffect(() => {
+  //   listMedia(setMedia, page);
+  //   const subscription = DataStore.observe(Media).subscribe(() => listMedia(setMedia, page));
 
-    const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
-    window.addEventListener('online', handleConnectionChange);
+  //   const handleConnectionChange = () => navigator.onLine && listMedia(setMedia, page);
+  //   window.addEventListener('online', handleConnectionChange);
 
-    return () => subscription.unsubscribe();
-  }, [page]);
+  //   return () => subscription.unsubscribe();
+  // }, [page]);
 
-  const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
+  // const gotoPage = useCallback((e, page) => router.push(`?page=${page}`, undefined, { shallow: true }), [router]);
 
-  const addNewChannel = useCallback(
-    async ({ title, description, tags = [], editors = [], metadata = {} }) => {
-      const channel = await DataStore.save(
-        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
-      );
+  // const addNewChannel = useCallback(
+  //   async ({ title, description, tags = [], editors = [], metadata = {} }) => {
+  //     const channel = await DataStore.save(
+  //       new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
+  //     );
 
-      await DataStore.save(new UserChannel({ user, channel }));
-    },
-    [user],
-  );
+  //     await DataStore.save(new UserChannel({ user, channel }));
+  //   },
+  //   [user],
+  // );
 
-  const updateChannel = useCallback(async (channel, { title, description, tags = [] }) => {
-    await DataStore.save(
-      Channel.copyOf(channel, updated => {
-        updated.title = title;
-        updated.description = description;
-        updated.tags = tags;
-      }),
-    );
-  }, []);
+  // const updateChannel = useCallback(async (channel, { title, description, tags = [] }) => {
+  //   await DataStore.save(
+  //     Channel.copyOf(channel, updated => {
+  //       updated.title = title;
+  //       updated.description = description;
+  //       updated.tags = tags;
+  //     }),
+  //   );
+  // }, []);
 
   const onChannelCreate = payload => {
-    addNewChannel(payload);
+    // addNewChannel(payload);
     setChannelDialog(false);
     router.push('/channels');
   };
@@ -328,60 +329,63 @@ const Dashboard = props => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
   const {
     query: { page = 1 },
   } = context;
 
-  global.pages = global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
+  global.pages = 0; // global.pages ?? Math.ceil((await DataStore.query(Media, Predicates.ALL)).length / PAGINATION_LIMIT);
 
-  const media = await DataStore.query(Media, Predicates.ALL, {
-    page: parseInt(page, 10) - 1,
-    limit: PAGINATION_LIMIT,
-    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-  });
+  // const media = await DataStore.query(Media, Predicates.ALL, {
+  //   page: parseInt(page, 10) - 1,
+  //   limit: PAGINATION_LIMIT,
+  //   sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  // });
+  const media = [];
 
-  const channels = await DataStore.query(Channel, Predicates.ALL, {
-    // page: parseInt(page, 10) - 1,
-    // limit: PAGINATION_LIMIT,
-    sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-  });
+  // const channels = await DataStore.query(Channel, Predicates.ALL, {
+  //   // page: parseInt(page, 10) - 1,
+  //   // limit: PAGINATION_LIMIT,
+  //   sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  // });
+
+  const channels = [];
 
   let user = null;
   let userChannels = [];
   let mediaChannels = [];
 
-  try {
-    const {
-      attributes: { sub },
-    } = await Auth.currentAuthenticatedUser();
-    user = await DataStore.query(User, sub);
-    userChannels = (await DataStore.query(UserChannel))
-      .filter(c => c.user.id === user.id)
-      .map(({ channel }) => channel);
-    // userChannels = await DataStore.query(UserChannel);
-    // userChannels = await DataStore.query(UserChannel, uc => uc.parent('eq', user.id));
-  } catch (ignored) {}
+  // try {
+  //   const {
+  //     attributes: { sub },
+  //   } = await Auth.currentAuthenticatedUser();
+  //   user = await DataStore.query(User, sub);
+  //   userChannels = (await DataStore.query(UserChannel))
+  //     .filter(c => c.user.id === user.id)
+  //     .map(({ channel }) => channel);
+  //   // userChannels = await DataStore.query(UserChannel);
+  //   // userChannels = await DataStore.query(UserChannel, uc => uc.parent('eq', user.id));
+  // } catch (ignored) {}
 
-  mediaChannels = Object.values(
-    serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
-      const entry = acc[channel.id] ?? { channel, media: [] };
-      if (!entry.media.find(m => m.id === media.id)) entry.media.push(media);
-      entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(b).getTime() - new Date(a).getTime());
+  // mediaChannels = Object.values(
+  //   serializeModel(await DataStore.query(MediaChannel)).reduce((acc, { channel, media }) => {
+  //     const entry = acc[channel.id] ?? { channel, media: [] };
+  //     if (!entry.media.find(m => m.id === media.id)) entry.media.push(media);
+  //     entry.media.sort(({ updatedAt: a }, { updatedAt: b }) => new Date(b).getTime() - new Date(a).getTime());
 
-      acc[channel.id] = entry;
-      return acc;
-    }, {}),
-  ).sort(
-    ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(b).getTime() - new Date(a).getTime(),
-  );
+  //     acc[channel.id] = entry;
+  //     return acc;
+  //   }, {}),
+  // ).sort(
+  //   ({ media: [{ updatedAt: a }] }, { media: [{ updatedAt: b }] }) => new Date(b).getTime() - new Date(a).getTime(),
+  // );
 
   return {
     props: {
-      media: serializeModel(media),
-      user: serializeModel(user),
-      channels: serializeModel(channels),
-      userChannels: serializeModel(userChannels),
+      media: media,
+      user: user,
+      channels: channels,
+      userChannels: userChannels,
       mediaChannels,
       page,
       pages: global.pages,

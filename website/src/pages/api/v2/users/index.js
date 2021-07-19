@@ -1,6 +1,6 @@
-import { withSSRContext } from 'aws-amplify';
+// import { withSSRContext } from 'aws-amplify';
 
-import { getItem, setItem } from 'src/util/api';
+// import { getItem, setItem } from 'src/util/api';
 
 const handler = async (req, res) => {
   try {
@@ -9,7 +9,7 @@ const handler = async (req, res) => {
       // body,
     } = req;
 
-    const { Auth } = withSSRContext({ req });
+    // const { Auth } = withSSRContext({ req });
 
     switch (method) {
       case 'GET':
