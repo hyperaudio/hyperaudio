@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
-import Embedly from 'embedly';
+// import Embedly from 'embedly';
 import { Storage, withSSRContext } from 'aws-amplify';
 // import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
@@ -294,17 +294,17 @@ export default function AddMediaPage(initialData) {
       if (!key) return;
 
       // TODO use https://api.embed.ly/1/oembed?key=KEY&urls=URL
-      const embedly = new Embedly({ key, secure: true });
-      embedly.oembed({ url }, (err, objs = []) => {
-        if (err) return;
+      // const embedly = new Embedly({ key, secure: true });
+      // embedly.oembed({ url }, (err, objs = []) => {
+      //   if (err) return;
 
-        const data = objs.pop();
-        const { title = '', description = '', provider_name: platform } = data;
-        setTitle(title);
-        setDescription(description);
-        setMetadata({ embedly: data });
-        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-      });
+      //   const data = objs.pop();
+      //   const { title = '', description = '', provider_name: platform } = data;
+      //   setTitle(title);
+      //   setDescription(description);
+      //   setMetadata({ embedly: data });
+      //   if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+      // });
     };
 
     oembed();

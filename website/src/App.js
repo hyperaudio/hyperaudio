@@ -9,10 +9,11 @@ import { ThemeProvider } from '@material-ui/core/styles';
 import useTheme from 'src/hooks/useTheme';
 
 // import awsconfig from './aws-config';
-// import awsexports from './aws-exports';
+import awsexports from './aws-exports';
 
 global.Amplify = Amplify;
 
+Amplify.configure({ ...awsexports });
 // Amplify.configure({ ...awsexports, ...awsconfig });
 
 // Analytics.autoTrack('session', {
