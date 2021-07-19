@@ -4,12 +4,12 @@ applications:
       phases:
         preBuild:
           commands:
-            - npm install
+            - yarn
         build:
           commands:
             - npm run build
       artifacts:
-        baseDirectory: .next
+        baseDirectory: build
         files:
           - '**/*'
       cache:
