@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -7,9 +8,9 @@ import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { rgba } from 'polished';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+// import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { withSSRContext } from 'aws-amplify';
 import axios from 'axios';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -49,7 +50,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
-import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
+// import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
 import DeleteDialog from 'src/components/DeleteDialog';
 import Footer from 'src/components/Footer';
@@ -175,7 +176,7 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+// const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
 const MediaPage = initialData => {
   const classes = useStyles();
@@ -185,9 +186,9 @@ const MediaPage = initialData => {
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
 
-  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
-  const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
-  const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
+  const initialMedia = useMemo(() => initialData.media, [initialData]);
+  const userChannels = useMemo(() => initialData.userChannels, [initialData]);
+  const mediaChannel = useMemo(() => initialData.mediaChannel?.pop(), [initialData]);
   // console.log({ userChannels, mediaChannel, channels, transcripts });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
@@ -283,26 +284,26 @@ const MediaPage = initialData => {
   };
 
   const onSave = useCallback(async () => {
-    console.log('onSave:', { title }, { description }, { tags });
-    await DataStore.save(
-      Media.copyOf(media, updated => {
-        updated.title = title;
-        updated.description = description;
-        updated.tags = tags;
-      }),
-    );
-    if (channel && !mediaChannel) {
-      await DataStore.save(new MediaChannel({ media, channel }));
-    } else if (channel) {
-      await DataStore.save(
-        MediaChannel.copyOf(mediaChannel, updated => {
-          updated.channel = channel;
-        }),
-      );
-    } else if (!channel && mediaChannel) {
-      await DataStore.delete(mediaChannel);
-    }
-    setEditable(false);
+    // console.log('onSave:', { title }, { description }, { tags });
+    // await DataStore.save(
+    //   Media.copyOf(media, updated => {
+    //     updated.title = title;
+    //     updated.description = description;
+    //     updated.tags = tags;
+    //   }),
+    // );
+    // if (channel && !mediaChannel) {
+    //   await DataStore.save(new MediaChannel({ media, channel }));
+    // } else if (channel) {
+    //   await DataStore.save(
+    //     MediaChannel.copyOf(mediaChannel, updated => {
+    //       updated.channel = channel;
+    //     }),
+    //   );
+    // } else if (!channel && mediaChannel) {
+    //   await DataStore.delete(mediaChannel);
+    // }
+    // setEditable(false);
   }, [media, title, description, tags, channel, mediaChannel]);
 
   const gotoTranscript = useCallback(
@@ -335,36 +336,36 @@ const MediaPage = initialData => {
     );
   }, [transcript, id, router]);
 
-  useEffect(() => {
-    getMedia(setMedia, id);
-    const subscription = DataStore.observe(Media).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
-      getMedia(setMedia, id);
-    });
-    const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
-    window.addEventListener('online', handleConnectionChange);
-    return () => subscription.unsubscribe();
-  }, [id]);
+  // useEffect(() => {
+  //   getMedia(setMedia, id);
+  //   const subscription = DataStore.observe(Media).subscribe(msg => {
+  //     console.log(msg.model, msg.opType, msg.element);
+  //     getMedia(setMedia, id);
+  //   });
+  //   const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
+  //   window.addEventListener('online', handleConnectionChange);
+  //   return () => subscription.unsubscribe();
+  // }, [id]);
 
-  useEffect(() => {
-    if (!media || !media.url) return;
-    const signURL = async () => {
-      const prefix = 's3://hyperpink-data/public/';
-      if (media.url.startsWith(prefix)) {
-        setUrl(await Storage.get(media.url.substring(prefix.length)));
-      } else {
-        setUrl(media.url);
-      }
-    };
-    signURL();
-  }, [media]);
+  // useEffect(() => {
+  //   if (!media || !media.url) return;
+  //   const signURL = async () => {
+  //     const prefix = 's3://hyperpink-data/public/';
+  //     if (media.url.startsWith(prefix)) {
+  //       setUrl(await Storage.get(media.url.substring(prefix.length)));
+  //     } else {
+  //       setUrl(media.url);
+  //     }
+  //   };
+  //   signURL();
+  // }, [media]);
 
-  useEffect(() => {
-    if (!media) return;
-    setTitle(media.title);
-    setDescription(media.description);
-    setTags(media.tags);
-  }, [media]);
+  // useEffect(() => {
+  //   if (!media) return;
+  //   setTitle(media.title);
+  //   setDescription(media.description);
+  //   setTags(media.tags);
+  // }, [media]);
 
   const menuProps = useMemo(
     () => ({
@@ -710,12 +711,12 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
   const {
     params: { id },
   } = context;
 
-  const media = await DataStore.query(Media, id);
+  const media = null; // await DataStore.query(Media, id);
   if (!media) return { notFound: true };
 
   let user = null;
@@ -724,34 +725,34 @@ export const getServerSideProps = async context => {
   let mediaChannel = null;
   let transcripts = [];
 
-  try {
-    const {
-      attributes: { sub },
-    } = await Auth.currentAuthenticatedUser();
-    user = serializeModel(await DataStore.query(User, sub));
+  // try {
+  //   const {
+  //     attributes: { sub },
+  //   } = await Auth.currentAuthenticatedUser();
+  //   user = serializeModel(await DataStore.query(User, sub));
 
-    channels = serializeModel(
-      (
-        await DataStore.query(Channel, Predicates.ALL, {
-          // page: parseInt(page, 10) - 1,
-          // limit: PAGINATION_LIMIT,
-          sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-        })
-      ).filter(({ editors }) => editors?.includes(user.id)),
-    );
+  //   channels = serializeModel(
+  //     (
+  //       await DataStore.query(Channel, Predicates.ALL, {
+  //         // page: parseInt(page, 10) - 1,
+  //         // limit: PAGINATION_LIMIT,
+  //         sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  //       })
+  //     ).filter(({ editors }) => editors?.includes(user.id)),
+  //   );
 
-    userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    ).concat(channels);
-  } catch (ignored) {}
+  //   userChannels = serializeModel(
+  //     (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+  //   ).concat(channels);
+  // } catch (ignored) {}
 
-  mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
-  transcripts = serializeModel((await DataStore.query(Transcript)).filter(({ media }) => media === id));
+  // mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
+  // transcripts = serializeModel((await DataStore.query(Transcript)).filter(({ media }) => media === id));
   // console.log({ user });
 
   return {
     props: {
-      media: serializeModel(media),
+      media: media,
       user,
       channels,
       transcripts,

@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
-import Embedly from 'embedly';
-import { Storage, withSSRContext, DataStore } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+// import Embedly from 'embedly';
+import { Storage, withSSRContext } from 'aws-amplify';
+// import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -32,10 +33,11 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FileInput from 'src/components/FileInput';
 import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
-import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
+// import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
-const MATCH_URL_YOUTUBE = /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+const MATCH_URL_YOUTUBE =
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 const MATCH_URL_SOUNDCLOUD = /(?:soundcloud\.com|snd\.sc)\/[^.]+$/;
 const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 const AUDIO_EXTENSIONS = /\.(m4a|mp4a|mpga|mp2|mp2a|mp3|m2a|m3a|wav|weba|aac|oga|spx)($|\?)/i;
@@ -110,7 +112,7 @@ const MetaForm = ({
   return (
     <form>
       <TextField
-        autoFocus
+        // autoFocus
         fullWidth
         label="Title"
         margin="dense"
@@ -175,9 +177,9 @@ const MetaForm = ({
 
 export default function AddMediaPage(initialData) {
   const router = useRouter();
-  const [user] = useState(initialData.user ? deserializeModel(User, initialData.user) : null);
+  const [user] = useState(initialData.user ? initialData.user : null);
 
-  const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
+  const userChannels = useMemo(() => initialData.userChannels, [initialData]);
 
   useEffect(() => {
     onAuthUIStateChange((authState, authData) => {
@@ -292,17 +294,17 @@ export default function AddMediaPage(initialData) {
       if (!key) return;
 
       // TODO use https://api.embed.ly/1/oembed?key=KEY&urls=URL
-      const embedly = new Embedly({ key, secure: true });
-      embedly.oembed({ url }, (err, objs = []) => {
-        if (err) return;
+      // const embedly = new Embedly({ key, secure: true });
+      // embedly.oembed({ url }, (err, objs = []) => {
+      //   if (err) return;
 
-        const data = objs.pop();
-        const { title = '', description = '', provider_name: platform } = data;
-        setTitle(title);
-        setDescription(description);
-        setMetadata({ embedly: data });
-        if (platform && !tags.includes(platform)) setTags([...tags, platform]);
-      });
+      //   const data = objs.pop();
+      //   const { title = '', description = '', provider_name: platform } = data;
+      //   setTitle(title);
+      //   setDescription(description);
+      //   setMetadata({ embedly: data });
+      //   if (platform && !tags.includes(platform)) setTags([...tags, platform]);
+      // });
     };
 
     oembed();
@@ -312,15 +314,12 @@ export default function AddMediaPage(initialData) {
     async channel => {
       // TODO: channels
       // console.log({ url, title, description, tags });
-      const media = await DataStore.save(
-        new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
-      );
-
-      console.log({ media });
-
+      // const media = await DataStore.save(
+      //   new Media({ url, title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
+      // );
+      // console.log({ media });
       // if (channel) await DataStore.save(new MediaChannel({ media, channel }));
-
-      router.push(`/media/${media.id}`);
+      // router.push(`/media/${media.id}`);
     },
     [url, title, description, tags, metadata, user, router],
   );
@@ -488,7 +487,7 @@ export default function AddMediaPage(initialData) {
                       ) : (
                         <form>
                           <TextField
-                            autoFocus
+                            // autoFocus
                             error={url.length > 0 && !isValid}
                             fullWidth
                             helperText="Youtube, Vimeo, Soundcloud or direct link to a media file"
@@ -557,19 +556,19 @@ export default function AddMediaPage(initialData) {
 }
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    const user = serializeModel(await DataStore.query(User, sub));
-    const userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    );
+    // const user = serializeModel(await DataStore.query(User, sub));
+    // const userChannels = serializeModel(
+    //   (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+    // );
 
-    return { props: { user, userChannels } };
+    return { props: { user: null, userChannels: [] } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/media', permanent: false } };
   }

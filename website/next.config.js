@@ -8,6 +8,7 @@ const { default: nextSafe } = require('next-safe');
 const isDev = process.env.NODE_ENV !== 'production';
 
 module.exports = withMDX({
+  distDir: 'build',
   webpack5: true,
 
   pageExtensions: ['js', 'jsx', 'mdx'],
@@ -19,12 +20,9 @@ module.exports = withMDX({
       use: ['@svgr/webpack'],
     });
 
-    // if (!isServer) {
-    //   // eslint-disable-next-line no-param-reassign
-    //   config.node = {
-    //     fs: 'empty',
-    //   };
-    // }
+    if (!isServer) {
+      config.resolve.fallback.fs = false;
+    }
 
     config.plugins.push(new webpack.IgnorePlugin(/^hiredis$/));
 
@@ -72,4 +70,17 @@ module.exports = withMDX({
   //     },
   //   ];
   // },
+
+  async rewrites() {
+    return [
+      // {
+      //   source: '/api/v2/channels',
+      //   destination: '/api/v2/users/-/channels',
+      // },
+      {
+        source: '/api/v2/channels/:channel',
+        destination: '/api/v2/users/-/channels/:channel',
+      },
+    ];
+  },
 });

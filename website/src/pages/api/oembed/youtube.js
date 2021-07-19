@@ -1,9 +1,10 @@
 import axios from 'axios';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
-const MATCH_URL_YOUTUBE = /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+// const MATCH_URL_YOUTUBE =
+//   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 
-export default async (req, res) => {
+const handler = async (req, res) => {
   const {
     query: { url },
   } = req;
@@ -20,3 +21,5 @@ export default async (req, res) => {
   res.statusCode = 200;
   res.json(data);
 };
+
+export default handler;

@@ -49,10 +49,7 @@ export default function Topbar() {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then(user => {
-        console.log('User: ', user);
-        setUser(user);
-      })
+      .then(user => setUser(user))
       .catch(() => setUser(null));
   }, [setUser]);
 
