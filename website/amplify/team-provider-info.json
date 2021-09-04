@@ -20,6 +20,20 @@
       },
       "auth": {
         "Hyperaudio": {}
+      },
+      "function": {
+        "transcode": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
+          "s3Key": "amplify-builds/transcode-4c4d5a36756f47457a42-build.zip"
+        },
+        "transcribe": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
+          "s3Key": "amplify-builds/transcribe-414f476273316b414236-build.zip"
+        },
+        "api": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
+          "s3Key": "amplify-builds/api-6d3232336831714a4a47-build.zip"
+        }
       }
     }
   }
