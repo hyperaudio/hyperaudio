@@ -13,7 +13,7 @@ import awsexports from './aws-exports';
 
 global.Amplify = Amplify;
 
-Amplify.configure({ ...awsexports });
+Amplify.configure({ ...awsexports, ssr: true });
 // Amplify.configure({ ...awsexports, ...awsconfig });
 
 // Analytics.autoTrack('session', {

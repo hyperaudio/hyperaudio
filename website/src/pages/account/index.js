@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 
 import Layout from 'src/components/Layout';
 import { wash, getUser, setUser as saveUser } from 'src/api';
-import { User } from 'src/api/models';
+import User from 'src/api/models/User';
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -131,6 +131,7 @@ export const getServerSideProps = async context => {
 
     return { props: { user } };
   } catch (error) {
+    console.log(error);
     return { redirect: { destination: '/auth/?redirect=/account', permanent: false } };
   }
 };

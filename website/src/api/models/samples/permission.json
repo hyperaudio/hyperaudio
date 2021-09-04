@@ -1,0 +1,7 @@
+{
+  "pk": "user:5a121422-2f39-440a-882d-064f99d8df2a",
+  "sk": "v0_channel:RYBbmLX43W2KPCuH3vSJTw",
+  "gsi1pk": "channel:RYBbmLX43W2KPCuH3vSJTw",
+  "gsi1sk": "user:5a121422-2f39-440a-882d-064f99d8df2a",
+  "can": ["delete"]
+}

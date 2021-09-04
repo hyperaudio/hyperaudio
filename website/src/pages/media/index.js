@@ -145,7 +145,7 @@ export const getServerSideProps = async context => {
   console.log({ user });
   return {
     props: {
-      media: {},
+      media: [],
       user,
       channels: [],
       userChannels: userChannels,

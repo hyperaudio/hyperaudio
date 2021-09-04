@@ -8,6 +8,8 @@
   "scripts": {
     "status": "npx oao status",
     "clean": "npx oao clean",
+    "build": "lerna run build",
+    "start": "lerna run --parallel start",
     "postinstall": "patch-package"
   },
   "workspaces": [
@@ -15,6 +17,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "lerna": "^4.0.0",
     "patch-package": "^6.4.7",
     "postinstall-postinstall": "^2.1.0"
   }

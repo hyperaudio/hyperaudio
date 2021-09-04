@@ -13,5 +13,22 @@
       "type": "cicd",
       "lastPushTimeStamp": "2021-07-19T18:01:22.683Z"
     }
+  },
+  "function": {
+    "api": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "transcode": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    },
+    "transcribe": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
   }
 }

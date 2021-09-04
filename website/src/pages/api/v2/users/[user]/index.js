@@ -1,7 +1,7 @@
 import { withSSRContext } from 'aws-amplify';
 
 import { getUser, setUser } from 'src/api';
-import { User } from 'src/api/models';
+import User from 'src/api/models/User';
 
 const handler = async (req, res) => {
   try {
