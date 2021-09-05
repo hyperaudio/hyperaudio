@@ -27,6 +27,16 @@
           "sortKeyName": "sk",
           "sortKeyType": "S"
         }
+      },
+      "function": {
+        "transcode": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/transcode-646d504a505534726557-build.zip"
+        },
+        "transcribe": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/transcribe-6962776b4e3766336e56-build.zip"
+        }
       }
     }
   }
