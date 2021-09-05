@@ -13,7 +13,7 @@ import awsconfig from './aws-config';
 global.Amplify = Amplify;
 
 Amplify.configure({ ...awsexports, ...awsconfig });
-Analytics.record();
+// Analytics.record();
 
 const Provider = props => {
   const theme = useTheme();

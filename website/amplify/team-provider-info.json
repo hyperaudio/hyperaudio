@@ -44,12 +44,6 @@
       },
       "auth": {
         "Hyperaudio": {}
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d2y3mvty9ur9jk",
-          "type": "manual"
-        }
       }
     }
   }
