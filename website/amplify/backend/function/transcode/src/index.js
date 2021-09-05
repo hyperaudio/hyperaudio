@@ -8,15 +8,16 @@
 Amplify Params - DO NOT EDIT */
 
 exports.handler = async event => {
-  // TODO implement
+  const {
+    detail: { eventName, resources },
+  } = event;
+
+  console.log(eventName, JSON.stringify(resources));
+
   const response = {
-    statusCode: 200,
-    //  Uncomment below to enable CORS requests
-    //  headers: {
-    //      "Access-Control-Allow-Origin": "*",
-    //      "Access-Control-Allow-Headers": "*"
-    //  },
-    body: JSON.stringify('Hello from Lambda!'),
+    eventName,
+    resources,
   };
+
   return response;
 };

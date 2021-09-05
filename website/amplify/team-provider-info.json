@@ -31,7 +31,7 @@
       "function": {
         "transcode": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcode-646d504a505534726557-build.zip"
+          "s3Key": "amplify-builds/transcode-47747a33636966594134-build.zip"
         },
         "transcribe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
@@ -39,11 +39,17 @@
         },
         "items": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/items-776844336b38626f6779-build.zip"
+          "s3Key": "amplify-builds/items-536c6167766e49466d71-build.zip"
         }
       },
       "auth": {
         "Hyperaudio": {}
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2y3mvty9ur9jk",
+          "type": "manual"
+        }
       }
     }
   }
