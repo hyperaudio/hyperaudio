@@ -36,7 +36,26 @@ const awsmobile = {
             "endpoint": "https://cg0hw8tey7.execute-api.eu-west-1.amazonaws.com/staging",
             "region": "eu-west-1"
         }
-    ]
+    ],
+    "predictions": {
+        "convert": {
+            "transcription": {
+                "region": "eu-west-1",
+                "proxy": false,
+                "defaults": {
+                    "language": "en-US"
+                }
+            },
+            "translateText": {
+                "region": "eu-west-1",
+                "proxy": false,
+                "defaults": {
+                    "sourceLanguage": "en",
+                    "targetLanguage": "es"
+                }
+            }
+        }
+    }
 };
 
 
