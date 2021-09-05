@@ -37,6 +37,9 @@
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
           "s3Key": "amplify-builds/transcribe-6962776b4e3766336e56-build.zip"
         }
+      },
+      "auth": {
+        "Hyperaudio": {}
       }
     }
   }

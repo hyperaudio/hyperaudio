@@ -27,7 +27,9 @@ const awsmobile = {
             "tableName": "hyperaudio-data",
             "region": "eu-west-1"
         }
-    ]
+    ],
+    "aws_mobile_analytics_app_id": "9ba278ee518547c7b2a536b585397229",
+    "aws_mobile_analytics_app_region": "eu-west-1"
 };
 
 
