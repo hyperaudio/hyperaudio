@@ -15,6 +15,14 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "storagehyperaudiodataName": {
+      "Type": "String",
+      "Default": "storagehyperaudiodataName"
+    },
+    "storagehyperaudiodataArn": {
+      "Type": "String",
+      "Default": "storagehyperaudiodataArn"
     }
   },
   "Conditions": {
@@ -47,12 +55,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "api",
+            "items",
             {
               "Fn::Join": [
                 "",
                 [
-                  "api",
+                  "items",
                   "-",
                   {
                     "Ref": "env"
@@ -89,12 +97,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "hyperaudioLambdaRole3323f446",
+            "hyperaudioLambdaRolebdd879bc",
             {
               "Fn::Join": [
                 "",
                 [
-                  "hyperaudioLambdaRole3323f446",
+                  "hyperaudioLambdaRolebdd879bc",
                   "-",
                   {
                     "Ref": "env"
@@ -160,6 +168,34 @@
                   }
                 ]
               }
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:DescribeTable",
+                "dynamodb:GetItem",
+                "dynamodb:Query",
+                "dynamodb:Scan",
+                "dynamodb:PutItem",
+                "dynamodb:UpdateItem",
+                "dynamodb:DeleteItem"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagehyperaudiodataArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagehyperaudiodataArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

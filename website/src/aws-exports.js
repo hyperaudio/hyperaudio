@@ -3,11 +3,59 @@
 
 const awsmobile = {
     "aws_project_region": "eu-west-1",
-    "aws_cognito_identity_pool_id": "eu-west-1:f70fed74-666a-41a1-ae62-bdbab6ba6fb1",
+    "aws_cognito_identity_pool_id": "eu-west-1:b2d3f876-17f6-44b3-a9c2-a31ce219a78b",
     "aws_cognito_region": "eu-west-1",
-    "aws_user_pools_id": "eu-west-1_N4x6dwTVm",
-    "aws_user_pools_web_client_id": "359ncrquiaka0082mf0ivmjqvc",
-    "oauth": {}
+    "aws_user_pools_id": "eu-west-1_qRD69m8Kt",
+    "aws_user_pools_web_client_id": "mljenqs0mdegstbbka8fujng0",
+    "oauth": {},
+    "aws_cognito_signup_attributes": [
+        "EMAIL"
+    ],
+    "aws_cognito_mfa_configuration": "OPTIONAL",
+    "aws_cognito_mfa_types": [
+        "TOTP"
+    ],
+    "aws_cognito_password_protection_settings": {
+        "passwordPolicyMinLength": 8,
+        "passwordPolicyCharacters": []
+    },
+    "aws_user_files_s3_bucket": "hyperaudio-data",
+    "aws_user_files_s3_bucket_region": "eu-west-1",
+    "aws_dynamodb_all_tables_region": "eu-west-1",
+    "aws_dynamodb_table_schemas": [
+        {
+            "tableName": "hyperaudio-data",
+            "region": "eu-west-1"
+        }
+    ],
+    "aws_mobile_analytics_app_id": "9ba278ee518547c7b2a536b585397229",
+    "aws_mobile_analytics_app_region": "eu-west-1",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "api",
+            "endpoint": "https://cg0hw8tey7.execute-api.eu-west-1.amazonaws.com/staging",
+            "region": "eu-west-1"
+        }
+    ],
+    "predictions": {
+        "convert": {
+            "transcription": {
+                "region": "eu-west-1",
+                "proxy": false,
+                "defaults": {
+                    "language": "en-US"
+                }
+            },
+            "translateText": {
+                "region": "eu-west-1",
+                "proxy": false,
+                "defaults": {
+                    "sourceLanguage": "en",
+                    "targetLanguage": "es"
+                }
+            }
+        }
+    }
 };
 
 

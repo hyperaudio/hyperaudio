@@ -15,6 +15,22 @@
     },
     "s3Key": {
       "Type": "String"
+    },
+    "storagehyperaudio12034b8aBucketName": {
+      "Type": "String",
+      "Default": "storagehyperaudio12034b8aBucketName"
+    },
+    "storagehyperaudiodataName": {
+      "Type": "String",
+      "Default": "storagehyperaudiodataName"
+    },
+    "storagehyperaudiodataArn": {
+      "Type": "String",
+      "Default": "storagehyperaudiodataArn"
+    },
+    "storagehyperaudiodataStreamArn": {
+      "Type": "String",
+      "Default": "storagehyperaudiodataStreamArn"
     }
   },
   "Conditions": {
@@ -69,6 +85,18 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "STORAGE_HYPERAUDIO12034B8A_BUCKETNAME": {
+              "Ref": "storagehyperaudio12034b8aBucketName"
+            },
+            "STORAGE_HYPERAUDIODATA_NAME": {
+              "Ref": "storagehyperaudiodataName"
+            },
+            "STORAGE_HYPERAUDIODATA_ARN": {
+              "Ref": "storagehyperaudiodataArn"
+            },
+            "STORAGE_HYPERAUDIODATA_STREAMARN": {
+              "Ref": "storagehyperaudiodataStreamArn"
             }
           }
         },
@@ -89,12 +117,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "hyperaudioLambdaRolee850d2e4",
+            "hyperaudioLambdaRole674a7649",
             {
               "Fn::Join": [
                 "",
                 [
-                  "hyperaudioLambdaRolee850d2e4",
+                  "hyperaudioLambdaRole674a7649",
                   "-",
                   {
                     "Ref": "env"
@@ -160,6 +188,97 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehyperaudio12034b8aBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehyperaudio12034b8aBucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Put*",
+                "dynamodb:Create*",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*",
+                "dynamodb:Delete*"
+              ],
+              "Resource": [
+                {
+                  "Ref": "storagehyperaudiodataArn"
+                },
+                {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      {
+                        "Ref": "storagehyperaudiodataArn"
+                      },
+                      "index/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

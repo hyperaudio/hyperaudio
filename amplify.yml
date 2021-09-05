@@ -9,9 +9,9 @@ applications:
           commands:
             - npm run build
       artifacts:
-        baseDirectory: build
+        baseDirectory: .next
         files:
-          - '**/*'
+          - "**/*"
       cache:
         paths:
           - node_modules/**/*

@@ -4,31 +4,137 @@
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
-      "customAuth": false
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "loginMechanisms": [],
+        "signupAttributes": [
+          "EMAIL"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": []
+        },
+        "mfaConfiguration": "OPTIONAL",
+        "mfaTypes": [
+          "TOTP"
+        ]
+      }
     }
   },
-  "hosting": {
-    "amplifyhosting": {
-      "service": "amplifyhosting",
-      "type": "cicd",
-      "lastPushTimeStamp": "2021-07-19T18:01:22.683Z"
+  "storage": {
+    "hyperaudio12034b8a": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    },
+    "hyperaudiodata": {
+      "service": "DynamoDB",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
     }
   },
   "function": {
-    "api": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    },
     "transcode": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "hyperaudio12034b8a",
+          "attributes": [
+            "BucketName"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "hyperaudiodata",
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ]
+        }
+      ]
     },
     "transcribe": {
       "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "Lambda"
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "hyperaudio12034b8a",
+          "attributes": [
+            "BucketName"
+          ]
+        },
+        {
+          "category": "storage",
+          "resourceName": "hyperaudiodata",
+          "attributes": [
+            "Name",
+            "Arn",
+            "StreamArn"
+          ]
+        }
+      ]
+    },
+    "items": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "dependsOn": [
+        {
+          "category": "storage",
+          "resourceName": "hyperaudiodata",
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "attributeEnvMap": {
+            "Name": "TABLE_NAME",
+            "Arn": "TABLE_ARN"
+          }
+        }
+      ]
+    }
+  },
+  "analytics": {
+    "hyperaudio": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "api": {
+    "api": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "items",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ]
+    }
+  },
+  "hosting": {},
+  "predictions": {
+    "transcription": {
+      "providerPlugin": "awscloudformation",
+      "service": "Transcribe",
+      "convertType": "transcription"
+    },
+    "translation": {
+      "providerPlugin": "awscloudformation",
+      "service": "Translate",
+      "convertType": "translateText"
     }
   }
 }

@@ -1,3 +1,4 @@
+
 AWSTemplateFormatVersion: 2010-09-09
 
 Parameters:
@@ -71,6 +72,10 @@ Parameters:
   requiredAttributes:
     Type: CommaDelimitedList
       
+        
+  aliasAttributes:
+    Type: CommaDelimitedList
+      
   
   userpoolClientGenerateSecret:
     Type: String
@@ -133,7 +138,6 @@ Parameters:
   adminQueries:
     Type: String
             
-            
   
   thirdPartyAuth:
     Type: String
@@ -164,7 +168,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'hyperadc747918_sns-role', !Join ['',[ 'sns', 'dc747918', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'hypera73924afa_sns-role', !Join ['',[ 'sns', '73924afa', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -176,10 +180,10 @@ Resources:
               - "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: hyperadc747918_role_external_id
+                sts:ExternalId: hypera73924afa_role_external_id
       Policies:
         -
-          PolicyName: hyperadc747918-sns-policy
+          PolicyName: hypera73924afa-sns-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -211,7 +215,10 @@ Resources:
       
       
       
-      AutoVerifiedAttributes: !Ref autoVerifiedAttributes
+      AutoVerifiedAttributes:
+      
+        - email
+      
       
       
       EmailVerificationMessage: !Ref emailVerificationMessage
@@ -227,12 +234,13 @@ Resources:
       
       UsernameAttributes: !Ref usernameAttributes
       
+      
       MfaConfiguration: !Ref mfaConfiguration
       SmsVerificationMessage: !Ref smsVerificationMessage
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: hyperadc747918_role_external_id
+        ExternalId: hypera73924afa_role_external_id
     
     DependsOn: SNSRole
     
@@ -242,7 +250,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: hyperadc747918_app_clientWeb
+      ClientName: hypera73924afa_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -252,7 +260,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: hyperadc747918_app_client
+      ClientName: hypera73924afa_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -263,7 +271,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', 'dc747918', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '73924afa', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -306,7 +314,7 @@ Resources:
             - '};'
       Handler: index.handler
       Runtime: nodejs12.x
-      Timeout: '300'
+      Timeout: 300
       Role: !GetAtt
         - UserPoolClientRole
         - Arn
@@ -317,7 +325,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: hyperadc747918_userpoolclient_lambda_iam_policy
+      PolicyName: hypera73924afa_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -334,7 +342,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: hyperadc747918_userpoolclient_lambda_log_policy
+      PolicyName: hypera73924afa_userpoolclient_lambda_log_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -371,7 +379,7 @@ Resources:
   # Created to execute Lambda which sets MFA config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'hyperadc747918_totp_lambda_role', !Join ['',['hyperadc747918_totp_lambda_role', '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'hypera73924afa_totp_lambda_role', !Join ['',['hypera73924afa_totp_lambda_role', '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -382,18 +390,18 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Policies:
-      - PolicyName: hyperadc747918_totp_pass_role_policy
+      - PolicyName: hypera73924afa_totp_pass_role_policy
         PolicyDocument:
           Version: 2012-10-17
           Statement:
             - Effect: Allow
               Action:
                 - 'iam:PassRole'
-              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/hyperadc747918_totp_lambda_role', !Join ['',['arn:aws:iam:::role/hyperadc747918_totp_lambda_role', '-', !Ref env]]]
-      - PolicyName: hyperadc747918_sns_pass_role_policy
+              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/hypera73924afa_totp_lambda_role', !Join ['',['arn:aws:iam:::role/hypera73924afa_totp_lambda_role', '-', !Ref env]]]
+      - PolicyName: hypera73924afa_sns_pass_role_policy
         PolicyDocument:
           Version: 2012-10-17
-          Statement: 
+          Statement:
             - Effect: Allow
               Action:
                 - 'iam:PassRole'
@@ -443,7 +451,7 @@ Resources:
             - '};'
       Handler: index.handler
       Runtime: nodejs12.x
-      Timeout: '300'
+      Timeout: 300
       Role: !GetAtt
         - MFALambdaRole
         - Arn
@@ -454,9 +462,9 @@ Resources:
   # Marked as depending on MFALambda for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: hyperadc747918_totp_lambda_iam_policy
+      PolicyName: hypera73924afa_totp_lambda_iam_policy
       Roles:
-        - !If [ShouldNotCreateEnvResources, 'hyperadc747918_totp_lambda_role', !Join ['',['hyperadc747918_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'hypera73924afa_totp_lambda_role', !Join ['',['hypera73924afa_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -470,9 +478,9 @@ Resources:
   # Marked as depending on MFALambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: hyperadc747918_totp_lambda_log_policy
+      PolicyName: hypera73924afa_totp_lambda_log_policy
       Roles:
-        - !If [ShouldNotCreateEnvResources, 'hyperadc747918_totp_lambda_role', !Join ['',['hyperadc747918_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'hypera73924afa_totp_lambda_role', !Join ['',['hypera73924afa_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -498,7 +506,7 @@ Resources:
       totpEnabled: true
       smsConfigCaller: !GetAtt SNSRole.Arn
       smsAuthenticationMessage: !Ref smsAuthenticationMessage
-      smsConfigExternalId: hyperadc747918_role_external_id
+      smsConfigExternalId: hypera73924afa_role_external_id
     DependsOn: MFALogPolicy
   
     
