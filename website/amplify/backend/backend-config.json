@@ -124,7 +124,13 @@
       ]
     }
   },
-  "hosting": {},
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "type": "cicd",
+      "lastPushTimeStamp": "2021-09-05T17:35:14.409Z"
+    }
+  },
   "predictions": {
     "transcription": {
       "providerPlugin": "awscloudformation",

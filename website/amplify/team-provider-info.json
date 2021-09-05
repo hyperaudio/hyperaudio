@@ -1,50 +1,56 @@
 {
-  "staging": {
-    "awscloudformation": {
-      "AuthRoleName": "amplify-hyperaudio-staging-141132-authRole",
-      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-authRole",
-      "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-      "UnauthRoleName": "amplify-hyperaudio-staging-141132-unauthRole",
-      "StackName": "amplify-hyperaudio-staging-141132",
-      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-141132/2c78c730-0e53-11ec-b9b1-0ad71ec068e7",
-      "AmplifyAppId": "d2y3mvty9ur9jk"
-    },
-    "categories": {
-      "storage": {
-        "hyperaudio12034b8a": {
-          "bucketName": "hyperaudio-data",
-          "region": "eu-west-1"
+    "staging": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-hyperaudio-staging-141132-authRole",
+            "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-authRole",
+            "Region": "eu-west-1",
+            "DeploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+            "UnauthRoleName": "amplify-hyperaudio-staging-141132-unauthRole",
+            "StackName": "amplify-hyperaudio-staging-141132",
+            "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-141132/2c78c730-0e53-11ec-b9b1-0ad71ec068e7",
+            "AmplifyAppId": "d2y3mvty9ur9jk"
         },
-        "hyperaudiodata": {
-          "tableName": "hyperaudio-data",
-          "region": "eu-west-1",
-          "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
-          "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
-          "partitionKeyName": "pk",
-          "partitionKeyType": "S",
-          "sortKeyName": "sk",
-          "sortKeyType": "S"
+        "categories": {
+            "storage": {
+                "hyperaudio12034b8a": {
+                    "bucketName": "hyperaudio-data",
+                    "region": "eu-west-1"
+                },
+                "hyperaudiodata": {
+                    "tableName": "hyperaudio-data",
+                    "region": "eu-west-1",
+                    "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
+                    "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
+                    "partitionKeyName": "pk",
+                    "partitionKeyType": "S",
+                    "sortKeyName": "sk",
+                    "sortKeyType": "S"
+                }
+            },
+            "function": {
+                "transcode": {
+                    "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+                    "s3Key": "amplify-builds/transcode-47747a33636966594134-build.zip"
+                },
+                "transcribe": {
+                    "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+                    "s3Key": "amplify-builds/transcribe-6962776b4e3766336e56-build.zip"
+                },
+                "items": {
+                    "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+                    "s3Key": "amplify-builds/items-536c6167766e49466d71-build.zip"
+                }
+            },
+            "auth": {
+                "Hyperaudio": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d2y3mvty9ur9jk",
+                    "type": "cicd"
+                }
+            }
         }
-      },
-      "function": {
-        "transcode": {
-          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcode-47747a33636966594134-build.zip"
-        },
-        "transcribe": {
-          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcribe-6962776b4e3766336e56-build.zip"
-        },
-        "items": {
-          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/items-536c6167766e49466d71-build.zip"
-        }
-      },
-      "auth": {
-        "Hyperaudio": {}
-      }
     }
-  }
 }
