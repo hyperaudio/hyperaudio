@@ -10,6 +10,14 @@
       "StackName": "amplify-hyperaudio-staging-141132",
       "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-141132/2c78c730-0e53-11ec-b9b1-0ad71ec068e7",
       "AmplifyAppId": "d2y3mvty9ur9jk"
+    },
+    "categories": {
+      "storage": {
+        "hyperaudio12034b8a": {
+          "bucketName": "hyperaudio-data",
+          "region": "eu-west-1"
+        }
+      }
     }
   }
 }

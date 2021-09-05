@@ -20,5 +20,13 @@
         ]
       }
     }
+  },
+  "storage": {
+    "hyperaudio12034b8a": {
+      "service": "S3",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

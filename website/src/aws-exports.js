@@ -18,7 +18,9 @@ const awsmobile = {
     "aws_cognito_password_protection_settings": {
         "passwordPolicyMinLength": 8,
         "passwordPolicyCharacters": []
-    }
+    },
+    "aws_user_files_s3_bucket": "hyperaudio-data",
+    "aws_user_files_s3_bucket_region": "eu-west-1"
 };
 
 
