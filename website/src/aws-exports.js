@@ -20,7 +20,14 @@ const awsmobile = {
         "passwordPolicyCharacters": []
     },
     "aws_user_files_s3_bucket": "hyperaudio-data",
-    "aws_user_files_s3_bucket_region": "eu-west-1"
+    "aws_user_files_s3_bucket_region": "eu-west-1",
+    "aws_dynamodb_all_tables_region": "eu-west-1",
+    "aws_dynamodb_table_schemas": [
+        {
+            "tableName": "hyperaudio-data",
+            "region": "eu-west-1"
+        }
+    ]
 };
 
 

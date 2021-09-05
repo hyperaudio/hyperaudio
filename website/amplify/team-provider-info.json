@@ -16,6 +16,16 @@
         "hyperaudio12034b8a": {
           "bucketName": "hyperaudio-data",
           "region": "eu-west-1"
+        },
+        "hyperaudiodata": {
+          "tableName": "hyperaudio-data",
+          "region": "eu-west-1",
+          "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
+          "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
+          "partitionKeyName": "pk",
+          "partitionKeyType": "S",
+          "sortKeyName": "sk",
+          "sortKeyType": "S"
         }
       }
     }
