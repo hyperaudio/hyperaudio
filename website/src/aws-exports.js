@@ -29,7 +29,14 @@ const awsmobile = {
         }
     ],
     "aws_mobile_analytics_app_id": "9ba278ee518547c7b2a536b585397229",
-    "aws_mobile_analytics_app_region": "eu-west-1"
+    "aws_mobile_analytics_app_region": "eu-west-1",
+    "aws_cloud_logic_custom": [
+        {
+            "name": "api",
+            "endpoint": "https://cg0hw8tey7.execute-api.eu-west-1.amazonaws.com/staging",
+            "region": "eu-west-1"
+        }
+    ]
 };
 
 
