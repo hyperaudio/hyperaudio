@@ -30,9 +30,9 @@
           "deploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
           "s3Key": "amplify-builds/transcribe-414f476273316b414236-build.zip"
         },
-        "api": {
+        "S3Triggera4ba362b": {
           "deploymentBucketName": "amplify-hyperaudio-staging-165035-deployment",
-          "s3Key": "amplify-builds/api-6d3232336831714a4a47-build.zip"
+          "s3Key": "amplify-builds/S3Triggera4ba362b-3838344e655a69555363-build.zip"
         }
       }
     }

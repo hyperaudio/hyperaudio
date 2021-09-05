@@ -8,13 +8,12 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import useTheme from 'src/hooks/useTheme';
 
-// import awsconfig from './aws-config';
 import awsexports from './aws-exports';
+import awsconfig from './aws-config';
 
 global.Amplify = Amplify;
 
-Amplify.configure({ ...awsexports, ssr: true });
-// Amplify.configure({ ...awsexports, ...awsconfig });
+Amplify.configure({ ...awsexports, ...awsconfig });
 
 // Analytics.autoTrack('session', {
 //   enable: true,

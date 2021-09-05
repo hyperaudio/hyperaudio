@@ -7,7 +7,9 @@ const awsmobile = {
     "aws_cognito_region": "eu-west-1",
     "aws_user_pools_id": "eu-west-1_N4x6dwTVm",
     "aws_user_pools_web_client_id": "359ncrquiaka0082mf0ivmjqvc",
-    "oauth": {}
+    "oauth": {},
+    "aws_user_files_s3_bucket": "hyperaudio-data165035-staging",
+    "aws_user_files_s3_bucket_region": "eu-west-1"
 };
 
 
