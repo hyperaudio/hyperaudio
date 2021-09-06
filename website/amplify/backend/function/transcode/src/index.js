@@ -16,9 +16,9 @@ const {
   // STORAGE_HYPERAUDIODATA_ARN,
   // STORAGE_HYPERAUDIODATA_NAME,
   // STORAGE_HYPERAUDIODATA_STREAMARN,
-  MEDIA_CONVERT_API, // https://r1eeew44a.mediaconvert.eu-west-1.amazonaws.com
-  MEDIA_CONVERT_ROLE, // arn:aws:iam::585082712647:role/mediaConvertRole
-  MEDIA_CONVERT_QUEUE, // arn:aws:mediaconvert:eu-west-1:585082712647:queues/Default
+  MEDIA_CONVERT_API,
+  MEDIA_CONVERT_ROLE,
+  MEDIA_CONVERT_QUEUE,
 } = process.env;
 
 const mediaConvert = new AWS.MediaConvert({
