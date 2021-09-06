@@ -41,8 +41,8 @@ class Item {
     this.pk = pk ?? `${this.type}:${this.id}`;
     this.sk = sk ?? `v0_${this.pk}`;
 
-    this.gsi1pk = gsi1pk ?? this.pk;
-    this.gsi1sk = gsi1sk ?? this.sk;
+    this.gsi1pk = gsi1pk ?? this.sk; // FIXME
+    this.gsi1sk = gsi1sk ?? this.pk; // FIXME
 
     this.version = parseInt(version);
 
