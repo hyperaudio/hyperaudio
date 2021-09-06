@@ -50,7 +50,7 @@
         },
         "eventstream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/eventstream-366d36744a6f35543967-build.zip"
+          "s3Key": "amplify-builds/eventstream-6541362b53634a456d71-build.zip"
         }
       },
       "auth": {
