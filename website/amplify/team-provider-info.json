@@ -31,18 +31,22 @@
       "function": {
         "transcode": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcode-69375232424d46486561-build.zip",
+          "s3Key": "amplify-builds/transcode-77692f4265683143784a-build.zip",
           "mediaConvertApi": "https://r1eeew44a.mediaconvert.eu-west-1.amazonaws.com",
           "mediaConvertRole": "arn:aws:iam::585082712647:role/mediaConvertRole",
           "mediaConvertQueue": "arn:aws:mediaconvert:eu-west-1:585082712647:queues/Default"
         },
         "transcribe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcribe-6962776b4e3766336e56-build.zip"
+          "s3Key": "amplify-builds/transcribe-32754c58513677596b52-build.zip"
         },
         "items": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
           "s3Key": "amplify-builds/items-536c6167766e49466d71-build.zip"
+        },
+        "datastream": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/datastream-657358512f6344742f50-build.zip"
         }
       },
       "auth": {
