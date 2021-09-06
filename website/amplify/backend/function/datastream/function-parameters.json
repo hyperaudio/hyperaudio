@@ -1,3 +1,27 @@
 {
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "permissions": {
+    "storage": {
+      "hyperaudio12034b8a": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    },
+    "function": {
+      "transcode": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ],
+      "transcribe": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

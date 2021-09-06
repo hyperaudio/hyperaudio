@@ -1,4 +1,10 @@
-
+/* Amplify Params - DO NOT EDIT
+	ENV
+	FUNCTION_TRANSCODE_NAME
+	FUNCTION_TRANSCRIBE_NAME
+	REGION
+	STORAGE_HYPERAUDIO12034B8A_BUCKETNAME
+Amplify Params - DO NOT EDIT */
 
 exports.handler = event => {
   //eslint-disable-line
