@@ -651,7 +651,7 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
   return metadata ? (
     <div id="hypertranscript" className="hyperaudio-transcript">
       <article>
-        <section>{transcript?.transcript}</section>
+        <section>{transcript?.results?.transcripts?.[0]?.transcript}</section>
       </article>
     </div>
   ) : null;
