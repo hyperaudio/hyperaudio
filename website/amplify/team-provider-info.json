@@ -47,6 +47,10 @@
         "datastream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
           "s3Key": "amplify-builds/datastream-33582b4b4667626b2b59-build.zip"
+        },
+        "eventstream": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/eventstream-366d36744a6f35543967-build.zip"
         }
       },
       "auth": {
