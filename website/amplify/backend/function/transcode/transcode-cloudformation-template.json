@@ -31,6 +31,15 @@
     "storagehyperaudiodataStreamArn": {
       "Type": "String",
       "Default": "storagehyperaudiodataStreamArn"
+    },
+    "mediaConvertApi": {
+      "Type": "String"
+    },
+    "mediaConvertRole": {
+      "Type": "String"
+    },
+    "mediaConvertQueue": {
+      "Type": "String"
     }
   },
   "Conditions": {
@@ -97,6 +106,15 @@
             },
             "STORAGE_HYPERAUDIODATA_STREAMARN": {
               "Ref": "storagehyperaudiodataStreamArn"
+            },
+            "MEDIA_CONVERT_API": {
+              "Ref": "mediaConvertApi"
+            },
+            "MEDIA_CONVERT_ROLE": {
+              "Ref": "mediaConvertRole"
+            },
+            "MEDIA_CONVERT_QUEUE": {
+              "Ref": "mediaConvertQueue"
             }
           }
         },

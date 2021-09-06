@@ -15,5 +15,19 @@
       ]
     }
   },
-  "lambdaLayers": []
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "mediaConvertApi",
+      "environmentVariableName": "MEDIA_CONVERT_API"
+    },
+    {
+      "cloudFormationParameterName": "mediaConvertRole",
+      "environmentVariableName": "MEDIA_CONVERT_ROLE"
+    },
+    {
+      "cloudFormationParameterName": "mediaConvertQueue",
+      "environmentVariableName": "MEDIA_CONVERT_QUEUE"
+    }
+  ]
 }
