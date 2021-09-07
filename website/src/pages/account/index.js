@@ -48,12 +48,12 @@ const AccountPage = initialData => {
   }, [user]);
 
   // TODO test this:
-  useEffect(() => {
-    onAuthUIStateChange((authState, authData) => {
-      console.log({ authState, authData });
-      if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
-    });
-  }, [router]);
+  // useEffect(() => {
+  //   onAuthUIStateChange((authState, authData) => {
+  //     console.log({ authState, authData });
+  //     if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
+  //   });
+  // }, [router]);
 
   const handleSave = useCallback(async () => {
     const nextUserState = produce(user, draftUser => {
@@ -131,7 +131,7 @@ export const getServerSideProps = async context => {
 
     return { props: { user } };
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return { redirect: { destination: '/auth/?redirect=/account', permanent: false } };
   }
 };

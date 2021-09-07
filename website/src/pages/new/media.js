@@ -33,7 +33,9 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import FileInput from 'src/components/FileInput';
 import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
-// import { Media, User, Channel, UserChannel, MediaChannel } from '../../models';
+
+import { wash, getUser, setUser as saveUser } from 'src/api';
+import User from 'src/api/models/User';
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
 const MATCH_URL_YOUTUBE =
@@ -177,8 +179,7 @@ const MetaForm = ({
 
 export default function AddMediaPage(initialData) {
   const router = useRouter();
-  const [user] = useState(initialData.user ? initialData.user : null);
-
+  const user = useMemo(() => new User(initialData.user), [initialData]);
   const userChannels = useMemo(() => initialData.userChannels, [initialData]);
 
   useEffect(() => {
@@ -194,12 +195,11 @@ export default function AddMediaPage(initialData) {
   // ];
 
   // curent user's channels
-  const allChannels = user.channels ?? [];
+  const allChannels = [];
 
   // TBD
   const allTags = [
     // { id: 1, title: 'Remix' },
-    // { id: 1, title: 'Audio' },
   ];
 
   const [channel, setChannel] = useState(); // USE THIS (single channel)
@@ -215,17 +215,21 @@ export default function AddMediaPage(initialData) {
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');
 
-  const isValid = useMemo(() => url.startsWith('s3://hyperpink-data/') || ReactPlayer.canPlay(url), [url]);
+  const isValid = useMemo(() => url.startsWith('s3://hyperaudio-data/') || ReactPlayer.canPlay(url), [url]);
 
   const onFileChange = useCallback(({ target: { files } }) => setFile(files[0]), []);
 
-  const onUpload = useCallback(() => {
+  const onUpload = useCallback(async () => {
     setTitle(file.name);
-    Storage.put(`test/${file.name}`, file, {
+
+    console.log(`test/${file.name}`);
+
+    const result = await Storage.put(`test/${file.name}`, file, {
       progressCallback: ({ loaded, total }) => setProgress((100 * loaded) / total),
-    })
-      .then(({ key }) => setUrl(`s3://hyperpink-data/public/${key}`))
-      .catch(err => console.log(err));
+    });
+    console.log({ result });
+    // .then(({ key }) => setUrl(`s3://hyperaudio-data/public/${key}`))
+    // .catch(err => console.error(err));
   }, [file]);
 
   useEffect(() => {
@@ -563,12 +567,12 @@ export const getServerSideProps = async context => {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    // const user = serializeModel(await DataStore.query(User, sub));
+    const user = wash(await getUser(sub));
     // const userChannels = serializeModel(
     //   (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
     // );
 
-    return { props: { user: null, userChannels: [] } };
+    return { props: { user, userChannels: [] } };
   } catch (error) {
     return { redirect: { destination: '/auth/?redirect=/new/media', permanent: false } };
   }

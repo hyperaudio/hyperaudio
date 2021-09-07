@@ -25,4 +25,4 @@ export const db = () => {
   return global[DOCUMENT_CLIENT_KEY];
 };
 
-export const TableName = 'HA-DEV-02';
+export const TableName = 'hyperaudio-data';

@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
 import {
+  AmplifyAuthContainer,
   AmplifyAuthenticator,
   AmplifySignIn,
   AmplifySignUp,
@@ -54,10 +55,12 @@ const AuthPage = () => {
           }
         `}
       </style>
-      <AmplifyAuthenticator>
-        <AmplifySignIn slot="sign-in" usernameAlias="email" />
-        <AmplifySignUp slot="sign-up" usernameAlias="email" formFields={[{ type: 'email' }, { type: 'password' }]} />
-      </AmplifyAuthenticator>
+      <AmplifyAuthContainer>
+        <AmplifyAuthenticator>
+          <AmplifySignIn slot="sign-in" usernameAlias="email" />
+          <AmplifySignUp slot="sign-up" usernameAlias="email" formFields={[{ type: 'email' }, { type: 'password' }]} />
+        </AmplifyAuthenticator>
+      </AmplifyAuthContainer>
     </>
   );
 };

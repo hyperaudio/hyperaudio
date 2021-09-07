@@ -13,9 +13,9 @@ export const getUser = async (id, consistentRead) =>
     ? new User((await getItem(`user:${id}`, `v0_user:${id}`, consistentRead))?.Item)
     : new User((await axios.get(`/api/v2/users/${id}`))?.data);
 
-export const setUser = async (user, currentUser) =>
+export const setUser = async (user, currentUserId) =>
   SERVER
-    ? (await setItemVersioned(user.pk, user.sk, user, currentUser.id)) && (await getUser(user.id, true))
+    ? (await setItemVersioned(user.pk, user.sk, user, currentUserId)) && (await getUser(user.id, true))
     : new User((await axios.put(`/api/v2/users/${user.id}`, user))?.data);
 
 export const getChannel = async (id, consistentRead) =>

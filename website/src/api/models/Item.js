@@ -46,10 +46,10 @@ class Item {
 
     this.version = parseInt(version);
 
-    this.createdAt = createdAt ? new Date(createdAt) : now;
+    this.createdAt = createdAt ? new Date(createdAt).toISOString() : now;
     this.createdBy = createdBy;
 
-    this.updatedAt = updatedAt ? new Date(updatedAt) : now;
+    this.updatedAt = updatedAt ? new Date(updatedAt).toISOString() : now;
     this.updatedBy = updatedBy;
 
     // this.deletedAt = deletedAt ? new Date(deletedAt) : null;

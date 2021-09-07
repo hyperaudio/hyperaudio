@@ -70,7 +70,7 @@ export default function Topbar() {
 
   const signOut = useCallback(() => {
     (async () => {
-      Auth.signOut();
+      await Auth.signOut({ global: true }); // TODO less nuclear?
       router.reload();
     })();
   }, [router]);
