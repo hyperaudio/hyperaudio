@@ -181,6 +181,11 @@
           ]
         }
       ]
+    },
+    "probe": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "analytics": {
@@ -197,6 +202,14 @@
         {
           "category": "function",
           "resourceName": "items",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        },
+        {
+          "category": "function",
+          "resourceName": "probe",
           "attributes": [
             "Name",
             "Arn"

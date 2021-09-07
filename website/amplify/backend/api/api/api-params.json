@@ -1,35 +1,62 @@
 {
-  "paths": [
-    {
-      "name": "/items/{pk}/{sk}",
-      "lambdaFunction": "items",
-      "privacy": {
-        "open": true
-      },
-      "policyResourceName": "/items/*/*"
-    }
-  ],
-  "resourceName": "api",
-  "apiName": "api",
-  "functionArns": [
-    {
-      "lambdaFunction": "items"
-    }
-  ],
-  "privacy": {
-    "auth": 0,
-    "unauth": 0,
-    "authRoleName": "amplify-hyperaudio-staging-141132-authRole",
-    "unAuthRoleName": "amplify-hyperaudio-staging-141132-unauthRole"
-  },
-  "dependsOn": [
-    {
-      "category": "function",
-      "resourceName": "items",
-      "attributes": [
-        "Name",
-        "Arn"
-      ]
-    }
-  ]
+    "paths": [
+        {
+            "name": "/items/{pk}/{sk}",
+            "lambdaFunction": "items",
+            "privacy": {
+                "open": true
+            },
+            "policyResourceName": "/items/*/*"
+        },
+        {
+            "name": "/probe",
+            "lambdaFunction": "probe",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            },
+            "policyResourceName": "/probe"
+        }
+    ],
+    "resourceName": "api",
+    "apiName": "api",
+    "functionArns": [
+        {
+            "lambdaFunction": "items"
+        },
+        {
+            "lambdaFunction": "probe"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-hyperaudio-staging-141132-authRole",
+        "unAuthRoleName": "amplify-hyperaudio-staging-141132-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "items",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "probe",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ],
+    "uuid": "f140accc"
 }

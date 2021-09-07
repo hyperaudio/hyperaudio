@@ -50,11 +50,15 @@
         },
         "eventstream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/eventstream-6541362b53634a456d71-build.zip"
+          "s3Key": "amplify-builds/eventstream-32574b57637877523851-build.zip"
         },
         "postauth": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/postauth-756e7171456f74325547-build.zip"
+          "s3Key": "amplify-builds/postauth-6352654e6b506d376339-build.zip"
+        },
+        "probe": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/probe-70474334504c69776d39-build.zip"
         }
       },
       "auth": {

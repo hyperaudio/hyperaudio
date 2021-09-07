@@ -1,5 +1,82 @@
 {
-  "key1": "value1",
-  "key2": "value2",
-  "key3": "value3"
+  "version": "0",
+  "id": "532008e7-18be-142b-3228-24453a53b7d6",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.s3",
+  "account": "585082712647",
+  "time": "2021-09-06T21:36:59Z",
+  "region": "eu-west-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "AssumedRole",
+      "principalId": "AROAYQONFWJDWFSVXIWSO:CognitoIdentityCredentials",
+      "arn": "arn:aws:sts::585082712647:assumed-role/amplify-hyperaudio-staging-141132-authRole/CognitoIdentityCredentials",
+      "accountId": "585082712647",
+      "accessKeyId": "ASIAYQONFWJDX7NLT4KS",
+      "sessionContext": {
+        "sessionIssuer": {
+          "type": "Role",
+          "principalId": "AROAYQONFWJDWFSVXIWSO",
+          "arn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-authRole",
+          "accountId": "585082712647",
+          "userName": "amplify-hyperaudio-staging-141132-authRole"
+        },
+        "webIdFederationData": {
+          "federatedProvider": "cognito-identity.amazonaws.com",
+          "attributes": {
+            "cognito-identity.amazonaws.com:amr": "[\"authenticated\",\"cognito-idp.eu-west-1.amazonaws.com/eu-west-1_qRD69m8Kt\",\"cognito-idp.eu-west-1.amazonaws.com/eu-west-1_qRD69m8Kt:CognitoSignIn:458395a5-3ec2-4c60-9478-85977c477884\"]",
+            "cognito-identity.amazonaws.com:aud": "eu-west-1:b2d3f876-17f6-44b3-a9c2-a31ce219a78b",
+            "cognito-identity.amazonaws.com:sub": "eu-west-1:cbdeca40-2b32-45f2-9aa5-4d5898b7f9c9"
+          }
+        },
+        "attributes": {
+          "creationDate": "2021-09-06T21:28:48Z",
+          "mfaAuthenticated": "false"
+        }
+      }
+    },
+    "eventTime": "2021-09-06T21:36:59Z",
+    "eventSource": "s3.amazonaws.com",
+    "eventName": "PutObject",
+    "awsRegion": "eu-west-1",
+    "sourceIPAddress": "46.27.175.159",
+    "userAgent": "[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36]",
+    "errorCode": "AccessDenied",
+    "errorMessage": "Access Denied",
+    "requestParameters": {
+      "bucketName": "hyperaudio-data",
+      "Host": "hyperaudio-data.s3.eu-west-1.amazonaws.com",
+      "key": "public/test/fW.mp4",
+      "x-id": "PutObject"
+    },
+    "responseElements": null,
+    "additionalEventData": {
+      "SignatureVersion": "SigV4",
+      "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+      "bytesTransferredIn": 0,
+      "AuthenticationMethod": "AuthHeader",
+      "x-amz-id-2": "1hDlUOwA/zmrRaGVdXj9bhjTEWOPgsOB5wLObk6ZJfHmrxt6KxOIr14lYBkAVGnoMAPh3cX1SrE=",
+      "bytesTransferredOut": 243
+    },
+    "requestID": "DGWCMC4N2T4SRET7",
+    "eventID": "f8769317-7483-4167-9cb3-21aa9d704cdf",
+    "readOnly": false,
+    "resources": [
+      {
+        "type": "AWS::S3::Object",
+        "ARN": "arn:aws:s3:::hyperaudio-data/public/test/fW.mp4"
+      },
+      {
+        "accountId": "585082712647",
+        "type": "AWS::S3::Bucket",
+        "ARN": "arn:aws:s3:::hyperaudio-data"
+      }
+    ],
+    "eventType": "AwsApiCall",
+    "managementEvent": false,
+    "recipientAccountId": "585082712647",
+    "eventCategory": "Data"
+  }
 }
