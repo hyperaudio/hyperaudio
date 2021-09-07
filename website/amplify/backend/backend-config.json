@@ -193,20 +193,8 @@
           "attributes": [
             "Name"
           ]
-        },
-        {
-          "category": "function",
-          "resourceName": "hyperaudioffmpeg",
-          "attributes": [
-            "Arn"
-          ]
         }
       ]
-    },
-    "hyperaudioffmpeg": {
-      "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
     },
     "ytdl": {
       "build": true,

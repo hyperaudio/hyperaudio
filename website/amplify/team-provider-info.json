@@ -48,13 +48,9 @@
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
           "s3Key": "amplify-builds/probe-68725957307a376d3144-build.zip"
         },
-        "hyperaudioffmpeg": {
-          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/hyperaudioffmpeg-LambdaLayerVersion7f22578b-build.zip"
-        },
         "ytdl": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/ytdl-4d754545797052446830-build.zip"
+          "s3Key": "amplify-builds/ytdl-39505264302f65364d65-build.zip"
         }
       },
       "hosting": {

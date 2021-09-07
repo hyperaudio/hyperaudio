@@ -86,7 +86,9 @@
           ]
         },
         "Runtime": "python3.8",
-        "Layers": [],
+        "Layers": [
+          "arn:aws:lambda:eu-west-1:585082712647:layer:ffmpeg-4-4-amd64-static:1"
+        ],
         "Timeout": 25
       }
     },
