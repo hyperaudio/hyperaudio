@@ -31,34 +31,38 @@
       "function": {
         "transcode": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcode-6b69562f566970646668-build.zip",
+          "s3Key": "amplify-builds/transcode-4931742b4769382b466b-build.zip",
           "mediaConvertApi": "https://r1eeew44a.mediaconvert.eu-west-1.amazonaws.com",
           "mediaConvertRole": "arn:aws:iam::585082712647:role/mediaConvertRole",
           "mediaConvertQueue": "arn:aws:mediaconvert:eu-west-1:585082712647:queues/Default"
         },
         "transcribe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcribe-32754c58513677596b52-build.zip"
+          "s3Key": "amplify-builds/transcribe-4f7867364f58466e3639-build.zip"
         },
         "items": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/items-536c6167766e49466d71-build.zip"
+          "s3Key": "amplify-builds/items-73635951494b504e4d62-build.zip"
         },
         "datastream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/datastream-33582b4b4667626b2b59-build.zip"
+          "s3Key": "amplify-builds/datastream-7a783859757541755a68-build.zip"
         },
         "eventstream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/eventstream-32574b57637877523851-build.zip"
+          "s3Key": "amplify-builds/eventstream-626777416d5a67376b69-build.zip"
         },
         "postauth": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/postauth-6352654e6b506d376339-build.zip"
+          "s3Key": "amplify-builds/postauth-385a4a53596a374b5a75-build.zip"
         },
         "probe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/probe-70474334504c69776d39-build.zip"
+          "s3Key": "amplify-builds/probe-3850726467456e79655a-build.zip"
+        },
+        "hyperaudioffmpeg": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/hyperaudioffmpeg-LambdaLayerVersion799641b2-build.zip"
         }
       },
       "auth": {
