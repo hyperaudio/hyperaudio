@@ -29,5 +29,6 @@
     "!Split sequence"
   ],
   "javascript.inlayHints.variableTypes.enabled": true,
-  "typescript.inlayHints.variableTypes.enabled": true
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "python.formatting.provider": "black"
 }

@@ -16,9 +16,9 @@
     "s3Key": {
       "Type": "String"
     },
-    "functionhyperaudioffmpegArn": {
+    "storagehyperaudio12034b8aBucketName": {
       "Type": "String",
-      "Default": "functionhyperaudioffmpegArn"
+      "Default": "storagehyperaudio12034b8aBucketName"
     }
   },
   "Conditions": {
@@ -51,12 +51,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "probe",
+            "ytdl",
             {
               "Fn::Join": [
                 "",
                 [
-                  "probe",
+                  "ytdl",
                   "-",
                   {
                     "Ref": "env"
@@ -73,6 +73,9 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "STORAGE_HYPERAUDIO12034B8A_BUCKETNAME": {
+              "Ref": "storagehyperaudio12034b8aBucketName"
             }
           }
         },
@@ -82,12 +85,8 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
-        "Layers": [
-          {
-            "Ref": "functionhyperaudioffmpegArn"
-          }
-        ],
+        "Runtime": "python3.8",
+        "Layers": [],
         "Timeout": 25
       }
     },
@@ -97,12 +96,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "hyperaudioLambdaRole087f7299",
+            "hyperaudioLambdaRole6604b8c9",
             {
               "Fn::Join": [
                 "",
                 [
-                  "hyperaudioLambdaRole087f7299",
+                  "hyperaudioLambdaRole6604b8c9",
                   "-",
                   {
                     "Ref": "env"
@@ -168,6 +167,64 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": "s3:ListBucket",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehyperaudio12034b8aBucketName"
+                      }
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:DeleteObject"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:s3:::",
+                      {
+                        "Ref": "storagehyperaudio12034b8aBucketName"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

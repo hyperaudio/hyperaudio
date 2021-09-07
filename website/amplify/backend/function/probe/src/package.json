@@ -5,7 +5,8 @@
   "main": "index.js",
   "license": "AGPL-3.0-only",
   "dependencies": {
-    "youtube-dl-exec": "1.2.5",
-    "ffprobe-client": "1.1.6"
+    "ytdl-core": "4.9.1",
+    "ffprobe-client": "1.1.6",
+    "axios": "0.21.4"
   }
 }
