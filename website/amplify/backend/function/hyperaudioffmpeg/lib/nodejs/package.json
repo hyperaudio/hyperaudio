@@ -2,6 +2,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "license": "AGPL-3.0-only",
   "dependencies": {},
   "devDependencies": {}
 }

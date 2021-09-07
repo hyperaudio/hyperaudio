@@ -9,24 +9,12 @@
       "UnauthRoleName": "amplify-hyperaudio-staging-141132-unauthRole",
       "StackName": "amplify-hyperaudio-staging-141132",
       "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-141132/2c78c730-0e53-11ec-b9b1-0ad71ec068e7",
-      "AmplifyAppId": "d2y3mvty9ur9jk"
+      "AmplifyAppId": "d2y3mvty9ur9jk",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hyperaudio-staging-141132-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
-      "storage": {
-        "hyperaudio12034b8a": {
-          "bucketName": "hyperaudio-data",
-          "region": "eu-west-1"
-        },
-        "hyperaudiodata": {
-          "tableName": "hyperaudio-data",
-          "region": "eu-west-1",
-          "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
-          "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
-          "partitionKeyName": "pk",
-          "partitionKeyType": "S",
-          "sortKeyName": "sk",
-          "sortKeyType": "S"
-        }
+      "auth": {
+        "Hyperaudio": {}
       },
       "function": {
         "transcode": {
@@ -62,16 +50,29 @@
         },
         "hyperaudioffmpeg": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/hyperaudioffmpeg-LambdaLayerVersion799641b2-build.zip"
+          "s3Key": "amplify-builds/hyperaudioffmpeg-LambdaLayerVersiondbc8049d-build.zip"
         }
-      },
-      "auth": {
-        "Hyperaudio": {}
       },
       "hosting": {
         "amplifyhosting": {
           "appId": "d2y3mvty9ur9jk",
           "type": "cicd"
+        }
+      },
+      "storage": {
+        "hyperaudio12034b8a": {
+          "bucketName": "hyperaudio-data",
+          "region": "eu-west-1"
+        },
+        "hyperaudiodata": {
+          "tableName": "hyperaudio-data",
+          "region": "eu-west-1",
+          "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
+          "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
+          "partitionKeyName": "pk",
+          "partitionKeyType": "S",
+          "sortKeyName": "sk",
+          "sortKeyType": "S"
         }
       }
     }
