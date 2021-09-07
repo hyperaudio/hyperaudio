@@ -189,6 +189,13 @@
       "dependsOn": [
         {
           "category": "function",
+          "resourceName": "ytdl",
+          "attributes": [
+            "Name"
+          ]
+        },
+        {
+          "category": "function",
           "resourceName": "hyperaudioffmpeg",
           "attributes": [
             "Arn"

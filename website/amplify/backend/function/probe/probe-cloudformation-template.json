@@ -19,6 +19,10 @@
     "functionhyperaudioffmpegArn": {
       "Type": "String",
       "Default": "functionhyperaudioffmpegArn"
+    },
+    "functionytdlName": {
+      "Type": "String",
+      "Default": "functionytdlName"
     }
   },
   "Conditions": {
@@ -73,6 +77,9 @@
             },
             "REGION": {
               "Ref": "AWS::Region"
+            },
+            "FUNCTION_YTDL_NAME": {
+              "Ref": "functionytdlName"
             }
           }
         },
@@ -168,6 +175,60 @@
                   }
                 ]
               }
+            }
+          ]
+        }
+      }
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "lambda:Create*",
+                "lambda:Put*",
+                "lambda:Add*",
+                "lambda:Get*",
+                "lambda:List*",
+                "lambda:Invoke*",
+                "lambda:Update*",
+                "lambda:Delete*",
+                "lambda:Remove*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:lambda:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":function:",
+                      {
+                        "Ref": "functionytdlName"
+                      }
+                    ]
+                  ]
+                }
+              ]
             }
           ]
         }

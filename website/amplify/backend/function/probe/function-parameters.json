@@ -7,5 +7,15 @@
       "version": "Always choose latest version",
       "isLatestVersionSelected": true
     }
-  ]
+  ],
+  "permissions": {
+    "function": {
+      "ytdl": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  }
 }

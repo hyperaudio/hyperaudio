@@ -1,6 +1,21 @@
+/* Amplify Params - DO NOT EDIT
+	ENV
+	FUNCTION_YTDL_NAME
+	REGION
+Amplify Params - DO NOT EDIT */
+const AWS = require('aws-sdk');
 const ytdl = require('ytdl-core');
 const ffprobe = require('ffprobe-client');
 const axios = require('axios');
+
+const {
+  // ENV,
+  FUNCTION_YTDL_NAME,
+  REGION,
+} = process.env;
+
+AWS.config.update({ region: REGION });
+const lambda = new AWS.Lambda();
 
 exports.handler = async event => {
   const {
@@ -10,10 +25,24 @@ exports.handler = async event => {
   const data = {};
 
   if (url) {
-    // ytdl
+    // ytdl lambda
     try {
-      data.ytdl = await ytdl.getInfo(url);
-    } catch (ignored) {}
+      const { Payload: payload } = await lambda
+        .invoke({
+          FunctionName: FUNCTION_YTDL_NAME,
+          InvocationType: 'RequestResponse',
+          Payload: JSON.stringify({ url }),
+        })
+        .promise();
+      data.ytdl = JSON.parse(payload);
+    } catch (ignored) {
+      console.log(ignored);
+    }
+
+    // // ytdlcore
+    // try {
+    //   data.ytdl = await ytdl.getInfo(url);
+    // } catch (ignored) {}
 
     // ffprobe
     if (!data.ytdl)
