@@ -1,12 +1,13 @@
 version: 1
 applications:
-  - backend:
+  - appRoot: website
+    backend:
       phases:
         preBuild:
           commands:
             - pip3 install --user pipenv
             - pip3 install --user venv
-  - frontend:
+    frontend:
       phases:
         preBuild:
           commands:
@@ -21,4 +22,4 @@ applications:
       cache:
         paths:
           - node_modules/**/*
-    appRoot: website
+
