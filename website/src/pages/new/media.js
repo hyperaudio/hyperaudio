@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
 // import Embedly from 'embedly';
-import { Storage, withSSRContext } from 'aws-amplify';
+import { Storage, withSSRContext, API } from 'aws-amplify';
 // import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
 
@@ -181,6 +181,25 @@ export default function AddMediaPage(initialData) {
   const router = useRouter();
   const user = useMemo(() => new User(initialData.user), [initialData]);
   const userChannels = useMemo(() => initialData.userChannels, [initialData]);
+
+  useEffect(() => {
+    if (typeof window !== 'object') return;
+    // https://badideafactory-bbc.s3.eu-west-2.amazonaws.com/perf/EM-ycPr5-27vSI-720-h264.mp4
+    // https://www.youtube.com/watch?v=RcYjXbSJBN8
+    API.get('api', '/probe', {
+      queryStringParameters: {
+        url: 'https://www.youtube.com/watch?v=FzQ6eNtdIGQ',
+      },
+    })
+      .then(response => {
+        // Add your code here
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
+    //
+  }, []);
 
   useEffect(() => {
     onAuthUIStateChange((authState, authData) => {

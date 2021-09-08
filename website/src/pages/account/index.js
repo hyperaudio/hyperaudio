@@ -33,7 +33,7 @@ const AccountPage = initialData => {
   const classes = useStyles();
   const router = useRouter();
 
-  const [user, setUser] = useState(() => new User(initialData.user) ?? null);
+  const [user, setUser] = useState(() => new User(initialData.user));
   const [username, setUsername] = useState('');
   const [displayName, setDisplayName] = useState('');
   const [bio, setBio] = useState('');
@@ -47,13 +47,12 @@ const AccountPage = initialData => {
     setBio(user.bio);
   }, [user]);
 
-  // TODO test this:
-  // useEffect(() => {
-  //   onAuthUIStateChange((authState, authData) => {
-  //     console.log({ authState, authData });
-  //     if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
-  //   });
-  // }, [router]);
+  useEffect(() => {
+    onAuthUIStateChange((authState, authData) => {
+      console.log({ authState, authData });
+      if (authState !== AuthState.SignedIn || !authData) router.push('/auth/?redirect=/account');
+    });
+  }, [router]);
 
   const handleSave = useCallback(async () => {
     const nextUserState = produce(user, draftUser => {
