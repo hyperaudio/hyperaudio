@@ -9,6 +9,7 @@ applications:
             - pip3.8 install --user pipenv
             - pip3.8 install --user virtualenv
             - nvm use || nvm install
+            - npm install -g @aws-amplify/cli@${VERSION_AMPLIFY}"
         build:
           commands:
             - amplifyPush --simple
