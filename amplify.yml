@@ -8,6 +8,7 @@ applications:
             - ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
             - pip3.8 install --user pipenv
             - pip3.8 install --user virtualenv
+            - nvm use || nvm install
         build:
           commands:
             - amplifyPush --simple
@@ -15,9 +16,11 @@ applications:
       phases:
         preBuild:
           commands:
+            - nvm use || nvm install
             - yarn
         build:
           commands:
+            - nvm use || nvm install
             - npm run build
       artifacts:
         baseDirectory: .next
