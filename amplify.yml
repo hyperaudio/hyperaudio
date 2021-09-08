@@ -6,7 +6,7 @@ applications:
         preBuild:
           commands:
             - pip3 install --user pipenv
-            - pip3 install --user venv
+            - pip3 install --user virtualenv
         build:
           commands:
             - amplifyPush --simple
