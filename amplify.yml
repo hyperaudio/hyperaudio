@@ -1,12 +1,16 @@
 version: 1
 applications:
+  - backend:
+      phases:
+        preBuild:
+          commands:
+            - pip3 install --user pipenv
+            - pip3 install --user venv
   - frontend:
       phases:
         preBuild:
           commands:
             - yarn
-            - pip3 install --user pipenv
-            - pip3 install --user venv
         build:
           commands:
             - npm run build
