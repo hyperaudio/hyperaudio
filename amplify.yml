@@ -5,8 +5,8 @@ applications:
       phases:
         preBuild:
           commands:
-            - pip3 install --user pipenv
-            - pip3 install --user virtualenv
+            - pip3.8 install --user pipenv
+            - pip3.8 install --user virtualenv
         build:
           commands:
             - amplifyPush --simple
