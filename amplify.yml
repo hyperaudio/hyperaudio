@@ -7,6 +7,9 @@ applications:
           commands:
             - pip3 install --user pipenv
             - pip3 install --user venv
+        build:
+          commands:
+            - amplifyPush --simple
     frontend:
       phases:
         preBuild:
