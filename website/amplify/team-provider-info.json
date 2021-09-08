@@ -50,7 +50,7 @@
         },
         "ytdl": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/ytdl-39505264302f65364d65-build.zip"
+          "s3Key": "amplify-builds/ytdl-75495558417a4769336c-build.zip"
         }
       },
       "hosting": {

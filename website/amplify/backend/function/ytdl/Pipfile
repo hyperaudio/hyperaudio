@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 src = { editable = true, path = "./src" }
 youtube_dl = "2021.6.6"
+smart_open = "5.2.1"
+boto3 = "1.18.37"
 
 [requires]
 python_version = "3.8"
