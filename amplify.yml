@@ -8,9 +8,6 @@ applications:
             - ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
             - pip3.8 install --user pipenv
             - pip3.8 install --user virtualenv
-            - npm cache clean --force
-            - nvm cache clear
-            - rm -fR node_modules
         build:
           commands:
             - amplifyPush --simple
