@@ -25,6 +25,6 @@ applications:
           - "**/*"
       cache:
         paths:
-          - !node_modules/**/*
+          - "!node_modules/**/*"
 
 # FYI https://github.com/aws-amplify/amplify-console/blob/master/FAQ.md#how-do-i-run-amplify-functions-with-python-runtime
