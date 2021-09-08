@@ -5,6 +5,8 @@ applications:
         preBuild:
           commands:
             - yarn
+            - pip3 install --user pipenv
+            - pip3 install --user venv
         build:
           commands:
             - npm run build
