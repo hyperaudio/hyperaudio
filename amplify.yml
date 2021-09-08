@@ -5,6 +5,7 @@ applications:
       phases:
         preBuild:
           commands:
+            - ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
             - pip3.8 install --user pipenv
             - pip3.8 install --user virtualenv
         build:
