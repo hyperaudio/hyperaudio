@@ -1,0 +1,31 @@
+version: 1
+applications:
+  - appRoot: website
+    backend:
+      phases:
+        preBuild:
+          commands:
+            - ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
+            - pip3.8 install --user pipenv
+            - pip3.8 install --user virtualenv
+        build:
+          commands:
+            - amplifyPush --simple
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - yarn
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - node_modules/**/*
+          - website/.next/cache/**/*
+
+# FYI https://github.com/aws-amplify/amplify-console/blob/master/FAQ.md#how-do-i-run-amplify-functions-with-python-runtime

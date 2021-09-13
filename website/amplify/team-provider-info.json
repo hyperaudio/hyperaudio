@@ -1,19 +1,79 @@
 {
   "staging": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-hyperaudio-staging-72420-authRole",
-      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-72420-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-72420-authRole",
+      "AuthRoleName": "amplify-hyperaudio-staging-141132-authRole",
+      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-staging-141132-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-hyperaudio-staging-72420-deployment",
-      "UnauthRoleName": "amplify-hyperaudio-staging-72420-unauthRole",
-      "StackName": "amplify-hyperaudio-staging-72420",
-      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-72420/ba6a7be0-3601-11eb-9664-02e53e34ced2",
-      "AmplifyAppId": "d2mozp2vb25w5k"
+      "DeploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+      "UnauthRoleName": "amplify-hyperaudio-staging-141132-unauthRole",
+      "StackName": "amplify-hyperaudio-staging-141132",
+      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-staging-141132/2c78c730-0e53-11ec-b9b1-0ad71ec068e7",
+      "AmplifyAppId": "d2y3mvty9ur9jk",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-hyperaudio-staging-141132-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "Hyperaudio": {}
+      },
+      "function": {
+        "transcode": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/transcode-4931742b4769382b466b-build.zip",
+          "mediaConvertApi": "https://r1eeew44a.mediaconvert.eu-west-1.amazonaws.com",
+          "mediaConvertRole": "arn:aws:iam::585082712647:role/mediaConvertRole",
+          "mediaConvertQueue": "arn:aws:mediaconvert:eu-west-1:585082712647:queues/Default"
+        },
+        "transcribe": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/transcribe-4f7867364f58466e3639-build.zip"
+        },
+        "items": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/items-73635951494b504e4d62-build.zip"
+        },
+        "datastream": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/datastream-7a783859757541755a68-build.zip"
+        },
+        "eventstream": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/eventstream-626777416d5a67376b69-build.zip"
+        },
+        "postauth": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/postauth-385a4a53596a374b5a75-build.zip"
+        },
+        "probe": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/probe-68725957307a376d3144-build.zip"
+        },
+        "ytdl": {
+          "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
+          "s3Key": "amplify-builds/ytdl-75495558417a4769336c-build.zip"
+        }
+      },
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2y3mvty9ur9jk",
+          "type": "cicd"
+        }
+      },
+      "storage": {
+        "hyperaudio12034b8a": {
+          "bucketName": "hyperaudio-data",
+          "region": "eu-west-1"
+        },
+        "hyperaudiodata": {
+          "tableName": "hyperaudio-data",
+          "region": "eu-west-1",
+          "arn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data",
+          "streamArn": "arn:aws:dynamodb:eu-west-1:585082712647:table/hyperaudio-data/stream/2021-09-05T14:33:34.597",
+          "partitionKeyName": "pk",
+          "partitionKeyType": "S",
+          "sortKeyName": "sk",
+          "sortKeyType": "S"
+        }
       }
     }
   }

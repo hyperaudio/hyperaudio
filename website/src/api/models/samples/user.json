@@ -1,0 +1,33 @@
+{
+  "pk": "user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "sk": "v0_user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "gsi1pk": "user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "gsi1sk": "v0_user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "id": "c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "type": "user",
+  "version": 11,
+  "username": "gridinoc",
+  "name": "Laurian G (edited) 42",
+  "bio": "Full Stack Computational Linguist ※ Knight-Mozilla OpenNews Fellow ※ Producer ※ Filmmaker",
+  "createdAt": "2021-07-11T09:00:37.416Z",
+  "updatedBy": null,
+  "createdBy": "c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "updatedAt": "2021-07-11T09:00:37.416Z"
+}
+
+{
+  "pk": "user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "sk": "v11_user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "gsi1pk": "user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "gsi1sk": "v0_user:c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "id": "c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "type": "user",
+  "version": 11,
+  "username": "gridinoc",
+  "name": "Laurian G (edited) 42",
+  "bio": "Full Stack Computational Linguist ※ Knight-Mozilla OpenNews Fellow ※ Producer ※ Filmmaker",
+  "createdAt": "2021-07-11T09:00:37.416Z",
+  "updatedBy": null,
+  "createdBy": "c01bf617-3229-4283-8ec2-3dee49ae5c00",
+  "updatedAt": "2021-07-11T09:00:37.416Z"
+}

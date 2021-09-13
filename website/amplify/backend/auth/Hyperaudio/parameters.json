@@ -1,7 +1,7 @@
 {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "hypera932195cd",
+    "resourceNameTruncated": "hypera73924afa",
     "userPoolName": "Hyperaudio",
     "autoVerifiedAttributes": [
         "email"
@@ -12,25 +12,22 @@
     ],
     "smsAuthenticationMessage": "Your login code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Hyperaudio authentication code",
-    "emailVerificationMessage": "Authentication code: {####}",
+    "emailVerificationSubject": "Hyperaudio password code",
+    "emailVerificationMessage": "Hyperaudio password code: {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
         "email"
     ],
-    "userpoolClientGenerateSecret": true,
+    "aliasAttributes": [],
+    "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-        "email"
-    ],
-    "userpoolClientReadAttributes": [
-        "email"
-    ],
-    "userpoolClientLambdaRole": "Hypera932195cd_userpoolclient_lambda_role",
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
+    "userpoolClientLambdaRole": "Hypera73924afa_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "932195cd",
+    "sharedId": "73924afa",
     "resourceName": "Hyperaudio",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
@@ -54,6 +51,7 @@
     "userPoolGroupList": [],
     "adminQueries": false,
     "thirdPartyAuth": false,
-    "dependsOn": [],
-    "hostedUI": false
+    "authProviders": [],
+    "usernameCaseSensitive": false,
+    "dependsOn": []
 }

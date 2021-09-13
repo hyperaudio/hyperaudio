@@ -1,11 +1,11 @@
 {
     "appName": "hyperaudio",
-    "roleName": "pinpointLambdaRoledb80d6d5",
-    "cloudformationPolicyName": "cloudformationPolicydb80d6d5",
-    "cloudWatchPolicyName": "cloudWatchPolicydb80d6d5",
-    "pinpointPolicyName": "pinpointPolicydb80d6d5",
-    "authPolicyName": "pinpoint_amplify_db80d6d5",
-    "unauthPolicyName": "pinpoint_amplify_db80d6d5",
+    "roleName": "pinpointLambdaRole3a3ac208",
+    "cloudformationPolicyName": "cloudformationPolicy3a3ac208",
+    "cloudWatchPolicyName": "cloudWatchPolicy3a3ac208",
+    "pinpointPolicyName": "pinpointPolicy3a3ac208",
+    "authPolicyName": "pinpoint_amplify_3a3ac208",
+    "unauthPolicyName": "pinpoint_amplify_3a3ac208",
     "authRoleName": {
         "Ref": "AuthRoleName"
     },

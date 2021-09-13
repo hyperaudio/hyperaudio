@@ -1,9 +1,8 @@
+/* eslint-disable no-unused-vars */
 import React, { useCallback, useState, useEffect } from 'react';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
-import { AuthState, onAuthUIStateChange } from '@aws-amplify/ui-components';
+import { withSSRContext } from 'aws-amplify';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Avatar from '@material-ui/core/Avatar';
@@ -26,9 +25,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
+import { getItem, listItemsByParent, listItemsByType } from 'src/util/api';
 import Layout from 'src/components/Layout';
-
-import { Channel, User, UserChannel } from '../../models';
 
 import DeleteDialog from 'src/components/DeleteDialog';
 
@@ -136,36 +134,11 @@ function stableSort(array, comparator) {
   return stabilizedThis.map(el => el[0]);
 }
 
-const getUserChannels = async (setChannels, user) =>
-  setChannels((await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel));
-
-export default function Channels({ user, userChannels, users }) {
+export default function Channels({ user, channels: userChannels, users }) {
   const classes = useStyles();
 
-  const [channels, setChannels] = useState(userChannels ? deserializeModel(Channel, userChannels) : []);
+  const [channels, setChannels] = useState(userChannels ?? []);
   console.log({ user, channels, users });
-
-  useEffect(() => {
-    getUserChannels(setChannels, user);
-    const subscription = DataStore.observe(UserChannel).subscribe(msg => {
-      // console.log(msg.model, msg.opType, msg.element);
-      getUserChannels(setChannels, user);
-    });
-    const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
-    window.addEventListener('online', handleConnectionChange);
-    return () => subscription.unsubscribe();
-  }, [user]);
-
-  useEffect(() => {
-    getUserChannels(setChannels, user);
-    const subscription = DataStore.observe(Channel).subscribe(msg => {
-      // console.log(msg.model, msg.opType, msg.element);
-      getUserChannels(setChannels, user);
-    });
-    const handleConnectionChange = () => navigator.onLine && getUserChannels(setChannels, user);
-    window.addEventListener('online', handleConnectionChange);
-    return () => subscription.unsubscribe();
-  }, [user]);
 
   const [channelDialog, setChannelDialog] = React.useState();
   const [deleteDialog, setDeleteDialog] = React.useState();
@@ -175,57 +148,57 @@ export default function Channels({ user, userChannels, users }) {
   const [orderBy, setOrderBy] = React.useState('name');
   const [selectedChannel, setSelectedChannel] = React.useState();
 
-  // const onAddNewChannel = useCallback(async () => {
-  //   const channel = await DataStore.save(
-  //     new Channel({ title, description, tags, metadata: JSON.stringify(metadata), owner: user.id }),
-  //   );
   const addNewChannel = useCallback(
     async ({ title, description, tags = [], editors = [], metadata = {} }) => {
-      const channel = await DataStore.save(
-        new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
-      );
-
-      await DataStore.save(new UserChannel({ user, channel }));
+      // const channel = await DataStore.save(
+      //   new Channel({ title, description, tags, editors, metadata: JSON.stringify(metadata), owner: user.id }),
+      // );
+      // await DataStore.save(new UserChannel({ user, channel }));
     },
     [user],
   );
 
   const updateChannel = useCallback(async (channel, { title, description, tags = [] }) => {
-    await DataStore.save(
-      Channel.copyOf(channel, updated => {
-        updated.title = title;
-        updated.description = description;
-        updated.tags = tags;
-      }),
-    );
+    // await DataStore.save(
+    //   Channel.copyOf(channel, updated => {
+    //     updated.title = title;
+    //     updated.description = description;
+    //     updated.tags = tags;
+    //   }),
+    // );
   }, []);
 
   const updateChannelEditors = useCallback(async (channel, editors = []) => {
-    await DataStore.save(
-      Channel.copyOf(channel, updated => {
-        updated.editors = editors;
-      }),
-    );
+    // await DataStore.save(
+    //   Channel.copyOf(channel, updated => {
+    //     updated.editors = editors;
+    //   }),
+    // );
   }, []);
 
-  const deleteChannel = useCallback(channel => DataStore.delete(channel), []);
+  const deleteChannel = useCallback(channel => {
+    // DataStore.delete(channel);
+  }, []);
 
   const onOrderByClick = property => () => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+
   const onEditClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
-    setChannelDialog(true);
+    // setChannelDialog(true);
   };
+
   const onEditorsClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
-    setEditorsDialog(true);
+    // setEditorsDialog(true);
   };
+
   const onDeleteClick = () => {
     setSelectedChannel(channels.find(o => o.id === moreMenuAnchor.id));
-    setDeleteDialog(true);
+    // setDeleteDialog(true);
   };
 
   const onReset = () => {
@@ -235,20 +208,23 @@ export default function Channels({ user, userChannels, users }) {
     setMoreMenuAnchor(null);
     setSelectedChannel(null);
   };
+
   const onSaveEditors = editors => {
-    updateChannelEditors(selectedChannel, editors);
+    // updateChannelEditors(selectedChannel, editors);
     onReset();
   };
+
   const onSaveDetails = payload => {
     if (selectedChannel) {
-      updateChannel(selectedChannel, payload);
+      // updateChannel(selectedChannel, payload);
     } else {
-      addNewChannel(payload);
+      // addNewChannel(payload);
     }
     onReset();
   };
+
   const onDelete = () => {
-    deleteChannel(selectedChannel);
+    // deleteChannel(selectedChannel);
     onReset();
   };
 
@@ -445,22 +421,21 @@ export default function Channels({ user, userChannels, users }) {
 }
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
 
   try {
     const {
       attributes: { sub },
     } = await Auth.currentAuthenticatedUser();
 
-    const user = serializeModel(await DataStore.query(User, sub));
-    const userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    );
+    const { Item: user } = await getItem(sub, 'v0_metadata');
+    const { Items: channels } = await listItemsByParent(sub);
 
-    const users = serializeModel(await DataStore.query(User));
+    const { Items: users } = await listItemsByType('User');
 
-    return { props: { user, userChannels, users } };
+    return { props: { user, channels, users } };
   } catch (error) {
+    console.log(error);
     return { redirect: { destination: '/auth/?redirect=/new/channel', permanent: false } };
   }
 };

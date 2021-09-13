@@ -1,0 +1,75 @@
+{
+  "version": "0",
+  "id": "b2bcd78a-dbe5-7a72-51ae-0aaf5937e7db",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.s3",
+  "account": "585082712647",
+  "time": "2021-09-05T16:33:48Z",
+  "region": "eu-west-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "Root",
+      "principalId": "585082712647",
+      "arn": "arn:aws:iam::585082712647:root",
+      "accountId": "585082712647",
+      "accessKeyId": "ASIAYQONFWJDSAT36QHO",
+      "userName": "hyperaudio",
+      "sessionContext": {
+        "attributes": {
+          "creationDate": "2021-09-05T10:07:13Z",
+          "mfaAuthenticated": "true"
+        }
+      }
+    },
+    "eventTime": "2021-09-05T16:33:48Z",
+    "eventSource": "s3.amazonaws.com",
+    "eventName": "PutObject",
+    "awsRegion": "eu-west-1",
+    "sourceIPAddress": "46.27.175.203",
+    "userAgent": "[Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36]",
+    "requestParameters": {
+      "X-Amz-Date": "20210905T163330Z",
+      "bucketName": "hyperaudio-data",
+      "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+      "x-amz-acl": "private",
+      "X-Amz-SignedHeaders": "content-md5;content-type;host;x-amz-acl;x-amz-storage-class",
+      "Host": "hyperaudio-data.s3.eu-west-1.amazonaws.com",
+      "X-Amz-Expires": "300",
+      "key": "test/Doctor-1080x1080.png",
+      "x-amz-storage-class": "STANDARD"
+    },
+    "responseElements": {
+      "x-amz-server-side-encryption": "AES256",
+      "x-amz-version-id": "W2SnwIcybiNWyDoCHLLoxgXf4_4gh_hv"
+    },
+    "additionalEventData": {
+      "SignatureVersion": "SigV4",
+      "CipherSuite": "ECDHE-RSA-AES128-GCM-SHA256",
+      "bytesTransferredIn": 1071464,
+      "SSEApplied": "Default_SSE_S3",
+      "AuthenticationMethod": "QueryString",
+      "x-amz-id-2": "OJ8FXvl/3Ow40zbHRaWJjOePNwA3DxzNFyyVebiMpXESFyzG+vXNnOxkm2NtzT9u9g5EQua4/Ik=",
+      "bytesTransferredOut": 0
+    },
+    "requestID": "0HF0DXH9WVZ2NEZS",
+    "eventID": "3d0f35f7-7cb5-43bb-953a-1af0364a3cc7",
+    "readOnly": false,
+    "resources": [
+      {
+        "type": "AWS::S3::Object",
+        "ARN": "arn:aws:s3:::hyperaudio-data/test/Doctor-1080x1080.png"
+      },
+      {
+        "accountId": "585082712647",
+        "type": "AWS::S3::Bucket",
+        "ARN": "arn:aws:s3:::hyperaudio-data"
+      }
+    ],
+    "eventType": "AwsApiCall",
+    "managementEvent": false,
+    "recipientAccountId": "585082712647",
+    "eventCategory": "Data"
+  }
+}

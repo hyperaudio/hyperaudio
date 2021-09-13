@@ -6,3 +6,4 @@ Disallow: /COC
 Disallow: /PP
 Disallow: /License
 Disallow: /api
+Disallow: /auth

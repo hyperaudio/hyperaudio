@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useMemo } from 'react';
 import isArray from 'lodash/fp/isArray';
 import isString from 'lodash/fp/isString';
@@ -22,8 +23,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const acceptVariants = {
-  word:
-    '.pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  word: '.pdf,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
   images: 'image/*',
   excel: '.xlsx,.xls,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 };

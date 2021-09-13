@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable consistent-return */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
@@ -7,9 +8,9 @@ import NextLink from 'next/link';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
 import { rgba } from 'polished';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+// import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
 import { useRouter } from 'next/router';
-import { withSSRContext, DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { withSSRContext } from 'aws-amplify';
 import axios from 'axios';
 
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -49,7 +50,7 @@ import { ThemeProvider } from '@material-ui/core/styles';
 
 import Layout from 'src/components/Layout';
 import useTheme from 'src/hooks/useTheme';
-import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
+// import { Media, User, UserChannel, MediaChannel, Channel, Transcript } from 'src/models';
 
 import DeleteDialog from 'src/components/DeleteDialog';
 import Footer from 'src/components/Footer';
@@ -175,7 +176,7 @@ const useStyles = makeStyles(theme => {
   };
 });
 
-const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+// const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 
 const MediaPage = initialData => {
   const classes = useStyles();
@@ -185,9 +186,9 @@ const MediaPage = initialData => {
   const { id, transcript } = router.query;
   const { user, channels, transcripts = [] } = initialData;
 
-  const initialMedia = useMemo(() => deserializeModel(Media, initialData.media), [initialData]);
-  const userChannels = useMemo(() => deserializeModel(UserChannel, initialData.userChannels), [initialData]);
-  const mediaChannel = useMemo(() => deserializeModel(MediaChannel, initialData.mediaChannel)?.pop(), [initialData]);
+  const initialMedia = useMemo(() => initialData.media, [initialData]);
+  const userChannels = useMemo(() => initialData.userChannels, [initialData]);
+  const mediaChannel = useMemo(() => initialData.mediaChannel?.pop(), [initialData]);
   // console.log({ userChannels, mediaChannel, channels, transcripts });
 
   const [channel, setChannel] = useState(mediaChannel?.channel || null);
@@ -283,26 +284,26 @@ const MediaPage = initialData => {
   };
 
   const onSave = useCallback(async () => {
-    console.log('onSave:', { title }, { description }, { tags });
-    await DataStore.save(
-      Media.copyOf(media, updated => {
-        updated.title = title;
-        updated.description = description;
-        updated.tags = tags;
-      }),
-    );
-    if (channel && !mediaChannel) {
-      await DataStore.save(new MediaChannel({ media, channel }));
-    } else if (channel) {
-      await DataStore.save(
-        MediaChannel.copyOf(mediaChannel, updated => {
-          updated.channel = channel;
-        }),
-      );
-    } else if (!channel && mediaChannel) {
-      await DataStore.delete(mediaChannel);
-    }
-    setEditable(false);
+    // console.log('onSave:', { title }, { description }, { tags });
+    // await DataStore.save(
+    //   Media.copyOf(media, updated => {
+    //     updated.title = title;
+    //     updated.description = description;
+    //     updated.tags = tags;
+    //   }),
+    // );
+    // if (channel && !mediaChannel) {
+    //   await DataStore.save(new MediaChannel({ media, channel }));
+    // } else if (channel) {
+    //   await DataStore.save(
+    //     MediaChannel.copyOf(mediaChannel, updated => {
+    //       updated.channel = channel;
+    //     }),
+    //   );
+    // } else if (!channel && mediaChannel) {
+    //   await DataStore.delete(mediaChannel);
+    // }
+    // setEditable(false);
   }, [media, title, description, tags, channel, mediaChannel]);
 
   const gotoTranscript = useCallback(
@@ -335,36 +336,36 @@ const MediaPage = initialData => {
     );
   }, [transcript, id, router]);
 
-  useEffect(() => {
-    getMedia(setMedia, id);
-    const subscription = DataStore.observe(Media).subscribe(msg => {
-      console.log(msg.model, msg.opType, msg.element);
-      getMedia(setMedia, id);
-    });
-    const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
-    window.addEventListener('online', handleConnectionChange);
-    return () => subscription.unsubscribe();
-  }, [id]);
+  // useEffect(() => {
+  //   getMedia(setMedia, id);
+  //   const subscription = DataStore.observe(Media).subscribe(msg => {
+  //     console.log(msg.model, msg.opType, msg.element);
+  //     getMedia(setMedia, id);
+  //   });
+  //   const handleConnectionChange = () => navigator.onLine && getMedia(setMedia, id);
+  //   window.addEventListener('online', handleConnectionChange);
+  //   return () => subscription.unsubscribe();
+  // }, [id]);
 
-  useEffect(() => {
-    if (!media || !media.url) return;
-    const signURL = async () => {
-      const prefix = 's3://hyperpink-data/public/';
-      if (media.url.startsWith(prefix)) {
-        setUrl(await Storage.get(media.url.substring(prefix.length)));
-      } else {
-        setUrl(media.url);
-      }
-    };
-    signURL();
-  }, [media]);
+  // useEffect(() => {
+  //   if (!media || !media.url) return;
+  //   const signURL = async () => {
+  //     const prefix = 's3://hyperpink-data/public/';
+  //     if (media.url.startsWith(prefix)) {
+  //       setUrl(await Storage.get(media.url.substring(prefix.length)));
+  //     } else {
+  //       setUrl(media.url);
+  //     }
+  //   };
+  //   signURL();
+  // }, [media]);
 
-  useEffect(() => {
-    if (!media) return;
-    setTitle(media.title);
-    setDescription(media.description);
-    setTags(media.tags);
-  }, [media]);
+  // useEffect(() => {
+  //   if (!media) return;
+  //   setTitle(media.title);
+  //   setDescription(media.description);
+  //   setTags(media.tags);
+  // }, [media]);
 
   const menuProps = useMemo(
     () => ({
@@ -647,111 +648,99 @@ const TranscriptLoader = ({ transcripts, id, time, player, playing, setPlaying }
     loadTranscript();
   }, [metadata]);
 
-  const ht1 = useRef();
-  const onPlay = useRef();
-  const onPause = useRef();
-
-  const hypermedia = {
-    getAttribute: () => 'ha2',
-    currentTime: time,
-    getCurrentTime: () => time,
-    seekTo: t => {
-      player.current?.seekTo(t, 'seconds');
-    },
-    play: () => setPlaying(true),
-    pause: () => setPlaying(false),
-    onPlay: cb => {
-      onPlay.current = cb;
-    },
-    onPause: cb => {
-      onPause.current = cb;
-    },
-  };
-
-  useEffect(() => {
-    window.currentTime = time;
-    if (onPlay.current) onPlay.current();
-  }, [time]);
-
-  useEffect(() => {
-    if (playing && onPlay.current) onPlay.current();
-    if (!playing && onPause.current) onPause.current();
-  }, [playing]);
-
-  useEffect(() => {
-    if (ht1.current) return;
-    if (!transcript) return;
-    if (!document.querySelector('span[data-m]')) return;
-
-    ht1.current = window.hyperaudiolite();
-    // ht1.current.setScrollParameters(<duration>, <delay>, <offset>, <container>);
-    ht1.current.setScrollParameters(800, 0, -284, null);
-    ht1.current.init('hypertranscript', hypermedia, false, true);
-  }, [transcript, ht1]);
-
   return metadata ? (
     <div id="hypertranscript" className="hyperaudio-transcript">
       <article>
-        <section>
-          {transcript?.content?.paragraphs?.map(({ speaker, start, end, words }, i) => (
-            <p key={`${i}-${start}-${end}`}>
-              <span data-m={start * 1e3} data-d={0} className="speaker">
-                {speaker}:{' '}
-              </span>
-              {words.map(({ start, end, text }, i) => (
-                <span data-m={start} data-d={end - start} key={`${i}-${start}-${end}`}>{`${text} `}</span>
-              ))}
-            </p>
-          ))}
-        </section>
+        <section>{transcript?.results?.transcripts?.[0]?.transcript}</section>
       </article>
     </div>
   ) : null;
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
   const {
     params: { id },
   } = context;
 
-  const media = await DataStore.query(Media, id);
+  let media = null; // await DataStore.query(Media, id);
+
+  if (id === 'AXxbnq3n5SRgeSEEMixvMd')
+    media = {
+      id: 'AXxbnq3n5SRgeSEEMixvMd',
+      ns: null,
+      type: null,
+      url: 'https://www.youtube.com/watch?v=ycPr5-27vSI',
+      metadata:
+        '{"oembed":{"author_name":"PowerfulJRE","provider_url":"https://www.youtube.com/","title":"Joe Rogan Experience #1169 - Elon Musk","type":"video","thumbnail_url":"https://i.ytimg.com/vi/ycPr5-27vSI/hqdefault.jpg","version":"1.0","thumbnail_height":360,"author_url":"https://www.youtube.com/c/joerogan","width":200,"thumbnail_width":480,"html":"<iframe width=\\"200\\" height=\\"113\\" src=\\"https://www.youtube.com/embed/ycPr5-27vSI?feature=oembed\\" frameborder=\\"0\\" allow=\\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\\" allowfullscreen></iframe>","provider_name":"YouTube","height":113}}',
+      status: null,
+      title: 'Joe Rogan Experience #1169 - Elon Musk',
+      description: '',
+      owner: '5a121422-2f39-440a-882d-064f99d8df2a',
+      createdAt: '2021-09-01T01:01:01.003Z',
+      updatedAt: '2021-09-05T08:31:41.013Z',
+      tags: [],
+      _version: 12,
+      _lastChangedAt: 1613731661847,
+      _deleted: null,
+    };
+
   if (!media) return { notFound: true };
 
   let user = null;
   let channels = [];
   let userChannels = [];
   let mediaChannel = null;
-  let transcripts = [];
+  let transcripts = [
+    {
+      id: 'McjSrbLfxQwmcjCoidZvcP',
+      ns: '',
+      type: null,
+      metadata: null,
+      status: 'transcribed',
+      title: 'Joe Rogan Experience #1169 - Elon Musk',
+      description: null,
+      owner: null,
+      createdAt: '2021-09-01T01:01:01.003Z',
+      updatedAt: '2021-09-05T08:31:41.013Z',
+      tags: [],
+      url: 'https://hyperaudio-data.s3.eu-west-1.amazonaws.com/public/AXxbnq3n5SRgeSEEMixvMd/transcript/transcript.json',
+      lang: 'en-US',
+      media: 'AXxbnq3n5SRgeSEEMixvMd',
+      _version: 1,
+      _lastChangedAt: 1621584494287,
+      _deleted: null,
+    },
+  ];
 
-  try {
-    const {
-      attributes: { sub },
-    } = await Auth.currentAuthenticatedUser();
-    user = serializeModel(await DataStore.query(User, sub));
+  // try {
+  //   const {
+  //     attributes: { sub },
+  //   } = await Auth.currentAuthenticatedUser();
+  //   user = serializeModel(await DataStore.query(User, sub));
 
-    channels = serializeModel(
-      (
-        await DataStore.query(Channel, Predicates.ALL, {
-          // page: parseInt(page, 10) - 1,
-          // limit: PAGINATION_LIMIT,
-          sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
-        })
-      ).filter(({ editors }) => editors?.includes(user.id)),
-    );
+  //   channels = serializeModel(
+  //     (
+  //       await DataStore.query(Channel, Predicates.ALL, {
+  //         // page: parseInt(page, 10) - 1,
+  //         // limit: PAGINATION_LIMIT,
+  //         sort: s => s.updatedAt(SortDirection.DESCENDING).title(SortDirection.DESCENDING),
+  //       })
+  //     ).filter(({ editors }) => editors?.includes(user.id)),
+  //   );
 
-    userChannels = serializeModel(
-      (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
-    ).concat(channels);
-  } catch (ignored) {}
+  //   userChannels = serializeModel(
+  //     (await DataStore.query(UserChannel)).filter(c => c.user.id === user.id).map(({ channel }) => channel),
+  //   ).concat(channels);
+  // } catch (ignored) {}
 
-  mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
-  transcripts = serializeModel((await DataStore.query(Transcript)).filter(({ media }) => media === id));
+  // mediaChannel = serializeModel((await DataStore.query(MediaChannel)).filter(({ media: { id: _id } }) => _id === id));
+  // transcripts = serializeModel((await DataStore.query(Transcript)).filter(({ media }) => media === id));
   // console.log({ user });
 
   return {
     props: {
-      media: serializeModel(media),
+      media: media,
       user,
       channels,
       transcripts,

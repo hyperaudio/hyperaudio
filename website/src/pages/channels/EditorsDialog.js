@@ -16,7 +16,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import TextField from '@material-ui/core/TextField';
 import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import makeStyles from '@material-ui/core/styles/makeStyles';
 
 const useStyles = makeStyles(theme => ({
@@ -93,7 +93,7 @@ export default function EditorsDialog({ users = [], user, data, onConfirm, onCan
             renderInput={params => (
               <TextField
                 {...params}
-                autoFocus
+                // autoFocus
                 fullWidth
                 label="Add editor…"
                 margin="dense"

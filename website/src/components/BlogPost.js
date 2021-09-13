@@ -1,5 +1,5 @@
 import MDX from '@mdx-js/runtime';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 const components = {
   // img: Image,

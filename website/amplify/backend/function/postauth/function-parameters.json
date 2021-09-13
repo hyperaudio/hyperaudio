@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "storage": {
+      "hyperaudiodata": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}

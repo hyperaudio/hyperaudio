@@ -49,10 +49,7 @@ export default function Topbar() {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then(user => {
-        console.log('User: ', user);
-        setUser(user);
-      })
+      .then(user => setUser(user))
       .catch(() => setUser(null));
   }, [setUser]);
 
@@ -73,7 +70,7 @@ export default function Topbar() {
 
   const signOut = useCallback(() => {
     (async () => {
-      Auth.signOut();
+      await Auth.signOut({ global: true }); // TODO less nuclear?
       router.reload();
     })();
   }, [router]);
