@@ -1,13 +1,10 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/website"
     target-branch: "develop"
     schedule:
-      # interval: "weekly"
-      # day: "wednesday"
       interval: "daily"
-      time: "09:00"
     reviewers:
       - "maboa"
     assignees:
@@ -20,4 +17,115 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
-    # open-pull-requests-limit: 0
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/datastream/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/eventstream/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/items/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/postauth/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/probe/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/transcode/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/website/amplify/backend/function/transcribe/src"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    assignees:
+      - "Laurian"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
