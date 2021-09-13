@@ -30,5 +30,14 @@
   ],
   "javascript.inlayHints.variableTypes.enabled": true,
   "typescript.inlayHints.variableTypes.enabled": true,
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "files.exclude": {
+    "website/amplify/.config": true,
+    "website/amplify/**/*-parameters.json": true,
+    "website/amplify/**/amplify.state": true,
+    "website/amplify/**/transform.conf.json": true,
+    "website/amplify/#current-cloud-backend": true,
+    "website/amplify/backend/amplify-meta.json": true,
+    "website/amplify/backend/awscloudformation": true
+  }
 }
