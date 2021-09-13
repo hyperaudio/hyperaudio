@@ -11,45 +11,5 @@
     "type": "git",
     "url": "https://github.com/hyperaudio/ha-api"
   },
-  "private": true,
-  "scripts": {
-    "start:local": "node index.js",
-    "start:watch": "nodemon index.js",
-    "build": "tsc",
-    "start": "node dist/server.js"
-  },
-  "dependencies": {
-    "@hyperaudio/transcript-parser": "0.0.6",
-    "@hyperaudio/transcript-renderer": "hyperaudio/transcript-renderer",
-    "@nestjs/common": "^4.5.10",
-    "@nestjs/core": "^4.5.10",
-    "@nestjs/microservices": "^4.5.10",
-    "@nestjs/testing": "^4.5.10",
-    "@nestjs/websockets": "^4.5.10",
-    "@types/passport-jwt": "^3.0.0",
-    "@types/passport-local-mongoose": "^4.0.11",
-    "axios": "^0.18.1",
-    "body-parser": "^1.18.2",
-    "dotenv": "^4.0.0",
-    "jsdom": "^11.4.0",
-    "jsonwebtoken": "^8.1.0",
-    "mandrill-api": "^1.0.45",
-    "mongoose": "^5.7.5",
-    "passport": "^0.4.0",
-    "passport-jwt": "^3.0.1",
-    "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^4.4.0",
-    "redis": "^2.7.1",
-    "reflect-metadata": "^0.1.10",
-    "rxjs": "^5.4.0",
-    "typescript": "^2.5.2",
-    "urlsafe-base64": "^1.0.0",
-    "uuid": "^3.1.0"
-  },
-  "devDependencies": {
-    "@types/mongoose": "^4.7.24",
-    "@types/node": "^8.0.28",
-    "nodemon": "^1.12.1",
-    "ts-node": "^3.3.0"
-  }
+  "private": true
 }
