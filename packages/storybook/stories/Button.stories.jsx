@@ -8,6 +8,11 @@ export default {
   argTypes: {
     backgroundColor: { control: "color" },
   },
+  parameters: {
+    status: {
+      type: "stable", // 'beta' | 'stable' | 'deprecated' | 'releaseCandidate'
+    },
+  },
 };
 
 const Template = (args) => <Button {...args} />;

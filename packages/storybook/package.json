@@ -5,6 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.15.5",
+    "@etchteam/storybook-addon-status": "^4.0.0",
     "@storybook/addon-a11y": "^6.3.8",
     "@storybook/addon-actions": "^6.3.8",
     "@storybook/addon-essentials": "^6.3.8",
