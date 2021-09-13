@@ -8,5 +8,6 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-links",
     "storybook-dark-mode",
+    "storybook-addon-material-ui",
   ],
 };

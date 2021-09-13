@@ -1,3 +1,5 @@
+import { muiTheme } from "storybook-addon-material-ui";
+
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
   controls: {
@@ -6,4 +8,6 @@ export const parameters = {
       date: /Date$/,
     },
   },
-}
+};
+
+export const decorators = [muiTheme()];
