@@ -9,6 +9,5 @@ module.exports = {
     "@storybook/addon-links",
     "storybook-dark-mode",
     "storybook-addon-material-ui",
-    "@etchteam/storybook-addon-status",
   ],
 };
