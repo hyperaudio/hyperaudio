@@ -1,4 +1,5 @@
 import { muiTheme } from "storybook-addon-material-ui";
+import CssBaseline from "@mui/material/CssBaseline";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -10,4 +11,13 @@ export const parameters = {
   },
 };
 
-export const decorators = [muiTheme()];
+export const decorators = [
+  (story) => (
+    <>
+      <CssBaseline />
+      {story()}
+    </>
+  ),
+  ,
+  muiTheme(),
+];
