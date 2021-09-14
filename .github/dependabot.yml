@@ -129,3 +129,40 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/packages/remixer"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "maboa"
+      - "Laurian"
+    assignees:
+      - "piotrf"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/packages/storybook"
+    target-branch: "develop"
+    schedule:
+      interval: "daily"
+    reviewers:
+      - "Laurian"
+    assignees:
+      - "piotrf"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
