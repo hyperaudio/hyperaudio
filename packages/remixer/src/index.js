@@ -1,13 +1,27 @@
 import React from 'react';
-import styles from './styles.module.css';
+import { Button, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import img from './img.png';
+const PREFIX = 'Remixer';
 
-export const Remixer = ({ text }) => {
+const classes = {
+  root: `${PREFIX}-root`,
+  sourcePane: `${PREFIX}-sourcePane`,
+  remixPane: `${PREFIX}-remixPane`,
+};
+const Root = styled('div')(({ theme }) => ({}));
+const SourcePane = styled('div')(({ theme }) => ({
+  background: 'blue',
+}));
+const RemixPane = styled('div')(({ theme }) => ({
+  background: 'red',
+}));
+
+export const Remixer = ({ source, remix }) => {
   return (
-    <div className={styles.test}>
-      Example Component: {text} <br />
-      <img src={img} />
-    </div>
+    <Root className={classes.root}>
+      <SourcePane>Source: {source}</SourcePane>
+      <RemixPane>Remix: {remix}</RemixPane>
+    </Root>
   );
 };

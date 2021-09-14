@@ -7,8 +7,8 @@ export default {
   component: Remixer,
 };
 
-const Template = (args) => <Remixer {...args} text="Hello world" />;
+const Template = (args) => (
+  <Remixer {...args} source="Hello Source" remix="Hello Remix" />
+);
 
-export const LoggedIn = Template.bind({});
-
-export const LoggedOut = Template.bind({});
+export const Playground = Template.bind({});
