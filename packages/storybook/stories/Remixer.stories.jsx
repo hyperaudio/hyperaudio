@@ -12,8 +12,9 @@ const Template = (args) => (
   <div style={{ height: "600px" }}>
     <Remixer
       {...args}
-      remix={{ media: null, transcript: data.remix.transcript }}
-      source={{ media: null, transcript: data.source.transcript }}
+      remix={{ ...data.remix }}
+      source={{ ...data.source }}
+      sources={{ ...data.sources }}
     />
   </div>
 );
