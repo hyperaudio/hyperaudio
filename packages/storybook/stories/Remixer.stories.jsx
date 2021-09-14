@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Remixer } from "../../remixer/src/index.js";
+import data from "./remixer.data.json";
 
 export default {
   title: "Packages/Remixer",
@@ -8,7 +9,21 @@ export default {
 };
 
 const Template = (args) => (
-  <Remixer {...args} source="Hello Source" remix="Hello Remix" />
+  <div style={{ height: "600px" }}>
+    <Remixer
+      {...args}
+      remix={{ media: null, transcript: data.remix.transcript }}
+      source={{ media: null, transcript: data.source.transcript }}
+    />
+  </div>
 );
 
-export const Playground = Template.bind({});
+export const ReadMode = Template.bind({});
+ReadMode.args = {
+  editable: false,
+};
+
+export const EditMode = Template.bind({});
+EditMode.args = {
+  editable: true,
+};
