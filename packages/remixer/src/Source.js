@@ -16,7 +16,6 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function Source({ editable, source, sources }) {
-  console.log(sources, sources.length);
   return (
     <Root className={`RemixerPane RemixerPane--Source Source`}>
       <Toolbar className="topbar">
