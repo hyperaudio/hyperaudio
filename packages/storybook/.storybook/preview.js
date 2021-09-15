@@ -1,6 +1,6 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import { ThemeProvider } from "@mui/material/styles";
 import { muiTheme } from "storybook-addon-material-ui";
+
+import CssBaseline from "@mui/material/CssBaseline";
 
 import { defaultTheme } from "../../remixer/src/themes/defaultTheme";
 
@@ -20,11 +20,11 @@ console.groupEnd();
 
 export const decorators = [
   (story) => (
-    <ThemeProvider theme={defaultTheme}>
+    <>
       <CssBaseline />
       {story()}
-    </ThemeProvider>
+    </>
   ),
   ,
-  muiTheme(),
+  muiTheme([defaultTheme]),
 ];

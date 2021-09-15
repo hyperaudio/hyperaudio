@@ -1,12 +1,6 @@
 import { createTheme } from '@mui/material/styles';
 
 export const defaultTheme = createTheme({
-  palette: {
-    background: {
-      paper: '#fff',
-      default: '#f8f8f8',
-    },
-  },
   components: {
     MuiButtonBase: {
       defaultProps: {
@@ -17,6 +11,12 @@ export const defaultTheme = createTheme({
       defaultProps: {
         color: 'primary',
       },
+    },
+  },
+  palette: {
+    background: {
+      paper: '#fff',
+      default: '#f8f8f8',
     },
   },
 });

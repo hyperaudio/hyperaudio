@@ -6,7 +6,7 @@ import RedoIcon from '@mui/icons-material/Redo';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 import HideSourceIcon from '../icons/HideSourceIcon';
 import ShareIcon from '../icons/ShareIcon';
@@ -22,6 +22,7 @@ const Root = styled('div')(({ theme }) => {
 });
 
 export const Remix = ({ editable, showSource, setShowSource, remix }) => {
+  console.log('useTheme', useTheme());
   return (
     <Root className="RemixerPane RemixerPane--Remix">
       <Toolbar className="topbar">

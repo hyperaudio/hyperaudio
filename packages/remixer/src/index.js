@@ -2,11 +2,10 @@ import React from 'react';
 
 import { styled, ThemeProvider } from '@mui/material/styles';
 
+import { Remix, Source } from './components';
 import { defaultTheme } from './themes/defaultTheme';
 
-import { Remix, Source } from './components';
-
-const Root = styled('div')(({ theme }) => ({
+const Layout = styled('div')(({ theme }) => ({
   // gap: '10px', // TODO: just checking
   alignContent: 'flex-start',
   alignItems: 'stretch',
@@ -44,15 +43,15 @@ const Root = styled('div')(({ theme }) => ({
 
 export const Remixer = ({ editable = false, remix, source, sources }) => {
   const [showSource, setShowSource] = React.useState(true);
-  console.log({ source });
-  console.log({ defaultTheme });
-  console.log({ sources }, sources.length);
+  // console.log({ source });
+  // console.log({ defaultTheme });
+  // console.log({ sources }, sources.length);
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Root>
+      <Layout>
         {showSource && <Source editable={editable} source={source} sources={sources} />}
         <Remix editable={editable} remix={remix} showSource={showSource} setShowSource={setShowSource} />
-      </Root>
+      </Layout>
     </ThemeProvider>
   );
 };
