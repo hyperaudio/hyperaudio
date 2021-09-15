@@ -4,7 +4,8 @@ updates:
     directory: "/website"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     reviewers:
       - "maboa"
     assignees:
@@ -22,7 +23,8 @@ updates:
     directory: "/website/amplify/backend/function/datastream/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -39,7 +41,8 @@ updates:
     directory: "/website/amplify/backend/function/eventstream/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -56,7 +59,8 @@ updates:
     directory: "/website/amplify/backend/function/items/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -73,7 +77,8 @@ updates:
     directory: "/website/amplify/backend/function/postauth/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -90,7 +95,8 @@ updates:
     directory: "/website/amplify/backend/function/probe/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -107,7 +113,8 @@ updates:
     directory: "/website/amplify/backend/function/transcode/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -124,7 +131,8 @@ updates:
     directory: "/website/amplify/backend/function/transcribe/src"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -141,7 +149,8 @@ updates:
     directory: "/website/amplify/backend/function/ytdl"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     assignees:
       - "Laurian"
     labels:
@@ -158,7 +167,8 @@ updates:
     directory: "/packages/remixer"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     reviewers:
       - "maboa"
       - "Laurian"
@@ -177,7 +187,8 @@ updates:
     directory: "/packages/storybook"
     target-branch: "develop"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+      day: "monday"
     reviewers:
       - "Laurian"
     assignees:
