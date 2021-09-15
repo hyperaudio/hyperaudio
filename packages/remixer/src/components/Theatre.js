@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { styled } from '@mui/material/styles';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
 const classes = {
@@ -22,12 +23,14 @@ const Root = styled('div')(({ theme }) => ({
 export const Theatre = () => {
   return (
     <Root className={classes.root}>
-      <div>Player 16x9</div>
-      <div>
-        <IconButton>
-          <PlayArrowIcon />
-        </IconButton>
-      </div>
+      <Container maxWidth="md">
+        <div>Player 16x9</div>
+        <div>
+          <IconButton>
+            <PlayArrowIcon />
+          </IconButton>
+        </div>
+      </Container>
     </Root>
   );
 };

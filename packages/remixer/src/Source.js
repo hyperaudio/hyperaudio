@@ -11,16 +11,24 @@ import { Sources, Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
+  [`& .topbar`]: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    minHeight: 'auto',
+    position: 'absolute',
+  },
+  [`& .topbarSide`]: {
+    flex: `0 1 ${theme.spacing(12)}`,
+  },
 }));
 
 export default function Source({ editable, source, sources }) {
   return (
-    <Root className={`RemixerPane RemixerPane--Source Source`}>
-      <Toolbar className="topbar">
+    <Root className={`RemixerPane RemixerPane--Source`}>
+      <Toolbar className="topbar" disableGutters>
         <div className="topbarSide topbarSide--left">
           {editable && (
             <Tooltip title="Add source transcript">
-              <IconButton>
+              <IconButton size="small">
                 <AddIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -32,13 +40,14 @@ export default function Source({ editable, source, sources }) {
         <div className="topbarSide topbarSide--right">
           {editable && (
             <Tooltip title="All transcripts…">
-              <IconButton>
+              <IconButton size="small">
                 <MoreVertIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           )}
         </div>
       </Toolbar>
+      <div className="topbarPush" />
       <Theatre media={source.media} />
       <Transcript transcript={source.transcript} />
     </Root>

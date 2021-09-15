@@ -21,6 +21,7 @@ const Layout = styled('div')(({ theme, showSource }) => ({
     flexFlow: 'column nowrap',
     justifyContent: 'flex-start',
     maxWidth: '50%',
+    position: 'relative',
     [`&.RemixerPane--Source`]: {
       borderRight: `1px solid ${theme.palette.divider}`,
       [theme.breakpoints.down('md')]: {
@@ -30,6 +31,10 @@ const Layout = styled('div')(({ theme, showSource }) => ({
     [`&.RemixerPane--Remix`]: {
       flexBasis: showSource ? '50%' : '100%',
       maxWidth: showSource ? '50%' : 'none',
+      [theme.breakpoints.down('md')]: {
+        flexBasis: '100%',
+        maxWidth: 'none',
+      },
     },
   },
   [`& .topbar`]: {
@@ -37,15 +42,18 @@ const Layout = styled('div')(({ theme, showSource }) => ({
     display: 'flex',
     flexDirecton: 'row',
     justifyContent: 'space-between',
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
-  [`& .topbarSide`]: {
-    flex: `0 1 ${theme.spacing(12)}`,
-    [`&.topbarSide--left`]: {
-      textAlign: 'left',
-    },
-    [`&.topbarSide--right`]: {
-      textAlign: 'right',
-    },
+  [`& .topbarSide--left`]: {
+    textAlign: 'left',
+  },
+  [`& .topbarSide--right`]: {
+    textAlign: 'right',
+  },
+  [`& .topbarPush`]: {
+    ...theme.mixins.toolbar,
   },
 }));
 
