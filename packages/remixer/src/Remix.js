@@ -8,9 +8,7 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
-import HideSourceIcon from './icons/HideSourceIcon';
-import ShareIcon from './icons/ShareIcon';
-import ShowSourceIcon from './icons/ShowSourceIcon';
+import { HideSourceIcon, ShareIcon, ShowSourceIcon } from './icons';
 
 import { Theatre, Transcript } from './components';
 
