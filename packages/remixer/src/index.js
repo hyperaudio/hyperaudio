@@ -7,7 +7,6 @@ import Source from './Source';
 import { defaultTheme } from './themes';
 
 const Layout = styled('div')(({ theme }) => ({
-  // gap: '10px', // TODO: just checking
   alignContent: 'flex-start',
   alignItems: 'stretch',
   display: 'flex',
@@ -23,6 +22,9 @@ const Layout = styled('div')(({ theme }) => ({
     justifyContent: 'flex-start',
     [`&.RemixerPane--Source`]: {
       borderRight: `1px solid ${theme.palette.divider}`,
+      [theme.breakpoints.down('md')]: {
+        display: 'none',
+      },
     },
   },
   [`& .topbar`]: {
@@ -44,9 +46,6 @@ const Layout = styled('div')(({ theme }) => ({
 
 export const Remixer = ({ editable = false, remix, source, sources }) => {
   const [showSource, setShowSource] = React.useState(true);
-  // console.log({ source });
-  // console.log({ defaultTheme });
-  // console.log({ sources }, sources.length);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Layout>

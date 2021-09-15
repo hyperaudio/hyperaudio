@@ -20,7 +20,7 @@ const Root = styled('div')(({ theme }) => {
   };
 });
 
-const Remix = ({ editable, showSource, setShowSource, remix }) => {
+export default function Remix({ editable, showSource, setShowSource, remix }) {
   return (
     <Root className="RemixerPane RemixerPane--Remix">
       <Toolbar className="topbar">
@@ -67,6 +67,4 @@ const Remix = ({ editable, showSource, setShowSource, remix }) => {
       <Transcript transcript={remix.transcript} />
     </Root>
   );
-};
-
-export default Remix;
+}
