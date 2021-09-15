@@ -17,11 +17,18 @@ const Root = styled('div')(({ theme }) => ({
     position: 'absolute',
   },
   [`& .topbarSide`]: {
-    flex: `0 1 ${theme.spacing(12)}`,
+    flexBasis: 'auto',
+    [`&.topbarSide--left`]: {
+      borderRight: `1px solid ${theme.palette.divider}`,
+    },
+    [`&.topbarSide--right`]: {
+      borderLeft: `1px solid ${theme.palette.divider}`,
+    },
   },
 }));
 
-export default function Source({ editable, source, sources }) {
+export default function Source(props) {
+  const { source, editable } = props;
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <Toolbar className="topbar" disableGutters>
@@ -34,17 +41,15 @@ export default function Source({ editable, source, sources }) {
             </Tooltip>
           )}
         </div>
-        <div style={{ width: 'auto', overflow: 'auto' }}>
-          <Sources sources={sources} source={source} />
+        <div className="topbarCore">
+          <Sources {...props} />
         </div>
         <div className="topbarSide topbarSide--right">
-          {editable && (
-            <Tooltip title="All transcripts…">
-              <IconButton size="small">
-                <MoreVertIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+          <Tooltip title="All transcripts…">
+            <IconButton size="small">
+              <MoreVertIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
         </div>
       </Toolbar>
       <div className="topbarPush" />

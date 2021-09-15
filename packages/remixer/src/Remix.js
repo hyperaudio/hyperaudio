@@ -16,7 +16,16 @@ const Root = styled('div')(({ theme }) => {
   return {
     backgroundColor: theme.palette.background.default,
     [`& .topbarSide`]: {
-      flex: `0 1 ${theme.spacing(12)}`,
+      flexBasis: theme.spacing(10),
+      [theme.breakpoints.up('sm')]: {
+        flexBasis: theme.spacing(10),
+      },
+      [`&.topbarSide--right > *`]: {
+        marginLeft: theme.spacing(1),
+      },
+      [`&.topbarSide--left > *`]: {
+        marginRight: theme.spacing(1),
+      },
     },
   };
 });
@@ -48,7 +57,7 @@ export default function Remix({ editable, showSource, setShowSource, remix }) {
             </>
           )}
         </div>
-        <div>Title</div>
+        <div className="topbarCore">Title</div>
         <div className="topbarSide topbarSide--right">
           {editable && (
             <Tooltip title="More remix options…">
