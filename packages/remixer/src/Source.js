@@ -8,13 +8,13 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
-import { Theatre, Transcript } from '.';
+import { Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
 }));
 
-export const Source = ({ editable, source, sources }) => {
+const Source = ({ editable, source, sources }) => {
   return (
     <Root className={`RemixerPane RemixerPane--Source Source`}>
       <Toolbar className="topbar">
@@ -55,3 +55,5 @@ export const Source = ({ editable, source, sources }) => {
     </Root>
   );
 };
+
+export default Source;

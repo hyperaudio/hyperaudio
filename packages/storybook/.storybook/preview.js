@@ -2,7 +2,7 @@ import { muiTheme } from "storybook-addon-material-ui";
 
 import CssBaseline from "@mui/material/CssBaseline";
 
-import { defaultTheme } from "../../remixer/src/themes/defaultTheme";
+import { defaultTheme } from "../../remixer/src/themes";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -13,10 +13,6 @@ export const parameters = {
     },
   },
 };
-
-console.group("preview.js");
-console.log("theme:", defaultTheme);
-console.groupEnd();
 
 export const decorators = [
   (story) => (

@@ -2,8 +2,9 @@ import React from 'react';
 
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { Remix, Source } from './components';
-import { defaultTheme } from './themes/defaultTheme';
+import Remix from './Remix';
+import Source from './Source';
+import { defaultTheme } from './themes';
 
 const Layout = styled('div')(({ theme }) => ({
   // gap: '10px', // TODO: just checking

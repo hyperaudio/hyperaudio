@@ -6,23 +6,21 @@ import RedoIcon from '@mui/icons-material/Redo';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
-import HideSourceIcon from '../icons/HideSourceIcon';
-import ShareIcon from '../icons/ShareIcon';
-import ShowSourceIcon from '../icons/ShowSourceIcon';
+import HideSourceIcon from './icons/HideSourceIcon';
+import ShareIcon from './icons/ShareIcon';
+import ShowSourceIcon from './icons/ShowSourceIcon';
 
-import { Theatre, Transcript } from '.';
+import { Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => {
-  console.log('this:', theme.palette.background.default);
   return {
     backgroundColor: theme.palette.background.default,
   };
 });
 
-export const Remix = ({ editable, showSource, setShowSource, remix }) => {
-  console.log('useTheme', useTheme());
+const Remix = ({ editable, showSource, setShowSource, remix }) => {
   return (
     <Root className="RemixerPane RemixerPane--Remix">
       <Toolbar className="topbar">
@@ -70,3 +68,5 @@ export const Remix = ({ editable, showSource, setShowSource, remix }) => {
     </Root>
   );
 };
+
+export default Remix;
