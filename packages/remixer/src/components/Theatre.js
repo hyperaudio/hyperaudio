@@ -11,6 +11,12 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   textAlign: 'center',
+  alignItems: 'center',
+  display: 'flex',
+  flex: '1 0 300px',
+  flexFlow: 'column nowrap',
+  justifyContent: 'center',
+  padding: theme.spacing(2),
 }));
 
 export const Theatre = () => {
