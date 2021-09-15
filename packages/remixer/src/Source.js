@@ -13,6 +13,9 @@ import { Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
+  [theme.breakpoints.down('md')]: {
+    display: 'none',
+  },
 }));
 
 const Source = ({ editable, source, sources }) => {
