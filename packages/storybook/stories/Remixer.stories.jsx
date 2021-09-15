@@ -9,7 +9,7 @@ export default {
 };
 
 const Template = (args) => (
-  <div style={{ height: "600px" }}>
+  <div style={{ height: "100vh" }}>
     <Remixer
       {...args}
       remix={{ ...data.remix }}
