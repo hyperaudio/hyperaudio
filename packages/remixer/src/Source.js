@@ -5,6 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
@@ -20,9 +21,11 @@ const Source = ({ editable, source, sources }) => {
       <Toolbar className="topbar">
         <div className="topbarSide topbarSide--left">
           {editable && (
-            <IconButton>
-              <AddCircleOutlineIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="Add source transcript">
+              <IconButton>
+                <AddCircleOutlineIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
         <div>
@@ -44,9 +47,11 @@ const Source = ({ editable, source, sources }) => {
         </div>
         <div className="topbarSide topbarSide--right">
           {editable && (
-            <IconButton>
-              <MoreVertIcon fontSize="small" />
-            </IconButton>
+            <Tooltip title="All transcripts…">
+              <IconButton>
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       </Toolbar>

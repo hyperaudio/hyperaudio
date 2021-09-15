@@ -50,13 +50,13 @@ const Remix = ({ editable, showSource, setShowSource, remix }) => {
         <div>Title</div>
         <div className="topbarSide topbarSide--right">
           {editable && (
-            <Tooltip title="More…">
+            <Tooltip title="More remix options…">
               <IconButton>
                 <MoreHorizIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           )}
-          <Tooltip title="Share remix…">
+          <Tooltip title="Share remix">
             <IconButton>
               <ShareIcon fontSize="small" />
             </IconButton>
