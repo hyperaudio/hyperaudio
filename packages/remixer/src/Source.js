@@ -53,7 +53,7 @@ export default function Source(props) {
           <Sources {...props} />
         </div>
         <div className="topbarSide topbarSide--right">
-          <Tooltip title="All transcripts…">
+          <Tooltip title="All source transcripts…">
             <IconButton size="small">
               <MoreVertIcon fontSize="small" />
             </IconButton>

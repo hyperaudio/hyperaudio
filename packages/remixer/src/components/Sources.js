@@ -20,7 +20,7 @@ const Root = styled('div')(({ theme }) => ({
 const Tab = styled(Button)(({ theme }) => ({
   borderRadius: 0,
   borderRight: `1px solid ${theme.palette.divider}`,
-  flexBasis: '0',
+  flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
   minHeight: theme.spacing(5),
@@ -45,30 +45,26 @@ const TabCloseIcon = styled(CloseIcon)(({ theme }) => ({
 export const Sources = ({ editable, sources, source }) => {
   return (
     <Root className="SourcesTabs">
-      {sources.length > 1 ? (
-        sources.map((obj, i) => (
-          <Tab
-            key={obj.id}
-            variant="caption"
-            underline="none"
-            endIcon={
-              editable ? (
-                <Tooltip title="Close">
-                  <TabClose size="small">
-                    <TabCloseIcon />
-                  </TabClose>
-                </Tooltip>
-              ) : null
-            }
-          >
-            <TabText variant="caption" noWrap>
-              {obj.title}
-            </TabText>
-          </Tab>
-        ))
-      ) : (
-        <>title</>
-      )}
+      {sources.map((obj, i) => (
+        <Tab
+          key={obj.id}
+          variant="caption"
+          underline="none"
+          endIcon={
+            editable ? (
+              <Tooltip title="Close">
+                <TabClose size="small">
+                  <TabCloseIcon />
+                </TabClose>
+              </Tooltip>
+            ) : null
+          }
+        >
+          <TabText variant="caption" noWrap>
+            {obj.title}
+          </TabText>
+        </Tab>
+      ))}
     </Root>
   );
 };
