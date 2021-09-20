@@ -1,3 +1,3 @@
-export * from './Sources';
+export * from './SourceTopbar';
 export * from './Theatre';
 export * from './Transcript';

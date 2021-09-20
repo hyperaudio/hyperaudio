@@ -6,7 +6,9 @@ import Remix from './Remix';
 import Source from './Source';
 import { defaultTheme } from './themes';
 
-const Layout = styled('div')(({ theme, showSource }) => ({
+const Layout = styled('div', {
+  shouldForwardProp: prop => prop !== 'showSource',
+})(({ theme, showSource }) => ({
   alignContent: 'flex-start',
   alignItems: 'stretch',
   display: 'flex',
@@ -45,6 +47,7 @@ const Layout = styled('div')(({ theme, showSource }) => ({
     left: 0,
     position: 'absolute',
     right: 0,
+    zIndex: theme.zIndex.appBar,
   },
   [`& .topbarSide`]: {
     flexGrow: 0,
@@ -69,14 +72,19 @@ const Layout = styled('div')(({ theme, showSource }) => ({
   },
 }));
 
-export const Remixer = ({ editable = false, remix, source, sources }) => {
+export const Remixer = props => {
   const [showSource, setShowSource] = React.useState(true);
+  const [source, setSource] = React.useState(props.sources[0].id);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Layout showSource={showSource}>
-        {showSource && <Source editable={editable} source={source} sources={sources} />}
-        <Remix editable={editable} remix={remix} showSource={showSource} setShowSource={setShowSource} />
+        {showSource && <Source {...props} source={source} setSource={setSource} />}
+        <Remix {...props} showSource={showSource} setShowSource={setShowSource} setSource={setSource} />
       </Layout>
     </ThemeProvider>
   );
+};
+
+Remixer.defaultProps = {
+  editable: false,
 };

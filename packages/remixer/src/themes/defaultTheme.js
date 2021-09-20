@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 
+const mui = createTheme();
+
 export const defaultTheme = createTheme({
   components: {
     MuiButtonBase: {
@@ -7,9 +9,19 @@ export const defaultTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
+      },
+    },
     MuiIconButton: {
       defaultProps: {
         color: 'primary',
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: mui.spacing(1),
+        },
       },
     },
   },
