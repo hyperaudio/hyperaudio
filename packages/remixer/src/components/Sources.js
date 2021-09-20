@@ -1,10 +1,10 @@
 import React from 'react';
 
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 
 const Root = styled('div')(({ theme }) => ({
@@ -23,19 +23,14 @@ const Tab = styled(Button)(({ theme }) => ({
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
-  minHeight: theme.spacing(5),
   justifyContent: 'space-between',
+  minHeight: theme.spacing(5),
   textTransform: 'none',
   width: 'auto',
 }));
 
 const TabText = styled(Typography)(({ theme }) => ({
   maxWidth: '150px',
-}));
-
-const TabClose = styled(IconButton)(({ theme }) => ({
-  marginLeft: theme.spacing(0.5 * -1),
-  marginRight: theme.spacing(0.5 * -1),
 }));
 
 const TabCloseIcon = styled(CloseIcon)(({ theme }) => ({
@@ -53,9 +48,9 @@ export const Sources = ({ editable, sources, source }) => {
           endIcon={
             editable ? (
               <Tooltip title="Close">
-                <TabClose size="small">
-                  <TabCloseIcon />
-                </TabClose>
+                <IconButton size="small" edge="end">
+                  <TabCloseIcon fontSize="small" />
+                </IconButton>
               </Tooltip>
             ) : null
           }
