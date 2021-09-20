@@ -15,14 +15,22 @@ const Root = styled('div')(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     minHeight: 'auto',
     position: 'absolute',
+    alignItems: 'stretch',
   },
   [`& .topbarSide`]: {
+    alignItems: 'center',
+    padding: theme.spacing(0, 0.5),
+    display: 'flex',
     flexBasis: 'auto',
+    flexDirection: 'column',
+    height: 'inherit',
+    justifyContent: 'center',
     [`&.topbarSide--left`]: {
       borderRight: `1px solid ${theme.palette.divider}`,
     },
     [`&.topbarSide--right`]: {
       borderLeft: `1px solid ${theme.palette.divider}`,
+      marginLeft: `-1px`,
     },
   },
 }));
@@ -32,15 +40,15 @@ export default function Source(props) {
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <Toolbar className="topbar" disableGutters>
-        <div className="topbarSide topbarSide--left">
-          {editable && (
+        {editable && (
+          <div className="topbarSide topbarSide--left">
             <Tooltip title="Add source transcript">
               <IconButton size="small">
                 <AddIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-          )}
-        </div>
+          </div>
+        )}
         <div className="topbarCore">
           <Sources {...props} />
         </div>

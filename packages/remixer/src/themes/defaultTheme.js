@@ -18,6 +18,7 @@ export const defaultTheme = createTheme({
       paper: '#fff',
       default: '#F8F8F8',
     },
+    divider: '#E9E8EE',
     primary: {
       main: '#6202EE',
       light: '#F2E7FE',
