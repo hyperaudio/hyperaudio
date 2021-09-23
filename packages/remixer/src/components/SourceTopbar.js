@@ -1,11 +1,12 @@
 import React from 'react';
 
-import AddIcon from '@mui/icons-material/Add';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -34,7 +35,8 @@ const Tab = styled(Button, {
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
-  justifyContent: isSingle ? 'center' : 'space-between',
+  justifyContent: 'space-between',
+  // maxWidth: '50%',
   minHeight: theme.spacing(5),
   position: 'relative',
   textTransform: 'none',
@@ -46,20 +48,17 @@ export const SourceTopbar = props => {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const onTranscriptsOpen = e => setAnchorEl(e.currentTarget);
+  const onTranscriptsClose = () => setAnchorEl(null);
+
   return (
     <>
       <Toolbar className="topbar" disableGutters>
         {editable && (
           <div className="topbarSide topbarSide--left">
-            <Tooltip title="Add source transcript">
+            <Tooltip title="Add source transcript…">
               <IconButton size="small">
-                <AddIcon fontSize="small" />
+                <AddCircleOutlineIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           </div>
@@ -94,18 +93,17 @@ export const SourceTopbar = props => {
         </div>
         <div className="topbarSide topbarSide--right">
           <Tooltip title="All source transcripts…">
-            <IconButton size="small" onClick={handleClick} disabled={sources.length < 2}>
+            <IconButton size="small" onClick={onTranscriptsOpen} disabled={sources.length < 2}>
               <MoreVertIcon fontSize="small" />
             </IconButton>
           </Tooltip>
           <Menu
             anchorEl={anchorEl}
             open={open}
-            onClose={handleClose}
-            onClick={handleClose}
+            onClose={onTranscriptsClose}
+            onClick={onTranscriptsClose}
             MenuListProps={{
               dense: true,
-              subheader: <ListSubheader>All source transcripts:</ListSubheader>,
             }}
             PaperProps={{
               elevation: 0,
@@ -131,18 +129,25 @@ export const SourceTopbar = props => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {sources.map(o => (
-              <MenuItem key={o.id} selected={o.id === source} onClick={() => setSource(o.id)}>
+            {sources.map((o, i) => (
+              <MenuItem key={o.id} onClick={() => setSource(o.id)} selected={o.id === source} primary>
                 <ListItemText>{o.title}</ListItemText>
                 {editable && (
                   <Tooltip title="Close" enterDelay={1000}>
-                    <IconButton size="small" edge="end" color="default" sx={{ ml: 1 }}>
+                    <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
                       <CloseIcon sx={{ fontSize: '16px' }} />
                     </IconButton>
                   </Tooltip>
                 )}
               </MenuItem>
             ))}
+            <Divider />
+            <MenuItem>
+              <ListItemIcon>
+                <AddCircleOutlineIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Add source transcript…" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
           </Menu>
         </div>
       </Toolbar>
