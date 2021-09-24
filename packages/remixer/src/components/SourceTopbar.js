@@ -76,11 +76,17 @@ export const SourceTopbar = props => {
                 color="inherit"
                 endIcon={
                   editable && (
-                    <Tooltip title="Close">
-                      <IconButton size="small" edge="end">
-                        <CloseIcon sx={{ fontSize: '16px' }} />
-                      </IconButton>
-                    </Tooltip>
+                    <span>
+                      <Tooltip title="Close">
+                        <IconButton
+                          size="small"
+                          edge="end"
+                          // FIXME: <button> cannot appear as a descendant of <button>
+                        >
+                          <CloseIcon sx={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </Tooltip>
+                    </span>
                   )
                 }
               >
@@ -132,13 +138,17 @@ export const SourceTopbar = props => {
             {sources.map((o, i) => (
               <MenuItem key={o.id} onClick={() => setSource(o.id)} selected={o.id === source} primary>
                 <ListItemText>{o.title}</ListItemText>
-                {editable && (
-                  <Tooltip title="Close" enterDelay={1000}>
-                    <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
-                      <CloseIcon sx={{ fontSize: '16px' }} />
-                    </IconButton>
-                  </Tooltip>
-                )}
+                <span>
+                  {editable && (
+                    <span>
+                      <Tooltip title="Close" enterDelay={1000}>
+                        <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
+                          <CloseIcon sx={{ fontSize: '16px' }} />
+                        </IconButton>
+                      </Tooltip>
+                    </span>
+                  )}
+                </span>
               </MenuItem>
             ))}
             <Divider />

@@ -47,7 +47,6 @@ const Layout = styled('div', {
     left: 0,
     position: 'absolute',
     right: 0,
-    zIndex: theme.zIndex.appBar,
   },
   [`& .topbarSide`]: {
     flexGrow: 0,
