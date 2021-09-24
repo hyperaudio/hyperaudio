@@ -15,32 +15,35 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+const Root = styled(Toolbar)(({ theme }) => ({
+  alignItems: 'stretch !important',
+  backgroundColor: theme.palette.background.default,
+}));
+
 const Tabs = styled('div')(({ theme }) => ({
   alignItems: 'center',
   display: 'flex',
   flexFlow: 'row',
   justifyContent: 'flex-start',
   maxWidth: 'inherit',
-  overflowX: 'auto',
-  whiteSpace: 'nowrap',
+  whiteSpace: 'inherit',
 }));
 
 const Tab = styled(Button, {
   shouldForwardProp: prop => prop !== 'isActive' && prop !== 'isSingle',
 })(({ theme, isActive, isSingle }) => ({
-  background: isActive ? theme.palette.divider : 'transparent',
+  background: isActive ? theme.palette.background.paper : 'transparent',
   borderRadius: 0,
   borderRight: `1px solid ${theme.palette.divider}`,
-  boxShadow: isActive ? '0 1px 0 0  red' : 'none',
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
   justifyContent: 'space-between',
-  // maxWidth: '50%',
   minHeight: theme.spacing(5),
-  position: 'relative',
   textTransform: 'none',
-  zIndex: 1,
+  [`&:hover`]: {
+    background: theme.palette.background.paper,
+  },
 }));
 
 export const SourceTopbar = props => {
@@ -53,7 +56,7 @@ export const SourceTopbar = props => {
 
   return (
     <>
-      <Toolbar className="topbar" disableGutters>
+      <Root className="topbar" disableGutters>
         {editable && (
           <div className="topbarSide topbarSide--left">
             <Tooltip title="Add source transcript…">
@@ -136,17 +139,15 @@ export const SourceTopbar = props => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {sources.map((o, i) => (
-              <MenuItem key={o.id} onClick={() => setSource(o.id)} selected={o.id === source} primary>
+              <MenuItem key={o.id} onClick={() => setSource(o.id)} selected={o.id === source}>
                 <ListItemText>{o.title}</ListItemText>
                 <span>
                   {editable && (
-                    <span>
-                      <Tooltip title="Close" enterDelay={1000}>
-                        <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
-                          <CloseIcon sx={{ fontSize: '16px' }} />
-                        </IconButton>
-                      </Tooltip>
-                    </span>
+                    <Tooltip title="Close" enterDelay={1000}>
+                      <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
+                        <CloseIcon sx={{ fontSize: '16px' }} />
+                      </IconButton>
+                    </Tooltip>
                   )}
                 </span>
               </MenuItem>
@@ -160,7 +161,7 @@ export const SourceTopbar = props => {
             </MenuItem>
           </Menu>
         </div>
-      </Toolbar>
+      </Root>
       <div className="topbarPush" />
     </>
   );

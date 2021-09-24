@@ -51,20 +51,22 @@ const Layout = styled('div', {
   [`& .topbarSide`]: {
     flexGrow: 0,
     flexShrink: 0,
+    [`&.topbarSide--left`]: {
+      textAlign: 'left',
+    },
+    [`&.topbarSide--right`]: {
+      textAlign: 'right',
+    },
   },
   [`& .topbarCore`]: {
     flexBasis: '100%',
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-    overflowX: 'auto',
+    overflowX: 'auto !important',
+    overflow: 'visible',
     textAlign: 'center',
-  },
-  [`& .topbarSide--left`]: {
-    textAlign: 'left',
-  },
-  [`& .topbarSide--right`]: {
-    textAlign: 'right',
+    whiteSpace: 'unset',
   },
   [`& .topbarPush`]: {
     ...theme.mixins.toolbar,

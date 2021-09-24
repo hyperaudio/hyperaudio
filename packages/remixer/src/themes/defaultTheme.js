@@ -14,6 +14,18 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
     },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          [`&.Mui-selected`]: {
+            backgroundColor: mui.palette.action.hover,
+            [`&:hover`]: {
+              backgroundColor: mui.palette.action.hover,
+            },
+          },
+        },
+      },
+    },
     MuiIconButton: {
       defaultProps: {
         color: 'primary',

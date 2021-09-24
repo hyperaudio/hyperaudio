@@ -4,6 +4,7 @@ import ClickAwayListener from '@mui/material/ClickAwayListener';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Divider from '@mui/material/Divider';
 import Grow from '@mui/material/Grow';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import IconButton from '@mui/material/IconButton';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +21,6 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 
 import { RecursiveMenuItem } from '.';
-
 import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
 export const RemixTopbar = props => {
@@ -85,6 +85,7 @@ export const RemixTopbar = props => {
                                 <IosShareIcon fontSize="small" color="primary" />
                               </ListItemIcon>
                               <ListItemText primary="Export" primaryTypographyProps={{ color: 'primary' }} />
+                              <ArrowRightIcon fontSize="small" />
                             </>
                           }
                           placement="left-start"
