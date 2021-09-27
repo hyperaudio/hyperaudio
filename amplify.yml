@@ -8,6 +8,7 @@ applications:
             - ln -s /usr/local/bin/python3.8 /usr/local/bin/python3
             - pip3.8 install --user pipenv
             - pip3.8 install --user virtualenv
+            - nvm install 16 && nvm use 16
         build:
           commands:
             - amplifyPush --simple
@@ -27,5 +28,4 @@ applications:
         paths:
           - node_modules/**/*
           - website/.next/cache/**/*
-
 # FYI https://github.com/aws-amplify/amplify-console/blob/master/FAQ.md#how-do-i-run-amplify-functions-with-python-runtime
