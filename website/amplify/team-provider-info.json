@@ -19,18 +19,18 @@
       "function": {
         "transcode": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcode-4931742b4769382b466b-build.zip",
+          "s3Key": "amplify-builds/transcode-317776436457525a6a51-build.zip",
           "mediaConvertApi": "https://r1eeew44a.mediaconvert.eu-west-1.amazonaws.com",
           "mediaConvertRole": "arn:aws:iam::585082712647:role/mediaConvertRole",
           "mediaConvertQueue": "arn:aws:mediaconvert:eu-west-1:585082712647:queues/Default"
         },
         "transcribe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/transcribe-4f7867364f58466e3639-build.zip"
+          "s3Key": "amplify-builds/transcribe-6b3278314263464c5670-build.zip"
         },
         "items": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/items-73635951494b504e4d62-build.zip"
+          "s3Key": "amplify-builds/items-637854613744637a552b-build.zip"
         },
         "datastream": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
@@ -42,15 +42,15 @@
         },
         "postauth": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/postauth-385a4a53596a374b5a75-build.zip"
+          "s3Key": "amplify-builds/postauth-5962744a444b764b4a66-build.zip"
         },
         "probe": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/probe-68725957307a376d3144-build.zip"
+          "s3Key": "amplify-builds/probe-562f6e37386553582f4a-build.zip"
         },
         "ytdl": {
           "deploymentBucketName": "amplify-hyperaudio-staging-141132-deployment",
-          "s3Key": "amplify-builds/ytdl-75495558417a4769336c-build.zip"
+          "s3Key": "amplify-builds/ytdl-38565958636b77366355-build.zip"
         }
       },
       "hosting": {
