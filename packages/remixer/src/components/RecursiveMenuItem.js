@@ -1,5 +1,7 @@
 import React, { useRef, useState } from 'react';
 
+// via https://github.com/mui-org/material-ui/issues/11723#issuecomment-893308915 & https://codesandbox.io/s/stoic-mcnulty-ux2l8?file=/src/App.tsx
+
 import Grow from '@mui/material/Grow';
 import MenuList from '@mui/material/MenuList';
 import MenuItem from '@mui/material/MenuItem';

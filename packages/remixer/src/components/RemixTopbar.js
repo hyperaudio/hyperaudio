@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Divider from '@mui/material/Divider';
 import Grow from '@mui/material/Grow';
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import IconButton from '@mui/material/IconButton';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -16,23 +16,46 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import RedoIcon from '@mui/icons-material/Redo';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
+import { styled } from '@mui/material/styles';
 
-import { RecursiveMenuItem } from '.';
+import { RecursiveMenuItem, ShareDialog } from '.';
 import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
+const Root = styled('div')(({ theme }) => {
+  return {
+    [`& .RemixTitle`]: {
+      textAlign: 'center',
+    },
+  };
+});
+
 export const RemixTopbar = props => {
-  const { editable, showSource, setShowSource } = props;
+  const { editable, showSource, setShowSource, remix } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [share, setShare] = React.useState(false);
+  const [titleFocus, setTitleFocus] = React.useState(false);
+
   const open = Boolean(anchorEl);
   const onMoreOpen = e => setAnchorEl(e.currentTarget);
   const onMoreClose = () => setAnchorEl(null);
+  const onShareOpen = () => setShare(true);
+  const onShareClose = () => setShare(false);
+
+  const onTitleFocus = e => {
+    setTitleFocus(true);
+  };
+  const onTitleBlur = e => {
+    setTitleFocus(false);
+    console.log(e.target.value);
+  };
 
   return (
-    <>
+    <Root>
       <Toolbar className="topbar">
         <div className="topbarSide topbarSide--left">
           {!editable && (
@@ -57,7 +80,25 @@ export const RemixTopbar = props => {
             </>
           )}
         </div>
-        <div className="topbarCore">Title</div>
+        <div className="topbarCore">
+          <TextField
+            fullWidth
+            placeholder="Give your remix a title…"
+            required
+            size="small"
+            type="text"
+            value={remix.title}
+            InputProps={{
+              disableUnderline: !titleFocus,
+            }}
+            variant="standard"
+            inputProps={{
+              className: 'RemixTitle',
+              onBlur: onTitleBlur,
+              onFocus: onTitleFocus,
+            }}
+          />
+        </div>
         <div className="topbarSide topbarSide--right">
           {editable && (
             <>
@@ -132,13 +173,14 @@ export const RemixTopbar = props => {
             </>
           )}
           <Tooltip title="Share remix">
-            <IconButton size="small">
+            <IconButton onClick={onShareOpen} size="small">
               <ShareIcon fontSize="small" />
             </IconButton>
           </Tooltip>
         </div>
       </Toolbar>
       <div className="topbarPush" />
-    </>
+      <ShareDialog isOpen={share} onClose={onShareClose} />
+    </Root>
   );
 };

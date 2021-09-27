@@ -38,7 +38,7 @@ const Tab = styled(Button, {
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
-  justifyContent: 'space-between',
+  justifyContent: isSingle ? 'center' : 'space-between',
   minHeight: theme.spacing(5),
   textTransform: 'none',
   [`&:hover`]: {
