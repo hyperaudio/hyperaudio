@@ -142,6 +142,7 @@ export const ShareDialog = props => {
           autoFocus
           size="small"
           fullWidth
+          label="Grab you share link:"
           // disabled
           className={classes.field}
           type="url"
