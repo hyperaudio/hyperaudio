@@ -23,13 +23,13 @@ const Root = styled('div')(({ theme }) => {
 });
 
 export default function Remix(props) {
-  const { remix } = props;
+  const { editable, remix } = props;
   return (
     <Root className="RemixerPane RemixerPane--Remix">
       <RemixTopbar {...props} />
       <Theatre media={remix.media} />
       <Transcript transcript={remix.transcript} />
-      <Dragbar />
+      {editable && <Dragbar />}
     </Root>
   );
 }

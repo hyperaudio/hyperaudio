@@ -93,6 +93,7 @@ export const RemixTopbar = props => {
             placeholder="Give your remix a title…"
             required
             size="small"
+            disabled={!editable}
             type="text"
             value={remix.title}
             InputProps={{
