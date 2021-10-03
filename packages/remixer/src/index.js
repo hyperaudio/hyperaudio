@@ -80,7 +80,10 @@ export const Remixer = props => {
   const [source, setSource] = React.useState(props.sources[0].id);
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Layout showSource={showSource}>
+      <Layout
+        id="Layout" // used as Dragbar’s bounds
+        showSource={showSource}
+      >
         {showSource && <Source {...props} source={source} setSource={setSource} />}
         <Remix {...props} showSource={showSource} setShowSource={setShowSource} setSource={setSource} />
       </Layout>

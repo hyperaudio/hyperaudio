@@ -2,7 +2,7 @@ import React from 'react';
 
 import { styled } from '@mui/material/styles';
 
-import { RemixTopbar, Theatre, Transcript } from './components';
+import { RemixTopbar, Theatre, Transcript, Dragbar } from './components';
 
 const Root = styled('div')(({ theme }) => {
   return {
@@ -29,6 +29,7 @@ export default function Remix(props) {
       <RemixTopbar {...props} />
       <Theatre media={remix.media} />
       <Transcript transcript={remix.transcript} />
+      <Dragbar />
     </Root>
   );
 }

@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
+import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { styled } from '@mui/material/styles';
 
@@ -35,6 +36,8 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const Theatre = props => {
+  const [playing, setPlaying] = React.useState(false);
+
   return (
     <Root className={classes.root}>
       <Container maxWidth="md">
@@ -42,14 +45,23 @@ export const Theatre = props => {
           <ReactPlayer
             className={classes.player}
             height="100%"
+            onPause={() => setPlaying(false)}
+            onPlay={() => setPlaying(true)}
+            playing={playing}
             url="https://www.youtube.com/watch?v=TnkdoEZhTbc"
             width="100%"
           />
         </div>
         <div>
-          <IconButton>
-            <PlayArrowIcon />
-          </IconButton>
+          {playing ? (
+            <IconButton onClick={() => setPlaying(false)}>
+              <PauseIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => setPlaying(true)}>
+              <PlayArrowIcon />
+            </IconButton>
+          )}
         </div>
       </Container>
     </Root>
