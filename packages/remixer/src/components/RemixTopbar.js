@@ -27,8 +27,15 @@ import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
 const Root = styled('div')(({ theme }) => {
   return {
+    [`& .RemixTitleField`]: {
+      borderWidth: '15px',
+      [`& .MuiOutlinedInput-notchedOutline`]: {
+        borderColor: 'transparent',
+      },
+    },
     [`& .RemixTitle`]: {
       textAlign: 'center',
+      borderWidth: '15px',
     },
   };
 });
@@ -72,7 +79,7 @@ export const RemixTopbar = props => {
                   <UndoIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Undo">
+              <Tooltip title="Redo">
                 <IconButton size="small">
                   <RedoIcon fontSize="small" />
                 </IconButton>
@@ -89,11 +96,11 @@ export const RemixTopbar = props => {
             type="text"
             value={remix.title}
             InputProps={{
-              disableUnderline: !titleFocus,
+              className: 'RemixTitleField',
             }}
-            variant="standard"
             inputProps={{
               className: 'RemixTitle',
+              minlength: 1,
               onBlur: onTitleBlur,
               onFocus: onTitleFocus,
             }}
