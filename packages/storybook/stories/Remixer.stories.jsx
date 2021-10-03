@@ -32,9 +32,11 @@ ReadModeOneSource.args = {
 export const EditMode = Template.bind({});
 EditMode.args = {
   editable: true,
+  remix: { ...data.remix, title: "" },
 };
 export const EditModeOneSource = Template.bind({});
 EditModeOneSource.args = {
   editable: true,
+  remix: { ...data.remix, title: "" },
   sources: [{ id: 0, title: "A transcript" }],
 };

@@ -1,81 +1,189 @@
 import React from 'react';
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import Dialog from '@mui/material/Dialog';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import FormControl from '@mui/material/FormControl';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import ToggleButton from '@mui/material/ToggleButton';
 import Tooltip from '@mui/material/Tooltip';
 import TwitterIcon from '@mui/icons-material/Twitter';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 import { Share1Pane, Share2Panes } from '../icons';
 
+const PREFIX = 'ShareDialog';
+const classes = {
+  root: `${PREFIX}`,
+  toggleButton: `${PREFIX}-toggleButton`,
+  field: `${PREFIX}-field`,
+  copiedButton: `${PREFIX}-copiedButton`,
+};
+const Root = styled(Dialog)(({ theme }) => ({
+  [`& .${classes.toggleButton}`]: {
+    marginBottom: theme.spacing(1),
+    minHeight: '100px',
+  },
+  [`& .${classes.field}`]: {
+    marginTop: theme.spacing(3),
+  },
+  [`& .${classes.copiedButton}`]: {
+    background: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+  },
+}));
+
 export const ShareDialog = props => {
   const { isOpen, onClose } = props;
+  const inputRef = React.useRef();
 
-  const [maxWidth, setMaxWidth] = React.useState('sm');
+  const [isCopied, setIsCopied] = React.useState(false);
+  const [includeSource, setIncludeSource] = React.useState(true);
 
-  const handleMaxWidthChange = event => {
-    setMaxWidth(
-      // @ts-expect-error autofill of arbitrary value is not handled.
-      event.target.value,
-    );
+  // This is the function we wrote earlier
+  async function copyToClipboard(text) {
+    if ('clipboard' in navigator) {
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand('copy', true, text);
+    }
+  }
+
+  const handleCopyClick = () => {
+    inputRef.current.focus();
+    copyToClipboard(inputRef.current.value)
+      .then(() => {
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 1500);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
-    <Dialog fullWidth maxWidth="xs" open={isOpen} onClose={onClose}>
-      <DialogTitle>Share Remix</DialogTitle>
+    <Root fullWidth maxWidth="xs" open={isOpen} onClose={onClose}>
+      <DialogTitle>
+        Share Remix{' '}
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          size="small"
+          sx={{
+            color: theme => theme.palette.grey[500],
+            position: 'absolute',
+            right: theme => theme.spacing(1),
+            top: theme => theme.spacing(1),
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       <DialogContent>
-        {/* <DialogContentText>You can set my maximum width and whether to adapt or not.</DialogContentText> */}
         <Grid container spacing={3}>
           <Grid item xs={6}>
-            <Card variant="outlined">
-              <CardMedia>
-                <Share1Pane sx={{ fontSize: 40 }} />
-              </CardMedia>
-              <CardContent>Content</CardContent>
-            </Card>
+            <ToggleButton
+              aria-label="Include source"
+              className={classes.toggleButton}
+              color="primary"
+              fullWidth
+              onClick={() => setIncludeSource(false)}
+              selected={!includeSource}
+              size="large"
+              value="excludesource"
+            >
+              <Share1Pane sx={{ fontSize: 40 }} />
+            </ToggleButton>
+            <Typography
+              color={!includeSource ? 'primary' : 'textSecondary'}
+              align="center"
+              variant="caption"
+              component="h3"
+            >
+              Remix only
+            </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Card variant="outlined">
-              <CardMedia>
-                <Share2Panes sx={{ fontSize: 40 }} />
-              </CardMedia>
-              <CardContent>Content</CardContent>
-            </Card>
+            <ToggleButton
+              aria-label="Include source"
+              className={classes.toggleButton}
+              color="primary"
+              fullWidth
+              onClick={() => setIncludeSource(true)}
+              selected={includeSource}
+              size="large"
+              value="includesource"
+            >
+              <Share2Panes sx={{ fontSize: 40 }} />
+            </ToggleButton>
+            <Typography
+              color={includeSource ? 'primary' : 'textSecondary'}
+              align="center"
+              variant="caption"
+              component="h3"
+            >
+              Remix & Source
+            </Typography>
           </Grid>
         </Grid>
+        <TextField
+          autoFocus
+          size="small"
+          fullWidth
+          // disabled
+          className={classes.field}
+          type="url"
+          inputRef={inputRef}
+          inputProps={{
+            onFocus: e => e.target.select(),
+            readOnly: true,
+          }}
+          value={`https://hyper.audio/xyz${includeSource ? '?includesource' : ''}`}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <Tooltip title="Copy to clipboard">
+                  <IconButton
+                    className={isCopied ? classes.copiedButton : ''}
+                    color={isCopied ? 'primary' : 'default'}
+                    onClick={handleCopyClick}
+                    size="small"
+                  >
+                    {isCopied ? <CheckIcon fontSize="small" /> : <ContentCopyIcon fontSize="small" />}
+                  </IconButton>
+                </Tooltip>
+              </InputAdornment>
+            ),
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <Grid container spacing={2}>
           <Grid item xs>
             <Tooltip title="Share on Facebook">
-              <IconButton>
+              <IconButton onClick={() => console.log('Share on Facebook')}>
                 <FacebookIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Share on Twitter">
-              <IconButton>
+              <IconButton onClick={() => console.log('Share on Twitter')}>
                 <TwitterIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Share via Email">
-              <IconButton>
+              <IconButton onClick={() => console.log('Share via Email')}>
                 <MailOutlineIcon />
               </IconButton>
             </Tooltip>
@@ -87,6 +195,6 @@ export const ShareDialog = props => {
           </Grid>
         </Grid>
       </DialogActions>
-    </Dialog>
+    </Root>
   );
 };

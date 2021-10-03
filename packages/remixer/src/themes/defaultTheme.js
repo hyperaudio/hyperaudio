@@ -14,6 +14,34 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
     },
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          padding: mui.spacing(2),
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(3),
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(3, 3),
+        },
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(3),
+        },
+      },
+    },
     MuiMenuItem: {
       styleOverrides: {
         root: {
@@ -36,6 +64,13 @@ export const defaultTheme = createTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        rounded: {
+          borderRadius: '14px',
+        },
+      },
+    },
   },
   palette: {
     background: {
@@ -53,5 +88,8 @@ export const defaultTheme = createTheme({
       light: '#86FFEA',
       dark: '#002F33',
     },
+  },
+  typography: {
+    fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
   },
 });
