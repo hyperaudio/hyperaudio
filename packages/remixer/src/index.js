@@ -6,6 +6,8 @@ import Remix from './Remix';
 import Source from './Source';
 import { defaultTheme } from './themes';
 
+import './fonts/Inter/inter.css';
+
 const Layout = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
 })(({ theme, showSource }) => ({
