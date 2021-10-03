@@ -1,3 +1,5 @@
+import React from 'react';
+
 import SvgIcon from '@mui/material/SvgIcon';
 
 export const HideSourceIcon = props => (

@@ -30,12 +30,12 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export default function Source(props) {
-  const { media, transcript } = props.source;
+  const { source } = props;
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
-      <Theatre media={media} />
-      <Transcript transcript={transcript} />
+      <Theatre media={source.media} />
+      <Transcript transcript={source.transcript} />
     </Root>
   );
 }

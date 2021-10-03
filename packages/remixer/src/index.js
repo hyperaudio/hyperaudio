@@ -6,6 +6,8 @@ import Remix from './Remix';
 import Source from './Source';
 import { defaultTheme } from './themes';
 
+import './fonts/Inter/inter.css';
+
 const Layout = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
 })(({ theme, showSource }) => ({
@@ -47,25 +49,26 @@ const Layout = styled('div', {
     left: 0,
     position: 'absolute',
     right: 0,
-    zIndex: theme.zIndex.appBar,
   },
   [`& .topbarSide`]: {
     flexGrow: 0,
     flexShrink: 0,
+    [`&.topbarSide--left`]: {
+      textAlign: 'left',
+    },
+    [`&.topbarSide--right`]: {
+      textAlign: 'right',
+    },
   },
   [`& .topbarCore`]: {
     flexBasis: '100%',
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-    overflowX: 'auto',
+    overflowX: 'auto !important',
+    overflow: 'visible',
     textAlign: 'center',
-  },
-  [`& .topbarSide--left`]: {
-    textAlign: 'left',
-  },
-  [`& .topbarSide--right`]: {
-    textAlign: 'right',
+    whiteSpace: 'unset',
   },
   [`& .topbarPush`]: {
     ...theme.mixins.toolbar,
@@ -77,7 +80,10 @@ export const Remixer = props => {
   const [source, setSource] = React.useState(props.sources[0].id);
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Layout showSource={showSource}>
+      <Layout
+        id="Layout" // used as Dragbar’s bounds
+        showSource={showSource}
+      >
         {showSource && <Source {...props} source={source} setSource={setSource} />}
         <Remix {...props} showSource={showSource} setShowSource={setShowSource} setSource={setSource} />
       </Layout>

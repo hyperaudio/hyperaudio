@@ -2,7 +2,7 @@ import React from 'react';
 
 import { styled } from '@mui/material/styles';
 
-import { RemixTopbar, Theatre, Transcript } from './components';
+import { RemixTopbar, Theatre, Transcript, Dragbar } from './components';
 
 const Root = styled('div')(({ theme }) => {
   return {
@@ -23,12 +23,13 @@ const Root = styled('div')(({ theme }) => {
 });
 
 export default function Remix(props) {
-  const { remix } = props;
+  const { editable, remix } = props;
   return (
     <Root className="RemixerPane RemixerPane--Remix">
       <RemixTopbar {...props} />
       <Theatre media={remix.media} />
       <Transcript transcript={remix.transcript} />
+      {editable && <Dragbar />}
     </Root>
   );
 }

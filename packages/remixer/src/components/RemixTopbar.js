@@ -1,32 +1,68 @@
-import React from 'react';
+import React, { useState } from 'react';
 
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ClickAwayListener from '@mui/material/ClickAwayListener';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Divider from '@mui/material/Divider';
-import DownloadIcon from '@mui/icons-material/Download';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
+import IosShareIcon from '@mui/icons-material/IosShare';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import LockIcon from '@mui/icons-material/Lock';
-import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import MenuList from '@mui/material/MenuList';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import Paper from '@mui/material/Paper';
+import Popper from '@mui/material/Popper';
 import RedoIcon from '@mui/icons-material/Redo';
+import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
+import { styled } from '@mui/material/styles';
 
+import { RecursiveMenuItem, ShareDialog } from '.';
 import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
-export const RemixTopbar = props => {
-  const { editable, showSource, setShowSource } = props;
+const Root = styled('div')(({ theme }) => {
+  return {
+    [`& .RemixTitleField`]: {
+      borderWidth: '15px',
+      [`& .MuiOutlinedInput-notchedOutline`]: {
+        borderColor: 'transparent',
+      },
+    },
+    [`& .RemixTitle`]: {
+      textAlign: 'center',
+      borderWidth: '15px',
+    },
+  };
+});
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+export const RemixTopbar = props => {
+  const { editable, showSource, setShowSource, remix } = props;
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [share, setShare] = React.useState(false);
+  const [titleFocus, setTitleFocus] = React.useState(false);
+
   const open = Boolean(anchorEl);
   const onMoreOpen = e => setAnchorEl(e.currentTarget);
   const onMoreClose = () => setAnchorEl(null);
+  const onShareOpen = () => setShare(true);
+  const onShareClose = () => setShare(false);
+
+  const onTitleFocus = e => {
+    setTitleFocus(true);
+  };
+  const onTitleBlur = e => {
+    setTitleFocus(false);
+    console.log(e.target.value);
+  };
 
   return (
-    <>
+    <Root>
       <Toolbar className="topbar">
         <div className="topbarSide topbarSide--left">
           {!editable && (
@@ -43,7 +79,7 @@ export const RemixTopbar = props => {
                   <UndoIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Undo">
+              <Tooltip title="Redo">
                 <IconButton size="small">
                   <RedoIcon fontSize="small" />
                 </IconButton>
@@ -51,7 +87,26 @@ export const RemixTopbar = props => {
             </>
           )}
         </div>
-        <div className="topbarCore">Title</div>
+        <div className="topbarCore">
+          <TextField
+            fullWidth
+            placeholder="Give your remix a title…"
+            required
+            size="small"
+            disabled={!editable}
+            type="text"
+            value={remix.title}
+            InputProps={{
+              className: 'RemixTitleField',
+            }}
+            inputProps={{
+              className: 'RemixTitle',
+              minlength: 1,
+              onBlur: onTitleBlur,
+              onFocus: onTitleFocus,
+            }}
+          />
+        </div>
         <div className="topbarSide topbarSide--right">
           {editable && (
             <>
@@ -60,69 +115,80 @@ export const RemixTopbar = props => {
                   <MoreHorizIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
-
-              <Menu
+              <Popper
                 anchorEl={anchorEl}
-                open={open}
-                onClose={onMoreClose}
                 onClick={onMoreClose}
-                MenuListProps={{
-                  dense: true,
-                }}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: 'visible',
-                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                    mt: 1.5,
-                    '&:before': {
-                      content: '""',
-                      display: 'block',
-                      position: 'absolute',
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: 'background.paper',
-                      transform: 'translateY(-50%) rotate(45deg)',
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                variant="selectedMenu"
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                onClose={onMoreClose}
+                open={open}
+                placement="bottom-end"
               >
-                <MenuItem>
-                  <ListItemIcon>
-                    <DownloadIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary="Export" primaryTypographyProps={{ color: 'primary' }} />
-                </MenuItem>
-                <MenuItem>
-                  <ListItemIcon>
-                    <LockIcon fontSize="small" color="primary" />
-                  </ListItemIcon>
-                  <ListItemText primary="Make private" primaryTypographyProps={{ color: 'primary' }} />
-                </MenuItem>
-                <Divider />
-                <MenuItem>
-                  <ListItemIcon>
-                    <DeleteSweepIcon fontSize="small" color="error" />
-                  </ListItemIcon>
-                  <ListItemText primary="Clear" primaryTypographyProps={{ color: 'error' }} />
-                </MenuItem>
-              </Menu>
+                <Grow in={open} appear={open}>
+                  <Paper elevation={12}>
+                    <ClickAwayListener onClickAway={onMoreClose}>
+                      <MenuList dense={true}>
+                        <RecursiveMenuItem
+                          autoFocus={false}
+                          label={
+                            <>
+                              <ListItemIcon>
+                                <IosShareIcon fontSize="small" color="primary" />
+                              </ListItemIcon>
+                              <ListItemText primary="Export" primaryTypographyProps={{ color: 'primary' }} />
+                              <ArrowRightIcon fontSize="small" />
+                            </>
+                          }
+                          placement="left-start"
+                          elevation={0}
+                          MenuListProps={{ dense: true }}
+                        >
+                          <MenuItem onClick={() => console.log('Text')}>
+                            <ListItemText primary="Text" primaryTypographyProps={{ color: 'primary' }} />
+                          </MenuItem>
+                          <MenuItem onClick={() => console.log('JSON')}>
+                            <ListItemText primary="JSON" primaryTypographyProps={{ color: 'primary' }} />
+                          </MenuItem>
+                          <MenuItem onClick={() => console.log('WP Plugin-compatible HTML')}>
+                            <ListItemText
+                              primary="WP Plugin-compatible HTML"
+                              primaryTypographyProps={{ color: 'primary' }}
+                            />
+                          </MenuItem>
+                          <MenuItem onClick={() => console.log('Interactive transcript')}>
+                            <ListItemText
+                              primary="Interactive Transcript"
+                              primaryTypographyProps={{ color: 'primary' }}
+                            />
+                          </MenuItem>
+                        </RecursiveMenuItem>
+                        <MenuItem>
+                          <ListItemIcon>
+                            <LockIcon fontSize="small" color="primary" />
+                          </ListItemIcon>
+                          <ListItemText primary="Make private" primaryTypographyProps={{ color: 'primary' }} />
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem>
+                          <ListItemIcon>
+                            <DeleteSweepIcon fontSize="small" color="error" />
+                          </ListItemIcon>
+                          <ListItemText primary="Clear" primaryTypographyProps={{ color: 'error' }} />
+                        </MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              </Popper>
             </>
           )}
           <Tooltip title="Share remix">
-            <IconButton size="small">
+            <IconButton onClick={onShareOpen} size="small">
               <ShareIcon fontSize="small" />
             </IconButton>
           </Tooltip>
         </div>
       </Toolbar>
       <div className="topbarPush" />
-    </>
+      <ShareDialog isOpen={share} onClose={onShareClose} />
+    </Root>
   );
 };
