@@ -1,10 +1,14 @@
 import React from 'react';
 
+import Fab from '@mui/material/Fab';
+import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
+
+import { HyperaudioIcon } from './icons';
+import { defaultTheme } from './themes';
 
 import Remix from './Remix';
 import Source from './Source';
-import { defaultTheme } from './themes';
 
 import './fonts/Inter/inter.css';
 
@@ -74,8 +78,14 @@ const Layout = styled('div', {
     ...theme.mixins.toolbar,
   },
 }));
+const Badge = styled(Fab)(({ theme }) => ({
+  bottom: theme.spacing(2),
+  position: 'fixed',
+  right: theme.spacing(2),
+}));
 
 export const Remixer = props => {
+  const { editable } = props;
   const [showSource, setShowSource] = React.useState(true);
   const [source, setSource] = React.useState(props.sources[0].id);
   return (
@@ -87,6 +97,13 @@ export const Remixer = props => {
         {showSource && <Source {...props} source={source} setSource={setSource} />}
         <Remix {...props} showSource={showSource} setShowSource={setShowSource} setSource={setSource} />
       </Layout>
+      {!editable && (
+        <Tooltip title="Visit Hyperaudio">
+          <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
+            <HyperaudioIcon />
+          </Badge>
+        </Tooltip>
+      )}
     </ThemeProvider>
   );
 };
