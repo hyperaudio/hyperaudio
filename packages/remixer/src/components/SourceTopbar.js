@@ -68,7 +68,14 @@ export const SourceTopbar = props => {
   const onTranscriptsOpen = e => setAnchorEl(e.currentTarget);
   const onTranscriptsClose = () => setAnchorEl(null);
 
-  console.log(sources);
+  const onSourceClose = e => {
+    e.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  // console.group(SourceTopbar);
+  // console.log(sources);
+  // console.groupEnd();
 
   return (
     <>
@@ -159,11 +166,15 @@ export const SourceTopbar = props => {
                 onClick={() => onSourceChange(o.data.id)}
                 selected={o.data.id === source.data.id}
               >
-                <ListItemText>{o.data.title}</ListItemText>
+                <Tooltip enterDelay={1500} title={o.data.title}>
+                  <ListItemText primaryTypographyProps={{ noWrap: true, variant: 'body2' }} sx={{ maxWidth: '200px' }}>
+                    {o.data.title}
+                  </ListItemText>
+                </Tooltip>
                 <span>
                   {editable && (
-                    <Tooltip title="Close" enterDelay={1000}>
-                      <IconButton size="small" edge="end" color="default" sx={{ ml: 3 }}>
+                    <Tooltip enterDelay={1500} title="Close">
+                      <IconButton onClick={onSourceClose} size="small" edge="end" color="default" sx={{ ml: 3 }}>
                         <CloseIcon sx={{ fontSize: '16px' }} />
                       </IconButton>
                     </Tooltip>
