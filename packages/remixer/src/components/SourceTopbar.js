@@ -33,9 +33,9 @@ const Tab = styled(Button, {
   shouldForwardProp: prop => prop !== 'isActive' && prop !== 'isSingle',
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
-  color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
   borderRadius: 0,
   borderRight: `1px solid ${theme.palette.divider}`,
+  color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
@@ -45,6 +45,9 @@ const Tab = styled(Button, {
   [`&:hover`]: {
     background: isActive ? theme.palette.background.paper : 'transparent',
     color: theme.palette.secondary.dark,
+  },
+  [`& .MuiButton-endIcon > span`]: {
+    lineHeight: 0,
   },
 }));
 
