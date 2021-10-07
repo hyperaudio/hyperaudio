@@ -46,6 +46,7 @@
     "@emotion/styled": "11.3.0",
     "@mui/icons-material": "5.0.1",
     "@mui/material": "5.0.2",
+    "lodash": "4.17.21",
     "react-beautiful-dnd": "^13.1.0",
     "react-draggable": "^4.4.4",
     "react-player": "2.9.0"
