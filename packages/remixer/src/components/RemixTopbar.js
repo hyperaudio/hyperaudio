@@ -101,7 +101,7 @@ export const RemixTopbar = props => {
             }}
             inputProps={{
               className: 'RemixTitle',
-              minlength: 1,
+              minLength: 1,
               onBlur: onTitleBlur,
               onFocus: onTitleFocus,
             }}

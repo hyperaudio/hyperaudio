@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
@@ -85,17 +86,26 @@ const Badge = styled(Fab)(({ theme }) => ({
 }));
 
 export const Remixer = props => {
-  const { editable } = props;
+  const { editable, sources } = props;
+
   const [showSource, setShowSource] = React.useState(true);
-  const [source, setSource] = React.useState(props.sources[0].id);
+  const [source, setSource] = React.useState(sources[0]);
+
+  const onSourceChange = id => setSource(_.find(sources, o => o.data.id === id));
+
+  // console.group('index.js');
+  // console.log('sources', sources);
+  // console.log('source', source);
+  // console.groupEnd();
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Layout
         id="Layout" // used as Dragbar’s bounds
         showSource={showSource}
       >
-        {showSource && <Source {...props} source={source} setSource={setSource} />}
-        <Remix {...props} showSource={showSource} setShowSource={setShowSource} setSource={setSource} />
+        {showSource && <Source {...props} onSourceChange={onSourceChange} source={source} />}
+        <Remix {...props} showSource={showSource} setShowSource={setShowSource} onSourceChange={onSourceChange} />
       </Layout>
       {!editable && (
         <Tooltip title="Visit Hyperaudio">

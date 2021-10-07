@@ -36,6 +36,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const Theatre = props => {
+  const { media } = props;
   const [playing, setPlaying] = React.useState(false);
 
   return (
@@ -48,7 +49,7 @@ export const Theatre = props => {
             onPause={() => setPlaying(false)}
             onPlay={() => setPlaying(true)}
             playing={playing}
-            url="https://www.youtube.com/watch?v=TnkdoEZhTbc"
+            url={media}
             width="100%"
           />
         </div>

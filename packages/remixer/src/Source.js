@@ -34,8 +34,8 @@ export default function Source(props) {
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
-      <Theatre media={source.media} />
-      <Transcript transcript={source.transcript} />
+      <Theatre media={source.data.url} />
+      <Transcript blocks={source.data.blocks} />
     </Root>
   );
 }

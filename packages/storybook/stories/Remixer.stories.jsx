@@ -10,12 +10,7 @@ export default {
 
 const Template = (args) => (
   <div style={{ height: "100vh" }}>
-    <Remixer
-      remix={data.remix}
-      source={data.source}
-      sources={data.sources}
-      {...args}
-    />
+    <Remixer remix={data.remix} sources={data.sources} {...args} />
   </div>
 );
 
@@ -26,7 +21,7 @@ ReadMode.args = {
 export const ReadModeOneSource = Template.bind({});
 ReadModeOneSource.args = {
   editable: false,
-  sources: [{ id: 0, title: "A transcript" }],
+  sources: [data.sources[0]],
 };
 
 export const EditMode = Template.bind({});
@@ -38,5 +33,5 @@ export const EditModeOneSource = Template.bind({});
 EditModeOneSource.args = {
   editable: true,
   remix: { ...data.remix, title: "" },
-  sources: [{ id: 0, title: "A transcript" }],
+  sources: [data.sources[0]],
 };

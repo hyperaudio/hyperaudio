@@ -14,10 +14,16 @@ const Root = styled('div')(({ theme }) => ({
   padding: theme.spacing(6, 2, 18, 2),
 }));
 
-export const Transcript = ({ transcript }) => {
+export const Transcript = props => {
+  const { blocks } = props;
+
+  // console.group('Transcript');
+  // console.log('blocks', blocks);
+  // console.groupEnd();
+
   return (
     <Root>
-      <Container maxWidth="sm">{transcript}</Container>
+      <Container maxWidth="sm">{blocks && blocks.map(block => <p key={block.SK}>{block.text}</p>)}</Container>
     </Root>
   );
 };

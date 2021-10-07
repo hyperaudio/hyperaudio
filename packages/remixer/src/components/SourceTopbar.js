@@ -33,6 +33,7 @@ const Tab = styled(Button, {
   shouldForwardProp: prop => prop !== 'isActive' && prop !== 'isSingle',
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
+  color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
   borderRadius: 0,
   borderRight: `1px solid ${theme.palette.divider}`,
   flexBasis: 'auto',
@@ -42,17 +43,29 @@ const Tab = styled(Button, {
   minHeight: theme.spacing(5),
   textTransform: 'none',
   [`&:hover`]: {
-    background: theme.palette.background.paper,
+    background: isActive ? theme.palette.background.paper : 'transparent',
+    color: theme.palette.secondary.dark,
+  },
+}));
+
+const TabClose = styled(IconButton, {
+  shouldForwardProp: prop => prop !== 'isActive',
+})(({ theme, isActive }) => ({
+  background: theme.palette.background.default,
+  [`&, & *`]: {
+    color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
   },
 }));
 
 export const SourceTopbar = props => {
-  const { editable, sources, source, setSource } = props;
+  const { editable, sources, source, onSourceChange } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const onTranscriptsOpen = e => setAnchorEl(e.currentTarget);
   const onTranscriptsClose = () => setAnchorEl(null);
+
+  console.log(sources);
 
   return (
     <>
@@ -68,33 +81,30 @@ export const SourceTopbar = props => {
         )}
         <div className="topbarCore">
           <Tabs className="SourceTopbar">
-            {sources.map((o, i) => (
+            {sources.map(o => (
               <Tab
-                isActive={source === o.id}
-                isSingle={sources.length < 2}
-                key={o.id}
-                variant="contained"
-                onClick={() => setSource(o.id)}
-                size="small"
                 color="inherit"
+                component="a"
+                isActive={o.data.id === source.data.id}
+                isSingle={sources.length < 2}
+                key={o.data.id}
+                onClick={() => onSourceChange(o.data.id)}
+                size="small"
+                variant="contained"
                 endIcon={
                   editable && (
                     <span>
                       <Tooltip title="Close">
-                        <IconButton
-                          size="small"
-                          edge="end"
-                          // FIXME: <button> cannot appear as a descendant of <button>
-                        >
+                        <TabClose edge="end" size="small">
                           <CloseIcon sx={{ fontSize: '16px' }} />
-                        </IconButton>
+                        </TabClose>
                       </Tooltip>
                     </span>
                   )
                 }
               >
                 <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
-                  {o.title}
+                  {o.data.title}
                 </Typography>
               </Tab>
             ))}
@@ -102,9 +112,11 @@ export const SourceTopbar = props => {
         </div>
         <div className="topbarSide topbarSide--right">
           <Tooltip title="All source transcripts…">
-            <IconButton size="small" onClick={onTranscriptsOpen} disabled={sources.length < 2}>
-              <MoreVertIcon fontSize="small" />
-            </IconButton>
+            <span>
+              <IconButton size="small" onClick={onTranscriptsOpen} disabled={sources.length < 2}>
+                <MoreVertIcon fontSize="small" />
+              </IconButton>
+            </span>
           </Tooltip>
           <Menu
             anchorEl={anchorEl}
@@ -139,8 +151,12 @@ export const SourceTopbar = props => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {sources.map((o, i) => (
-              <MenuItem key={o.id} onClick={() => setSource(o.id)} selected={o.id === source}>
-                <ListItemText>{o.title}</ListItemText>
+              <MenuItem
+                key={o.data.id}
+                onClick={() => onSourceChange(o.data.id)}
+                selected={o.data.id === source.data.id}
+              >
+                <ListItemText>{o.data.title}</ListItemText>
                 <span>
                   {editable && (
                     <Tooltip title="Close" enterDelay={1000}>

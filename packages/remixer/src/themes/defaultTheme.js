@@ -2,6 +2,34 @@ import { createTheme } from '@mui/material/styles';
 
 const mui = createTheme();
 
+const palette = {
+  ...mui.palette,
+  background: {
+    ...mui.palette.background,
+    paper: '#fff',
+    default: '#F5F5F7',
+  },
+  divider: '#E9E8EE',
+  primary: {
+    ...mui.palette.primary,
+    main: '#6202EE',
+    light: '#6554A5',
+    dark: '#190078',
+    contrastText: '#fff',
+  },
+  secondary: {
+    ...mui.palette.secondary,
+    main: '#01A39D',
+    light: '#86FFEA',
+    dark: '#002F33',
+    contrastText: '#fff',
+  },
+  text: {
+    ...mui.palette.text,
+    secondary: '#190078',
+  },
+};
+
 export const defaultTheme = createTheme({
   components: {
     MuiButtonBase: {
@@ -45,12 +73,10 @@ export const defaultTheme = createTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: {
-          [`&.Mui-selected`]: {
-            backgroundColor: mui.palette.action.hover,
-            [`&:hover`]: {
-              backgroundColor: mui.palette.action.hover,
-            },
-          },
+          // [`&.Mui-selected, &.Mui-selected:hover`]: {
+          //   backgroundColor: palette.primary.main,
+          //   color: palette.primary.contrastText,
+          // },
         },
       },
     },
@@ -60,7 +86,7 @@ export const defaultTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: mui.spacing(1),
+          borderRadius: mui.spacing(0.75),
         },
       },
     },
@@ -72,23 +98,7 @@ export const defaultTheme = createTheme({
       },
     },
   },
-  palette: {
-    background: {
-      paper: '#fff',
-      default: '#F8F8F8',
-    },
-    divider: '#E9E8EE',
-    primary: {
-      main: '#6202EE',
-      light: '#F2E7FE',
-      dark: '#190078',
-    },
-    secondary: {
-      main: '#01A39D',
-      light: '#86FFEA',
-      dark: '#002F33',
-    },
-  },
+  palette: palette,
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
   },
