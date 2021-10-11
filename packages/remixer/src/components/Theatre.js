@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useCallback, useState } from 'react';
 import ReactPlayer from 'react-player';
 
 import Container from '@mui/material/Container';
@@ -35,9 +35,15 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export const Theatre = props => {
-  const { media } = props;
-  const [playing, setPlaying] = React.useState(false);
+export const Theatre = ({ id, media: url, players }) => {
+  const ref = useRef();
+  const [playing, setPlaying] = useState(false);
+
+  const onPlay = useCallback(() => setPlaying(true), []);
+  const onPause = useCallback(() => setPlaying(false), []);
+  const onReady = useCallback(() => {
+    players.current[id] = ref.current;
+  }, []);
 
   return (
     <Root className={classes.root}>
@@ -45,12 +51,9 @@ export const Theatre = props => {
         <div className={classes.playerWrapper}>
           <ReactPlayer
             className={classes.player}
-            height="100%"
-            onPause={() => setPlaying(false)}
-            onPlay={() => setPlaying(true)}
-            playing={playing}
-            url={media}
             width="100%"
+            height="100%"
+            {...{ ref, url, playing, onReady, onPlay, onPause }}
           />
         </div>
         <div>

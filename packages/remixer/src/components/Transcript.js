@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
@@ -15,15 +15,39 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { blocks } = props;
+  const { blocks, players } = props;
 
   // console.group('Transcript');
   // console.log('blocks', blocks);
   // console.groupEnd();
 
+  const handleClick = useCallback(({ target }) => {
+    const selection = window.getSelection();
+    if (!selection.isCollapsed || !target.getAttribute('data-key') || !target.getAttribute('data-media')) return;
+
+    const { anchorOffset } = selection;
+    const media = target.getAttribute('data-media');
+    const key = target.getAttribute('data-key');
+
+    const block = blocks.find(block => block.key === key);
+    const index = block.offsets.findIndex(
+      (offset, i) => offset <= anchorOffset && anchorOffset <= offset + block.lengths[i],
+    );
+
+    const time = index > 0 ? block.starts[index] : block.start;
+
+    players.current?.[media]?.seekTo(time / 1e3, 'seconds');
+  }, []);
+
   return (
     <Root>
-      <Container maxWidth="sm">{blocks && blocks.map(block => <p key={block.SK}>{block.text}</p>)}</Container>
+      <Container maxWidth="sm" onClick={handleClick}>
+        {blocks?.map(({ key, pk, sk, text }) => (
+          <p data-media={pk} data-key={key} key={key}>
+            {text}
+          </p>
+        ))}
+      </Container>
     </Root>
   );
 };
