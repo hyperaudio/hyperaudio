@@ -31,14 +31,15 @@ const Root = styled('div')(({ theme }) => ({
 
 export default function Source(props) {
   const { source } = props;
+  console.log({ source });
 
   const players = useRef({});
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
-      <Theatre id={source.data.id} media={source.data.url} players={players} />
-      <Transcript blocks={source.data.blocks} players={players} />
+      <Theatre id={source.id} media={source.url} players={players} />
+      <Transcript blocks={source.blocks} players={players} />
     </Root>
   );
 }
