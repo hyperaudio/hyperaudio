@@ -21,23 +21,32 @@ export const Transcript = props => {
   // console.log('blocks', blocks);
   // console.groupEnd();
 
-  const handleClick = useCallback(({ target }) => {
-    const selection = window.getSelection();
-    if (!selection.isCollapsed || !target.getAttribute('data-key') || !target.getAttribute('data-media')) return;
+  const handleClick = useCallback(
+    ({ target }) => {
+      const selection = window.getSelection();
+      if (!selection.isCollapsed || !target.getAttribute('data-key') || !target.getAttribute('data-media')) return;
 
-    const { anchorOffset } = selection;
-    const media = target.getAttribute('data-media');
-    const key = target.getAttribute('data-key');
+      const { anchorOffset } = selection;
+      const media = target.getAttribute('data-media');
+      const key = target.getAttribute('data-key');
 
-    const block = blocks.find(block => block.key === key);
-    const index = block.offsets.findIndex(
-      (offset, i) => offset <= anchorOffset && anchorOffset <= offset + block.lengths[i],
-    );
+      console.log(media, key, blocks);
 
-    const time = index > 0 ? block.starts[index] : block.start;
+      const block = blocks.find(block => block.key === key);
+      const index = block.offsets.findIndex(
+        (offset, i) => offset <= anchorOffset && anchorOffset <= offset + block.lengths[i],
+      );
 
-    players.current?.[media]?.seekTo(time / 1e3, 'seconds');
-  }, []);
+      console.log(block, index);
+
+      const time = index > 0 ? block.starts[index] : block.start;
+
+      console.log(time, players.current?.[media]);
+
+      players.current?.[media]?.seekTo(time / 1e3, 'seconds');
+    },
+    [blocks],
+  );
 
   return (
     <Root>

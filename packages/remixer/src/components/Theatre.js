@@ -43,7 +43,7 @@ export const Theatre = ({ id, media: url, players }) => {
   const onPause = useCallback(() => setPlaying(false), []);
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
-  }, []);
+  }, [id]);
 
   return (
     <Root className={classes.root}>

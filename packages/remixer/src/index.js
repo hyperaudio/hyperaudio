@@ -91,7 +91,7 @@ export const Remixer = props => {
   const [showSource, setShowSource] = React.useState(true);
   const [source, setSource] = React.useState(sources[0]);
 
-  const onSourceChange = id => setSource(_.find(sources, o => o.data.id === id));
+  const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
 
   // console.group('index.js');
   // console.log('sources', sources);
