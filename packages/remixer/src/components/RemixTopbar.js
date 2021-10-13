@@ -15,6 +15,7 @@ import MenuList from '@mui/material/MenuList';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
+import PublicIcon from '@mui/icons-material/Public';
 import RedoIcon from '@mui/icons-material/Redo';
 import TextField from '@mui/material/TextField';
 import Toolbar from '@mui/material/Toolbar';
@@ -22,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
-import { RecursiveMenuItem, ShareDialog } from '.';
+import { RecursiveMenuItem, ShareDialog, VisibilityDialog } from '.';
 import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
 const Root = styled('div')(({ theme }) => {
@@ -44,14 +45,17 @@ export const RemixTopbar = props => {
   const { editable, showSource, setShowSource, remix } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [share, setShare] = React.useState(false);
+  const [shareDialog, setShareDialog] = React.useState(false);
   const [titleFocus, setTitleFocus] = React.useState(false);
+  const [visibilityDialog, setVisibilityDialog] = React.useState(false);
 
   const open = Boolean(anchorEl);
-  const onMoreOpen = e => setAnchorEl(e.currentTarget);
   const onMoreClose = () => setAnchorEl(null);
-  const onShareOpen = () => setShare(true);
-  const onShareClose = () => setShare(false);
+  const onMoreOpen = e => setAnchorEl(e.currentTarget);
+  const onShareClose = () => setShareDialog(false);
+  const onShareOpen = () => setShareDialog(true);
+  const onVisibilityClose = () => setVisibilityDialog(false);
+  const onVisibilityOpen = () => setVisibilityDialog(true);
 
   const onTitleFocus = e => {
     setTitleFocus(true);
@@ -160,11 +164,18 @@ export const RemixTopbar = props => {
                             />
                           </MenuItem>
                         </RecursiveMenuItem>
-                        <MenuItem>
+                        <MenuItem onClick={() => setVisibilityDialog(true)}>
                           <ListItemIcon>
-                            <LockIcon fontSize="small" color="primary" />
+                            {remix.secret ? (
+                              <PublicIcon fontSize="small" color="primary" />
+                            ) : (
+                              <LockIcon fontSize="small" color="primary" />
+                            )}
                           </ListItemIcon>
-                          <ListItemText primary="Make private" primaryTypographyProps={{ color: 'primary' }} />
+                          <ListItemText
+                            primary={`Make ${remix.secret ? 'public' : 'private'}`}
+                            primaryTypographyProps={{ color: 'primary' }}
+                          />
                         </MenuItem>
                         <Divider />
                         <MenuItem>
@@ -188,7 +199,8 @@ export const RemixTopbar = props => {
         </div>
       </Toolbar>
       <div className="topbarPush" />
-      <ShareDialog isOpen={share} onClose={onShareClose} />
+      <ShareDialog isOpen={shareDialog} onClose={onShareClose} />
+      <VisibilityDialog isOpen={visibilityDialog} onClose={onVisibilityClose} secret={remix.secret} />
     </Root>
   );
 };
