@@ -5,3 +5,4 @@ export * from './ShareDialog';
 export * from './SourceTopbar';
 export * from './Theatre';
 export * from './Transcript';
+export * from './VisibilityDialog';
