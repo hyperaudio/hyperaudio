@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
@@ -55,13 +56,17 @@ export const Theatre = props => {
         </div>
         <div>
           {playing ? (
-            <IconButton onClick={() => setPlaying(false)}>
-              <PauseIcon />
-            </IconButton>
+            <Tooltip title="Pause">
+              <IconButton onClick={() => setPlaying(false)}>
+                <PauseIcon />
+              </IconButton>
+            </Tooltip>
           ) : (
-            <IconButton onClick={() => setPlaying(true)}>
-              <PlayArrowIcon />
-            </IconButton>
+            <Tooltip title="Play">
+              <IconButton onClick={() => setPlaying(true)}>
+                <PlayArrowIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
       </Container>
