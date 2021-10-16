@@ -24,6 +24,11 @@ ReadModeOneSource.args = {
   sources: [data.sources[0]],
 };
 
+export const EditModeEmpty = Template.bind({});
+EditModeEmpty.args = {
+  editable: true,
+  remix: { ...data.remix, secret: false, title: "", blocks: [] },
+};
 export const EditMode = Template.bind({});
 EditMode.args = {
   editable: true,
