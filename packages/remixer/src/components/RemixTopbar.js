@@ -23,7 +23,7 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
-import { RecursiveMenuItem, ShareDialog, VisibilityDialog } from '.';
+import { ClearDialog, RecursiveMenuItem, ShareDialog, VisibilityDialog } from '.';
 import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 
 const Root = styled('div')(({ theme }) => {
@@ -48,8 +48,11 @@ export const RemixTopbar = props => {
   const [shareDialog, setShareDialog] = React.useState(false);
   const [titleFocus, setTitleFocus] = React.useState(false);
   const [visibilityDialog, setVisibilityDialog] = React.useState(false);
+  const [clearDialog, setClearDialog] = React.useState(false);
 
   const open = Boolean(anchorEl);
+  const onClearClose = () => setClearDialog(false);
+  const onClearOpen = () => setClearDialog(true);
   const onMoreClose = () => setAnchorEl(null);
   const onMoreOpen = e => setAnchorEl(e.currentTarget);
   const onShareClose = () => setShareDialog(false);
@@ -178,7 +181,7 @@ export const RemixTopbar = props => {
                           />
                         </MenuItem>
                         <Divider />
-                        <MenuItem>
+                        <MenuItem onClick={() => setClearDialog(true)}>
                           <ListItemIcon>
                             <DeleteSweepIcon fontSize="small" color="error" />
                           </ListItemIcon>
@@ -201,6 +204,7 @@ export const RemixTopbar = props => {
       <div className="topbarPush" />
       <ShareDialog isOpen={shareDialog} onClose={onShareClose} />
       <VisibilityDialog isOpen={visibilityDialog} onClose={onVisibilityClose} secret={remix.secret} />
+      <ClearDialog isOpen={clearDialog} onClose={onClearClose} />
     </Root>
   );
 };

@@ -10,13 +10,13 @@ import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-export const VisibilityDialog = props => {
-  const { isOpen, onClose, secret } = props;
+export const ClearDialog = props => {
+  const { isOpen, onClose } = props;
 
   return (
     <Dialog fullWidth maxWidth="xs" open={isOpen} onClose={onClose}>
       <DialogTitle>
-        Make remix {secret ? 'public' : 'private'}?
+        Clear remix?
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -32,11 +32,7 @@ export const VisibilityDialog = props => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Typography variant="body1">
-          {secret
-            ? 'Your remix is accessible exclusively by yourself. Do you wish to make it publicly available instead?'
-            : 'Your remix is publicly available. Do you wish to make it accessible to you only instead?'}
-        </Typography>
+        <Typography variant="body1">All sections within this remix will be removed.</Typography>
       </DialogContent>
       <DialogActions>
         <Grid container spacing={2}>
@@ -45,7 +41,7 @@ export const VisibilityDialog = props => {
           </Grid>
           <Grid item>
             <Button onClick={onClose} variant="contained" color="primary">
-              Make {secret ? 'public' : 'private'}
+              Clear remix
             </Button>
           </Grid>
         </Grid>
