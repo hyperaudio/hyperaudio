@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useState } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 import Container from '@mui/material/Container';
@@ -35,39 +35,70 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export const Theatre = ({ id, media: url, players }) => {
-  const ref = useRef();
-  const [playing, setPlaying] = useState(false);
+export const Theatre = ({ media, players }) => {
+  const [active, setActive] = useState();
 
-  const onPlay = useCallback(() => setPlaying(true), []);
-  const onPause = useCallback(() => setPlaying(false), []);
-  const onReady = useCallback(() => {
-    players.current[id] = ref.current;
-  }, [id]);
+  useEffect(() => {
+    // set the 1st one as active
+    setActive(media?.[0]?.id);
+
+    // media.forEach(({ id }) => {
+    //   if (!players.current[id]?.setActive) players.current[id] = {};
+    //   players.current[id].setActive = () => setActive(id);
+    // });
+  }, [media]);
 
   return (
     <Root className={classes.root}>
       <Container maxWidth="md">
-        <div className={classes.playerWrapper}>
-          <ReactPlayer
-            className={classes.player}
-            width="100%"
-            height="100%"
-            {...{ ref, url, playing, onReady, onPlay, onPause }}
-          />
-        </div>
-        <div>
-          {playing ? (
-            <IconButton onClick={() => setPlaying(false)}>
-              <PauseIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={() => setPlaying(true)}>
-              <PlayArrowIcon />
-            </IconButton>
-          )}
-        </div>
+        {media?.map(({ id, url }) => (
+          <Player key={id} active={active === id} media={{ id, url }} players={players} setActive={setActive} />
+        ))}
       </Container>
     </Root>
+  );
+};
+
+const Player = ({ media: { id, url }, players, active, setActive }) => {
+  const ref = useRef();
+  const [playing, setPlaying] = useState(false);
+
+  const onReady = useCallback(() => {
+    players.current[id] = ref.current;
+  }, [id]);
+
+  const onPlay = useCallback(() => {
+    setPlaying(true);
+    setActive(id);
+  }, [id]);
+
+  const onPause = useCallback(() => setPlaying(false), []);
+  const onSeek = useCallback(() => {
+    setActive(id);
+  }, [id]);
+
+  return (
+    <>
+      <div className={classes.playerWrapper} style={{ display: active ? 'block' : 'none' }}>
+        <ReactPlayer
+          key={id}
+          className={classes.player}
+          width="100%"
+          height="100%"
+          {...{ ref, url, playing, onReady, onPlay, onPause, onSeek }}
+        />
+      </div>
+      <div style={{ display: active ? 'block' : 'none' }}>
+        {playing ? (
+          <IconButton onClick={() => setPlaying(false)}>
+            <PauseIcon />
+          </IconButton>
+        ) : (
+          <IconButton onClick={() => setPlaying(true)}>
+            <PlayArrowIcon />
+          </IconButton>
+        )}
+      </div>
+    </>
   );
 };

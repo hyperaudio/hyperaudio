@@ -38,7 +38,7 @@ export default function Source(props) {
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
-      <Theatre id={source.id} media={source.url} players={players} />
+      <Theatre id={source.id} media={source.media} players={players} />
       <Transcript blocks={source.blocks} players={players} />
     </Root>
   );

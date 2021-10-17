@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -24,12 +24,14 @@ const Root = styled('div')(({ theme }) => {
 
 export default function Remix(props) {
   const { editable, remix } = props;
+  const players = useRef({});
+
   return (
     <>
       <Root className="RemixerPane RemixerPane--Remix">
         <RemixTopbar {...props} />
-        <Theatre media={remix.media} />
-        <Transcript transcript={remix.transcript} />
+        <Theatre media={remix.media} players={players} />
+        <Transcript blocks={remix.blocks} players={players} />
         {editable && <Dragbar />}
       </Root>
     </>

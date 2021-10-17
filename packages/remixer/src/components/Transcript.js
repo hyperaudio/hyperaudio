@@ -30,20 +30,20 @@ export const Transcript = props => {
       const media = target.getAttribute('data-media');
       const key = target.getAttribute('data-key');
 
-      console.log(media, key, blocks);
+      // console.log(media, key, blocks);
 
       const block = blocks.find(block => block.key === key);
       const index = block.offsets.findIndex(
         (offset, i) => offset <= anchorOffset && anchorOffset <= offset + block.lengths[i],
       );
 
-      console.log(block, index);
+      // console.log(block, index);
 
       const time = index > 0 ? block.starts[index] : block.start;
 
-      console.log(time, players.current?.[media]);
+      console.log(time, players.current, players.current?.[media]);
 
-      players.current?.[media]?.seekTo(time / 1e3, 'seconds');
+      players?.current?.[media]?.seekTo(time / 1e3, 'seconds');
     },
     [blocks],
   );
@@ -51,11 +51,12 @@ export const Transcript = props => {
   return (
     <Root>
       <Container maxWidth="sm" onClick={handleClick}>
-        {blocks?.map(({ key, pk, sk, text }) => (
-          <p data-media={pk} data-key={key} key={key}>
+        {blocks?.map(({ key, pk, sk, speaker, text }) => (
+          <p key={key} data-media={pk} data-key={key} data-speaker={`${speaker}: `}>
             {text}
           </p>
         ))}
+        <style scoped>{'p::before { content: attr(data-speaker); font-weight: bold; }'}</style>
       </Container>
     </Root>
   );
