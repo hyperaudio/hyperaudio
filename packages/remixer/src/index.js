@@ -10,6 +10,7 @@ import { defaultTheme } from './themes';
 
 import Remix from './Remix';
 import Source from './Source';
+import GlobalStyles from './GlobalStyles';
 
 import './fonts/Inter/inter.css';
 
@@ -100,6 +101,7 @@ export const Remixer = props => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <GlobalStyles />
       <Layout
         id="Layout" // used as Dragbar’s bounds
         showSource={showSource}
