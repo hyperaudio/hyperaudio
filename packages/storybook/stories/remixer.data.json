@@ -2,6 +2,7 @@
   "remix": {
     "id": "some-remix-id",
     "title": "A remix",
+    "secret": true,
     "media": [
       {
         "id": "3B7PzBDLT8WZjbMzHUpTVY",

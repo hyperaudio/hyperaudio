@@ -5,6 +5,7 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';

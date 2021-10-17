@@ -1,9 +1,15 @@
 import React, { useRef } from 'react';
 
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { RemixTopbar, Theatre, Transcript, Dragbar } from './components';
+import { StartDropIcon } from './icons';
 
+const PREFIX = 'Remix';
+const classes = {
+  intro: `${PREFIX}-intro`,
+};
 const Root = styled('div')(({ theme }) => {
   return {
     backgroundColor: theme.palette.background.default,
@@ -19,6 +25,18 @@ const Root = styled('div')(({ theme }) => {
         marginRight: theme.spacing(1),
       },
     },
+    [`& .${classes.intro}`]: {
+      alignItems: 'center',
+      display: 'flex',
+      flex: '1 1 100%',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      textAlign: 'center',
+      [`& *`]: {
+        margin: theme.spacing(1),
+        color: theme.palette.text.disabled,
+      },
+    },
   };
 });
 
@@ -30,8 +48,17 @@ export default function Remix(props) {
     <>
       <Root className="RemixerPane RemixerPane--Remix">
         <RemixTopbar {...props} />
-        <Theatre media={remix.media} players={players} />
-        <Transcript blocks={remix.blocks} players={players} />
+        {remix.blocks?.length > 0 ? (
+          <>
+            <Theatre media={remix.media} players={players} />
+            <Transcript blocks={remix.blocks} players={players} />
+          </>
+        ) : (
+          <div className={classes.intro}>
+            <StartDropIcon />
+            <Typography variant="body2">Start by dropping an effect or a section from the source transcript</Typography>
+          </div>
+        )}
         {editable && <Dragbar />}
       </Root>
     </>

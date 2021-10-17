@@ -97,6 +97,14 @@ export const defaultTheme = createTheme({
         },
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          background: palette.primary.dark,
+          color: palette.primary.contrastText,
+        },
+      },
+    },
   },
   palette: palette,
   typography: {
