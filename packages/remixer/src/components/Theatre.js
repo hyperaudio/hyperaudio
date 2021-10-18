@@ -38,48 +38,68 @@ const Root = styled('div')(({ theme }) => ({
 
 export const Theatre = ({ media, players }) => {
   const [active, setActive] = useState();
+  const [playing, setPlaying] = useState();
 
-  useEffect(() => {
-    // set the 1st one as active
-    setActive(media?.[0]?.id);
-
-    // media.forEach(({ id }) => {
-    //   if (!players.current[id]?.setActive) players.current[id] = {};
-    //   players.current[id].setActive = () => setActive(id);
-    // });
-  }, [media]);
+  useEffect(() => setActive(media?.[0]?.id), [media]);
 
   return (
     <Root className={classes.root}>
       <Container maxWidth="md">
         {media?.map(({ id, url }) => (
-          <Player key={id} active={active === id} media={{ id, url }} players={players} setActive={setActive} />
+          <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
+            <Player
+              key={id}
+              active={active === id}
+              playing={playing === id}
+              media={{ id, url }}
+              {...{ players, setActive, setPlaying }}
+            />
+          </div>
         ))}
+
+        <div>
+          {playing ? (
+            <IconButton onClick={() => setPlaying(null)}>
+              <PauseIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={() => setPlaying(active)}>
+              <PlayArrowIcon />
+            </IconButton>
+          )}
+        </div>
       </Container>
     </Root>
   );
 };
 
-const Player = ({ media: { id, url }, players, active, setActive }) => {
+const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying }) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(false);
-  const [playing, setPlaying] = useState(false);
+
+  console.log({ primed });
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
-    if (!primed) setPlaying(true);
+    if (!primed) {
+      setPlaying(id);
+      // setActive(id);
+    }
   }, [id, primed]);
 
   const onPlay = useCallback(() => {
-    setPlaying(true);
+    setPlaying(id);
     setActive(id);
-    if (!primed) setPlaying(false);
-  }, [id]);
+    if (!primed) {
+      setPrimed(true);
+      setPlaying(false);
+    }
+  }, [id, primed]);
 
   const onPause = useCallback(() => setPlaying(false), []);
 
   const onSeek = useCallback(() => {
-    console.log('seek', id); // YT not getting here?
+    console.log('seek', id);
     setActive(id);
   }, [id]);
 
@@ -92,27 +112,12 @@ const Player = ({ media: { id, url }, players, active, setActive }) => {
   );
 
   return (
-    <>
-      <div className={classes.playerWrapper} style={{ display: active ? 'block' : 'none' }}>
-        <ReactPlayer
-          key={id}
-          className={classes.player}
-          width="100%"
-          height="100%"
-          {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
-        />
-      </div>
-      <div style={{ display: active ? 'block' : 'none' }}>
-        {playing ? (
-          <IconButton onClick={() => setPlaying(false)}>
-            <PauseIcon />
-          </IconButton>
-        ) : (
-          <IconButton onClick={() => setPlaying(true)}>
-            <PlayArrowIcon />
-          </IconButton>
-        )}
-      </div>
-    </>
+    <ReactPlayer
+      key={id}
+      className={classes.player}
+      width="100%"
+      height="100%"
+      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
+    />
   );
 };
