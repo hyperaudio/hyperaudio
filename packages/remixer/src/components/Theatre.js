@@ -77,8 +77,6 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
   const ref = useRef();
   const [primed, setPrimed] = useState(false);
 
-  console.log({ primed });
-
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
     if (!primed) {
@@ -105,7 +103,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
 
   const onProgress = useCallback(
     progress => {
-      console.log(progress);
+      // console.log(progress);
       setActive(id);
     },
     [id],

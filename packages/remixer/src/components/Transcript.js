@@ -41,7 +41,7 @@ export const Transcript = props => {
 
       const time = index > 0 ? block.starts[index] : block.start;
 
-      console.log(time, players.current, players.current?.[media]);
+      // console.log(time, players.current, players.current?.[media]);
 
       players?.current?.[media]?.seekTo(time / 1e3, 'seconds');
     },
