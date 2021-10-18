@@ -27,7 +27,7 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-config-standard": "16.0.3",
     "eslint-config-standard-react": "11.0.1",
-    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-import": "2.25.2",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "3.4.1",
     "eslint-plugin-promise": "4.3.1",
@@ -42,10 +42,10 @@
     "dist"
   ],
   "dependencies": {
-    "@emotion/react": "11.4.1",
+    "@emotion/react": "11.5.0",
     "@emotion/styled": "11.3.0",
     "@mui/icons-material": "5.0.1",
-    "@mui/material": "5.0.3",
+    "@mui/material": "5.0.4",
     "lodash": "4.17.21",
     "polished": "4.1.3",
     "react-beautiful-dnd": "^13.1.0",

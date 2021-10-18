@@ -95,10 +95,10 @@ export const SourceTopbar = props => {
               <Tab
                 color="inherit"
                 component="a"
-                isActive={o.data.id === source.data.id}
+                isActive={o.id === source.id}
                 isSingle={sources.length < 2}
-                key={o.data.id}
-                onClick={() => onSourceChange(o.data.id)}
+                key={o.id}
+                onClick={() => onSourceChange(o.id)}
                 size="small"
                 variant="contained"
                 endIcon={
@@ -114,7 +114,7 @@ export const SourceTopbar = props => {
                 }
               >
                 <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
-                  {o.data.title}
+                  {o.title}
                 </Typography>
               </Tab>
             ))}
@@ -161,14 +161,10 @@ export const SourceTopbar = props => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {sources.map((o, i) => (
-              <MenuItem
-                key={o.data.id}
-                onClick={() => onSourceChange(o.data.id)}
-                selected={o.data.id === source.data.id}
-              >
-                <Tooltip enterDelay={1500} title={o.data.title}>
+              <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
+                <Tooltip enterDelay={1500} title={o.title}>
                   <ListItemText primaryTypographyProps={{ noWrap: true, variant: 'body2' }} sx={{ maxWidth: '200px' }}>
-                    {o.data.title}
+                    {o.title}
                   </ListItemText>
                 </Tooltip>
                 <span>
