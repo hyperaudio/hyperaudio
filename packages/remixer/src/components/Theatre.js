@@ -115,6 +115,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
       className={classes.player}
       width="100%"
       height="100%"
+      muted={!primed}
       {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
     />
   );
