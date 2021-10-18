@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 
 import Container from '@mui/material/Container';
@@ -36,40 +36,87 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export const Theatre = props => {
-  const { media } = props;
-  const [playing, setPlaying] = React.useState(false);
+export const Theatre = ({ media, players }) => {
+  const [active, setActive] = useState();
+  const [playing, setPlaying] = useState();
+
+  useEffect(() => setActive(media?.[0]?.id), [media]);
 
   return (
     <Root className={classes.root}>
       <Container maxWidth="md">
-        <div className={classes.playerWrapper}>
-          <ReactPlayer
-            className={classes.player}
-            height="100%"
-            onPause={() => setPlaying(false)}
-            onPlay={() => setPlaying(true)}
-            playing={playing}
-            url={media}
-            width="100%"
-          />
-        </div>
+        {media?.map(({ id, url }) => (
+          <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
+            <Player
+              key={id}
+              active={active === id}
+              playing={playing === id}
+              media={{ id, url }}
+              {...{ players, setActive, setPlaying }}
+            />
+          </div>
+        ))}
+
         <div>
           {playing ? (
-            <Tooltip title="Pause">
-              <IconButton onClick={() => setPlaying(false)}>
-                <PauseIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={() => setPlaying(null)}>
+              <PauseIcon />
+            </IconButton>
           ) : (
-            <Tooltip title="Play">
-              <IconButton onClick={() => setPlaying(true)}>
-                <PlayArrowIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={() => setPlaying(active)}>
+              <PlayArrowIcon />
+            </IconButton>
           )}
         </div>
       </Container>
     </Root>
+  );
+};
+
+const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying }) => {
+  const ref = useRef();
+  const [primed, setPrimed] = useState(false);
+
+  const onReady = useCallback(() => {
+    players.current[id] = ref.current;
+    if (!primed) {
+      setPlaying(id);
+      // setActive(id);
+    }
+  }, [id, primed]);
+
+  const onPlay = useCallback(() => {
+    setPlaying(id);
+    setActive(id);
+    if (!primed) {
+      setPrimed(true);
+      setPlaying(false);
+    }
+  }, [id, primed]);
+
+  const onPause = useCallback(() => setPlaying(false), []);
+
+  const onSeek = useCallback(() => {
+    console.log('seek', id);
+    setActive(id);
+  }, [id]);
+
+  const onProgress = useCallback(
+    progress => {
+      // console.log(progress);
+      setActive(id);
+    },
+    [id],
+  );
+
+  return (
+    <ReactPlayer
+      key={id}
+      className={classes.player}
+      width="100%"
+      height="100%"
+      muted={!primed}
+      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
+    />
   );
 };
