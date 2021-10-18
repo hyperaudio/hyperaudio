@@ -62,21 +62,34 @@ export const Theatre = ({ media, players }) => {
 
 const Player = ({ media: { id, url }, players, active, setActive }) => {
   const ref = useRef();
+  const [primed, setPrimed] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
-  }, [id]);
+    if (!primed) setPlaying(true);
+  }, [id, primed]);
 
   const onPlay = useCallback(() => {
     setPlaying(true);
     setActive(id);
+    if (!primed) setPlaying(false);
   }, [id]);
 
   const onPause = useCallback(() => setPlaying(false), []);
+
   const onSeek = useCallback(() => {
+    console.log('seek', id); // YT not getting here?
     setActive(id);
   }, [id]);
+
+  const onProgress = useCallback(
+    progress => {
+      console.log(progress);
+      setActive(id);
+    },
+    [id],
+  );
 
   return (
     <>
@@ -86,7 +99,7 @@ const Player = ({ media: { id, url }, players, active, setActive }) => {
           className={classes.player}
           width="100%"
           height="100%"
-          {...{ ref, url, playing, onReady, onPlay, onPause, onSeek }}
+          {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
         />
       </div>
       <div style={{ display: active ? 'block' : 'none' }}>
