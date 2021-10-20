@@ -9,7 +9,7 @@ verify_ssl = true
 src = { editable = true, path = "./src" }
 youtube_dl = "2021.6.6"
 smart_open = "5.2.1"
-boto3 = "1.18.42"
+boto3 = "1.18.63"
 
 [requires]
 python_version = "3.8"
