@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Remixer } from "../../remixer/src/index.js";
-import data from "./remixer.data.json";
+import { data } from "./data/remixer-data";
 
 export default {
   title: "Packages/Remixer",
