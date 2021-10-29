@@ -42,6 +42,11 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
     },
+    MuiCard: {
+      defaultProps: {
+        square: true,
+      },
+    },
     MuiDialog: {
       styleOverrides: {
         paper: {

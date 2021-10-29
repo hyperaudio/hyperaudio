@@ -31,7 +31,6 @@ const Root = styled('div')(({ theme }) => ({
 
 export default function Source(props) {
   const { source } = props;
-  console.log({ source });
 
   const players = useRef({});
 

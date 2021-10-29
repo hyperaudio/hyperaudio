@@ -40,3 +40,15 @@ EditModeOneSource.args = {
   remix: { ...data.remix, title: "" },
   sources: [data.sources[0]],
 };
+export const EditModeEmptyLibrary = Template.bind({});
+EditModeEmptyLibrary.args = {
+  editable: true,
+  remix: { ...data.remix, title: "" },
+  media: [],
+};
+export const EditModeRichLibrary = Template.bind({});
+EditModeRichLibrary.args = {
+  editable: true,
+  remix: { ...data.remix, title: "" },
+  media: [...data.sources],
+};

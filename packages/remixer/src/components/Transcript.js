@@ -11,7 +11,7 @@ const Root = styled('div')(({ theme }) => ({
   flexFlow: 'column nowrap',
   justifyContent: 'flex-start',
   overflow: 'auto',
-  padding: theme.spacing(6, 2, 18, 2),
+  padding: theme.spacing(4, 2, 18, 2),
 }));
 
 export const Transcript = props => {

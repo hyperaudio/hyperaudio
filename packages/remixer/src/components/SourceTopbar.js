@@ -61,7 +61,7 @@ const TabClose = styled(IconButton, {
 }));
 
 export const SourceTopbar = props => {
-  const { editable, sources, source, onSourceChange } = props;
+  const { editable, sources, source, onSourceChange, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -83,7 +83,7 @@ export const SourceTopbar = props => {
         {editable && (
           <div className="topbarSide topbarSide--left">
             <Tooltip title="Add source transcript…">
-              <IconButton size="small">
+              <IconButton onClick={onShowLibrary} size="small">
                 <AddCircleOutlineIcon fontSize="small" />
               </IconButton>
             </Tooltip>
