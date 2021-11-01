@@ -6,6 +6,7 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import Slider from '@mui/material/Slider';
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
@@ -106,6 +107,10 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
 
+  const handleSliderChange = (event, value) => {
+    reference.current.currentTime = value;
+  };
+
   return (
     <Root className={classes.root}>
       <Container maxWidth="md">
@@ -134,6 +139,16 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
               <PlayArrowIcon />
             </IconButton>
           )}
+          <Slider
+            size="small"
+            defaultValue={0}
+            value={time / 1e3}
+            min={0}
+            max={duration / 1e3}
+            aria-label="timeline"
+            valueLabelDisplay="auto"
+            onChange={handleSliderChange}
+          />
           <audio
             controls
             muted
@@ -141,6 +156,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             ref={reference}
             onPlay={onPlay}
             onPause={onPause}
+            style={{ display: 'none' }}
           />
         </div>
       </Container>
@@ -155,9 +171,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
   // console.log(time, active, playing, id);
 
   useEffect(() => {
-    console.log(time, ref.current.getCurrentTime(), Math.abs(ref.current.getCurrentTime() - time));
     if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
-      // console.log('seek', time);
       ref.current?.seekTo(time, 'seconds');
     }
   }, [ref, time]);
