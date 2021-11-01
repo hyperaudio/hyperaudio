@@ -41,8 +41,6 @@ export const Transcript = props => {
 
       const time = index > 0 ? block.starts[index] : block.start;
 
-      // console.log(time, players.current, players.current?.[media]);
-
       if (reference.current) reference.current.currentTime = time / 1e3;
     },
     [blocks],

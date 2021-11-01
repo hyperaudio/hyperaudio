@@ -185,7 +185,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
   }, [id, primed]);
 
   const onPlay = useCallback(() => {
-    setPlaying(id);
+    // setPlaying(id);
     // setActive(id);
     if (!primed) {
       setPrimed(true);
