@@ -3,23 +3,26 @@ const media = [
   {
     id: "3B7PzBDLT8WZjbMzHUpTVY",
     // url: "https://www.youtube.com/watch?v=2Bt12slPiMg",
-    // url: "https://vimeo.com/636017205/3ec94eaf9b",
-    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/3B7PzBDLT8WZjbMzHUpTVY.mp4",
+    url: "https://vimeo.com/636017205/3ec94eaf9b",
+    // url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/3B7PzBDLT8WZjbMzHUpTVY.mp4",
   },
   {
     id: "V1VrYa2KRZ9hBkos5RUTfo",
     // url: "https://www.youtube.com/watch?v=LHdUSGY-X74",
     // url: "https://vimeo.com/636017423/59d2d009af",
-    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/V1VrYa2KRZ9hBkos5RUTfo.mp4",
+    url:
+      "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/V1VrYa2KRZ9hBkos5RUTfo.mp4",
   },
   {
     id: "21LPML8F2h8zxd3tGb5Ain",
     // url: "https://www.youtube.com/watch?v=xidL-WMJWwg",
     // url: "https://vimeo.com/636017395/f0ea0fe391",
-    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
+    url:
+      "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
   },
 ];
 
+// prettier-ignore
 export const data = {
   remix: {
     id: "some-remix-id",
@@ -903,7 +906,26 @@ export const data = {
         key: "J2iIE4aZibtCQ",
         start: 50640,
       },
-    ],
+    ].map((block, i, arr) => {
+      const { pk, start, end, starts, ends } = block;
+      let gap = 0;
+
+      if (i < arr.length - 2) {
+        const next = arr[i + 1];
+        if (block.pk === next.pk) {
+          gap = next.start - end;
+        }
+      }
+      return {
+        ...block,
+        media: pk,
+        duration: end - start,
+        starts2: starts.map((s) => s - start),
+        ends2: ends.map((e) => e - start),
+        durations: ends.map((e, j) => e - starts[j]),
+        gap,
+      };
+    }),
   },
   sources: [
     {
@@ -10675,7 +10697,26 @@ export const data = {
           key: "bNYaIPPHyQz3N",
           start: 648640,
         },
-      ],
+      ].map((block, i, arr) => {
+        const { pk, start, end, starts, ends } = block;
+        let gap = 0;
+
+        if (i < arr.length - 2) {
+          const next = arr[i + 1];
+          if (block.pk === next.pk) {
+            gap = next.start - end;
+          }
+        }
+        return {
+          ...block,
+          media: pk,
+          duration: end - start,
+          starts2: starts.map((s) => s - start),
+          ends2: ends.map((e) => e - start),
+          durations: ends.map((e, j) => e - starts[j]),
+          gap,
+        };
+      }),
     },
     {
       id: "V1VrYa2KRZ9hBkos5RUTfo",
@@ -24790,7 +24831,26 @@ export const data = {
           key: "iwH8XaAApsYaO",
           start: 858440,
         },
-      ],
+      ].map((block, i, arr) => {
+        const { pk, start, end, starts, ends } = block;
+        let gap = 0;
+
+        if (i < arr.length - 2) {
+          const next = arr[i + 1];
+          if (block.pk === next.pk) {
+            gap = next.start - end;
+          }
+        }
+        return {
+          ...block,
+          media: pk,
+          duration: end - start,
+          starts2: starts.map((s) => s - start),
+          ends2: ends.map((e) => e - start),
+          durations: ends.map((e, j) => e - starts[j]),
+          gap,
+        };
+      }),
     },
     {
       id: "21LPML8F2h8zxd3tGb5Ain",
@@ -40459,7 +40519,26 @@ export const data = {
           key: "yHmpJ3yB4DNnG",
           start: 1032030,
         },
-      ],
+      ].map((block, i, arr) => {
+        const { pk, start, end, starts, ends } = block;
+        let gap = 0;
+
+        if (i < arr.length - 2) {
+          const next = arr[i + 1];
+          if (block.pk === next.pk) {
+            gap = next.start - end;
+          }
+        }
+        return {
+          ...block,
+          media: pk,
+          duration: end - start,
+          starts2: starts.map((s) => s - start),
+          ends2: ends.map((e) => e - start),
+          durations: ends.map((e, j) => e - starts[j]),
+          gap,
+        };
+      }),
     },
   ],
 };
