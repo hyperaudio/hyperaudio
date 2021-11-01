@@ -3,8 +3,8 @@ const media = [
   {
     id: "3B7PzBDLT8WZjbMzHUpTVY",
     // url: "https://www.youtube.com/watch?v=2Bt12slPiMg",
-    url: "https://vimeo.com/636017205/3ec94eaf9b",
-    // url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/3B7PzBDLT8WZjbMzHUpTVY.mp4",
+    // url: "https://vimeo.com/636017205/3ec94eaf9b",
+    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/3B7PzBDLT8WZjbMzHUpTVY.mp4",
   },
   {
     id: "V1VrYa2KRZ9hBkos5RUTfo",
