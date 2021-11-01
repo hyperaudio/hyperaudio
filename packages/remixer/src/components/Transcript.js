@@ -15,7 +15,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { blocks, players } = props;
+  const { blocks, players, reference, time } = props;
 
   // console.group('Transcript');
   // console.log('blocks', blocks);
@@ -43,7 +43,7 @@ export const Transcript = props => {
 
       // console.log(time, players.current, players.current?.[media]);
 
-      players?.current?.[media]?.seekTo(time / 1e3, 'seconds');
+      if (reference.current) reference.current.currentTime = time / 1e3;
     },
     [blocks],
   );

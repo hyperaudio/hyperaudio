@@ -1,5 +1,6 @@
-import React, { useRef, useCallback, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
+import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -39,13 +40,71 @@ const Root = styled('div')(({ theme }) => ({
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
 const MATCH_URL_YOUTUBE =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
-const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
+// const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
-export const Theatre = ({ media, players }) => {
+export const Theatre = ({ blocks, media, players, reference, time }) => {
+  const duration = useMemo(
+    () =>
+      blocks.reduce(
+        (acc, { media, duration, gap }, i, arr) =>
+          acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
+        0,
+      ),
+    [blocks],
+  );
+
+  useEffect(() => {
+    // @ts-ignore
+    reference.current.src = createSilentAudio(Math.ceil(duration / 1e3), 44100);
+  }, [reference, duration]);
+
   const [active, setActive] = useState();
-  const [playing, setPlaying] = useState();
+  const [interval, setInterval] = useState();
+  const [referencePlaying, setReferencePlaying] = useState();
+  // const [playing, setPlaying] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
+
+  const intervals = useMemo(
+    () =>
+      blocks
+        .reduce((acc, { start, duration, gap, media }, i, arr) => {
+          const prevInterval = acc.pop();
+          const offset = prevInterval?.[1] ?? 0;
+          return [
+            ...acc,
+            prevInterval,
+            [
+              offset,
+              offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
+              { start, media },
+            ],
+          ];
+        }, [])
+        .filter(i => !!i),
+    [blocks],
+  );
+
+  useEffect(() => {
+    const interval = intervals.find(([start, end]) => start <= time && time < end);
+    if (interval) {
+      setActive(interval[2].media);
+      setInterval(interval);
+    } else setReferencePlaying(false);
+  }, [intervals, time]);
+
+  const onPlay = useCallback(() => {
+    setReferencePlaying(true);
+    // setPlaying(active);
+  }, [active]);
+
+  const onPause = useCallback(() => {
+    setReferencePlaying(false);
+    // setPlaying(null);
+  }, []);
+
+  const play = useCallback(() => reference.current?.play(), [reference]);
+  const pause = useCallback(() => reference.current?.pause(), [reference]);
 
   return (
     <Root className={classes.root}>
@@ -55,61 +114,84 @@ export const Theatre = ({ media, players }) => {
             <Player
               key={id}
               active={active === id}
-              playing={playing === id}
+              time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
+              // playing={referencePlaying && playing === id && active === id}
+              playing={referencePlaying && active === id}
               media={{ id, url }}
-              {...{ players, setActive, setPlaying }}
+              // {...{ players, setActive, setPlaying }}
+              {...{ players, setActive }}
             />
           </div>
         ))}
 
         <div>
-          {playing ? (
-            <IconButton onClick={() => setPlaying(null)}>
+          {referencePlaying ? (
+            <IconButton onClick={pause}>
               <PauseIcon />
             </IconButton>
           ) : (
-            <IconButton onClick={() => setPlaying(active)}>
+            <IconButton onClick={play}>
               <PlayArrowIcon />
             </IconButton>
           )}
+          <audio
+            controls
+            muted
+            // @ts-ignore
+            ref={reference}
+            onPlay={onPlay}
+            onPause={onPause}
+          />
         </div>
       </Container>
     </Root>
   );
 };
 
-const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying }) => {
+const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time }) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
+
+  // console.log(time, active, playing, id);
+
+  useEffect(() => {
+    console.log(time, ref.current.getCurrentTime(), Math.abs(ref.current.getCurrentTime() - time));
+    if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
+      // console.log('seek', time);
+      ref.current?.seekTo(time, 'seconds');
+    }
+  }, [ref, time]);
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
     if (!primed) {
-      setPlaying(id);
+      // setPlaying(id); // TODO make this via ref?
       // setActive(id);
     }
   }, [id, primed]);
 
   const onPlay = useCallback(() => {
     setPlaying(id);
-    setActive(id);
+    // setActive(id);
     if (!primed) {
       setPrimed(true);
-      setPlaying(false);
+      // setPlaying(false); // TODO make this via ref?
     }
   }, [id, primed]);
 
-  const onPause = useCallback(() => setPlaying(false), []);
+  const onPause = useCallback(() => {
+    // setPlaying(false);
+  }, []);
 
   const onSeek = useCallback(() => {
-    console.log('seek', id);
-    setActive(id);
+    // console.log('seek', id);
+    // setActive(id);
   }, [id]);
 
   const onProgress = useCallback(
     progress => {
       // console.log(progress);
-      setActive(id);
+      // setActive(id);
     },
     [id],
   );

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -41,17 +41,28 @@ const Root = styled('div')(({ theme }) => {
 });
 
 export default function Remix(props) {
-  const { editable, remix } = props;
+  const {
+    editable,
+    remix: { blocks, media },
+  } = props;
+
+  const reference = useRef();
   const players = useRef({});
+
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+  }, [reference]);
 
   return (
     <>
       <Root className="RemixerPane RemixerPane--Remix">
         <RemixTopbar {...props} />
-        {remix.blocks?.length > 0 ? (
+        {blocks?.length > 0 ? (
           <>
-            <Theatre media={remix.media} players={players} />
-            <Transcript blocks={remix.blocks} players={players} />
+            <Theatre {...{ blocks, media, players, reference, time }} />
+            <Transcript {...{ blocks, players, reference, time }} />
           </>
         ) : (
           <div className={classes.intro}>
