@@ -36,6 +36,11 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
+// https://github.com/cookpete/react-player/blob/master/src/patterns.js
+const MATCH_URL_YOUTUBE =
+  /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
+const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
+
 export const Theatre = ({ media, players }) => {
   const [active, setActive] = useState();
   const [playing, setPlaying] = useState();
@@ -75,7 +80,7 @@ export const Theatre = ({ media, players }) => {
 
 const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying }) => {
   const ref = useRef();
-  const [primed, setPrimed] = useState(false);
+  const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
