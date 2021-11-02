@@ -10,7 +10,7 @@ export default {
 
 const Template = (args) => (
   <div style={{ height: "100vh" }}>
-    <Remixer remix={data.remix} sources={data.sources} {...args} />
+    <Remixer remix={data.remix} sources={data.sources} media={[]} {...args} />
   </div>
 );
 
@@ -51,4 +51,11 @@ EditModeRichLibrary.args = {
   editable: true,
   remix: { ...data.remix, title: "" },
   media: [...data.sources],
+};
+export const EditModeLibrarySearch = Template.bind({});
+EditModeLibrarySearch.args = {
+  editable: true,
+  remix: { ...data.remix, title: "" },
+  media: [...data.sources],
+  matches: [...data.sources],
 };

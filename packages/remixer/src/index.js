@@ -109,10 +109,11 @@ export const Remixer = props => {
   const { editable, sources } = props;
 
   const [showSource, setShowSource] = React.useState(true);
-  const [showLibrary, setShowLibrary] = React.useState(true); // TODO: default to false
+  const [showLibrary, setShowLibrary] = React.useState(false);
   const [source, setSource] = React.useState(sources[0]);
 
   const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
+  const onSourceOpen = id => console.log('onSourceOpen', id);
 
   console.group('index.js');
   console.log('sources', sources);
@@ -144,7 +145,7 @@ export const Remixer = props => {
             </Badge>
           </Tooltip>
         )}
-        {showLibrary && <Library {...props} onHideLibrary={() => setShowLibrary(false)} />}
+        {showLibrary && <Library {...props} onSourceOpen={onSourceOpen} onHideLibrary={() => setShowLibrary(false)} />}
       </Root>
     </ThemeProvider>
   );
