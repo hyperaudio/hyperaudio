@@ -89,6 +89,7 @@ const Root = styled('div', {
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
+    padding: `1px 0`, // a workaround for cut down textfield borders with overflow set below
     overflowX: 'auto !important',
     overflow: 'visible',
     textAlign: 'center',
@@ -114,6 +115,7 @@ export const Remixer = props => {
 
   const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
   const onSourceOpen = id => console.log('onSourceOpen', id);
+  const onSearch = string => console.log('onSearch', string);
 
   console.group('index.js');
   console.log('sources', sources);
@@ -145,7 +147,14 @@ export const Remixer = props => {
             </Badge>
           </Tooltip>
         )}
-        {showLibrary && <Library {...props} onSourceOpen={onSourceOpen} onHideLibrary={() => setShowLibrary(false)} />}
+        {showLibrary && (
+          <Library
+            {...props}
+            onHideLibrary={() => setShowLibrary(false)}
+            onSearch={onSearch}
+            onSourceOpen={onSourceOpen}
+          />
+        )}
       </Root>
     </ThemeProvider>
   );

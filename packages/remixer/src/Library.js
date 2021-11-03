@@ -48,45 +48,52 @@ const CardTitle = styled(Typography)(({ theme }) => ({
 export default function Library(props) {
   const { media, matches, onSourceOpen } = props;
 
-  console.group('Library.js');
-  console.log({ media, matches });
-  console.groupEnd();
+  const [searchKey, setSearchKey] = React.useState(null);
+
+  // console.group('Library.js');
+  // console.log({ media, matches });
+  // console.groupEnd();
 
   return (
     <Root className={`RemixerPane RemixerPane--Library`}>
-      <LibraryTopbar {...props} />
+      <LibraryTopbar {...props} setSearchKey={setSearchKey} />
       <Media>
-        {matches?.length > 0 && (
+        {searchKey && (
           <>
-            <MediaBlock>
-              <MediaWrapper maxWidth="sm">
-                <Typography component="h2" variant="h5" className={classes.title}>
-                  Search results
-                </Typography>
-                <Grid container spacing={3}>
-                  {media.map(o => (
-                    <Grid item xs={6} lg={4} key={o.id}>
-                      <MediaItem elevation={0} onClick={() => onSourceOpen(o.id)}>
-                        <CardMedia
-                          component="img"
-                          height="140"
-                          image="https://picsum.photos/200/300"
-                          alt="green iguana"
-                        />
-                        <Tooltip enterDelay={1500} title={o.title}>
-                          <CardTitle display="block" noWrap variant="caption">
-                            {o.title}
-                          </CardTitle>
-                        </Tooltip>
-                      </MediaItem>
+            {matches?.length > 0 && (
+              <>
+                <MediaBlock>
+                  <MediaWrapper maxWidth="sm">
+                    <Typography component="h2" variant="h5" className={classes.title}>
+                      Search results
+                    </Typography>
+                    <Grid container spacing={3}>
+                      {media.map(o => (
+                        <Grid item xs={6} lg={4} key={o.id}>
+                          <MediaItem elevation={0} onClick={() => onSourceOpen(o.id)}>
+                            <CardMedia
+                              component="img"
+                              height="140"
+                              image="https://picsum.photos/200/300"
+                              alt="green iguana"
+                            />
+                            <Tooltip enterDelay={1500} title={o.title}>
+                              <CardTitle display="block" noWrap variant="caption">
+                                {o.title}
+                              </CardTitle>
+                            </Tooltip>
+                          </MediaItem>
+                        </Grid>
+                      ))}
                     </Grid>
-                  ))}
-                </Grid>
-              </MediaWrapper>
-            </MediaBlock>
-            <Divider />
+                  </MediaWrapper>
+                </MediaBlock>
+                <Divider />
+              </>
+            )}
           </>
         )}
+
         {media?.length > 0 && (
           <MediaBlock>
             <MediaWrapper maxWidth="sm">
