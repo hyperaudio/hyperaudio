@@ -1,12 +1,12 @@
 import React from 'react';
 
+import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
+import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
-
-import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -45,6 +45,33 @@ const CardTitle = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0.5, 0),
 }));
 
+const GridBlock = props => {
+  const { title, items, onSourceOpen } = props;
+  return (
+    <MediaBlock>
+      <MediaWrapper maxWidth="sm">
+        <Typography component="h2" variant="h6" className={classes.title}>
+          {title}
+        </Typography>
+        <Grid container spacing={3}>
+          {items.map(o => (
+            <Grid item xs={12} md={6} lg={4} key={o.id}>
+              <MediaItem elevation={0} onClick={() => onSourceOpen(o.id)}>
+                <CardMedia component="img" height="200" image="https://picsum.photos/200/300" alt="green iguana" />
+                <Tooltip enterDelay={1500} title={o.title}>
+                  <CardTitle display="block" noWrap variant="caption">
+                    {o.title}
+                  </CardTitle>
+                </Tooltip>
+              </MediaItem>
+            </Grid>
+          ))}
+        </Grid>
+      </MediaWrapper>
+    </MediaBlock>
+  );
+};
+
 export default function Library(props) {
   const { media, matches, onSourceOpen } = props;
 
@@ -60,68 +87,33 @@ export default function Library(props) {
       <Media>
         {searchKey && (
           <>
-            {matches?.length > 0 && (
+            {matches?.titles?.length > 0 || matches?.transcripts?.length > 0 ? (
               <>
-                <MediaBlock>
-                  <MediaWrapper maxWidth="sm">
-                    <Typography component="h2" variant="h5" className={classes.title}>
-                      Search results
-                    </Typography>
-                    <Grid container spacing={3}>
-                      {media.map(o => (
-                        <Grid item xs={6} lg={4} key={o.id}>
-                          <MediaItem elevation={0} onClick={() => onSourceOpen(o.id)}>
-                            <CardMedia
-                              component="img"
-                              height="140"
-                              image="https://picsum.photos/200/300"
-                              alt="green iguana"
-                            />
-                            <Tooltip enterDelay={1500} title={o.title}>
-                              <CardTitle display="block" noWrap variant="caption">
-                                {o.title}
-                              </CardTitle>
-                            </Tooltip>
-                          </MediaItem>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </MediaWrapper>
-                </MediaBlock>
-                <Divider />
+                {matches?.titles?.length > 0 && (
+                  <GridBlock
+                    items={matches.titles}
+                    onSourceOpen={onSourceOpen}
+                    title={`${matches?.titles?.length} titles matching: ${searchKey}`}
+                  />
+                )}
+                {matches?.transcripts?.length > 0 && (
+                  <GridBlock
+                    items={matches.transcripts}
+                    onSourceOpen={onSourceOpen}
+                    title={`${matches?.transcripts?.length} transcript occurances matching: ${searchKey}`}
+                  />
+                )}
               </>
+            ) : (
+              <Alert severity="warning">
+                We couldn’t find any media matches for <strong>{searchKey}</strong>
+              </Alert>
             )}
+            <Divider />
           </>
         )}
 
-        {media?.length > 0 && (
-          <MediaBlock>
-            <MediaWrapper maxWidth="sm">
-              <Typography component="h2" variant="h5" className={classes.title}>
-                All media
-              </Typography>
-              <Grid container spacing={3}>
-                {media.map(o => (
-                  <Grid item xs={6} lg={4} key={o.id}>
-                    <MediaItem elevation={0} onClick={() => onSourceOpen(o.id)}>
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        image="https://picsum.photos/200/300"
-                        alt={`Media poster from ${o.title}`}
-                      />
-                      <Tooltip enterDelay={1500} title={o.title}>
-                        <CardTitle display="block" noWrap variant="caption">
-                          {o.title}
-                        </CardTitle>
-                      </Tooltip>
-                    </MediaItem>
-                  </Grid>
-                ))}
-              </Grid>
-            </MediaWrapper>
-          </MediaBlock>
-        )}
+        {media?.length > 0 && <GridBlock items={media} title={`All media`} onSourceOpen={onSourceOpen} />}
       </Media>
     </Root>
   );
