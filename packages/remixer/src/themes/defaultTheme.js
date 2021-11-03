@@ -49,7 +49,7 @@ export const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           padding: mui.spacing(0.15),
-          [`&.MuiPaper-rounded, & .MuiCardMedia-root`]: {
+          [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
             borderRadius: mui.shape.borderRadius,
           },
         },

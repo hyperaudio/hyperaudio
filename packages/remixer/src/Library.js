@@ -2,7 +2,6 @@ import React from 'react';
 
 import Alert from '@mui/material/Alert';
 import Card from '@mui/material/Card';
-import CardMedia from '@mui/material/CardMedia';
 import CardActionArea from '@mui/material/CardActionArea';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
@@ -48,6 +47,10 @@ const MediaItem = styled(Card, {
     boxShadow: `0 0px 0px 5px ${theme.palette.primary.main}`,
     color: theme.palette.primary.contrastText,
   },
+  [`& img`]: {
+    position: 'relative',
+    width: '100%',
+  },
 }));
 const CardTitle = styled(Typography)(({ theme }) => ({
   padding: theme.spacing(0.5, 0, 0),
@@ -68,7 +71,8 @@ const GridBlock = props => {
               <Grid item xs={12} md={6} lg={4} key={o.id}>
                 <MediaItem elevation={0} isActive={isActive} onClick={!isActive ? () => onSourceOpen(o.id) : null}>
                   <CardActionArea disabled={isActive}>
-                    <CardMedia component="img" height="200" image="https://picsum.photos/200/300" alt="green iguana" />
+                    {/* <CardMedia component="img" height="200" image="https://picsum.photos/400/300" alt="green iguana" /> */}
+                    <img alt={`Poster image for ${o.title}`} src="https://picsum.photos/400/300" />
                     <Tooltip enterDelay={1500} title={o.title}>
                       <CardTitle display="block" noWrap variant="caption">
                         {o.title}
@@ -92,9 +96,9 @@ export default function Library(props) {
 
   const sourcesIds = sources.map(o => o.id);
 
-  console.group('Library.js');
-  console.log({ media, matches });
-  console.groupEnd();
+  // console.group('Library.js');
+  // console.log({ media, matches });
+  // console.groupEnd();
 
   return (
     <Root className={`RemixerPane RemixerPane--Library`}>
