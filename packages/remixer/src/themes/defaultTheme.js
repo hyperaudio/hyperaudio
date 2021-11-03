@@ -44,7 +44,15 @@ export const defaultTheme = createTheme({
     },
     MuiCard: {
       defaultProps: {
-        square: true,
+        square: false,
+      },
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(0.15),
+          [`&.MuiPaper-rounded, & .MuiCardMedia-root`]: {
+            borderRadius: mui.shape.borderRadius,
+          },
+        },
       },
     },
     MuiDialog: {
