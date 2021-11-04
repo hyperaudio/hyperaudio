@@ -1,5 +1,6 @@
 export * from './ClearDialog';
 export * from './Dragbar';
+export * from './LibraryTopbar';
 export * from './RecursiveMenuItem';
 export * from './RemixTopbar';
 export * from './ShareDialog';

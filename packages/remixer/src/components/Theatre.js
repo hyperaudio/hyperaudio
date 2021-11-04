@@ -5,7 +5,6 @@ import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
@@ -44,7 +43,7 @@ export const Theatre = ({ media, players }) => {
 
   return (
     <Root className={classes.root}>
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         {media?.map(({ id, url }) => (
           <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
             <Player

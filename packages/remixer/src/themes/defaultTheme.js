@@ -42,6 +42,19 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
     },
+    MuiCard: {
+      defaultProps: {
+        square: false,
+      },
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(0.15),
+          [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
+            borderRadius: mui.shape.borderRadius,
+          },
+        },
+      },
+    },
     MuiDialog: {
       styleOverrides: {
         paper: {

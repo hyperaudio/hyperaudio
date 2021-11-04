@@ -8,21 +8,30 @@ import { styled, ThemeProvider } from '@mui/material/styles';
 import { HyperaudioIcon } from './icons';
 import { defaultTheme } from './themes';
 
+import Library from './Library';
 import Remix from './Remix';
 import Source from './Source';
 import GlobalStyles from './GlobalStyles';
 
 import './fonts/Inter/inter.css';
 
-const Layout = styled('div', {
+const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
 })(({ theme, showSource }) => ({
-  alignContent: 'flex-start',
-  alignItems: 'stretch',
-  display: 'flex',
-  flexFlow: 'row nowrap',
   height: '100%',
-  justifyContent: 'space-between',
+  position: 'relative',
+
+  // layout
+  [`& .Layout`]: {
+    alignContent: 'flex-start',
+    alignItems: 'stretch',
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+
+  // panes
   [`& .RemixerPane`]: {
     alignContent: 'flex-start',
     alignItems: 'stretch',
@@ -46,7 +55,16 @@ const Layout = styled('div', {
         maxWidth: 'none',
       },
     },
+    [`&.RemixerPane--Library`]: {
+      bottom: 0,
+      left: 0,
+      position: 'absolute',
+      right: '50%',
+      top: 0,
+    },
   },
+
+  // topbars
   [`& .topbar`]: {
     alignItems: 'center',
     display: 'flex',
@@ -71,6 +89,7 @@ const Layout = styled('div', {
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
+    padding: `1px 0`, // a workaround for cut down textfield borders with overflow set below
     overflowX: 'auto !important',
     overflow: 'visible',
     textAlign: 'center',
@@ -80,6 +99,7 @@ const Layout = styled('div', {
     ...theme.mixins.toolbar,
   },
 }));
+
 const Badge = styled(Fab)(({ theme }) => ({
   bottom: theme.spacing(2),
   position: 'fixed',
@@ -90,32 +110,52 @@ export const Remixer = props => {
   const { editable, sources } = props;
 
   const [showSource, setShowSource] = React.useState(true);
+  const [showLibrary, setShowLibrary] = React.useState(false);
   const [source, setSource] = React.useState(sources[0]);
 
   const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
+  const onSourceOpen = id => console.log('onSourceOpen', id);
+  const onSearch = string => console.log('onSearch', string);
 
-  // console.group('index.js');
-  // console.log('sources', sources);
-  // console.log('source', source);
-  // console.groupEnd();
+  console.group('index.js');
+  console.log('sources', sources);
+  console.log('source', source);
+  console.groupEnd();
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
-      <Layout
-        id="Layout" // used as Dragbar’s bounds
-        showSource={showSource}
-      >
-        {showSource && <Source {...props} onSourceChange={onSourceChange} source={source} />}
-        <Remix {...props} showSource={showSource} setShowSource={setShowSource} onSourceChange={onSourceChange} />
-      </Layout>
-      {!editable && (
-        <Tooltip title="Visit Hyperaudio">
-          <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
-            <HyperaudioIcon />
-          </Badge>
-        </Tooltip>
-      )}
+      <Root showSource={showSource}>
+        <div
+          className="Layout"
+          id="Layout" // used as Dragbar’s bounds
+        >
+          {showSource && (
+            <Source
+              {...props}
+              onShowLibrary={() => setShowLibrary(true)}
+              onSourceChange={onSourceChange}
+              source={source}
+            />
+          )}
+          <Remix {...props} showSource={showSource} setShowSource={setShowSource} onSourceChange={onSourceChange} />
+        </div>
+        {!editable && (
+          <Tooltip title="Visit Hyperaudio">
+            <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
+              <HyperaudioIcon />
+            </Badge>
+          </Tooltip>
+        )}
+        {showLibrary && (
+          <Library
+            {...props}
+            onHideLibrary={() => setShowLibrary(false)}
+            onSearch={onSearch}
+            onSourceOpen={onSourceOpen}
+          />
+        )}
+      </Root>
     </ThemeProvider>
   );
 };
