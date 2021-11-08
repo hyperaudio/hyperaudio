@@ -29,14 +29,12 @@ import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '../icons';
 const Root = styled('div')(({ theme }) => {
   return {
     [`& .RemixTitleField`]: {
-      borderWidth: '15px',
       [`& .MuiOutlinedInput-notchedOutline`]: {
         borderColor: 'transparent',
       },
     },
     [`& .RemixTitle`]: {
       textAlign: 'center',
-      borderWidth: '15px',
     },
   };
 });
@@ -105,6 +103,7 @@ export const RemixTopbar = props => {
             value={remix.title}
             InputProps={{
               className: 'RemixTitleField',
+              readOnly: !editable,
             }}
             inputProps={{
               className: 'RemixTitle',

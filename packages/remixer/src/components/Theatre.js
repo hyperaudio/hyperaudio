@@ -113,7 +113,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
 
   return (
     <Root className={classes.root}>
-      <Container maxWidth="md">
+      <Container maxWidth="sm">
         {media?.map(({ id, url }) => (
           <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
             <Player
