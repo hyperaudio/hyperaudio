@@ -52,7 +52,8 @@ export default function Remix(props) {
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+    if (reference.current)
+      reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
   }, [reference]);
 
   return (
