@@ -20,22 +20,25 @@ export const Transcript = props => {
   const handleClick = useCallback(
     ({ target }) => {
       const selection = window.getSelection();
+      console.log(target, selection);
       if (!selection.isCollapsed || !target.getAttribute('data-key') || !target.getAttribute('data-media')) return;
 
       const { anchorOffset } = selection;
-      const media = target.getAttribute('data-media');
+      // const media = target.getAttribute('data-media');
       const key = target.getAttribute('data-key');
+      const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
+      const offset = parseInt(target.getAttribute('data-offset') ?? 0);
 
       // console.log(media, key, blocks);
 
       const block = blocks.find(block => block.key === key);
       const index = block.offsets.findIndex(
-        (offset, i) => offset <= anchorOffset && anchorOffset <= offset + block.lengths[i],
+        (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
       );
 
       // console.log(block, index);
 
-      const time = index > 0 ? block.starts[index] : block.start;
+      const time = index > 0 ? block.starts2[index] + offset : offset;
 
       if (reference.current) reference.current.currentTime = time / 1e3;
     },
@@ -93,6 +96,8 @@ const Block = ({ blocks, block, time }) => {
     <p
       data-media={pk}
       data-key={key}
+      data-offset={offset}
+      data-text-offset={0}
       data-speaker={`${speaker}: `}
       className={`${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
@@ -105,19 +110,21 @@ const Block = ({ blocks, block, time }) => {
 
 const Playhead = ({ block, offset, time }) => {
   const [start, end] = useMemo(() => {
-    const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
+    let index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
     if (index === -1) return [block.text.length - 1, block.text.length - 1];
-
+    // if (index > 0) index--;
     return [block.offsets[index], block.offsets[index] + block.lengths[index]];
   }, [block, offset, time]);
 
   return (
     <>
-      <span className="playhead">
+      <span className="playhead" data-media={block.pk} data-key={block.key} data-text-offset={0} data-offset={offset}>
         {block.text.substring(0, start)}
         <span>{block.text.substring(start, end)}</span>
       </span>
-      {block.text.substring(end)}
+      <span data-media={block.pk} data-key={block.key} data-text-offset={end} data-offset={offset}>
+        {block.text.substring(end)}
+      </span>
     </>
   );
 };
