@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
@@ -16,10 +16,6 @@ const Root = styled('div')(({ theme }) => ({
 
 export const Transcript = props => {
   const { blocks, players, reference, time } = props;
-
-  // console.group('Transcript');
-  // console.log('blocks', blocks);
-  // console.groupEnd();
 
   const handleClick = useCallback(
     ({ target }) => {
@@ -49,13 +45,79 @@ export const Transcript = props => {
   return (
     <Root>
       <Container maxWidth="sm" onClick={handleClick}>
-        {blocks?.map(({ key, pk, sk, speaker, text }) => (
-          <p key={key} data-media={pk} data-key={key} data-speaker={`${speaker}: `}>
-            {text}
-          </p>
+        {blocks?.map(block => (
+          <Block key={block.key} blocks={blocks} block={block} time={time} />
         ))}
-        <style scoped>{'p::before { content: attr(data-speaker); font-weight: bold; }'}</style>
+        <style scoped>{`
+          p {
+            color: darkgrey;
+          }
+          p.past {
+            color: black;
+          }
+          p.present {
+            outline: 1px solid lightgrey;
+          }
+          p.future {
+            color: darkgrey;
+          }
+          p span.playhead {
+            color: black;
+          }
+          p span.playhead span {
+            color: teal;
+          }
+          p::before {
+            content: attr(data-speaker);
+            font-weight: bold;
+          }
+          p.present::before {
+            color: black;
+          }
+        `}</style>
       </Container>
     </Root>
+  );
+};
+
+const Block = ({ blocks, block, time }) => {
+  const { key, pk, speaker, text, duration } = block;
+
+  const offset = useMemo(() => {
+    const index = blocks.findIndex(b => b === block);
+
+    return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, 0);
+  }, [blocks, block]);
+
+  return (
+    <p
+      data-media={pk}
+      data-key={key}
+      data-speaker={`${speaker}: `}
+      className={`${time >= offset + duration ? 'past' : 'future'} ${
+        time >= offset && time < offset + duration ? 'present' : ''
+      }`}
+    >
+      {time >= offset && time < offset + duration ? <Playhead block={block} offset={offset} time={time} /> : text}
+    </p>
+  );
+};
+
+const Playhead = ({ block, offset, time }) => {
+  const [start, end] = useMemo(() => {
+    const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
+    if (index === -1) return [block.text.length - 1, block.text.length - 1];
+
+    return [block.offsets[index], block.offsets[index] + block.lengths[index]];
+  }, [block, offset, time]);
+
+  return (
+    <>
+      <span className="playhead">
+        {block.text.substring(0, start)}
+        <span>{block.text.substring(start, end)}</span>
+      </span>
+      {block.text.substring(end)}
+    </>
   );
 };

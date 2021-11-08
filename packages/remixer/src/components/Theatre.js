@@ -76,7 +76,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             ...acc,
             prevInterval,
             [
-              offset,
+              offset, // TODO name these better
               offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
               { start, media },
             ],
