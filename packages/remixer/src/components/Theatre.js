@@ -3,11 +3,11 @@ import ReactPlayer from 'react-player';
 import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
-import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
@@ -130,25 +130,32 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
         ))}
 
         <div>
-          {referencePlaying ? (
-            <IconButton onClick={pause}>
-              <PauseIcon />
-            </IconButton>
-          ) : (
-            <IconButton onClick={play}>
-              <PlayArrowIcon />
-            </IconButton>
-          )}
-          <Slider
-            size="small"
-            defaultValue={0}
-            value={time / 1e3}
-            min={0}
-            max={duration / 1e3}
-            aria-label="timeline"
-            valueLabelDisplay="auto"
-            onChange={handleSliderChange}
-          />
+          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+            <Grid item>
+              {referencePlaying ? (
+                <IconButton onClick={pause} size="small">
+                  <PauseIcon />
+                </IconButton>
+              ) : (
+                <IconButton onClick={play} size="small">
+                  <PlayArrowIcon />
+                </IconButton>
+              )}
+            </Grid>
+            <Grid container item xs>
+              <Slider
+                aria-label="timeline"
+                defaultValue={0}
+                max={duration / 1e3}
+                min={0}
+                onChange={handleSliderChange}
+                size="small"
+                value={time / 1e3}
+                valueLabelDisplay="auto"
+              />
+            </Grid>
+          </Grid>
+
           <audio
             controls
             muted
