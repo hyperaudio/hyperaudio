@@ -38,7 +38,6 @@ const Tab = styled(Button, {
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
   borderRadius: 0,
-  borderRight: `1px solid ${theme.palette.divider}`,
   color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
   flexBasis: 'auto',
   flexGrow: 1,
@@ -46,6 +45,9 @@ const Tab = styled(Button, {
   justifyContent: isSingle ? 'center' : 'space-between',
   minHeight: theme.spacing(5),
   textTransform: 'none',
+  [`&:not(:last-child)`]: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
   [`&:hover`]: {
     background: isActive ? theme.palette.background.paper : 'transparent',
     color: theme.palette.secondary.dark,
