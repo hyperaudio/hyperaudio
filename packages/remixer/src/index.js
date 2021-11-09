@@ -130,6 +130,12 @@ export const Remixer = props => {
     },
     [media],
   );
+  const onSourceClose = useCallback(
+    id => {
+      dispatch({ type: 'sourceClose', id });
+    },
+    [media],
+  );
 
   console.group('index.js');
   console.log('sources', sources);
