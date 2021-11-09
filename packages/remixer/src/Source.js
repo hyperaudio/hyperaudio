@@ -29,9 +29,10 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-export default function Source(props) {
+const Source = props => {
   const {
-    source: { blocks, media },
+    source: { id, blocks, media },
+    editable,
   } = props;
 
   const reference = useRef();
@@ -47,7 +48,9 @@ export default function Source(props) {
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
       <Theatre {...{ blocks, media, players, reference, time }} />
-      <Transcript {...{ blocks, players, reference, time }} />
+      <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
     </Root>
   );
-}
+};
+
+export default Source;

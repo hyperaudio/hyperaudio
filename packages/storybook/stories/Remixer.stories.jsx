@@ -18,6 +18,7 @@ export const ReadMode = Template.bind({});
 ReadMode.args = {
   editable: false,
 };
+
 export const ReadModeOneSource = Template.bind({});
 ReadModeOneSource.args = {
   editable: false,
@@ -29,29 +30,35 @@ EmptyRemix.args = {
   editable: true,
   remix: { ...data.remix, secret: false, title: "", blocks: [] },
 };
+
 export const RichRemix = Template.bind({});
 RichRemix.args = {
   editable: true,
   remix: { ...data.remix, secret: false, title: "" },
 };
+
 export const OneSource = Template.bind({});
 OneSource.args = {
   editable: true,
   remix: { ...data.remix, title: "" },
   sources: [data.sources[0]],
 };
+
 export const LibraryEmpty = Template.bind({});
 LibraryEmpty.args = {
   editable: true,
   remix: { ...data.remix, title: "" },
   media: [],
 };
+
 export const RichLibrary = Template.bind({});
 RichLibrary.args = {
   editable: true,
   remix: { ...data.remix, title: "" },
+  sources: [data.sources[0]],
   media: [...data.sources],
 };
+
 export const SearchResults = Template.bind({});
 SearchResults.args = {
   editable: true,
@@ -59,6 +66,7 @@ SearchResults.args = {
   media: [...data.sources],
   matches: { transcripts: [...data.sources], titles: [...data.sources] },
 };
+
 export const SearchSome = Template.bind({});
 SearchSome.args = {
   editable: true,
@@ -66,6 +74,7 @@ SearchSome.args = {
   media: [...data.sources],
   matches: { transcripts: [...data.sources], titles: null },
 };
+
 export const SearchNull = Template.bind({});
 SearchNull.args = {
   editable: true,

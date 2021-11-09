@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
@@ -15,7 +16,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { blocks, players, reference, time } = props;
+  const { id, blocks, reference, time, editable, isSource = false } = props;
 
   const handleClick = useCallback(
     ({ target }) => {
@@ -48,9 +49,35 @@ export const Transcript = props => {
   return (
     <Root>
       <Container maxWidth="sm" onClick={handleClick}>
-        {blocks?.map(block => (
-          <Block key={block.key} blocks={blocks} block={block} time={time} />
-        ))}
+        {editable && !isSource ? (
+          <Droppable droppableId={`droppable-${id}`} type="BLOCK">
+            {(provided, snapshot) => (
+              <div
+                ref={provided.innerRef}
+                style={
+                  {
+                    // backgroundColor: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
+                  }
+                }
+                {...provided.droppableProps}
+              >
+                {provided.placeholder}
+                {blocks?.map((block, i) => (
+                  <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
+                    {(provided, snapshot) => (
+                      <div ref={provided.innerRef} {...provided.draggableProps}>
+                        <div className={'dragHandle'} {...provided.dragHandleProps} />
+                        <Block key={block.key} blocks={blocks} block={block} time={time} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+              </div>
+            )}
+          </Droppable>
+        ) : (
+          blocks?.map((block, i) => <Block key={block.key} blocks={blocks} block={block} time={time} />)
+        )}
         <style scoped>{`
           p {
             color: darkgrey;
@@ -76,6 +103,12 @@ export const Transcript = props => {
           }
           p.present::before {
             color: black;
+          }
+          .dragHandle {
+            float: left;
+            width: 10px;
+            height: 20px;
+            background-color: red;
           }
         `}</style>
       </Container>
@@ -110,9 +143,9 @@ const Block = ({ blocks, block, time }) => {
 
 const Playhead = ({ block, offset, time }) => {
   const [start, end] = useMemo(() => {
-    let index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
+    const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
     if (index === -1) return [block.text.length - 1, block.text.length - 1];
-    // if (index > 0) index--;
+
     return [block.offsets[index], block.offsets[index] + block.lengths[index]];
   }, [block, offset, time]);
 
