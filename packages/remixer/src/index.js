@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useReducer, useState, useCallback } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 
 import Fab from '@mui/material/Fab';
@@ -12,6 +13,8 @@ import Library from './Library';
 import Remix from './Remix';
 import Source from './Source';
 import GlobalStyles from './GlobalStyles';
+
+import remixReducer from './reducers/remixReducer';
 
 import './fonts/Inter/inter.css';
 
@@ -107,20 +110,51 @@ const Badge = styled(Fab)(({ theme }) => ({
 }));
 
 export const Remixer = props => {
-  const { editable, sources } = props;
+  const { editable, media } = props;
 
-  const [showSource, setShowSource] = React.useState(true);
-  const [showLibrary, setShowLibrary] = React.useState(false);
-  const [source, setSource] = React.useState(sources[0]);
+  const [{ sources, remix }, dispatch] = useReducer(remixReducer, { sources: props.sources, remix: props.remix });
+  const [source, setSource] = useState(sources[0]);
 
-  const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
-  const onSourceOpen = id => console.log('onSourceOpen', id);
-  const onSearch = string => console.log('onSearch', string);
+  const [showSource, setShowSource] = useState(true);
+  const [showLibrary, setShowLibrary] = useState(false);
+
+  const onSourceChange = useCallback(id => setSource(_.find(sources, o => o.id === id)), [sources]);
+
+  const onShowLibrary = useCallback(() => setShowLibrary(true), []);
+  const onHideLibrary = useCallback(() => setShowLibrary(false), []);
+
+  const onSearch = useCallback(string => console.log('onSearch', string), []);
+  const onSourceOpen = useCallback(
+    id => {
+      dispatch({ type: 'sourceOpen', source: media.find(m => m.id === id) });
+    },
+    [media],
+  );
 
   console.group('index.js');
   console.log('sources', sources);
   console.log('source', source);
   console.groupEnd();
+
+  const onBeforeCapture = useCallback(e => {
+    console.log({ onBeforeCapture: e });
+  }, []);
+
+  const onBeforeDragStart = useCallback(e => {
+    console.log({ onBeforeDragStart: e });
+  }, []);
+
+  const onDragStart = useCallback(e => {
+    console.log({ onDragStart: e });
+  }, []);
+
+  const onDragUpdate = useCallback(e => {
+    console.log({ onDragUpdate: e });
+  }, []);
+
+  const onDragEnd = useCallback(e => {
+    console.log({ onDragEnd: e });
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -130,15 +164,17 @@ export const Remixer = props => {
           className="Layout"
           id="Layout" // used as Dragbar’s bounds
         >
-          {showSource && (
-            <Source
-              {...props}
-              onShowLibrary={() => setShowLibrary(true)}
-              onSourceChange={onSourceChange}
-              source={source}
-            />
+          {editable ? (
+            <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
+              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
+              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
+            </DragDropContext>
+          ) : (
+            <>
+              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
+              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
+            </>
           )}
-          <Remix {...props} showSource={showSource} setShowSource={setShowSource} onSourceChange={onSourceChange} />
         </div>
         {!editable && (
           <Tooltip title="Visit Hyperaudio">
@@ -147,14 +183,7 @@ export const Remixer = props => {
             </Badge>
           </Tooltip>
         )}
-        {showLibrary && (
-          <Library
-            {...props}
-            onHideLibrary={() => setShowLibrary(false)}
-            onSearch={onSearch}
-            onSourceOpen={onSourceOpen}
-          />
-        )}
+        {showLibrary && <Library {...{ ...props, sources, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>
   );
