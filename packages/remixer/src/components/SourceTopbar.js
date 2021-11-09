@@ -18,6 +18,10 @@ import { styled } from '@mui/material/styles';
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
   backgroundColor: theme.palette.background.default,
+  [`.topbarCore`]: {
+    overflowX: 'auto !important',
+    overflow: 'visible',
+  },
 }));
 
 const Tabs = styled('div')(({ theme }) => ({

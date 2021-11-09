@@ -92,9 +92,7 @@ const Root = styled('div', {
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-    padding: `1px 0`, // a workaround for cut down textfield borders with overflow set below
-    overflowX: 'auto !important',
-    overflow: 'visible',
+    // padding: `1px 0`, // a workaround for cut down textfield borders with overflow set below
     textAlign: 'center',
     whiteSpace: 'unset',
   },
