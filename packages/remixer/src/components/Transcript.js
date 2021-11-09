@@ -1,8 +1,10 @@
 import React, { useCallback, useMemo } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
+import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 
 const Root = styled('div')(({ theme }) => ({
   alignItems: 'center',
@@ -13,6 +15,57 @@ const Root = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
   overflow: 'auto',
   padding: theme.spacing(4, 2, 18, 2),
+}));
+
+const DragBlock = styled('div')(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius,
+  position: 'relative',
+  [`&:hover`]: {
+    backgroundColor: theme.palette.background.paper,
+    outline: `1px solid ${theme.palette.divider}`,
+  },
+}));
+
+const DragHandle = styled(IconButton)(({ theme }) => ({
+  marginRight: theme.spacing(1),
+  opacity: 0.5,
+  position: 'absolute',
+  right: '100%',
+  top: theme.spacing(0.7),
+  [`&:hover`]: {
+    opacity: 1,
+  },
+}));
+
+const Section = styled('p')(({ theme }) => ({
+  // transitionDuration: `${theme.transitions.duration.short}s`, // TODO: figure out why transitions have no effect
+  // transitionProperty: 'background-color',
+  // transitionTimingFunction: 'ease-in',
+  color: theme.palette.text.secondary,
+  margin: theme.spacing(0),
+  padding: theme.spacing(1),
+  [`& span.playhead`]: {
+    color: theme.palette.primary.main,
+  },
+  [`&:before`]: {
+    ...theme.typography.overline,
+    backgroundColor: theme.palette.divider,
+    borderRadius: theme.shape.borderRadius,
+    color: `${theme.palette.text.disabled}`,
+    content: `attr(data-speaker)`,
+    lineHeight: 0,
+    marginRight: theme.spacing(0.66),
+    padding: theme.spacing(0.3, 0.5),
+  },
+  [`&.past, &.past:before`]: {
+    color: theme.palette.text.primary,
+  },
+  [`&.present:before, & span.playhead span`]: {
+    color: theme.palette.primary.dark,
+  },
+  [`&.future`]: {
+    color: theme.palette.text.disabled,
+  },
 }));
 
 export const Transcript = props => {
@@ -65,10 +118,12 @@ export const Transcript = props => {
                 {blocks?.map((block, i) => (
                   <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
                     {(provided, snapshot) => (
-                      <div ref={provided.innerRef} {...provided.draggableProps}>
-                        <div className={'dragHandle'} {...provided.dragHandleProps} />
+                      <DragBlock ref={provided.innerRef} {...provided.draggableProps}>
+                        <DragHandle {...provided.dragHandleProps} color="default" size="small">
+                          <DragIndicatorIcon fontSize="small" />
+                        </DragHandle>
                         <Block key={block.key} blocks={blocks} block={block} time={time} />
-                      </div>
+                      </DragBlock>
                     )}
                   </Draggable>
                 ))}
@@ -78,39 +133,6 @@ export const Transcript = props => {
         ) : (
           blocks?.map((block, i) => <Block key={block.key} blocks={blocks} block={block} time={time} />)
         )}
-        <style scoped>{`
-          p {
-            color: darkgrey;
-          }
-          p.past {
-            color: black;
-          }
-          p.present {
-            outline: 1px solid lightgrey;
-          }
-          p.future {
-            color: darkgrey;
-          }
-          p span.playhead {
-            color: black;
-          }
-          p span.playhead span {
-            color: teal;
-          }
-          p::before {
-            content: attr(data-speaker);
-            font-weight: bold;
-          }
-          p.present::before {
-            color: black;
-          }
-          .dragHandle {
-            float: left;
-            width: 10px;
-            height: 20px;
-            background-color: red;
-          }
-        `}</style>
       </Container>
     </Root>
   );
@@ -126,18 +148,18 @@ const Block = ({ blocks, block, time }) => {
   }, [blocks, block]);
 
   return (
-    <p
+    <Section
       data-media={pk}
       data-key={key}
       data-offset={offset}
       data-text-offset={0}
-      data-speaker={`${speaker}: `}
+      data-speaker={`${speaker}:`}
       className={`${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
     >
       {time >= offset && time < offset + duration ? <Playhead block={block} offset={offset} time={time} /> : text}
-    </p>
+    </Section>
   );
 };
 
