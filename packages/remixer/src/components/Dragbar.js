@@ -1,10 +1,7 @@
 import React from 'react';
-import { Droppable, Draggable as DraggableItem } from 'react-beautiful-dnd';
-import Draggable from 'react-draggable';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
@@ -27,10 +24,6 @@ const Root = styled('div')(({ theme }) => ({
   position: 'fixed',
   right: 0,
   zIndex: theme.zIndex.appBar,
-}));
-
-const DragHandle = styled(IconButton)(({ theme }) => ({
-  cursor: 'move',
 }));
 
 const Effect = styled('div')(({ theme }) => ({
@@ -61,86 +54,79 @@ const Effect = styled('div')(({ theme }) => ({
 // dragging a copy: https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-755864913
 export const Dragbar = props => {
   return (
-    <Draggable handle="#DragHandle" cancel={'[class*="MuiDialogContent-root"]'} bounds="#Layout">
-      <Root>
-        <Droppable droppableId={`droppable-toolbar`} type="BLOCK" isDropDisabled={true}>
-          {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
-              <Toolbar>
-                <Grid container columnSpacing={2} alignItems="center">
-                  <Grid item>
-                    <DragHandle size="small" color="default" id="DragHandle">
-                      <DragIndicatorIcon />
-                    </DragHandle>
+    <Root>
+      <Droppable droppableId={`droppable-toolbar`} type="BLOCK" isDropDisabled={true}>
+        {(provided, snapshot) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            <Toolbar>
+              <Grid container columnSpacing={2} alignItems="center">
+                <Grid item container xs columnSpacing={2}>
+                  <Grid item xs={4}>
+                    <Draggable draggableId="draggable-slides" index={0}>
+                      {(provided, snapshot) => (
+                        <>
+                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                            <Effect>
+                              <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Slide</Typography>
+                            </Effect>
+                          </div>
+                          {snapshot.isDragging && (
+                            <Effect>
+                              <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Slide</Typography>
+                            </Effect>
+                          )}
+                        </>
+                      )}
+                    </Draggable>
                   </Grid>
-                  <Grid item container xs columnSpacing={2}>
-                    <Grid item xs={4}>
-                      <DraggableItem draggableId="draggable-slides" index={0}>
-                        {(provided, snapshot) => (
-                          <>
-                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                              <Effect>
-                                <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Slide</Typography>
-                              </Effect>
-                            </div>
-                            {snapshot.isDragging && (
-                              <Effect>
-                                <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Slide</Typography>
-                              </Effect>
-                            )}
-                          </>
-                        )}
-                      </DraggableItem>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <DraggableItem draggableId="draggable-title" index={1}>
-                        {(provided, snapshot) => (
-                          <>
-                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                              <Effect>
-                                <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Title</Typography>
-                              </Effect>
-                            </div>
-                            {snapshot.isDragging && (
-                              <Effect>
-                                <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Title</Typography>
-                              </Effect>
-                            )}
-                          </>
-                        )}
-                      </DraggableItem>
-                    </Grid>
-                    <Grid item xs={4}>
-                      <DraggableItem draggableId="draggable-transition" index={2}>
-                        {(provided, snapshot) => (
-                          <>
-                            <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                              <Effect>
-                                <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Transition</Typography>
-                              </Effect>
-                            </div>
-                            {snapshot.isDragging && (
-                              <Effect>
-                                <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                                <Typography variant="subtitle2">Transition</Typography>
-                              </Effect>
-                            )}
-                          </>
-                        )}
-                      </DraggableItem>
-                    </Grid>
+                  <Grid item xs={4}>
+                    <Draggable draggableId="draggable-title" index={1}>
+                      {(provided, snapshot) => (
+                        <>
+                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                            <Effect>
+                              <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Title</Typography>
+                            </Effect>
+                          </div>
+                          {snapshot.isDragging && (
+                            <Effect>
+                              <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Title</Typography>
+                            </Effect>
+                          )}
+                        </>
+                      )}
+                    </Draggable>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Draggable draggableId="draggable-transition" index={2}>
+                      {(provided, snapshot) => (
+                        <>
+                          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                            <Effect>
+                              <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Transition</Typography>
+                            </Effect>
+                          </div>
+                          {snapshot.isDragging && (
+                            <Effect>
+                              <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2">Transition</Typography>
+                            </Effect>
+                          )}
+                        </>
+                      )}
+                    </Draggable>
                   </Grid>
                 </Grid>
-              </Toolbar>
-            </div>
-          )}
-        </Droppable>
-      </Root>
-    </Draggable>
+              </Grid>
+            </Toolbar>
+          </div>
+        )}
+      </Droppable>
+    </Root>
   );
 };
