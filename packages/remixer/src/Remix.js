@@ -40,10 +40,10 @@ const Root = styled('div')(({ theme }) => {
   };
 });
 
-export default function Remix(props) {
+const Remix = props => {
   const {
     editable,
-    remix: { blocks, media },
+    remix: { id, blocks, media },
   } = props;
 
   const reference = useRef();
@@ -63,7 +63,7 @@ export default function Remix(props) {
         {blocks?.length > 0 ? (
           <>
             <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ blocks, players, reference, time }} />
+            <Transcript {...{ id, blocks, players, reference, time, editable }} />
           </>
         ) : (
           <div className={classes.intro}>
@@ -75,4 +75,6 @@ export default function Remix(props) {
       </Root>
     </>
   );
-}
+};
+
+export default Remix;
