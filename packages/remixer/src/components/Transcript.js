@@ -55,7 +55,7 @@ const Section = styled('p')(({ theme }) => ({
     content: `attr(data-speaker)`,
     lineHeight: 0,
     marginRight: theme.spacing(0.66),
-    padding: theme.spacing(0.3, 0.5),
+    padding: theme.spacing(0.2, 0.3),
   },
   [`&.past, &.past:before`]: {
     color: theme.palette.text.primary,
