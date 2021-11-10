@@ -4,6 +4,8 @@ import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
+import Skeleton from '@mui/material/Skeleton';
+
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -12,19 +14,20 @@ import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
 const classes = {
-  root: `${PREFIX}`,
   playerWrapper: `${PREFIX}-playerWrapper`,
   player: `${PREFIX}-player`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  textAlign: 'center',
   alignItems: 'center',
   display: 'flex',
   flex: '1 0 260px',
   flexFlow: 'column nowrap',
-  justifyContent: 'center',
+  height: 'auto',
+  minHeight: '400px',
+  justifyContent: 'space-between',
   padding: theme.spacing(2),
+  textAlign: 'center',
   [`& .${classes.playerWrapper}`]: {
     position: 'relative',
     paddingTop: '56.25%' /* Player ratio: 100 / (1280 / 720) */,
@@ -111,8 +114,11 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
     reference.current.currentTime = value;
   };
 
+  console.log({ referencePlaying });
+  console.log({ active });
+
   return (
-    <Root className={classes.root}>
+    <Root>
       <Container maxWidth="sm">
         {media?.map(({ id, url }) => (
           <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
