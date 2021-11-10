@@ -40,6 +40,7 @@ export const defaultTheme = createTheme({
     MuiButton: {
       defaultProps: {
         disableElevation: true,
+        disableRipple: true,
       },
     },
     MuiCard: {

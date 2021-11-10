@@ -101,12 +101,6 @@ export const SourceTopbar = props => {
               <Tab
                 color="inherit"
                 component="a"
-                isActive={o.id === source.id}
-                isSingle={sources.length < 2}
-                key={o.id}
-                onClick={() => onSourceChange(o.id)}
-                size="small"
-                variant="contained"
                 endIcon={
                   editable && (
                     <span>
@@ -118,6 +112,12 @@ export const SourceTopbar = props => {
                     </span>
                   )
                 }
+                isActive={o.id === source.id}
+                isSingle={sources.length < 2}
+                key={o.id}
+                onClick={() => onSourceChange(o.id)}
+                size="small"
+                variant="contained"
               >
                 <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
                   {o.title}
