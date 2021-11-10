@@ -114,7 +114,7 @@ export const Transcript = props => {
                 }
                 {...provided.droppableProps}
               >
-                {provided.placeholder}
+                {/* {provided.placeholder} */}
                 {blocks?.map((block, i) => (
                   <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
                     {(provided, snapshot) => (
