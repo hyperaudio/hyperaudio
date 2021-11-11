@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
@@ -17,31 +17,55 @@ const Root = styled('div')(({ theme }) => ({
 
 export const Transcript = props => {
   const { id, blocks, reference, time, editable, isSource = false } = props;
+  const [range, setRange] = useState();
 
   const handleClick = useCallback(
     ({ target }) => {
       const selection = window.getSelection();
       console.log(target, selection);
-      if (!selection.isCollapsed || !target.getAttribute('data-key') || !target.getAttribute('data-media')) return;
 
-      const { anchorOffset } = selection;
-      // const media = target.getAttribute('data-media');
-      const key = target.getAttribute('data-key');
-      const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
-      const offset = parseInt(target.getAttribute('data-offset') ?? 0);
+      const { anchorOffset, focusOffset, anchorNode, focusNode } = selection;
 
-      // console.log(media, key, blocks);
+      if (selection.isCollapsed && target.getAttribute('data-key')) {
+        const key = target.getAttribute('data-key');
+        const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
+        const offset = parseInt(target.getAttribute('data-offset') ?? 0);
 
-      const block = blocks.find(block => block.key === key);
-      const index = block.offsets.findIndex(
-        (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
-      );
+        const block = blocks.find(block => block.key === key);
+        const index = block.offsets.findIndex(
+          (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
+        );
 
-      // console.log(block, index);
+        const time = index > 0 ? block.starts2[index] + offset : offset;
+        if (reference.current) reference.current.currentTime = time / 1e3;
+      } else if (!selection.isCollapsed && editable && isSource) {
+        const key = anchorNode?.parentNode?.getAttribute('data-key');
+        const textOffset = parseInt(anchorNode?.parentNode?.getAttribute('data-text-offset') ?? 0);
+        const offset = parseInt(anchorNode?.parentNode?.getAttribute('data-offset') ?? 0);
 
-      const time = index > 0 ? block.starts2[index] + offset : offset;
+        const block = blocks.find(block => block.key === key);
+        const index = block.offsets.findIndex(
+          (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
+        );
 
-      if (reference.current) reference.current.currentTime = time / 1e3;
+        const time = index > 0 ? block.starts2[index] + offset : offset;
+
+        const key2 = focusNode?.parentNode?.getAttribute('data-key');
+        const textOffset2 = parseInt(focusNode?.parentNode?.getAttribute('data-text-offset') ?? 0);
+        const offset2 = parseInt(focusNode?.parentNode?.getAttribute('data-offset') ?? 0);
+
+        const block2 = blocks.find(block => block.key === key2);
+        const index2 = block2.offsets.findIndex(
+          (offset, i) =>
+            offset2 <= focusOffset + textOffset2 && focusOffset + textOffset2 <= offset2 + block2.lengths[i],
+        );
+
+        const time2 = index2 > 0 ? block2.starts2[index2] + offset2 : offset2;
+
+        console.log(block, index, time);
+        console.log(block2, index2, time2);
+        setRange([Math.min(time, time2), Math.max(time, time2)]);
+      }
     },
     [blocks],
   );
@@ -61,13 +85,12 @@ export const Transcript = props => {
                 }
                 {...provided.droppableProps}
               >
-                {provided.placeholder}
                 {blocks?.map((block, i) => (
                   <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
                     {(provided, snapshot) => (
                       <div ref={provided.innerRef} {...provided.draggableProps}>
                         <div className={'dragHandle'} {...provided.dragHandleProps} />
-                        <Block key={block.key} blocks={blocks} block={block} time={time} />
+                        <Block key={block.key} {...{ blocks, block, time, range }} />
                       </div>
                     )}
                   </Draggable>
@@ -76,7 +99,7 @@ export const Transcript = props => {
             )}
           </Droppable>
         ) : (
-          blocks?.map((block, i) => <Block key={block.key} blocks={blocks} block={block} time={time} />)
+          blocks?.map((block, i) => <Block key={block.key} {...{ blocks, block, time, range }} />)
         )}
         <style scoped>{`
           p {
@@ -116,7 +139,9 @@ export const Transcript = props => {
   );
 };
 
-const Block = ({ blocks, block, time }) => {
+// TODO: wrap range intersecting blocks with Draggable, keep copy mode, have draggable clone with the text only
+
+const Block = ({ blocks, block, time, range }) => {
   const { key, pk, speaker, text, duration } = block;
 
   const offset = useMemo(() => {
