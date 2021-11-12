@@ -4,7 +4,6 @@ import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Skeleton from '@mui/material/Skeleton';
 
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
