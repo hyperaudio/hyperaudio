@@ -1,4 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
+import _ from 'lodash';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
@@ -215,13 +216,16 @@ export const Transcript = props => {
           <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => console.log('Move up')}>
+        <MenuItem disabled={_.findIndex(blocks, o => o.key === focus) === 0} onClick={() => console.log('Move up')}>
           <ListItemIcon>
             <MoveUpIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={() => console.log('Move down')}>
+        <MenuItem
+          disabled={_.findIndex(blocks, o => o.key === focus) === blocks.length - 1}
+          onClick={() => console.log('Move down')}
+        >
           <ListItemIcon>
             <MoveDownIcon color="primary" fontSize="small" />
           </ListItemIcon>
