@@ -18,6 +18,10 @@ import { styled } from '@mui/material/styles';
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
   backgroundColor: theme.palette.background.default,
+  [`.topbarCore`]: {
+    overflowX: 'auto !important',
+    overflow: 'visible',
+  },
 }));
 
 const Tabs = styled('div')(({ theme }) => ({
@@ -34,7 +38,6 @@ const Tab = styled(Button, {
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
   borderRadius: 0,
-  borderRight: `1px solid ${theme.palette.divider}`,
   color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
   flexBasis: 'auto',
   flexGrow: 1,
@@ -42,6 +45,9 @@ const Tab = styled(Button, {
   justifyContent: isSingle ? 'center' : 'space-between',
   minHeight: theme.spacing(5),
   textTransform: 'none',
+  [`&:not(:last-child)`]: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
   [`&:hover`]: {
     background: isActive ? theme.palette.background.paper : 'transparent',
     color: theme.palette.secondary.dark,
@@ -95,12 +101,6 @@ export const SourceTopbar = props => {
               <Tab
                 color="inherit"
                 component="a"
-                isActive={o.id === source.id}
-                isSingle={sources.length < 2}
-                key={o.id}
-                onClick={() => onSourceChange(o.id)}
-                size="small"
-                variant="contained"
                 endIcon={
                   editable && (
                     <span>
@@ -112,6 +112,12 @@ export const SourceTopbar = props => {
                     </span>
                   )
                 }
+                isActive={o.id === source.id}
+                isSingle={sources.length < 2}
+                key={o.id}
+                onClick={() => onSourceChange(o.id)}
+                size="small"
+                variant="contained"
               >
                 <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
                   {o.title}

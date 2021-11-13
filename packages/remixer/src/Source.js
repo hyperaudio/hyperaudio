@@ -24,7 +24,7 @@ const Root = styled('div')(({ theme }) => ({
     },
     [`&.topbarSide--right`]: {
       borderLeft: `1px solid ${theme.palette.divider}`,
-      marginLeft: `-1px`,
+      // marginLeft: `-1px`,
     },
   },
 }));
