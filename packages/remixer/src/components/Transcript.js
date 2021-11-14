@@ -255,7 +255,7 @@ export const Transcript = props => {
           <ListItemIcon>
             <DeleteIcon color="error" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primary="Remove" primaryTypographyProps={{ color: 'error' }} />
+          <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
         </MenuItem>
       </Menu>
     </Root>
