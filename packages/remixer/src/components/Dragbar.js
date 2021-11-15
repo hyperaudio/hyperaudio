@@ -3,7 +3,6 @@ import { Droppable, Draggable as DraggableItem } from 'react-beautiful-dnd';
 
 // import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Grid from '@mui/material/Grid';
-import IconButton from '@mui/material/IconButton';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
@@ -27,10 +26,6 @@ const Root = styled('div')(({ theme }) => ({
   position: 'fixed',
   right: 0,
   zIndex: theme.zIndex.appBar,
-}));
-
-const DragHandle = styled(IconButton)(({ theme }) => ({
-  cursor: 'move',
 }));
 
 const Effect = styled('div')(({ theme }) => ({
