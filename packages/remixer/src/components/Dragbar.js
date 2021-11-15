@@ -1,10 +1,12 @@
 import React from 'react';
-import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { Droppable, Draggable as DraggableItem } from 'react-beautiful-dnd';
 
+// import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import Grid from '@mui/material/Grid';
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -16,9 +18,9 @@ const classes = {
 };
 const Root = styled('div')(({ theme }) => ({
   background: theme.palette.background.paper,
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: theme.shape.borderRadius * 2,
   bottom: 0,
-  boxShadow: theme.shadows[12],
+  boxShadow: theme.shadows[1],
   left: '50%',
   margin: theme.spacing(2),
   position: 'fixed',
@@ -60,66 +62,89 @@ export const Dragbar = props => {
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <Toolbar>
               <Grid container columnSpacing={2} alignItems="center">
+                {/* <Grid item>
+                  <DragHandle size="small" color="default" id="DragHandle">
+                    <DragIndicatorIcon />
+                  </DragHandle>
+                </Grid> */}
                 <Grid item container xs columnSpacing={2}>
                   <Grid item xs={4}>
-                    <Draggable draggableId="draggable-slides" index={0}>
+                    <DraggableItem draggableId="draggable-slides" index={0}>
                       {(provided, snapshot) => (
                         <>
                           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <Effect>
-                              <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Slide</Typography>
-                            </Effect>
+                            <Tooltip title="Drag this to add a slide to your remix">
+                              <Effect>
+                                <SlideshowIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                                <Typography variant="subtitle2" color="primary">
+                                  Slide
+                                </Typography>
+                              </Effect>
+                            </Tooltip>
                           </div>
                           {snapshot.isDragging && (
                             <Effect>
-                              <SlideshowIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Slide</Typography>
+                              <SlideshowIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2" color="primary">
+                                Slide
+                              </Typography>
                             </Effect>
                           )}
                         </>
                       )}
-                    </Draggable>
+                    </DraggableItem>
                   </Grid>
                   <Grid item xs={4}>
-                    <Draggable draggableId="draggable-title" index={1}>
+                    <DraggableItem draggableId="draggable-title" index={1}>
                       {(provided, snapshot) => (
                         <>
                           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <Effect>
-                              <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Title</Typography>
-                            </Effect>
+                            <Tooltip title="Drag this to add a title to your remix">
+                              <Effect>
+                                <TextFieldsIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                                <Typography variant="subtitle2" color="primary">
+                                  Title
+                                </Typography>
+                              </Effect>
+                            </Tooltip>
                           </div>
                           {snapshot.isDragging && (
                             <Effect>
-                              <TextFieldsIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Title</Typography>
+                              <TextFieldsIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2" color="primary">
+                                Title
+                              </Typography>
                             </Effect>
                           )}
                         </>
                       )}
-                    </Draggable>
+                    </DraggableItem>
                   </Grid>
                   <Grid item xs={4}>
-                    <Draggable draggableId="draggable-transition" index={2}>
+                    <DraggableItem draggableId="draggable-transition" index={2}>
                       {(provided, snapshot) => (
                         <>
                           <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                            <Effect>
-                              <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Transition</Typography>
-                            </Effect>
+                            <Tooltip title="Drag this to add a transition to your remix">
+                              <Effect>
+                                <MovieFilterIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                                <Typography variant="subtitle2" color="primary">
+                                  Transition
+                                </Typography>
+                              </Effect>
+                            </Tooltip>
                           </div>
                           {snapshot.isDragging && (
                             <Effect>
-                              <MovieFilterIcon fontSize="small" color="inherit" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2">Transition</Typography>
+                              <MovieFilterIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
+                              <Typography variant="subtitle2" color="primary">
+                                Transition
+                              </Typography>
                             </Effect>
                           )}
                         </>
                       )}
-                    </Draggable>
+                    </DraggableItem>
                   </Grid>
                 </Grid>
               </Grid>
