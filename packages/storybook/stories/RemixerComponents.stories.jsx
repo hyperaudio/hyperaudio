@@ -34,6 +34,11 @@ const InsertSlideTpl = (args) => <InsertSlide {...args} />;
 export const Slide = InsertSlideTpl.bind({});
 Slide.args = {};
 
-const InsertTransitionTpl = (args) => <InsertTransition {...args} />;
+const InsertTransitionTpl = (args) => (
+  <InsertTransition
+    onDurationChange={(val) => console.log("onDurationChange", val)}
+    {...args}
+  />
+);
 export const Transition = InsertTransitionTpl.bind({});
 Transition.args = {};

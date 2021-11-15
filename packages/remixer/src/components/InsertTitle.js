@@ -2,6 +2,7 @@ import React from 'react';
 
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
+import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -9,57 +10,59 @@ import { FullSizeIcon, LowerThirdsIcon } from '../icons';
 
 const PREFIX = 'InsertTitle';
 const classes = {
-  icon: `${PREFIX}-icon`,
+  canvas: `${PREFIX}-canvas`,
+  controls: `${PREFIX}-controls`,
   field: `${PREFIX}-field`,
+  icon: `${PREFIX}-icon`,
+  title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper)(({ theme }) => ({
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1),
-}));
-
-const Canvas = styled('div', {
+const Root = styled(Paper, {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
-  background: theme.palette.text.primary,
-  color: theme.palette.primary.contrastText,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: fullSize ? 'center' : 'flex-end',
-  minHeight: '120px',
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  [`& .${classes.field}`]: {
-    [`& .MuiOutlinedInput-notchedOutline`]: {
-      border: 'none',
-    },
-    input: {
-      ...theme.typography.h6,
-      border: 'none',
-      color: theme.palette.primary.contrastText,
-      textAlign: 'center',
+  borderRadius: theme.shape.borderRadius,
+  padding: theme.spacing(1, 2, 0.5),
+  [`& .${classes.title}`]: {
+    marginBottom: theme.spacing(1),
+  },
+  [`& .${classes.canvas}`]: {
+    background: theme.palette.text.primary,
+    color: theme.palette.primary.contrastText,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: fullSize ? 'center' : 'flex-end',
+    minHeight: '120px',
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    [`& .${classes.field}`]: {
+      [`& .MuiOutlinedInput-notchedOutline`]: {
+        border: 'none',
+      },
+      input: {
+        ...theme.typography.h6,
+        border: 'none',
+        color: theme.palette.primary.contrastText,
+        textAlign: 'center',
+      },
     },
   },
-}));
-
-const Controls = styled('div')(({ theme }) => ({
-  color: theme.palette.text.disabled,
-  borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1),
-  [`& .${classes.icon}`]: {
-    fontSize: '16px',
-    lineHeight: 0,
-    verticalAlign: 'middle',
-    marginRight: theme.spacing(0.5),
+  [`& .${classes.controls}`]: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
 const Control = styled('a', {
   shouldForwardProp: prop => prop !== 'isActive',
 })(({ theme, isActive }) => ({
-  color: isActive ? 'inherit' : theme.palette.primary.dark,
+  color: isActive ? theme.palette.primary.dark : theme.palette.text.disabled,
   cursor: 'pointer',
   display: 'inline-block',
+  [`& .${classes.icon}`]: {
+    fontSize: '16px',
+    lineHeight: 0,
+    verticalAlign: 'middle',
+    marginRight: theme.spacing(0.5),
+  },
   [`&:hover`]: {
     color: theme.palette.primary.main,
   },
@@ -67,12 +70,15 @@ const Control = styled('a', {
 
 export const InsertTitle = props => {
   const { fullSize, text, onTextChange, onSetFullSize } = props;
-
   const [titleText, setTitleText] = React.useState(text);
 
   return (
-    <Root>
-      <Canvas fullSize={fullSize}>
+    <Root fullSize={fullSize}>
+      <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
+        <TextFieldsIcon fontSize="small" sx={{ marginRight: '6px' }} />
+        <span id="insert-title">Title</span>
+      </Typography>
+      <div className={classes.canvas}>
         <TextField
           className={classes.field}
           onBlur={e => onTextChange(e.target.value)}
@@ -80,8 +86,8 @@ export const InsertTitle = props => {
           size="small"
           value={titleText}
         />
-      </Canvas>
-      <Controls>
+      </div>
+      <div className={classes.controls}>
         <Control isActive={fullSize} onClick={() => onSetFullSize(true)}>
           <FullSizeIcon className={classes.icon} />
           <Typography variant="caption" underline="hover">
@@ -95,7 +101,7 @@ export const InsertTitle = props => {
             Lower-thirds
           </Typography>
         </Control>
-      </Controls>
+      </div>
     </Root>
   );
 };
