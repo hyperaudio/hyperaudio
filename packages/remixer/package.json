@@ -49,8 +49,7 @@
     "@mui/material": "5.1.0",
     "lodash": "4.17.21",
     "polished": "4.1.3",
-    "react-beautiful-dnd": "13.1.0",
-    "react-draggable": "4.4.4",
+    "react-beautiful-dnd": "^13.1.0",
     "react-player": "2.9.0"
   }
 }
