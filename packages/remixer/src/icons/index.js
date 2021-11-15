@@ -1,5 +1,7 @@
+export * from './FullSize';
 export * from './HideSourceIcon';
 export * from './HyperaudioIcon';
+export * from './LowerThirds';
 export * from './MoveDown';
 export * from './MoveUp';
 export * from './Share1Pane';
