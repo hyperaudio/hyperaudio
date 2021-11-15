@@ -94,6 +94,12 @@ const Section = styled('p')(({ theme }) => ({
   [`&.future`]: {
     color: theme.palette.text.disabled,
   },
+  [`&.in-range`]: {
+    backgroundColor: 'lightyellow',
+  },
+  [`& span.range`]: {
+    backgroundColor: 'lightcyan',
+  },
 }));
 
 export const Transcript = props => {
@@ -120,6 +126,8 @@ export const Transcript = props => {
       const { anchorOffset, focusOffset, anchorNode, focusNode } = selection;
 
       if (selection.isCollapsed && target.getAttribute('data-key')) {
+        setRange(null);
+
         const key = target.getAttribute('data-key');
         const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
         const offset = parseInt(target.getAttribute('data-offset') ?? 0);
@@ -149,16 +157,15 @@ export const Transcript = props => {
 
         const block2 = blocks.find(block => block.key === key2);
         const index2 = block2.offsets.findIndex(
-          (offset, i) =>
-            offset2 <= focusOffset + textOffset2 && focusOffset + textOffset2 <= offset2 + block2.lengths[i],
+          (offset, i) => offset <= focusOffset + textOffset2 && focusOffset + textOffset2 <= offset + block2.lengths[i],
         );
 
         const time2 = index2 > 0 ? block2.starts2[index2] + offset2 : offset2;
 
-        console.log(block, index, time);
-        console.log(block2, index2, time2);
+        // console.log(block, index, time);
+        // console.log(block2, index2, time2);
         setRange([Math.min(time, time2), Math.max(time, time2)]);
-      }
+      } else setRange(null);
     },
     [blocks],
   );
@@ -169,16 +176,7 @@ export const Transcript = props => {
         {editable && !isSource ? (
           <Droppable droppableId={`droppable-${id}`} type="BLOCK">
             {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                style={
-                  {
-                    // backgroundColor: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                  }
-                }
-                {...provided.droppableProps}
-              >
-                {/* {provided.placeholder} */}
+              <div ref={provided.innerRef} {...provided.droppableProps}>
                 {blocks?.map((block, i) => (
                   <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
                     {(provided, snapshot) => (
@@ -193,6 +191,41 @@ export const Transcript = props => {
                       </DragBlock>
                     )}
                   </Draggable>
+                ))}
+              </div>
+            )}
+          </Droppable>
+        ) : editable && isSource && range ? (
+          <Droppable droppableId={`droppable-${id}`} type="BLOCK">
+            {(provided, snapshot) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                {blocks?.map((block, i) => (
+                  <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="before-range" />
+                ))}
+
+                <Draggable draggableId={`draggable-${id}`} index={0}>
+                  {(provided, snapshot) => (
+                    <>
+                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        {blocks?.map((block, i) => (
+                          <Block
+                            key={block.key}
+                            {...{ blocks, block, time, range }}
+                            rangeMode="in-range"
+                            onlyRange={snapshot.isDragging}
+                          />
+                        ))}
+                      </div>
+                      {snapshot.isDragging &&
+                        blocks?.map((block, i) => (
+                          <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="in-range" />
+                        ))}
+                    </>
+                  )}
+                </Draggable>
+
+                {blocks?.map((block, i) => (
+                  <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="after-range" />
                 ))}
               </div>
             )}
@@ -288,29 +321,53 @@ export const Transcript = props => {
 
 // TODO: wrap range intersecting blocks with Draggable, keep copy mode, have draggable clone with the text only
 
-const Block = ({ blocks, block, time, range }) => {
+const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
   const { key, pk, speaker, text, duration } = block;
 
   const offset = useMemo(() => {
     const index = blocks.findIndex(b => b === block);
-
     return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, 0);
   }, [blocks, block]);
 
-  return (
+  const include = useMemo(() => {
+    if (!range) return true;
+
+    switch (rangeMode) {
+      case 'before-range':
+        return offset + block.duration < range[0];
+      case 'in-range':
+        return (
+          (offset <= range[0] && range[0] < offset + block.duration) ||
+          (range[0] <= offset && offset + block.duration < range[1]) ||
+          (offset <= range[1] && range[1] < offset + block.duration)
+        );
+      case 'after-range':
+        return range[1] < offset;
+      default:
+        return true;
+    }
+  }, [block, offset, range, rangeMode]);
+
+  return include ? (
     <Section
       data-media={pk}
       data-key={key}
       data-offset={offset}
       data-text-offset={0}
       data-speaker={`${speaker}:`}
-      className={`${time >= offset + duration ? 'past' : 'future'} ${
+      className={`${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
     >
-      {time >= offset && time < offset + duration ? <Playhead block={block} offset={offset} time={time} /> : text}
+      {range && rangeMode === 'in-range' ? (
+        <Range {...{ block, offset, range, onlyRange }} />
+      ) : time >= offset && time < offset + duration ? (
+        <Playhead {...{ block, offset, time }} />
+      ) : (
+        text
+      )}
     </Section>
-  );
+  ) : null;
 };
 
 const Playhead = ({ block, offset, time }) => {
@@ -329,6 +386,33 @@ const Playhead = ({ block, offset, time }) => {
       </span>
       <span data-media={block.pk} data-key={block.key} data-text-offset={end} data-offset={offset}>
         {block.text.substring(end)}
+      </span>
+    </>
+  );
+};
+
+const Range = ({ block, offset, range, onlyRange }) => {
+  const [start, end] = useMemo(() => {
+    const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
+    const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
+
+    return [
+      startIndex === -1 ? 0 : block.offsets[startIndex],
+      endIndex === -1
+        ? block.text.length
+        : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
+          block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
+    ];
+  }, [block, offset, range]);
+
+  return (
+    <>
+      {!onlyRange ? block.text.substring(0, start) : null}
+      <span className="range" data-media={block.pk} data-key={block.key} data-text-offset={0} data-offset={offset}>
+        {block.text.substring(start, end)}
+      </span>
+      <span data-media={block.pk} data-key={block.key} data-text-offset={end} data-offset={offset}>
+        {!onlyRange ? block.text.substring(end) : null}
       </span>
     </>
   );
