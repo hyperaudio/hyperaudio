@@ -9,19 +9,21 @@ import { styled } from '@mui/material/styles';
 const PREFIX = 'Thumb';
 const classes = {
   title: `${PREFIX}-title`,
+  actionArea: `${PREFIX}-actionArea`,
 };
 const Root = styled(Card, {
   shouldForwardProp: prop => prop !== 'isActive',
 })(({ theme, isActive }) => ({
   background: isActive ? theme.palette.primary.main : 'auto',
-  boxShadow: `0 0px 0px 5px ${isActive ? theme.palette.primary.main : 'transparent'}`,
+  // boxShadow: `0 0px 0px 5px ${isActive ? theme.palette.primary.main : 'transparent'}`,
   color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
+  outline: `5px solid ${isActive ? theme.palette.primary.main : 'transparent'}`,
   transitionDuration: theme.transitions.duration.standard,
-  transitionProperty: 'background, background-color, box-shadow, color',
+  transitionProperty: 'background, background-color, outline, color',
   [`&:hover`]: {
-    background: theme.palette.primary.main,
-    boxShadow: `0 0px 0px 5px ${theme.palette.primary.main}`,
-    color: theme.palette.primary.contrastText,
+    background: isActive ? theme.palette.primary.main : theme.palette.primary.offwhite,
+    color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
+    outline: isActive ? `5px solid ${theme.palette.primary.main}` : `5px solid ${theme.palette.primary.offwhite}`,
   },
   [`& img`]: {
     position: 'relative',
@@ -30,6 +32,9 @@ const Root = styled(Card, {
   [`& .${classes.title}`]: {
     padding: theme.spacing(0.5, 0, 0),
   },
+  [`& .MuiCardActionArea-focusHighlight`]: {
+    display: 'none',
+  },
 }));
 
 export const Thumb = props => {
@@ -37,7 +42,7 @@ export const Thumb = props => {
 
   return (
     <Root elevation={0} isActive={isActive} onClick={!isActive ? onClick : null}>
-      <CardActionArea disabled={isActive}>
+      <CardActionArea disabled={isActive} className={classes.actionArea}>
         <img alt={`Poster image for ${title}`} src={img} />
         <Tooltip enterDelay={1500} title={title}>
           <Typography display="block" noWrap variant="caption">
