@@ -42,7 +42,7 @@
     "dist"
   ],
   "dependencies": {
-    "@emotion/react": "11.5.0",
+    "@emotion/react": "11.6.0",
     "@emotion/styled": "11.3.0",
     "create-silent-audio": "0.1.1",
     "@mui/icons-material": "5.1.0",
