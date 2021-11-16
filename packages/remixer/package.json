@@ -45,7 +45,7 @@
     "@emotion/react": "11.6.0",
     "@emotion/styled": "11.6.0",
     "create-silent-audio": "0.1.1",
-    "@mui/icons-material": "5.1.0",
+    "@mui/icons-material": "5.1.1",
     "@mui/material": "5.1.1",
     "lodash": "4.17.21",
     "polished": "4.1.3",
