@@ -54,13 +54,13 @@ const Effect = styled('div')(({ theme }) => ({
 export const InsertsBar = props => {
   return (
     <Root>
-      <Droppable droppableId={`droppable-toolbar`} type="BLOCK" isDropDisabled={true}>
+      <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             <Toolbar>
               <Grid container columnSpacing={2}>
                 <Grid item xs={4}>
-                  <DraggableItem draggableId="draggable-slides" index={0}>
+                  <DraggableItem draggableId="draggable:$slides" index={0}>
                     {(provided, snapshot) => (
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
@@ -86,7 +86,7 @@ export const InsertsBar = props => {
                   </DraggableItem>
                 </Grid>
                 <Grid item xs={4}>
-                  <DraggableItem draggableId="draggable-title" index={1}>
+                  <DraggableItem draggableId="draggable:$title" index={1}>
                     {(provided, snapshot) => (
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
@@ -112,7 +112,7 @@ export const InsertsBar = props => {
                   </DraggableItem>
                 </Grid>
                 <Grid item xs={4}>
-                  <DraggableItem draggableId="draggable-transition" index={2}>
+                  <DraggableItem draggableId="draggable:$transition" index={2}>
                     {(provided, snapshot) => (
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
