@@ -156,8 +156,9 @@ export const Remixer = props => {
     console.log({ onDragUpdate: e });
   }, []);
 
-  const onDragEnd = useCallback(e => {
-    console.log({ onDragEnd: e });
+  const onDragEnd = useCallback(event => {
+    console.log({ onDragEnd: event });
+    event.destination && dispatch({ type: 'dragEnd', event });
   }, []);
 
   return (

@@ -174,64 +174,90 @@ export const Transcript = props => {
     <Root>
       <Container maxWidth="sm" onClick={handleClick}>
         {editable && !isSource ? (
-          <Droppable droppableId={`droppable-${id}`} type="BLOCK">
+          <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks?.map((block, i) => (
-                  <Draggable key={block.key} draggableId={`draggable-${id}-${block.key}`} index={i}>
-                    {(provided, snapshot) => (
-                      <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                        <DragHandle {...provided.dragHandleProps} color="default" size="small">
-                          <DragIndicatorIcon fontSize="small" />
-                        </DragHandle>
-                        <Block key={block.key} blocks={blocks} block={block} time={time} />
-                        <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                          <MoreHorizIcon fontSize="small" />
-                        </BlockMenu>
-                      </DragBlock>
-                    )}
-                  </Draggable>
-                ))}
+                {blocks
+                  ?.filter(({ type }) => type === 'block')
+                  .map((block, i) => (
+                    <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
+                      {(provided, snapshot) => (
+                        <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
+                          <DragHandle {...provided.dragHandleProps} color="default" size="small">
+                            <DragIndicatorIcon fontSize="small" />
+                          </DragHandle>
+                          <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
+                          <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                            <MoreHorizIcon fontSize="small" />
+                          </BlockMenu>
+                        </DragBlock>
+                      )}
+                    </Draggable>
+                  ))}
               </div>
             )}
           </Droppable>
         ) : editable && isSource && range ? (
-          <Droppable droppableId={`droppable-${id}`} type="BLOCK">
+          <Droppable droppableId={`droppable:${id}`} type="BLOCK">
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks?.map((block, i) => (
-                  <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="before-range" />
-                ))}
+                {blocks
+                  ?.filter(({ type }) => type === 'block')
+                  .map((block, i) => (
+                    <Block
+                      key={`${id}:${block.key}:${i}`}
+                      {...{ blocks, block, time, range }}
+                      rangeMode="before-range"
+                    />
+                  ))}
 
-                <Draggable draggableId={`draggable-${id}`} index={0}>
+                <Draggable draggableId={`draggable:${id}::${range[0]}-${range[1]}`} index={0}>
                   {(provided, snapshot) => (
                     <>
                       <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        {blocks?.map((block, i) => (
-                          <Block
-                            key={block.key}
-                            {...{ blocks, block, time, range }}
-                            rangeMode="in-range"
-                            onlyRange={snapshot.isDragging}
-                          />
-                        ))}
+                        {blocks
+                          ?.filter(({ type }) => type === 'block')
+                          .map((block, i) => (
+                            <Block
+                              key={`${id}:${block.key}:${i}`}
+                              {...{ blocks, block, time, range }}
+                              rangeMode="in-range"
+                              onlyRange={snapshot.isDragging}
+                            />
+                          ))}
                       </div>
                       {snapshot.isDragging &&
-                        blocks?.map((block, i) => (
-                          <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="in-range" />
-                        ))}
+                        blocks
+                          ?.filter(({ type }) => type === 'block')
+                          .map((block, i) => (
+                            <Block
+                              key={`${id}:${block.key}:${i}`}
+                              {...{ blocks, block, time, range }}
+                              rangeMode="in-range"
+                            />
+                          ))}
                     </>
                   )}
                 </Draggable>
 
-                {blocks?.map((block, i) => (
-                  <Block key={block.key} {...{ blocks, block, time, range }} rangeMode="after-range" />
-                ))}
+                {blocks
+                  ?.filter(({ type }) => type === 'block')
+                  .map((block, i) => (
+                    <Block
+                      key={`${id}:${block.key}:${i}`}
+                      {...{ blocks, block, time, range }}
+                      rangeMode="after-range"
+                    />
+                  ))}
               </div>
             )}
           </Droppable>
         ) : (
-          blocks?.map((block, i) => <Block key={block.key} {...{ blocks, block, time, range }} />)
+          blocks?.map((block, i) =>
+            block.type === 'block' ? (
+              <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+            ) : null,
+          )
         )}
       </Container>
       <Menu
