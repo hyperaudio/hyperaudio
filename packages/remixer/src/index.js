@@ -136,7 +136,7 @@ export const Remixer = props => {
   );
 
   console.group('index.js');
-  console.log('sources', sources);
+  // console.log('sources', sources);
   console.log('source', source);
   console.groupEnd();
 
@@ -170,7 +170,9 @@ export const Remixer = props => {
         >
           {editable ? (
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
-              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
+              {showSource && (
+                <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange, onSourceClose }} />
+              )}
               <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
             </DragDropContext>
           ) : (
