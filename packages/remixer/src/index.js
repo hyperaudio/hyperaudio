@@ -53,6 +53,7 @@ const Root = styled('div', {
     [`&.RemixerPane--Remix`]: {
       flexBasis: showSource ? '50%' : '100%',
       maxWidth: showSource ? '50%' : 'none',
+      userSelect: 'none',
       [theme.breakpoints.down('md')]: {
         flexBasis: '100%',
         maxWidth: 'none',
