@@ -3,7 +3,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { RemixTopbar, Theatre, Transcript, Dragbar } from './components';
+import { RemixTopbar, Theatre, Transcript, InsertsBar } from './components';
 import { StartDropIcon } from './icons';
 
 const PREFIX = 'Remix';
@@ -71,7 +71,7 @@ const Remix = props => {
             <Typography variant="body2">Start by dropping an effect or a section from the source transcript</Typography>
           </div>
         )}
-        {editable && <Dragbar />}
+        {editable && <InsertsBar />}
       </Root>
     </>
   );
