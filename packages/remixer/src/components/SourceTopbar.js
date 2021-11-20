@@ -38,7 +38,7 @@ const Tab = styled(Button, {
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
   borderRadius: 0,
-  color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
+  color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
@@ -50,7 +50,7 @@ const Tab = styled(Button, {
   },
   [`&:hover`]: {
     background: isActive ? theme.palette.background.paper : 'transparent',
-    color: theme.palette.secondary.dark,
+    color: theme.palette.primary.dark,
   },
   [`& .MuiButton-endIcon > span`]: {
     lineHeight: 0,
@@ -67,16 +67,17 @@ const TabClose = styled(IconButton, {
 }));
 
 export const SourceTopbar = props => {
-  const { editable, media, sources, source, onSourceChange, onShowLibrary } = props;
+  const { editable, media, sources, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const onTranscriptsOpen = e => setAnchorEl(e.currentTarget);
   const onTranscriptsClose = () => setAnchorEl(null);
 
-  const onSourceClose = e => {
+  const onTabClose = (e, id) => {
     e.stopPropagation();
     setAnchorEl(null);
+    onSourceClose(id);
   };
 
   // console.group(SourceTopbar);
@@ -104,11 +105,13 @@ export const SourceTopbar = props => {
                 endIcon={
                   editable && (
                     <span>
-                      <Tooltip title="Close">
-                        <TabClose edge="end" size="small">
-                          <CloseIcon sx={{ fontSize: '16px' }} />
-                        </TabClose>
-                      </Tooltip>
+                      {sources.length > 1 && (
+                        <Tooltip title="Close">
+                          <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
+                            <CloseIcon sx={{ fontSize: '16px' }} />
+                          </TabClose>
+                        </Tooltip>
+                      )}
                     </span>
                   )
                 }
