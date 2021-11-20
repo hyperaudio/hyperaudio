@@ -6,8 +6,8 @@ const palette = {
   ...mui.palette,
   background: {
     ...mui.palette.background,
-    paper: '#fff',
     default: '#F5F5F7',
+    paper: '#fff',
   },
   divider: 'rgba(0,0,0,0.085)',
   primary: {
@@ -29,6 +29,7 @@ const palette = {
   text: {
     ...mui.palette.text,
     // secondary: '#190078',
+    primary: '#000',
   },
 };
 
@@ -135,5 +136,8 @@ export const defaultTheme = createTheme({
   ],
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
+    body1: {
+      lineHeight: '1.7em',
+    },
   },
 });

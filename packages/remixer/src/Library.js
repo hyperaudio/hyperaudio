@@ -32,7 +32,7 @@ const MediaWrapper = styled(Container)(({ theme }) => ({
 }));
 
 const GridBlock = props => {
-  const { title, items, selectedItems, onSourceOpen } = props;
+  const { title, items, selectedItems, onThumbClick } = props;
   return (
     <MediaBlock>
       <MediaWrapper maxWidth="sm">
@@ -47,7 +47,7 @@ const GridBlock = props => {
                 <Thumb
                   img="https://picsum.photos/400/300"
                   isActive={isActive}
-                  onClick={!isActive ? () => onSourceOpen(o.id) : null}
+                  onClick={!isActive ? () => onThumbClick(o.id) : null}
                   title={o.title}
                 />
               </Grid>
@@ -60,7 +60,7 @@ const GridBlock = props => {
 };
 
 export default function Library(props) {
-  const { media, matches, sources, onSourceOpen } = props;
+  const { media, matches, sources, onSourceOpen, onHideLibrary } = props;
 
   const [searchKey, setSearchKey] = React.useState(null);
 
@@ -69,6 +69,11 @@ export default function Library(props) {
   // console.group('Library.js');
   // console.log({ media, matches });
   // console.groupEnd();
+
+  const onThumbClick = id => {
+    onSourceOpen(id);
+    onHideLibrary();
+  };
 
   return (
     <Root className={`RemixerPane RemixerPane--Library`}>
@@ -81,7 +86,7 @@ export default function Library(props) {
                 {matches?.titles?.length > 0 && (
                   <GridBlock
                     items={matches.titles}
-                    onSourceOpen={onSourceOpen}
+                    onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
                     title={`${matches?.titles?.length} titles matching: ${searchKey}`}
                   />
@@ -89,7 +94,7 @@ export default function Library(props) {
                 {matches?.transcripts?.length > 0 && (
                   <GridBlock
                     items={matches.transcripts}
-                    onSourceOpen={onSourceOpen}
+                    onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
                     title={`${matches?.transcripts?.length} transcript occurances matching: ${searchKey}`}
                   />
@@ -103,9 +108,8 @@ export default function Library(props) {
             <Divider />
           </>
         )}
-
         {media?.length > 0 && (
-          <GridBlock items={media} title={`All media`} onSourceOpen={onSourceOpen} selectedItems={sourcesIds} />
+          <GridBlock items={media} title={`All media`} onThumbClick={onThumbClick} selectedItems={sourcesIds} />
         )}
       </Media>
     </Root>
