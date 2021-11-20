@@ -6,27 +6,28 @@ const palette = {
   ...mui.palette,
   background: {
     ...mui.palette.background,
-    paper: '#fff',
     default: '#F5F5F7',
+    paper: '#fff',
   },
   divider: 'rgba(0,0,0,0.085)',
   primary: {
     ...mui.palette.primary,
-    main: '#6202EE',
-    light: '#6554A5',
-    dark: '#190078',
     contrastText: '#fff',
+    dark: '#190078',
+    light: '#6554A5',
+    main: '#6202EE',
   },
   secondary: {
     ...mui.palette.secondary,
-    main: '#207666',
-    light: '#2A9B86',
-    dark: '#12453C',
     contrastText: '#fff',
+    dark: '#12453C',
+    light: '#CCEDEB',
+    main: '#01A39D',
   },
   text: {
     ...mui.palette.text,
     // secondary: '#190078',
+    primary: '#000',
   },
 };
 
@@ -128,5 +129,8 @@ export const defaultTheme = createTheme({
   ],
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
+    body1: {
+      lineHeight: '1.7em',
+    },
   },
 });

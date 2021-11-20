@@ -23,7 +23,7 @@ const Root = styled('div')(({ theme }) => ({
   flex: '1 0 260px',
   flexFlow: 'column nowrap',
   height: 'auto',
-  minHeight: '400px',
+  // minHeight: '400px', // TODO: see if it is still needed?
   justifyContent: 'space-between',
   padding: theme.spacing(2),
   textAlign: 'center',
