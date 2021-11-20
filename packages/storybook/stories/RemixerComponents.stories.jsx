@@ -1,5 +1,7 @@
 import React from "react";
 
+import { data } from "./data/remixer-data";
+
 import {
   InsertSlide,
   InsertTitle,
@@ -30,9 +32,24 @@ LowerThirdsTitle.args = {
   fullSize: false,
 };
 
-const InsertSlideTpl = (args) => <InsertSlide {...args} />;
-export const Slide = InsertSlideTpl.bind({});
-Slide.args = {};
+const InsertSlideTpl = (args) => (
+  <InsertSlide
+    sources={data.sources}
+    onChooseSlide={({ deck, slide }) =>
+      console.log("onChooseSlide:", { deck, slide })
+    }
+    {...args}
+  />
+);
+export const SlidesAvailable = InsertSlideTpl.bind({});
+SlidesAvailable.args = {};
+export const NoSlides = InsertSlideTpl.bind({});
+NoSlides.args = { sources: [] };
+export const SelectedSlide = InsertSlideTpl.bind({});
+SelectedSlide.args = {
+  deck: data.sources[0].id,
+  slide: data.sources[0].deck.slides[1].id,
+};
 
 const InsertTransitionTpl = (args) => (
   <InsertTransition

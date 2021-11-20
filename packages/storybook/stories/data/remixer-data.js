@@ -931,6 +931,10 @@ export const data = {
     {
       id: "3B7PzBDLT8WZjbMzHUpTVY",
       title: "Planning a New Cafe - Cafe Design & Workflow Advice",
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [{id: 0, url: 'https://picsum.photos/400/300'}, {id: 1, url: "https://picsum.photos/400/300"}, {id: 2, url: "https://picsum.photos/400/300"}, {id: 3, url: "https://picsum.photos/400/300"}, {id: 4, url: "https://picsum.photos/400/300"}, {id: 5, url: "https://picsum.photos/400/300"}, {id: 6, url: "https://picsum.photos/400/300"}, {id: 7, url: "https://picsum.photos/400/300"}, {id: 8, url: "https://picsum.photos/400/300"}],
+      },
       createdAt: "2021-10-06T21:17:55.365Z",
       updatedAt: "2021-10-06T21:21:54.315Z",
       duration: 648.544,
@@ -10722,6 +10726,7 @@ export const data = {
       id: "V1VrYa2KRZ9hBkos5RUTfo",
       title:
         "Living in my Lexus GX470 - A walkthrough of my home | Full-Time Overlanding",
+      deck: null,
       createdAt: "2021-10-06T21:31:09.921Z",
       updatedAt: "2021-10-06T21:35:23.592Z",
       duration: 871.425,
@@ -24855,6 +24860,10 @@ export const data = {
     {
       id: "21LPML8F2h8zxd3tGb5Ain",
       title: "MindBody Prescription",
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [{id: 0, url: 'https://picsum.photos/400/300'}, {id: 1, url: "https://picsum.photos/400/300"}, {id: 2, url: "https://picsum.photos/400/300"}, {id: 3, url: "https://picsum.photos/400/300"}, {id: 4, url: "https://picsum.photos/400/300"}, {id: 5, url: "https://picsum.photos/400/300"}, {id: 6, url: "https://picsum.photos/400/300"}, {id: 7, url: "https://picsum.photos/400/300"}, {id: 8, url: "https://picsum.photos/400/300"}],
+      },
       createdAt: "2021-10-06T21:18:59.581Z",
       updatedAt: "2021-10-06T21:25:06.533Z",
       duration: 1032.8300000000002,

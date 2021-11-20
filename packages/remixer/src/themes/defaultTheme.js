@@ -16,13 +16,15 @@ const palette = {
     dark: '#190078',
     light: '#6554A5',
     main: '#6202EE',
+    offwhite: '#E2D1FD',
   },
   secondary: {
     ...mui.palette.secondary,
     contrastText: '#fff',
     dark: '#12453C',
-    light: '#CCEDEB',
-    main: '#01A39D',
+    light: '#2A9B86',
+    main: '#207666',
+    offwhite: '#D7E6E2',
   },
   text: {
     ...mui.palette.text,
@@ -42,6 +44,11 @@ export const defaultTheme = createTheme({
       defaultProps: {
         disableElevation: true,
         disableRipple: true,
+      },
+    },
+    MuiBreadcrumbs: {
+      defaultProps: {
+        separator: '›',
       },
     },
     MuiCard: {
