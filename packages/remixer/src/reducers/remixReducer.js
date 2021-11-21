@@ -26,15 +26,36 @@ const remixReducer = (state, action) => {
 
         console.log(range);
 
-        const sourceBlocks = state.sources
-          .find(({ id }) => id === sourceId)
-          .blocks.filter((block, i, arr) => {
-            const offset = arr.slice(0, i).reduce((acc, block) => acc + block.duration + block.gap, 0);
+        const sourceBlocks = state.sources.find(({ id }) => id === sourceId).blocks;
+        const sourceSelectedBlocks = sourceBlocks
+          .filter((block, i, arr) => {
+            const offset = sourceBlocks.slice(0, i).reduce((acc, block) => acc + block.duration + block.gap, 0);
+
             return (
               (offset <= range[0] && range[0] < offset + block.duration) ||
               (range[0] <= offset && offset + block.duration < range[1]) ||
               (offset <= range[1] && range[1] < offset + block.duration)
             );
+          })
+          .map((block, i, arr) => {
+            const offset = sourceBlocks.slice(0, i).reduce((acc, block) => acc + block.duration + block.gap, 0);
+
+            const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
+            const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
+
+            console.log({ startIndex, endIndex, text: block.text });
+
+            // TODO
+            return {
+              ...block,
+              // text: block.text.substring(
+              //   startIndex === -1 ? 0 : block.offsets[startIndex],
+              //   endIndex === -1
+              //     ? block.text.length
+              //     : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
+              //         block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
+              // ),
+            };
           });
 
         return {
@@ -43,7 +64,7 @@ const remixReducer = (state, action) => {
             ...state.remix,
             blocks: [
               ...state.remix.blocks.slice(0, destination.index),
-              ...sourceBlocks,
+              ...sourceSelectedBlocks,
               ...state.remix.blocks.slice(destination.index),
             ],
           },
@@ -56,3 +77,16 @@ const remixReducer = (state, action) => {
 };
 
 export default remixReducer;
+
+/*
+    const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
+    const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
+
+    return [
+      startIndex === -1 ? 0 : block.offsets[startIndex],
+      endIndex === -1
+        ? block.text.length
+        : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
+          block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
+    ];
+*/
