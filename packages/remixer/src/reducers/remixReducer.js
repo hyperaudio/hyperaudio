@@ -27,6 +27,7 @@ const remixReducer = (state, action) => {
         console.log(range);
 
         const sourceBlocks = state.sources.find(({ id }) => id === sourceId).blocks;
+
         const sourceSelectedBlocks = sourceBlocks
           .filter((block, i, arr) => {
             const offset = sourceBlocks.slice(0, i).reduce((acc, block) => acc + block.duration + block.gap, 0);
@@ -38,23 +39,40 @@ const remixReducer = (state, action) => {
             );
           })
           .map((block, i, arr) => {
-            const offset = sourceBlocks.slice(0, i).reduce((acc, block) => acc + block.duration + block.gap, 0);
+            const sourceIndex = sourceBlocks.findIndex(b => b === block);
+            const offset = sourceBlocks
+              .slice(0, sourceIndex)
+              .reduce((acc, block) => acc + block.duration + block.gap, 0);
 
             const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
             const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
 
-            console.log({ startIndex, endIndex, text: block.text });
+            console.log({ startIndex, endIndex, offset, text: block.text, block });
 
-            // TODO
+            let startIndex2 = startIndex;
+            let endIndex2 = endIndex;
+
+            if (startIndex === -1) startIndex2 = 0;
+            if (endIndex === -1) endIndex2 = block.starts2.length - 1;
+
             return {
               ...block,
-              // text: block.text.substring(
-              //   startIndex === -1 ? 0 : block.offsets[startIndex],
-              //   endIndex === -1
-              //     ? block.text.length
-              //     : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
-              //         block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
-              // ),
+              text: block.text.substring(
+                startIndex === -1 ? 0 : block.offsets[startIndex],
+                endIndex === -1
+                  ? block.text.length
+                  : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
+                      block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
+              ),
+              starts: block.starts.slice(startIndex2, endIndex2),
+              starts2: block.starts2.slice(startIndex2, endIndex2),
+              ends: block.ends.slice(startIndex2, endIndex2),
+              ends2: block.ends2.slice(startIndex2, endIndex2),
+              offsets: block.offsets.slice(startIndex2, endIndex2),
+              lengths: block.lengths.slice(startIndex2, endIndex2),
+              keys: block.keys.slice(startIndex2, endIndex2),
+              // start: block.starts.slice(startIndex2, endIndex2)[0],
+              // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
             };
           });
 
