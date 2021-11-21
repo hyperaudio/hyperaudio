@@ -1,16 +1,13 @@
 import React from 'react';
 
 import Alert from '@mui/material/Alert';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { LibraryTopbar } from './components';
+import { LibraryTopbar, Thumb } from './components';
 
 const PREFIX = 'Library';
 const classes = {
@@ -34,30 +31,8 @@ const MediaWrapper = styled(Container)(({ theme }) => ({
   margin: theme.spacing(4, 0, 4),
 }));
 
-const MediaItem = styled(Card, {
-  shouldForwardProp: prop => prop !== 'isActive',
-})(({ theme, isActive }) => ({
-  background: isActive ? theme.palette.primary.main : 'auto',
-  boxShadow: `0 0px 0px 5px ${isActive ? theme.palette.primary.main : 'transparent'}`,
-  color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
-  transitionDuration: theme.transitions.duration.standard,
-  transitionProperty: 'background, background-color, box-shadow, color',
-  [`&:hover`]: {
-    background: theme.palette.primary.main,
-    boxShadow: `0 0px 0px 5px ${theme.palette.primary.main}`,
-    color: theme.palette.primary.contrastText,
-  },
-  [`& img`]: {
-    position: 'relative',
-    width: '100%',
-  },
-}));
-const CardTitle = styled(Typography)(({ theme }) => ({
-  padding: theme.spacing(0.5, 0, 0),
-}));
-
 const GridBlock = props => {
-  const { title, items, selectedItems, onSourceOpen } = props;
+  const { title, items, selectedItems, onThumbClick } = props;
   return (
     <MediaBlock>
       <MediaWrapper maxWidth="sm">
@@ -69,17 +44,12 @@ const GridBlock = props => {
             const isActive = selectedItems.includes(o.id);
             return (
               <Grid item xs={12} md={6} lg={4} key={o.id}>
-                <MediaItem elevation={0} isActive={isActive} onClick={!isActive ? () => onSourceOpen(o.id) : null}>
-                  <CardActionArea disabled={isActive}>
-                    {/* <CardMedia component="img" height="200" image="https://picsum.photos/400/300" alt="green iguana" /> */}
-                    <img alt={`Poster image for ${o.title}`} src="https://picsum.photos/400/300" />
-                    <Tooltip enterDelay={1500} title={o.title}>
-                      <CardTitle display="block" noWrap variant="caption">
-                        {o.title}
-                      </CardTitle>
-                    </Tooltip>
-                  </CardActionArea>
-                </MediaItem>
+                <Thumb
+                  img="https://picsum.photos/400/300"
+                  isActive={isActive}
+                  onClick={!isActive ? () => onThumbClick(o.id) : null}
+                  title={o.title}
+                />
               </Grid>
             );
           })}
@@ -90,7 +60,7 @@ const GridBlock = props => {
 };
 
 export default function Library(props) {
-  const { media, matches, sources, onSourceOpen } = props;
+  const { media, matches, sources, onSourceOpen, onHideLibrary } = props;
 
   const [searchKey, setSearchKey] = React.useState(null);
 
@@ -99,6 +69,11 @@ export default function Library(props) {
   // console.group('Library.js');
   // console.log({ media, matches });
   // console.groupEnd();
+
+  const onThumbClick = id => {
+    onSourceOpen(id);
+    onHideLibrary();
+  };
 
   return (
     <Root className={`RemixerPane RemixerPane--Library`}>
@@ -111,7 +86,7 @@ export default function Library(props) {
                 {matches?.titles?.length > 0 && (
                   <GridBlock
                     items={matches.titles}
-                    onSourceOpen={onSourceOpen}
+                    onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
                     title={`${matches?.titles?.length} titles matching: ${searchKey}`}
                   />
@@ -119,7 +94,7 @@ export default function Library(props) {
                 {matches?.transcripts?.length > 0 && (
                   <GridBlock
                     items={matches.transcripts}
-                    onSourceOpen={onSourceOpen}
+                    onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
                     title={`${matches?.transcripts?.length} transcript occurances matching: ${searchKey}`}
                   />
@@ -133,9 +108,8 @@ export default function Library(props) {
             <Divider />
           </>
         )}
-
         {media?.length > 0 && (
-          <GridBlock items={media} title={`All media`} onSourceOpen={onSourceOpen} selectedItems={sourcesIds} />
+          <GridBlock items={media} title={`All media`} onThumbClick={onThumbClick} selectedItems={sourcesIds} />
         )}
       </Media>
     </Root>

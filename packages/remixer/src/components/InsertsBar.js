@@ -15,6 +15,7 @@ const PREFIX = 'InsertsBar';
 const classes = {
   root: `${PREFIX}`,
   effectIcon: `${PREFIX}-effectIcon`,
+  toolbar: `${PREFIX}-toolbar`,
 };
 const Root = styled(Paper)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius * 2,
@@ -23,6 +24,10 @@ const Root = styled(Paper)(({ theme }) => ({
   margin: theme.spacing(2),
   position: 'fixed',
   right: 0,
+  [`& .${classes.toolbar}`]: {
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+  },
 }));
 
 const Effect = styled('div')(({ theme }) => ({
@@ -57,7 +62,7 @@ export const InsertsBar = props => {
       <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
-            <Toolbar>
+            <Toolbar className={classes.toolbar}>
               <Grid container columnSpacing={2}>
                 <Grid item xs={4}>
                   <DraggableItem draggableId="draggable:$slides" index={0}>

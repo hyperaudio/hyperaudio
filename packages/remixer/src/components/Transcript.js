@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import _ from 'lodash';
+import { rgba } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
@@ -28,6 +29,12 @@ const Root = styled('div')(({ theme }) => ({
   justifyContent: 'flex-start',
   overflow: 'auto',
   padding: theme.spacing(4, 2, 18, 2),
+  [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
+    borderRadius: theme.shape.borderRadius,
+    [`&:hover`]: {
+      outline: `1px dashed ${theme.palette.primary.main}`,
+    },
+  },
 }));
 
 const DragBlock = styled('div', {
@@ -69,6 +76,7 @@ const Section = styled('p')(({ theme }) => ({
   // transitionDuration: `${theme.transitions.duration.short}s`, // TODO: figure out why transitions have no effect
   // transitionProperty: 'background-color',
   // transitionTimingFunction: 'ease-in',
+  borderRadius: theme.shape.borderRadius,
   color: theme.palette.text.secondary,
   margin: theme.spacing(0),
   padding: theme.spacing(1),
@@ -95,10 +103,12 @@ const Section = styled('p')(({ theme }) => ({
     color: theme.palette.text.disabled,
   },
   [`&.in-range`]: {
-    backgroundColor: 'lightyellow',
+    // backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    backgroundColor: 'lightcyan',
+    background: rgba(theme.palette.secondary.main, 0.2),
+    color: theme.palette.text.primary,
+    padding: theme.spacing(0.3, 0),
   },
 }));
 
