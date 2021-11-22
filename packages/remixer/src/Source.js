@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -24,22 +24,33 @@ const Root = styled('div')(({ theme }) => ({
     },
     [`&.topbarSide--right`]: {
       borderLeft: `1px solid ${theme.palette.divider}`,
-      marginLeft: `-1px`,
+      // marginLeft: `-1px`,
     },
   },
 }));
 
-export default function Source(props) {
-  const { source } = props;
-  console.log({ source });
+const Source = props => {
+  const {
+    source: { id, blocks, media },
+    editable,
+  } = props;
 
+  const reference = useRef();
   const players = useRef({});
+
+  const [time, setTime] = useState(0);
+
+  useEffect(() => {
+    reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+  }, [reference]);
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
-      <Theatre id={source.id} media={source.media} players={players} />
-      <Transcript blocks={source.blocks} players={players} />
+      <Theatre {...{ blocks, media, players, reference, time }} />
+      <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
     </Root>
   );
-}
+};
+
+export default Source;

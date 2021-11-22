@@ -4,14 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.15.8",
+    "@babel/core": "7.16.0",
     "@storybook/addon-a11y": "6.3.12",
     "@storybook/addon-actions": "6.3.12",
     "@storybook/addon-essentials": "6.3.12",
     "@storybook/addon-links": "6.3.12",
     "@storybook/react": "6.3.12",
-    "babel-loader": "8.2.2",
-    "storybook-addon-material-ui": "0.9.0-alpha.24",
+    "babel-loader": "8.2.3",
     "storybook-dark-mode": "1.0.8"
   },
   "dependencies": {

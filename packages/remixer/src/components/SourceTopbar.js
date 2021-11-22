@@ -18,6 +18,10 @@ import { styled } from '@mui/material/styles';
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
   backgroundColor: theme.palette.background.default,
+  [`.topbarCore`]: {
+    overflowX: 'auto !important',
+    overflow: 'visible',
+  },
 }));
 
 const Tabs = styled('div')(({ theme }) => ({
@@ -34,17 +38,19 @@ const Tab = styled(Button, {
 })(({ theme, isActive, isSingle }) => ({
   background: isActive ? theme.palette.background.paper : 'transparent',
   borderRadius: 0,
-  borderRight: `1px solid ${theme.palette.divider}`,
-  color: isActive ? theme.palette.secondary.dark : theme.palette.primary.light,
+  color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
   justifyContent: isSingle ? 'center' : 'space-between',
   minHeight: theme.spacing(5),
   textTransform: 'none',
+  [`&:not(:last-child)`]: {
+    borderRight: `1px solid ${theme.palette.divider}`,
+  },
   [`&:hover`]: {
     background: isActive ? theme.palette.background.paper : 'transparent',
-    color: theme.palette.secondary.dark,
+    color: theme.palette.primary.dark,
   },
   [`& .MuiButton-endIcon > span`]: {
     lineHeight: 0,
@@ -61,16 +67,17 @@ const TabClose = styled(IconButton, {
 }));
 
 export const SourceTopbar = props => {
-  const { editable, sources, source, onSourceChange } = props;
+  const { editable, media, sources, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const onTranscriptsOpen = e => setAnchorEl(e.currentTarget);
   const onTranscriptsClose = () => setAnchorEl(null);
 
-  const onSourceClose = e => {
+  const onTabClose = (e, id) => {
     e.stopPropagation();
     setAnchorEl(null);
+    onSourceClose(id);
   };
 
   // console.group(SourceTopbar);
@@ -83,7 +90,7 @@ export const SourceTopbar = props => {
         {editable && (
           <div className="topbarSide topbarSide--left">
             <Tooltip title="Add source transcript…">
-              <IconButton size="small">
+              <IconButton onClick={onShowLibrary} size="small" disabled={media?.length === 0}>
                 <AddCircleOutlineIcon fontSize="small" />
               </IconButton>
             </Tooltip>
@@ -95,23 +102,25 @@ export const SourceTopbar = props => {
               <Tab
                 color="inherit"
                 component="a"
+                endIcon={
+                  editable && (
+                    <span>
+                      {sources.length > 1 && (
+                        <Tooltip title="Close">
+                          <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
+                            <CloseIcon sx={{ fontSize: '16px' }} />
+                          </TabClose>
+                        </Tooltip>
+                      )}
+                    </span>
+                  )
+                }
                 isActive={o.id === source.id}
                 isSingle={sources.length < 2}
                 key={o.id}
                 onClick={() => onSourceChange(o.id)}
                 size="small"
                 variant="contained"
-                endIcon={
-                  editable && (
-                    <span>
-                      <Tooltip title="Close">
-                        <TabClose edge="end" size="small">
-                          <CloseIcon sx={{ fontSize: '16px' }} />
-                        </TabClose>
-                      </Tooltip>
-                    </span>
-                  )
-                }
               >
                 <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
                   {o.title}
@@ -179,7 +188,7 @@ export const SourceTopbar = props => {
               </MenuItem>
             ))}
             <Divider />
-            <MenuItem>
+            <MenuItem disabled={media?.length === 0} onClick={onShowLibrary}>
               <ListItemIcon>
                 <AddCircleOutlineIcon color="primary" fontSize="small" />
               </ListItemIcon>

@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useReducer, useState, useCallback } from 'react';
+import { DragDropContext } from 'react-beautiful-dnd';
 import _ from 'lodash';
 
 import Fab from '@mui/material/Fab';
@@ -8,21 +9,32 @@ import { styled, ThemeProvider } from '@mui/material/styles';
 import { HyperaudioIcon } from './icons';
 import { defaultTheme } from './themes';
 
+import Library from './Library';
 import Remix from './Remix';
 import Source from './Source';
 import GlobalStyles from './GlobalStyles';
 
+import remixReducer from './reducers/remixReducer';
+
 import './fonts/Inter/inter.css';
 
-const Layout = styled('div', {
+const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
 })(({ theme, showSource }) => ({
-  alignContent: 'flex-start',
-  alignItems: 'stretch',
-  display: 'flex',
-  flexFlow: 'row nowrap',
   height: '100%',
-  justifyContent: 'space-between',
+  position: 'relative',
+
+  // layout
+  [`& .Layout`]: {
+    alignContent: 'flex-start',
+    alignItems: 'stretch',
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    height: '100%',
+    justifyContent: 'space-between',
+  },
+
+  // panes
   [`& .RemixerPane`]: {
     alignContent: 'flex-start',
     alignItems: 'stretch',
@@ -46,7 +58,16 @@ const Layout = styled('div', {
         maxWidth: 'none',
       },
     },
+    [`&.RemixerPane--Library`]: {
+      bottom: 0,
+      left: 0,
+      position: 'absolute',
+      right: '50%',
+      top: 0,
+    },
   },
+
+  // topbars
   [`& .topbar`]: {
     alignItems: 'center',
     display: 'flex',
@@ -71,8 +92,7 @@ const Layout = styled('div', {
     flexGrow: 1,
     flexShrink: 1,
     height: '100%',
-    overflowX: 'auto !important',
-    overflow: 'visible',
+    // padding: `1px 0`, // a workaround for cut down textfield borders with overflow set below
     textAlign: 'center',
     whiteSpace: 'unset',
   },
@@ -80,6 +100,7 @@ const Layout = styled('div', {
     ...theme.mixins.toolbar,
   },
 }));
+
 const Badge = styled(Fab)(({ theme }) => ({
   bottom: theme.spacing(2),
   position: 'fixed',
@@ -87,35 +108,90 @@ const Badge = styled(Fab)(({ theme }) => ({
 }));
 
 export const Remixer = props => {
-  const { editable, sources } = props;
+  const { editable, media } = props;
 
-  const [showSource, setShowSource] = React.useState(true);
-  const [source, setSource] = React.useState(sources[0]);
+  const [{ sources, remix }, dispatch] = useReducer(remixReducer, { sources: props.sources, remix: props.remix });
+  const [source, setSource] = useState(sources[0]);
 
-  const onSourceChange = id => setSource(_.find(sources, o => o.id === id));
+  const [showSource, setShowSource] = useState(true);
+  const [showLibrary, setShowLibrary] = useState(false);
 
-  // console.group('index.js');
+  const onSourceChange = useCallback(id => setSource(_.find(sources, o => o.id === id)), [sources]);
+
+  const onShowLibrary = useCallback(() => setShowLibrary(true), []);
+  const onHideLibrary = useCallback(() => setShowLibrary(false), []);
+
+  const onSearch = useCallback(string => console.log('onSearch', string), []);
+  const onSourceOpen = useCallback(
+    id => {
+      dispatch({ type: 'sourceOpen', source: media.find(m => m.id === id) });
+    },
+    [media],
+  );
+  const onSourceClose = useCallback(
+    id => {
+      dispatch({ type: 'sourceClose', id });
+    },
+    [media],
+  );
+
+  console.group('index.js');
   // console.log('sources', sources);
-  // console.log('source', source);
-  // console.groupEnd();
+  console.log('source', source);
+  console.groupEnd();
+
+  const onBeforeCapture = useCallback(e => {
+    console.log({ onBeforeCapture: e });
+  }, []);
+
+  const onBeforeDragStart = useCallback(e => {
+    console.log({ onBeforeDragStart: e });
+  }, []);
+
+  const onDragStart = useCallback(e => {
+    console.log({ onDragStart: e });
+  }, []);
+
+  const onDragUpdate = useCallback(e => {
+    console.log({ onDragUpdate: e });
+  }, []);
+
+  const onDragEnd = useCallback(event => {
+    console.log({ onDragEnd: event });
+    event.destination && dispatch({ type: 'dragEnd', event });
+  }, []);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
-      <Layout
-        id="Layout" // used as Dragbar’s bounds
-        showSource={showSource}
-      >
-        {showSource && <Source {...props} onSourceChange={onSourceChange} source={source} />}
-        <Remix {...props} showSource={showSource} setShowSource={setShowSource} onSourceChange={onSourceChange} />
-      </Layout>
-      {!editable && (
-        <Tooltip title="Visit Hyperaudio">
-          <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
-            <HyperaudioIcon />
-          </Badge>
-        </Tooltip>
-      )}
+      <Root showSource={showSource}>
+        <div
+          className="Layout"
+          id="Layout" // used as Dragbar’s bounds
+        >
+          {editable ? (
+            <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
+              {showSource && (
+                <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange, onSourceClose }} />
+              )}
+              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange, dispatch }} />
+            </DragDropContext>
+          ) : (
+            <>
+              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
+              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
+            </>
+          )}
+        </div>
+        {!editable && (
+          <Tooltip title="Visit Hyperaudio">
+            <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
+              <HyperaudioIcon />
+            </Badge>
+          </Tooltip>
+        )}
+        {showLibrary && <Library {...{ ...props, sources, onHideLibrary, onSearch, onSourceOpen }} />}
+      </Root>
     </ThemeProvider>
   );
 };

@@ -6,27 +6,30 @@ const palette = {
   ...mui.palette,
   background: {
     ...mui.palette.background,
-    paper: '#fff',
     default: '#F5F5F7',
+    paper: '#fff',
   },
-  divider: '#E9E8EE',
+  divider: 'rgba(0,0,0,0.085)',
   primary: {
     ...mui.palette.primary,
-    main: '#6202EE',
-    light: '#6554A5',
-    dark: '#190078',
     contrastText: '#fff',
+    dark: '#190078',
+    light: '#6554A5',
+    main: '#6202EE',
+    offwhite: '#E2D1FD',
   },
   secondary: {
     ...mui.palette.secondary,
-    main: '#01A39D',
-    light: '#86FFEA',
-    dark: '#002F33',
     contrastText: '#fff',
+    dark: '#12453C',
+    light: '#2A9B86',
+    main: '#207666',
+    offwhite: '#D7E6E2',
   },
   text: {
     ...mui.palette.text,
-    secondary: '#190078',
+    // secondary: '#190078',
+    primary: '#000',
   },
 };
 
@@ -40,6 +43,25 @@ export const defaultTheme = createTheme({
     MuiButton: {
       defaultProps: {
         disableElevation: true,
+        disableRipple: true,
+      },
+    },
+    MuiBreadcrumbs: {
+      defaultProps: {
+        separator: '›',
+      },
+    },
+    MuiCard: {
+      defaultProps: {
+        square: false,
+      },
+      styleOverrides: {
+        root: {
+          padding: mui.spacing(0.15),
+          [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
+            borderRadius: mui.shape.borderRadius,
+          },
+        },
       },
     },
     MuiDialog: {
@@ -107,7 +129,15 @@ export const defaultTheme = createTheme({
     },
   },
   palette: palette,
+  shadows: [
+    'none',
+    '0px 1px 3px rgba(0,0,0,0.1), 0px 1px 4px rgba(0,0,0,0.08), 0px 1px 12px rgba(0,0,0,0.04)',
+    ...mui.shadows,
+  ],
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
+    body1: {
+      lineHeight: '1.7em',
+    },
   },
 });

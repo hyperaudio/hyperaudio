@@ -9,7 +9,7 @@ export default function Styles(props) {
       styles={theme => ({
         html: {
           [`& *::selection`]: {
-            background: rgba(theme.palette.secondary.main, 0.25),
+            background: rgba(theme.palette.secondary.main, 0.2),
           },
         },
       })}
