@@ -45,6 +45,7 @@ const Remix = props => {
   const {
     editable,
     remix: { id, blocks, media },
+    sources,
     dispatch,
   } = props;
 
@@ -65,7 +66,7 @@ const Remix = props => {
         {blocks?.length > 0 ? (
           <>
             <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ id, blocks, players, reference, time, editable, dispatch }} />
+            <Transcript {...{ id, blocks, sources, players, reference, time, editable, dispatch }} />
           </>
         ) : (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>

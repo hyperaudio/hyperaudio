@@ -116,7 +116,7 @@ const Section = styled('p')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { id, blocks, reference, time, editable, isSource = false, dispatch } = props;
+  const { id, blocks, sources, reference, time, editable, isSource = false, dispatch } = props;
   const [range, setRange] = useState();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -216,7 +216,11 @@ export const Transcript = props => {
                         ) : block.type === 'title' ? (
                           <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
                         ) : block.type === 'slides' ? (
-                          <InsertSlide key={`${id}:${block.key}:${i}`} onChooseSlide={() => null} />
+                          <InsertSlide
+                            key={`${id}:${block.key}:${i}`}
+                            onChooseSlide={() => null}
+                            {...{ sources, block, dispatch }}
+                          />
                         ) : block.type === 'transition' ? (
                           <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
                         ) : null}
