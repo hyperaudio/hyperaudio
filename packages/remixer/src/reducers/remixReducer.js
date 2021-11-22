@@ -32,7 +32,24 @@ const remixReducer = (state, action) => {
         const blocks = arrayMoveImmutable(state.remix.blocks, source.index, destination.index);
         return { ...state, remix: { ...state.remix, blocks } };
       } else if (sourceId === '$toolbar') {
-        console.log('TODO toolbar');
+        const type = draggableId.split(':').pop().substring(1);
+
+        return {
+          ...state,
+          remix: {
+            ...state.remix,
+            blocks: [
+              ...state.remix.blocks.slice(0, destination.index),
+              {
+                key: `${type}-${Date.now()}`,
+                duration: 0,
+                gap: 0,
+                type,
+              },
+              ...state.remix.blocks.slice(destination.index),
+            ],
+          },
+        };
       } else if (sourceId) {
         const range = draggableId
           .split(':')

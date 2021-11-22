@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import _ from 'lodash';
 import { rgba } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -19,6 +19,9 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { styled } from '@mui/material/styles';
 
 import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '../icons';
+import { InsertSlide } from './InsertSlide';
+import { InsertTitle } from './InsertTitle';
+import { InsertTransition } from './InsertTransition';
 
 const Root = styled('div')(({ theme }) => ({
   alignItems: 'center',
@@ -192,6 +195,8 @@ export const Transcript = props => {
     [blocks],
   );
 
+  useEffect(() => console.log({ blocks }), [blocks]);
+
   return (
     <Root>
       <Container maxWidth="sm" onClick={handleClick}>
@@ -200,7 +205,7 @@ export const Transcript = props => {
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {blocks
-                  ?.filter(({ type }) => type === 'block')
+                  // ?.filter(({ type }) => type === 'block')
                   .map((block, i) => (
                     <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
                       {(provided, snapshot) => (
@@ -208,7 +213,15 @@ export const Transcript = props => {
                           <DragHandle {...provided.dragHandleProps} color="default" size="small">
                             <DragIndicatorIcon fontSize="small" />
                           </DragHandle>
-                          <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
+                          {block.type === 'block' ? (
+                            <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
+                          ) : block.type === 'title' ? (
+                            <InsertTitle text="foo" />
+                          ) : block.type === 'slides' ? (
+                            <InsertSlide onChooseSlide={() => null} />
+                          ) : (
+                            <InsertTransition />
+                          )}
                           <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
                             <MoreHorizIcon fontSize="small" />
                           </BlockMenu>
