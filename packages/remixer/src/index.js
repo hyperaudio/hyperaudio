@@ -174,7 +174,7 @@ export const Remixer = props => {
               {showSource && (
                 <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange, onSourceClose }} />
               )}
-              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
+              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange, dispatch }} />
             </DragDropContext>
           ) : (
             <>

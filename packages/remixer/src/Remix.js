@@ -44,6 +44,7 @@ const Remix = props => {
   const {
     editable,
     remix: { id, blocks, media },
+    dispatch,
   } = props;
 
   const reference = useRef();
@@ -63,7 +64,7 @@ const Remix = props => {
         {blocks?.length > 0 ? (
           <>
             <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ id, blocks, players, reference, time, editable }} />
+            <Transcript {...{ id, blocks, players, reference, time, editable, dispatch }} />
           </>
         ) : (
           <div className={classes.intro}>

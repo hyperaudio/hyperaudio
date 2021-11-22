@@ -113,20 +113,32 @@ const Section = styled('p')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { id, blocks, reference, time, editable, isSource = false } = props;
+  const { id, blocks, reference, time, editable, isSource = false, dispatch } = props;
   const [range, setRange] = useState();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [focus, setFocus] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [focus, setFocus] = useState(null);
+  const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
+
   const onMoreOpen = (e, key) => {
     setFocus(key);
     setAnchorEl(e.currentTarget);
   };
-  const onMoreClose = () => {
+
+  const onMoreClose = useCallback(() => {
     setFocus(null);
     setAnchorEl(null);
-  };
+  }, []);
+
+  const moveUpDisabled = useMemo(() => _.findIndex(blocks, o => o.key === focus) === 0, [blocks, focus]);
+  const moveDownDisabled = useMemo(
+    () => _.findIndex(blocks, o => o.key === focus) === blocks.length - 1,
+    [blocks, focus],
+  );
+
+  const moveUpBlock = useCallback(() => dispatch({ type: 'moveUpBlock', key: focus }), [focus, dispatch]);
+  const moveDownBlock = useCallback(() => dispatch({ type: 'moveDownBlock', key: focus }), [focus, dispatch]);
+  const removeBlock = useCallback(() => dispatch({ type: 'removeBlock', key: focus }), [focus, dispatch]);
 
   const handleClick = useCallback(
     ({ target }) => {
@@ -309,16 +321,13 @@ export const Transcript = props => {
           <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
-        <MenuItem disabled={_.findIndex(blocks, o => o.key === focus) === 0} onClick={() => console.log('Move up')}>
+        <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
           <ListItemIcon>
             <MoveUpIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem
-          disabled={_.findIndex(blocks, o => o.key === focus) === blocks.length - 1}
-          onClick={() => console.log('Move down')}
-        >
+        <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock}>
           <ListItemIcon>
             <MoveDownIcon color="primary" fontSize="small" />
           </ListItemIcon>
@@ -344,7 +353,7 @@ export const Transcript = props => {
           <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => console.log('Remove section')}>
+        <MenuItem onClick={removeBlock}>
           <ListItemIcon>
             <DeleteIcon color="error" fontSize="small" />
           </ListItemIcon>
@@ -354,8 +363,6 @@ export const Transcript = props => {
     </Root>
   );
 };
-
-// TODO: wrap range intersecting blocks with Draggable, keep copy mode, have draggable clone with the text only
 
 const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
   const { key, pk, speaker, text, duration } = block;
