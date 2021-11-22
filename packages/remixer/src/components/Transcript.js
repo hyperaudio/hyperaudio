@@ -218,7 +218,7 @@ export const Transcript = props => {
                         ) : block.type === 'slides' ? (
                           <InsertSlide
                             key={`${id}:${block.key}:${i}`}
-                            onChooseSlide={() => null}
+                            onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
                             {...{ sources, block, dispatch }}
                           />
                         ) : block.type === 'transition' ? (

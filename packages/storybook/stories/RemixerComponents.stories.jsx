@@ -14,22 +14,35 @@ export default {
 
 const InsertTitleTpl = (args) => (
   <InsertTitle
-    onTextChange={(str) => console.log("onTextChange:", str)}
-    onSetFullSize={(bool) => console.log("onSetFullSize:", bool)}
+    dispatch={(action) => console.log("dispatch:", action)}
     {...args}
   />
 );
+
 export const EmptyTitle = InsertTitleTpl.bind({});
-EmptyTitle.args = {};
+EmptyTitle.args = {
+  block: {
+    key: "title-block",
+    text: "",
+  },
+};
+
 export const FullSizeTitle = InsertTitleTpl.bind({});
 FullSizeTitle.args = {
-  text: "This is a full-size title",
-  fullSize: true,
+  block: {
+    key: "title-block",
+    text: "This is a full-size title",
+    fullSize: true,
+  },
 };
+
 export const LowerThirdsTitle = InsertTitleTpl.bind({});
 LowerThirdsTitle.args = {
-  text: "This is a lower-thirds title",
-  fullSize: false,
+  block: {
+    key: "title-block",
+    text: "This is a lower-thirds title",
+    fullSize: false,
+  },
 };
 
 const InsertSlideTpl = (args) => (
@@ -41,10 +54,13 @@ const InsertSlideTpl = (args) => (
     {...args}
   />
 );
+
 export const SlidesAvailable = InsertSlideTpl.bind({});
 SlidesAvailable.args = {};
+
 export const NoSlides = InsertSlideTpl.bind({});
 NoSlides.args = { sources: [] };
+
 export const SelectedSlide = InsertSlideTpl.bind({});
 SelectedSlide.args = {
   deck: data.sources[0].id,
@@ -53,9 +69,13 @@ SelectedSlide.args = {
 
 const InsertTransitionTpl = (args) => (
   <InsertTransition
-    onDurationChange={(val) => console.log("onDurationChange", val)}
+    dispatch={(action) => console.log("dispatch:", action)}
     {...args}
   />
 );
 export const Transition = InsertTransitionTpl.bind({});
-Transition.args = {};
+Transition.args = {
+  block: {
+    key: "transition-block",
+  },
+};
