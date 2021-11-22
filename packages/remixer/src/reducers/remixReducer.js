@@ -1,5 +1,5 @@
 /* eslint-disable no-case-declarations */
-import { arrayMoveImmutable, arrayMoveMutable } from 'array-move';
+import { arrayMoveImmutable } from 'array-move';
 
 const remixReducer = (state, action) => {
   const { type, event: { draggableId, source, destination } = {} } = action;
@@ -9,14 +9,47 @@ const remixReducer = (state, action) => {
       return { ...state, sources: [...state.sources, action.source] };
     case 'sourceClose':
       return { ...state, sources: state.sources.filter(source => source.id !== action.id) };
-    case 'dragEnd':
+    case 'removeBlock':
+      return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
+    case 'moveUpBlock': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      return {
+        ...state,
+        remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index - 1) },
+      };
+    }
+    case 'moveDownBlock': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      return {
+        ...state,
+        remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index + 1) },
+      };
+    }
+    case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
       if (destination && draggableId.indexOf(`draggable:${remixId}`) === 0) {
         const blocks = arrayMoveImmutable(state.remix.blocks, source.index, destination.index);
         return { ...state, remix: { ...state.remix, blocks } };
       } else if (sourceId === '$toolbar') {
-        console.log('TODO toolbar');
+        const type = draggableId.split(':').pop().substring(1);
+
+        return {
+          ...state,
+          remix: {
+            ...state.remix,
+            blocks: [
+              ...state.remix.blocks.slice(0, destination.index),
+              {
+                key: `${type}-${Date.now()}`,
+                duration: 0,
+                gap: 0,
+                type,
+              },
+              ...state.remix.blocks.slice(destination.index),
+            ],
+          },
+        };
       } else if (sourceId) {
         const range = draggableId
           .split(':')
@@ -57,6 +90,7 @@ const remixReducer = (state, action) => {
 
             return {
               ...block,
+              key: `${block.key}-${Date.now()}`, // TODO: better random key
               text: block.text.substring(
                 startIndex === -1 ? 0 : block.offsets[startIndex],
                 endIndex === -1
@@ -89,6 +123,7 @@ const remixReducer = (state, action) => {
         };
       }
       return state;
+    }
     default:
       throw new Error('unhandled action', action);
   }
