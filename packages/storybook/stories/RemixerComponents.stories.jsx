@@ -23,7 +23,6 @@ export const EmptyTitle = InsertTitleTpl.bind({});
 EmptyTitle.args = {
   block: {
     key: "title-block",
-    text: "",
   },
 };
 
@@ -85,6 +84,7 @@ const InsertTransitionTpl = (args) => (
     {...args}
   />
 );
+
 export const Transition = InsertTransitionTpl.bind({});
 Transition.args = {
   block: {

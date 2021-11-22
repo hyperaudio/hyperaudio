@@ -68,7 +68,3 @@ export const InsertTransition = ({ block: { key, transition: duration = 3000 }, 
     </Root>
   );
 };
-
-InsertTransition.defaultProps = {
-  duration: 3000,
-};

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -68,11 +68,12 @@ const Control = styled('a', {
   },
 }));
 
-export const InsertTitle = ({ block: { key, fullSize, text }, dispatch }) => {
+export const InsertTitle = ({ block: { key, fullSize = true, text = 'Type in your title here…' }, dispatch }) => {
   const onTextChange = useCallback(
     ({ target: { value: text } }) => dispatch({ type: 'titleTextChange', key, text }),
     [dispatch],
   );
+
   const onSetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: true }), [dispatch]);
   const onUnsetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: false }), [dispatch]);
 
@@ -102,9 +103,4 @@ export const InsertTitle = ({ block: { key, fullSize, text }, dispatch }) => {
       </div>
     </Root>
   );
-};
-
-InsertTitle.defaultProps = {
-  text: 'Type in your title here…',
-  fullSize: true,
 };
