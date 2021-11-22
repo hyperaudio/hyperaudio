@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -44,6 +45,7 @@ const Remix = props => {
   const {
     editable,
     remix: { id, blocks, media },
+    sources,
     dispatch,
   } = props;
 
@@ -64,13 +66,19 @@ const Remix = props => {
         {blocks?.length > 0 ? (
           <>
             <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ id, blocks, players, reference, time, editable, dispatch }} />
+            <Transcript {...{ id, blocks, sources, players, reference, time, editable, dispatch }} />
           </>
         ) : (
-          <div className={classes.intro}>
-            <StartDropIcon />
-            <Typography variant="body2">Start by dropping an effect or a section from the source transcript</Typography>
-          </div>
+          <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>
+            {(provided, snapshot) => (
+              <div className={classes.intro} ref={provided.innerRef} {...provided.droppableProps}>
+                <StartDropIcon />
+                <Typography variant="body2">
+                  Start by dropping an effect or a section from the source transcript
+                </Typography>
+              </div>
+            )}
+          </Droppable>
         )}
         {editable && <InsertsBar />}
       </Root>

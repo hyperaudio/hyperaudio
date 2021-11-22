@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -48,16 +48,28 @@ const Root = styled(Paper, {
 }));
 
 export const InsertSlide = props => {
-  const { sources, deck, slide, onChooseSlide } = props;
+  const {
+    sources,
+    block: { key, deck, slide },
+    dispatch,
+  } = props;
 
-  const [stateDeck, setStateDeck] = React.useState(deck);
-  const [stateSlide, setStateSlide] = React.useState(slide);
+  const onChooseSlide = useCallback(({ deck, slide }) => dispatch({ type: 'slidesChange', key, deck, slide }), []);
+
+  const [stateDeck, setStateDeck] = useState(deck);
+  const [stateSlide, setStateSlide] = useState(slide);
 
   const decks = _.filter(sources, o => o.deck !== null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onChooseSlide({ deck: stateDeck, slide: stateSlide });
-  }, [stateSlide]);
+  }, [stateDeck, stateSlide]);
+
+  useEffect(() => {
+    if (!stateDeck && decks.length === 1) {
+      setStateDeck(decks[0].id);
+    }
+  }, [stateDeck, decks]);
 
   return (
     <Root>
