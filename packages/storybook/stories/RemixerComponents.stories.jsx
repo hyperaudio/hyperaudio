@@ -47,9 +47,7 @@ LowerThirdsTitle.args = {
 const InsertSlideTpl = (args) => (
   <InsertSlide
     sources={data.sources}
-    onChooseSlide={({ deck, slide }) =>
-      console.log("onChooseSlide:", { deck, slide })
-    }
+    dispatch={(action) => console.log("dispatch:", action)}
     {...args}
   />
 );
@@ -71,10 +69,10 @@ NoSlides.args = {
 
 export const SelectedSlide = InsertSlideTpl.bind({});
 SelectedSlide.args = {
-  deck: data.sources[0].id,
-  slide: data.sources[0].deck.slides[1].id,
   block: {
     key: "slide-block",
+    deck: data.sources[0].id,
+    slide: data.sources[0].deck.slides[1].id,
   },
 };
 

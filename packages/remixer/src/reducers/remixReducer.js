@@ -73,6 +73,22 @@ const remixReducer = (state, action) => {
         },
       };
     }
+    case 'slidesChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, deck: action.deck, slide: action.slide },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
     case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();

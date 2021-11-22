@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -48,7 +48,13 @@ const Root = styled(Paper, {
 }));
 
 export const InsertSlide = props => {
-  const { sources, deck, slide, onChooseSlide } = props;
+  const {
+    sources,
+    block: { key, deck, slide },
+    dispatch,
+  } = props;
+
+  const onChooseSlide = useCallback(({ deck, slide }) => dispatch({ type: 'slidesChange', key, deck, slide }), []);
 
   const [stateDeck, setStateDeck] = useState(deck);
   const [stateSlide, setStateSlide] = useState(slide);
