@@ -49,12 +49,16 @@ const Root = styled(Paper, {
 
 export const InsertSlide = props => {
   const {
+    editable = false,
     sources,
     block: { key, deck, slide },
     dispatch,
   } = props;
 
-  const onChooseSlide = useCallback(({ deck, slide }) => dispatch({ type: 'slidesChange', key, deck, slide }), []);
+  const onChooseSlide = useCallback(
+    ({ deck, slide }) => dispatch && dispatch({ type: 'slidesChange', key, deck, slide }),
+    [],
+  );
 
   const [stateDeck, setStateDeck] = useState(deck);
   const [stateSlide, setStateSlide] = useState(slide);

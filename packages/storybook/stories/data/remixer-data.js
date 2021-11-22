@@ -45,6 +45,13 @@ export const data = {
     media: media,
     blocks: [
       {
+        "key": "title-1637590696180",
+        "duration": 0,
+        "gap": 0,
+        "type": "title",
+        "text": "Remix Title"
+      },
+      ...[{
         ends: [
           710,
           810,
@@ -173,7 +180,36 @@ export const data = {
         pk: "3B7PzBDLT8WZjbMzHUpTVY",
         key: "Zd6wDG84oFoX",
         start: 340,
+      },].map((block, i, arr) => {
+        const { pk, start, end, starts, ends } = block;
+        let gap = 0;
+
+        if (i < arr.length - 2) {
+          const next = arr[i + 1];
+          if (block.pk === next.pk) {
+            gap = next.start - end;
+          }
+        }
+        return {
+          ...block,
+          media: pk,
+          duration: end - start,
+          starts2: starts.map((s) => s - start),
+          ends2: ends.map((e) => e - start),
+          durations: ends.map((e, j) => e - starts[j]),
+          gap,
+        };
+      }),
+      {
+        "key": "slides-1637590891263",
+        "duration": 0,
+        "gap": 0,
+        "type": "slides",
+        "deck": "3B7PzBDLT8WZjbMzHUpTVY",
+        "slide": 0
       },
+    ...[
+
       {
         ends: [1120, 1280, 1430, 1520, 2160, 2510, 3030],
         starts: [540, 1130, 1280, 1430, 1520, 2170, 2510],
@@ -925,7 +961,12 @@ export const data = {
         durations: ends.map((e, j) => e - starts[j]),
         gap,
       };
-    }),
+    }), {
+      "key": "transition-1637590853408",
+      "duration": 0,
+      "gap": 0,
+      "type": "transition"
+  }]
   },
   sources: [
     {

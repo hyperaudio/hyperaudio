@@ -28,7 +28,7 @@ const Root = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export const InsertTransition = ({ block: { key, transition: duration = 3000 }, dispatch }) => {
+export const InsertTransition = ({ editable = false, block: { key, transition: duration = 3000 }, dispatch }) => {
   const [stateDuration, setStateDuration] = useState(duration);
   useEffect(() => setStateDuration(duration), [duration]);
 
