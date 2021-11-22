@@ -55,7 +55,10 @@ export const InsertSlide = props => {
     dispatch,
   } = props;
 
-  const onChooseSlide = useCallback(({ deck, slide }) => dispatch({ type: 'slidesChange', key, deck, slide }), []);
+  const onChooseSlide = useCallback(
+    ({ deck, slide }) => dispatch && dispatch({ type: 'slidesChange', key, deck, slide }),
+    [],
+  );
 
   const [stateDeck, setStateDeck] = useState(deck);
   const [stateSlide, setStateSlide] = useState(slide);
