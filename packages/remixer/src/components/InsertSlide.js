@@ -59,6 +59,12 @@ export const InsertSlide = props => {
     onChooseSlide({ deck: stateDeck, slide: stateSlide });
   }, [stateDeck, stateSlide]);
 
+  useEffect(() => {
+    if (!stateDeck && decks.length === 1) {
+      setStateDeck(decks[0].id);
+    }
+  }, [stateDeck, decks]);
+
   return (
     <Root>
       <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
