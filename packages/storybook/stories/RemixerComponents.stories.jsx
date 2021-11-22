@@ -56,15 +56,27 @@ const InsertSlideTpl = (args) => (
 );
 
 export const SlidesAvailable = InsertSlideTpl.bind({});
-SlidesAvailable.args = {};
+SlidesAvailable.args = {
+  block: {
+    key: "slide-block",
+  },
+};
 
 export const NoSlides = InsertSlideTpl.bind({});
-NoSlides.args = { sources: [] };
+NoSlides.args = {
+  sources: [],
+  block: {
+    key: "slide-block",
+  },
+};
 
 export const SelectedSlide = InsertSlideTpl.bind({});
 SelectedSlide.args = {
   deck: data.sources[0].id,
   slide: data.sources[0].deck.slides[1].id,
+  block: {
+    key: "slide-block",
+  },
 };
 
 const InsertTransitionTpl = (args) => (
