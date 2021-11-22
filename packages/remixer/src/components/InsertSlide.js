@@ -57,7 +57,7 @@ export const InsertSlide = props => {
 
   useEffect(() => {
     onChooseSlide({ deck: stateDeck, slide: stateSlide });
-  }, [stateSlide]);
+  }, [stateDeck, stateSlide]);
 
   return (
     <Root>
