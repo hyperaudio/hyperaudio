@@ -204,31 +204,29 @@ export const Transcript = props => {
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks
-                  // ?.filter(({ type }) => type === 'block')
-                  .map((block, i) => (
-                    <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
-                      {(provided, snapshot) => (
-                        <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                          <DragHandle {...provided.dragHandleProps} color="default" size="small">
-                            <DragIndicatorIcon fontSize="small" />
-                          </DragHandle>
-                          {block.type === 'block' ? (
-                            <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
-                          ) : block.type === 'title' ? (
-                            <InsertTitle text="foo" />
-                          ) : block.type === 'slides' ? (
-                            <InsertSlide onChooseSlide={() => null} />
-                          ) : (
-                            <InsertTransition />
-                          )}
-                          <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                            <MoreHorizIcon fontSize="small" />
-                          </BlockMenu>
-                        </DragBlock>
-                      )}
-                    </Draggable>
-                  ))}
+                {blocks.map((block, i) => (
+                  <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
+                    {(provided, snapshot) => (
+                      <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
+                        <DragHandle {...provided.dragHandleProps} color="default" size="small">
+                          <DragIndicatorIcon fontSize="small" />
+                        </DragHandle>
+                        {block.type === 'block' ? (
+                          <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
+                        ) : block.type === 'title' ? (
+                          <InsertTitle text="foo" />
+                        ) : block.type === 'slides' ? (
+                          <InsertSlide onChooseSlide={() => null} />
+                        ) : block.type === 'transition' ? (
+                          <InsertTransition />
+                        ) : null}
+                        <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                          <MoreHorizIcon fontSize="small" />
+                        </BlockMenu>
+                      </DragBlock>
+                    )}
+                  </Draggable>
+                ))}
               </div>
             )}
           </Droppable>

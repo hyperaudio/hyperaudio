@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -70,7 +70,7 @@ const Control = styled('a', {
 
 export const InsertTitle = props => {
   const { fullSize, text, onTextChange, onSetFullSize } = props;
-  const [titleText, setTitleText] = React.useState(text);
+  const [titleText, setTitleText] = useState(text);
 
   return (
     <Root fullSize={fullSize}>

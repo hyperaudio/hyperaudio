@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import _ from 'lodash';
 
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -50,12 +50,12 @@ const Root = styled(Paper, {
 export const InsertSlide = props => {
   const { sources, deck, slide, onChooseSlide } = props;
 
-  const [stateDeck, setStateDeck] = React.useState(deck);
-  const [stateSlide, setStateSlide] = React.useState(slide);
+  const [stateDeck, setStateDeck] = useState(deck);
+  const [stateSlide, setStateSlide] = useState(slide);
 
   const decks = _.filter(sources, o => o.deck !== null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     onChooseSlide({ deck: stateDeck, slide: stateSlide });
   }, [stateSlide]);
 

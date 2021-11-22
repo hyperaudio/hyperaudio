@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import Paper from '@mui/material/Paper';
@@ -30,9 +30,9 @@ const Root = styled(Paper)(({ theme }) => ({
 
 export const InsertTransition = props => {
   const { onDurationChange, duration } = props;
-  const [stateDuration, setStateDuration] = React.useState(duration);
+  const [stateDuration, setStateDuration] = useState(duration);
 
-  const onSliderChange = (e, val) => setStateDuration(val);
+  const onSliderChange = useCallback((e, val) => setStateDuration(val), []);
 
   return (
     <Root>
