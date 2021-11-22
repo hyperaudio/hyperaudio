@@ -49,6 +49,7 @@ const Root = styled(Paper, {
 
 export const InsertSlide = props => {
   const {
+    editable = false,
     sources,
     block: { key, deck, slide },
     dispatch,

@@ -212,17 +212,13 @@ export const Transcript = props => {
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (
-                          <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
+                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
                         ) : block.type === 'title' ? (
-                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                         ) : block.type === 'slides' ? (
-                          <InsertSlide
-                            key={`${id}:${block.key}:${i}`}
-                            onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
-                            {...{ sources, block, dispatch }}
-                          />
+                          <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
                         ) : block.type === 'transition' ? (
-                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                         ) : null}
                         <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
                           <MoreHorizIcon fontSize="small" />
@@ -293,6 +289,16 @@ export const Transcript = props => {
           blocks?.map((block, i) =>
             block.type === 'block' ? (
               <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+            ) : block.type === 'title' ? (
+              <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+            ) : block.type === 'slides' ? (
+              <InsertSlide
+                key={`${id}:${block.key}:${i}`}
+                onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
+                {...{ sources, block, dispatch }}
+              />
+            ) : block.type === 'transition' ? (
+              <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
             ) : null,
           )
         )}

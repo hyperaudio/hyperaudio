@@ -68,7 +68,11 @@ const Control = styled('a', {
   },
 }));
 
-export const InsertTitle = ({ block: { key, fullSize = true, text = 'Type in your title here…' }, dispatch }) => {
+export const InsertTitle = ({
+  editable = false,
+  block: { key, fullSize = true, text = 'Type in your title here…' },
+  dispatch,
+}) => {
   const onTextChange = useCallback(
     ({ target: { value: text } }) => dispatch({ type: 'titleTextChange', key, text }),
     [dispatch],
