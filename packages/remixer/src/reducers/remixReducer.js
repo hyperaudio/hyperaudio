@@ -25,6 +25,54 @@ const remixReducer = (state, action) => {
         remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index + 1) },
       };
     }
+    case 'titleSetFullSize': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, fullSize: action.fullSize },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'titleTextChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, text: action.text },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'transitionDurationChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, transition: action.transition },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
     case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
@@ -125,21 +173,8 @@ const remixReducer = (state, action) => {
       return state;
     }
     default:
-      throw new Error('unhandled action', action);
+      throw new Error(`unhandled action ${type}`, action);
   }
 };
 
 export default remixReducer;
-
-/*
-    const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
-    const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
-
-    return [
-      startIndex === -1 ? 0 : block.offsets[startIndex],
-      endIndex === -1
-        ? block.text.length
-        : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
-          block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
-    ];
-*/

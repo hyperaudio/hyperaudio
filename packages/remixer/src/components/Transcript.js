@@ -214,11 +214,11 @@ export const Transcript = props => {
                         {block.type === 'block' ? (
                           <Block key={`${id}:${block.key}:${i}`} blocks={blocks} block={block} time={time} />
                         ) : block.type === 'title' ? (
-                          <InsertTitle text="foo" />
+                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
                         ) : block.type === 'slides' ? (
-                          <InsertSlide onChooseSlide={() => null} />
+                          <InsertSlide key={`${id}:${block.key}:${i}`} onChooseSlide={() => null} />
                         ) : block.type === 'transition' ? (
-                          <InsertTransition />
+                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
                         ) : null}
                         <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
                           <MoreHorizIcon fontSize="small" />

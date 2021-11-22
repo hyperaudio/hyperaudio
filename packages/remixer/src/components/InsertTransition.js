@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import Paper from '@mui/material/Paper';
@@ -28,11 +28,17 @@ const Root = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export const InsertTransition = props => {
-  const { onDurationChange, duration } = props;
+export const InsertTransition = ({ block: { key, transition: duration = 3000 }, dispatch }) => {
   const [stateDuration, setStateDuration] = useState(duration);
+  useEffect(() => setStateDuration(duration), [duration]);
 
-  const onSliderChange = useCallback((e, val) => setStateDuration(val), []);
+  const onSliderChange = useCallback((e, value) => setStateDuration(value), []);
+  const onDurationChange = useCallback(
+    (e, value) => dispatch({ type: 'transitionDurationChange', key, transition: value }),
+    [dispatch],
+  );
+
+  const labelFormat = useCallback(val => `${(val / 1000).toFixed(1)} s`, []);
 
   return (
     <Root>
@@ -52,11 +58,11 @@ export const InsertTransition = props => {
           max={5000}
           min={1000}
           onChange={onSliderChange}
-          onChangeCommitted={(e, val) => onDurationChange(val)}
+          onChangeCommitted={onDurationChange}
           size="small"
           value={stateDuration}
           valueLabelDisplay="auto"
-          valueLabelFormat={val => `${(val / 1000).toFixed(1)} s`}
+          valueLabelFormat={labelFormat}
         />
       </div>
     </Root>

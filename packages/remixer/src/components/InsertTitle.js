@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -68,9 +68,13 @@ const Control = styled('a', {
   },
 }));
 
-export const InsertTitle = props => {
-  const { fullSize, text, onTextChange, onSetFullSize } = props;
-  const [titleText, setTitleText] = useState(text);
+export const InsertTitle = ({ block: { key, fullSize, text }, dispatch }) => {
+  const onTextChange = useCallback(
+    ({ target: { value: text } }) => dispatch({ type: 'titleTextChange', key, text }),
+    [dispatch],
+  );
+  const onSetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: true }), [dispatch]);
+  const onUnsetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: false }), [dispatch]);
 
   return (
     <Root fullSize={fullSize}>
@@ -79,23 +83,17 @@ export const InsertTitle = props => {
         <span id="insert-title">Title</span>
       </Typography>
       <div className={classes.canvas}>
-        <TextField
-          className={classes.field}
-          onBlur={e => onTextChange(e.target.value)}
-          onChange={e => setTitleText(e.target.value)}
-          size="small"
-          value={titleText}
-        />
+        <TextField className={classes.field} onBlur={onTextChange} onChange={onTextChange} size="small" value={text} />
       </div>
       <div className={classes.controls}>
-        <Control isActive={fullSize} onClick={() => onSetFullSize(true)}>
+        <Control isActive={fullSize} onClick={onSetFullSize}>
           <FullSizeIcon className={classes.icon} />
           <Typography variant="caption" underline="hover">
             Full-size
           </Typography>
         </Control>{' '}
         ⋅ 
-        <Control isActive={!fullSize} onClick={() => onSetFullSize(false)}>
+        <Control isActive={!fullSize} onClick={onUnsetFullSize}>
           <LowerThirdsIcon className={classes.icon} />
           <Typography variant="caption" underline="hover">
             Lower-thirds
