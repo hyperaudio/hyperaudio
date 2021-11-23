@@ -143,6 +143,19 @@ export const Transcript = props => {
   const moveDownBlock = useCallback(() => dispatch({ type: 'moveDownBlock', key: focus }), [focus, dispatch]);
   const removeBlock = useCallback(() => dispatch({ type: 'removeBlock', key: focus }), [focus, dispatch]);
 
+  const appendSlidesBlock = useCallback(
+    () => dispatch({ type: 'appendInsert', insert: 'slides', key: focus }),
+    [focus, dispatch],
+  );
+  const appendTitleBlock = useCallback(
+    () => dispatch({ type: 'appendInsert', insert: 'title', key: focus }),
+    [focus, dispatch],
+  );
+  const appendTransitionBlock = useCallback(
+    () => dispatch({ type: 'appendInsert', insert: 'transition', key: focus }),
+    [focus, dispatch],
+  );
+
   const handleClick = useCallback(
     ({ target }) => {
       const selection = window.getSelection();
@@ -355,19 +368,19 @@ export const Transcript = props => {
           <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => console.log('Append slide')}>
+        <MenuItem onClick={appendSlidesBlock}>
           <ListItemIcon>
             <SlideshowIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={() => console.log('Append title')}>
+        <MenuItem onClick={appendTitleBlock}>
           <ListItemIcon>
             <TextFieldsIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={() => console.log('Append transition')}>
+        <MenuItem onClick={appendTransitionBlock}>
           <ListItemIcon>
             <MovieFilterIcon color="primary" fontSize="small" />
           </ListItemIcon>

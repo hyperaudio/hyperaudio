@@ -89,6 +89,26 @@ const remixReducer = (state, action) => {
         },
       };
     }
+    case 'appendInsert': {
+      const { insert } = action;
+      const index = state.remix.blocks.findIndex(b => b.key === action.key) + 1;
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            {
+              key: `${insert}-${Date.now()}`,
+              duration: 0,
+              gap: 0,
+              type: insert,
+            },
+            ...state.remix.blocks.slice(index),
+          ],
+        },
+      };
+    }
     case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
