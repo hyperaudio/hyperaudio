@@ -169,8 +169,13 @@ const remixReducer = (state, action) => {
               offsets: block.offsets.slice(startIndex2, endIndex2),
               lengths: block.lengths.slice(startIndex2, endIndex2),
               keys: block.keys.slice(startIndex2, endIndex2),
+              durations: block.durations.slice(startIndex2, endIndex2),
               // start: block.starts.slice(startIndex2, endIndex2)[0],
               // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
+              duration:
+                block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0],
+              gap: endIndex === -1 ? block.gap : 0,
+              debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
             };
           });
 
