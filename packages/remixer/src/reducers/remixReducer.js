@@ -89,6 +89,26 @@ const remixReducer = (state, action) => {
         },
       };
     }
+    case 'appendInsert': {
+      const { insert } = action;
+      const index = state.remix.blocks.findIndex(b => b.key === action.key) + 1;
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            {
+              key: `${insert}-${Date.now()}`,
+              duration: 0,
+              gap: 0,
+              type: insert,
+            },
+            ...state.remix.blocks.slice(index),
+          ],
+        },
+      };
+    }
     case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
@@ -169,8 +189,13 @@ const remixReducer = (state, action) => {
               offsets: block.offsets.slice(startIndex2, endIndex2),
               lengths: block.lengths.slice(startIndex2, endIndex2),
               keys: block.keys.slice(startIndex2, endIndex2),
+              durations: block.durations.slice(startIndex2, endIndex2),
               // start: block.starts.slice(startIndex2, endIndex2)[0],
               // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
+              duration:
+                block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0],
+              gap: endIndex === -1 ? block.gap : 0,
+              debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
             };
           });
 
