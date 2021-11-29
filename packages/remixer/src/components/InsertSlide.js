@@ -15,9 +15,7 @@ const PREFIX = 'InsertSlide';
 const classes = {
   canvas: `${PREFIX}-canvas`,
   gridItem: `${PREFIX}-gridItem`,
-  alert: `${PREFIX}-alert`,
   masonry: `${PREFIX}-masonry`,
-  breadcrumbs: `${PREFIX}-breadcrumbs`,
   title: `${PREFIX}-title`,
 };
 
@@ -35,14 +33,8 @@ const Root = styled('div', {
     overflowY: 'auto',
     padding: theme.spacing(1, 1, 0),
   },
-  [`& .${classes.breadcrumbs}`]: {
-    // marginBottom: theme.spacing(1),
-  },
   [`& .${classes.masonry}`]: {
     alignContent: 'flex-start',
-  },
-  [`& .${classes.alert}`]: {
-    margin: theme.spacing(1, 0, 2),
   },
 }));
 
@@ -59,20 +51,43 @@ export const InsertSlide = props => {
     [],
   );
 
-  const [stateDeck, setStateDeck] = useState(deck);
-  const [stateSlide, setStateSlide] = useState(slide);
+  const [stateDeckId, setStateDeckId] = useState(deck);
+  const [stateSlideId, setStateSlideId] = useState(slide);
+  const [step, setStep] = useState(slide ? 2 : deck ? 1 : 0);
 
   const decks = _.filter(sources, o => o.deck !== null);
 
   useEffect(() => {
-    onChooseSlide({ deck: stateDeck, slide: stateSlide });
-  }, [stateDeck, stateSlide]);
+    onChooseSlide({ deck: stateDeckId, slide: stateSlideId });
+  }, [stateSlideId]);
 
-  useEffect(() => {
-    if (!stateDeck && decks.length === 1) {
-      setStateDeck(decks[0].id);
-    }
-  }, [stateDeck, decks]);
+  // useEffect(() => {
+  //   if (!stateDeckId && decks.length === 1) {
+  //     setStateDeckId(decks[0].id);
+  //   }
+  // }, [stateDeckId, decks]);
+
+  const onDeckClick = id => {
+    setStateDeckId(id);
+    setStep(1);
+  };
+  const onSlideClick = id => {
+    setStateSlideId(id);
+    setStep(2);
+  };
+
+  const breadcrumbProps = {
+    noWrap: true,
+    variant: 'caption',
+  };
+  const masonryProps = {
+    className: classes.masonry,
+    columns: { xs: 2, sm: 4 },
+    defaultColumns: 4,
+    defaultHeight: 60,
+    defaultSpacing: 2,
+    spacing: 2,
+  };
 
   return (
     <Root>
@@ -80,63 +95,77 @@ export const InsertSlide = props => {
         <SlideshowIcon fontSize="small" sx={{ marginRight: '6px' }} />
         <span id="insert-title">Slide</span>
       </Typography>
-      {decks && decks.length > 0 ? (
+      {decks?.length > 0 ? (
         <>
-          <Breadcrumbs className={classes.breadcrumbs}>
+          <Breadcrumbs>
             <Link
-              color={stateDeck ? 'primary' : 'textSecondary'}
-              disabled={!stateDeck}
-              href={stateDeck ? '' : null}
-              onClick={() => setStateDeck(null)}
-              underline={stateDeck !== null && stateDeck !== deck ? 'hover' : 'none'}
-              variant="caption"
+              {...breadcrumbProps}
+              color={step === 0 ? 'textSecondary' : 'primary'}
+              href={step > 0 ? '' : null}
+              onClick={() => setStep(0)}
+              underline={step > 0 ? 'hover' : 'none'}
             >
               Available decks
             </Link>
-            {stateDeck && <Typography variant="caption">{_.find(decks, o => o.id === stateDeck)?.title}</Typography>}
+            {[1, 2].includes(step) && stateDeckId && (
+              <Link
+                {...breadcrumbProps}
+                color={step === 1 ? 'textSecondary' : 'primary'}
+                href={step > 1 ? '' : null}
+                onClick={step > 1 ? () => setStep(1) : null}
+                sx={{ maxWidth: '160px' }}
+                underline={step > 1 ? 'hover' : 'none'}
+              >
+                {_.find(decks, o => o.id === stateDeckId)?.title}
+              </Link>
+            )}
+            {step === 2 && <Typography {...breadcrumbProps}>Slide {stateSlideId + 1}</Typography>}
           </Breadcrumbs>
           <div className={classes.canvas}>
-            <Masonry
-              columns={{ xs: 2, sm: 4 }}
-              defaultColumns={8}
-              defaultHeight={60}
-              defaultSpacing={2}
-              spacing={2}
-              className={classes.masonry}
-            >
-              {!stateDeck &&
-                decks.length > 1 &&
-                decks.map(o => {
-                  if (!o.deck) return null;
-                  return (
+            {step === 0 && (
+              <Masonry {...masonryProps}>
+                {decks.length > 1 &&
+                  decks.map(o => (
                     <Thumb
-                      key={o.id}
-                      title={o.title}
                       img={o.deck.url}
-                      onClick={() => setStateDeck(o.id)}
-                      isActive={o.id === stateDeck}
-                    />
-                  );
-                })}
-              {stateDeck &&
-                _.find(decks, o => o.id === stateDeck)?.deck?.slides?.map((o, i) => {
-                  return (
-                    <Thumb
+                      isActive={o.id === stateDeckId}
                       key={o.id}
-                      img={o.url}
-                      isActive={stateDeck === deck && o.id === stateSlide}
-                      onClick={() => setStateSlide(o.id)}
-                      title={i + 1}
+                      onClick={() => onDeckClick(o.id)}
+                      title={o.title}
                     />
-                  );
-                })}
-            </Masonry>
+                  ))}
+              </Masonry>
+            )}
+            {step === 1 && (
+              <Masonry {...masonryProps}>
+                {stateDeckId &&
+                  _.find(decks, o => o.id === stateDeckId)?.deck?.slides?.map((o, i) => {
+                    return (
+                      <Thumb
+                        img={o.url}
+                        isActive={deck === stateDeckId && o.id === stateSlideId}
+                        key={o.id}
+                        onClick={() => onSlideClick(o.id)}
+                        title={i + 1}
+                      />
+                    );
+                  })}
+              </Masonry>
+            )}
+            {step === 2 && (
+              <img
+                style={{ width: '100%' }}
+                alt={`${_.find(decks, o => o.id === stateDeckId).title} › Slide ${_.findIndex(
+                  _.find(decks, o => o.id === stateDeckId).deck.slides,
+                  o => o.id === stateSlideId,
+                )}`}
+                src={_.find(_.find(decks, o => o.id === stateDeckId).deck.slides, o => o.id === stateSlideId).url}
+              />
+            )}
           </div>
         </>
       ) : (
-        <Alert className={classes.alert} severity="warning">
-          None of the available remix sources has associated slideshows.
-        </Alert>
+        <Alert severity="info">We couldn’t find any decks associated to your transcript sources.</Alert>
       )}
     </Root>
   );
