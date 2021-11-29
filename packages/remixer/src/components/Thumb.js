@@ -17,20 +17,20 @@ const Root = styled(Card, {
   background: isActive ? theme.palette.primary.main : 'auto',
   // boxShadow: `0 0px 0px 5px ${isActive ? theme.palette.primary.main : 'transparent'}`,
   color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
-  outline: `5px solid ${isActive ? theme.palette.primary.main : 'transparent'}`,
-  transitionDuration: theme.transitions.duration.standard,
+  outline: `3px solid ${isActive ? theme.palette.primary.main : 'transparent'}`,
+  transitionDuration: theme.transitions.duration.short,
   transitionProperty: 'background, background-color, outline, color',
   [`&:hover`]: {
     background: isActive ? theme.palette.primary.main : theme.palette.primary.offwhite,
     color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
-    outline: isActive ? `5px solid ${theme.palette.primary.main}` : `5px solid ${theme.palette.primary.offwhite}`,
+    outline: isActive ? `3px solid ${theme.palette.primary.main}` : `3px solid ${theme.palette.primary.offwhite}`,
   },
   [`& img`]: {
     position: 'relative',
     width: '100%',
   },
   [`& .${classes.title}`]: {
-    padding: theme.spacing(0.5, 0, 0),
+    padding: theme.spacing(0, 0.5),
   },
   [`& .MuiCardActionArea-focusHighlight`]: {
     display: 'none',
@@ -45,7 +45,7 @@ export const Thumb = props => {
       <CardActionArea disabled={isActive} className={classes.actionArea}>
         <img alt={`Poster image for ${title}`} src={img} />
         <Tooltip enterDelay={1500} title={title}>
-          <Typography display="block" noWrap variant="caption">
+          <Typography display="block" noWrap variant="caption" className={classes.title}>
             {title}
           </Typography>
         </Tooltip>

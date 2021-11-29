@@ -97,7 +97,7 @@ export const InsertSlide = props => {
           </Breadcrumbs>
           <div className={classes.canvas}>
             <Masonry
-              columns={{ xs: 2, sm: 4, md: 6, lg: 8, xl: 10 }}
+              columns={{ xs: 2, sm: 4 }}
               defaultColumns={8}
               defaultHeight={60}
               defaultSpacing={2}
