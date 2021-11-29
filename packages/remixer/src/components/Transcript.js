@@ -44,7 +44,8 @@ const Root = styled('div')(({ theme }) => ({
     },
   },
   [`& .${classes.insertWrap}`]: {
-    margin: theme.spacing(1, 0),
+    marginTop: theme.spacing(1.5),
+    marginBottom: theme.spacing(1.5),
   },
 }));
 
