@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import _ from 'lodash';
+import _, { isNull } from 'lodash';
 
 import Alert from '@mui/material/Alert';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -14,7 +14,7 @@ import { Thumb } from '.';
 const PREFIX = 'InsertSlide';
 const classes = {
   canvas: `${PREFIX}-canvas`,
-  gridItem: `${PREFIX}-gridItem`,
+  breadcrumbs: `${PREFIX}-breadcrumbs`,
   masonry: `${PREFIX}-masonry`,
   title: `${PREFIX}-title`,
 };
@@ -22,16 +22,21 @@ const classes = {
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
-  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
+    padding: theme.spacing(1.35, 1, 0),
+  },
+  [`& .${classes.breadcrumbs}`]: {
+    padding: theme.spacing(0, 1),
+    marginBottom: theme.spacing(1 * -1),
+    marginTop: theme.spacing(1 * -1),
   },
   [`& .${classes.canvas}`]: {
     maxHeight: '220px',
     overflowY: 'auto',
-    padding: theme.spacing(1, 1, 0),
+    padding: theme.spacing(1.35),
   },
   [`& .${classes.masonry}`]: {
     alignContent: 'flex-start',
@@ -53,13 +58,27 @@ export const InsertSlide = props => {
 
   const [stateDeckId, setStateDeckId] = useState(deck);
   const [stateSlideId, setStateSlideId] = useState(slide);
-  const [step, setStep] = useState(slide ? 2 : deck ? 1 : 0);
+  const [step, setStep] = useState();
 
   const decks = _.filter(sources, o => o.deck !== null);
 
   useEffect(() => {
     onChooseSlide({ deck: stateDeckId, slide: stateSlideId });
   }, [stateSlideId]);
+
+  useEffect(() => {
+    let i;
+    if (deck !== null) {
+      if (slide !== null) {
+        i = 2;
+      } else {
+        i = 1;
+      }
+    } else {
+      i = 0;
+    }
+    setStep(i);
+  }, [deck, slide]);
 
   // useEffect(() => {
   //   if (!stateDeckId && decks.length === 1) {
@@ -89,6 +108,8 @@ export const InsertSlide = props => {
     spacing: 2,
   };
 
+  console.log({ deck, slide, step });
+
   return (
     <Root>
       <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
@@ -97,7 +118,7 @@ export const InsertSlide = props => {
       </Typography>
       {decks?.length > 0 ? (
         <>
-          <Breadcrumbs>
+          <Breadcrumbs className={classes.breadcrumbs}>
             <Link
               {...breadcrumbProps}
               color={step === 0 ? 'textSecondary' : 'primary'}
