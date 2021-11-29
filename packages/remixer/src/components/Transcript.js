@@ -117,8 +117,7 @@ const Section = styled('p')(({ theme }) => ({
     // backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    background: lighten(0.45, theme.palette.secondary.main),
-    color: theme.palette.text.primary,
+    backgroundColor: lighten(0.3, theme.palette.secondary.main),
     padding: theme.spacing(0.3, 0),
   },
 }));
