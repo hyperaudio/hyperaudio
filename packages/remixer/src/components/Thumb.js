@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Card from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
 import CardActionArea from '@mui/material/CardActionArea';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Thumb';
@@ -14,7 +14,7 @@ const classes = {
 const Root = styled(Card, {
   shouldForwardProp: prop => prop !== 'isActive',
 })(({ theme, isActive }) => ({
-  background: isActive ? theme.palette.primary.main : 'auto',
+  background: isActive ? theme.palette.primary.main : 'transparent',
   // boxShadow: `0 0px 0px 5px ${isActive ? theme.palette.primary.main : 'transparent'}`,
   color: isActive ? theme.palette.primary.contrastText : theme.palette.primary.dark,
   outline: `3px solid ${isActive ? theme.palette.primary.main : 'transparent'}`,
