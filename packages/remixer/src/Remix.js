@@ -14,6 +14,9 @@ const classes = {
 const Root = styled('div')(({ theme }) => {
   return {
     backgroundColor: theme.palette.background.default,
+    [`& *::selection`]: {
+      background: 'transparent',
+    },
     [`& .topbarSide`]: {
       flexBasis: theme.spacing(10),
       [theme.breakpoints.up('sm')]: {
