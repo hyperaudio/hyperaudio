@@ -1,6 +1,5 @@
 import React, { useCallback } from 'react';
 
-import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Typography from '@mui/material/Typography';
@@ -17,11 +16,12 @@ const classes = {
   title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper, {
+const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
+  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1, 2, 0.5),
+  boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
   },
@@ -47,7 +47,7 @@ const Root = styled(Paper, {
     },
   },
   [`& .${classes.controls}`]: {
-    margin: theme.spacing(1, 0),
+    marginTop: theme.spacing(1),
   },
 }));
 

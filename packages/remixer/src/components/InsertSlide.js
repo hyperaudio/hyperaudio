@@ -1,11 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import _ from 'lodash';
 
+import Alert from '@mui/material/Alert';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 import Masonry from '@mui/lab/Masonry';
-import Paper from '@mui/material/Paper';
-import Alert from '@mui/material/Alert';
 import SlideshowIcon from '@mui/icons-material/Slideshow';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -22,22 +21,22 @@ const classes = {
   title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper, {
+const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
+  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1, 2, 0.5),
+  boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
   },
   [`& .${classes.canvas}`]: {
-    margin: theme.spacing(1 * -1, 1 * -1, 2),
     maxHeight: '220px',
     overflowY: 'auto',
     padding: theme.spacing(1, 1, 0),
   },
   [`& .${classes.breadcrumbs}`]: {
-    marginBottom: theme.spacing(1),
+    // marginBottom: theme.spacing(1),
   },
   [`& .${classes.masonry}`]: {
     alignContent: 'flex-start',

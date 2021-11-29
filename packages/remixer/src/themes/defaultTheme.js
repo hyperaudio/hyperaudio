@@ -131,6 +131,7 @@ export const defaultTheme = createTheme({
   palette: palette,
   shadows: [
     'none',
+    '0px 1px 2px rgba(0,0,0,0.1), 0px 1px 3px rgba(0,0,0,0.08), 0px 1px 6px rgba(0,0,0,0.04)',
     '0px 1px 3px rgba(0,0,0,0.1), 0px 1px 4px rgba(0,0,0,0.08), 0px 1px 12px rgba(0,0,0,0.04)',
     ...mui.shadows,
   ],

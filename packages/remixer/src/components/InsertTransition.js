@@ -1,7 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
-import Paper from '@mui/material/Paper';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -13,13 +12,20 @@ const classes = {
   title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper)(({ theme }) => ({
+const Root = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1, 2, 0.5),
+  boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
   },
+
+  [`& .${classes.controls}`]: {
+    padding: theme.spacing(0, 0.5),
+    lineHeight: 0,
+  },
   [`& .${classes.slider}`]: {
+    paddingBottom: theme.spacing(1),
     [`& .MuiSlider-markLabel`]: {
       ...theme.typography.caption,
       color: theme.palette.text.secondary,
@@ -51,9 +57,9 @@ export const InsertTransition = ({ editable = false, block: { key, transition: d
           aria-labelledby="insert-slide-title"
           className={classes.slider}
           marks={[
-            { value: 1000, label: '1s' },
-            { value: 3000, label: '3s' },
-            { value: 5000, label: '5s' },
+            { value: 2000, label: '2s' },
+            // { value: 3000, label: '3s' },
+            { value: 4000, label: '4s' },
           ]}
           max={5000}
           min={1000}

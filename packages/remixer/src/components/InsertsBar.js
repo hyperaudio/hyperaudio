@@ -58,7 +58,7 @@ const Effect = styled('div')(({ theme }) => ({
 // dragging a copy: https://github.com/atlassian/react-beautiful-dnd/issues/216#issuecomment-755864913
 export const InsertsBar = props => {
   return (
-    <Root>
+    <Root elevation={2}>
       <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>

@@ -23,6 +23,11 @@ import { InsertSlide } from './InsertSlide';
 import { InsertTitle } from './InsertTitle';
 import { InsertTransition } from './InsertTransition';
 
+const PREFIX = 'Transcript';
+const classes = {
+  insertWrap: `${PREFIX}-insertWrap`,
+};
+
 const Root = styled('div')(({ theme }) => ({
   alignItems: 'center',
   borderTop: `1px solid ${theme.palette.divider}`,
@@ -37,6 +42,9 @@ const Root = styled('div')(({ theme }) => ({
     [`&:hover`]: {
       outline: `1px dashed ${theme.palette.primary.main}`,
     },
+  },
+  [`& .${classes.insertWrap}`]: {
+    margin: theme.spacing(1, 0),
   },
 }));
 
@@ -227,11 +235,17 @@ export const Transcript = props => {
                         {block.type === 'block' ? (
                           <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
                         ) : block.type === 'title' ? (
-                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          <div className={classes.insertWrap}>
+                            <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          </div>
                         ) : block.type === 'slides' ? (
-                          <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
+                          <div className={classes.insertWrap}>
+                            <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
+                          </div>
                         ) : block.type === 'transition' ? (
-                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          <div className={classes.insertWrap}>
+                            <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          </div>
                         ) : null}
                         <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
                           <MoreHorizIcon fontSize="small" />
