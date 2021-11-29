@@ -179,7 +179,13 @@ export const SourceTopbar = props => {
                 <span>
                   {editable && (
                     <Tooltip enterDelay={1500} title="Close">
-                      <IconButton onClick={onSourceClose} size="small" edge="end" color="default" sx={{ ml: 3 }}>
+                      <IconButton
+                        color="default"
+                        edge="end"
+                        onClick={e => onTabClose(e, o.id)}
+                        size="small"
+                        sx={{ ml: 3 }}
+                      >
                         <CloseIcon sx={{ fontSize: '16px' }} />
                       </IconButton>
                     </Tooltip>
