@@ -6,9 +6,11 @@ const remixReducer = (state, action) => {
 
   switch (type) {
     case 'sourceOpen':
-      return { ...state, sources: [...state.sources, action.source] };
+      // TODO deal with sources/library via API
+      // TODO dedupe
+      return { ...state, sources: [...state.sources, action.source], tabs: [...state.tabs, action.source] };
     case 'sourceClose':
-      return { ...state, sources: state.sources.filter(source => source.id !== action.id) };
+      return { ...state, tabs: state.tabs.filter(source => source.id !== action.id) };
     case 'removeBlock':
       return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
     case 'moveUpBlock': {
