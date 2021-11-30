@@ -67,7 +67,7 @@ const TabClose = styled(IconButton, {
 }));
 
 export const SourceTopbar = props => {
-  const { editable, media, sources, source, onSourceChange, onSourceClose, onShowLibrary } = props;
+  const { editable, media, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -98,14 +98,14 @@ export const SourceTopbar = props => {
         )}
         <div className="topbarCore">
           <Tabs className="SourceTopbar">
-            {sources.map(o => (
+            {tabs.map(o => (
               <Tab
                 color="inherit"
                 component="a"
                 endIcon={
                   editable && (
                     <span>
-                      {sources.length > 1 && (
+                      {tabs.length > 1 && (
                         <Tooltip title="Close">
                           <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
                             <CloseIcon sx={{ fontSize: '16px' }} />
@@ -116,7 +116,7 @@ export const SourceTopbar = props => {
                   )
                 }
                 isActive={o.id === source.id}
-                isSingle={sources.length < 2}
+                isSingle={tabs.length < 2}
                 key={o.id}
                 onClick={() => onSourceChange(o.id)}
                 size="small"
@@ -132,7 +132,7 @@ export const SourceTopbar = props => {
         <div className="topbarSide topbarSide--right">
           <Tooltip title="All source transcripts…">
             <span>
-              <IconButton size="small" onClick={onTranscriptsOpen} disabled={sources.length < 2}>
+              <IconButton size="small" onClick={onTranscriptsOpen} disabled={tabs.length < 2}>
                 <MoreVertIcon fontSize="small" />
               </IconButton>
             </span>
@@ -169,7 +169,7 @@ export const SourceTopbar = props => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {sources.map((o, i) => (
+            {tabs.map((o, i) => (
               <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
                 <Tooltip enterDelay={1500} title={o.title}>
                   <ListItemText primaryTypographyProps={{ noWrap: true, variant: 'body2' }} sx={{ maxWidth: '200px' }}>

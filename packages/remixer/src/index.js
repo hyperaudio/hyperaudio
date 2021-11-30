@@ -110,7 +110,11 @@ const Badge = styled(Fab)(({ theme }) => ({
 export const Remixer = props => {
   const { editable, media } = props;
 
-  const [{ sources, remix }, dispatch] = useReducer(remixReducer, { sources: props.sources, remix: props.remix });
+  const [{ sources, tabs, remix }, dispatch] = useReducer(remixReducer, {
+    sources: props.sources,
+    tabs: props.sources,
+    remix: props.remix,
+  });
   const [source, setSource] = useState(sources[0]);
 
   const [showSource, setShowSource] = useState(true);
@@ -172,14 +176,14 @@ export const Remixer = props => {
           {editable ? (
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
               {showSource && (
-                <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange, onSourceClose }} />
+                <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose }} />
               )}
-              <Remix {...{ ...props, remix, sources, showSource, setShowSource, onSourceChange, dispatch }} />
+              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, dispatch }} />
             </DragDropContext>
           ) : (
             <>
-              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
-              <Remix {...{ ...props, remix, sources, showSource, setShowSource, onSourceChange }} />
+              {showSource && <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange }} />}
+              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange }} />
             </>
           )}
         </div>
@@ -190,7 +194,7 @@ export const Remixer = props => {
             </Badge>
           </Tooltip>
         )}
-        {showLibrary && <Library {...{ ...props, sources, onHideLibrary, onSearch, onSourceOpen }} />}
+        {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>
   );
