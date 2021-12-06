@@ -45,7 +45,7 @@
     "@emotion/react": "11.6.0",
     "@emotion/styled": "11.6.0",
     "@mui/icons-material": "5.2.0",
-    "@mui/lab": "5.0.0-alpha.55",
+    "@mui/lab": "5.0.0-alpha.58",
     "@mui/material": "5.1.1",
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
