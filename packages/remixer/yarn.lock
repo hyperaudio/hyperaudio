@@ -1197,19 +1197,19 @@
     react-transition-group "^4.4.2"
     rifm "^0.12.1"
 
-"@mui/material@5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.1.1.tgz#72ba1ce8c253697df96e24cd1f555d5c2569376d"
-  integrity sha512-3mhuKlWnTa1r5cJ8mV66NXXmOB6Ck564oq4X8Ai0CeHqj0f6xCBHOgWXQtX6Cc8Yhf81MJkaN92AECVUpUHqLQ==
+"@mui/material@5.2.2":
+  version "5.2.2"
+  resolved "https://registry.yarnpkg.com/@mui/material/-/material-5.2.2.tgz#4dfbc9186a83e16a9dcdcc10e4a70ecaf641b1a3"
+  integrity sha512-vqmZq+v59CT4V84WcvYkYldnjC6uRddYx0TJqgl2h5YRbbPYCGVVywVvg9cBwxy4j5xI3F2WH6z7WGkHqkJIQA==
   dependencies:
     "@babel/runtime" "^7.16.3"
-    "@mui/base" "5.0.0-alpha.55"
-    "@mui/system" "^5.1.1"
+    "@mui/base" "5.0.0-alpha.58"
+    "@mui/system" "^5.2.2"
     "@mui/types" "^7.1.0"
-    "@mui/utils" "^5.1.1"
+    "@mui/utils" "^5.2.2"
     "@types/react-transition-group" "^4.4.4"
     clsx "^1.1.1"
-    csstype "^3.0.9"
+    csstype "^3.0.10"
     hoist-non-react-statics "^3.3.2"
     prop-types "^15.7.2"
     react-is "^17.0.2"
