@@ -3,6 +3,7 @@ import React from "react";
 import { data } from "./data/remixer-data";
 
 import {
+  ContextFrame,
   InsertSlide,
   InsertTitle,
   InsertTransition,
@@ -88,4 +89,12 @@ Transition.args = {
   block: {
     key: "transition-block",
   },
+};
+
+const ContextTpl = (args) => <ContextFrame {...args} />;
+export const Context = ContextTpl.bind({});
+Context.args = {
+  // block: {
+  // key: "transition-block",
+  // },
 };
