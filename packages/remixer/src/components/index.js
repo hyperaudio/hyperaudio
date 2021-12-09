@@ -1,4 +1,5 @@
 export * from './ClearDialog';
+export * from './ContextFrame';
 export * from './InsertSlide';
 export * from './InsertTitle';
 export * from './InsertTransition';
