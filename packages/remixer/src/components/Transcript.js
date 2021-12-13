@@ -22,6 +22,7 @@ import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '../icons';
 import { InsertSlide } from './InsertSlide';
 import { InsertTitle } from './InsertTitle';
 import { InsertTransition } from './InsertTransition';
+import { ContextFrame } from './ContextFrame';
 
 const PREFIX = 'Transcript';
 const classes = {
@@ -129,9 +130,14 @@ export const Transcript = props => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [focus, setFocus] = useState(null);
+  const [hideContextMenu, setHideContextMenu] = useState(false);
+  const [context, setContext] = useState(null);
+
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
   const onMoreOpen = (e, key) => {
+    const block = blocks.find(b => b.key === key);
+    setHideContextMenu(block.type !== 'block');
     setFocus(key);
     setAnchorEl(e.currentTarget);
   };
@@ -139,6 +145,7 @@ export const Transcript = props => {
   const onMoreClose = useCallback(() => {
     setFocus(null);
     setAnchorEl(null);
+    setHideContextMenu(false);
   }, []);
 
   const moveUpDisabled = useMemo(() => _.findIndex(blocks, o => o.key === focus) === 0, [blocks, focus]);
@@ -155,14 +162,27 @@ export const Transcript = props => {
     () => dispatch({ type: 'appendInsert', insert: 'slides', key: focus }),
     [focus, dispatch],
   );
+
   const appendTitleBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'title', key: focus }),
     [focus, dispatch],
   );
+
   const appendTransitionBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'transition', key: focus }),
     [focus, dispatch],
   );
+
+  const showBlockContext = useCallback(() => {
+    const block = blocks.find(b => b.key === focus);
+    if (block.type === 'block') {
+      setContext(focus);
+    } else setContext(null);
+  }, [focus, blocks]);
+
+  const hideBlockContext = useCallback(() => {
+    setContext(null);
+  }, [focus, blocks]);
 
   const handleClick = useCallback(
     ({ target }) => {
@@ -233,7 +253,21 @@ export const Transcript = props => {
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (
-                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                          context === block.key ? (
+                            <ContextFrame title={sources.find(source => source.id === block.media).title}>
+                              <Transcript
+                                {...{
+                                  ...props,
+                                  editable: false,
+                                  isSource: false,
+                                  id: sources.find(source => source.id === block.media),
+                                  blocks: sources.find(source => source.id === block.media).blocks,
+                                }}
+                              />
+                            </ContextFrame>
+                          ) : (
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                          )
                         ) : block.type === 'title' ? (
                           <div className={classes.insertWrap}>
                             <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
@@ -315,7 +349,17 @@ export const Transcript = props => {
         ) : (
           blocks?.map((block, i) =>
             block.type === 'block' ? (
-              <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+              <div>
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+                {!isSource ? (
+                  <>
+                    BLOCKMENU?
+                    <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                      <MoreHorizIcon fontSize="small" />
+                    </BlockMenu>
+                  </>
+                ) : null}
+              </div>
             ) : block.type === 'title' ? (
               <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
             ) : block.type === 'slides' ? (
@@ -362,13 +406,29 @@ export const Transcript = props => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => console.log('Show context')}>
-          <ListItemIcon>
-            <ShowContextIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
+        {!hideContextMenu ? (
+          context && context === focus ? (
+            <>
+              <MenuItem onClick={hideBlockContext}>
+                <ListItemIcon>
+                  <ShowContextIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>
+              <Divider />
+            </>
+          ) : (
+            <>
+              <MenuItem onClick={showBlockContext}>
+                <ListItemIcon>
+                  <ShowContextIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>
+              <Divider />
+            </>
+          )
+        ) : null}
         <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
           <ListItemIcon>
             <MoveUpIcon color="primary" fontSize="small" />
