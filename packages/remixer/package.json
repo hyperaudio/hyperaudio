@@ -42,11 +42,11 @@
     "dist"
   ],
   "dependencies": {
-    "@emotion/react": "11.7.0",
+    "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
-    "@mui/icons-material": "5.2.0",
+    "@mui/icons-material": "5.2.1",
     "@mui/material": "5.2.2",
-    "@mui/lab": "5.0.0-alpha.58",
+    "@mui/lab": "5.0.0-alpha.59",
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
     "lodash": "4.17.21",
