@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
+import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
@@ -64,6 +65,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   const [active, setActive] = useState();
   const [interval, setInterval] = useState();
   const [referencePlaying, setReferencePlaying] = useState();
+  const [buffering, setBuffering] = useState(false);
   // const [playing, setPlaying] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
@@ -97,14 +99,16 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   }, [intervals, time]);
 
   const onPlay = useCallback(() => {
+    if (buffering) return;
     setReferencePlaying(true);
     // setPlaying(active);
-  }, [active]);
+  }, [active, buffering]);
 
   const onPause = useCallback(() => {
+    if (buffering) return;
     setReferencePlaying(false);
     // setPlaying(null);
-  }, []);
+  }, [buffering]);
 
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
@@ -115,6 +119,14 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
 
   console.log({ referencePlaying });
   console.log({ active });
+
+  useEffect(() => {
+    if (buffering && referencePlaying) {
+      reference.current.pause();
+    } else if (!buffering && referencePlaying) {
+      reference.current.play();
+    }
+  }, [buffering, reference]);
 
   return (
     <Root>
@@ -129,7 +141,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
               playing={referencePlaying && active === id}
               media={{ id, url }}
               // {...{ players, setActive, setPlaying }}
-              {...{ players, setActive }}
+              {...{ players, setActive, buffering, setBuffering }}
             />
           </div>
         ))}
@@ -138,9 +150,15 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
               {referencePlaying ? (
-                <IconButton onClick={pause} size="small">
-                  <PauseIcon />
-                </IconButton>
+                buffering ? (
+                  <IconButton onClick={pause} size="small">
+                    <FastForwardIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={pause} size="small">
+                    <PauseIcon />
+                  </IconButton>
+                )
               ) : (
                 <IconButton onClick={play} size="small">
                   <PlayArrowIcon />
@@ -176,7 +194,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 };
 
-const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time }) => {
+const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time, setBuffering }) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
 
@@ -222,6 +240,16 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
     [id],
   );
 
+  const onBuffer = useCallback(() => {
+    console.log('onBuffer', id);
+    setBuffering(true);
+  }, [id, setBuffering]);
+
+  const onBufferEnd = useCallback(() => {
+    console.log('onBufferEnd', id);
+    setBuffering(false);
+  }, [id, setBuffering]);
+
   return (
     <ReactPlayer
       key={id}
@@ -229,7 +257,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
       width="100%"
       height="100%"
       muted={!primed}
-      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
+      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
     />
   );
 };
