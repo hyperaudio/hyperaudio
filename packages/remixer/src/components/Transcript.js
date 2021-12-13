@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
 import { lighten } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -22,6 +22,7 @@ import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '../icons';
 import { InsertSlide } from './InsertSlide';
 import { InsertTitle } from './InsertTitle';
 import { InsertTransition } from './InsertTransition';
+import { ContextFrame } from './ContextFrame';
 
 const PREFIX = 'Transcript';
 const classes = {
@@ -124,14 +125,22 @@ const Section = styled('p')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { id, blocks, sources, reference, time, editable, isSource = false, dispatch } = props;
-  const [range, setRange] = useState();
+  const { id, blocks, sources, reference, time, editable, isSource = false, noMenu, dispatch, externalRange } = props;
+  const container = useRef();
+
+  const [range, setRange] = useState(externalRange);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [focus, setFocus] = useState(null);
+  const [context, setContext] = useState(null);
+  const [contextData, setContextData] = useState({});
+  const [hideContextMenu, setHideContextMenu] = useState(false);
+
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
   const onMoreOpen = (e, key) => {
+    const block = blocks.find(b => b.key === key);
+    setHideContextMenu(block.type !== 'block');
     setFocus(key);
     setAnchorEl(e.currentTarget);
   };
@@ -139,6 +148,7 @@ export const Transcript = props => {
   const onMoreClose = useCallback(() => {
     setFocus(null);
     setAnchorEl(null);
+    setHideContextMenu(false);
   }, []);
 
   const moveUpDisabled = useMemo(() => _.findIndex(blocks, o => o.key === focus) === 0, [blocks, focus]);
@@ -155,14 +165,38 @@ export const Transcript = props => {
     () => dispatch({ type: 'appendInsert', insert: 'slides', key: focus }),
     [focus, dispatch],
   );
+
   const appendTitleBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'title', key: focus }),
     [focus, dispatch],
   );
+
   const appendTransitionBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'transition', key: focus }),
     [focus, dispatch],
   );
+
+  const showBlockContext = useCallback(() => {
+    const block = blocks.find(b => b.key === focus);
+    if (block.type === 'block') {
+      const source = sources.find(source => source.id === block.media);
+      setContext(focus);
+      setContextData({
+        id: block.media,
+        title: source.title,
+        blocks: source.blocks,
+        externalRange: [block.start, block.end],
+      });
+    } else {
+      setContext(null);
+      setContextData({});
+    }
+  }, [focus, blocks]);
+
+  const hideBlockContext = useCallback(() => {
+    setContext(null);
+    setContextData({});
+  }, [focus, blocks]);
 
   const handleClick = useCallback(
     ({ target }) => {
@@ -216,11 +250,17 @@ export const Transcript = props => {
     [blocks],
   );
 
+  useEffect(() => {
+    if (externalRange) {
+      container.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [externalRange, container]);
+
   useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
     <Root>
-      <Container maxWidth="sm" onClick={handleClick}>
+      <Container ref={container} maxWidth="sm" onClick={handleClick}>
         {editable && !isSource ? (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
             {(provided, snapshot) => (
@@ -233,7 +273,21 @@ export const Transcript = props => {
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (
-                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                          context === block.key ? (
+                            <ContextFrame title={contextData.title}>
+                              <Transcript
+                                {...{
+                                  ...props,
+                                  editable: false,
+                                  isSource: false,
+                                  noMenu: true,
+                                  ...contextData,
+                                }}
+                              />
+                            </ContextFrame>
+                          ) : (
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                          )
                         ) : block.type === 'title' ? (
                           <div className={classes.insertWrap}>
                             <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
@@ -312,10 +366,51 @@ export const Transcript = props => {
               </div>
             )}
           </Droppable>
+        ) : range ? (
+          <>
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="before-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="in-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="after-range" />
+              ))}
+          </>
         ) : (
           blocks?.map((block, i) =>
             block.type === 'block' ? (
-              <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+              <DragBlock>
+                {context === block.key ? (
+                  <ContextFrame title={contextData.title}>
+                    <Transcript
+                      {...{
+                        ...props,
+                        editable: false,
+                        isSource: false,
+                        noMenu: true,
+                        ...contextData,
+                      }}
+                    />
+                  </ContextFrame>
+                ) : (
+                  <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+                )}
+                {!isSource && !noMenu ? (
+                  <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                    <MoreHorizIcon fontSize="small" />
+                  </BlockMenu>
+                ) : null}
+              </DragBlock>
             ) : block.type === 'title' ? (
               <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
             ) : block.type === 'slides' ? (
@@ -362,51 +457,71 @@ export const Transcript = props => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => console.log('Show context')}>
-          <ListItemIcon>
-            <ShowContextIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
-          <ListItemIcon>
-            <MoveUpIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock}>
-          <ListItemIcon>
-            <MoveDownIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={appendSlidesBlock}>
-          <ListItemIcon>
-            <SlideshowIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem onClick={appendTitleBlock}>
-          <ListItemIcon>
-            <TextFieldsIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem onClick={appendTransitionBlock}>
-          <ListItemIcon>
-            <MovieFilterIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={removeBlock}>
-          <ListItemIcon>
-            <DeleteIcon color="error" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
-        </MenuItem>
+        {!hideContextMenu ? (
+          context && context === focus ? (
+            <>
+              <MenuItem onClick={hideBlockContext}>
+                <ListItemIcon>
+                  <ShowContextIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>
+              {editable ? <Divider /> : null}
+            </>
+          ) : (
+            <>
+              <MenuItem onClick={showBlockContext}>
+                <ListItemIcon>
+                  <ShowContextIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>
+              {editable ? <Divider /> : null}
+            </>
+          )
+        ) : null}
+        {editable ? (
+          <>
+            <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
+              <ListItemIcon>
+                <MoveUpIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+            <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock}>
+              <ListItemIcon>
+                <MoveDownIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={appendSlidesBlock}>
+              <ListItemIcon>
+                <SlideshowIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+            <MenuItem onClick={appendTitleBlock}>
+              <ListItemIcon>
+                <TextFieldsIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+            <MenuItem onClick={appendTransitionBlock}>
+              <ListItemIcon>
+                <MovieFilterIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+            <Divider />
+            <MenuItem onClick={removeBlock}>
+              <ListItemIcon>
+                <DeleteIcon color="error" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
+            </MenuItem>
+          </>
+        ) : null}
       </Menu>
     </Root>
   );
