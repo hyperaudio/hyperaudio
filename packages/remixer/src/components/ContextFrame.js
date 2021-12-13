@@ -28,11 +28,11 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 export const ContextFrame = props => {
-  const { children, className } = props;
+  const { title, children, className } = props;
   return (
     <Root className={`${classes.root} ${className}`}>
       <div className={classes.head}>
-        <Typography variant="body2">Hello head</Typography>
+        <Typography variant="body2">{title}</Typography>
       </div>
       <div className={classes.body}>{children}</div>
     </Root>
