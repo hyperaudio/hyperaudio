@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
 import { lighten } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
@@ -125,13 +125,16 @@ const Section = styled('p')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { id, blocks, sources, reference, time, editable, isSource = false, noMenu, dispatch } = props;
-  const [range, setRange] = useState();
+  const { id, blocks, sources, reference, time, editable, isSource = false, noMenu, dispatch, externalRange } = props;
+  const container = useRef();
+
+  const [range, setRange] = useState(externalRange);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [focus, setFocus] = useState(null);
-  const [hideContextMenu, setHideContextMenu] = useState(false);
   const [context, setContext] = useState(null);
+  const [contextData, setContextData] = useState({});
+  const [hideContextMenu, setHideContextMenu] = useState(false);
 
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
@@ -176,12 +179,23 @@ export const Transcript = props => {
   const showBlockContext = useCallback(() => {
     const block = blocks.find(b => b.key === focus);
     if (block.type === 'block') {
+      const source = sources.find(source => source.id === block.media);
       setContext(focus);
-    } else setContext(null);
+      setContextData({
+        id: block.media,
+        title: source.title,
+        blocks: source.blocks,
+        externalRange: [block.start, block.end],
+      });
+    } else {
+      setContext(null);
+      setContextData({});
+    }
   }, [focus, blocks]);
 
   const hideBlockContext = useCallback(() => {
     setContext(null);
+    setContextData({});
   }, [focus, blocks]);
 
   const handleClick = useCallback(
@@ -236,11 +250,17 @@ export const Transcript = props => {
     [blocks],
   );
 
+  useEffect(() => {
+    if (externalRange) {
+      container.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [externalRange, container]);
+
   useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
     <Root>
-      <Container maxWidth="sm" onClick={handleClick}>
+      <Container ref={container} maxWidth="sm" onClick={handleClick}>
         {editable && !isSource ? (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
             {(provided, snapshot) => (
@@ -254,15 +274,14 @@ export const Transcript = props => {
                         </DragHandle>
                         {block.type === 'block' ? (
                           context === block.key ? (
-                            <ContextFrame title={sources.find(source => source.id === block.media).title}>
+                            <ContextFrame title={contextData.title}>
                               <Transcript
                                 {...{
                                   ...props,
                                   editable: false,
                                   isSource: false,
                                   noMenu: true,
-                                  id: sources.find(source => source.id === block.media),
-                                  blocks: sources.find(source => source.id === block.media).blocks,
+                                  ...contextData,
                                 }}
                               />
                             </ContextFrame>
@@ -347,20 +366,39 @@ export const Transcript = props => {
               </div>
             )}
           </Droppable>
+        ) : range ? (
+          <>
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="before-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="in-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="after-range" />
+              ))}
+          </>
         ) : (
           blocks?.map((block, i) =>
             block.type === 'block' ? (
               <DragBlock>
                 {context === block.key ? (
-                  <ContextFrame title={sources.find(source => source.id === block.media).title}>
+                  <ContextFrame title={contextData.title}>
                     <Transcript
                       {...{
                         ...props,
                         editable: false,
                         isSource: false,
                         noMenu: true,
-                        id: sources.find(source => source.id === block.media),
-                        blocks: sources.find(source => source.id === block.media).blocks,
+                        ...contextData,
                       }}
                     />
                   </ContextFrame>
