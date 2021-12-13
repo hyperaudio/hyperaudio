@@ -59,14 +59,19 @@ const Remix = props => {
       reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
   }, [reference]);
 
+  const [blocksOverride, setBlockOverride] = useState();
+
   return (
     <>
       <Root className="RemixerPane RemixerPane--Remix">
         <RemixTopbar {...props} />
         {blocks?.length > 0 ? (
           <>
-            <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ id, blocks, sources, players, reference, time, editable, dispatch }} />
+            <Theatre {...{ media, players, reference, time }} blocks={blocksOverride ?? blocks} />
+            <Transcript
+              {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride }}
+              editable={editable && !blocksOverride}
+            />
           </>
         ) : (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>

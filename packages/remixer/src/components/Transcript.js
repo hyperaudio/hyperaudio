@@ -125,7 +125,19 @@ const Section = styled('p')(({ theme }) => ({
 }));
 
 export const Transcript = props => {
-  const { id, blocks, sources, reference, time, editable, isSource = false, noMenu, dispatch, externalRange } = props;
+  const {
+    id,
+    blocks,
+    sources,
+    reference,
+    time,
+    editable,
+    isSource = false,
+    noMenu,
+    dispatch,
+    setBlockOverride,
+    externalRange,
+  } = props;
   const container = useRef();
 
   const [range, setRange] = useState(externalRange);
@@ -177,29 +189,45 @@ export const Transcript = props => {
   );
 
   const showBlockContext = useCallback(() => {
-    const block = blocks.find(b => b.key === focus);
+    const blockIndex = blocks.findIndex(b => b.key === focus);
+    const block = blocks[blockIndex];
+    const offset = blocks.slice(0, blockIndex).reduce((acc, b) => acc + b.duration + b.gap, 0);
+
     if (block.type === 'block') {
       const source = sources.find(source => source.id === block.media);
-      setContext(focus);
+
       setContextData({
         id: block.media,
         title: source.title,
-        blocks: source.blocks,
+        index: blockIndex,
+        offset,
+        blocks: source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })), // TODO: better random key
         externalRange: [block.start, block.end],
       });
+
+      setBlockOverride([
+        ...blocks.slice(0, blockIndex),
+        ...source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })),
+        ...blocks.slice(blockIndex + 1),
+      ]);
+      setContext(focus);
     } else {
       setContext(null);
       setContextData({});
     }
-  }, [focus, blocks]);
+  }, [focus, blocks, setBlockOverride]);
 
   const hideBlockContext = useCallback(() => {
     setContext(null);
     setContextData({});
-  }, [focus, blocks]);
+    setBlockOverride(null);
+  }, [focus, blocks, setBlockOverride]);
 
   const handleClick = useCallback(
-    ({ target }) => {
+    event => {
+      if (externalRange) event.stopPropagation();
+      const { target } = event;
+
       const selection = window.getSelection();
       console.log(target, selection);
 
@@ -207,6 +235,12 @@ export const Transcript = props => {
 
       if (selection.isCollapsed && target.getAttribute('data-key')) {
         setRange(null);
+
+        if (!externalRange) {
+          setContext(null);
+          setContextData({});
+          setBlockOverride(null);
+        }
 
         const key = target.getAttribute('data-key');
         const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
@@ -247,7 +281,7 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks],
+    [blocks, externalRange],
   );
 
   useEffect(() => {
@@ -403,7 +437,11 @@ export const Transcript = props => {
                     />
                   </ContextFrame>
                 ) : (
-                  <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
+                  <Block
+                    key={`${id}:${block.key}:${i}`}
+                    {...{ blocks, block, time, range }}
+                    // offset={contextData && contextData.index > i ? contextData.offset : 0}
+                  />
                 )}
                 {!isSource && !noMenu ? (
                   <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
@@ -528,11 +566,11 @@ export const Transcript = props => {
 };
 
 const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
-  const { key, pk, speaker, text, duration } = block;
+  const { key, pk, speaker, text, duration, offset: _offset = 0 } = block;
 
   const offset = useMemo(() => {
     const index = blocks.findIndex(b => b === block);
-    return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, 0);
+    return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, _offset);
   }, [blocks, block]);
 
   const include = useMemo(() => {
