@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import _, { isNull } from 'lodash';
+import _ from 'lodash';
 
 import Alert from '@mui/material/Alert';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
@@ -20,8 +20,8 @@ const classes = {
 };
 
 const Root = styled('div', {
-  shouldForwardProp: prop => prop !== 'fullSize',
-})(({ theme, fullSize }) => ({
+  shouldForwardProp: prop => prop !== 'editable',
+})(({ theme, editable }) => ({
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
@@ -34,7 +34,8 @@ const Root = styled('div', {
     marginTop: theme.spacing(1 * -1),
   },
   [`& .${classes.canvas}`]: {
-    maxHeight: '220px',
+    lineHeight: 1,
+    maxHeight: editable ? '220px' : 'auto',
     overflowY: 'auto',
     padding: theme.spacing(1.35),
   },
@@ -111,37 +112,41 @@ export const InsertSlide = props => {
   console.log({ deck, slide, step });
 
   return (
-    <Root>
-      <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
-        <SlideshowIcon fontSize="small" sx={{ marginRight: '6px' }} />
-        <span id="insert-title">Slide</span>
-      </Typography>
+    <Root editable={editable}>
+      {editable && (
+        <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
+          <SlideshowIcon fontSize="small" sx={{ marginRight: '6px' }} />
+          <span id="insert-title">Slide</span>
+        </Typography>
+      )}
       {decks?.length > 0 ? (
         <>
-          <Breadcrumbs className={classes.breadcrumbs}>
-            <Link
-              {...breadcrumbProps}
-              color={step === 0 ? 'textSecondary' : 'primary'}
-              href={step > 0 ? '' : null}
-              onClick={() => setStep(0)}
-              underline={step > 0 ? 'hover' : 'none'}
-            >
-              Available decks
-            </Link>
-            {[1, 2].includes(step) && stateDeckId && (
+          {editable && (
+            <Breadcrumbs className={classes.breadcrumbs}>
               <Link
                 {...breadcrumbProps}
-                color={step === 1 ? 'textSecondary' : 'primary'}
-                href={step > 1 ? '' : null}
-                onClick={step > 1 ? () => setStep(1) : null}
-                sx={{ maxWidth: '160px' }}
-                underline={step > 1 ? 'hover' : 'none'}
+                color={step === 0 ? 'textSecondary' : 'primary'}
+                href={step > 0 ? '' : null}
+                onClick={() => setStep(0)}
+                underline={step > 0 ? 'hover' : 'none'}
               >
-                {_.find(decks, o => o.id === stateDeckId)?.title}
+                Available decks
               </Link>
-            )}
-            {step === 2 && <Typography {...breadcrumbProps}>Slide {stateSlideId + 1}</Typography>}
-          </Breadcrumbs>
+              {[1, 2].includes(step) && stateDeckId && (
+                <Link
+                  {...breadcrumbProps}
+                  color={step === 1 ? 'textSecondary' : 'primary'}
+                  href={step > 1 ? '' : null}
+                  onClick={step > 1 ? () => setStep(1) : null}
+                  sx={{ maxWidth: '160px' }}
+                  underline={step > 1 ? 'hover' : 'none'}
+                >
+                  {_.find(decks, o => o.id === stateDeckId)?.title}
+                </Link>
+              )}
+              {step === 2 && <Typography {...breadcrumbProps}>Slide {stateSlideId + 1}</Typography>}
+            </Breadcrumbs>
+          )}
           <div className={classes.canvas}>
             {step === 0 && (
               <Masonry {...masonryProps}>

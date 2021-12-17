@@ -322,7 +322,7 @@ export const Transcript = props => {
                           ) : (
                             <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
                           )
-                        ) : block.type === 'title' ? (
+                        ) : block.type === 'title' && editable ? (
                           <div className={classes.insertWrap}>
                             <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                           </div>
@@ -330,7 +330,7 @@ export const Transcript = props => {
                           <div className={classes.insertWrap}>
                             <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
                           </div>
-                        ) : block.type === 'transition' ? (
+                        ) : block.type === 'transition' && editable ? (
                           <div className={classes.insertWrap}>
                             <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                           </div>
@@ -449,16 +449,22 @@ export const Transcript = props => {
                   </BlockMenu>
                 ) : null}
               </DragBlock>
-            ) : block.type === 'title' ? (
-              <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+            ) : block.type === 'title' && editable ? (
+              <div className={classes.insertWrap}>
+                <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+              </div>
             ) : block.type === 'slides' ? (
-              <InsertSlide
-                key={`${id}:${block.key}:${i}`}
-                onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
-                {...{ sources, block, dispatch }}
-              />
-            ) : block.type === 'transition' ? (
-              <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+              <div className={classes.insertWrap}>
+                <InsertSlide
+                  key={`${id}:${block.key}:${i}`}
+                  onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
+                  {...{ sources, block, dispatch, editable }}
+                />
+              </div>
+            ) : block.type === 'transition' && editable ? (
+              <div className={classes.insertWrap}>
+                <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+              </div>
             ) : null,
           )
         )}
