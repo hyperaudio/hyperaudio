@@ -124,6 +124,7 @@ export const defaultTheme = createTheme({
         tooltip: {
           background: palette.primary.dark,
           color: palette.primary.contrastText,
+          padding: mui.spacing(0, 1),
         },
       },
     },

@@ -122,7 +122,7 @@ export const SourceTopbar = props => {
                 size="small"
                 variant="contained"
               >
-                <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
+                <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption" title={o.title}>
                   {o.title}
                 </Typography>
               </Tab>
@@ -171,11 +171,13 @@ export const SourceTopbar = props => {
           >
             {tabs.map((o, i) => (
               <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
-                <Tooltip enterDelay={1500} title={o.title}>
-                  <ListItemText primaryTypographyProps={{ noWrap: true, variant: 'body2' }} sx={{ maxWidth: '200px' }}>
-                    {o.title}
-                  </ListItemText>
-                </Tooltip>
+                <ListItemText
+                  primaryTypographyProps={{ noWrap: true, variant: 'body2' }}
+                  sx={{ maxWidth: '200px' }}
+                  title={o.title}
+                >
+                  {o.title}
+                </ListItemText>
                 <span>
                   {editable && (
                     <Tooltip enterDelay={1500} title="Close">
