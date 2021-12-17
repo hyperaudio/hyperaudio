@@ -68,10 +68,12 @@ const Remix = props => {
         {blocks?.length > 0 ? (
           <>
             <Theatre {...{ media, players, reference, time }} blocks={blocksOverride ?? blocks} />
-            <Transcript
-              {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride }}
-              editable={editable && !blocksOverride}
-            />
+            <div className="transcriptWrap">
+              <Transcript
+                {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride }}
+                editable={editable && !blocksOverride}
+              />
+            </div>
           </>
         ) : (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>

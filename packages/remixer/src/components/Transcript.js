@@ -30,14 +30,6 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-  alignItems: 'center',
-  borderTop: `1px solid ${theme.palette.divider}`,
-  display: 'flex',
-  flex: '2 2 66%',
-  flexFlow: 'column nowrap',
-  justifyContent: 'flex-start',
-  overflow: 'auto',
-  padding: theme.spacing(4, 2, 18, 2),
   [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
     borderRadius: theme.shape.borderRadius,
     [`&:hover`]: {

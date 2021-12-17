@@ -48,7 +48,9 @@ const Source = props => {
     <Root className={`RemixerPane RemixerPane--Source`}>
       <SourceTopbar {...props} />
       <Theatre {...{ blocks, media, players, reference, time }} />
-      <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
+      <div className="transcriptWrap">
+        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
+      </div>
     </Root>
   );
 };
