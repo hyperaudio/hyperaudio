@@ -46,7 +46,7 @@
     "@emotion/styled": "11.6.0",
     "@mui/icons-material": "5.2.1",
     "@mui/material": "5.2.2",
-    "@mui/lab": "5.0.0-alpha.59",
+    "@mui/lab": "5.0.0-alpha.60",
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
     "lodash": "4.17.21",
