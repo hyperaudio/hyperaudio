@@ -215,6 +215,10 @@ export const Transcript = props => {
     setBlockOverride(null);
   }, [focus, blocks, setBlockOverride]);
 
+  const toggleSourceTabWContext = () => {
+    console.log('toggleSourceTabWContext');
+  };
+
   const handleClick = useCallback(
     event => {
       if (externalRange) event.stopPropagation();
@@ -415,7 +419,7 @@ export const Transcript = props => {
         ) : (
           blocks?.map((block, i) =>
             block.type === 'block' ? (
-              <DragBlock>
+              <DragBlock key={`${id}:${block.key}:${i}`}>
                 {context === block.key ? (
                   <ContextFrame title={contextData.title}>
                     <Transcript
@@ -494,70 +498,66 @@ export const Transcript = props => {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         {!hideContextMenu ? (
-          context && context === focus ? (
-            <>
-              <MenuItem onClick={hideBlockContext}>
-                <ListItemIcon>
-                  <ShowContextIcon color="primary" fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
-              </MenuItem>
-              {editable ? <Divider /> : null}
-            </>
+          context && context === focus && !editable ? (
+            <MenuItem onClick={hideBlockContext}>
+              <ListItemIcon>
+                <ShowContextIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
           ) : (
-            <>
-              <MenuItem onClick={showBlockContext}>
-                <ListItemIcon>
-                  <ShowContextIcon color="primary" fontSize="small" />
-                </ListItemIcon>
-                <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
-              </MenuItem>
-              {editable ? <Divider /> : null}
-            </>
+            <MenuItem onClick={editable ? toggleSourceTabWContext : showBlockContext}>
+              <ListItemIcon>
+                <ShowContextIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
           )
         ) : null}
-        {editable ? (
-          <>
-            <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
-              <ListItemIcon>
-                <MoveUpIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-            <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock}>
-              <ListItemIcon>
-                <MoveDownIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={appendSlidesBlock}>
-              <ListItemIcon>
-                <SlideshowIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-            <MenuItem onClick={appendTitleBlock}>
-              <ListItemIcon>
-                <TextFieldsIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-            <MenuItem onClick={appendTransitionBlock}>
-              <ListItemIcon>
-                <MovieFilterIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={removeBlock}>
-              <ListItemIcon>
-                <DeleteIcon color="error" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
-            </MenuItem>
-          </>
-        ) : null}
+        {editable ? <Divider /> : null}
+        {editable
+          ? [
+              <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock} key="moveUp">
+                <ListItemIcon>
+                  <MoveUpIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock} key="moveDown">
+                <ListItemIcon>
+                  <MoveDownIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <Divider key="divider1" />,
+              <MenuItem onClick={appendSlidesBlock} key="appendSlide">
+                ,
+                <ListItemIcon>
+                  <SlideshowIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem onClick={appendTitleBlock} key="appendTitle">
+                <ListItemIcon>
+                  <TextFieldsIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem onClick={appendTransitionBlock} key="appendTransition">
+                <ListItemIcon>
+                  <MovieFilterIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <Divider key="divider2" />,
+              <MenuItem onClick={removeBlock} key="removeBlock">
+                <ListItemIcon>
+                  <DeleteIcon color="error" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
+              </MenuItem>,
+            ]
+          : null}
       </Menu>
     </Root>
   );
