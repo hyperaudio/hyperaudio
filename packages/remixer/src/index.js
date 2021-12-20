@@ -120,17 +120,20 @@ const Badge = styled(Fab)(({ theme }) => ({
 export const Remixer = props => {
   const { editable, media } = props;
 
-  const [{ sources, tabs, remix }, dispatch] = useReducer(remixReducer, {
+  const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
     sources: props.sources,
     tabs: props.sources,
     remix: props.remix,
+    source: props.sources[0],
   });
-  const [source, setSource] = useState(sources[0]);
 
   const [showSource, setShowSource] = useState(true);
   const [showLibrary, setShowLibrary] = useState(false);
 
-  const onSourceChange = useCallback(id => setSource(_.find(sources, o => o.id === id)), [sources]);
+  const onSourceChange = useCallback(
+    id => dispatch({ type: 'sourceOpen', source: props.sources.find(m => m.id === id) }),
+    [props],
+  );
 
   const onShowLibrary = useCallback(() => setShowLibrary(true), []);
   const onHideLibrary = useCallback(() => setShowLibrary(false), []);

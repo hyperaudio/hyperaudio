@@ -7,8 +7,11 @@ const remixReducer = (state, action) => {
   switch (type) {
     case 'sourceOpen':
       // TODO deal with sources/library via API
-      // TODO dedupe
-      return { ...state, sources: [...state.sources, action.source], tabs: [...state.tabs, action.source] };
+      let sources = state.sources;
+      let tabs = state.tabs;
+      if (!sources.find(s => s.id === action.source.id)) sources = [...state.sources, action.source];
+      if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
+      return { ...state, sources, tabs, source: action.source };
     case 'sourceClose':
       return { ...state, tabs: state.tabs.filter(source => source.id !== action.id) };
     case 'removeBlock':

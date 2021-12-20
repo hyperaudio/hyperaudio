@@ -115,7 +115,7 @@ export const SourceTopbar = props => {
                     </span>
                   )
                 }
-                isActive={o.id === source.id}
+                isActive={o.id === source?.id}
                 isSingle={tabs.length < 2}
                 key={o.id}
                 onClick={() => onSourceChange(o.id)}

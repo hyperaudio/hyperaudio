@@ -129,6 +129,7 @@ export const Transcript = props => {
     dispatch,
     setBlockOverride,
     externalRange,
+    onSourceChange,
   } = props;
   const container = useRef();
 
@@ -184,40 +185,41 @@ export const Transcript = props => {
     const blockIndex = blocks.findIndex(b => b.key === focus);
     const block = blocks[blockIndex];
     const offset = blocks.slice(0, blockIndex).reduce((acc, b) => acc + b.duration + b.gap, 0);
+    const source = sources.find(source => source.id === block.media);
 
-    if (block.type === 'block') {
-      const source = sources.find(source => source.id === block.media);
+    if (!editable) {
+      if (block.type === 'block') {
+        setContextData({
+          id: block.media,
+          title: source.title,
+          index: blockIndex,
+          offset,
+          blocks: source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })), // TODO: better random key
+          externalRange: [block.start, block.end],
+        });
 
-      setContextData({
-        id: block.media,
-        title: source.title,
-        index: blockIndex,
-        offset,
-        blocks: source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })), // TODO: better random key
-        externalRange: [block.start, block.end],
-      });
-
-      setBlockOverride([
-        ...blocks.slice(0, blockIndex),
-        ...source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })),
-        ...blocks.slice(blockIndex + 1),
-      ]);
-      setContext(focus);
+        setBlockOverride([
+          ...blocks.slice(0, blockIndex),
+          ...source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })),
+          ...blocks.slice(blockIndex + 1),
+        ]);
+        setContext(focus);
+      } else {
+        setContext(null);
+        setContextData({});
+      }
     } else {
-      setContext(null);
-      setContextData({});
+      console.log({ type: 'sourceOpen', source });
+      onSourceChange(source.id);
+      dispatch({ type: 'sourceOpen', source });
     }
-  }, [focus, blocks, setBlockOverride]);
+  }, [focus, blocks, setBlockOverride, editable, dispatch, onSourceChange]);
 
   const hideBlockContext = useCallback(() => {
     setContext(null);
     setContextData({});
     setBlockOverride(null);
   }, [focus, blocks, setBlockOverride]);
-
-  const toggleSourceTabWContext = () => {
-    console.log('toggleSourceTabWContext');
-  };
 
   const handleClick = useCallback(
     event => {
@@ -506,7 +508,7 @@ export const Transcript = props => {
               <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
             </MenuItem>
           ) : (
-            <MenuItem onClick={editable ? toggleSourceTabWContext : showBlockContext}>
+            <MenuItem onClick={showBlockContext}>
               <ListItemIcon>
                 <ShowContextIcon color="primary" fontSize="small" />
               </ListItemIcon>
