@@ -30,7 +30,7 @@ const Root = styled('div')(({ theme }) => {
   return {
     [`& .RemixTitleField`]: {
       [`& .MuiOutlinedInput-notchedOutline`]: {
-        borderColor: 'transparent',
+        borderColor: 'transparent !important',
       },
     },
     [`& .RemixTitle`]: {
