@@ -7,7 +7,7 @@ verify_ssl = true
 
 [packages]
 src = { editable = true, path = "./src" }
-youtube_dl = "2021.6.6"
+youtube_dl = "2021.12.17"
 smart_open = "5.2.1"
 boto3 = "1.20.24"
 
