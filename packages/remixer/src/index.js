@@ -105,9 +105,19 @@ const Root = styled('div', {
     display: 'flex',
     flex: '2 2 66%',
     flexFlow: 'column nowrap',
+    height: '100%',
     justifyContent: 'flex-start',
     overflow: 'auto',
-    padding: theme.spacing(4, 2, 18, 2),
+    padding: theme.spacing(2, 2, 12, 2),
+  },
+  [`& .transcriptSnapshotDropArea`]: {
+    boxShadow: `0 0 2px 0 ${theme.palette.primary.light} inset`,
+    outline: `3px solid ${theme.palette.primary.main}`,
+    overflow: 'scroll',
+  },
+  [`& .transcriptDropArea`]: {
+    borderRadius: theme.shape.borderRadius,
+    height: '100%',
   },
 }));
 

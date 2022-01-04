@@ -32,6 +32,7 @@ const Root = styled('div')(({ theme }) => {
       flex: '1 1 100%',
       flexDirection: 'column',
       justifyContent: 'center',
+      margin: theme.spacing(0, 2, 12),
       textAlign: 'center',
       [`& *`]: {
         margin: theme.spacing(1),
@@ -79,7 +80,13 @@ const Remix = props => {
         ) : (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>
             {(provided, snapshot) => (
-              <div className={classes.intro} ref={provided.innerRef} {...provided.droppableProps}>
+              <div
+                className={`${classes.intro} transcriptDropArea ${
+                  snapshot.isDraggingOver && 'transcriptSnapshotDropArea'
+                }`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
                 <StartDropIcon />
                 <Typography variant="body2">
                   Start by dropping an effect or a section from the source transcript
