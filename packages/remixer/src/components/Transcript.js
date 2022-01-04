@@ -30,6 +30,7 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
+  width: '100%',
   [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
     borderRadius: theme.shape.borderRadius,
     [`&:hover`]: {
