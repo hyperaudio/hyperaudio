@@ -201,3 +201,22 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/packages/common"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    reviewers:
+      - "Laurian"
+    assignees:
+      - "piotrf"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
