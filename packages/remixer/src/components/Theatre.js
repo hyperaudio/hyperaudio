@@ -66,7 +66,6 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   const [interval, setInterval] = useState();
   const [referencePlaying, setReferencePlaying] = useState();
   const [buffering, setBuffering] = useState(false);
-  // const [playing, setPlaying] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
 
@@ -91,23 +90,24 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 
   useEffect(() => {
-    const interval = intervals.find(([start, end]) => start <= time && time < end);
-    if (interval) {
-      setActive(interval[2].media);
-      setInterval(interval);
+    const currentInterval = intervals.find(([start, end]) => start <= time && time < end);
+
+    console.log(currentInterval, interval, currentInterval !== interval);
+
+    if (currentInterval) {
+      setActive(currentInterval[2].media);
+      setInterval(currentInterval);
     } else setReferencePlaying(false);
-  }, [intervals, time]);
+  }, [intervals, interval, time]);
 
   const onPlay = useCallback(() => {
     if (buffering) return;
     setReferencePlaying(true);
-    // setPlaying(active);
   }, [active, buffering]);
 
   const onPause = useCallback(() => {
     if (buffering) return;
     setReferencePlaying(false);
-    // setPlaying(null);
   }, [buffering]);
 
   const play = useCallback(() => reference.current?.play(), [reference]);
@@ -137,10 +137,8 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
               key={id}
               active={active === id}
               time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
-              // playing={referencePlaying && playing === id && active === id}
               playing={referencePlaying && active === id}
               media={{ id, url }}
-              // {...{ players, setActive, setPlaying }}
               {...{ players, setActive, buffering, setBuffering }}
             />
           </div>
@@ -197,8 +195,6 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
 const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time, setBuffering }) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
-
-  // console.log(time, active, playing, id);
 
   useEffect(() => {
     if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
