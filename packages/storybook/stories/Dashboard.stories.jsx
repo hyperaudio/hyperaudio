@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Dashboard } from "../../app/src/Dashboard.js";
-// import { data } from "./data/remixer-data";
+import { Dashboard } from "../../remixer/src/views/Dashboard.js";
+import { data } from "./data/dashboard-data";
 
 export default {
   title: "App/Dashboard",
@@ -10,7 +10,7 @@ export default {
 
 const DashboardTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <Dashboard {...args} />
+    <Dashboard {...data} {...args} />
   </div>
 );
 

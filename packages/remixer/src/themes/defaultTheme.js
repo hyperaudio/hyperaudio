@@ -45,6 +45,12 @@ export const defaultTheme = createTheme({
         disableElevation: true,
         disableRipple: true,
       },
+      styleOverrides: {
+        root: {
+          borderRadius: 100,
+          padding: mui.spacing(0.5, 0.75),
+        },
+      },
     },
     MuiBreadcrumbs: {
       defaultProps: {
@@ -57,6 +63,7 @@ export const defaultTheme = createTheme({
       },
       styleOverrides: {
         root: {
+          borderRadius: mui.shape.borderRadius,
           padding: mui.spacing(0.15),
           [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
             borderRadius: mui.shape.borderRadius,
@@ -108,7 +115,8 @@ export const defaultTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          borderRadius: mui.spacing(0.75),
+          // borderRadius: mui.spacing(0.75),
+          borderRadius: 100,
         },
       },
     },
@@ -138,6 +146,9 @@ export const defaultTheme = createTheme({
   ],
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
+    button: {
+      fontFamily: 'Nunito, sans-serif',
+    },
     body1: {
       lineHeight: '1.7em',
     },
