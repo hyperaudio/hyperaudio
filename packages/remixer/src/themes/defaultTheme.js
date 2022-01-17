@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { deepOrange } from '@mui/material/colors';
 
 const mui = createTheme();
 
@@ -9,26 +10,22 @@ const palette = {
     default: '#F5F5F7',
     paper: '#fff',
   },
-  divider: 'rgba(0,0,0,0.085)',
+  divider: 'rgba(0,0,0,0.066)',
   primary: {
     ...mui.palette.primary,
-    contrastText: '#fff',
     dark: '#190078',
     light: '#6554A5',
     main: '#6202EE',
-    offwhite: '#E2D1FD',
   },
   secondary: {
     ...mui.palette.secondary,
     contrastText: '#fff',
-    dark: '#12453C',
-    light: '#2A9B86',
-    main: '#207666',
-    offwhite: '#D7E6E2',
+    dark: deepOrange[900],
+    light: deepOrange[50],
+    main: deepOrange[500],
   },
   text: {
     ...mui.palette.text,
-    // secondary: '#190078',
     primary: '#000',
   },
 };
@@ -43,7 +40,6 @@ export const defaultTheme = createTheme({
     MuiButton: {
       defaultProps: {
         disableElevation: true,
-        disableRipple: true,
       },
       styleOverrides: {
         root: {
@@ -146,11 +142,42 @@ export const defaultTheme = createTheme({
   ],
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
-    button: {
-      fontFamily: 'Nunito, sans-serif',
+    h1: {
+      fontFamily: 'Quicksand, sans-serif',
+    },
+    h2: {
+      fontFamily: 'Quicksand, sans-serif',
+    },
+    h3: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontSize: '2.55rem',
+      fontWeight: '700',
+    },
+    h4: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: '700',
+    },
+    h5: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: '700',
+    },
+    h6: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: '700',
     },
     body1: {
-      lineHeight: '1.7em',
+      lineHeight: '1.66em',
+    },
+    body2: {
+      lineHeight: '1.66em',
+    },
+    caption: {
+      letterSpacing: 'normal',
+    },
+    button: {
+      fontFamily: 'Quicksand, sans-serif',
+      fontWeight: '700',
+      letterSpacing: '0.066em',
     },
   },
 });
