@@ -10,6 +10,5 @@ export * from './RemixTopbar';
 export * from './ShareDialog';
 export * from './SourceTopbar';
 export * from './Theatre';
-export * from './Thumb';
 export * from './Transcript';
 export * from './VisibilityDialog';
