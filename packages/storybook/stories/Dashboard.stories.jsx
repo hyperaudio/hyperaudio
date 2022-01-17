@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Dashboard } from "../../remixer/src/views/Dashboard.js";
+import { Dashboard } from "../../app/src/views/Dashboard.js";
 import { data } from "./data/dashboard-data";
 
 export default {

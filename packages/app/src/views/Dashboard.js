@@ -1,45 +1,45 @@
-import React from 'react';
+import React from "react";
 
-import AddIcon from '@mui/icons-material/Add';
-import AppBar from '@mui/material/AppBar';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CloudDoneIcon from '@mui/icons-material/CloudDone';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import ErrorIcon from '@mui/icons-material/Error';
-import Grid from '@mui/material/Grid';
-import HomeIcon from '@mui/icons-material/Home';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import IconButton from '@mui/material/IconButton';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import Link from '@mui/material/Link';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import LogoutIcon from '@mui/icons-material/Logout';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import PublicIcon from '@mui/icons-material/Public';
-import PublicOffIcon from '@mui/icons-material/PublicOff';
-import SettingsIcon from '@mui/icons-material/Settings';
-import SpellcheckIcon from '@mui/icons-material/Spellcheck';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
-import TuneIcon from '@mui/icons-material/Tune';
-import Typography from '@mui/material/Typography';
-import VideocamIcon from '@mui/icons-material/Videocam';
-import { styled } from '@mui/material/styles';
+import AddIcon from "@mui/icons-material/Add";
+import AppBar from "@mui/material/AppBar";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CloudDoneIcon from "@mui/icons-material/CloudDone";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Container from "@mui/material/Container";
+import Divider from "@mui/material/Divider";
+import ErrorIcon from "@mui/icons-material/Error";
+import Grid from "@mui/material/Grid";
+import HomeIcon from "@mui/icons-material/Home";
+import HourglassTopIcon from "@mui/icons-material/HourglassTop";
+import IconButton from "@mui/material/IconButton";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import Link from "@mui/material/Link";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import PublicIcon from "@mui/icons-material/Public";
+import PublicOffIcon from "@mui/icons-material/PublicOff";
+import SettingsIcon from "@mui/icons-material/Settings";
+import SpellcheckIcon from "@mui/icons-material/Spellcheck";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import TuneIcon from "@mui/icons-material/Tune";
+import Typography from "@mui/material/Typography";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import { styled } from "@mui/material/styles";
 
-import { Thumb } from '../components';
+import { Thumb } from "@hyperaudio/common";
 
 const PREFIX = `Dashboard`;
 const classes = {
@@ -52,8 +52,8 @@ const classes = {
 };
 
 const Root = styled(
-  'div',
-  {},
+  "div",
+  {}
 )(({ theme }) => ({
   [`& .${classes.button}`]: {
     // background: theme.palette.background.default,
@@ -80,14 +80,14 @@ const Root = styled(
   [`& .${classes.flicker}`]: {
     animation: `flickerAnimation 1.66s infinite`,
   },
-  '@keyframes flickerAnimation': {
-    '0%': {
+  "@keyframes flickerAnimation": {
+    "0%": {
       opacity: 1,
     },
-    '50%': {
+    "50%": {
       opacity: 0.5,
     },
-    '100%': {
+    "100%": {
       opacity: 1,
     },
   },
@@ -95,22 +95,30 @@ const Root = styled(
 
 function Status(props) {
   const { status, isPublic } = props;
-  if (status === 'uploading') {
+  if (status === "uploading") {
     return (
       <Tooltip title="Uploading…">
-        <CloudUploadIcon size="small" color="primary" className={classes.flicker} />
+        <CloudUploadIcon
+          size="small"
+          color="primary"
+          className={classes.flicker}
+        />
       </Tooltip>
     );
-  } else if (status === 'uploaded') {
+  } else if (status === "uploaded") {
     return (
       <Tooltip title="Uploaded">
         <CloudDoneIcon size="small" color="disabled" />
       </Tooltip>
     );
-  } else if (status === 'transcribing') {
+  } else if (status === "transcribing") {
     return (
       <Tooltip title="Processing…">
-        <HourglassTopIcon size="small" color="primary" className={classes.flicker} />
+        <HourglassTopIcon
+          size="small"
+          color="primary"
+          className={classes.flicker}
+        />
       </Tooltip>
     );
   }
@@ -128,19 +136,29 @@ function Status(props) {
   //     </Tooltip>
   //   );
   // }
-  else if (status === 'corrected') {
+  else if (status === "corrected") {
     return (
       <Tooltip title="Media marked as corrected">
         <SpellcheckIcon size="small" color="disabled" />
       </Tooltip>
     );
-  } else if (status === 'ready') {
+  } else if (status === "ready") {
     return (
-      <Tooltip title={isPublic ? 'Media is publically available' : 'Media is being kept private'}>
-        {isPublic ? <PublicIcon size="small" color="disabled" /> : <PublicOffIcon size="small" color="disabled" />}
+      <Tooltip
+        title={
+          isPublic
+            ? "Media is publically available"
+            : "Media is being kept private"
+        }
+      >
+        {isPublic ? (
+          <PublicIcon size="small" color="disabled" />
+        ) : (
+          <PublicOffIcon size="small" color="disabled" />
+        )}
       </Tooltip>
     );
-  } else if (status === 'error') {
+  } else if (status === "error") {
     return (
       <Tooltip title="Processing failed. Try again.">
         <ErrorIcon size="small" color="error" />
@@ -171,13 +189,14 @@ export function Dashboard(props) {
             <Grid item xs={3}>
               <Button
                 className={classes.button}
-                onClick={e => setOrgMenuAnchor(e.currentTarget)}
+                onClick={(e) => setOrgMenuAnchor(e.currentTarget)}
                 size="small"
                 color="inherit"
                 startIcon={<Avatar sx={{ height: 30, width: 30 }} />}
               >
-                {' '}
-                {organization.name} <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
+                {" "}
+                {organization.name}{" "}
+                <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Button>
               <Tooltip title="Open your organization’s home page">
                 <IconButton
@@ -200,14 +219,14 @@ export function Dashboard(props) {
             <Grid item xs={3} align="right">
               <Tooltip title="Add new…">
                 <IconButton
-                  aria-expanded={openAddMenu ? 'true' : undefined}
+                  aria-expanded={openAddMenu ? "true" : undefined}
                   aria-haspopup="true"
                   aria-label="Add new…"
                   className={classes.button}
                   color="inherit"
                   edge="start"
                   id="openAddMenuButton"
-                  onClick={e => setAddMenuAnchor(e.currentTarget)}
+                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
                   size="large"
                   sx={{ marginRight: 1 }}
                 >
@@ -216,7 +235,7 @@ export function Dashboard(props) {
               </Tooltip>
               <Button
                 className={classes.button}
-                onClick={e => setProfileMenuAnchor(e.currentTarget)}
+                onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
                 color="inherit"
                 size="small"
                 startIcon={
@@ -227,8 +246,8 @@ export function Dashboard(props) {
                   />
                 }
               >
-                {' '}
-                {account.fname} {account.lname.charAt(0)}.{' '}
+                {" "}
+                {account.fname} {account.lname.charAt(0)}.{" "}
                 <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Button>
             </Grid>
@@ -238,7 +257,7 @@ export function Dashboard(props) {
       <Toolbar />
       <main className={classes.main}>
         <Container>
-          {channels.map(channel => {
+          {channels.map((channel) => {
             return (
               <div key={channel.channelId}>
                 <Typography gutterBottom variant="h4">
@@ -253,12 +272,19 @@ export function Dashboard(props) {
                         <TableCell>Created</TableCell>
                         <TableCell>Last modified</TableCell>
                         <TableCell align="center"></TableCell>
-                        <TableCell align="center" padding="checkbox"></TableCell>
+                        <TableCell
+                          align="center"
+                          padding="checkbox"
+                        ></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {channel.media.map(media => {
-                        const isProcessing = ['uploading', 'uploaded', 'transcribing'].includes(media.status);
+                      {channel.media.map((media) => {
+                        const isProcessing = [
+                          "uploading",
+                          "uploaded",
+                          "transcribing",
+                        ].includes(media.status);
                         return (
                           <TableRow key={media.mediaId}>
                             <TableCell className={classes.leftCol}>
@@ -267,20 +293,26 @@ export function Dashboard(props) {
                             <TableCell>
                               <Link
                                 disabled={isProcessing}
-                                underline={isProcessing ? 'none' : 'hover'}
-                                sx={{ cursor: 'pointer' }}
-                                onClick={() => console.log('hello')}
+                                underline={isProcessing ? "none" : "hover"}
+                                sx={{ cursor: "pointer" }}
+                                onClick={() => console.log("hello")}
                                 noWrap
-                                color={isProcessing ? 'text.disabled' : 'primary'}
+                                color={
+                                  isProcessing ? "text.disabled" : "primary"
+                                }
                                 variant="subtitle2"
                               >
                                 {media.title}
                               </Link>
                             </TableCell>
                             <TableCell>
-                              <Tooltip title={media.created || 'Not available'}>
+                              <Tooltip title={media.created || "Not available"}>
                                 <Typography
-                                  sx={{ color: isProcessing ? 'text.disabled' : 'text.secondary' }}
+                                  sx={{
+                                    color: isProcessing
+                                      ? "text.disabled"
+                                      : "text.secondary",
+                                  }}
                                   variant="caption"
                                 >
                                   {media.created}
@@ -288,17 +320,26 @@ export function Dashboard(props) {
                               </Tooltip>
                             </TableCell>
                             <TableCell>
-                              <Tooltip title={media.modified || 'Not available'}>
+                              <Tooltip
+                                title={media.modified || "Not available"}
+                              >
                                 <Typography
-                                  sx={{ color: isProcessing ? 'text.disabled' : 'text.secondary' }}
+                                  sx={{
+                                    color: isProcessing
+                                      ? "text.disabled"
+                                      : "text.secondary",
+                                  }}
                                   variant="caption"
                                 >
-                                  {media?.modified || '—'}
+                                  {media?.modified || "—"}
                                 </Typography>
                               </Tooltip>
                             </TableCell>
                             <TableCell align="center">
-                              <Status status={media.status} isPublic={media.isPublic} />
+                              <Status
+                                status={media.status}
+                                isPublic={media.isPublic}
+                              />
                             </TableCell>
                             <TableCell align="center" padding="checkbox">
                               <IconButton size="small" disabled={isProcessing}>
@@ -320,102 +361,118 @@ export function Dashboard(props) {
         anchorEl={orgMenuAnchor}
         id="orgMenu"
         MenuListProps={{
-          'aria-labelledby': 'openOrgMenuButton',
+          "aria-labelledby": "openOrgMenuButton",
           dense: true,
         }}
         onClose={() => setOrgMenuAnchor(null)}
         open={openOrgMenu}
         variant="menu"
-        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "left", vertical: "top" }}
+        anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
       >
         <MenuItem onClick={() => setAddMenuAnchor(null)}>
           <ListItemIcon>
             <TuneIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>Organization settings</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            Organization settings
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setAddMenuAnchor(null)}>
           <ListItemIcon>
             <LibraryAddIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>Change organization…</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            Change organization…
+          </ListItemText>
         </MenuItem>
       </Menu>
       <Menu
         anchorEl={addMenuAnchor}
         id="addMenu"
         MenuListProps={{
-          'aria-labelledby': 'openAddMenuButton',
+          "aria-labelledby": "openAddMenuButton",
           dense: true,
         }}
         onClose={() => setAddMenuAnchor(null)}
         open={openAddMenu}
         variant="menu"
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={() => setAddMenuAnchor(null)}>
           <ListItemIcon>
             <VideocamIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>New media…</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            New media…
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setAddMenuAnchor(null)}>
           <ListItemIcon>
             <LibraryAddIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>New channel…</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            New channel…
+          </ListItemText>
         </MenuItem>
       </Menu>
       <Menu
         anchorEl={profileMenuAnchor}
         id="profileMenu"
         MenuListProps={{
-          'aria-labelledby': 'openProfileMenuButton',
+          "aria-labelledby": "openProfileMenuButton",
           dense: true,
         }}
         onClose={() => setProfileMenuAnchor(null)}
         open={openProfileMenu}
         variant="menu"
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
           <ListItemIcon>
             <SettingsIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>Preferences</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            Preferences
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
           <ListItemIcon>
             <LogoutIcon color="error" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'error' }}>Log out</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "error" }}>
+            Log out
+          </ListItemText>
         </MenuItem>
       </Menu>
       <Menu
         anchorEl={sortMenuAnchor}
         id="sortMenu"
         MenuListProps={{
-          'aria-labelledby': 'openSortMenuButton',
+          "aria-labelledby": "openSortMenuButton",
           dense: true,
         }}
         onClose={() => setSortMenuAnchor(null)}
         open={openSortMenu}
         variant="menu"
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>By title A->Z</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            By title A->Z
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>By title Z->A</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: "primary" }}>
+            By title Z->A
+          </ListItemText>
         </MenuItem>
       </Menu>
     </Root>
