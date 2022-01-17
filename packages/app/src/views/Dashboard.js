@@ -260,7 +260,7 @@ export function Dashboard(props) {
           {channels.map((channel) => {
             return (
               <div key={channel.channelId}>
-                <Typography gutterBottom variant="h4">
+                <Typography gutterBottom variant="h5">
                   {channel.title}
                 </Typography>
                 <TableContainer className={classes.tableContainer}>

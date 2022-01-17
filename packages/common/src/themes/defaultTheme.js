@@ -160,6 +160,7 @@ export const defaultTheme = createTheme({
     h5: {
       fontFamily: 'Quicksand, sans-serif',
       fontWeight: '700',
+      fontSize: '1.88rem',
     },
     h6: {
       fontFamily: 'Quicksand, sans-serif',
