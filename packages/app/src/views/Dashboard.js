@@ -372,19 +372,10 @@ export function Dashboard(props) {
       >
         <MenuItem onClick={() => setAddMenuAnchor(null)}>
           <ListItemIcon>
-            <TuneIcon color="primary" fontSize="small" />
+            <SettingsIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primaryTypographyProps={{ color: "primary" }}>
             Organization settings
-          </ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <LibraryAddIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Change organization…
           </ListItemText>
         </MenuItem>
       </Menu>
@@ -434,7 +425,7 @@ export function Dashboard(props) {
       >
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
           <ListItemIcon>
-            <SettingsIcon color="primary" fontSize="small" />
+            <TuneIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primaryTypographyProps={{ color: "primary" }}>
             Preferences
