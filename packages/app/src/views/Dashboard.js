@@ -5,19 +5,23 @@ import AppBar from "@mui/material/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardMedia from "@mui/material/CardMedia";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Container from "@mui/material/Container";
 import Divider from "@mui/material/Divider";
+import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
 import Grid from "@mui/material/Grid";
+import Hidden from "@mui/material/Hidden";
 import HomeIcon from "@mui/icons-material/Home";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import IconButton from "@mui/material/IconButton";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import Link from "@mui/material/Link";
-import Hidden from "@mui/material/Hidden";
-
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -25,9 +29,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PublicIcon from "@mui/icons-material/Public";
-import PublicOffIcon from "@mui/icons-material/PublicOff";
 import SettingsIcon from "@mui/icons-material/Settings";
-import SpellcheckIcon from "@mui/icons-material/Spellcheck";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -36,12 +38,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
+import TranslateIcon from "@mui/icons-material/Translate";
 import TuneIcon from "@mui/icons-material/Tune";
 import Typography from "@mui/material/Typography";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import { styled } from "@mui/material/styles";
-
-import { Thumb } from "@hyperaudio/common";
 
 const PREFIX = `Dashboard`;
 const classes = {
@@ -65,7 +66,16 @@ const Root = styled(
   },
   [`& .${classes.topbar}`]: {
     borderBottom: `1px solid ${theme.palette.divider}`,
-    // background: theme.palette.background.default,
+    [`& .MuiButton-root:hover, & .MuiIconButton-root:hover`]: {
+      backgroundColor: theme.palette.primary.light,
+    },
+    [`& .MuiAvatar-root`]: {
+      backgroundColor: theme.palette.secondary.main,
+      fontSize: "1em",
+      fontWeight: "600",
+      letterSpacing: 0,
+      lineHeight: 1,
+    },
   },
   [`& .${classes.leftCol}`]: {
     paddingLeft: theme.spacing(0.5),
@@ -141,26 +151,28 @@ function Status(props) {
   else if (status === "corrected") {
     return (
       <Tooltip title="Media marked as corrected">
-        <SpellcheckIcon fontSize="small" color="disabled" />
+        <CheckCircleIcon fontSize="small" color="disabled" />
       </Tooltip>
     );
-  } else if (status === "ready") {
-    return (
-      <Tooltip
-        title={
-          isPublic
-            ? "Media is publically available"
-            : "Media is being kept private"
-        }
-      >
-        {isPublic ? (
-          <PublicIcon fontSize="small" color="disabled" />
-        ) : (
-          <PublicOffIcon fontSize="small" color="disabled" />
-        )}
-      </Tooltip>
-    );
-  } else if (status === "error") {
+  }
+  // else if (status === "ready") {
+  //   return (
+  //     <Tooltip
+  //       title={
+  //         isPublic
+  //           ? "Media is publically available"
+  //           : "Media is being kept private"
+  //       }
+  //     >
+  //       {isPublic ? (
+  //         <PublicIcon fontSize="small" color="disabled" />
+  //       ) : (
+  //         <PublicOffIcon fontSize="small" color="disabled" />
+  //       )}
+  //     </Tooltip>
+  //   );
+  // }
+  else if (status === "error") {
     return (
       <Tooltip title="Processing failed. Try again.">
         <ErrorIcon fontSize="small" color="error" />
@@ -174,14 +186,14 @@ export function Dashboard(props) {
   const { channels, organization, account } = props;
 
   const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
+  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = React.useState(null);
   const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
   const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
-  const [sortMenuAnchor, setSortMenuAnchor] = React.useState(null);
 
   const openAddMenu = Boolean(addMenuAnchor);
+  const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openProfileMenu = Boolean(profileMenuAnchor);
-  const openSortMenu = Boolean(sortMenuAnchor);
 
   return (
     <Root>
@@ -192,23 +204,32 @@ export function Dashboard(props) {
               <Button
                 className={classes.button}
                 onClick={(e) => setOrgMenuAnchor(e.currentTarget)}
-                fontSize="small"
+                size="small"
                 color="inherit"
-                startIcon={<Avatar sx={{ height: 30, width: 30 }} />}
+                startIcon={
+                  <Avatar
+                    sx={{ height: 28, width: 28 }}
+                    alt={`${account.fname}
+                    ${account.lname}`}
+                  >
+                    {organization.name.charAt(0)}
+                  </Avatar>
+                }
               >
                 {" "}
-                <Hidden mdDown>{organization.name}</Hidden>
-                <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
+                <Hidden mdDown sx={{ marginRight: 0.5 }}>
+                  {organization.name}
+                </Hidden>
+                <ArrowDropDownIcon fontSize="small" />
               </Button>
               <Tooltip title="Open your organization’s home page">
                 <IconButton
                   className={classes.button}
                   color="inherit"
                   edge="end"
-                  size="large"
                   href={organization.slug}
-                  target="_blank"
                   sx={{ marginLeft: 1 }}
+                  target="_blank"
                   variant="contained"
                 >
                   <HomeIcon fontSize="small" />
@@ -229,7 +250,6 @@ export function Dashboard(props) {
                   edge="start"
                   id="openAddMenuButton"
                   onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                  size="large"
                   sx={{ marginRight: 1 }}
                 >
                   <AddIcon fontSize="small" />
@@ -239,20 +259,22 @@ export function Dashboard(props) {
                 className={classes.button}
                 onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
                 color="inherit"
-                fontSize="small"
+                size="small"
                 startIcon={
                   <Avatar
                     sx={{ height: 30, width: 30 }}
                     alt={`${account.fname}
                     ${account.lname}`}
-                  />
+                  >
+                    {account.fname.charAt(0)} {account.lname.charAt(0)}
+                  </Avatar>
                 }
               >
                 {" "}
-                <Hidden mdDown>
+                <Hidden mdDown sx={{ marginRight: 0.5 }}>
                   {account.fname} {account.lname.charAt(0)}.
                 </Hidden>{" "}
-                <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
+                <ArrowDropDownIcon fontSize="small" />
               </Button>
             </Grid>
           </Grid>
@@ -264,7 +286,7 @@ export function Dashboard(props) {
           {channels.map((channel) => {
             return (
               <div key={channel.channelId}>
-                <Typography gutterBottom variant="h5">
+                <Typography gutterBottom variant="h5" color="primary.dark">
                   {channel.title}
                 </Typography>
                 <TableContainer className={classes.tableContainer}>
@@ -293,7 +315,19 @@ export function Dashboard(props) {
                         return (
                           <TableRow key={media.mediaId}>
                             <TableCell className={classes.leftCol}>
-                              <Thumb img={media.thumb} height={48} />
+                              <Card sx={{ width: 80, height: 60 }}>
+                                <CardActionArea
+                                  onClick={() => console.log("hello")}
+                                >
+                                  <CardMedia
+                                    component="img"
+                                    height="100%"
+                                    image={media.thumb}
+                                  />
+                                </CardActionArea>
+                              </Card>
+
+                              {/* <Thumb img={media.thumb} height={48} width={60} /> */}
                             </TableCell>
                             <TableCell>
                               <Link
@@ -353,8 +387,12 @@ export function Dashboard(props) {
                             </TableCell>
                             <TableCell align="center" padding="checkbox">
                               <IconButton
-                                fontSize="small"
                                 disabled={isProcessing}
+                                edge="end"
+                                fontSize="small"
+                                onClick={(e) =>
+                                  setItemMoreMenuAnchor(e.currentTarget)
+                                }
                               >
                                 <MoreHorizIcon fontSize="small" />
                               </IconButton>
@@ -455,27 +493,33 @@ export function Dashboard(props) {
         </MenuItem>
       </Menu>
       <Menu
-        anchorEl={sortMenuAnchor}
-        id="sortMenu"
+        anchorEl={itemMoreMenuAnchor}
+        id="itemMoreMenu"
         MenuListProps={{
-          "aria-labelledby": "openSortMenuButton",
+          "aria-labelledby": "openItemMoreButton",
           dense: true,
         }}
-        onClose={() => setSortMenuAnchor(null)}
-        open={openSortMenu}
+        onClose={() => setItemMoreMenuAnchor(null)}
+        open={openItemMoreMenu}
         variant="menu"
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
+          <ListItemIcon>
+            <EditIcon color="primary" fontSize="small" />
+          </ListItemIcon>
           <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            By title A->Z
+            Edit
           </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
+          <ListItemIcon>
+            <TranslateIcon color="primary" fontSize="small" />
+          </ListItemIcon>
           <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            By title Z->A
+            Translate
           </ListItemText>
         </MenuItem>
       </Menu>

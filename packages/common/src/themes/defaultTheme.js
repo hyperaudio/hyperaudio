@@ -13,9 +13,9 @@ const palette = {
   divider: 'rgba(0,0,0,0.066)',
   primary: {
     ...mui.palette.primary,
-    dark: '#190078',
-    light: '#6554A5',
-    main: '#6202EE',
+    dark: '#02007F',
+    light: '#CAABF4',
+    main: '#6000DE',
   },
   secondary: {
     ...mui.palette.secondary,
@@ -119,7 +119,7 @@ export const defaultTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         rounded: {
-          borderRadius: '14px',
+          borderRadius: mui.spacing(1),
         },
       },
     },
