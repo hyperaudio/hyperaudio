@@ -113,7 +113,13 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
     if (currentInterval) {
       setActive(currentInterval[2].media);
       setInterval(currentInterval);
-    } else setReferencePlaying(false);
+    } else {
+      setReferencePlaying(false);
+      const lastInterval = intervals[intervals.length - 1];
+      if (lastInterval[2].block.type === 'transition') {
+        setInsert(lastInterval[2].block);
+      }
+    }
   }, [intervals, interval, time]);
 
   const onPlay = useCallback(() => {
