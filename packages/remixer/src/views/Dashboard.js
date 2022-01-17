@@ -4,48 +4,56 @@ import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Avatar from '@mui/material/Avatar';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
+import SpellcheckIcon from '@mui/icons-material/Spellcheck';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import CloudDoneIcon from '@mui/icons-material/CloudDone';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Container from '@mui/material/Container';
-import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import FormControlLabel from '@mui/material/FormControlLabel';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import FactCheckIcon from '@mui/icons-material/FactCheck';
+import ErrorIcon from '@mui/icons-material/Error';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Link from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import Paper from '@mui/material/Paper';
+import PublicIcon from '@mui/icons-material/Public';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Switch from '@mui/material/Switch';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import TuneIcon from '@mui/icons-material/Tune';
 import Typography from '@mui/material/Typography';
 import VideocamIcon from '@mui/icons-material/Videocam';
-import { alpha } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
-import { visuallyHidden } from '@mui/utils';
+
+import { Thumb } from '../components';
 
 const PREFIX = `Dashboard`;
 const classes = {
   button: `${PREFIX}-button`,
+  flicker: `${PREFIX}-flicker`,
+  tableContainer: `${PREFIX}-tableContainer`,
+  leftCol: `${PREFIX}-leftCol`,
   main: `${PREFIX}-main`,
   topbar: `${PREFIX}-topbar`,
 };
@@ -62,9 +70,96 @@ const Root = styled(
   },
   [`& .${classes.topbar}`]: {
     borderBottom: `1px solid ${theme.palette.divider}`,
+    // background: theme.palette.background.default,
+  },
+  [`& .${classes.leftCol}`]: {
+    paddingLeft: theme.spacing(0.5),
+    paddingRight: 0,
+  },
+  [`& .${classes.tableContainer}`]: {
     // background: theme.palette.background.paper,
+    // borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(10),
+    // maxHeight: '600px',
+    // overflow: 'auto',
+    // padding: theme.spacing(1, 3),
+  },
+  [`& .${classes.flicker}`]: {
+    animation: `flickerAnimation 1.66s infinite`,
+  },
+  '@keyframes flickerAnimation': {
+    '0%': {
+      opacity: 1,
+    },
+    '50%': {
+      opacity: 0.5,
+    },
+    '100%': {
+      opacity: 1,
+    },
   },
 }));
+
+function Status(props) {
+  const { status, isPublic } = props;
+  if (status === 'uploading') {
+    return (
+      <Tooltip title="Uploading…">
+        <CloudUploadIcon size="small" color="primary" className={classes.flicker} />
+      </Tooltip>
+    );
+  } else if (status === 'uploaded') {
+    return (
+      <Tooltip title="Uploaded">
+        <CloudDoneIcon size="small" color="disabled" />
+      </Tooltip>
+    );
+  } else if (status === 'transcribing') {
+    return (
+      <Tooltip title="Processing…">
+        <HourglassTopIcon size="small" color="primary" className={classes.flicker} />
+      </Tooltip>
+    );
+  }
+  //  else if (status === 'transcribed') {
+  //   return (
+  //     <Tooltip title="Ready to edit">
+  //       <SpellcheckIcon size="small" color="primary" />
+  //     </Tooltip>
+  //   );
+  // }
+  //  else if (status === 'edited') {
+  //   return (
+  //     <Tooltip title="Edited">
+  //       <DoneAllIcon size="small" color="primary" />
+  //     </Tooltip>
+  //   );
+  // }
+  else if (status === 'corrected') {
+    return (
+      <Tooltip title="Media marked as corrected">
+        <FactCheckIcon size="small" color="disabled" />
+      </Tooltip>
+    );
+  } else if (status === 'ready') {
+    return (
+      <Tooltip title={isPublic ? 'Media publically available' : 'Media being kept private'}>
+        {isPublic ? (
+          <VisibilityIcon size="small" color="disabled" />
+        ) : (
+          <VisibilityOffIcon size="small" color="disabled" />
+        )}
+      </Tooltip>
+    );
+  } else if (status === 'error') {
+    return (
+      <Tooltip title="Processing failed. Try again.">
+        <ErrorIcon size="small" color="error" />
+      </Tooltip>
+    );
+  }
+  return null;
+}
 
 export function Dashboard(props) {
   const { channels, organization, account } = props;
@@ -83,8 +178,8 @@ export function Dashboard(props) {
     <Root>
       <AppBar position="fixed" elevation={0} className={classes.topbar}>
         <Toolbar>
-          <Grid container>
-            <Grid item>
+          <Grid container alignItems="center">
+            <Grid item xs={3}>
               <Button
                 className={classes.button}
                 onClick={e => setOrgMenuAnchor(e.currentTarget)}
@@ -110,8 +205,10 @@ export function Dashboard(props) {
                 </IconButton>
               </Tooltip>
             </Grid>
-            <Grid item xs></Grid>
-            <Grid item>
+            <Grid item xs={6} align="center">
+              <Typography variant="h6">Your Channels</Typography>
+            </Grid>
+            <Grid item xs={3} align="right">
               <Tooltip title="Add new…">
                 <IconButton
                   aria-expanded={openAddMenu ? 'true' : undefined}
@@ -152,47 +249,70 @@ export function Dashboard(props) {
       <Toolbar />
       <main className={classes.main}>
         <Container>
-          <Toolbar disableGutters sx={{ marginBottom: 5 }}>
-            <Typography variant="h4" component="h2" sx={{ flexGrow: 1 }}>
-              Your Channels
-            </Typography>
-            <Typography variant="overline">
-              Sort channels:
-              <Link sx={{ marginLeft: 0.5 }} onClick={e => setSortMenuAnchor(e.currentTarget)}>
-                By title A->Z
-                <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5, verticalAlign: 'middle' }} />
-              </Link>
-            </Typography>
-          </Toolbar>
           {channels.map(channel => {
             return (
-              <>
-                <Typography gutterBottom variant="h5">
+              <div key={channel.channelId}>
+                <Typography gutterBottom variant="h4">
                   {channel.title}
                 </Typography>
-                <TableContainer sx={{ marginBottom: 10 }}>
+                <TableContainer className={classes.tableContainer}>
                   <Table>
                     <TableHead>
                       <TableRow>
-                        <TableCell padding="checkbox">Media</TableCell>
+                        <TableCell className={classes.leftCol}>Media</TableCell>
                         <TableCell></TableCell>
-                        <TableCell>Status</TableCell>
-                        <TableCell>Visibility</TableCell>
-                        <TableCell padding="checkbox"></TableCell>
+                        <TableCell>Created</TableCell>
+                        <TableCell>Last modified</TableCell>
+                        <TableCell align="center"></TableCell>
+                        <TableCell align="center" padding="checkbox"></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {channel.media.map(media => {
+                        const isProcessing = ['uploading', 'uploaded', 'transcribing'].includes(media.status);
                         return (
-                          <TableRow key={media.id}>
-                            <TableCell padding="checkbox">
-                              <img src={media.thumb} width={40} />
+                          <TableRow key={media.mediaId}>
+                            <TableCell className={classes.leftCol}>
+                              <Thumb img={media.thumb} height={48} />
                             </TableCell>
-                            <TableCell>{media.title}</TableCell>
-                            <TableCell>{media.status}</TableCell>
-                            <TableCell>{media.visibility}</TableCell>
-                            <TableCell padding="checkbox">
-                              <IconButton size="small">
+                            <TableCell>
+                              <Link
+                                disabled={isProcessing}
+                                underline={isProcessing ? 'none' : 'hover'}
+                                sx={{ cursor: 'pointer' }}
+                                onClick={() => console.log('hello')}
+                                noWrap
+                                color={isProcessing ? 'text.disabled' : 'primary'}
+                                variant="subtitle2"
+                              >
+                                {media.title}
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Tooltip title={media.created || 'Not available'}>
+                                <Typography
+                                  sx={{ color: isProcessing ? 'text.disabled' : 'text.secondary' }}
+                                  variant="caption"
+                                >
+                                  {media.created}
+                                </Typography>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell>
+                              <Tooltip title={media.modified || 'Not available'}>
+                                <Typography
+                                  sx={{ color: isProcessing ? 'text.disabled' : 'text.secondary' }}
+                                  variant="caption"
+                                >
+                                  {media?.modified || '—'}
+                                </Typography>
+                              </Tooltip>
+                            </TableCell>
+                            <TableCell align="center">
+                              <Status status={media.status} isPublic={media.isPublic} />
+                            </TableCell>
+                            <TableCell align="center" padding="checkbox">
+                              <IconButton size="small" disabled={isProcessing}>
                                 <MoreHorizIcon fontSize="small" />
                               </IconButton>
                             </TableCell>
@@ -202,7 +322,7 @@ export function Dashboard(props) {
                     </TableBody>
                   </Table>
                 </TableContainer>
-              </>
+              </div>
             );
           })}
         </Container>
