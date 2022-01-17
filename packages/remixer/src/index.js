@@ -6,8 +6,7 @@ import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { HyperaudioIcon } from '@hyperaudio/common';
-import { defaultTheme } from './themes';
+import { HyperaudioIcon, defaultTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
