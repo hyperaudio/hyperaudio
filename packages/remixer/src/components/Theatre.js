@@ -66,13 +66,15 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   const [interval, setInterval] = useState();
   const [referencePlaying, setReferencePlaying] = useState();
   const [buffering, setBuffering] = useState(false);
+  const [insert, setInsert] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
 
   const intervals = useMemo(
     () =>
       blocks
-        .reduce((acc, { start, duration, gap, media }, i, arr) => {
+        .reduce((acc, block, i, arr) => {
+          const { start, duration, gap, media } = block;
           const prevInterval = acc.pop();
           const offset = prevInterval?.[1] ?? 0;
           return [
@@ -81,7 +83,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             [
               offset, // TODO name these better
               offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
-              { start, media },
+              { start, media, block },
             ],
           ];
         }, [])
@@ -90,9 +92,23 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 
   useEffect(() => {
-    const currentInterval = intervals.find(([start, end]) => start <= time && time < end);
+    const currentIntervalIndex = intervals.findIndex(([start, end]) => start <= time && time < end);
+    const currentInterval = intervals[currentIntervalIndex];
 
-    console.log(currentInterval, interval, currentInterval !== interval);
+    if (currentInterval !== interval && currentIntervalIndex > 0) {
+      const prevInterval = intervals[currentIntervalIndex - 1];
+      console.log('previous', prevInterval);
+
+      if (prevInterval[2].block.type === 'title') {
+        console.log('TITLE', prevInterval[2].block.text);
+        setInsert(prevInterval[2].block);
+      } else if (prevInterval[2].block.type === 'transition') {
+        console.log('TRANSITION', prevInterval[2].block);
+        setInsert(prevInterval[2].block);
+      } else {
+        setInsert(null);
+      }
+    }
 
     if (currentInterval) {
       setActive(currentInterval[2].media);
@@ -131,19 +147,94 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   return (
     <Root>
       <Container maxWidth="sm">
-        {media?.map(({ id, url }) => (
-          <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
-            <Player
-              key={id}
-              active={active === id}
-              time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
-              playing={referencePlaying && active === id}
-              media={{ id, url }}
-              {...{ players, setActive, buffering, setBuffering }}
-            />
-          </div>
-        ))}
+        <div style={{ position: 'relative' }}>
+          {media?.map(({ id, url }) => (
+            <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
+              <Player
+                key={id}
+                active={active === id}
+                time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
+                playing={referencePlaying && active === id}
+                media={{ id, url }}
+                {...{ players, setActive, buffering, setBuffering }}
+              />
+            </div>
+          ))}
 
+          {insert && insert.type === 'title' && (
+            <>
+              <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
+              <style scoped>
+                {`
+                .insertTitle {
+                  pointer-events: none;
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  background: rgba(0, 0, 0, 0.5);
+                  color: white;
+                  animation: hideAnimation 0s ease-in 3s;
+                  animation-fill-mode: forwards;
+                }
+
+                .insertTitle.fullSize {
+                  width: 100%;
+                  height: 100%;
+                }
+
+                .insertTitle.lowerThirds {
+                  width: 100%;
+                  height: 33%;
+                }
+
+                @keyframes hideAnimation {
+                  100% {
+                    visibility: hidden;
+                  }
+                }
+              `}
+              </style>
+            </>
+          )}
+
+          {insert && insert.type === 'transition' && (
+            <>
+              <div className="insertTransition"></div>
+              <style scoped>
+                {`
+                .insertTransition {
+                  pointer-events: none;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #000;
+                  opacity: 1;
+                  animation: transitionAnimation ${(insert.transition ?? 3000) / 1e3}s;
+                  animation-fill-mode: forwards;
+                  width: 100%;
+                  height: 100%;
+                }
+
+                @keyframes transitionAnimation {
+                  0% {
+                    opacity: 0;
+                  }
+                  99% {
+                    width: 100%;
+                    height: 100%;
+                  }
+                  100% {
+                    opacity: 1;
+                    visibility: hidden;
+                    width: 0;
+                    height: 0;
+                  }
+                }
+              `}
+              </style>
+            </>
+          )}
+        </div>
         <div>
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
