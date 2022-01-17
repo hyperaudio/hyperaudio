@@ -70,7 +70,7 @@ const Control = styled('a', {
 
 export const InsertTitle = ({
   editable = false,
-  block: { key, fullSize = true, text = 'Type in your title here…' },
+  block: { key, fullSize = false, text = 'Type in your title here…' },
   dispatch,
 }) => {
   const onTextChange = useCallback(
