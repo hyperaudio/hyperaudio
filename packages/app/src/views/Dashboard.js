@@ -16,6 +16,8 @@ import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import IconButton from "@mui/material/IconButton";
 import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import Link from "@mui/material/Link";
+import Hidden from "@mui/material/Hidden";
+
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -99,7 +101,7 @@ function Status(props) {
     return (
       <Tooltip title="Uploading…">
         <CloudUploadIcon
-          size="small"
+          fontSize="small"
           color="primary"
           className={classes.flicker}
         />
@@ -108,14 +110,14 @@ function Status(props) {
   } else if (status === "uploaded") {
     return (
       <Tooltip title="Uploaded">
-        <CloudDoneIcon size="small" color="disabled" />
+        <CloudDoneIcon fontSize="small" color="disabled" />
       </Tooltip>
     );
   } else if (status === "transcribing") {
     return (
       <Tooltip title="Processing…">
         <HourglassTopIcon
-          size="small"
+          fontSize="small"
           color="primary"
           className={classes.flicker}
         />
@@ -125,21 +127,21 @@ function Status(props) {
   //  else if (status === 'transcribed') {
   //   return (
   //     <Tooltip title="Ready to edit">
-  //       <SpellcheckIcon size="small" color="primary" />
+  //       <SpellcheckIcon fontSize="small" color="primary" />
   //     </Tooltip>
   //   );
   // }
   //  else if (status === 'edited') {
   //   return (
   //     <Tooltip title="Edited">
-  //       <DoneAllIcon size="small" color="primary" />
+  //       <DoneAllIcon fontSize="small" color="primary" />
   //     </Tooltip>
   //   );
   // }
   else if (status === "corrected") {
     return (
       <Tooltip title="Media marked as corrected">
-        <SpellcheckIcon size="small" color="disabled" />
+        <SpellcheckIcon fontSize="small" color="disabled" />
       </Tooltip>
     );
   } else if (status === "ready") {
@@ -152,16 +154,16 @@ function Status(props) {
         }
       >
         {isPublic ? (
-          <PublicIcon size="small" color="disabled" />
+          <PublicIcon fontSize="small" color="disabled" />
         ) : (
-          <PublicOffIcon size="small" color="disabled" />
+          <PublicOffIcon fontSize="small" color="disabled" />
         )}
       </Tooltip>
     );
   } else if (status === "error") {
     return (
       <Tooltip title="Processing failed. Try again.">
-        <ErrorIcon size="small" color="error" />
+        <ErrorIcon fontSize="small" color="error" />
       </Tooltip>
     );
   }
@@ -186,16 +188,16 @@ export function Dashboard(props) {
       <AppBar position="fixed" elevation={0} className={classes.topbar}>
         <Toolbar>
           <Grid container alignItems="center">
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <Button
                 className={classes.button}
                 onClick={(e) => setOrgMenuAnchor(e.currentTarget)}
-                size="small"
+                fontSize="small"
                 color="inherit"
                 startIcon={<Avatar sx={{ height: 30, width: 30 }} />}
               >
                 {" "}
-                {organization.name}{" "}
+                <Hidden mdDown>{organization.name}</Hidden>
                 <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Button>
               <Tooltip title="Open your organization’s home page">
@@ -213,10 +215,10 @@ export function Dashboard(props) {
                 </IconButton>
               </Tooltip>
             </Grid>
-            <Grid item xs={6} align="center">
+            <Grid item xs={4} align="center">
               <Typography variant="subtitle1">Your Channels</Typography>
             </Grid>
-            <Grid item xs={3} align="right">
+            <Grid item xs={4} align="right">
               <Tooltip title="Add new…">
                 <IconButton
                   aria-expanded={openAddMenu ? "true" : undefined}
@@ -237,7 +239,7 @@ export function Dashboard(props) {
                 className={classes.button}
                 onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
                 color="inherit"
-                size="small"
+                fontSize="small"
                 startIcon={
                   <Avatar
                     sx={{ height: 30, width: 30 }}
@@ -247,7 +249,9 @@ export function Dashboard(props) {
                 }
               >
                 {" "}
-                {account.fname} {account.lname.charAt(0)}.{" "}
+                <Hidden mdDown>
+                  {account.fname} {account.lname.charAt(0)}.
+                </Hidden>{" "}
                 <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Button>
             </Grid>
@@ -271,6 +275,7 @@ export function Dashboard(props) {
                         <TableCell></TableCell>
                         <TableCell>Created</TableCell>
                         <TableCell>Last modified</TableCell>
+                        <TableCell align="center"></TableCell>
                         <TableCell align="center"></TableCell>
                         <TableCell
                           align="center"
@@ -336,13 +341,21 @@ export function Dashboard(props) {
                               </Tooltip>
                             </TableCell>
                             <TableCell align="center">
+                              {media.isPublic && (
+                                <PublicIcon fontSize="small" color="disabled" />
+                              )}
+                            </TableCell>
+                            <TableCell align="center">
                               <Status
                                 status={media.status}
                                 isPublic={media.isPublic}
                               />
                             </TableCell>
                             <TableCell align="center" padding="checkbox">
-                              <IconButton size="small" disabled={isProcessing}>
+                              <IconButton
+                                fontSize="small"
+                                disabled={isProcessing}
+                              >
                                 <MoreHorizIcon fontSize="small" />
                               </IconButton>
                             </TableCell>
