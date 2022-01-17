@@ -15,7 +15,7 @@ import GlobalStyles from './GlobalStyles';
 
 import remixReducer from './reducers/remixReducer';
 
-import './fonts/Inter/inter.css';
+import '@hyperaudio/common/src/fonts/Inter/inter.css';
 
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
