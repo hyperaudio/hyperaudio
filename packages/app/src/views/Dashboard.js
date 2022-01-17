@@ -1,20 +1,27 @@
-import React from "react";
+import * as React from "react";
+import PropTypes from "prop-types";
+import _ from "lodash";
 
 import AddIcon from "@mui/icons-material/Add";
 import AppBar from "@mui/material/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Checkbox from "@mui/material/Checkbox";
 import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Container from "@mui/material/Container";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
+import FilterListIcon from "@mui/icons-material/FilterList";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
 import HomeIcon from "@mui/icons-material/Home";
@@ -28,28 +35,33 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Paper from "@mui/material/Paper";
 import PublicIcon from "@mui/icons-material/Public";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
+import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import TranslateIcon from "@mui/icons-material/Translate";
 import TuneIcon from "@mui/icons-material/Tune";
 import Typography from "@mui/material/Typography";
 import VideocamIcon from "@mui/icons-material/Videocam";
+import { alpha } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
+import { visuallyHidden } from "@mui/utils";
 
 const PREFIX = `Dashboard`;
 const classes = {
-  button: `${PREFIX}-button`,
   flicker: `${PREFIX}-flicker`,
-  tableContainer: `${PREFIX}-tableContainer`,
   leftCol: `${PREFIX}-leftCol`,
+  thumbCell: `${PREFIX}-thumbCell`,
   main: `${PREFIX}-main`,
   topbar: `${PREFIX}-topbar`,
 };
@@ -58,9 +70,6 @@ const Root = styled(
   "div",
   {}
 )(({ theme }) => ({
-  [`& .${classes.button}`]: {
-    // background: theme.palette.background.default,
-  },
   [`& .${classes.main}`]: {
     padding: theme.spacing(8, 0),
   },
@@ -77,17 +86,11 @@ const Root = styled(
       lineHeight: 1,
     },
   },
-  [`& .${classes.leftCol}`]: {
-    paddingLeft: theme.spacing(0.5),
-    paddingRight: 0,
+  [`& .${classes.thumbCell}`]: {
+    width: "0",
   },
-  [`& .${classes.tableContainer}`]: {
-    // background: theme.palette.background.paper,
-    // borderRadius: theme.shape.borderRadius,
-    marginBottom: theme.spacing(10),
-    // maxHeight: '600px',
-    // overflow: 'auto',
-    // padding: theme.spacing(1, 3),
+  [`& .MuiCard-root`]: {
+    display: "inline-block",
   },
   [`& .${classes.flicker}`]: {
     animation: `flickerAnimation 1.66s infinite`,
@@ -105,6 +108,36 @@ const Root = styled(
   },
 }));
 
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === "desc"
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+// This method is created for cross-browser compatibility, if you don't
+// need to support IE11, you can use Array.prototype.sort() directly
+function stableSort(array, comparator) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) {
+      return order;
+    }
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
 function Status(props) {
   const { status, isPublic } = props;
   if (status === "uploading") {
@@ -117,13 +150,7 @@ function Status(props) {
         />
       </Tooltip>
     );
-  } else if (status === "uploaded") {
-    return (
-      <Tooltip title="Uploaded">
-        <CloudDoneIcon fontSize="small" color="disabled" />
-      </Tooltip>
-    );
-  } else if (status === "transcribing") {
+  } else if (["uploaded", "transcribing"].includes(status)) {
     return (
       <Tooltip title="Processing…">
         <HourglassTopIcon
@@ -182,8 +209,161 @@ function Status(props) {
   return null;
 }
 
+const headCells = [
+  {
+    id: "name",
+    disablePadding: false,
+    label: "Media",
+  },
+  { id: "silentName", skip: true },
+  {
+    id: "created",
+    disablePadding: false,
+    label: "Created",
+  },
+  {
+    id: "modified",
+    disablePadding: false,
+    label: "Modified",
+  },
+  {
+    id: "channelId",
+    disablePadding: false,
+    label: "Channel",
+  },
+  {
+    id: "status",
+    disablePadding: false,
+    label: "Status",
+  },
+];
+
+function EnhancedTableHead(props) {
+  const {
+    onSelectAllClick,
+    order,
+    orderBy,
+    numSelected,
+    rowCount,
+    onRequestSort,
+  } = props;
+  const createSortHandler = (property) => (event) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              "aria-label": "select all desserts",
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            padding={headCell.disablePadding ? "none" : "normal"}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            {!headCell.silent && (
+              <TableSortLabel
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc"
+                      ? "sorted descending"
+                      : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            )}
+          </TableCell>
+        ))}
+        <TableCell></TableCell>
+      </TableRow>
+    </TableHead>
+  );
+}
+
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
+  orderBy: PropTypes.string.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
+
+const EnhancedTableToolbar = (props) => {
+  const { numSelected } = props;
+
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
+        }),
+      }}
+    >
+      {numSelected > 0 ? (
+        <Typography
+          sx={{ flex: "1 1 100%" }}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography
+          sx={{ flex: "1 1 100%" }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          Your media
+        </Typography>
+      )}
+
+      {numSelected > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton>
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Toolbar>
+  );
+};
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+};
+
 export function Dashboard(props) {
-  const { channels, organization, account } = props;
+  const { channels, media, organization, account } = props;
 
   const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
   const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = React.useState(null);
@@ -195,6 +375,64 @@ export function Dashboard(props) {
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openProfileMenu = Boolean(profileMenuAnchor);
 
+  //
+
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("calories");
+  const [selected, setSelected] = React.useState([]);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = media.map((n) => n.mediaId);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, name) => {
+    const selectedIndex = selected.indexOf(name);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, name);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const isSelected = (name) => selected.indexOf(name) !== -1;
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - media.length) : 0;
+
   return (
     <Root>
       <AppBar position="fixed" elevation={0} className={classes.topbar}>
@@ -202,7 +440,6 @@ export function Dashboard(props) {
           <Grid container alignItems="center">
             <Grid item xs={4}>
               <Button
-                className={classes.button}
                 onClick={(e) => setOrgMenuAnchor(e.currentTarget)}
                 size="small"
                 color="inherit"
@@ -217,14 +454,11 @@ export function Dashboard(props) {
                 }
               >
                 {" "}
-                <Hidden mdDown sx={{ marginRight: 0.5 }}>
-                  {organization.name}
-                </Hidden>
+                <Hidden mdDown>{organization.name}</Hidden>
                 <ArrowDropDownIcon fontSize="small" />
               </Button>
               <Tooltip title="Open your organization’s home page">
                 <IconButton
-                  className={classes.button}
                   color="inherit"
                   edge="end"
                   href={organization.slug}
@@ -237,7 +471,7 @@ export function Dashboard(props) {
               </Tooltip>
             </Grid>
             <Grid item xs={4} align="center">
-              <Typography variant="subtitle1">Your Channels</Typography>
+              <Typography variant="subtitle1">Your Media</Typography>
             </Grid>
             <Grid item xs={4} align="right">
               <Tooltip title="Add new…">
@@ -245,7 +479,6 @@ export function Dashboard(props) {
                   aria-expanded={openAddMenu ? "true" : undefined}
                   aria-haspopup="true"
                   aria-label="Add new…"
-                  className={classes.button}
                   color="inherit"
                   edge="start"
                   id="openAddMenuButton"
@@ -256,7 +489,6 @@ export function Dashboard(props) {
                 </IconButton>
               </Tooltip>
               <Button
-                className={classes.button}
                 onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
                 color="inherit"
                 size="small"
@@ -271,7 +503,7 @@ export function Dashboard(props) {
                 }
               >
                 {" "}
-                <Hidden mdDown sx={{ marginRight: 0.5 }}>
+                <Hidden mdDown>
                   {account.fname} {account.lname.charAt(0)}.
                 </Hidden>{" "}
                 <ArrowDropDownIcon fontSize="small" />
@@ -282,130 +514,132 @@ export function Dashboard(props) {
       </AppBar>
       <Toolbar />
       <main className={classes.main}>
-        <Container>
-          {channels.map((channel) => {
-            return (
-              <div key={channel.channelId}>
-                <Typography gutterBottom variant="h5" color="primary.dark">
-                  {channel.title}
-                </Typography>
-                <TableContainer className={classes.tableContainer}>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell className={classes.leftCol}>Media</TableCell>
-                        <TableCell></TableCell>
-                        <TableCell>Created</TableCell>
-                        <TableCell>Last modified</TableCell>
-                        <TableCell align="center"></TableCell>
-                        <TableCell align="center"></TableCell>
-                        <TableCell
-                          align="center"
-                          padding="checkbox"
-                        ></TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {channel.media.map((media) => {
-                        const isProcessing = [
-                          "uploading",
-                          "uploaded",
-                          "transcribing",
-                        ].includes(media.status);
-                        return (
-                          <TableRow key={media.mediaId}>
-                            <TableCell className={classes.leftCol}>
-                              <Card sx={{ width: 80, height: 60 }}>
-                                <CardActionArea
-                                  onClick={() => console.log("hello")}
-                                >
-                                  <CardMedia
-                                    component="img"
-                                    height="100%"
-                                    image={media.thumb}
-                                  />
-                                </CardActionArea>
-                              </Card>
+        <Container maxWidth="none">
+          <EnhancedTableToolbar numSelected={selected.length} />
+          <TableContainer>
+            <Table
+              aria-labelledby="tableTitle"
+              size="medium"
+              sx={{ minWidth: 750 }}
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={media.length}
+              />
+              <TableBody>
+                {stableSort(media, getComparator(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    const isItemSelected = isSelected(row.mediaId);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
-                              {/* <Thumb img={media.thumb} height={48} width={60} /> */}
-                            </TableCell>
-                            <TableCell>
-                              <Link
-                                disabled={isProcessing}
-                                underline={isProcessing ? "none" : "hover"}
-                                sx={{ cursor: "pointer" }}
-                                onClick={() => console.log("hello")}
-                                noWrap
-                                color={
-                                  isProcessing ? "text.disabled" : "primary"
-                                }
-                                variant="subtitle2"
-                              >
-                                {media.title}
-                              </Link>
-                            </TableCell>
-                            <TableCell>
-                              <Tooltip title={media.created || "Not available"}>
-                                <Typography
-                                  sx={{
-                                    color: isProcessing
-                                      ? "text.disabled"
-                                      : "text.secondary",
-                                  }}
-                                  variant="caption"
-                                >
-                                  {media.created}
-                                </Typography>
-                              </Tooltip>
-                            </TableCell>
-                            <TableCell>
-                              <Tooltip
-                                title={media.modified || "Not available"}
-                              >
-                                <Typography
-                                  sx={{
-                                    color: isProcessing
-                                      ? "text.disabled"
-                                      : "text.secondary",
-                                  }}
-                                  variant="caption"
-                                >
-                                  {media?.modified || "—"}
-                                </Typography>
-                              </Tooltip>
-                            </TableCell>
-                            <TableCell align="center">
-                              {media.isPublic && (
-                                <PublicIcon fontSize="small" color="disabled" />
-                              )}
-                            </TableCell>
-                            <TableCell align="center">
-                              <Status
-                                status={media.status}
-                                isPublic={media.isPublic}
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.mediaId)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.mediaId}
+                        selected={isItemSelected}
+                      >
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            color="primary"
+                            checked={isItemSelected}
+                            inputProps={{
+                              "aria-labelledby": labelId,
+                            }}
+                          />
+                        </TableCell>
+                        <TableCell id={labelId} className={classes.thumbCell}>
+                          <Card sx={{ width: 60, height: 45 }}>
+                            <CardActionArea
+                              onClick={() => console.log("hello")}
+                            >
+                              <CardMedia
+                                component="img"
+                                height="100%"
+                                image={row.thumb}
                               />
-                            </TableCell>
-                            <TableCell align="center" padding="checkbox">
-                              <IconButton
-                                disabled={isProcessing}
-                                edge="end"
-                                fontSize="small"
-                                onClick={(e) =>
-                                  setItemMoreMenuAnchor(e.currentTarget)
-                                }
-                              >
-                                <MoreHorizIcon fontSize="small" />
-                              </IconButton>
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </div>
-            );
-          })}
+                            </CardActionArea>
+                          </Card>
+                        </TableCell>
+                        <TableCell
+                          component="th"
+                          id={labelId}
+                          scope="row"
+                          padding="none"
+                        >
+                          <Link
+                            disabled={row.isProcessing}
+                            underline={row.isProcessing ? "none" : "hover"}
+                            sx={{ cursor: "pointer" }}
+                            onClick={() => console.log("hello")}
+                            noWrap
+                            color={
+                              row.isProcessing ? "text.disabled" : "primary"
+                            }
+                            variant="subtitle2"
+                          >
+                            {row.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell sx={{ color: "text.secondary" }}>
+                          {row.created || "—"}
+                        </TableCell>
+                        <TableCell sx={{ color: "text.secondary" }}>
+                          {row.modified || "—"}
+                        </TableCell>
+                        <TableCell>
+                          {row.channelId &&
+                            _.find(
+                              channels,
+                              (o) => o.channelId === row.channelId
+                            ).name}
+                        </TableCell>
+                        <TableCell>
+                          <Status status={row.status} />
+                        </TableCell>
+                        <TableCell padding="checkbox">
+                          <IconButton
+                            disabled={row.isProcessing}
+                            fontSize="small"
+                            onClick={(e) =>
+                              setItemMoreMenuAnchor(e.currentTarget)
+                            }
+                          >
+                            <MoreHorizIcon fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={media.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
         </Container>
       </main>
       <Menu
