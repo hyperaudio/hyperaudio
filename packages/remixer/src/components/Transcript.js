@@ -18,7 +18,7 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { styled } from '@mui/material/styles';
 
-import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '../icons';
+import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '@hyperaudio/common';
 import { InsertSlide } from './InsertSlide';
 import { InsertTitle } from './InsertTitle';
 import { InsertTransition } from './InsertTransition';

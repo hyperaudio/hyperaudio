@@ -20,7 +20,7 @@ import TwitterIcon from '@mui/icons-material/Twitter';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { Share1Pane, Share2Panes } from '../icons';
+import { Share1Pane, Share2Panes } from '@hyperaudio/common';
 
 const PREFIX = 'ShareDialog';
 const classes = {
