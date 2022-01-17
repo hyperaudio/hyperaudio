@@ -5,34 +5,27 @@ import AppBar from '@mui/material/AppBar';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import PlaylistAddCheckIcon from '@mui/icons-material/PlaylistAddCheck';
-import SpellcheckIcon from '@mui/icons-material/Spellcheck';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import FactCheckIcon from '@mui/icons-material/FactCheck';
 import ErrorIcon from '@mui/icons-material/Error';
 import Grid from '@mui/material/Grid';
+import HomeIcon from '@mui/icons-material/Home';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import IconButton from '@mui/material/IconButton';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import Link from '@mui/material/Link';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import PublicIcon from '@mui/icons-material/Public';
+import PublicOffIcon from '@mui/icons-material/PublicOff';
 import SettingsIcon from '@mui/icons-material/Settings';
+import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -138,17 +131,13 @@ function Status(props) {
   else if (status === 'corrected') {
     return (
       <Tooltip title="Media marked as corrected">
-        <FactCheckIcon size="small" color="disabled" />
+        <SpellcheckIcon size="small" color="disabled" />
       </Tooltip>
     );
   } else if (status === 'ready') {
     return (
-      <Tooltip title={isPublic ? 'Media publically available' : 'Media being kept private'}>
-        {isPublic ? (
-          <VisibilityIcon size="small" color="disabled" />
-        ) : (
-          <VisibilityOffIcon size="small" color="disabled" />
-        )}
+      <Tooltip title={isPublic ? 'Media is publically available' : 'Media is being kept private'}>
+        {isPublic ? <PublicIcon size="small" color="disabled" /> : <PublicOffIcon size="small" color="disabled" />}
       </Tooltip>
     );
   } else if (status === 'error') {
@@ -190,7 +179,7 @@ export function Dashboard(props) {
                 {' '}
                 {organization.name} <ArrowDropDownIcon fontSize="small" sx={{ marginLeft: 0.5 }} />
               </Button>
-              <Tooltip title="Open home page">
+              <Tooltip title="Open your organization’s home page">
                 <IconButton
                   className={classes.button}
                   color="inherit"
@@ -201,12 +190,12 @@ export function Dashboard(props) {
                   sx={{ marginLeft: 1 }}
                   variant="contained"
                 >
-                  <OpenInNewIcon fontSize="small" />
+                  <HomeIcon fontSize="small" />
                 </IconButton>
               </Tooltip>
             </Grid>
             <Grid item xs={6} align="center">
-              <Typography variant="h6">Your Channels</Typography>
+              <Typography variant="subtitle1">Your Channels</Typography>
             </Grid>
             <Grid item xs={3} align="right">
               <Tooltip title="Add new…">
