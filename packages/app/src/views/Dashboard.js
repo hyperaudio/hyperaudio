@@ -13,15 +13,12 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
-import CloudDoneIcon from "@mui/icons-material/CloudDone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import Container from "@mui/material/Container";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
 import HomeIcon from "@mui/icons-material/Home";
@@ -35,10 +32,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Paper from "@mui/material/Paper";
-import PublicIcon from "@mui/icons-material/Public";
 import SettingsIcon from "@mui/icons-material/Settings";
-import Switch from "@mui/material/Switch";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -61,8 +55,8 @@ const PREFIX = `Dashboard`;
 const classes = {
   flicker: `${PREFIX}-flicker`,
   leftCol: `${PREFIX}-leftCol`,
-  thumbCell: `${PREFIX}-thumbCell`,
   main: `${PREFIX}-main`,
+  thumbCell: `${PREFIX}-thumbCell`,
   topbar: `${PREFIX}-topbar`,
 };
 
@@ -209,101 +203,6 @@ function Status(props) {
   return null;
 }
 
-const headCells = [
-  {
-    id: "name",
-    disablePadding: false,
-    label: "Media",
-  },
-  { id: "silentName", skip: true },
-  {
-    id: "created",
-    disablePadding: false,
-    label: "Created",
-  },
-  {
-    id: "modified",
-    disablePadding: false,
-    label: "Modified",
-  },
-  {
-    id: "channelId",
-    disablePadding: false,
-    label: "Channel",
-  },
-  {
-    id: "status",
-    disablePadding: false,
-    label: "Status",
-  },
-];
-
-function EnhancedTableHead(props) {
-  const {
-    onSelectAllClick,
-    order,
-    orderBy,
-    numSelected,
-    rowCount,
-    onRequestSort,
-  } = props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            padding={headCell.disablePadding ? "none" : "normal"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            {!headCell.silent && (
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            )}
-          </TableCell>
-        ))}
-        <TableCell></TableCell>
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
 const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
 
@@ -347,13 +246,7 @@ const EnhancedTableToolbar = (props) => {
             <DeleteIcon />
           </IconButton>
         </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+      ) : null}
     </Toolbar>
   );
 };
@@ -370,38 +263,20 @@ export function Dashboard(props) {
   const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
   const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
 
+  const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("created");
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(25);
+  const [selected, setSelected] = React.useState([]);
+
   const openAddMenu = Boolean(addMenuAnchor);
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openProfileMenu = Boolean(profileMenuAnchor);
 
-  //
-
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("calories");
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = media.map((n) => n.mediaId);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, name) => {
+  const handleSelectClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
     let newSelected = [];
-
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
@@ -414,8 +289,16 @@ export function Dashboard(props) {
         selected.slice(selectedIndex + 1)
       );
     }
-
     setSelected(newSelected);
+  };
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelecteds = media.map((n) => n.mediaId);
+      setSelected(newSelecteds);
+      return;
+    }
+    setSelected([]);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -427,11 +310,42 @@ export function Dashboard(props) {
     setPage(0);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const handleChangeSort = (property) => (event) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - media.length) : 0;
+
+  const headCells = [
+    {
+      id: "name",
+      label: "Media",
+      span: 2,
+    },
+    // { id: "silentName", skip: true },
+    {
+      id: "created",
+      label: "Created",
+    },
+    {
+      id: "modified",
+      label: "Modified",
+    },
+    {
+      id: "channelId",
+      label: "Channel",
+    },
+    {
+      id: "status",
+      label: "Status",
+    },
+  ];
+
+  console.log({ order, orderBy });
 
   return (
     <Root>
@@ -522,35 +436,74 @@ export function Dashboard(props) {
               size="medium"
               sx={{ minWidth: 750 }}
             >
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={media.length}
-              />
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      indeterminate={
+                        selected.length > 0 && selected.length < media.length
+                      }
+                      checked={
+                        media.length > 0 && selected.length === media.length
+                      }
+                      onChange={handleSelectAllClick}
+                      inputProps={{
+                        "aria-label": "select all desserts",
+                      }}
+                    />
+                  </TableCell>
+                  {headCells.map((headCell) => (
+                    <TableCell
+                      colSpan={headCell.span || 1}
+                      key={headCell.id}
+                      sortDirection={orderBy === headCell.id ? order : false}
+                    >
+                      {!headCell.silent && (
+                        <TableSortLabel
+                          active={orderBy === headCell.id}
+                          direction={orderBy === headCell.id ? order : "asc"}
+                          onClick={handleChangeSort(headCell.id)}
+                        >
+                          {headCell.label}
+                          {orderBy === headCell.id ? (
+                            <Box component="span" sx={visuallyHidden}>
+                              {order === "desc"
+                                ? "sorted descending"
+                                : "sorted ascending"}
+                            </Box>
+                          ) : null}
+                        </TableSortLabel>
+                      )}
+                    </TableCell>
+                  ))}
+                  <TableCell></TableCell>
+                </TableRow>
+              </TableHead>
               <TableBody>
                 {stableSort(media, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row, index) => {
-                    const isItemSelected = isSelected(row.mediaId);
+                    const isItemSelected = selected.indexOf(row.mediaId) !== -1;
                     const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.mediaId)}
-                        role="checkbox"
-                        aria-checked={isItemSelected}
                         tabIndex={-1}
                         key={row.mediaId}
+                        onClick={() => console.log("open")}
                         selected={isItemSelected}
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
                             checked={isItemSelected}
+                            role="checkbox"
+                            aria-checked={isItemSelected}
+                            onClick={(event) =>
+                              handleSelectClick(event, row.mediaId)
+                            }
                             inputProps={{
                               "aria-labelledby": labelId,
                             }}
@@ -559,7 +512,10 @@ export function Dashboard(props) {
                         <TableCell id={labelId} className={classes.thumbCell}>
                           <Card sx={{ width: 60, height: 45 }}>
                             <CardActionArea
-                              onClick={() => console.log("hello")}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                console.log("hello");
+                              }}
                             >
                               <CardMedia
                                 component="img"
@@ -579,7 +535,10 @@ export function Dashboard(props) {
                             disabled={row.isProcessing}
                             underline={row.isProcessing ? "none" : "hover"}
                             sx={{ cursor: "pointer" }}
-                            onClick={() => console.log("hello")}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              console.log("hello");
+                            }}
                             noWrap
                             color={
                               row.isProcessing ? "text.disabled" : "primary"
@@ -596,11 +555,10 @@ export function Dashboard(props) {
                           {row.modified || "—"}
                         </TableCell>
                         <TableCell>
-                          {row.channelId &&
-                            _.find(
-                              channels,
-                              (o) => o.channelId === row.channelId
-                            ).name}
+                          {_.find(
+                            channels,
+                            (o) => o.channelId === row.channelId
+                          )?.name || "—"}
                         </TableCell>
                         <TableCell>
                           <Status status={row.status} />
@@ -609,9 +567,10 @@ export function Dashboard(props) {
                           <IconButton
                             disabled={row.isProcessing}
                             fontSize="small"
-                            onClick={(e) =>
-                              setItemMoreMenuAnchor(e.currentTarget)
-                            }
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setItemMoreMenuAnchor(e.currentTarget);
+                            }}
                           >
                             <MoreHorizIcon fontSize="small" />
                           </IconButton>
@@ -622,10 +581,11 @@ export function Dashboard(props) {
                 {emptyRows > 0 && (
                   <TableRow
                     style={{
-                      height: (dense ? 33 : 53) * emptyRows,
+                      height: 83 * emptyRows,
+                      // height: (dense ? 33 : 53) * emptyRows,
                     }}
                   >
-                    <TableCell colSpan={6} />
+                    <TableCell colSpan={8} />
                   </TableRow>
                 )}
               </TableBody>
