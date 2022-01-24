@@ -9,7 +9,7 @@ import SlideshowIcon from '@mui/icons-material/Slideshow';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { Thumb } from '.';
+import { Thumb } from '@hyperaudio/common';
 
 const PREFIX = 'InsertSlide';
 const classes = {
@@ -120,8 +120,8 @@ export const InsertSlide = props => {
         </Typography>
       )}
       {decks?.length > 0 ? (
-        <>
-          {editable && (
+        [
+          editable && (
             <Breadcrumbs className={classes.breadcrumbs}>
               <Link
                 {...breadcrumbProps}
@@ -146,7 +146,7 @@ export const InsertSlide = props => {
               )}
               {step === 2 && <Typography {...breadcrumbProps}>Slide {stateSlideId + 1}</Typography>}
             </Breadcrumbs>
-          )}
+          ),
           <div className={classes.canvas}>
             {step === 0 && (
               <Masonry {...masonryProps}>
@@ -188,8 +188,8 @@ export const InsertSlide = props => {
                 src={_.find(_.find(decks, o => o.id === stateDeckId).deck.slides, o => o.id === stateSlideId).url}
               />
             )}
-          </div>
-        </>
+          </div>,
+        ]
       ) : (
         <Alert severity="info">We couldn’t find any decks associated to your transcript sources.</Alert>
       )}

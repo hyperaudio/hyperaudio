@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { RemixTopbar, Theatre, Transcript, InsertsBar } from './components';
-import { StartDropIcon } from './icons';
+import { StartDropIcon } from '@hyperaudio/common';
 
 const PREFIX = 'Remix';
 const classes = {
