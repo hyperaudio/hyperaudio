@@ -97,6 +97,13 @@ export const schema = {
                                     "delete",
                                     "create"
                                 ]
+                            },
+                            {
+                                "allow": "public",
+                                "provider": "apiKey",
+                                "operations": [
+                                    "read"
+                                ]
                             }
                         ]
                     }
@@ -192,6 +199,13 @@ export const schema = {
                                     "create",
                                     "update",
                                     "delete"
+                                ]
+                            },
+                            {
+                                "allow": "public",
+                                "provider": "apiKey",
+                                "operations": [
+                                    "read"
                                 ]
                             }
                         ]
