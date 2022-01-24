@@ -7,7 +7,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { LibraryTopbar, Thumb } from './components';
+import { LibraryTopbar } from './components';
+import { Thumb } from '@hyperaudio/common';
 
 const PREFIX = 'Library';
 const classes = {
