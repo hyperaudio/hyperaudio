@@ -6,8 +6,7 @@ import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { HyperaudioIcon } from './icons';
-import { defaultTheme } from './themes';
+import { HyperaudioIcon, defaultTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
@@ -16,7 +15,7 @@ import GlobalStyles from './GlobalStyles';
 
 import remixReducer from './reducers/remixReducer';
 
-import './fonts/Inter/inter.css';
+import '@hyperaudio/common/src/fonts/Inter/inter.css';
 
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
