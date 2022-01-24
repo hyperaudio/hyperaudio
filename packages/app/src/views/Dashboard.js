@@ -294,14 +294,17 @@ export function Dashboard(props) {
     },
     // { id: "silentName", skip: true },
     {
+      hide: true,
       id: "created",
       label: "Created",
     },
     {
+      hide: true,
       id: "modified",
       label: "Modified",
     },
     {
+      hide: true,
       id: "channelId",
       label: "Channel",
     },
@@ -310,8 +313,6 @@ export function Dashboard(props) {
       label: "Status",
     },
   ];
-
-  console.log({ order, orderBy });
 
   return (
     <Root>
@@ -322,7 +323,7 @@ export function Dashboard(props) {
           <Table
             aria-labelledby="tableTitle"
             size="medium"
-            sx={{ minWidth: 750 }}
+            sx={{ width: "100%" }}
           >
             <TableHead>
               <TableRow>
@@ -346,6 +347,12 @@ export function Dashboard(props) {
                     colSpan={headCell.span || 1}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
+                    sx={{
+                      display: {
+                        xs: headCell.hide ? "none" : "table-cell",
+                        lg: "table-cell",
+                      },
+                    }}
                   >
                     {!headCell.silent && (
                       <TableSortLabel
@@ -374,7 +381,6 @@ export function Dashboard(props) {
                 .map((row, index) => {
                   const isItemSelected = selected.indexOf(row.mediaId) !== -1;
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -398,7 +404,12 @@ export function Dashboard(props) {
                         />
                       </TableCell>
                       <TableCell id={labelId} className={classes.thumbCell}>
-                        <Card sx={{ width: 60, height: 45 }}>
+                        <Card
+                          sx={{
+                            width: { xs: 40, lg: 60 },
+                            height: { xs: 30, lg: 45 },
+                          }}
+                        >
                           <CardActionArea
                             onClick={(e) => {
                               e.stopPropagation();
@@ -416,13 +427,16 @@ export function Dashboard(props) {
                       <TableCell
                         component="th"
                         id={labelId}
-                        scope="row"
                         padding="none"
+                        scope="row"
                       >
                         <Link
                           disabled={row.isProcessing}
                           underline={row.isProcessing ? "none" : "hover"}
-                          sx={{ cursor: "pointer" }}
+                          display="block"
+                          sx={{
+                            cursor: "pointer",
+                          }}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("hello");
@@ -434,15 +448,50 @@ export function Dashboard(props) {
                           {row.name}
                         </Link>
                       </TableCell>
-                      <TableCell sx={{ color: "text.secondary" }}>
-                        {row.created || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {row.created || "—"}
+                        </Typography>
                       </TableCell>
-                      <TableCell sx={{ color: "text.secondary" }}>
-                        {row.modified || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {row.modified || "—"}
+                        </Typography>
                       </TableCell>
-                      <TableCell>
-                        {_.find(channels, (o) => o.channelId === row.channelId)
-                          ?.name || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {_.find(
+                            channels,
+                            (o) => o.channelId === row.channelId
+                          )?.name || "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         <Status status={row.status} />
