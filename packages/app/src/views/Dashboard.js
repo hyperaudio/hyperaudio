@@ -436,6 +436,12 @@ export function Dashboard(props) {
                           display="block"
                           sx={{
                             cursor: "pointer",
+                            maxWidth: {
+                              xs: "180px",
+                              sm: "320px",
+                              md: "460px",
+                              lg: "400px",
+                            },
                           }}
                           onClick={(e) => {
                             e.stopPropagation();
