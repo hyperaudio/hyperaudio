@@ -4,9 +4,9 @@
   "private": true,
   "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=4000 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=4000 next start",
     "lint": "next lint"
   },
   "dependencies": {
