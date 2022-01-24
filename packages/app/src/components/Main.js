@@ -19,7 +19,7 @@ export function Main(props) {
   const { children } = props;
   return (
     <Root className={classes.root}>
-      <Container maxWidth="none">{children}</Container>
+      <Container>{children}</Container>
     </Root>
   );
 }

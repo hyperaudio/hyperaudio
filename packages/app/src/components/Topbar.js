@@ -5,6 +5,7 @@ import AppBar from "@mui/material/AppBar";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
+import PersonIcon from "@mui/icons-material/Person";
 import Divider from "@mui/material/Divider";
 import Grid from "@mui/material/Grid";
 import Hidden from "@mui/material/Hidden";
@@ -179,10 +180,10 @@ export function Topbar(props) {
       >
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
           <ListItemIcon>
-            <TuneIcon color="primary" fontSize="small" />
+            <PersonIcon color="primary" fontSize="small" />
           </ListItemIcon>
           <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Preferences
+            My account
           </ListItemText>
         </MenuItem>
         <Divider />
