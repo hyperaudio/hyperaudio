@@ -1,38 +1,26 @@
-import * as React from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import AddIcon from "@mui/icons-material/Add";
-import AppBar from "@mui/material/AppBar";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Container from "@mui/material/Container";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
-import Grid from "@mui/material/Grid";
-import Hidden from "@mui/material/Hidden";
-import HomeIcon from "@mui/icons-material/Home";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import IconButton from "@mui/material/IconButton";
-import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
 import Link from "@mui/material/Link";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import LogoutIcon from "@mui/icons-material/Logout";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import SettingsIcon from "@mui/icons-material/Settings";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -44,12 +32,12 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import TranslateIcon from "@mui/icons-material/Translate";
-import TuneIcon from "@mui/icons-material/Tune";
 import Typography from "@mui/material/Typography";
-import VideocamIcon from "@mui/icons-material/Videocam";
 import { alpha } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
+
+import { Main, Topbar } from "@hyperaudio/app/src/components";
 
 const PREFIX = `Dashboard`;
 const classes = {
@@ -64,22 +52,6 @@ const Root = styled(
   "div",
   {}
 )(({ theme }) => ({
-  [`& .${classes.main}`]: {
-    padding: theme.spacing(8, 0),
-  },
-  [`& .${classes.topbar}`]: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-    [`& .MuiButton-root:hover, & .MuiIconButton-root:hover`]: {
-      backgroundColor: theme.palette.primary.light,
-    },
-    [`& .MuiAvatar-root`]: {
-      backgroundColor: theme.palette.secondary.main,
-      fontSize: "1em",
-      fontWeight: "600",
-      letterSpacing: 0,
-      lineHeight: 1,
-    },
-  },
   [`& .${classes.thumbCell}`]: {
     width: "0",
   },
@@ -258,10 +230,7 @@ EnhancedTableToolbar.propTypes = {
 export function Dashboard(props) {
   const { channels, media, organization, account } = props;
 
-  const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
   const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = React.useState(null);
-  const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
-  const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
 
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("created");
@@ -269,10 +238,7 @@ export function Dashboard(props) {
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
   const [selected, setSelected] = React.useState([]);
 
-  const openAddMenu = Boolean(addMenuAnchor);
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
-  const openOrgMenu = Boolean(orgMenuAnchor);
-  const openProfileMenu = Boolean(profileMenuAnchor);
 
   const handleSelectClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -349,343 +315,176 @@ export function Dashboard(props) {
 
   return (
     <Root>
-      <AppBar position="fixed" elevation={0} className={classes.topbar}>
-        <Toolbar>
-          <Grid container alignItems="center">
-            <Grid item xs={4}>
-              <Button
-                onClick={(e) => setOrgMenuAnchor(e.currentTarget)}
-                size="small"
-                color="inherit"
-                startIcon={
-                  <Avatar
-                    sx={{ height: 28, width: 28 }}
-                    alt={`${account.fname}
-                    ${account.lname}`}
+      <Topbar account={account} organization={organization} />
+      <Main>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableContainer>
+          <Table
+            aria-labelledby="tableTitle"
+            size="medium"
+            sx={{ minWidth: 750 }}
+          >
+            <TableHead>
+              <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    color="primary"
+                    indeterminate={
+                      selected.length > 0 && selected.length < media.length
+                    }
+                    checked={
+                      media.length > 0 && selected.length === media.length
+                    }
+                    onChange={handleSelectAllClick}
+                    inputProps={{
+                      "aria-label": "select all desserts",
+                    }}
+                  />
+                </TableCell>
+                {headCells.map((headCell) => (
+                  <TableCell
+                    colSpan={headCell.span || 1}
+                    key={headCell.id}
+                    sortDirection={orderBy === headCell.id ? order : false}
                   >
-                    {organization.name.charAt(0)}
-                  </Avatar>
-                }
-              >
-                {" "}
-                <Hidden mdDown>{organization.name}</Hidden>
-                <ArrowDropDownIcon fontSize="small" />
-              </Button>
-              <Tooltip title="Open your organization’s home page">
-                <IconButton
-                  color="inherit"
-                  edge="end"
-                  href={organization.slug}
-                  sx={{ marginLeft: 1 }}
-                  target="_blank"
-                  variant="contained"
-                >
-                  <HomeIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-            </Grid>
-            <Grid item xs={4} align="center">
-              <Typography variant="subtitle1">Your Media</Typography>
-            </Grid>
-            <Grid item xs={4} align="right">
-              <Tooltip title="Add new…">
-                <IconButton
-                  aria-expanded={openAddMenu ? "true" : undefined}
-                  aria-haspopup="true"
-                  aria-label="Add new…"
-                  color="inherit"
-                  edge="start"
-                  id="openAddMenuButton"
-                  onClick={(e) => setAddMenuAnchor(e.currentTarget)}
-                  sx={{ marginRight: 1 }}
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Button
-                onClick={(e) => setProfileMenuAnchor(e.currentTarget)}
-                color="inherit"
-                size="small"
-                startIcon={
-                  <Avatar
-                    sx={{ height: 30, width: 30 }}
-                    alt={`${account.fname}
-                    ${account.lname}`}
-                  >
-                    {account.fname.charAt(0)} {account.lname.charAt(0)}
-                  </Avatar>
-                }
-              >
-                {" "}
-                <Hidden mdDown>
-                  {account.fname} {account.lname.charAt(0)}.
-                </Hidden>{" "}
-                <ArrowDropDownIcon fontSize="small" />
-              </Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-      <main className={classes.main}>
-        <Container maxWidth="none">
-          <EnhancedTableToolbar numSelected={selected.length} />
-          <TableContainer>
-            <Table
-              aria-labelledby="tableTitle"
-              size="medium"
-              sx={{ minWidth: 750 }}
-            >
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      indeterminate={
-                        selected.length > 0 && selected.length < media.length
-                      }
-                      checked={
-                        media.length > 0 && selected.length === media.length
-                      }
-                      onChange={handleSelectAllClick}
-                      inputProps={{
-                        "aria-label": "select all desserts",
-                      }}
-                    />
-                  </TableCell>
-                  {headCells.map((headCell) => (
-                    <TableCell
-                      colSpan={headCell.span || 1}
-                      key={headCell.id}
-                      sortDirection={orderBy === headCell.id ? order : false}
-                    >
-                      {!headCell.silent && (
-                        <TableSortLabel
-                          active={orderBy === headCell.id}
-                          direction={orderBy === headCell.id ? order : "asc"}
-                          onClick={handleChangeSort(headCell.id)}
-                        >
-                          {headCell.label}
-                          {orderBy === headCell.id ? (
-                            <Box component="span" sx={visuallyHidden}>
-                              {order === "desc"
-                                ? "sorted descending"
-                                : "sorted ascending"}
-                            </Box>
-                          ) : null}
-                        </TableSortLabel>
-                      )}
-                    </TableCell>
-                  ))}
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {stableSort(media, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    const isItemSelected = selected.indexOf(row.mediaId) !== -1;
-                    const labelId = `enhanced-table-checkbox-${index}`;
-
-                    return (
-                      <TableRow
-                        hover
-                        tabIndex={-1}
-                        key={row.mediaId}
-                        onClick={() => console.log("open")}
-                        selected={isItemSelected}
+                    {!headCell.silent && (
+                      <TableSortLabel
+                        active={orderBy === headCell.id}
+                        direction={orderBy === headCell.id ? order : "asc"}
+                        onClick={handleChangeSort(headCell.id)}
                       >
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            color="primary"
-                            checked={isItemSelected}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
-                            onClick={(event) =>
-                              handleSelectClick(event, row.mediaId)
-                            }
-                            inputProps={{
-                              "aria-labelledby": labelId,
-                            }}
-                          />
-                        </TableCell>
-                        <TableCell id={labelId} className={classes.thumbCell}>
-                          <Card sx={{ width: 60, height: 45 }}>
-                            <CardActionArea
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                console.log("hello");
-                              }}
-                            >
-                              <CardMedia
-                                component="img"
-                                height="100%"
-                                image={row.thumb}
-                              />
-                            </CardActionArea>
-                          </Card>
-                        </TableCell>
-                        <TableCell
-                          component="th"
-                          id={labelId}
-                          scope="row"
-                          padding="none"
-                        >
-                          <Link
-                            disabled={row.isProcessing}
-                            underline={row.isProcessing ? "none" : "hover"}
-                            sx={{ cursor: "pointer" }}
+                        {headCell.label}
+                        {orderBy === headCell.id ? (
+                          <Box component="span" sx={visuallyHidden}>
+                            {order === "desc"
+                              ? "sorted descending"
+                              : "sorted ascending"}
+                          </Box>
+                        ) : null}
+                      </TableSortLabel>
+                    )}
+                  </TableCell>
+                ))}
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {stableSort(media, getComparator(order, orderBy))
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row, index) => {
+                  const isItemSelected = selected.indexOf(row.mediaId) !== -1;
+                  const labelId = `enhanced-table-checkbox-${index}`;
+
+                  return (
+                    <TableRow
+                      hover
+                      tabIndex={-1}
+                      key={row.mediaId}
+                      onClick={() => console.log("open")}
+                      selected={isItemSelected}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          onClick={(event) =>
+                            handleSelectClick(event, row.mediaId)
+                          }
+                          inputProps={{
+                            "aria-labelledby": labelId,
+                          }}
+                        />
+                      </TableCell>
+                      <TableCell id={labelId} className={classes.thumbCell}>
+                        <Card sx={{ width: 60, height: 45 }}>
+                          <CardActionArea
                             onClick={(e) => {
                               e.stopPropagation();
                               console.log("hello");
                             }}
-                            noWrap
-                            color={
-                              row.isProcessing ? "text.disabled" : "primary"
-                            }
-                            variant="subtitle2"
                           >
-                            {row.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell sx={{ color: "text.secondary" }}>
-                          {row.created || "—"}
-                        </TableCell>
-                        <TableCell sx={{ color: "text.secondary" }}>
-                          {row.modified || "—"}
-                        </TableCell>
-                        <TableCell>
-                          {_.find(
-                            channels,
-                            (o) => o.channelId === row.channelId
-                          )?.name || "—"}
-                        </TableCell>
-                        <TableCell>
-                          <Status status={row.status} />
-                        </TableCell>
-                        <TableCell padding="checkbox">
-                          <IconButton
-                            disabled={row.isProcessing}
-                            fontSize="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setItemMoreMenuAnchor(e.currentTarget);
-                            }}
-                          >
-                            <MoreHorizIcon fontSize="small" />
-                          </IconButton>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                {emptyRows > 0 && (
-                  <TableRow
-                    style={{
-                      height: 83 * emptyRows,
-                      // height: (dense ? 33 : 53) * emptyRows,
-                    }}
-                  >
-                    <TableCell colSpan={8} />
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={media.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Container>
-      </main>
-      <Menu
-        anchorEl={orgMenuAnchor}
-        id="orgMenu"
-        MenuListProps={{
-          "aria-labelledby": "openOrgMenuButton",
-          dense: true,
-        }}
-        onClose={() => setOrgMenuAnchor(null)}
-        open={openOrgMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: "left", vertical: "top" }}
-        anchorOrigin={{ horizontal: "left", vertical: "bottom" }}
-      >
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <SettingsIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Organization settings
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={addMenuAnchor}
-        id="addMenu"
-        MenuListProps={{
-          "aria-labelledby": "openAddMenuButton",
-          dense: true,
-        }}
-        onClose={() => setAddMenuAnchor(null)}
-        open={openAddMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <VideocamIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            New media…
-          </ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <LibraryAddIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            New channel…
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={profileMenuAnchor}
-        id="profileMenu"
-        MenuListProps={{
-          "aria-labelledby": "openProfileMenuButton",
-          dense: true,
-        }}
-        onClose={() => setProfileMenuAnchor(null)}
-        open={openProfileMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemIcon>
-            <TuneIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Preferences
-          </ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemIcon>
-            <LogoutIcon color="error" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "error" }}>
-            Log out
-          </ListItemText>
-        </MenuItem>
-      </Menu>
+                            <CardMedia
+                              component="img"
+                              height="100%"
+                              image={row.thumb}
+                            />
+                          </CardActionArea>
+                        </Card>
+                      </TableCell>
+                      <TableCell
+                        component="th"
+                        id={labelId}
+                        scope="row"
+                        padding="none"
+                      >
+                        <Link
+                          disabled={row.isProcessing}
+                          underline={row.isProcessing ? "none" : "hover"}
+                          sx={{ cursor: "pointer" }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            console.log("hello");
+                          }}
+                          noWrap
+                          color={row.isProcessing ? "text.disabled" : "primary"}
+                          variant="subtitle2"
+                        >
+                          {row.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell sx={{ color: "text.secondary" }}>
+                        {row.created || "—"}
+                      </TableCell>
+                      <TableCell sx={{ color: "text.secondary" }}>
+                        {row.modified || "—"}
+                      </TableCell>
+                      <TableCell>
+                        {_.find(channels, (o) => o.channelId === row.channelId)
+                          ?.name || "—"}
+                      </TableCell>
+                      <TableCell>
+                        <Status status={row.status} />
+                      </TableCell>
+                      <TableCell padding="checkbox">
+                        <IconButton
+                          disabled={row.isProcessing}
+                          fontSize="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setItemMoreMenuAnchor(e.currentTarget);
+                          }}
+                        >
+                          <MoreHorizIcon fontSize="small" />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              {emptyRows > 0 && (
+                <TableRow
+                  style={{
+                    height: 83 * emptyRows,
+                    // height: (dense ? 33 : 53) * emptyRows,
+                  }}
+                >
+                  <TableCell colSpan={8} />
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={media.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Main>
       <Menu
         anchorEl={itemMoreMenuAnchor}
         id="itemMoreMenu"
@@ -699,7 +498,7 @@ export function Dashboard(props) {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
+        <MenuItem onClick={() => setItemMoreMenuAnchor(null)}>
           <ListItemIcon>
             <EditIcon color="primary" fontSize="small" />
           </ListItemIcon>
@@ -708,7 +507,7 @@ export function Dashboard(props) {
           </ListItemText>
         </MenuItem>
         <Divider />
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
+        <MenuItem onClick={() => setItemMoreMenuAnchor(null)}>
           <ListItemIcon>
             <TranslateIcon color="primary" fontSize="small" />
           </ListItemIcon>
