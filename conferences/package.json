@@ -1,12 +1,12 @@
 {
-  "name": "@hyperaudio/website",
+  "name": "@hyperaudio/conferences",
   "version": "0.3.0",
   "private": true,
   "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "PORT=4000 next dev",
+    "dev": "next dev",
     "build": "next build",
-    "start": "PORT=4000 next start",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {

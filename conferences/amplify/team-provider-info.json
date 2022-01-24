@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hyperaudio-dev-130309-authRole",
+      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-dev-130309-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudio-dev-130309-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-hyperaudio-dev-130309-deployment",
+      "UnauthRoleName": "amplify-hyperaudio-dev-130309-unauthRole",
+      "StackName": "amplify-hyperaudio-dev-130309",
+      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudio-dev-130309/106e69f0-7785-11ec-91b8-0240d2b17685",
+      "AmplifyAppId": "d2q2ymru5i14e8"
+    },
+    "categories": {
+      "auth": {
+        "Hyperaudio": {}
+      }
+    }
+  }
+}

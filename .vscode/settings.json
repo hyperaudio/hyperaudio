@@ -28,5 +28,21 @@
     "!Split",
     "!Split sequence"
   ],
-  "python.formatting.provider": "black"
+  "python.formatting.provider": "black",
+  "files.exclude": {
+    "conferences/amplify/.config": true,
+    "conferences/amplify/**/*-parameters.json": true,
+    "conferences/amplify/**/amplify.state": true,
+    "conferences/amplify/**/transform.conf.json": true,
+    "conferences/amplify/#current-cloud-backend": true,
+    "conferences/amplify/backend/amplify-meta.json": true,
+    "conferences/amplify/backend/awscloudformation": true,
+    "website/amplify/.config": true,
+    "website/amplify/**/*-parameters.json": true,
+    "website/amplify/**/amplify.state": true,
+    "website/amplify/**/transform.conf.json": true,
+    "website/amplify/#current-cloud-backend": true,
+    "website/amplify/backend/amplify-meta.json": true,
+    "website/amplify/backend/awscloudformation": true
+  }
 }

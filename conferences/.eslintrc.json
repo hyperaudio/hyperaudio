@@ -1,0 +1,26 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["next/core-web-vitals", "prettier"],
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "jsx-a11y/anchor-is-valid": 0,
+    "no-console": 0,
+    "no-shadow": 0,
+    "no-empty": 0,
+    "no-param-reassign": 0,
+    "react-hooks/exhaustive-deps": 1,
+    "react/jsx-filename-extension": 0,
+    "import/prefer-default-export": 0,
+    "react/jsx-props-no-spreading": 0,
+    "react/prop-types": 0,
+    "react/react-in-jsx-scope": 0
+  }
+}
