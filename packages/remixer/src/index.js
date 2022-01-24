@@ -6,8 +6,7 @@ import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { HyperaudioIcon } from './icons';
-import { defaultTheme } from './themes';
+import { HyperaudioIcon, defaultTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
@@ -16,7 +15,7 @@ import GlobalStyles from './GlobalStyles';
 
 import remixReducer from './reducers/remixReducer';
 
-import './fonts/Inter/inter.css';
+import '@hyperaudio/common/src/fonts/Inter/inter.css';
 
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'showSource',
@@ -99,6 +98,26 @@ const Root = styled('div', {
   [`& .topbarPush`]: {
     ...theme.mixins.toolbar,
   },
+  [`& .transcriptWrap`]: {
+    alignItems: 'center',
+    borderTop: `1px solid ${theme.palette.divider}`,
+    display: 'flex',
+    flex: '2 2 66%',
+    flexFlow: 'column nowrap',
+    height: '100%',
+    justifyContent: 'flex-start',
+    overflow: 'auto',
+    padding: theme.spacing(2, 2, 12, 2),
+  },
+  [`& .transcriptSnapshotDropArea`]: {
+    boxShadow: `0 0 2px 0 ${theme.palette.primary.light} inset`,
+    outline: `3px solid ${theme.palette.primary.main}`,
+    overflow: 'scroll',
+  },
+  [`& .transcriptDropArea`]: {
+    borderRadius: theme.shape.borderRadius,
+    height: '100%',
+  },
 }));
 
 const Badge = styled(Fab)(({ theme }) => ({
@@ -110,13 +129,20 @@ const Badge = styled(Fab)(({ theme }) => ({
 export const Remixer = props => {
   const { editable, media } = props;
 
-  const [{ sources, remix }, dispatch] = useReducer(remixReducer, { sources: props.sources, remix: props.remix });
-  const [source, setSource] = useState(sources[0]);
+  const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
+    sources: props.sources,
+    tabs: props.sources,
+    remix: props.remix,
+    source: props.sources[0],
+  });
 
   const [showSource, setShowSource] = useState(true);
   const [showLibrary, setShowLibrary] = useState(false);
 
-  const onSourceChange = useCallback(id => setSource(_.find(sources, o => o.id === id)), [sources]);
+  const onSourceChange = useCallback(
+    id => dispatch({ type: 'sourceOpen', source: props.sources.find(m => m.id === id) }),
+    [props],
+  );
 
   const onShowLibrary = useCallback(() => setShowLibrary(true), []);
   const onHideLibrary = useCallback(() => setShowLibrary(false), []);
@@ -172,14 +198,14 @@ export const Remixer = props => {
           {editable ? (
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
               {showSource && (
-                <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange, onSourceClose }} />
+                <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose }} />
               )}
-              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange, dispatch }} />
+              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, dispatch }} />
             </DragDropContext>
           ) : (
             <>
-              {showSource && <Source {...{ ...props, sources, source, onShowLibrary, onSourceChange }} />}
-              <Remix {...{ ...props, remix, showSource, setShowSource, onSourceChange }} />
+              {showSource && <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange }} />}
+              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange }} />
             </>
           )}
         </div>
@@ -190,7 +216,7 @@ export const Remixer = props => {
             </Badge>
           </Tooltip>
         )}
-        {showLibrary && <Library {...{ ...props, sources, onHideLibrary, onSearch, onSourceOpen }} />}
+        {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>
   );

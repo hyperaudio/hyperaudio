@@ -6,9 +6,14 @@ const remixReducer = (state, action) => {
 
   switch (type) {
     case 'sourceOpen':
-      return { ...state, sources: [...state.sources, action.source] };
+      // TODO deal with sources/library via API
+      let sources = state.sources;
+      let tabs = state.tabs;
+      if (!sources.find(s => s.id === action.source.id)) sources = [...state.sources, action.source];
+      if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
+      return { ...state, sources, tabs, source: action.source };
     case 'sourceClose':
-      return { ...state, sources: state.sources.filter(source => source.id !== action.id) };
+      return { ...state, tabs: state.tabs.filter(source => source.id !== action.id) };
     case 'removeBlock':
       return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
     case 'moveUpBlock': {
@@ -23,6 +28,90 @@ const remixReducer = (state, action) => {
       return {
         ...state,
         remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index + 1) },
+      };
+    }
+    case 'titleSetFullSize': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, fullSize: action.fullSize },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'titleTextChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, text: action.text },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'transitionDurationChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, transition: action.transition },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'slidesChange': {
+      const index = state.remix.blocks.findIndex(b => b.key === action.key);
+      const block = state.remix.blocks[index];
+      console.log(index, block);
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            { ...block, deck: action.deck, slide: action.slide },
+            ...state.remix.blocks.slice(index + 1),
+          ],
+        },
+      };
+    }
+    case 'appendInsert': {
+      const { insert } = action;
+      const index = state.remix.blocks.findIndex(b => b.key === action.key) + 1;
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          blocks: [
+            ...state.remix.blocks.slice(0, index),
+            {
+              key: `${insert}-${Date.now()}`,
+              duration: 0,
+              gap: 0,
+              type: insert,
+            },
+            ...state.remix.blocks.slice(index),
+          ],
+        },
       };
     }
     case 'dragEnd': {
@@ -105,8 +194,13 @@ const remixReducer = (state, action) => {
               offsets: block.offsets.slice(startIndex2, endIndex2),
               lengths: block.lengths.slice(startIndex2, endIndex2),
               keys: block.keys.slice(startIndex2, endIndex2),
+              durations: block.durations.slice(startIndex2, endIndex2),
               // start: block.starts.slice(startIndex2, endIndex2)[0],
               // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
+              duration:
+                block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0],
+              gap: endIndex === -1 ? block.gap : 0,
+              debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
             };
           });
 
@@ -125,21 +219,8 @@ const remixReducer = (state, action) => {
       return state;
     }
     default:
-      throw new Error('unhandled action', action);
+      throw new Error(`unhandled action ${type}`, action);
   }
 };
 
 export default remixReducer;
-
-/*
-    const startIndex = block.starts2.findIndex((s, i) => offset + s >= range[0]);
-    const endIndex = block.starts2.findIndex((s, i) => offset + s + block.durations[i] >= range[1]);
-
-    return [
-      startIndex === -1 ? 0 : block.offsets[startIndex],
-      endIndex === -1
-        ? block.text.length
-        : block.offsets[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex] +
-          block.lengths[endIndex < block.offsets.length - 2 ? endIndex + 1 : endIndex],
-    ];
-*/

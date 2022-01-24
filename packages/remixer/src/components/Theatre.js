@@ -7,6 +7,7 @@ import Grid from '@mui/material/Grid';
 
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
+import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
@@ -64,14 +65,16 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   const [active, setActive] = useState();
   const [interval, setInterval] = useState();
   const [referencePlaying, setReferencePlaying] = useState();
-  // const [playing, setPlaying] = useState();
+  const [buffering, setBuffering] = useState(false);
+  const [insert, setInsert] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
 
   const intervals = useMemo(
     () =>
       blocks
-        .reduce((acc, { start, duration, gap, media }, i, arr) => {
+        .reduce((acc, block, i, arr) => {
+          const { start, duration, gap, media } = block;
           const prevInterval = acc.pop();
           const offset = prevInterval?.[1] ?? 0;
           return [
@@ -80,7 +83,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             [
               offset, // TODO name these better
               offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
-              { start, media },
+              { start, media, block },
             ],
           ];
         }, [])
@@ -89,22 +92,45 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 
   useEffect(() => {
-    const interval = intervals.find(([start, end]) => start <= time && time < end);
-    if (interval) {
-      setActive(interval[2].media);
-      setInterval(interval);
-    } else setReferencePlaying(false);
-  }, [intervals, time]);
+    const currentIntervalIndex = intervals.findIndex(([start, end]) => start <= time && time < end);
+    const currentInterval = intervals[currentIntervalIndex];
+
+    if (currentInterval !== interval && currentIntervalIndex > 0) {
+      const prevInterval = intervals[currentIntervalIndex - 1];
+      console.log('previous', prevInterval);
+
+      if (prevInterval[2].block.type === 'title') {
+        console.log('TITLE', prevInterval[2].block.text);
+        setInsert(prevInterval[2].block);
+      } else if (prevInterval[2].block.type === 'transition') {
+        console.log('TRANSITION', prevInterval[2].block);
+        setInsert(prevInterval[2].block);
+      } else {
+        setInsert(null);
+      }
+    }
+
+    if (currentInterval) {
+      setActive(currentInterval[2].media);
+      setInterval(currentInterval);
+    } else {
+      setReferencePlaying(false);
+      const lastInterval = intervals[intervals.length - 1];
+      if (lastInterval[2].block.type === 'transition') {
+        setInsert(lastInterval[2].block);
+      }
+    }
+  }, [intervals, interval, time]);
 
   const onPlay = useCallback(() => {
+    if (buffering) return;
     setReferencePlaying(true);
-    // setPlaying(active);
-  }, [active]);
+  }, [active, buffering]);
 
   const onPause = useCallback(() => {
+    if (buffering) return;
     setReferencePlaying(false);
-    // setPlaying(null);
-  }, []);
+  }, [buffering]);
 
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
@@ -116,31 +142,118 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   console.log({ referencePlaying });
   console.log({ active });
 
+  useEffect(() => {
+    if (buffering && referencePlaying) {
+      reference.current.pause();
+    } else if (!buffering && referencePlaying) {
+      reference.current.play();
+    }
+  }, [buffering, reference]);
+
   return (
     <Root>
       <Container maxWidth="sm">
-        {media?.map(({ id, url }) => (
-          <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
-            <Player
-              key={id}
-              active={active === id}
-              time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
-              // playing={referencePlaying && playing === id && active === id}
-              playing={referencePlaying && active === id}
-              media={{ id, url }}
-              // {...{ players, setActive, setPlaying }}
-              {...{ players, setActive }}
-            />
-          </div>
-        ))}
+        <div style={{ position: 'relative' }}>
+          {media?.map(({ id, url }) => (
+            <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
+              <Player
+                key={id}
+                active={active === id}
+                time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
+                playing={referencePlaying && active === id}
+                media={{ id, url }}
+                {...{ players, setActive, buffering, setBuffering }}
+              />
+            </div>
+          ))}
 
+          {insert && insert.type === 'title' && (
+            <>
+              <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
+              <style scoped>
+                {`
+                .insertTitle {
+                  pointer-events: none;
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  background: rgba(0, 0, 0, 0.5);
+                  color: white;
+                  animation: hideAnimation 0s ease-in 3s;
+                  animation-fill-mode: forwards;
+                }
+
+                .insertTitle.fullSize {
+                  width: 100%;
+                  height: 100%;
+                }
+
+                .insertTitle.lowerThirds {
+                  width: 100%;
+                  height: 33%;
+                }
+
+                @keyframes hideAnimation {
+                  100% {
+                    visibility: hidden;
+                  }
+                }
+              `}
+              </style>
+            </>
+          )}
+
+          {insert && insert.type === 'transition' && (
+            <>
+              <div className="insertTransition"></div>
+              <style scoped>
+                {`
+                .insertTransition {
+                  pointer-events: none;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  background-color: #000;
+                  opacity: 1;
+                  animation: transitionAnimation ${(insert.transition ?? 3000) / 1e3}s;
+                  animation-fill-mode: forwards;
+                  width: 100%;
+                  height: 100%;
+                }
+
+                @keyframes transitionAnimation {
+                  0% {
+                    opacity: 0;
+                  }
+                  99% {
+                    width: 100%;
+                    height: 100%;
+                  }
+                  100% {
+                    opacity: 1;
+                    visibility: hidden;
+                    width: 0;
+                    height: 0;
+                  }
+                }
+              `}
+              </style>
+            </>
+          )}
+        </div>
         <div>
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
               {referencePlaying ? (
-                <IconButton onClick={pause} size="small">
-                  <PauseIcon />
-                </IconButton>
+                buffering ? (
+                  <IconButton onClick={pause} size="small">
+                    <FastForwardIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton onClick={pause} size="small">
+                    <PauseIcon />
+                  </IconButton>
+                )
               ) : (
                 <IconButton onClick={play} size="small">
                   <PlayArrowIcon />
@@ -176,11 +289,9 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 };
 
-const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time }) => {
+const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time, setBuffering }) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
-
-  // console.log(time, active, playing, id);
 
   useEffect(() => {
     if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
@@ -222,6 +333,16 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
     [id],
   );
 
+  const onBuffer = useCallback(() => {
+    console.log('onBuffer', id);
+    setBuffering(true);
+  }, [id, setBuffering]);
+
+  const onBufferEnd = useCallback(() => {
+    console.log('onBufferEnd', id);
+    setBuffering(false);
+  }, [id, setBuffering]);
+
   return (
     <ReactPlayer
       key={id}
@@ -229,7 +350,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
       width="100%"
       height="100%"
       muted={!primed}
-      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress }}
+      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
     />
   );
 };

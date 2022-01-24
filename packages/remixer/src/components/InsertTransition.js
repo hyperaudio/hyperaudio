@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import MovieFilterIcon from '@mui/icons-material/MovieFilter';
-import Paper from '@mui/material/Paper';
 import Slider from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -13,13 +12,20 @@ const classes = {
   title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper)(({ theme }) => ({
+const Root = styled('div')(({ theme }) => ({
+  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1, 2, 0.5),
+  boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
   },
+
+  [`& .${classes.controls}`]: {
+    padding: theme.spacing(0, 0.5),
+    lineHeight: 0,
+  },
   [`& .${classes.slider}`]: {
+    paddingBottom: theme.spacing(1),
     [`& .MuiSlider-markLabel`]: {
       ...theme.typography.caption,
       color: theme.palette.text.secondary,
@@ -28,11 +34,17 @@ const Root = styled(Paper)(({ theme }) => ({
   },
 }));
 
-export const InsertTransition = props => {
-  const { onDurationChange, duration } = props;
-  const [stateDuration, setStateDuration] = React.useState(duration);
+export const InsertTransition = ({ editable = false, block: { key, transition: duration = 3000 }, dispatch }) => {
+  const [stateDuration, setStateDuration] = useState(duration);
+  useEffect(() => setStateDuration(duration), [duration]);
 
-  const onSliderChange = (e, val) => setStateDuration(val);
+  const onSliderChange = useCallback((e, value) => setStateDuration(value), []);
+  const onDurationChange = useCallback(
+    (e, value) => dispatch({ type: 'transitionDurationChange', key, transition: value }),
+    [dispatch],
+  );
+
+  const labelFormat = useCallback(val => `${(val / 1000).toFixed(1)} s`, []);
 
   return (
     <Root>
@@ -45,24 +57,20 @@ export const InsertTransition = props => {
           aria-labelledby="insert-slide-title"
           className={classes.slider}
           marks={[
-            { value: 1000, label: '1s' },
-            { value: 3000, label: '3s' },
-            { value: 5000, label: '5s' },
+            { value: 2000, label: '2s' },
+            // { value: 3000, label: '3s' },
+            { value: 4000, label: '4s' },
           ]}
           max={5000}
           min={1000}
           onChange={onSliderChange}
-          onChangeCommitted={(e, val) => onDurationChange(val)}
+          onChangeCommitted={onDurationChange}
           size="small"
           value={stateDuration}
           valueLabelDisplay="auto"
-          valueLabelFormat={val => `${(val / 1000).toFixed(1)} s`}
+          valueLabelFormat={labelFormat}
         />
       </div>
     </Root>
   );
-};
-
-InsertTransition.defaultProps = {
-  duration: 3000,
 };

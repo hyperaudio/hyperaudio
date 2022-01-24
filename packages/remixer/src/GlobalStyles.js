@@ -1,5 +1,5 @@
 import React from 'react';
-import { rgba } from 'polished';
+import { lighten } from 'polished';
 
 import GlobalStyles from '@mui/material/GlobalStyles';
 
@@ -9,7 +9,7 @@ export default function Styles(props) {
       styles={theme => ({
         html: {
           [`& *::selection`]: {
-            background: rgba(theme.palette.secondary.main, 0.2),
+            backgroundColor: lighten(0.3, theme.palette.secondary.main),
           },
         },
       })}

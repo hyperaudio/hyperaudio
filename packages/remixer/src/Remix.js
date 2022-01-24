@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
+import { Droppable } from 'react-beautiful-dnd';
 
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { RemixTopbar, Theatre, Transcript, InsertsBar } from './components';
-import { StartDropIcon } from './icons';
+import { StartDropIcon } from '@hyperaudio/common';
 
 const PREFIX = 'Remix';
 const classes = {
@@ -31,6 +32,7 @@ const Root = styled('div')(({ theme }) => {
       flex: '1 1 100%',
       flexDirection: 'column',
       justifyContent: 'center',
+      margin: theme.spacing(0, 2, 12),
       textAlign: 'center',
       [`& *`]: {
         margin: theme.spacing(1),
@@ -44,7 +46,9 @@ const Remix = props => {
   const {
     editable,
     remix: { id, blocks, media },
+    sources,
     dispatch,
+    onSourceChange,
   } = props;
 
   const reference = useRef();
@@ -57,20 +61,39 @@ const Remix = props => {
       reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
   }, [reference]);
 
+  const [blocksOverride, setBlockOverride] = useState();
+
   return (
     <>
       <Root className="RemixerPane RemixerPane--Remix">
         <RemixTopbar {...props} />
         {blocks?.length > 0 ? (
           <>
-            <Theatre {...{ blocks, media, players, reference, time }} />
-            <Transcript {...{ id, blocks, players, reference, time, editable, dispatch }} />
+            <Theatre {...{ media, players, reference, time }} blocks={blocksOverride ?? blocks} />
+            <div className="transcriptWrap">
+              <Transcript
+                {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride, onSourceChange }}
+                editable={editable && !blocksOverride}
+              />
+            </div>
           </>
         ) : (
-          <div className={classes.intro}>
-            <StartDropIcon />
-            <Typography variant="body2">Start by dropping an effect or a section from the source transcript</Typography>
-          </div>
+          <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>
+            {(provided, snapshot) => (
+              <div
+                className={`${classes.intro} transcriptDropArea ${
+                  snapshot.isDraggingOver && 'transcriptSnapshotDropArea'
+                }`}
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                <StartDropIcon />
+                <Typography variant="body2">
+                  Start by dropping an effect or a section from the source transcript
+                </Typography>
+              </div>
+            )}
+          </Droppable>
         )}
         {editable && <InsertsBar />}
       </Root>

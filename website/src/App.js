@@ -1,34 +1,46 @@
-/* eslint-disable react/jsx-props-no-spreading */
-// import 'reflect-metadata'; // FIXME: still need this?
-import App from 'next/app';
-import Amplify, { Analytics } from 'aws-amplify';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-import { ThemeProvider } from '@material-ui/core/styles';
+// import Amplify, { Hub, Analytics } from 'aws-amplify';
 
-import useTheme from 'src/hooks/useTheme';
+import { CacheProvider } from '@emotion/react';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 
-import awsexports from './aws-exports';
-import awsconfig from './aws-config';
+import createEmotionCache from './util/createEmotionCache';
+import lightTheme from './styles/theme/lightTheme';
 
-global.Amplify = Amplify;
+// import awsexports from './aws-exports';
+// import awsconfig from './aws-config';
 
-Amplify.configure({ ...awsexports, ...awsconfig });
+// Amplify.configure({ ...awsexports, ...awsconfig });
 // Analytics.record();
 
-const Provider = props => {
-  const theme = useTheme();
-  return <ThemeProvider {...props} theme={theme} />;
+// Hub.listen('auth', async data => {
+//   if (data.payload.event === 'signOut') {
+//     await DataStore.clear();
+//   }
+// });
+
+const clientSideEmotionCache = createEmotionCache();
+
+const App = props => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline />
+        {/* <Header /> */}
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
+  );
 };
 
-class Application extends App {
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <Provider>
-        <Component {...pageProps} />
-      </Provider>
-    );
-  }
-}
+export default App;
 
-export default Application;
+App.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  emotionCache: PropTypes.object,
+  pageProps: PropTypes.object.isRequired,
+};

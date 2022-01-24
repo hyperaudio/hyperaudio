@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
-import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { FullSizeIcon, LowerThirdsIcon } from '../icons';
+import { FullSizeIcon, LowerThirdsIcon } from '@hyperaudio/common';
 
 const PREFIX = 'InsertTitle';
 const classes = {
@@ -17,11 +16,12 @@ const classes = {
   title: `${PREFIX}-title`,
 };
 
-const Root = styled(Paper, {
+const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
+  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  padding: theme.spacing(1, 2, 0.5),
+  boxShadow: theme.shadows[1],
   [`& .${classes.title}`]: {
     marginBottom: theme.spacing(1),
   },
@@ -47,7 +47,7 @@ const Root = styled(Paper, {
     },
   },
   [`& .${classes.controls}`]: {
-    margin: theme.spacing(1, 0),
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -68,9 +68,18 @@ const Control = styled('a', {
   },
 }));
 
-export const InsertTitle = props => {
-  const { fullSize, text, onTextChange, onSetFullSize } = props;
-  const [titleText, setTitleText] = React.useState(text);
+export const InsertTitle = ({
+  editable = false,
+  block: { key, fullSize = false, text = 'Type in your title here…' },
+  dispatch,
+}) => {
+  const onTextChange = useCallback(
+    ({ target: { value: text } }) => dispatch({ type: 'titleTextChange', key, text }),
+    [dispatch],
+  );
+
+  const onSetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: true }), [dispatch]);
+  const onUnsetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: false }), [dispatch]);
 
   return (
     <Root fullSize={fullSize}>
@@ -79,23 +88,17 @@ export const InsertTitle = props => {
         <span id="insert-title">Title</span>
       </Typography>
       <div className={classes.canvas}>
-        <TextField
-          className={classes.field}
-          onBlur={e => onTextChange(e.target.value)}
-          onChange={e => setTitleText(e.target.value)}
-          size="small"
-          value={titleText}
-        />
+        <TextField className={classes.field} onBlur={onTextChange} onChange={onTextChange} size="small" value={text} />
       </div>
       <div className={classes.controls}>
-        <Control isActive={fullSize} onClick={() => onSetFullSize(true)}>
+        <Control isActive={fullSize} onClick={onSetFullSize}>
           <FullSizeIcon className={classes.icon} />
           <Typography variant="caption" underline="hover">
             Full-size
           </Typography>
         </Control>{' '}
         ⋅ 
-        <Control isActive={!fullSize} onClick={() => onSetFullSize(false)}>
+        <Control isActive={!fullSize} onClick={onUnsetFullSize}>
           <LowerThirdsIcon className={classes.icon} />
           <Typography variant="caption" underline="hover">
             Lower-thirds
@@ -104,9 +107,4 @@ export const InsertTitle = props => {
       </div>
     </Root>
   );
-};
-
-InsertTitle.defaultProps = {
-  text: 'Type in your title here…',
-  fullSize: true,
 };
