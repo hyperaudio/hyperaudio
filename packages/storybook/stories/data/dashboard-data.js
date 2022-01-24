@@ -7,6 +7,8 @@ export const data = {
   account: {
     fname: "Piotr",
     lname: "Fedorczyk",
+    displayName: "Monsieur Pieutre",
+    bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
   },
   media: [
     {

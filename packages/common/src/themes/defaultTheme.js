@@ -44,7 +44,7 @@ export const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: 100,
-          padding: mui.spacing(0.5, 0.75),
+          // padding: mui.spacing(0.5, 0.75), // TODO: check this elsewhere
         },
       },
     },
