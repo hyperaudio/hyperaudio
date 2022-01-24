@@ -5,7 +5,7 @@ import TextFieldsIcon from '@mui/icons-material/TextFields';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { FullSizeIcon, LowerThirdsIcon } from '../icons';
+import { FullSizeIcon, LowerThirdsIcon } from '@hyperaudio/common';
 
 const PREFIX = 'InsertTitle';
 const classes = {

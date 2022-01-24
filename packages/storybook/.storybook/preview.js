@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider as EmotionThemeProvider } from "emotion-theming";
 import { ThemeProvider } from "@mui/material/styles";
 
-import { defaultTheme } from "../../remixer/src/themes";
+import { defaultTheme } from "@hyperaudio/common";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
