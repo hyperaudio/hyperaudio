@@ -1,15 +1,15 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-hyperaudiowebsite-staging-190507-authRole",
-      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudiowebsite-staging-190507-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudiowebsite-staging-190507-authRole",
+      "AuthRoleName": "amplify-website-dev-224603-authRole",
+      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-website-dev-224603-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-website-dev-224603-authRole",
       "Region": "eu-west-1",
-      "DeploymentBucketName": "amplify-hyperaudiowebsite-staging-190507-deployment",
-      "UnauthRoleName": "amplify-hyperaudiowebsite-staging-190507-unauthRole",
-      "StackName": "amplify-hyperaudiowebsite-staging-190507",
-      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudiowebsite-staging-190507/8bb0cd60-7d48-11ec-8831-02bc3986344f",
-      "AmplifyAppId": "d2i7vhhd68dx7p"
+      "DeploymentBucketName": "amplify-website-dev-224603-deployment",
+      "UnauthRoleName": "amplify-website-dev-224603-unauthRole",
+      "StackName": "amplify-website-dev-224603",
+      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-website-dev-224603/a7808540-7d56-11ec-a548-0224d939e463",
+      "AmplifyAppId": "d1w5pcckrk3c5m"
     }
   }
 }
