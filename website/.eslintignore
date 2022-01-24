@@ -3,3 +3,4 @@
 **/.next/*
 
 src/models
+src/aws-exports.js

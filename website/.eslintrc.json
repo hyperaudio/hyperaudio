@@ -1,39 +1,15 @@
 {
-  "root": true,
-  "parser": "@typescript-eslint/parser",
-  "extends": [
-    "next",
-    "next/core-web-vitals",
-    "eslint:recommended",
-    "plugin:jsx-a11y/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/recommended",
-    "prettier"
-  ],
   "env": {
     "browser": true,
-    "commonjs": true,
-    "es6": true,
+    "es2021": true,
     "node": true
   },
-  "parserOptions": {
-    "ecmaVersion": 2018,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
+  "extends": ["next/core-web-vitals", "prettier"],
   "settings": {
-    "import/resolver": {
-      "node": {
-        "moduleDirectory": ["node_modules", "."]
-      }
-    },
     "react": {
       "version": "detect"
     }
   },
-  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "jsx-a11y/anchor-is-valid": 0,
     "no-console": 0,
