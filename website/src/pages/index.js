@@ -9,7 +9,7 @@ export default function Home() {
       </Head>
 
       <main>
-        <h1>Hyperaudio</h1>
+        <h1>Hyperaudio website</h1>
       </main>
     </div>
   );
