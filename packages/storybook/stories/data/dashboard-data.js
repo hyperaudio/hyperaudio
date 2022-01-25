@@ -3,8 +3,43 @@ export const data = {
   organization: {
     name: "Mozilla Festival",
     slug: "/mozfest-2022",
+    members: [
+      {
+        userId: "userIdBellz1",
+        displayName: "Annabel Church",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "bellz@email.com",
+        roles: {
+          organiser: false,
+          editor: true,
+          remixer: true,
+          viewer: true,
+          speaker: false,
+        },
+        payment: {
+          pointer: "$ilp.uphold.com/23sfdaf3wefwFDSxc",
+        },
+      },
+      {
+        userId: "userIdPio1",
+        displayName: "Monsieur Pieutre",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "pio@email.com",
+        roles: {
+          organiser: true,
+          editor: false,
+          remixer: true,
+          viewer: false,
+          speaker: false,
+        },
+        payment: {
+          pointer: "$ilp.uphold.com/sdfsssdfxaertwsadfsa",
+        },
+      },
+    ],
   },
   account: {
+    userId: "userIdPio1",
     fname: "Piotr",
     lname: "Fedorczyk",
     displayName: "Monsieur Pieutre",
