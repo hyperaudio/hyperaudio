@@ -1,6 +1,0 @@
-pyproject.toml
-setup.py
-/Users/laurian/Projects/Hyperaudio/hyperaudio/website/amplify/backend/function/ytdl/src/reqlib-metadata/src.egg-info/PKG-INFO
-/Users/laurian/Projects/Hyperaudio/hyperaudio/website/amplify/backend/function/ytdl/src/reqlib-metadata/src.egg-info/SOURCES.txt
-/Users/laurian/Projects/Hyperaudio/hyperaudio/website/amplify/backend/function/ytdl/src/reqlib-metadata/src.egg-info/dependency_links.txt
-/Users/laurian/Projects/Hyperaudio/hyperaudio/website/amplify/backend/function/ytdl/src/reqlib-metadata/src.egg-info/top_level.txt

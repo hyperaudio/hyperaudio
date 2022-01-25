@@ -1,34 +1,40 @@
-/* eslint-disable react/jsx-props-no-spreading */
-// import 'reflect-metadata'; // FIXME: still need this?
-import App from 'next/app';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import Amplify, { Analytics } from 'aws-amplify';
 
-import { ThemeProvider } from '@material-ui/core/styles';
+import { CacheProvider } from '@emotion/react';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 
-import useTheme from 'src/hooks/useTheme';
+import createEmotionCache from './util/createEmotionCache';
+import lightTheme from './styles/theme/lightTheme';
 
 import awsexports from './aws-exports';
 import awsconfig from './aws-config';
 
-global.Amplify = Amplify;
-
 Amplify.configure({ ...awsexports, ...awsconfig });
 // Analytics.record();
 
-const Provider = props => {
-  const theme = useTheme();
-  return <ThemeProvider {...props} theme={theme} />;
+const clientSideEmotionCache = createEmotionCache();
+
+const App = props => {
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+
+  return (
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={lightTheme}>
+        <CssBaseline />
+        {/* <Header /> */}
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </CacheProvider>
+  );
 };
 
-class Application extends App {
-  render() {
-    const { Component, pageProps } = this.props;
-    return (
-      <Provider>
-        <Component {...pageProps} />
-      </Provider>
-    );
-  }
-}
+export default App;
 
-export default Application;
+App.propTypes = {
+  Component: PropTypes.elementType.isRequired,
+  emotionCache: PropTypes.object,
+  pageProps: PropTypes.object.isRequired,
+};

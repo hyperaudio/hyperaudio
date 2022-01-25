@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "Hyperaudio",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authHyperaudio",
+      "Outputs.UserPoolId"
+    ]
+  },
+  "AuthModeLastUpdated": "2022-01-17T14:19:57.843Z"
+}

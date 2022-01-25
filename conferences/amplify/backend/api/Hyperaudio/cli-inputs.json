@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "Hyperaudio",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "/Users/laurian/Projects/Hyperaudio/hyperaudio/conferences/amplify/backend/api/Hyperaudio/schema.graphql",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authHyperaudio"
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2023-01-17T14:19:55.912Z",
+        "keyDescription": "PublicAccess"
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ],
+    "conflictResolution": {
+      "defaultResolutionStrategy": {
+        "type": "AUTOMERGE"
+      }
+    }
+  }
+}
