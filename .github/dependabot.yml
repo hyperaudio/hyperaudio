@@ -4,8 +4,7 @@ updates:
     directory: "/website"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "maboa"
     assignees:
@@ -23,8 +22,7 @@ updates:
     directory: "/conferences"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "maboa"
     assignees:
@@ -42,8 +40,7 @@ updates:
     directory: "/packages/remixer"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "maboa"
       - "Laurian"
@@ -62,8 +59,7 @@ updates:
     directory: "/packages/storybook"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "Laurian"
     assignees:
@@ -81,8 +77,7 @@ updates:
     directory: "/packages/common"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "Laurian"
     assignees:
@@ -100,8 +95,7 @@ updates:
     directory: "/packages/app"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "Laurian"
     assignees:
