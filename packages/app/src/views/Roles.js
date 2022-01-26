@@ -1,18 +1,24 @@
 import React, { useReducer, useState, useCallback } from "react";
 import _ from "lodash";
 
+import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
 import Box from "@mui/material/Box";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Menu from "@mui/material/Menu";
+import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
+import Paper from "@mui/material/Paper";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Popper from "@mui/material/Popper";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -29,6 +35,7 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
 import { Main, Topbar } from "@hyperaudio/app/src/components";
+import { RecursiveMenuItem } from "@hyperaudio/common";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 import { teamReducer } from "@hyperaudio/app/src/reducers";
 
@@ -46,14 +53,14 @@ export function Roles(props) {
     members: props.team.members,
   });
 
-  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = React.useState(null);
+  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
 
-  const [inspected, setInspected] = React.useState();
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("created");
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const [selected, setSelected] = React.useState([]);
+  const [inspected, setInspected] = useState();
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("created");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [selected, setSelected] = useState([]);
 
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
 
@@ -435,7 +442,88 @@ export function Roles(props) {
           </TableContainer>
         </Main>
       </Root>
-      <Menu
+      <Popper
+        anchorEl={itemMoreMenuAnchor}
+        onClick={() => setItemMoreMenuAnchor(null)}
+        onClose={() => setItemMoreMenuAnchor(null)}
+        open={Boolean(itemMoreMenuAnchor)}
+        placement="bottom-end"
+      >
+        <Grow in={open} appear={open}>
+          <Paper elevation={12}>
+            <ClickAwayListener onClickAway={() => setItemMoreMenuAnchor(null)}>
+              <MenuList dense={true}>
+                <RecursiveMenuItem
+                  autoFocus={false}
+                  label={
+                    <>
+                      <ListItemIcon>
+                        <AdminPanelSettingsIcon
+                          fontSize="small"
+                          color="primary"
+                        />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Change roles"
+                        primaryTypographyProps={{ color: "primary" }}
+                      />
+                      <ArrowRightIcon fontSize="small" />
+                    </>
+                  }
+                  placement="left-start"
+                  elevation={0}
+                  MenuListProps={{ dense: true }}
+                >
+                  <MenuItem onClick={() => console.log("Text")}>
+                    <ListItemText
+                      primary="Text"
+                      primaryTypographyProps={{ color: "primary" }}
+                    />
+                  </MenuItem>
+                  <MenuItem onClick={() => console.log("JSON")}>
+                    <ListItemText
+                      primary="JSON"
+                      primaryTypographyProps={{ color: "primary" }}
+                    />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => console.log("WP Plugin-compatible HTML")}
+                  >
+                    <ListItemText
+                      primary="WP Plugin-compatible HTML"
+                      primaryTypographyProps={{ color: "primary" }}
+                    />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => console.log("Interactive transcript")}
+                  >
+                    <ListItemText
+                      primary="Interactive Transcript"
+                      primaryTypographyProps={{ color: "primary" }}
+                    />
+                  </MenuItem>
+                </RecursiveMenuItem>
+                <Divider />
+                <MenuItem
+                  onClick={() => {
+                    handleRemove([inspected]);
+                    setItemMoreMenuAnchor(null);
+                    setInspected(null);
+                  }}
+                >
+                  <ListItemIcon>
+                    <PersonRemoveIcon color="error" fontSize="small" />
+                  </ListItemIcon>
+                  <ListItemText primaryTypographyProps={{ color: "error" }}>
+                    Remove from team
+                  </ListItemText>
+                </MenuItem>
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
+        </Grow>
+      </Popper>
+      {/* <Menu
         anchorEl={itemMoreMenuAnchor}
         id="itemMoreMenu"
         MenuListProps={{
@@ -462,22 +550,7 @@ export function Roles(props) {
             Change role
           </ListItemText>
         </MenuItem>
-        <Divider />
-        <MenuItem
-          onClick={() => {
-            handleRemove([inspected]);
-            setItemMoreMenuAnchor(null);
-            setInspected(null);
-          }}
-        >
-          <ListItemIcon>
-            <PersonRemoveIcon color="error" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "error" }}>
-            Remove from team
-          </ListItemText>
-        </MenuItem>
-      </Menu>
+      </Menu> */}
     </>
   );
 }

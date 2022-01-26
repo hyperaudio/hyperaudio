@@ -23,8 +23,8 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
-import { ClearDialog, RecursiveMenuItem, ShareDialog, VisibilityDialog } from '.';
-import { HideSourceIcon, ShareIcon, ShowSourceIcon } from '@hyperaudio/common';
+import { ClearDialog, ShareDialog, VisibilityDialog } from '.';
+import { HideSourceIcon, RecursiveMenuItem, ShareIcon, ShowSourceIcon } from '@hyperaudio/common';
 
 const Root = styled('div')(({ theme }) => {
   return {

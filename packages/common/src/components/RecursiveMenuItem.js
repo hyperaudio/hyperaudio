@@ -15,7 +15,7 @@ const StyledMenuItem = styled(MenuItem, {
   background: isActive ? theme.palette.action.hover : 'transparent',
 }));
 
-export const RecursiveMenuItem = ({ MenuListProps, ...props }) => {
+export function RecursiveMenuItem({ MenuListProps, ...props }) {
   const [open, setOpen] = useState(false);
   const ref = useRef();
   return (
@@ -36,4 +36,4 @@ export const RecursiveMenuItem = ({ MenuListProps, ...props }) => {
       </Popper>
     </StyledMenuItem>
   );
-};
+}
