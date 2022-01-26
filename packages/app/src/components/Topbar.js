@@ -44,7 +44,7 @@ const Root = styled(AppBar)(({ theme }) => ({
 }));
 
 export function Topbar(props) {
-  const { account, organization } = props;
+  const { account, organization, title } = props;
 
   const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
   const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
@@ -92,7 +92,7 @@ export function Topbar(props) {
               </Tooltip>
             </Grid>
             <Grid item xs={4} align="center">
-              <Typography variant="subtitle1">Your Media</Typography>
+              <Typography variant="subtitle1">{title}</Typography>
             </Grid>
             <Grid item xs={4} align="right">
               <Tooltip title="Add new…">

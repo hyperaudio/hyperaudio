@@ -287,7 +287,11 @@ export function Dashboard(props) {
 
   return (
     <Root>
-      <Topbar account={account} organization={organization} />
+      <Topbar
+        account={account}
+        organization={organization}
+        title="Your Media"
+      />
       <Main>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>

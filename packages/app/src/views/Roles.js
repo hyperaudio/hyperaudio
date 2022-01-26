@@ -1,24 +1,19 @@
 import React, { useReducer, useState, useCallback } from "react";
 import _ from "lodash";
 
-import AdminPanelSettingsIcon from "@mui/icons-material/AdminPanelSettings";
+import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
-import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import ListSubheader from "@mui/material/ListSubheader";
 import Menu from "@mui/material/Menu";
-import MenuList from "@mui/material/MenuList";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
-import Paper from "@mui/material/Paper";
-import ClickAwayListener from "@mui/material/ClickAwayListener";
-import Popper from "@mui/material/Popper";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -35,16 +30,28 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
 import { Main, Topbar } from "@hyperaudio/app/src/components";
-import { RecursiveMenuItem } from "@hyperaudio/common";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 import { teamReducer } from "@hyperaudio/app/src/reducers";
 
 const PREFIX = `Roles`;
 const classes = {
   root: `${PREFIX}-Root`,
+  pagination: `${PREFIX}-Pagination`,
 };
 
-const Root = styled("div", {})(({ theme }) => ({}));
+const Root = styled(
+  "div",
+  {}
+)(({ theme }) => ({
+  [`& .${classes.pagination}`]: {
+    [`& .MuiTablePagination-spacer, & .MuiTablePagination-selectLabel`]: {
+      display: "none",
+      [theme.breakpoints.up("md")]: {
+        display: "block",
+      },
+    },
+  },
+}));
 
 export function Roles(props) {
   const { organization, team, account } = props;
@@ -55,7 +62,7 @@ export function Roles(props) {
 
   const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
 
-  const [inspected, setInspected] = useState();
+  const [focused, setFocused] = useState();
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("created");
   const [page, setPage] = useState(0);
@@ -131,7 +138,7 @@ export function Roles(props) {
   const headCells = [
     {
       id: "displayName",
-      label: "User",
+      label: "Member",
     },
     {
       hide: true,
@@ -180,10 +187,23 @@ export function Roles(props) {
     })
   );
 
+  const getRoles = (id) => {
+    const keys = ["Organiser", "Editor", "Remixer", "Viewer", "Speaker"];
+    return keys.map((key) => ({
+      key: `is${key}`,
+      label: key,
+      value: _.find(flatMembers, (o) => o.userId === id)[`is${key}`],
+    }));
+  };
+
   return (
     <>
       <Root className={classes.root}>
-        <Topbar account={account} organization={organization} />
+        <Topbar
+          account={account}
+          organization={organization}
+          title="Your Team"
+        />
         <Main>
           <Toolbar disableGutters>
             {selected.length > 0 ? (
@@ -193,18 +213,18 @@ export function Roles(props) {
                   variant="h6"
                   component="div"
                   display="inline-block"
-                  sx={{ mr: 1 }}
+                  sx={{ mr: 2 }}
                 >
-                  {selected.length} selected:
+                  {selected.length} members selected:
                 </Typography>
-                <Tooltip title="Remove from team">
-                  <IconButton
-                    onClick={() => handleRemove(selected)}
-                    size="small"
-                  >
-                    <PersonRemoveIcon />
-                  </IconButton>
-                </Tooltip>
+                <Button
+                  color="error"
+                  onClick={() => handleRemove(selected)}
+                  size="small"
+                  startIcon={<PersonRemoveIcon />}
+                >
+                  Remove
+                </Button>
               </Box>
             ) : (
               <Typography
@@ -217,13 +237,15 @@ export function Roles(props) {
               </Typography>
             )}
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              className={classes.pagination}
               component="div"
               count={members.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
+              labelRowsPerPage="Rows:"
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
+              page={page}
+              rowsPerPage={rowsPerPage}
+              rowsPerPageOptions={[5, 10, 25]}
             />
           </Toolbar>
           <TableContainer>
@@ -284,15 +306,19 @@ export function Roles(props) {
                 {stableSort(flatMembers, getComparator(order, orderBy))
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((o, index) => {
+                    const isItemFocused = focused === o.userId || false;
                     const isItemSelected = selected.indexOf(o.userId) !== -1;
                     const isUserPending = o.userStatus === 0;
                     const labelId = `enhanced-table-checkbox-${index}`;
+
+                    const allRoles = getRoles(o.userId);
+
                     return (
                       <TableRow
                         hover
-                        tabIndex={-1}
                         key={o.userId}
                         selected={isItemSelected}
+                        tabIndex={-1}
                       >
                         <TableCell padding="checkbox">
                           <Checkbox
@@ -320,90 +346,33 @@ export function Roles(props) {
                             {o.email}
                           </Typography>
                         </TableCell>
-                        <TableCell
-                          sx={{
-                            display: { xs: "none", lg: "table-cell" },
-                          }}
-                        >
-                          <Checkbox
-                            checked={o.isOrganiser}
-                            checkedIcon={<CheckCircleIcon />}
-                            disabled
-                            icon={<RadioButtonUncheckedIcon />}
-                          />
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            display: { xs: "none", lg: "table-cell" },
-                          }}
-                        >
-                          <Checkbox
-                            checked={o.isEditor}
-                            checkedIcon={<CheckCircleIcon />}
-                            icon={<RadioButtonUncheckedIcon />}
-                            onChange={(e) =>
-                              handleRoleChange({
-                                id: o.userId,
-                                role: "editor",
-                                value: e.target.checked,
-                              })
-                            }
-                          />
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            display: { xs: "none", lg: "table-cell" },
-                          }}
-                        >
-                          <Checkbox
-                            checked={o.isRemixer}
-                            checkedIcon={<CheckCircleIcon />}
-                            icon={<RadioButtonUncheckedIcon />}
-                            onChange={(e) =>
-                              handleRoleChange({
-                                id: o.userId,
-                                role: "remixer",
-                                value: e.target.checked,
-                              })
-                            }
-                          />
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            display: { xs: "none", lg: "table-cell" },
-                          }}
-                        >
-                          <Checkbox
-                            checked={o.isViewer}
-                            checkedIcon={<CheckCircleIcon />}
-                            icon={<RadioButtonUncheckedIcon />}
-                            onChange={(e) =>
-                              handleRoleChange({
-                                id: o.userId,
-                                role: "viewer",
-                                value: e.target.checked,
-                              })
-                            }
-                          />
-                        </TableCell>
-                        <TableCell
-                          sx={{
-                            display: { xs: "none", lg: "table-cell" },
-                          }}
-                        >
-                          <Checkbox
-                            checked={o.isSpeaker}
-                            checkedIcon={<CheckCircleIcon />}
-                            icon={<RadioButtonUncheckedIcon />}
-                            onChange={(e) =>
-                              handleRoleChange({
-                                id: o.userId,
-                                role: "speaker",
-                                value: e.target.checked,
-                              })
-                            }
-                          />
-                        </TableCell>
+
+                        {allRoles.map((role) => {
+                          return (
+                            <TableCell
+                              key={role.key}
+                              sx={{
+                                display: { xs: "none", lg: "table-cell" },
+                              }}
+                              padding="checkbox"
+                            >
+                              <Checkbox
+                                checked={role.value}
+                                checkedIcon={<CheckCircleIcon />}
+                                disabled={role.key === "isOrganiser"}
+                                icon={<RadioButtonUncheckedIcon />}
+                                onChange={(e) =>
+                                  handleRoleChange({
+                                    id: o.userId,
+                                    role: role.label.toLowerCase(),
+                                    value: e.target.checked,
+                                  })
+                                }
+                              />
+                            </TableCell>
+                          );
+                        })}
+
                         <TableCell
                           sx={{
                             display: { xs: "none", lg: "table-cell" },
@@ -417,8 +386,9 @@ export function Roles(props) {
                             fontSize="small"
                             onClick={(e) => {
                               e.stopPropagation();
-                              setInspected(o.userId);
+                              setFocused(o.userId);
                               setItemMoreMenuAnchor(e.currentTarget);
+                              setSelected([o.userId]);
                             }}
                           >
                             <MoreHorizIcon fontSize="small" />
@@ -442,115 +412,78 @@ export function Roles(props) {
           </TableContainer>
         </Main>
       </Root>
-      <Popper
-        anchorEl={itemMoreMenuAnchor}
-        onClick={() => setItemMoreMenuAnchor(null)}
-        onClose={() => setItemMoreMenuAnchor(null)}
-        open={Boolean(itemMoreMenuAnchor)}
-        placement="bottom-end"
-      >
-        <Grow in={open} appear={open}>
-          <Paper elevation={12}>
-            <ClickAwayListener onClickAway={() => setItemMoreMenuAnchor(null)}>
-              <MenuList dense={true}>
-                <RecursiveMenuItem
-                  autoFocus={false}
-                  label={
-                    <>
-                      <ListItemIcon>
-                        <AdminPanelSettingsIcon
-                          fontSize="small"
-                          color="primary"
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary="Change roles"
-                        primaryTypographyProps={{ color: "primary" }}
-                      />
-                      <ArrowRightIcon fontSize="small" />
-                    </>
-                  }
-                  placement="left-start"
-                  elevation={0}
-                  MenuListProps={{ dense: true }}
-                >
-                  <MenuItem onClick={() => console.log("Text")}>
-                    <ListItemText
-                      primary="Text"
-                      primaryTypographyProps={{ color: "primary" }}
-                    />
-                  </MenuItem>
-                  <MenuItem onClick={() => console.log("JSON")}>
-                    <ListItemText
-                      primary="JSON"
-                      primaryTypographyProps={{ color: "primary" }}
-                    />
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => console.log("WP Plugin-compatible HTML")}
-                  >
-                    <ListItemText
-                      primary="WP Plugin-compatible HTML"
-                      primaryTypographyProps={{ color: "primary" }}
-                    />
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => console.log("Interactive transcript")}
-                  >
-                    <ListItemText
-                      primary="Interactive Transcript"
-                      primaryTypographyProps={{ color: "primary" }}
-                    />
-                  </MenuItem>
-                </RecursiveMenuItem>
-                <Divider />
-                <MenuItem
-                  onClick={() => {
-                    handleRemove([inspected]);
-                    setItemMoreMenuAnchor(null);
-                    setInspected(null);
-                  }}
-                >
-                  <ListItemIcon>
-                    <PersonRemoveIcon color="error" fontSize="small" />
-                  </ListItemIcon>
-                  <ListItemText primaryTypographyProps={{ color: "error" }}>
-                    Remove from team
-                  </ListItemText>
-                </MenuItem>
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Grow>
-      </Popper>
-      {/* <Menu
-        anchorEl={itemMoreMenuAnchor}
-        id="itemMoreMenu"
-        MenuListProps={{
-          "aria-labelledby": "openItemMoreButton",
-          dense: true,
-        }}
-        onClose={() => setItemMoreMenuAnchor(null)}
-        open={openItemMoreMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem
-          onClick={() => {
-            handleRemove([inspected]);
-            setItemMoreMenuAnchor(null);
-            setInspected(null);
+      {Boolean(focused) && (
+        <Menu
+          anchorEl={itemMoreMenuAnchor}
+          id="itemMoreMenu"
+          MenuListProps={{
+            "aria-labelledby": "openItemMoreButton",
+            dense: true,
+            subheader: (
+              <ListSubheader component="div" id="nested-list-subheader">
+                Edit user roles:
+              </ListSubheader>
+            ),
           }}
+          onClose={() => {
+            setFocused();
+            setItemMoreMenuAnchor();
+            setSelected([]);
+          }}
+          open={openItemMoreMenu}
+          variant="menu"
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <ListItemIcon>
-            <AdminPanelSettingsIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Change role
-          </ListItemText>
-        </MenuItem>
-      </Menu> */}
+          {getRoles(focused).map((role) => {
+            if (role.key === "isOrganiser") return null;
+            return (
+              <MenuItem
+                key={role.key}
+                onClick={(e) => {
+                  handleRoleChange({
+                    id: focused,
+                    role: role.label.toLowerCase(),
+                    value: !role.value,
+                  });
+                  e.stopPropagation();
+                }}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    checked={role.value}
+                    checkedIcon={<CheckCircleIcon />}
+                    edge="start"
+                    icon={<RadioButtonUncheckedIcon />}
+                    inputProps={{ "aria-labelledby": `label-${role.key}` }}
+                    size="small"
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  id={role.key}
+                  primary={role.label}
+                  primaryTypographyProps={{ color: "primary" }}
+                />
+              </MenuItem>
+            );
+          })}
+          <Divider />
+          <MenuItem
+            onClick={() => {
+              handleRemove([focused]);
+              setItemMoreMenuAnchor(null);
+              setFocused(null);
+            }}
+          >
+            <ListItemIcon>
+              <PersonRemoveIcon color="error" fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ color: "error" }}>
+              Remove from team
+            </ListItemText>
+          </MenuItem>
+        </Menu>
+      )}
     </>
   );
 }
