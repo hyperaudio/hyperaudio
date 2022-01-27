@@ -8,12 +8,11 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import CircularProgress from "@mui/material/CircularProgress";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Divider from "@mui/material/Divider";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
-import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import IconButton from "@mui/material/IconButton";
 import Link from "@mui/material/Link";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -42,11 +41,7 @@ import { mediaReducer } from "@hyperaudio/app/src/reducers";
 
 const PREFIX = `Dashboard`;
 const classes = {
-  flicker: `${PREFIX}-flicker`,
-  leftCol: `${PREFIX}-leftCol`,
-  main: `${PREFIX}-main`,
   thumbCell: `${PREFIX}-thumbCell`,
-  topbar: `${PREFIX}-topbar`,
 };
 
 const Root = styled(
@@ -59,42 +54,20 @@ const Root = styled(
   [`& .MuiCard-root`]: {
     display: "inline-block",
   },
-  [`& .${classes.flicker}`]: {
-    animation: `flickerAnimation 1.66s infinite`,
-  },
-  "@keyframes flickerAnimation": {
-    "0%": {
-      opacity: 1,
-    },
-    "50%": {
-      opacity: 0.5,
-    },
-    "100%": {
-      opacity: 1,
-    },
-  },
 }));
 
 function Status(props) {
   const { status, isPublic } = props;
   if (status === "uploading") {
     return (
-      <Tooltip title="Uploading…">
-        <CloudUploadIcon
-          fontSize="small"
-          color="primary"
-          className={classes.flicker}
-        />
+      <Tooltip title="Uploading… Keep the tab browser open for now…">
+        <CircularProgress color="error" size={16} />
       </Tooltip>
     );
   } else if (["uploaded", "transcribing"].includes(status)) {
     return (
-      <Tooltip title="Processing…">
-        <HourglassTopIcon
-          fontSize="small"
-          color="primary"
-          className={classes.flicker}
-        />
+      <Tooltip title="Processing your media. Please check back later.">
+        <CircularProgress color="primary" size={16} />
       </Tooltip>
     );
   }
@@ -138,7 +111,7 @@ function Status(props) {
   // }
   else if (status === "error") {
     return (
-      <Tooltip title="Processing failed. Try again.">
+      <Tooltip title="Processing failed. Try adding this media again.">
         <ErrorIcon fontSize="small" color="error" />
       </Tooltip>
     );
