@@ -39,7 +39,7 @@ import { Main, Topbar } from "@hyperaudio/app/src/components";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 import { mediaReducer } from "@hyperaudio/app/src/reducers";
 
-const PREFIX = `Dashboard`;
+const PREFIX = `DashboardView`;
 const classes = {
   thumbCell: `${PREFIX}-thumbCell`,
 };
@@ -119,7 +119,7 @@ function Status(props) {
   return null;
 }
 
-export function Dashboard(props) {
+export function DashboardView(props) {
   const { channels, organization, account } = props;
 
   const [{ media }, dispatch] = useReducer(mediaReducer, {

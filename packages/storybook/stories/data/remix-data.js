@@ -10,20 +10,18 @@ const media = [
     id: "V1VrYa2KRZ9hBkos5RUTfo",
     // url: "https://www.youtube.com/watch?v=LHdUSGY-X74",
     // url: "https://vimeo.com/636017423/59d2d009af",
-    url:
-      "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/V1VrYa2KRZ9hBkos5RUTfo.mp4",
+    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/V1VrYa2KRZ9hBkos5RUTfo.mp4",
   },
   {
     id: "21LPML8F2h8zxd3tGb5Ain",
     // url: "https://www.youtube.com/watch?v=xidL-WMJWwg",
     // url: "https://vimeo.com/636017395/f0ea0fe391",
-    url:
-      "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
+    url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
   },
 ];
 
 // prettier-ignore
-export const data = {
+export const remixData = {
   remix: {
     id: "some-remix-id",
     title: "A remix",

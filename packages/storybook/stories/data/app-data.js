@@ -1,5 +1,5 @@
 // @ts-nocheck
-export const data = {
+export const appData = {
   organization: {
     name: "Mozilla Festival",
     slug: "/mozfest-2022",
