@@ -4,7 +4,77 @@ export const data = {
     name: "Mozilla Festival",
     slug: "/mozfest-2022",
   },
+  team: {
+    members: [
+      {
+        userId: "userIdBellz1",
+        displayName: "Annabel Church",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "bellz@email.com",
+        roles: {
+          editor: true,
+          organiser: false,
+          remixer: false,
+          speaker: false,
+          viewer: true,
+        },
+        payment: {
+          pointer: "$ilp.uphold.com/23sfdaf3wefwFDSxc",
+        },
+      },
+      {
+        userId: "userIdMaboa1",
+        displayName: "Maboa",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "maboa@email.com",
+        roles: {
+          editor: true,
+          organiser: false,
+          remixer: true,
+          speaker: false,
+          viewer: true,
+        },
+        payment: {
+          pointer: "$ilp.uphold.com/23sfdaf3wefwFDSxc",
+        },
+      },
+      {
+        userId: "userIdLg1",
+        displayName: "Laurian G.",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "laurian@email.com",
+        userStatus: 0,
+        roles: {
+          editor: true,
+          organiser: false,
+          remixer: false,
+          speaker: true,
+          viewer: false,
+        },
+        payment: {
+          pointer: "$ilp.uphold.com/podsfsd9*JKJKJKwFDSxc",
+        },
+      },
+      {
+        userId: "userIdPio1",
+        displayName: "Monsieur Pieutre",
+        bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
+        email: "pio@email.com",
+        roles: {
+          editor: false,
+          organiser: true,
+          remixer: false,
+          speaker: true,
+          viewer: false,
+        },
+        payment: {
+          pointer: null,
+        },
+      },
+    ],
+  },
   account: {
+    userId: "userIdPio1",
     fname: "Piotr",
     lname: "Fedorczyk",
     displayName: "Monsieur Pieutre",

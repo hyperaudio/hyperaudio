@@ -116,6 +116,22 @@ export const defaultTheme = createTheme({
         },
       },
     },
+    MuiTablePagination: {
+      styleOverrides: {
+        actions: {
+          marginLeft: mui.spacing(1),
+        },
+        selectLabel: {
+          display: { sx: 'none', lg: 'block' },
+        },
+        displayedRows: {
+          display: 'none',
+        },
+        selectRoot: {
+          marginRight: 0,
+        },
+      },
+    },
     MuiPaper: {
       styleOverrides: {
         rounded: {
@@ -164,6 +180,7 @@ export const defaultTheme = createTheme({
     },
     h6: {
       fontFamily: 'Quicksand, sans-serif',
+      fontSize: '1.55rem',
       fontWeight: '700',
     },
     body1: {

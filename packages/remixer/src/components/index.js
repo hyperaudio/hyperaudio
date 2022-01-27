@@ -5,7 +5,6 @@ export * from './InsertTitle';
 export * from './InsertTransition';
 export * from './InsertsBar';
 export * from './LibraryTopbar';
-export * from './RecursiveMenuItem';
 export * from './RemixTopbar';
 export * from './ShareDialog';
 export * from './SourceTopbar';

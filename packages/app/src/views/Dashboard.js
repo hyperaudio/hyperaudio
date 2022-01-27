@@ -38,6 +38,7 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
 import { Main, Topbar } from "@hyperaudio/app/src/components";
+import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 
 const PREFIX = `Dashboard`;
 const classes = {
@@ -73,36 +74,6 @@ const Root = styled(
     },
   },
 }));
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 function Status(props) {
   const { status, isPublic } = props;
@@ -294,14 +265,17 @@ export function Dashboard(props) {
     },
     // { id: "silentName", skip: true },
     {
+      hide: true,
       id: "created",
       label: "Created",
     },
     {
+      hide: true,
       id: "modified",
       label: "Modified",
     },
     {
+      hide: true,
       id: "channelId",
       label: "Channel",
     },
@@ -311,18 +285,20 @@ export function Dashboard(props) {
     },
   ];
 
-  console.log({ order, orderBy });
-
   return (
     <Root>
-      <Topbar account={account} organization={organization} />
+      <Topbar
+        account={account}
+        organization={organization}
+        title="Your Media"
+      />
       <Main>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             aria-labelledby="tableTitle"
             size="medium"
-            sx={{ minWidth: 750 }}
+            sx={{ width: "100%" }}
           >
             <TableHead>
               <TableRow>
@@ -346,6 +322,12 @@ export function Dashboard(props) {
                     colSpan={headCell.span || 1}
                     key={headCell.id}
                     sortDirection={orderBy === headCell.id ? order : false}
+                    sx={{
+                      display: {
+                        xs: headCell.hide ? "none" : "table-cell",
+                        lg: "table-cell",
+                      },
+                    }}
                   >
                     {!headCell.silent && (
                       <TableSortLabel
@@ -374,7 +356,6 @@ export function Dashboard(props) {
                 .map((row, index) => {
                   const isItemSelected = selected.indexOf(row.mediaId) !== -1;
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -398,7 +379,12 @@ export function Dashboard(props) {
                         />
                       </TableCell>
                       <TableCell id={labelId} className={classes.thumbCell}>
-                        <Card sx={{ width: 60, height: 45 }}>
+                        <Card
+                          sx={{
+                            width: { xs: 40, lg: 60 },
+                            height: { xs: 30, lg: 45 },
+                          }}
+                        >
                           <CardActionArea
                             onClick={(e) => {
                               e.stopPropagation();
@@ -416,13 +402,22 @@ export function Dashboard(props) {
                       <TableCell
                         component="th"
                         id={labelId}
-                        scope="row"
                         padding="none"
+                        scope="row"
                       >
                         <Link
                           disabled={row.isProcessing}
                           underline={row.isProcessing ? "none" : "hover"}
-                          sx={{ cursor: "pointer" }}
+                          display="block"
+                          sx={{
+                            cursor: "pointer",
+                            maxWidth: {
+                              xs: "180px",
+                              sm: "320px",
+                              md: "460px",
+                              lg: "400px",
+                            },
+                          }}
                           onClick={(e) => {
                             e.stopPropagation();
                             console.log("hello");
@@ -434,15 +429,50 @@ export function Dashboard(props) {
                           {row.name}
                         </Link>
                       </TableCell>
-                      <TableCell sx={{ color: "text.secondary" }}>
-                        {row.created || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {row.created || "—"}
+                        </Typography>
                       </TableCell>
-                      <TableCell sx={{ color: "text.secondary" }}>
-                        {row.modified || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {row.modified || "—"}
+                        </Typography>
                       </TableCell>
-                      <TableCell>
-                        {_.find(channels, (o) => o.channelId === row.channelId)
-                          ?.name || "—"}
+                      <TableCell
+                        sx={{
+                          display: { xs: "none", lg: "table-cell" },
+                        }}
+                      >
+                        <Typography
+                          color="textSecondary"
+                          display="block"
+                          noWrap
+                          variant="body2"
+                        >
+                          {_.find(
+                            channels,
+                            (o) => o.channelId === row.channelId
+                          )?.name || "—"}
+                        </Typography>
                       </TableCell>
                       <TableCell>
                         <Status status={row.status} />
