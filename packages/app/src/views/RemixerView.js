@@ -18,7 +18,7 @@ export function RemixerView(props) {
   return (
     <Root className={classes.root}>
       <Topbar account={account} organization={organization} title="Remixer" />
-      <Box sx={{ height: "100%", position: "absolute", width: "100%" }}>
+      <Box sx={{ top: "63px", position: "absolute", width: "100%", bottom: 0 }}>
         <Remixer remix={remix} sources={sources} media={[]} />
       </Box>
     </Root>
