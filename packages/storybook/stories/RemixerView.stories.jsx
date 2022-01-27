@@ -1,62 +1,57 @@
 import React from "react";
 
-import { Remixer } from "../../remixer/src/index.js";
-import { remixData } from "./data";
+import { RemixerView } from "@hyperaudio/app/src/views";
+import { appData, remixData } from "./data";
 
 export default {
-  title: "Packages/Remixer",
-  component: Remixer,
+  title: "App/RemixerView",
+  component: RemixerView,
 };
 
-const Template = (args) => (
+const RemixerViewTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <Remixer
-      remix={remixData.remix}
-      sources={remixData.sources}
-      media={[]}
-      {...args}
-    />
+    <RemixerView {...appData} {...remixData} {...args} />
   </div>
 );
 
-export const ReadMode = Template.bind({});
+export const ReadMode = RemixerViewTpl.bind({});
 ReadMode.args = {
   editable: false,
 };
 
-export const ReadModeOneSource = Template.bind({});
+export const ReadModeOneSource = RemixerViewTpl.bind({});
 ReadModeOneSource.args = {
   editable: false,
   sources: [remixData.sources[0]],
 };
 
-export const EmptyRemix = Template.bind({});
+export const EmptyRemix = RemixerViewTpl.bind({});
 EmptyRemix.args = {
   editable: true,
   remix: { ...remixData.remix, secret: false, title: "", blocks: [] },
 };
 
-export const RichRemix = Template.bind({});
+export const RichRemix = RemixerViewTpl.bind({});
 RichRemix.args = {
   editable: true,
   remix: { ...remixData.remix, secret: false, title: "" },
 };
 
-export const OneSource = Template.bind({});
+export const OneSource = RemixerViewTpl.bind({});
 OneSource.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
   sources: [remixData.sources[0]],
 };
 
-export const LibraryEmpty = Template.bind({});
+export const LibraryEmpty = RemixerViewTpl.bind({});
 LibraryEmpty.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
   media: [],
 };
 
-export const RichLibrary = Template.bind({});
+export const RichLibrary = RemixerViewTpl.bind({});
 RichLibrary.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
@@ -64,7 +59,7 @@ RichLibrary.args = {
   media: [...remixData.sources],
 };
 
-export const SearchResults = Template.bind({});
+export const SearchResults = RemixerViewTpl.bind({});
 SearchResults.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
@@ -75,7 +70,7 @@ SearchResults.args = {
   },
 };
 
-export const SearchSome = Template.bind({});
+export const SearchSome = RemixerViewTpl.bind({});
 SearchSome.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
@@ -83,7 +78,7 @@ SearchSome.args = {
   matches: { transcripts: [...remixData.sources], titles: null },
 };
 
-export const SearchNull = Template.bind({});
+export const SearchNull = RemixerViewTpl.bind({});
 SearchNull.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },

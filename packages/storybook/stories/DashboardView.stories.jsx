@@ -1,7 +1,7 @@
 import React from "react";
 
 import { DashboardView } from "@hyperaudio/app/src/views";
-import { data } from "./data/dashboard-data";
+import { appData } from "./data";
 
 export default {
   title: "App/DashboardView",
@@ -10,7 +10,7 @@ export default {
 
 const DashboardTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <DashboardView {...data} {...args} />
+    <DashboardView {...appData} {...args} />
   </div>
 );
 

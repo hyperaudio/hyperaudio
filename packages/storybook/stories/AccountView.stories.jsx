@@ -1,7 +1,7 @@
 import React from "react";
 
 import { AccountView } from "@hyperaudio/app/src/views";
-import { data } from "./data/dashboard-data";
+import { appData } from "./data";
 
 export default {
   title: "App/AccountView",
@@ -10,7 +10,7 @@ export default {
 
 const AccountTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <AccountView {...data} {...args} />
+    <AccountView {...appData} {...args} />
   </div>
 );
 

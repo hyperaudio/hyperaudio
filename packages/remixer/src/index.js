@@ -1,6 +1,5 @@
 import React, { useReducer, useState, useCallback } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
-import _ from 'lodash';
 
 import Fab from '@mui/material/Fab';
 import Tooltip from '@mui/material/Tooltip';

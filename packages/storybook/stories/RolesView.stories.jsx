@@ -1,7 +1,7 @@
 import React from "react";
 
 import { RolesView } from "@hyperaudio/app/src/views";
-import { data } from "./data/dashboard-data";
+import { appData } from "./data";
 
 export default {
   title: "App/RolesView",
@@ -10,7 +10,7 @@ export default {
 
 const RolesTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <RolesView {...data} {...args} />
+    <RolesView {...appData} {...args} />
   </div>
 );
 
