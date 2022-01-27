@@ -280,7 +280,7 @@ export function DashboardView(props) {
               sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
             >
               <Typography component="div" id="tableTitle" variant="h6">
-                Your media
+                All media
               </Typography>
             </Box>
           )}

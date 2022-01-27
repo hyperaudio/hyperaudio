@@ -20,10 +20,14 @@ export function AccountView(props) {
   const { organization, account } = props;
   return (
     <Root className={classes.root}>
-      <Topbar account={account} organization={organization} />
+      <Topbar
+        account={account}
+        organization={organization}
+        title="Your Account"
+      />
       <Main>
-        <Typography variant="h3" component="h1" gutterBottom>
-          Your account
+        <Typography variant="h5" component="h1" gutterBottom>
+          Account details
         </Typography>
         <form sx={{ mt: 3 }}>
           <TextField
