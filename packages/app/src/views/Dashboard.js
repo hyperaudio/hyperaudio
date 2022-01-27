@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { useReducer, useState, useCallback } from "react";
 import _ from "lodash";
 
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardMedia from "@mui/material/CardMedia";
@@ -33,12 +33,12 @@ import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import TranslateIcon from "@mui/icons-material/Translate";
 import Typography from "@mui/material/Typography";
-import { alpha } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
 import { Main, Topbar } from "@hyperaudio/app/src/components";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
+import { mediaReducer } from "@hyperaudio/app/src/reducers";
 
 const PREFIX = `Dashboard`;
 const classes = {
@@ -146,70 +146,35 @@ function Status(props) {
   return null;
 }
 
-const EnhancedTableToolbar = (props) => {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Your media
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : null}
-    </Toolbar>
-  );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 export function Dashboard(props) {
-  const { channels, media, organization, account } = props;
+  const { channels, organization, account } = props;
 
-  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = React.useState(null);
+  const [{ media }, dispatch] = useReducer(mediaReducer, {
+    media: props.media,
+  });
 
-  const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("created");
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const [selected, setSelected] = React.useState([]);
+  const [focused, setFocused] = useState();
+  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
+  const [order, setOrder] = useState("asc");
+  const [orderBy, setOrderBy] = useState("created");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [selected, setSelected] = useState([]);
 
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
+
+  const deleteMedia = useCallback(
+    (ids) => dispatch({ type: "deleteMedia", payload: ids }),
+    [media]
+  );
+  const editMedia = useCallback(
+    (ids) => dispatch({ type: "editMedia", payload: ids }),
+    [media]
+  );
+  const translateMedia = useCallback(
+    (ids) => dispatch({ type: "translateMedia", payload: ids }),
+    [media]
+  );
 
   const handleSelectClick = (event, name) => {
     const selectedIndex = selected.indexOf(name);
@@ -253,6 +218,27 @@ export function Dashboard(props) {
     setOrderBy(property);
   };
 
+  const handleEdit = (ids) => {
+    editMedia(ids);
+    setItemMoreMenuAnchor(null);
+    setFocused(null);
+    setSelected([]);
+  };
+
+  const handleTranslate = (ids) => {
+    translateMedia(ids);
+    setItemMoreMenuAnchor(null);
+    setFocused(null);
+    setSelected([]);
+  };
+
+  const handleDelete = (ids) => {
+    deleteMedia(ids);
+    setItemMoreMenuAnchor(null);
+    setFocused(null);
+    setSelected([]);
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - media.length) : 0;
@@ -293,7 +279,52 @@ export function Dashboard(props) {
         title="Your Media"
       />
       <Main>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <Toolbar disableGutters>
+          {selected.length > 0 ? (
+            <Box
+              sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
+            >
+              <Typography
+                color="inherit"
+                component="div"
+                display="inline-block"
+                sx={{ mr: 2 }}
+                variant="h6"
+              >
+                {selected.length} selected:
+              </Typography>
+              <Button
+                color="error"
+                onClick={() => handleDelete(selected)}
+                size="small"
+                startIcon={<DeleteIcon />}
+              >
+                Delete
+              </Button>
+            </Box>
+          ) : (
+            <Box
+              sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
+            >
+              <Typography component="div" id="tableTitle" variant="h6">
+                Your media
+              </Typography>
+            </Box>
+          )}
+          <TablePagination
+            className={classes.pagination}
+            component="div"
+            count={media.length}
+            labelRowsPerPage="Rows:"
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            rowsPerPageOptions={[5, 10, 25]}
+          />
+        </Toolbar>
+
+        {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
         <TableContainer>
           <Table
             aria-labelledby="tableTitle"
@@ -483,7 +514,9 @@ export function Dashboard(props) {
                           fontSize="small"
                           onClick={(e) => {
                             e.stopPropagation();
+                            setFocused(row.mediaId);
                             setItemMoreMenuAnchor(e.currentTarget);
+                            setSelected([row.mediaId]);
                           }}
                         >
                           <MoreHorizIcon fontSize="small" />
@@ -505,47 +538,66 @@ export function Dashboard(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={media.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
       </Main>
-      <Menu
-        anchorEl={itemMoreMenuAnchor}
-        id="itemMoreMenu"
-        MenuListProps={{
-          "aria-labelledby": "openItemMoreButton",
-          dense: true,
-        }}
-        onClose={() => setItemMoreMenuAnchor(null)}
-        open={openItemMoreMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem onClick={() => setItemMoreMenuAnchor(null)}>
-          <ListItemIcon>
-            <EditIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Edit
-          </ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setItemMoreMenuAnchor(null)}>
-          <ListItemIcon>
-            <TranslateIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: "primary" }}>
-            Translate
-          </ListItemText>
-        </MenuItem>
-      </Menu>
+      {Boolean(focused) && (
+        <Menu
+          anchorEl={itemMoreMenuAnchor}
+          id="itemMoreMenu"
+          MenuListProps={{
+            "aria-labelledby": "openItemMoreButton",
+            dense: true,
+          }}
+          onClose={() => setItemMoreMenuAnchor(null)}
+          open={openItemMoreMenu}
+          variant="menu"
+          transformOrigin={{ horizontal: "right", vertical: "top" }}
+          anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+        >
+          <MenuItem
+            onClick={() => {
+              handleEdit([focused]);
+              setItemMoreMenuAnchor(null);
+              setFocused(null);
+              setSelected([]);
+            }}
+          >
+            <ListItemIcon>
+              <EditIcon color="primary" fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ color: "primary" }}>
+              Edit
+            </ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleTranslate([focused]);
+              setItemMoreMenuAnchor(null);
+              setFocused(null);
+              setSelected([]);
+            }}
+          >
+            <ListItemIcon>
+              <TranslateIcon color="primary" fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ color: "primary" }}>
+              Translate
+            </ListItemText>
+          </MenuItem>
+          <Divider />
+          <MenuItem
+            onClick={() => {
+              handleDelete([focused]);
+            }}
+          >
+            <ListItemIcon>
+              <DeleteIcon color="error" fontSize="small" />
+            </ListItemIcon>
+            <ListItemText primaryTypographyProps={{ color: "error" }}>
+              Delete
+            </ListItemText>
+          </MenuItem>
+        </Menu>
+      )}
     </Root>
   );
 }

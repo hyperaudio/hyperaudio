@@ -150,28 +150,23 @@ export function Roles(props) {
       hide: true,
       id: "isOrganiser",
       label: "Organiser",
-      center: true,
     },
     {
-      center: true,
       hide: true,
       id: "isEditor",
       label: "Editor",
     },
     {
-      center: true,
       hide: true,
       id: "isRemixer",
       label: "Remixer",
     },
     {
-      center: true,
       hide: true,
       id: "isViewer",
       label: "Viewer",
     },
     {
-      center: true,
       hide: true,
       id: "isSpeaker",
       label: "Speaker",
@@ -300,7 +295,6 @@ export function Roles(props) {
                     <TableCell
                       colSpan={headCell.span || 1}
                       key={headCell.id}
-                      align={headCell.center ? "center" : "left"}
                       sortDirection={orderBy === headCell.id ? order : false}
                       sx={{
                         display: {
