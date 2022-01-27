@@ -3,7 +3,7 @@ export function teamReducer(state, action) {
 
   switch (type) {
     case "addMember":
-      console.log("add team member");
+      console.log("add team member", { payload });
       return state;
     case "changeMemberRole":
       console.log("change member role", { payload });

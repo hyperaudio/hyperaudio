@@ -1,8 +1,8 @@
 import React, { useReducer, useState, useCallback } from "react";
 import _ from "lodash";
 
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Checkbox from "@mui/material/Checkbox";
 import Divider from "@mui/material/Divider";
@@ -13,6 +13,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import Table from "@mui/material/Table";
@@ -24,11 +25,11 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 
+import { InviteTeamMemberDialog } from "@hyperaudio/app/src/dialogs";
 import { Main, Topbar } from "@hyperaudio/app/src/components";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 import { teamReducer } from "@hyperaudio/app/src/reducers";
@@ -60,9 +61,9 @@ export function Roles(props) {
     members: props.team.members,
   });
 
-  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
-
+  const [adding, setAdding] = useState(false);
   const [focused, setFocused] = useState();
+  const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState("created");
   const [page, setPage] = useState(0);
@@ -131,6 +132,11 @@ export function Roles(props) {
     editRole({ id, role, value });
   };
 
+  const handleMemberAdd = useCallback(
+    (email) => dispatch({ type: "addMember", payload: email }),
+    [team]
+  );
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - members.length) : 0;
@@ -144,23 +150,28 @@ export function Roles(props) {
       hide: true,
       id: "isOrganiser",
       label: "Organiser",
+      center: true,
     },
     {
+      center: true,
       hide: true,
       id: "isEditor",
       label: "Editor",
     },
     {
+      center: true,
       hide: true,
       id: "isRemixer",
       label: "Remixer",
     },
     {
+      center: true,
       hide: true,
       id: "isViewer",
       label: "Viewer",
     },
     {
+      center: true,
       hide: true,
       id: "isSpeaker",
       label: "Speaker",
@@ -207,15 +218,17 @@ export function Roles(props) {
         <Main>
           <Toolbar disableGutters>
             {selected.length > 0 ? (
-              <Box sx={{ flex: "1 1 auto", display: "flex" }}>
+              <Box
+                sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
+              >
                 <Typography
                   color="inherit"
-                  variant="h6"
                   component="div"
                   display="inline-block"
                   sx={{ mr: 2 }}
+                  variant="h6"
                 >
-                  {selected.length} members selected:
+                  {selected.length} selected:
                 </Typography>
                 <Button
                   color="error"
@@ -227,14 +240,26 @@ export function Roles(props) {
                 </Button>
               </Box>
             ) : (
-              <Typography
-                sx={{ flex: "1 1 auto" }}
-                variant="h6"
-                id="tableTitle"
-                component="div"
+              <Box
+                sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
               >
-                Team members
-              </Typography>
+                <Typography
+                  component="div"
+                  id="tableTitle"
+                  sx={{ mr: 2 }}
+                  variant="h6"
+                >
+                  Team members
+                </Typography>
+                <Button
+                  color="primary"
+                  onClick={() => setAdding(true)}
+                  size="small"
+                  startIcon={<PersonAddIcon />}
+                >
+                  Add new
+                </Button>
+              </Box>
             )}
             <TablePagination
               className={classes.pagination}
@@ -275,6 +300,7 @@ export function Roles(props) {
                     <TableCell
                       colSpan={headCell.span || 1}
                       key={headCell.id}
+                      align={headCell.center ? "center" : "left"}
                       sortDirection={orderBy === headCell.id ? order : false}
                       sx={{
                         display: {
@@ -483,6 +509,12 @@ export function Roles(props) {
             </ListItemText>
           </MenuItem>
         </Menu>
+      )}
+      {adding && (
+        <InviteTeamMemberDialog
+          onClose={() => setAdding(false)}
+          onSubmit={handleMemberAdd}
+        />
       )}
     </>
   );

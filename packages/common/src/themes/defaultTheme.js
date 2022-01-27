@@ -180,6 +180,7 @@ export const defaultTheme = createTheme({
     },
     h6: {
       fontFamily: 'Quicksand, sans-serif',
+      fontSize: '1.55rem',
       fontWeight: '700',
     },
     body1: {
