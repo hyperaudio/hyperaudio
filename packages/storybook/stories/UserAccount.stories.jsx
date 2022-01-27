@@ -1,18 +1,18 @@
 import React from "react";
 
-import { UserAccount } from "../../app/src/views/UserAccount.js";
+import { AccountView } from "@hyperaudio/app/src/views";
 import { data } from "./data/dashboard-data";
 
 export default {
-  title: "App/UserAccount",
-  component: UserAccount,
+  title: "App/AccountView",
+  component: AccountView,
 };
 
-const UserAccountTpl = (args) => (
+const AccountTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <UserAccount {...data} {...args} />
+    <AccountView {...data} {...args} />
   </div>
 );
 
-export const UserAccountView = UserAccountTpl.bind({});
-UserAccountView.args = {};
+export const Account = AccountTpl.bind({});
+Account.args = {};

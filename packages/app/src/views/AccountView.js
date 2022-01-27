@@ -9,14 +9,14 @@ import { styled } from "@mui/material/styles";
 
 import { Main, Topbar } from "@hyperaudio/app/src/components";
 
-const PREFIX = `UserAccount`;
+const PREFIX = `AccountView`;
 const classes = {
   root: `${PREFIX}-Root`,
 };
 
 const Root = styled("div", {})(({ theme }) => ({}));
 
-export function UserAccount(props) {
+export function AccountView(props) {
   const { organization, account } = props;
   return (
     <Root className={classes.root}>

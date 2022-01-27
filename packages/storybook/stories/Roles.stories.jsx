@@ -1,18 +1,18 @@
 import React from "react";
 
-import { Roles } from "@hyperaudio/app/src/views/Roles";
+import { RolesView } from "@hyperaudio/app/src/views";
 import { data } from "./data/dashboard-data";
 
 export default {
-  title: "App/Roles",
-  component: Roles,
+  title: "App/RolesView",
+  component: RolesView,
 };
 
-const RolesViewTpl = (args) => (
+const RolesTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <Roles {...data} {...args} />
+    <RolesView {...data} {...args} />
   </div>
 );
 
-export const RolesView = RolesViewTpl.bind({});
-RolesView.args = {};
+export const Roles = RolesTpl.bind({});
+Roles.args = {};

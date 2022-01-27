@@ -1,18 +1,18 @@
 import React from "react";
 
-import { Dashboard } from "../../app/src/views/Dashboard.js";
+import { DashboardView } from "@hyperaudio/app/src/views";
 import { data } from "./data/dashboard-data";
 
 export default {
-  title: "App/Dashboard",
-  component: Dashboard,
+  title: "App/DashboardView",
+  component: DashboardView,
 };
 
 const DashboardTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <Dashboard {...data} {...args} />
+    <DashboardView {...data} {...args} />
   </div>
 );
 
-export const DashboardView = DashboardTpl.bind({});
-DashboardView.args = {};
+export const Dashboard = DashboardTpl.bind({});
+Dashboard.args = {};

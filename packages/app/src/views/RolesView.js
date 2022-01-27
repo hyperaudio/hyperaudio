@@ -34,7 +34,7 @@ import { Main, Topbar } from "@hyperaudio/app/src/components";
 import { getComparator, stableSort } from "@hyperaudio/app/src/utils";
 import { teamReducer } from "@hyperaudio/app/src/reducers";
 
-const PREFIX = `Roles`;
+const PREFIX = `RolesView`;
 const classes = {
   root: `${PREFIX}-Root`,
   pagination: `${PREFIX}-Pagination`,
@@ -54,7 +54,7 @@ const Root = styled(
   },
 }));
 
-export function Roles(props) {
+export function RolesView(props) {
   const { organization, team, account } = props;
 
   const [{ members }, dispatch] = useReducer(teamReducer, {
