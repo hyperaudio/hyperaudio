@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -16,8 +16,19 @@ const classes = {
 
 const Root = styled('div', {})(({ theme }) => ({}));
 
-export function AccountView(props) {
-  const { account } = props;
+export function AccountView({ account: { name, bio }, dispatch }) {
+  const handleNameChange = useCallback(
+    ({ target: { value } }) => dispatch({ type: 'updateName', payload: value }),
+    [dispatch],
+  );
+
+  const handleBioChange = useCallback(
+    ({ target: { value } }) => dispatch({ type: 'updateBio', payload: value }),
+    [dispatch],
+  );
+
+  const handleSave = useCallback(() => dispatch({ type: 'save' }), [dispatch]);
+
   return (
     <Root className={classes.root}>
       <Main>
@@ -33,8 +44,9 @@ export function AccountView(props) {
             name="displayName"
             placeholder="Display name"
             required
-            value={account.displayName}
+            value={name}
             variant="outlined"
+            onChange={handleNameChange}
           />
           <TextField
             fullWidth
@@ -47,13 +59,14 @@ export function AccountView(props) {
             name="bio"
             placeholder="Short bio"
             rows={3}
-            value={account.bio}
+            value={bio}
             variant="outlined"
+            onChange={handleBioChange}
           />
           <Box sx={{ mt: 3 }}>
             <Button
               color="primary"
-              onClick={() => console.log('Save me')}
+              onClick={handleSave}
               size="large"
               startIcon={<CheckIcon fontSize="small" />}
               variant="contained"

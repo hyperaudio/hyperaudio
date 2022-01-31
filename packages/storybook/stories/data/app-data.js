@@ -77,7 +77,8 @@ export const appData = {
     userId: "userIdPio1",
     fname: "Piotr",
     lname: "Fedorczyk",
-    displayName: "Monsieur Pieutre",
+    displayName: "Monsieur Pieutre", // deprecated
+    name: "Monsieur Pieutre",
     bio: "Veniam magna nostrud tempor adipisicing velit qui laborum sit.",
   },
   media: [
