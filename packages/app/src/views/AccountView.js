@@ -25,11 +25,11 @@ export function AccountView(props) {
         organization={organization}
         title="Your Account"
       />
-      <Main>
+      <Main maxWidth="sm">
         <Typography variant="h5" component="h1" gutterBottom>
           Account details
         </Typography>
-        <form sx={{ mt: 3 }}>
+        <form sx={{ mt: 3 }} onSubmit={(e) => e.preventDefault()}>
           <TextField
             fullWidth
             id="outlined-basic"
@@ -46,12 +46,11 @@ export function AccountView(props) {
             id="outlined-basic"
             label="Bio"
             margin="normal"
-            maxRows="5"
-            minRows="1"
+            maxRows={5}
+            minRows={1}
             multiline
             name="bio"
             placeholder="Short bio"
-            rows={3}
             value={account.bio}
             variant="outlined"
           />
