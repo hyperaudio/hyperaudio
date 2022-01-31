@@ -1,26 +1,25 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import CheckIcon from "@mui/icons-material/Check";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { styled } from "@mui/material/styles";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CheckIcon from '@mui/icons-material/Check';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
-import { Main, Topbar } from "@hyperaudio/app/src/components";
+import { Main } from '@hyperaudio/app/src/components';
 
 const PREFIX = `AccountView`;
 const classes = {
   root: `${PREFIX}-Root`,
 };
 
-const Root = styled("div", {})(({ theme }) => ({}));
+const Root = styled('div', {})(({ theme }) => ({}));
 
 export function AccountView(props) {
-  const { organization, account } = props;
+  const { account } = props;
   return (
     <Root className={classes.root}>
-      <Topbar account={account} organization={organization} />
       <Main>
         <Typography variant="h3" component="h1" gutterBottom>
           Your account
@@ -54,7 +53,7 @@ export function AccountView(props) {
           <Box sx={{ mt: 3 }}>
             <Button
               color="primary"
-              onClick={() => console.log("Save me")}
+              onClick={() => console.log('Save me')}
               size="large"
               startIcon={<CheckIcon fontSize="small" />}
               variant="contained"
