@@ -9,6 +9,8 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import createEmotionCache from './util/createEmotionCache';
 import lightTheme from './styles/theme/lightTheme';
 
+import Header from './components/Header';
+
 import awsexports from './aws-exports';
 import awsconfig from './aws-config';
 
@@ -32,7 +34,7 @@ const App = props => {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={lightTheme}>
         <CssBaseline />
-        {/* <Header /> */}
+        <Header {...pageProps} />
         <Component {...pageProps} />
       </ThemeProvider>
     </CacheProvider>

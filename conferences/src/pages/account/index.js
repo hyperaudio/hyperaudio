@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { NoSsr } from '@mui/base';
+
+import { AccountView } from '@hyperaudio/app';
 
 import { User } from '../../models';
 
@@ -28,7 +31,19 @@ const AccountPage = initialData => {
     return () => subscription.unsubscribe();
   }, [identityId]);
 
-  return <pre>{JSON.stringify(user, null, 2)}</pre>;
+  return (
+    <div>
+      <NoSsr>
+        <AccountView
+          account={{
+            displayName: user?.name ?? '',
+            bio: user?.bio ?? '',
+          }}
+        />
+      </NoSsr>
+      <pre>{JSON.stringify(user, null, 2)}</pre>
+    </div>
+  );
 };
 
 export const getServerSideProps = async context => {
