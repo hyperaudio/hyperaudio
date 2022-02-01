@@ -16,10 +16,9 @@ const Root = styled(
 }));
 
 export function Main(props) {
-  const { children } = props;
   return (
     <Root className={classes.root}>
-      <Container>{children}</Container>
+      <Container {...props} />
     </Root>
   );
 }

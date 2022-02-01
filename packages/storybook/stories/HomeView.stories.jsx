@@ -8,9 +8,17 @@ export default {
   component: HomeView,
 };
 
+const channels = appData.channels.map((channel) => {
+  const media = _.filter(
+    appData.media,
+    (o) => o.channelId === channel.channelId
+  );
+  return { ...channel, media };
+});
+
 const HomeTpl = (args) => (
   <div style={{ height: "100vh" }}>
-    <HomeView {...appData} {...args} />
+    <HomeView {...appData} channels={channels} {...args} />
   </div>
 );
 

@@ -280,7 +280,7 @@ export function DashboardView(props) {
               sx={{ flex: "1 1 auto", display: "flex", alignItems: "center" }}
             >
               <Typography component="div" id="tableTitle" variant="h6">
-                Your media
+                All media
               </Typography>
             </Box>
           )}
@@ -382,11 +382,15 @@ export function DashboardView(props) {
                           }}
                         />
                       </TableCell>
-                      <TableCell id={labelId} className={classes.thumbCell}>
+                      <TableCell
+                        id={labelId}
+                        className={classes.thumbCell}
+                        sx={{ lineHeight: 0 }}
+                      >
                         <Card
                           sx={{
-                            width: { xs: 40, lg: 60 },
-                            height: { xs: 30, lg: 45 },
+                            width: { xs: 82, lg: 82 },
+                            height: { xs: 47, lg: 47 },
                           }}
                         >
                           <CardActionArea

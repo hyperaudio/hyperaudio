@@ -244,7 +244,7 @@ export function RolesView(props) {
                   sx={{ mr: 2 }}
                   variant="h6"
                 >
-                  Team members
+                  All members
                 </Typography>
                 <Button
                   color="primary"
