@@ -4,9 +4,9 @@
   "private": true,
   "license": "AGPL-3.0-only",
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=7000 next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "PORT=7000 next start",
     "lint": "next lint"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "@emotion/server": "11.4.0",
     "@emotion/styled": "11.6.0",
     "@fontsource/roboto": "4.5.1",
+    "@mui/base": "5.0.0-alpha.66",
     "@mui/icons-material": "5.3.1",
     "@mui/material": "5.3.1",
     "aws-amplify": "4.3.12",
