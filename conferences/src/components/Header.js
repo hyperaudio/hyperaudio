@@ -34,19 +34,17 @@ const Header = props => {
   }, [identityId]);
 
   return (
-    user && (
-      <NoSsr>
-        <Topbar
-          account={{
-            displayName: user.name,
-          }}
-          organization={{
-            name: 'Mozilla Festival',
-            slug: '/mozfest-2022',
-          }}
-        />
-      </NoSsr>
-    )
+    <NoSsr>
+      <Topbar
+        account={{
+          name: user?.name,
+        }}
+        organization={{
+          name: 'Mozilla Festival',
+          slug: '/mozfest-2022',
+        }}
+      />
+    </NoSsr>
   );
 };
 
