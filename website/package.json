@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "2.1.9",
+    "@aws-amplify/ui-react": "2.2.1",
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.7.1",
     "@emotion/server": "11.4.0",
