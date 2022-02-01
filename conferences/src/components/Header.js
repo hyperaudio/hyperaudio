@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { Auth, DataStore, syncExpression } from 'aws-amplify';
+import { deserializeModel } from '@aws-amplify/datastore/ssr';
 import { NoSsr } from '@mui/base';
+import { useRouter } from 'next/router';
 
 import { Topbar } from '@hyperaudio/app';
 
@@ -21,7 +22,7 @@ const getUser = async (setUser, identityId) => {
 };
 
 const Header = props => {
-  console.log({ props });
+  const router = useRouter();
 
   const { identityId } = props;
   const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
@@ -32,6 +33,12 @@ const Header = props => {
     const subscription = DataStore.observe(User).subscribe(() => identityId && getUser(setUser, identityId));
     return () => subscription.unsubscribe();
   }, [identityId]);
+
+  const navigateToAccountPage = useCallback(() => router.push('/account'), [router]);
+  const logoutToHomePage = useCallback(async () => {
+    await Auth.signOut({ global: true });
+    window.location.href = '/';
+  }, []);
 
   return (
     <NoSsr>
@@ -47,6 +54,8 @@ const Header = props => {
           name: 'Mozilla Festival',
           slug: '/',
         }}
+        navigateToAccountPage={navigateToAccountPage}
+        logoutToHomePage={logoutToHomePage}
       />
     </NoSsr>
   );
