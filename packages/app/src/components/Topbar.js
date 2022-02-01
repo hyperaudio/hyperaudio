@@ -90,7 +90,9 @@ export function Topbar(props) {
               </Tooltip>
             </Grid>
             <Grid item xs={4} align="center">
-              <Typography variant="subtitle1">{title}</Typography>
+              <Typography variant="h6" sx={{ fontSize: "1.22rem" }}>
+                {title}
+              </Typography>
             </Grid>
             <Grid item xs={4} align="right">
               <Tooltip title="Add new…">
