@@ -45,7 +45,7 @@ const Header = props => {
         }
         organization={{
           name: 'Mozilla Festival',
-          slug: '/mozfest-2022',
+          slug: '/',
         }}
       />
     </NoSsr>
