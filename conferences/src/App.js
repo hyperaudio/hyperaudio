@@ -19,11 +19,11 @@ import awsconfig from './aws-config';
 Amplify.configure({ ...awsexports, ...awsconfig });
 // Analytics.record();
 
-// Hub.listen('auth', async data => {
-//   if (data.payload.event === 'signOut') {
-//     await DataStore.clear();
-//   }
-// });
+Hub.listen('auth', async data => {
+  if (data.payload.event === 'signOut') {
+    await DataStore.clear();
+  }
+});
 
 const clientSideEmotionCache = createEmotionCache();
 

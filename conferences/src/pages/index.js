@@ -49,7 +49,7 @@ export const getServerSideProps = async context => {
     return { props: { identityId, groups, user } };
   } catch (error) {
     console.error(error);
-    // return { redirect: { destination: '/auth/?redirect=/account', permanent: false } };
+    return { props: {} };
   }
 };
 

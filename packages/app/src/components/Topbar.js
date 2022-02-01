@@ -44,7 +44,7 @@ const Root = styled(AppBar)(({ theme }) => ({
 }));
 
 export function Topbar(props) {
-  const { account, organization, title } = props;
+  const { account, organization, title, navigateToAccountPage, logoutToHomePage } = props;
 
   const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
   const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
@@ -174,14 +174,18 @@ export function Topbar(props) {
           <ListItemIcon>
             <PersonIcon color="primary" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>My account</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: 'primary' }} onClick={navigateToAccountPage}>
+            My account
+          </ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={() => setProfileMenuAnchor(null)}>
           <ListItemIcon>
             <LogoutIcon color="error" fontSize="small" />
           </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'error' }}>Log out</ListItemText>
+          <ListItemText primaryTypographyProps={{ color: 'error' }} onClick={logoutToHomePage}>
+            Log out
+          </ListItemText>
         </MenuItem>
       </Menu>
       <Menu
