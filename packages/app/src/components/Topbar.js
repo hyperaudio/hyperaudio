@@ -54,7 +54,7 @@ export function Topbar(props) {
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openProfileMenu = Boolean(profileMenuAnchor);
 
-  const [fname, lname] = useMemo(() => [...account.displayName.split(' '), ''], [account]);
+  const [fname, lname] = useMemo(() => (account ? [...account.name.split(' '), ''] : ['', '']), [account]);
 
   return (
     <>
@@ -90,7 +90,7 @@ export function Topbar(props) {
               </Tooltip>
             </Grid>
             <Grid item xs={4} align="center">
-              <Typography variant="h6" sx={{ fontSize: "1.22rem" }}>
+              <Typography variant="h6" sx={{ fontSize: '1.22rem' }}>
                 {title}
               </Typography>
             </Grid>
@@ -114,7 +114,7 @@ export function Topbar(props) {
                 color="inherit"
                 size="small"
                 startIcon={
-                  <Avatar sx={{ height: 30, width: 30 }} alt={account.displayName}>
+                  <Avatar sx={{ height: 30, width: 30 }} alt={account?.name}>
                     {fname.charAt(0)} {lname.charAt(0)}
                   </Avatar>
                 }

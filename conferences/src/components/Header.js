@@ -36,9 +36,13 @@ const Header = props => {
   return (
     <NoSsr>
       <Topbar
-        account={{
-          name: user?.name,
-        }}
+        account={
+          user
+            ? {
+                name: user.name,
+              }
+            : null
+        }
         organization={{
           name: 'Mozilla Festival',
           slug: '/mozfest-2022',
