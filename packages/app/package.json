@@ -52,7 +52,7 @@
     "lodash": "4.17.21",
     "polished": "4.1.4",
     "react-beautiful-dnd": "^13.1.0",
-    "react-player": "2.9.0"
+    "react-player": "2.9.0",
     "react-text-truncate": "0.17.0"
   }
 }
