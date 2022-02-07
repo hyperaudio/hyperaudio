@@ -45,13 +45,14 @@
     "@emotion/react": "11.7.1",
     "@emotion/styled": "11.6.0",
     "@mui/icons-material": "5.3.1",
-    "@mui/material": "5.3.1",
     "@mui/lab": "5.0.0-alpha.66",
+    "@mui/material": "5.3.1",
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
     "lodash": "4.17.21",
     "polished": "4.1.4",
     "react-beautiful-dnd": "^13.1.0",
+    "react-draggable": "4.4.4",
     "react-player": "2.9.0"
   }
 }
