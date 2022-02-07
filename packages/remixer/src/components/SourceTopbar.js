@@ -18,6 +18,27 @@ import { styled } from '@mui/material/styles';
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
   backgroundColor: theme.palette.background.default,
+  [`&.topbar`]: {
+    alignItems: 'stretch',
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    minHeight: 'auto',
+    position: 'absolute',
+  },
+  [`& .topbarSide`]: {
+    alignItems: 'center',
+    display: 'flex',
+    flexBasis: 'auto',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: theme.spacing(0, 0.5),
+    [`&.topbarSide--left`]: {
+      borderRight: `1px solid ${theme.palette.divider}`,
+    },
+    [`&.topbarSide--right`]: {
+      borderLeft: `1px solid ${theme.palette.divider}`,
+      // marginLeft: `-1px`,
+    },
+  },
   [`.topbarCore`]: {
     overflowX: 'auto !important',
     overflow: 'visible',
