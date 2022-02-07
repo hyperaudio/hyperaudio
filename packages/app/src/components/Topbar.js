@@ -31,11 +31,9 @@ const classes = {
 };
 
 const Root = styled(AppBar)(({ theme }) => ({
-  [`& .MuiButton-root:hover, & .MuiIconButton-root:hover`]: {
-    backgroundColor: theme.palette.primary.light,
-  },
+  backgroundColor: theme.palette.background.paper,
+  borderBottom: `1px solid ${theme.palette.divider}`,
   [`& .MuiAvatar-root`]: {
-    background: theme.palette.secondary.main,
     fontSize: '1em !important',
     fontWeight: '600',
     letterSpacing: 0,
@@ -65,7 +63,7 @@ export function Topbar(props) {
               <Button
                 onClick={e => setOrgMenuAnchor(e.currentTarget)}
                 size="small"
-                color="inherit"
+                color="primary"
                 startIcon={
                   <Avatar sx={{ height: 28, width: 28 }} alt={organization.name}>
                     {organization.name.charAt(0)}
@@ -78,7 +76,7 @@ export function Topbar(props) {
               </Button>
               <Tooltip title="Open your organization’s home page">
                 <IconButton
-                  color="inherit"
+                  color="primary"
                   edge="end"
                   href={organization.slug}
                   sx={{ marginLeft: 1 }}
@@ -90,7 +88,7 @@ export function Topbar(props) {
               </Tooltip>
             </Grid>
             <Grid item xs={4} align="center">
-              <Typography variant="h6" sx={{ fontSize: '1.22rem' }}>
+              <Typography variant="h6" sx={{ fontSize: '1.11rem' }} color="primary">
                 {title}
               </Typography>
             </Grid>
@@ -100,7 +98,7 @@ export function Topbar(props) {
                   aria-expanded={openAddMenu ? 'true' : undefined}
                   aria-haspopup="true"
                   aria-label="Add new…"
-                  color="inherit"
+                  color="primary"
                   edge="start"
                   id="openAddMenuButton"
                   onClick={e => setAddMenuAnchor(e.currentTarget)}
@@ -111,7 +109,7 @@ export function Topbar(props) {
               </Tooltip>
               <Button
                 onClick={e => setProfileMenuAnchor(e.currentTarget)}
-                color="inherit"
+                color="primary"
                 size="small"
                 startIcon={
                   <Avatar sx={{ height: 30, width: 30 }} alt={account?.name}>
