@@ -10,7 +10,7 @@ const palette = {
     default: '#F5F5F7',
     paper: '#fff',
   },
-  divider: 'rgba(0,0,0,0.066)',
+  divider: 'rgba(0,0,0,0.088)',
   primary: {
     ...mui.palette.primary,
     dark: '#02007F',
