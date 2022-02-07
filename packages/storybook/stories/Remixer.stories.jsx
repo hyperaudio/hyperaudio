@@ -90,3 +90,9 @@ SearchNull.args = {
   media: [...remixData.sources],
   matches: { transcripts: null, titles: null },
 };
+
+export const SingleMedia = Template.bind({});
+SingleMedia.args = {
+  editable: false,
+  isSingleMedia: true,
+};
