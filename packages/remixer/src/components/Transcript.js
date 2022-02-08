@@ -89,7 +89,7 @@ const Section = styled('p')(({ theme }) => ({
   [`& span.playhead`]: {
     color: theme.palette.primary.main,
   },
-  [`&:before`]: {
+  [`&.showSpeaker:before`]: {
     ...theme.typography.overline,
     backgroundColor: theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
@@ -600,7 +600,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       data-offset={offset}
       data-text-offset={0}
       data-speaker={`${speaker}:`}
-      className={`${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
+      className={`${speaker ? 'showSpeaker' : ''} ${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
     >
