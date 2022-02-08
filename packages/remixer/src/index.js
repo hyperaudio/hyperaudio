@@ -43,17 +43,10 @@ const Root = styled('div', {
     position: 'relative',
     [`&.RemixerPane--Source`]: {
       borderRight: `1px solid ${theme.palette.divider}`,
-      // [theme.breakpoints.down('md')]: { // TODO: fix this for mobile?
-      //   display: 'none',
-      // },
     },
     [`&.RemixerPane--Remix`]: {
       flexBasis: showSource ? '50%' : '100%',
       maxWidth: showSource ? '50%' : 'none',
-      [theme.breakpoints.down('md')]: {
-        flexBasis: '100%',
-        maxWidth: 'none',
-      },
     },
     [`&.RemixerPane--Library`]: {
       bottom: 0,

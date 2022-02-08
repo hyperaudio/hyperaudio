@@ -22,7 +22,7 @@ const classes = {
 
 const Root = styled('div')(({ theme }) => ({
   paddingBottom: theme.spacing(1),
-  [theme.breakpoints.up('md')]: {
+  [theme.breakpoints.up('xl')]: {
     paddingTop: theme.spacing(2),
     paddingBottom: theme.spacing(4),
   },

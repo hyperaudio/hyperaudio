@@ -47,7 +47,9 @@ const Effect = styled('div')(({ theme }) => ({
   textAlign: 'center',
   transition: `border ${theme.transitions.duration.standard}`,
   [`& .${classes.effectIcon}`]: {
-    marginRight: theme.spacing(1),
+    [theme.breakpoints.up('md')]: {
+      marginRight: theme.spacing(1),
+    },
   },
   [`&:hover`]: {
     borderColor: theme.palette.primary.main,
@@ -70,18 +72,27 @@ export const InsertsBar = props => {
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                           <Tooltip title="Drag this to add a slide to your remix">
-                            <Effect>
+                            <Effect aria-labelledby="slide-label">
                               <SlideshowIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2" color="primary">
+                              <Typography
+                                color="primary"
+                                id="slide-label"
+                                sx={{ display: { xs: 'none', md: 'initial' } }}
+                                variant="subtitle2"
+                              >
                                 Slide
                               </Typography>
                             </Effect>
                           </Tooltip>
                         </div>
                         {snapshot.isDragging && (
-                          <Effect>
+                          <Effect aria-labelledby="slide-label">
                             <SlideshowIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                            <Typography variant="subtitle2" color="primary">
+                            <Typography
+                              color="primary"
+                              sx={{ display: { xs: 'none', md: 'initial' } }}
+                              variant="subtitle2"
+                            >
                               Slide
                             </Typography>
                           </Effect>
@@ -96,9 +107,14 @@ export const InsertsBar = props => {
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                           <Tooltip title="Drag this to add a title to your remix">
-                            <Effect>
+                            <Effect aria-labelledby="title-label">
                               <TextFieldsIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2" color="primary">
+                              <Typography
+                                color="primary"
+                                sx={{ display: { xs: 'none', md: 'initial' } }}
+                                id="title-label"
+                                variant="subtitle2"
+                              >
                                 Title
                               </Typography>
                             </Effect>
@@ -107,7 +123,11 @@ export const InsertsBar = props => {
                         {snapshot.isDragging && (
                           <Effect>
                             <TextFieldsIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                            <Typography variant="subtitle2" color="primary">
+                            <Typography
+                              variant="subtitle2"
+                              color="primary"
+                              sx={{ display: { xs: 'none', md: 'initial' } }}
+                            >
                               Title
                             </Typography>
                           </Effect>
@@ -122,9 +142,14 @@ export const InsertsBar = props => {
                       <>
                         <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
                           <Tooltip title="Drag this to add a transition to your remix">
-                            <Effect>
+                            <Effect aria-labelledby="transition-label">
                               <MovieFilterIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                              <Typography variant="subtitle2" color="primary">
+                              <Typography
+                                color="primary"
+                                id="transition-label"
+                                sx={{ display: { xs: 'none', md: 'initial' } }}
+                                variant="subtitle2"
+                              >
                                 Transition
                               </Typography>
                             </Effect>
@@ -133,7 +158,11 @@ export const InsertsBar = props => {
                         {snapshot.isDragging && (
                           <Effect>
                             <MovieFilterIcon color="primary" fontSize="small" className={classes.effectIcon} />{' '}
-                            <Typography variant="subtitle2" color="primary">
+                            <Typography
+                              color="primary"
+                              sx={{ display: { xs: 'none', md: 'initial' } }}
+                              variant="subtitle2"
+                            >
                               Transition
                             </Typography>
                           </Effect>
