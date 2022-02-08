@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -14,6 +13,11 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
+
+const PREFIX = 'SourceTopbar';
+const classes = {
+  tabText: `${PREFIX}-tabText`,
+};
 
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
@@ -76,14 +80,8 @@ const Tab = styled(Button, {
   [`& .MuiButton-endIcon > span`]: {
     lineHeight: 0,
   },
-}));
-
-const TabClose = styled(IconButton, {
-  shouldForwardProp: prop => prop !== 'isActive',
-})(({ theme, isActive }) => ({
-  background: theme.palette.background.default,
-  [`&, & *`]: {
-    color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
+  [`& .${classes.tabText}`]: {
+    color: theme.palette.primary.dark,
   },
 }));
 
@@ -128,9 +126,9 @@ export const SourceTopbar = props => {
                     <span>
                       {tabs.length > 1 && (
                         <Tooltip title="Close">
-                          <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
+                          <IconButton edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
                             <CloseIcon sx={{ fontSize: '16px' }} />
-                          </TabClose>
+                          </IconButton>
                         </Tooltip>
                       )}
                     </span>
@@ -143,7 +141,13 @@ export const SourceTopbar = props => {
                 size="small"
                 variant="contained"
               >
-                <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption" title={o.title}>
+                <Typography
+                  className={classes.tabText}
+                  noWrap
+                  sx={{ maxWidth: '150px' }}
+                  variant="caption"
+                  title={o.title}
+                >
                   {o.title}
                 </Typography>
               </Tab>
@@ -151,9 +155,9 @@ export const SourceTopbar = props => {
           </Tabs>
         </div>
         <div className="topbarSide topbarSide--right">
-          <Tooltip title="All source transcripts…">
+          <Tooltip title="All sources">
             <span>
-              <IconButton size="small" onClick={onTranscriptsOpen} disabled={tabs.length < 2}>
+              <IconButton size="small" onClick={onTranscriptsOpen}>
                 <MoreVertIcon fontSize="small" />
               </IconButton>
             </span>
@@ -191,7 +195,12 @@ export const SourceTopbar = props => {
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
             {tabs.map((o, i) => (
-              <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
+              <MenuItem
+                disabled={tabs.length === 1}
+                key={o.id}
+                onClick={() => onSourceChange(o.id)}
+                selected={o.id === source.id}
+              >
                 <ListItemText
                   primaryTypographyProps={{ noWrap: true, variant: 'body2' }}
                   sx={{ maxWidth: '200px' }}
@@ -218,10 +227,7 @@ export const SourceTopbar = props => {
             ))}
             <Divider />
             <MenuItem disabled={media?.length === 0} onClick={onShowLibrary}>
-              <ListItemIcon>
-                <AddCircleOutlineIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Add source transcript…" primaryTypographyProps={{ color: 'primary' }} />
+              <ListItemText primary="Add source…" primaryTypographyProps={{ color: 'primary' }} />
             </MenuItem>
           </Menu>
         </div>
