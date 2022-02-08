@@ -71,8 +71,8 @@ const Root = styled(Paper, {
     [`& .${classes.li}`]: {
       display: 'inline-block',
       marginRight: theme.spacing(1),
-      [`&::after`]: {
-        content: ',',
+      [`&:not(:last-child):after`]: {
+        content: '","',
         display: 'inline',
       },
     },
@@ -109,13 +109,13 @@ export const MediaInfoDialog = props => {
               </Typography>
               <div>
                 <TextField
-                  aria-labelled-by="title-label"
+                  aria-labelledby="title-label"
+                  disabled
                   fullWidth
                   id="title"
                   placeholder="Give your media a title…"
                   required
                   size="small"
-                  disabled
                   value={mediaTitle}
                   inputProps={{
                     className: classes.field,
@@ -136,13 +136,13 @@ export const MediaInfoDialog = props => {
               </Typography>
               <div>
                 <TextField
-                  aria-labelled-by="channel-label"
+                  aria-labelledby="channel-label"
+                  disabled
                   fullWidth
                   id="channel"
                   placeholder="Give your remix a title…"
                   select
                   size="small"
-                  disabled
                   value={mediaChannel}
                   inputProps={{
                     className: classes.field,
@@ -167,12 +167,11 @@ export const MediaInfoDialog = props => {
                 ))}
               </div>
               <br />
-
               <Typography variant="subtitle2">Linked remixes</Typography>
               {mediaRemixes.length > 0 ? (
                 <ul className={classes.ul}>
                   {mediaRemixes.map(r => (
-                    <li className={classes.li} key={r.id} disablePadding>
+                    <li className={classes.li} key={r.id}>
                       <Link variant="body2" sx={{ cursor: 'pointer' }}>
                         {r.title}
                       </Link>

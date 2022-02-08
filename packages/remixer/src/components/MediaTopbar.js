@@ -106,7 +106,7 @@ export const MediaTopbar = props => {
 
   return (
     <>
-      <Root maxWidth={false}>
+      <Root>
         <Container className={classes.sides} maxWidth="sm">
           <div className={`${classes.side} ${classes.sideL}`}>
             <Tooltip title="Edit transcript">
