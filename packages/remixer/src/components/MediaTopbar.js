@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
+import _ from 'lodash';
 
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InputAdornment from '@mui/material/InputAdornment';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import ListItemText from '@mui/material/ListItemText';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
+
 import { styled } from '@mui/material/styles';
 
 import { MediaInfoDialog } from '../dialogs';
@@ -76,33 +82,35 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = props => {
-  // const { transcripts } = props;
-  const [isInfoOpen, setIsInfoOpen] = React.useState(false);
-
-  // NECESSARY DATA FOR THIS COMPONENTS START HERE
+export const MediaTopbar = ({ source: { transcript }, ...props }) => {
   const mediaTitle = 'This is the actual media title, not transcript title';
-  const transcripts = [
-    // TODO: Wire real transcripts
-    { id: 'transcript1', name: 'A media — transcribed', language: 'en' },
-    { id: 'transcript2', name: 'A media — transcribed (EN)', language: 'es' },
-  ];
-  // NECESSARY DATA FOR THIS COMPONENTS END HERE
 
-  const [transcript, setTranscript] = useState('transcript1');
+  const defaultTranslation = _.find(transcript.translations, o => o.default === true);
 
-  const onSelectTranscript = id => e => {
-    setTranscript(id);
-    console.log('onSelectTranscript:', e, id);
+  const [isInfoOpen, setIsInfoOpen] = React.useState(false);
+  const [langAnchorEl, setLangAnchorEl] = React.useState(null);
+  const [translation, setTranslation] = useState(defaultTranslation);
+
+  const open = Boolean(langAnchorEl);
+  const onOpenTranslations = e => setLangAnchorEl(e.currentTarget);
+  const onCloseTranslations = () => setLangAnchorEl(null);
+
+  const onSelectTranslation = id => e => {
+    console.log('onSelectTranslation:', e, id);
+    setTranslation(id);
   };
-  const onAddTranscript = e => {
-    console.log('onAddTranscript:', e);
+  const onAddTranslation = e => {
+    console.log('onAddTranslation:', e);
   };
   const onCaption = () => console.log('onCaption');
   const onEdit = () => console.log('onEdit');
   const onInfoClose = () => setIsInfoOpen(false);
   const onInfoOpen = () => setIsInfoOpen(true);
   const onRemix = () => console.log('onRemix');
+
+  console.group('MediaTopbar');
+  console.log({ props });
+  console.groupEnd('');
 
   return (
     <>
@@ -143,27 +151,30 @@ export const MediaTopbar = props => {
             fullWidth
             id="transcript"
             placeholder="Give your remix a title…"
-            select
             size="small"
-            value={transcript}
+            disabled
+            value={transcript.title}
             InputProps={{
               className: 'MediaTitleField',
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Button
+                    endIcon={<ArrowDropDownIcon />}
+                    id="translations-button"
+                    onClick={onOpenTranslations}
+                    size="small"
+                    sx={{ mr: 1 * -1 }}
+                  >
+                    {translation.name}
+                  </Button>
+                </InputAdornment>
+              ),
             }}
             inputProps={{
               className: 'MediaTitle',
               minLength: 1,
             }}
-          >
-            {transcripts.map(transcript => (
-              <MenuItem dense key={transcript.id} value={transcript.id} onClick={onSelectTranscript(transcript.id)}>
-                {transcript.name}
-              </MenuItem>
-            ))}
-            <Divider />
-            <MenuItem dense onClick={onAddTranscript}>
-              <ListItemText primary="New transcript…" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-          </TextField>
+          ></TextField>
         </Container>
       </Root>
       <MediaInfoDialog
@@ -178,6 +189,37 @@ export const MediaTopbar = props => {
         onClose={onInfoClose}
         open={isInfoOpen}
       />
+      <Menu
+        anchorEl={langAnchorEl}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        id="account-menu"
+        onClick={onCloseTranslations}
+        onClose={onCloseTranslations}
+        open={open}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        MenuListProps={{
+          dense: true,
+          'aria-labelledby': 'translations-button',
+        }}
+        PaperProps={{
+          style: {
+            maxHeight: '200px',
+            width: '160px',
+          },
+        }}
+      >
+        {transcript.translations.map(t => {
+          return (
+            <MenuItem selected={t.id === translation.id} key={t.id} onClick={onSelectTranslation(t)}>
+              {t.name}
+            </MenuItem>
+          );
+        })}
+        <Divider />
+        <MenuItem onClick={onAddTranslation}>
+          <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+      </Menu>
     </>
   );
 };
