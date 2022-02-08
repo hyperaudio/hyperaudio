@@ -3,41 +3,43 @@ import ReactPlayer from 'react-player';
 import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
+import FastForwardIcon from '@mui/icons-material/FastForward';
 import Grid from '@mui/material/Grid';
-
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
-import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
 const classes = {
-  playerWrapper: `${PREFIX}-playerWrapper`,
+  controls: `${PREFIX}-controls`,
+  core: `${PREFIX}-core`,
+  effect: `${PREFIX}-effect`,
   player: `${PREFIX}-player`,
+  stage: `${PREFIX}-stage`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  alignItems: 'center',
-  display: 'flex',
-  flex: '1 0 260px',
-  flexFlow: 'column nowrap',
-  height: 'auto',
-  // minHeight: '400px', // TODO: see if it is still needed?
-  justifyContent: 'space-between',
-  padding: theme.spacing(2),
-  textAlign: 'center',
-  [`& .${classes.playerWrapper}`]: {
+  paddingBottom: theme.spacing(1),
+  [theme.breakpoints.up('md')]: {
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(4),
+  },
+  [`& .${classes.core}`]: {},
+  [`& .${classes.stage}`]: {
     position: 'relative',
-    paddingTop: '56.25%' /* Player ratio: 100 / (1280 / 720) */,
-    marginBottom: theme.spacing(2),
-    maxHeight: '260px',
   },
   [`& .${classes.player}`]: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
+    maxHeight: '260px',
+    paddingTop: '56.25%' /* Player ratio: 100 / (1280 / 720) */,
+    position: 'relative',
+  },
+  // [`& .${classes.effect}`]: {
+  // },
+  [`& .${classes.controls}`]: {
+    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
 }));
 
@@ -152,10 +154,10 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
 
   return (
     <Root>
-      <Container maxWidth="sm">
-        <div style={{ position: 'relative' }}>
+      <Container className={classes.core} maxWidth="sm">
+        <div className={classes.stage}>
           {media?.map(({ id, url }) => (
-            <div key={id} className={classes.playerWrapper} style={{ display: active === id ? 'block' : 'none' }}>
+            <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
               <Player
                 key={id}
                 active={active === id}
@@ -241,7 +243,7 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             </>
           )}
         </div>
-        <div>
+        <div className={classes.controls}>
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
               {referencePlaying ? (
@@ -273,7 +275,6 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
               />
             </Grid>
           </Grid>
-
           <audio
             controls
             muted
@@ -345,10 +346,14 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
 
   return (
     <ReactPlayer
-      key={id}
-      className={classes.player}
-      width="100%"
       height="100%"
+      key={id}
+      width="100%"
+      style={{
+        left: 0,
+        position: 'absolute',
+        top: 0,
+      }}
       muted={!primed}
       {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
     />

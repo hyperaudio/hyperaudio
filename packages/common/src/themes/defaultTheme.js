@@ -10,7 +10,7 @@ const palette = {
     default: '#F5F5F7',
     paper: '#fff',
   },
-  divider: 'rgba(0,0,0,0.066)',
+  divider: 'rgba(0,0,0,0.088)',
   primary: {
     ...mui.palette.primary,
     dark: '#02007F',
@@ -42,10 +42,8 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
       styleOverrides: {
-        root: {
-          borderRadius: 100,
-          // padding: mui.spacing(0.5, 0.75), // TODO: check this elsewhere
-        },
+        root: {},
+        // borderRadius: 100, TODO: find a way to use rounded buttons
       },
     },
     MuiBreadcrumbs: {

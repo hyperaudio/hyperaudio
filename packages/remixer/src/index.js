@@ -1,11 +1,10 @@
 import React, { useReducer, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import Fab from '@mui/material/Fab';
-import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { HyperaudioIcon, defaultTheme } from '@hyperaudio/common';
+import { defaultTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
@@ -17,8 +16,8 @@ import remixReducer from './reducers/remixReducer';
 import '@hyperaudio/common/src/fonts/Inter/inter.css';
 
 const Root = styled('div', {
-  shouldForwardProp: prop => prop !== 'showSource',
-})(({ theme, showSource }) => ({
+  shouldForwardProp: prop => !['showSource', 'isSingleMedia'].includes(prop),
+})(({ theme, showSource, isSingleMedia }) => ({
   height: '100%',
   position: 'relative',
 
@@ -37,16 +36,16 @@ const Root = styled('div', {
     alignContent: 'flex-start',
     alignItems: 'stretch',
     display: 'flex',
-    flex: '0 0 50%',
+    flex: `0 0 ${isSingleMedia ? '100%' : '50%'}`,
     flexFlow: 'column nowrap',
     justifyContent: 'flex-start',
-    maxWidth: '50%',
+    maxWidth: isSingleMedia ? 'auto' : '50%',
     position: 'relative',
     [`&.RemixerPane--Source`]: {
       borderRight: `1px solid ${theme.palette.divider}`,
-      [theme.breakpoints.down('md')]: {
-        display: 'none',
-      },
+      // [theme.breakpoints.down('md')]: { // TODO: fix this for mobile?
+      //   display: 'none',
+      // },
     },
     [`&.RemixerPane--Remix`]: {
       flexBasis: showSource ? '50%' : '100%',
@@ -106,7 +105,12 @@ const Root = styled('div', {
     height: '100%',
     justifyContent: 'flex-start',
     overflow: 'auto',
-    padding: theme.spacing(2, 2, 12, 2),
+    paddingTop: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
+    [theme.breakpoints.up('md')]: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(12),
+    },
   },
   [`& .transcriptSnapshotDropArea`]: {
     boxShadow: `0 0 2px 0 ${theme.palette.primary.light} inset`,
@@ -119,14 +123,8 @@ const Root = styled('div', {
   },
 }));
 
-const Badge = styled(Fab)(({ theme }) => ({
-  bottom: theme.spacing(2),
-  position: 'fixed',
-  right: theme.spacing(2),
-}));
-
 export const Remixer = props => {
-  const { editable, media } = props;
+  const { editable, media, isSingleMedia } = props;
 
   const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
     sources: props.sources,
@@ -189,7 +187,7 @@ export const Remixer = props => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <GlobalStyles />
-      <Root showSource={showSource}>
+      <Root showSource={showSource} isSingleMedia={isSingleMedia}>
         <div
           className="Layout"
           id="Layout" // used as Dragbar’s bounds
@@ -199,28 +197,31 @@ export const Remixer = props => {
               {showSource && (
                 <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose }} />
               )}
-              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, dispatch }} />
+              {!isSingleMedia && (
+                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, dispatch }} />
+              )}
             </DragDropContext>
           ) : (
             <>
               {showSource && <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange }} />}
-              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange }} />
+              {!isSingleMedia && (
+                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange }} />
+              )}
             </>
           )}
         </div>
-        {!editable && (
-          <Tooltip title="Visit Hyperaudio">
-            <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
-              <HyperaudioIcon />
-            </Badge>
-          </Tooltip>
-        )}
         {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>
   );
 };
 
+Remixer.propTypes = {
+  editable: PropTypes.bool, // used to allow edit functionality, drag&drop and all that magic
+  isSingleMedia: PropTypes.bool, // used for when showing single media (famous remix of one)
+};
+
 Remixer.defaultProps = {
   editable: false,
+  isSingleMedia: false,
 };
