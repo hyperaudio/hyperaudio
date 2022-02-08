@@ -18,12 +18,6 @@ const media = [
     // url: "https://vimeo.com/636017395/f0ea0fe391",
     url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
   },
-  // new media
-  {
-    id: "YVBNsWgjvPkGpubCchh2e5",
-    url: "https://cdn.hyper.audio/HLS/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.m3u8",
-    // url: "https://hyperaudio-a0e962a7c406.s3-eu-west-1.amazonaws.com/input/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.mp4",
-  },
 ];
 
 // prettier-ignore
@@ -22944,7 +22938,7 @@ export const remixData = {
         };
       }),
     },
-    // new source
+    // new sources
     {
       id: "T-YVBNsWgjvPkGpubCchh2e5",
       title: "MLTalks with Douglas Rushkoff",
@@ -22967,7 +22961,10 @@ export const remixData = {
       createdAt: "2021-10-06T21:17:55.365Z",
       updatedAt: "2021-10-06T21:21:54.315Z",
       duration: 648.544,
-      media: [media[3]],
+      media: [{
+        id: "YVBNsWgjvPkGpubCchh2e5",
+        url: "https://cdn.hyper.audio/HLS/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.m3u8",
+      }],
       tags: ["One pretty tag", "Another pretty tag"],
       transcript: {
         title: "A media transcribed",
@@ -22977,7 +22974,229 @@ export const remixData = {
         ],
       },
       status: "transcribed",
-      blocks: require('./YVBNsWgjvPkGpubCchh2e5-blocks.json'),
-    }
+      blocks: require('./transcripts/YVBNsWgjvPkGpubCchh2e5-blocks.json'),
+    },
+    {
+      id: "T-ACrY7ceZNUMQEbmeokbmNZ",
+      title: "MLTalks: Jill Lepore in conversation with Andrew Lippman",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "ACrY7ceZNUMQEbmeokbmNZ",
+        url: "https://cdn.hyper.audio/HLS/ACrY7ceZNUMQEbmeokbmNZ/ACrY7ceZNUMQEbmeokbmNZ.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/ACrY7ceZNUMQEbmeokbmNZ-blocks.json'),
+    },
+    {
+      id: "T-Cdamja34SyvrgaZ8x5H9VR",
+      title: "Patent Pandas Launch",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "Cdamja34SyvrgaZ8x5H9VR",
+        url: "https://cdn.hyper.audio/HLS/Cdamja34SyvrgaZ8x5H9VR/Cdamja34SyvrgaZ8x5H9VR.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/Cdamja34SyvrgaZ8x5H9VR-blocks.json'),
+    },
+    {
+      id: "T-DYXbRFUKMYbwUbWpwdNa62",
+      title: "Pattie Maes - Welcome \u2013 Opening Remarks/Introduction",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "DYXbRFUKMYbwUbWpwdNa62",
+        url: "https://cdn.hyper.audio/HLS/DYXbRFUKMYbwUbWpwdNa62/DYXbRFUKMYbwUbWpwdNa62.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/DYXbRFUKMYbwUbWpwdNa62-blocks.json'),
+    },
+    {
+      id: "T-FpF8Hvbyk93zgGAnAdJiHT",
+      title: "Joi Ito and Ethan Zuckerman: The Challenges of Innovation in Big Companies and Newsrooms",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "FpF8Hvbyk93zgGAnAdJiHT",
+        url: "https://cdn.hyper.audio/HLS/FpF8Hvbyk93zgGAnAdJiHT/FpF8Hvbyk93zgGAnAdJiHT.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/FpF8Hvbyk93zgGAnAdJiHT-blocks.json'),
+    },
+    {
+      id: "T-JniFbzYLAVaD12WAVfXMDF",
+      title: "Information Landscapes: Muriel Cooper at the TED5 Conference",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "JniFbzYLAVaD12WAVfXMDF",
+        url: "https://cdn.hyper.audio/HLS/JniFbzYLAVaD12WAVfXMDF/JniFbzYLAVaD12WAVfXMDF.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/JniFbzYLAVaD12WAVfXMDF-blocks.json'),
+    },
+    {
+      id: "T-N8dfdPHP3kdL7SESKQWZgY",
+      title: "Stereotype Threat and Identity Threat: The Science of a Diverse Community",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [{
+        id: "N8dfdPHP3kdL7SESKQWZgY",
+        url: "https://cdn.hyper.audio/HLS/N8dfdPHP3kdL7SESKQWZgY/N8dfdPHP3kdL7SESKQWZgY.m3u8",
+      }],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./transcripts/N8dfdPHP3kdL7SESKQWZgY-blocks.json'),
+    },
   ],
 };
