@@ -2,11 +2,9 @@ import React, { useReducer, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-import Fab from '@mui/material/Fab';
-import Tooltip from '@mui/material/Tooltip';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { HyperaudioIcon, defaultTheme } from '@hyperaudio/common';
+import { defaultTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
@@ -125,12 +123,6 @@ const Root = styled('div', {
   },
 }));
 
-const Badge = styled(Fab)(({ theme }) => ({
-  bottom: theme.spacing(2),
-  position: 'fixed',
-  right: theme.spacing(2),
-}));
-
 export const Remixer = props => {
   const { editable, media, isSingleMedia } = props;
 
@@ -218,13 +210,6 @@ export const Remixer = props => {
             </>
           )}
         </div>
-        {/* {!editable && (
-          <Tooltip title="Visit Hyperaudio">
-            <Badge aria-label="Visit Hyperaudio" color="primary" href="https://hyper.audio" target="_blank">
-              <HyperaudioIcon />
-            </Badge>
-          </Tooltip>
-        )} */}
         {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>

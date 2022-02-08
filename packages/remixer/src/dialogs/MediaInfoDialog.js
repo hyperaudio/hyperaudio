@@ -34,7 +34,7 @@ const Root = styled(Paper, {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
-    maxHeight: '360px',
+    maxHeight: '400px',
     maxWidth: '320px',
     overflow: 'hidden',
     position: 'fixed',
