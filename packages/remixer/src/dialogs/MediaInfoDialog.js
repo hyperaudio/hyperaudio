@@ -1,19 +1,15 @@
 import React from 'react';
 import Draggable from 'react-draggable';
 
+import Chip from '@mui/material/Chip';
 import CloseIcon from '@mui/icons-material/Close';
 import Fade from '@mui/material/Fade';
 import IconButton from '@mui/material/IconButton';
-import List from '@mui/material/List';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
-import Chip from '@mui/material/Chip';
-
 import Link from '@mui/material/Link';
+import MenuItem from '@mui/material/MenuItem';
 import Paper from '@mui/material/Paper';
 import Portal from '@mui/material/Portal';
+import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 
 import { Typography } from '@mui/material';
@@ -33,20 +29,20 @@ const Root = styled(Paper, {
   // shouldForwardProp: prop => !['comapct'].includes(prop),
 })(({ theme }) => {
   return {
-    maxHeight: '360px',
-    maxWidth: '320px',
-    position: 'fixed',
-    right: theme.spacing(4),
-    top: '50%',
-    width: '100%',
-    overflow: 'hidden',
-    userSelect: 'none',
-    zIndex: theme.zIndex.modal,
+    alignContent: 'flexStart',
+    alignItems: 'flexStart',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
-    alignItems: 'flexStart',
-    alignContent: 'flexStart',
+    maxHeight: '360px',
+    maxWidth: '320px',
+    overflow: 'hidden',
+    position: 'fixed',
+    right: theme.spacing(4),
+    top: '33%',
+    userSelect: 'none',
+    width: '100%',
+    zIndex: theme.zIndex.modal,
     [`& .${classes.head}`]: {
       background: theme.palette.background.default,
       borderBottom: `1px solid ${theme.palette.divider}`,
@@ -81,7 +77,12 @@ const Root = styled(Paper, {
 
 export const MediaInfoDialog = props => {
   const container = React.useRef(null);
-  const { allChannels, mediaChannel, mediaRemixes, mediaTags, mediaTitle, open, onClose } = props;
+  const { open, onClose, source } = props;
+
+  // console.group('MediaInfo');
+  // console.log({ props });
+  // console.groupEnd();
+
   return (
     <Portal container={container.current}>
       <Draggable handle="#media-detail-dialog" bounds="body">
@@ -116,19 +117,11 @@ export const MediaInfoDialog = props => {
                   placeholder="Give your media a title…"
                   required
                   size="small"
-                  value={mediaTitle}
+                  value={source.title}
                   inputProps={{
                     className: classes.field,
                   }}
-                >
-                  {allChannels.map(channel => {
-                    return (
-                      <MenuItem dense key={channel.id} value={channel.id}>
-                        {channel.name}
-                      </MenuItem>
-                    );
-                  })}
-                </TextField>
+                />
               </div>
               <br />
               <Typography gutterBottom variant="subtitle2" id="channel-label">
@@ -143,12 +136,12 @@ export const MediaInfoDialog = props => {
                   placeholder="Give your remix a title…"
                   select
                   size="small"
-                  value={mediaChannel}
+                  value={source.channel.id}
                   inputProps={{
                     className: classes.field,
                   }}
                 >
-                  {allChannels.map(channel => {
+                  {[source.channel].map(channel => {
                     return (
                       <MenuItem dense key={channel.id} value={channel.id}>
                         {channel.name}
@@ -162,15 +155,15 @@ export const MediaInfoDialog = props => {
                 Tags
               </Typography>
               <div>
-                {mediaTags.map(t => (
-                  <Chip label={t.name} size="small" key={t.id} />
-                ))}
+                {source.tags.length > 0
+                  ? source.tags.map(t => <Chip label={t} size="small" key={t} sx={{ mr: 0.5 }} />)
+                  : '—'}
               </div>
               <br />
               <Typography variant="subtitle2">Linked remixes</Typography>
-              {mediaRemixes.length > 0 ? (
+              {source.remixes.length > 0 ? (
                 <ul className={classes.ul}>
-                  {mediaRemixes.map(r => (
+                  {source.remixes.map(r => (
                     <li className={classes.li} key={r.id}>
                       <Link variant="body2" sx={{ cursor: 'pointer' }}>
                         {r.title}
@@ -178,7 +171,9 @@ export const MediaInfoDialog = props => {
                     </li>
                   ))}
                 </ul>
-              ) : null}
+              ) : (
+                '—'
+              )}
             </div>
           </Root>
         </Fade>

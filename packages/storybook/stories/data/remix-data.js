@@ -419,6 +419,8 @@ export const remixData = {
     {
       id: "3B7PzBDLT8WZjbMzHUpTVY",
       title: "Planning a New Cafe - Cafe Design & Workflow Advice",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
       deck: {
         url: "https://picsum.photos/400/300",
         slides: [
@@ -443,6 +445,7 @@ export const remixData = {
       //   },
       // ],
       media: [media[0]],
+      tags: ["One pretty tag", "Another pretty tag"],
       transcript: {
         title: "A media transcribed",
         translations: [
@@ -6912,6 +6915,8 @@ export const remixData = {
       id: "V1VrYa2KRZ9hBkos5RUTfo",
       title:
         "Living in my Lexus GX470 - A walkthrough of my home | Full-Time Overlanding",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
       deck: null,
       createdAt: "2021-10-06T21:31:09.921Z",
       updatedAt: "2021-10-06T21:35:23.592Z",
@@ -6923,6 +6928,7 @@ export const remixData = {
       //   },
       // ],
       media: [media[1]],
+      tags: ["One pretty tag", "Another pretty tag"],
       transcript: {
         title: "A media transcribed",
         translations: [
@@ -12815,6 +12821,8 @@ export const remixData = {
     {
       id: "21LPML8F2h8zxd3tGb5Ain",
       title: "MindBody Prescription",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[],
       deck: {
         url: "https://picsum.photos/400/300",
         slides: [
@@ -12839,6 +12847,7 @@ export const remixData = {
       //   },
       // ],
       media: [media[2]],
+      tags: ["One pretty tag", "Another pretty tag"],
       transcript: {
         title: "A media transcribed",
         translations: [

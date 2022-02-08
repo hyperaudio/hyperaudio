@@ -82,8 +82,8 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source: { transcript }, ...props }) => {
-  const mediaTitle = 'This is the actual media title, not transcript title';
+export const MediaTopbar = ({ source, ...props }) => {
+  const { transcript } = source;
 
   const defaultTranslation = _.find(transcript.translations, o => o.default === true);
 
@@ -177,18 +177,7 @@ export const MediaTopbar = ({ source: { transcript }, ...props }) => {
           ></TextField>
         </Container>
       </Root>
-      <MediaInfoDialog
-        allChannels={[{ id: 0, name: 'One pretty channel' }]}
-        mediaChannel={0}
-        mediaRemixes={[
-          { id: 0, title: 'Remix title' },
-          { id: 1, title: 'Another remix' },
-        ]}
-        mediaTags={[{ id: 0, name: 'one pretty tag' }]}
-        mediaTitle={mediaTitle}
-        onClose={onInfoClose}
-        open={isInfoOpen}
-      />
+      <MediaInfoDialog onClose={onInfoClose} open={isInfoOpen} source={source} />
       <Menu
         anchorEl={langAnchorEl}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
