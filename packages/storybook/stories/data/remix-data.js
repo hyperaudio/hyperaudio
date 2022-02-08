@@ -18,6 +18,12 @@ const media = [
     // url: "https://vimeo.com/636017395/f0ea0fe391",
     url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
   },
+  // new media
+  {
+    id: "YVBNsWgjvPkGpubCchh2e5",
+    url: "https://cdn.hyper.audio/HLS/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.m3u8",
+    // url: "https://hyperaudio-a0e962a7c406.s3-eu-west-1.amazonaws.com/input/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.mp4",
+  },
 ];
 
 // prettier-ignore
@@ -22938,5 +22944,40 @@ export const remixData = {
         };
       }),
     },
+    // new source
+    {
+      id: "T-YVBNsWgjvPkGpubCchh2e5",
+      title: "MLTalks with Douglas Rushkoff",
+      channel: { id: "channelId1", name: "One pretty channel" },
+      remixes:[{id: "remixid1", title: "One pretty remix"}],
+      deck: {
+        url: "https://picsum.photos/400/300",
+        slides: [
+          { id: 0, url: "https://picsum.photos/400/300" },
+          { id: 1, url: "https://picsum.photos/400/300" },
+          { id: 2, url: "https://picsum.photos/400/300" },
+          { id: 3, url: "https://picsum.photos/400/300" },
+          { id: 4, url: "https://picsum.photos/400/300" },
+          { id: 5, url: "https://picsum.photos/400/300" },
+          { id: 6, url: "https://picsum.photos/400/300" },
+          { id: 7, url: "https://picsum.photos/400/300" },
+          { id: 8, url: "https://picsum.photos/400/300" },
+        ],
+      },
+      createdAt: "2021-10-06T21:17:55.365Z",
+      updatedAt: "2021-10-06T21:21:54.315Z",
+      duration: 648.544,
+      media: [media[3]],
+      tags: ["One pretty tag", "Another pretty tag"],
+      transcript: {
+        title: "A media transcribed",
+        translations: [
+          { id: "foo", lang: "en-us", name: "English", default: true },
+          { id: "bar", lang: "es-es", name: "Spanish", default: false },
+        ],
+      },
+      status: "transcribed",
+      blocks: require('./YVBNsWgjvPkGpubCchh2e5-blocks.json'),
+    }
   ],
 };
