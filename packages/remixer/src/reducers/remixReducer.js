@@ -13,7 +13,11 @@ const remixReducer = (state, action) => {
       if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
       return { ...state, sources, tabs, source: action.source };
     case 'sourceClose':
-      return { ...state, tabs: state.tabs.filter(source => source.id !== action.id) };
+      return {
+        ...state,
+        source: state.tabs.filter(source => source.id !== action.id)[0],
+        tabs: state.tabs.filter(source => source.id !== action.id),
+      };
     case 'removeBlock':
       return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
     case 'moveUpBlock': {
