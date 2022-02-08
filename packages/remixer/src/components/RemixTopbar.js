@@ -5,21 +5,16 @@ import ChromeReaderModeIcon from '@mui/icons-material/ChromeReaderMode';
 import ChromeReaderModeOutlinedIcon from '@mui/icons-material/ChromeReaderModeOutlined';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Container from '@mui/material/Container';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
-import IosShareIcon from '@mui/icons-material/IosShare';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import LockIcon from '@mui/icons-material/Lock';
 import MenuItem from '@mui/material/MenuItem';
 import MenuList from '@mui/material/MenuList';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
-import PublicIcon from '@mui/icons-material/Public';
 import RedoIcon from '@mui/icons-material/Redo';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
@@ -175,9 +170,6 @@ export const RemixTopbar = props => {
                             autoFocus={false}
                             label={
                               <>
-                                <ListItemIcon>
-                                  <IosShareIcon fontSize="small" color="primary" />
-                                </ListItemIcon>
                                 <ListItemText primary="Export" primaryTypographyProps={{ color: 'primary' }} />
                                 <ArrowRightIcon fontSize="small" />
                               </>
@@ -206,13 +198,6 @@ export const RemixTopbar = props => {
                             </MenuItem>
                           </RecursiveMenuItem>
                           <MenuItem onClick={() => setVisibilityDialog(true)}>
-                            <ListItemIcon>
-                              {remix.secret ? (
-                                <PublicIcon fontSize="small" color="primary" />
-                              ) : (
-                                <LockIcon fontSize="small" color="primary" />
-                              )}
-                            </ListItemIcon>
                             <ListItemText
                               primary={`Make ${remix.secret ? 'public' : 'private'}`}
                               primaryTypographyProps={{ color: 'primary' }}
@@ -220,9 +205,6 @@ export const RemixTopbar = props => {
                           </MenuItem>
                           <Divider />
                           <MenuItem onClick={() => setClearDialog(true)}>
-                            <ListItemIcon>
-                              <DeleteSweepIcon fontSize="small" color="error" />
-                            </ListItemIcon>
                             <ListItemText primary="Clear" primaryTypographyProps={{ color: 'error' }} />
                           </MenuItem>
                         </MenuList>
