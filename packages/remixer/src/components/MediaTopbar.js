@@ -88,12 +88,14 @@ export const MediaTopbar = ({ source, ...props }) => {
   const defaultTranslation = _.find(transcript.translations, o => o.default === true);
 
   const [isInfoOpen, setIsInfoOpen] = React.useState(false);
+  const [exportAnchorEl, setExportAnchorEl] = React.useState(null);
   const [langAnchorEl, setLangAnchorEl] = React.useState(null);
   const [translation, setTranslation] = useState(defaultTranslation);
 
-  const open = Boolean(langAnchorEl);
-  const onOpenTranslations = e => setLangAnchorEl(e.currentTarget);
+  const onCloseExport = () => setExportAnchorEl(null);
   const onCloseTranslations = () => setLangAnchorEl(null);
+  const onOpenExport = e => setExportAnchorEl(e.currentTarget);
+  const onOpenTranslations = e => setLangAnchorEl(e.currentTarget);
 
   const onSelectTranslation = id => e => {
     console.log('onSelectTranslation:', e, id);
@@ -107,10 +109,14 @@ export const MediaTopbar = ({ source, ...props }) => {
   const onInfoClose = () => setIsInfoOpen(false);
   const onInfoOpen = () => setIsInfoOpen(true);
   const onRemix = () => console.log('onRemix');
+  const onExport = payload => () => {
+    console.log('onExport: ', { payload });
+    onCloseExport();
+  };
 
-  console.group('MediaTopbar');
-  console.log({ props });
-  console.groupEnd('');
+  // console.group('MediaTopbar');
+  // console.log({ props });
+  // console.groupEnd('');
 
   return (
     <>
@@ -140,7 +146,7 @@ export const MediaTopbar = ({ source, ...props }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Export…">
-              <IconButton size="small">
+              <IconButton size="small" id="export-button" onClick={onOpenExport}>
                 <IosShareIcon />
               </IconButton>
             </Tooltip>
@@ -184,7 +190,7 @@ export const MediaTopbar = ({ source, ...props }) => {
         id="account-menu"
         onClick={onCloseTranslations}
         onClose={onCloseTranslations}
-        open={open}
+        open={Boolean(langAnchorEl)}
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
         MenuListProps={{
           dense: true,
@@ -207,6 +213,32 @@ export const MediaTopbar = ({ source, ...props }) => {
         <Divider />
         <MenuItem onClick={onAddTranslation}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+      </Menu>
+      <Menu
+        anchorEl={exportAnchorEl}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        id="account-menu"
+        onClick={onCloseExport}
+        onClose={onCloseExport}
+        open={Boolean(exportAnchorEl)}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        MenuListProps={{
+          dense: true,
+          'aria-labelledby': 'export-button',
+        }}
+      >
+        <MenuItem onClick={onExport('text')}>
+          <ListItemText primary="Text" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+        <MenuItem onClick={onExport('json')}>
+          <ListItemText primary="JSON" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+        <MenuItem onClick={onExport('wphtml')}>
+          <ListItemText primary="WP Plugin-compatible HTML" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+        <MenuItem onClick={onExport('itranscript')}>
+          <ListItemText primary="Interactive Transcript" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
       </Menu>
     </>
