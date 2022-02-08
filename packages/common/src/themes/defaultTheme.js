@@ -46,11 +46,11 @@ export const defaultTheme = createTheme({
         // borderRadius: 100, TODO: find a way to use rounded buttons
       },
     },
-    MuiBreadcrumbs: {
-      defaultProps: {
-        separator: '›',
-      },
-    },
+    // MuiBreadcrumbs: {
+    //   defaultProps: {
+    //     separator: '/',
+    //   },
+    // },
     MuiCard: {
       defaultProps: {
         square: false,
@@ -58,10 +58,10 @@ export const defaultTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: mui.shape.borderRadius,
-          padding: mui.spacing(0.15),
-          [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
-            borderRadius: mui.shape.borderRadius,
-          },
+          //     padding: mui.spacing(0.15),
+          //     [`&.MuiPaper-rounded, & .MuiCardMedia-root, & img`]: {
+          //       borderRadius: mui.shape.borderRadius,
+          //     },
         },
       },
     },

@@ -55,11 +55,11 @@ export const InsertsBar = props => {
   return (
     <Root>
       <Container maxWidth="md">
-        <Paper elevation={2} sx={{ p: 2 }}>
+        <Paper elevation={2} sx={{ p: { xs: 1, xl: 2 } }}>
           <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Grid container columnSpacing={2}>
+                <Grid container columnSpacing={{ xs: 1, xl: 2 }}>
                   <Grid item xs={4}>
                     <DraggableItem draggableId="draggable:$slides" index={0}>
                       {(provided, snapshot) => (
