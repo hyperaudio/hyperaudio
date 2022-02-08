@@ -19,11 +19,13 @@ const classes = {
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
-  padding: theme.spacing(1.35, 1),
+  background: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1],
+  padding: theme.spacing(1),
   [`& .${classes.title}`]: {
+    display: 'flex',
     marginBottom: theme.spacing(1),
+    alignItems: 'center',
   },
   [`& .${classes.canvas}`]: {
     background: theme.palette.text.primary,
@@ -84,8 +86,8 @@ export const InsertTitle = ({
   return (
     <Root fullSize={fullSize}>
       <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
-        <TextFieldsIcon fontSize="small" sx={{ marginRight: '6px' }} />
-        <span id="insert-title">Title</span>
+        <TextFieldsIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
+        Title
       </Typography>
       <div className={classes.canvas}>
         <TextField className={classes.field} onBlur={onTextChange} onChange={onTextChange} size="small" value={text} />

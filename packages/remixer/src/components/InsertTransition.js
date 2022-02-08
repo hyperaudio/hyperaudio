@@ -13,11 +13,13 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1.35, 1),
+  background: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1],
+  padding: theme.spacing(1),
   [`& .${classes.title}`]: {
+    display: 'flex',
     marginBottom: theme.spacing(1),
+    alignItems: 'center',
   },
 
   [`& .${classes.controls}`]: {
@@ -48,8 +50,8 @@ export const InsertTransition = ({ editable = false, block: { key, transition: d
 
   return (
     <Root>
-      <Typography variant="subtitle2" component="h2" color="primary" className={classes.title}>
-        <MovieFilterIcon fontSize="small" sx={{ marginRight: '6px' }} />
+      <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
+        <MovieFilterIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
         <span id="insert-slide-title">Transition</span>
       </Typography>
       <div className={classes.controls}>
