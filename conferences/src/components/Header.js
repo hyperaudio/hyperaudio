@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Auth, DataStore, syncExpression } from 'aws-amplify';
 import { deserializeModel } from '@aws-amplify/datastore/ssr';
-import { NoSsr } from '@mui/base';
+import NoSsr from '@mui/material/NoSsr';
 import { useRouter } from 'next/router';
 
 import { Topbar } from '@hyperaudio/app';

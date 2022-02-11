@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useEffect, useReducer } from 'react';
 import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
-import { NoSsr } from '@mui/base';
+import NoSsr from '@mui/material/NoSsr';
 
 import { AccountView } from '@hyperaudio/app';
 
