@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Remixer } from "../../remixer/src/index.js";
+import Remixer from "@hyperaudio/remixer";
+
 import { remixData } from "./data";
 
 export default {
