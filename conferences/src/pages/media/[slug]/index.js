@@ -10,6 +10,7 @@ import { remixData } from './data';
 const PREFIX = 'MediaPage';
 const classes = {
   root: `${PREFIX}-root`,
+  push: `${PREFIX}-push`,
 };
 
 const Root = styled('div', {
@@ -20,6 +21,9 @@ const Root = styled('div', {
   position: 'absolute',
   right: 0,
   top: 0,
+  [`& .${classes.push}`]: {
+    ...theme.mixins.toolbar,
+  },
 }));
 
 const MediaPage = () => {
@@ -32,6 +36,7 @@ const MediaPage = () => {
 
   return (
     <Root className={classes.root}>
+      <div className={classes.push} />
       <Remixer
         editable={false}
         isSingleMedia={true}
