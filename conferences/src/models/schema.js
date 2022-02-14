@@ -151,6 +151,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "playbackId": {
+                    "name": "playbackId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "url": {
                     "name": "url",
                     "isArray": false,
@@ -186,14 +193,6 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "tags": {
-                    "name": "tags",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
-                },
                 "transcripts": {
                     "name": "transcripts",
                     "isArray": true,
@@ -208,12 +207,13 @@ export const schema = {
                         "associatedWith": "media"
                     }
                 },
-                "metadata": {
-                    "name": "metadata",
-                    "isArray": false,
-                    "type": "AWSJSON",
+                "tags": {
+                    "name": "tags",
+                    "isArray": true,
+                    "type": "String",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "channel": {
                     "name": "channel",
@@ -242,6 +242,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "media"
                     }
+                },
+                "metadata": {
+                    "name": "metadata",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -747,5 +754,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "a832b68d12f7dabc653921654856079e"
+    "version": "14ad516e379f2daad4fd96e86740a80a"
 };

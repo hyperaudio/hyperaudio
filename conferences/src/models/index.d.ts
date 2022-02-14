@@ -45,16 +45,17 @@ export declare class Transcript {
 
 export declare class Media {
   readonly id: string;
+  readonly playbackId?: string;
   readonly url: string;
   readonly poster?: string;
   readonly title: string;
   readonly description?: string;
   readonly language: string;
-  readonly tags?: (string | null)[];
   readonly transcripts?: (Transcript | null)[];
-  readonly metadata?: string;
+  readonly tags?: (string | null)[];
   readonly channel?: Channel;
   readonly remixes?: (RemixMedia | null)[];
+  readonly metadata?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   readonly mediaChannelId?: string;

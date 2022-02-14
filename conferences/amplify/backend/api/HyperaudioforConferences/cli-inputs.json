@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "HyperaudioforConferences",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-f89ab305-6d62-4bd9-afb0-668a59e17ac0/amplify/backend/api/HyperaudioforConferences/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-ff29531e-b2a9-427b-a68e-bc9102d67b76/amplify/backend/api/HyperaudioforConferences/schema.graphql",
     "defaultAuthType": {
       "mode": "AMAZON_COGNITO_USER_POOLS",
       "cognitoUserPoolId": "authHyperaudioforConferences"
