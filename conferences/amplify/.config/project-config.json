@@ -1,5 +1,8 @@
 {
-  "projectName": "Hyperaudio",
+  "providers": [
+    "awscloudformation"
+  ],
+  "projectName": "HyperaudioforConfere",
   "version": "3.1",
   "frontend": "javascript",
   "javascript": {
@@ -10,8 +13,5 @@
       "BuildCommand": "npm run-script build",
       "StartCommand": "npm run-script start"
     }
-  },
-  "providers": [
-    "awscloudformation"
-  ]
+  }
 }

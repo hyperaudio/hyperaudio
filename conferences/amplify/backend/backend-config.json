@@ -1,6 +1,6 @@
 {
   "auth": {
-    "Hyperaudio": {
+    "HyperaudioforConferences": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -28,7 +28,7 @@
     }
   },
   "api": {
-    "Hyperaudio": {
+    "HyperaudioforConferences": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -36,31 +36,23 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authHyperaudio"
+              "userPoolId": "authHyperaudioforConferences"
             }
           },
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "API_KEY",
-              "apiKeyConfig": {
-                "apiKeyExpirationDays": 365,
-                "apiKeyExpirationDate": "2023-01-17T14:19:55.912Z",
-                "description": "PublicAccess"
-              }
+              "authenticationType": "AWS_IAM"
             },
             {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 30,
+                "description": "api key description"
+              }
             }
           ]
         }
       }
-    }
-  },
-  "storage": {
-    "s3hyperaudiostoraged2q2ymru5i14e8": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
     }
   }
 }

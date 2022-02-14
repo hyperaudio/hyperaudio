@@ -1,6 +1,6 @@
 export type AmplifyDependentResourcesAttributes = {
     "auth": {
-        "Hyperaudio": {
+        "HyperaudioforConferences": {
             "IdentityPoolId": "string",
             "IdentityPoolName": "string",
             "UserPoolId": "string",
@@ -11,16 +11,10 @@ export type AmplifyDependentResourcesAttributes = {
         }
     },
     "api": {
-        "Hyperaudio": {
+        "HyperaudioforConferences": {
             "GraphQLAPIKeyOutput": "string",
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
-        }
-    },
-    "storage": {
-        "s3hyperaudiostoraged2q2ymru5i14e8": {
-            "BucketName": "string",
-            "Region": "string"
         }
     }
 }
