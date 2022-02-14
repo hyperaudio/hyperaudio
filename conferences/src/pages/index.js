@@ -21,36 +21,36 @@ const HomePage = () => {
   );
 };
 
-export const getServerSideProps = async context => {
-  const { Auth, DataStore } = withSSRContext(context);
+// export const getServerSideProps = async context => {
+//   const { Auth, DataStore } = withSSRContext(context);
 
-  try {
-    const {
-      attributes: { sub: identityId },
-      signInUserSession: {
-        accessToken: {
-          payload: { 'cognito:groups': groups },
-        },
-      },
-    } = await Auth.currentAuthenticatedUser();
+//   try {
+//     const {
+//       attributes: { sub: identityId },
+//       signInUserSession: {
+//         accessToken: {
+//           payload: { 'cognito:groups': groups },
+//         },
+//       },
+//     } = await Auth.currentAuthenticatedUser();
 
-    console.log(identityId, groups);
+//     console.log(identityId, groups);
 
-    DataStore.configure({
-      syncExpressions: [
-        syncExpression(User, () => {
-          return user => user.identityId('eq', identityId);
-        }),
-      ],
-    });
+//     DataStore.configure({
+//       syncExpressions: [
+//         syncExpression(User, () => {
+//           return user => user.identityId('eq', identityId);
+//         }),
+//       ],
+//     });
 
-    const user = serializeModel(await DataStore.query(User, user => user.identityId('eq', identityId))).pop() ?? null;
+//     const user = serializeModel(await DataStore.query(User, user => user.identityId('eq', identityId))).pop() ?? null;
 
-    return { props: { identityId, groups, user } };
-  } catch (error) {
-    console.error(error);
-    return { props: {} };
-  }
-};
+//     return { props: { identityId, groups, user } };
+//   } catch (error) {
+//     console.error(error);
+//     return { props: {} };
+//   }
+// };
 
 export default HomePage;
