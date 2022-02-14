@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import Amplify, { Hub, DataStore, Analytics } from 'aws-amplify';
-
 import { CacheProvider } from '@emotion/react';
+
 import { ThemeProvider, CssBaseline } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+import { defaultTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
-import lightTheme from './styles/theme/lightTheme';
-
 import Header from './components/Header';
 
 import awsexports from './aws-exports';
@@ -25,6 +25,17 @@ Hub.listen('auth', async data => {
   }
 });
 
+const PREFIX = 'App';
+const classes = {
+  root: `${PREFIX}-root`,
+};
+
+const Root = styled('div', {
+  // shouldForwardProp: (prop: any) => prop !== 'isActive',
+})(({ theme }) => ({
+  minHeight: '100%',
+}));
+
 const clientSideEmotionCache = createEmotionCache();
 
 const App = props => {
@@ -32,10 +43,12 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
-        <Header {...pageProps} />
-        <Component {...pageProps} />
+      <ThemeProvider theme={defaultTheme}>
+        <Root className={classes.root}>
+          <CssBaseline />
+          <Header {...pageProps} />
+          <Component {...pageProps} />
+        </Root>
       </ThemeProvider>
     </CacheProvider>
   );

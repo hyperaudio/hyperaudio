@@ -7,8 +7,8 @@
   "module": "dist/index.modern.js",
   "source": "src/index.js",
   "scripts": {
-    "build": "microbundle-crl --no-compress --format modern,cjs --external=react,react-dom,react-is",
-    "start": "microbundle-crl watch --no-compress --format modern,cjs --external=react,react-dom,react-is",
+    "build": "microbundle-crl --no-compress --format modern,cjs --external=react,react-dom,react-is --jsxFragment React.Fragment --jsx React.createElement",
+    "start": "microbundle-crl watch --no-compress --format modern,cjs --external=react,react-dom,react-is --jsxFragment React.Fragment --jsx React.createElement",
     "prepare": "run-s build",
     "test": "run-s test:unit test:lint test:build",
     "test:build": "run-s build",
@@ -17,6 +17,10 @@
     "test:watch": "react-scripts test --env=jsdom"
   },
   "peerDependencies": {
+    "@emotion/react": "11.7.1",
+    "@emotion/styled": "11.6.0",
+    "@mui/icons-material": "5.4.1",
+    "@mui/material": "5.4.1",
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2"
   },
@@ -42,11 +46,6 @@
     "dist"
   ],
   "dependencies": {
-    "@emotion/react": "11.7.1",
-    "@emotion/styled": "11.6.0",
-    "@mui/icons-material": "5.4.1",
-    "@mui/lab": "5.0.0-alpha.68",
-    "@mui/material": "5.4.1",
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
     "lodash": "4.17.21",

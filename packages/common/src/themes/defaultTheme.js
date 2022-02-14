@@ -5,6 +5,7 @@ const mui = createTheme();
 
 const palette = {
   ...mui.palette,
+  mode: 'light',
   background: {
     ...mui.palette.background,
     default: '#F5F5F7',
