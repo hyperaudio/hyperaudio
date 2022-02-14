@@ -156,14 +156,14 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
     <Root>
       <Container className={classes.core} maxWidth="sm">
         <div className={classes.stage}>
-          {media?.map(({ id, url }) => (
+          {media?.map(({ id, url, poster }) => (
             <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
               <Player
                 key={id}
                 active={active === id}
                 time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
                 playing={referencePlaying && active === id}
-                media={{ id, url }}
+                media={{ id, url, poster }}
                 {...{ players, setActive, buffering, setBuffering }}
               />
             </div>
@@ -290,9 +290,28 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
   );
 };
 
-const Player = ({ media: { id, url }, players, active, setActive, playing, setPlaying, time, setBuffering }) => {
+const Player = ({
+  media: { id, url, poster },
+  players,
+  active,
+  setActive,
+  playing,
+  setPlaying,
+  time,
+  setBuffering,
+}) => {
   const ref = useRef();
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
+  const config = useMemo(
+    () => ({
+      file: {
+        attributes: {
+          poster,
+        },
+      },
+    }),
+    [poster],
+  );
 
   useEffect(() => {
     if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
@@ -355,7 +374,7 @@ const Player = ({ media: { id, url }, players, active, setActive, playing, setPl
         top: 0,
       }}
       muted={!primed}
-      {...{ ref, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
+      {...{ ref, config, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
     />
   );
 };
