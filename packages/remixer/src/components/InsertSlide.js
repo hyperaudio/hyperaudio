@@ -19,18 +19,20 @@ import { styled } from '@mui/material/styles';
 
 const PREFIX = 'InsertSlide';
 const classes = {
-  head: `${PREFIX}-head`,
-  title: `${PREFIX}-title`,
+  root: `${PREFIX}-root`,
   breadcrumbs: `${PREFIX}-breadcrumbs`,
   canvas: `${PREFIX}-canvas`,
   currentSlide: `${PREFIX}-currentSlide`,
+  head: `${PREFIX}-head`,
+  title: `${PREFIX}-title`,
 };
 
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'editable',
 })(({ theme, editable }) => ({
-  background: theme.palette.background.paper,
+  // background: theme.palette.background.paper,
   borderRadius: theme.shape.borderRadius,
+  boxShadow: theme.shadows[3],
   padding: theme.spacing(1),
   [`& .${classes.head}`]: {
     marginBottom: theme.spacing(1),
@@ -185,10 +187,10 @@ export const InsertSlide = props => {
   const stateDeck = _.find(decks, o => o.id === stateDeckId);
 
   return (
-    <Root editable={editable}>
+    <Root className={classes.root} editable={editable}>
       {editable && (
         <div className={classes.head}>
-          <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
+          <Typography className={classes.title} color="primary" component="h2" variant="subtitle2">
             <SlideshowIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
             Slide
           </Typography>

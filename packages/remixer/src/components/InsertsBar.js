@@ -55,7 +55,7 @@ export const InsertsBar = props => {
   return (
     <Root>
       <Container maxWidth="md">
-        <Paper elevation={2} sx={{ p: { xs: 1, xl: 2 } }}>
+        <Paper elevation={6} sx={{ p: { xs: 1, xl: 2 } }}>
           <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>

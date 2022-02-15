@@ -3,33 +3,8 @@ import { deepOrange } from '@mui/material/colors';
 
 const mui = createTheme();
 
-const palette = {
-  ...mui.palette,
-  mode: 'light',
-  background: {
-    ...mui.palette.background,
-    default: '#F5F5F7',
-    paper: '#fff',
-  },
-  divider: 'rgba(0,0,0,0.088)',
-  primary: {
-    ...mui.palette.primary,
-    dark: '#02007F',
-    light: '#CAABF4',
-    main: '#6000DE',
-  },
-  secondary: {
-    ...mui.palette.secondary,
-    contrastText: '#fff',
-    dark: deepOrange[900],
-    light: deepOrange[50],
-    main: deepOrange[500],
-  },
-  text: {
-    ...mui.palette.text,
-    primary: '#000',
-  },
-};
+import shadows from './shadows';
+import palette from './palette';
 
 export const defaultTheme = createTheme({
   components: {
@@ -150,12 +125,7 @@ export const defaultTheme = createTheme({
     },
   },
   palette: palette,
-  shadows: [
-    'none',
-    '0px 1px 2px rgba(0,0,0,0.1), 0px 1px 3px rgba(0,0,0,0.08), 0px 1px 6px rgba(0,0,0,0.04)',
-    '0px 1px 3px rgba(0,0,0,0.1), 0px 1px 4px rgba(0,0,0,0.08), 0px 1px 12px rgba(0,0,0,0.04)',
-    ...mui.shadows,
-  ],
+  shadows: shadows,
   typography: {
     fontFamily: "'Inter', 'Helvetica', 'Arial', sans-serif",
     h1: {
