@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
-import { lighten } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
@@ -112,7 +111,7 @@ const Section = styled('p')(({ theme }) => ({
     // backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    backgroundColor: lighten(0.3, theme.palette.secondary.main),
+    backgroundColor: theme.palette.secondary.light,
     padding: theme.spacing(0.3, 0),
   },
 }));
