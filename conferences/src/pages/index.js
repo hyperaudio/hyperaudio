@@ -15,7 +15,9 @@ import Link from '@mui/material/Link';
 import NoSsr from '@mui/material/NoSsr';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
+
+import { MediaTable } from '@hyperaudio/common';
 
 import { Main } from '../components';
 import { User } from '../models';
@@ -40,17 +42,6 @@ const HomePage = props => {
 
   const media = [
     {
-      mediaId: 0,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical I',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: null,
-      status: 'uploading',
-      isPublic: true,
-      channelId: null,
-    },
-    {
       mediaId: 1,
       name: 'Podcasting has no future.',
       description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
@@ -60,39 +51,6 @@ const HomePage = props => {
       status: 'uploaded',
       isPublic: false,
       channelId: null,
-    },
-    {
-      mediaId: 2,
-      name: 'I wish to see yet another media title.',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: '2011-02-02',
-      status: 'transcribing',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
-      mediaId: 3,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical IV',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: '2011-02-18',
-      status: 'transcribed',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 4,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical V',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-02-01',
-      modified: '2011-02-17',
-      status: 'edited',
-      isPublic: true,
-      channelId: 0,
     },
     {
       mediaId: 5,
@@ -106,160 +64,6 @@ const HomePage = props => {
       channelId: 1,
     },
     {
-      mediaId: 6,
-      name: 'How about a short title?',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-10-29',
-      modified: '2011-01-22',
-      status: 'ready',
-      isPublic: true,
-      channelId: 0,
-    },
-    {
-      mediaId: 7,
-      name: 'We’d love to see some other title so all doesn’t just blend',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-09-26',
-      modified: '2011-01-21',
-      status: 'ready',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 8,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-07-11',
-      modified: '2011-01-10',
-      status: 'ready',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
-      mediaId: 9,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-06-13',
-      modified: '2001-07-01',
-      status: 'ready',
-      isPublic: false,
-      channelId: 0,
-    },
-    {
-      mediaId: 10,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-04-23',
-      modified: '2011-01-05',
-      status: 'error',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
-      mediaId: 11,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical I',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: null,
-      status: 'uploading',
-      isPublic: true,
-      channelId: 0,
-    },
-    {
-      mediaId: 12,
-      name: 'Podcasting has no future.',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: null,
-      status: 'uploaded',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 13,
-      name: 'I wish to see yet another media title.',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: '2011-02-02',
-      status: 'transcribing',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
-      mediaId: 14,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical IV',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: '2011-02-18',
-      status: 'transcribed',
-      isPublic: false,
-      channelId: 0,
-    },
-    {
-      mediaId: 15,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical V',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-02-01',
-      modified: '2011-02-17',
-      status: 'edited',
-      isPublic: true,
-      channelId: 0,
-    },
-    {
-      mediaId: 16,
-      name: 'What’s next for online conferences?',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-11-12',
-      modified: '2011-02-27',
-      status: 'corrected',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 17,
-      name: 'How about a short title?',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-10-29',
-      modified: '2011-01-22',
-      status: 'ready',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
-      mediaId: 18,
-      name: 'We’d love to see some other title so all doesn’t just blend',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-09-26',
-      modified: '2011-01-21',
-      status: 'ready',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 19,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-07-11',
-      modified: '2011-01-10',
-      status: 'ready',
-      isPublic: true,
-      channelId: 1,
-    },
-    {
       mediaId: 20,
       name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
       description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
@@ -269,17 +73,6 @@ const HomePage = props => {
       status: 'ready',
       isPublic: false,
       channelId: 0,
-    },
-    {
-      mediaId: 21,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-04-23',
-      modified: '2011-01-05',
-      status: 'error',
-      isPublic: true,
-      channelId: null,
     },
   ];
 
@@ -304,6 +97,9 @@ const HomePage = props => {
   });
   // const channels = [];
 
+  const user = true;
+  // const user = false;
+
   return (
     <Root className={classes.root}>
       <Head>
@@ -312,50 +108,64 @@ const HomePage = props => {
       </Head>
 
       <Main>
-        {groups.map(group => {
-          return [
-            <Container maxWidth={false} key={group.channelId}>
-              <Grid container key={`g-${group.channelId}`} spacing={{ xs: 4, md: 8 }}>
-                <Grid item xs={12} md={4} xl={4}>
-                  <Typography variant="h5" component="h1" gutterBottom>
-                    {group.name}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {group.description}
-                  </Typography>
-                </Grid>
-                <Grid item xs={12} md={8} xl={8}>
-                  <Grid container spacing={4}>
-                    {group.media.map(media => {
-                      return (
-                        <Grid item key={media.mediaId} xs={6} sm={4}>
-                          <Card sx={{ mb: 1 }}>
-                            <CardActionArea onClick={() => console.log('onMediaOpen', media.mediaId)}>
-                              <CardMedia component="img" height="100%" image={media.thumb} />
-                            </CardActionArea>
-                          </Card>
-                          <Tooltip title={media.name}>
-                            <Link
-                              color="primary"
-                              className={classes.thumbTitle}
-                              sx={{ cursor: 'pointer', display: 'block' }}
-                              underline="hover"
-                              variant="body2"
-                              onClick={() => console.log('onMediaOpen', media.mediaId)}
-                            >
-                              <TextTruncate line={2} element="span" truncateText="…" text={media.name} />
-                            </Link>
-                          </Tooltip>
-                        </Grid>
-                      );
-                    })}
+        {/* If logged in */}
+        {user && (
+          <MediaTable
+            media={media}
+            onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
+            onEditMedia={payload => console.log('onEditMedia', { payload })}
+            onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
+          />
+        )}
+      </Main>
+
+      <Main>
+        {/* If logged out */}
+        {user &&
+          groups.map(group => {
+            return [
+              <Container maxWidth={false} key={group.channelId}>
+                <Grid container key={`g-${group.channelId}`} spacing={{ xs: 4, md: 8 }}>
+                  <Grid item xs={12} md={4} xl={4}>
+                    <Typography variant="h5" component="h1" gutterBottom>
+                      {group.name}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                      {group.description}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={8} xl={8}>
+                    <Grid container spacing={4}>
+                      {group.media.map(media => {
+                        return (
+                          <Grid item key={media.mediaId} xs={6} sm={4}>
+                            <Card sx={{ mb: 1 }}>
+                              <CardActionArea onClick={() => console.log('onMediaOpen', media.mediaId)}>
+                                <CardMedia component="img" height="100%" image={media.thumb} />
+                              </CardActionArea>
+                            </Card>
+                            <Tooltip title={media.name}>
+                              <Link
+                                color="primary"
+                                className={classes.thumbTitle}
+                                sx={{ cursor: 'pointer', display: 'block' }}
+                                underline="hover"
+                                variant="body2"
+                                onClick={() => console.log('onMediaOpen', media.mediaId)}
+                              >
+                                <TextTruncate line={2} element="span" truncateText="…" text={media.name} />
+                              </Link>
+                            </Tooltip>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
                   </Grid>
                 </Grid>
-              </Grid>
-            </Container>,
-            <Divider key={`d-${group.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
-          ];
-        })}
+              </Container>,
+              <Divider key={`d-${group.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
+            ];
+          })}
       </Main>
     </Root>
   );
