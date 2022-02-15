@@ -43,8 +43,9 @@ export const defaultTheme = createTheme({
         disableElevation: true,
       },
       styleOverrides: {
-        root: {},
-        // borderRadius: 100, TODO: find a way to use rounded buttons
+        root: {
+          borderRadius: mui.spacing(2.5),
+        },
       },
     },
     // MuiBreadcrumbs: {
