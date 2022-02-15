@@ -9,7 +9,7 @@ export function descendingComparator(a, b, orderBy) {
 }
 
 export function getComparator(order, orderBy) {
-  return order === "desc"
+  return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
@@ -25,5 +25,5 @@ export function stableSort(array, comparator) {
     }
     return a[1] - b[1];
   });
-  return stabilizedThis.map((el) => el[0]);
+  return stabilizedThis.map(el => el[0]);
 }

@@ -1,11 +1,24 @@
 import React, { useState, useCallback, useEffect, useReducer } from 'react';
 import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import CheckIcon from '@mui/icons-material/Check';
 import NoSsr from '@mui/material/NoSsr';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
-import { AccountView } from '@hyperaudio/app';
-
+import { Main } from '../../components';
 import { User } from '../../models';
+
+const PREFIX = `AccountView`;
+const classes = {
+  root: `${PREFIX}-Root`,
+};
+
+const Root = styled('div', {})(({ theme }) => ({}));
 
 const getUser = async (dispatch, identityId) => {
   DataStore.configure({
@@ -22,6 +35,8 @@ const getUser = async (dispatch, identityId) => {
 
 export const userReducer = (state, action) => {
   const { type, payload } = action;
+
+  console.log('HERE WE ARE', { type, payload });
 
   switch (type) {
     case 'loadUser':
@@ -49,26 +64,78 @@ const AccountPage = initialData => {
     user: initialData.user ? deserializeModel(User, initialData.user) : null,
   });
 
-  useEffect(() => identityId && getUser(dispatch, identityId), [identityId]);
+  const handleNameChange = useCallback(
+    ({ target: { value } }) => dispatch({ type: 'updateName', payload: value }),
+    [dispatch],
+  );
+  const handleBioChange = useCallback(
+    ({ target: { value } }) => dispatch({ type: 'updateBio', payload: value }),
+    [dispatch],
+  );
+  const handleSave = useCallback(() => dispatch({ type: 'save' }), [dispatch]);
 
+  useEffect(() => identityId && getUser(dispatch, identityId), [identityId]);
   useEffect(() => {
     const subscription = DataStore.observe(User).subscribe(() => identityId && getUser(dispatch, identityId));
     return () => subscription.unsubscribe();
   }, [identityId]);
 
+  console.group('AccountPage');
+  console.log({ user, dispatch });
+  console.groupEnd();
+
   return (
-    <div>
-      <NoSsr>
-        <AccountView
-          account={{
-            name: name ?? user?.name ?? '',
-            bio: bio ?? user?.bio ?? '',
-          }}
-          dispatch={dispatch}
-        />
-      </NoSsr>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
-    </div>
+    <>
+      <Main>
+        <NoSsr>
+          <Root className={classes.root}>
+            <Typography variant="h5" component="h1" gutterBottom>
+              Account details
+            </Typography>
+            <form sx={{ mt: 3 }} onSubmit={e => e.preventDefault()}>
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Display name"
+                margin="normal"
+                name="displayName"
+                placeholder="Display name"
+                required
+                value={name ?? user?.name ?? ''}
+                variant="outlined"
+                onChange={handleNameChange}
+              />
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Bio"
+                margin="normal"
+                maxRows={5}
+                minRows={1}
+                multiline
+                name="bio"
+                placeholder="Short bio"
+                value={bio ?? user?.bio ?? ''}
+                variant="outlined"
+                onChange={handleBioChange}
+              />
+              <Box sx={{ mt: 3 }}>
+                <Button
+                  color="primary"
+                  onClick={handleSave}
+                  size="large"
+                  startIcon={<CheckIcon fontSize="small" />}
+                  variant="contained"
+                >
+                  Save
+                </Button>
+              </Box>
+            </form>
+          </Root>
+        </NoSsr>
+        <pre>{JSON.stringify(user, null, 2)}</pre>
+      </Main>
+    </>
   );
 };
 
