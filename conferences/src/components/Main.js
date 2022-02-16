@@ -1,7 +1,7 @@
-import * as React from "react";
+import React from 'react';
 
-import Container from "@mui/material/Container";
-import { styled } from "@mui/material/styles";
+import Container from '@mui/material/Container';
+import { styled } from '@mui/material/styles';
 
 const PREFIX = `Main`;
 const classes = {
@@ -9,8 +9,8 @@ const classes = {
 };
 
 const Root = styled(
-  "main",
-  {}
+  'main',
+  {},
 )(({ theme }) => ({
   padding: theme.spacing(8, 0),
 }));

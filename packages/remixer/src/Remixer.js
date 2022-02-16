@@ -9,7 +9,6 @@ import { defaultTheme } from '@hyperaudio/common';
 import Library from './Library';
 import Remix from './Remix';
 import Source from './Source';
-import GlobalStyles from './GlobalStyles';
 
 import remixReducer from './reducers/remixReducer';
 
@@ -179,7 +178,6 @@ const Remixer = props => {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <GlobalStyles />
       <Root showSource={showSource} isSingleMedia={isSingleMedia}>
         <div
           className="Layout"

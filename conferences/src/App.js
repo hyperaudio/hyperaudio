@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import { defaultTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
-import Header from './components/Header';
+import Topbar from './components/Topbar';
 
 import awsexports from './aws-exports';
 import awsconfig from './aws-config';
@@ -46,7 +46,7 @@ const App = props => {
       <ThemeProvider theme={defaultTheme}>
         <Root className={classes.root}>
           <CssBaseline />
-          <Header {...pageProps} />
+          <Topbar {...pageProps} />
           <Component {...pageProps} />
         </Root>
       </ThemeProvider>

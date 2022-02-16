@@ -26,9 +26,7 @@ import Tooltip from '@mui/material/Tooltip';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
-import { ClearDialog } from './ClearDialog';
-import { ShareDialog } from './ShareDialog';
-import { VisibilityDialog } from './VisibilityDialog';
+import { ClearDialog, ShareDialog, VisibilityDialog } from '../dialogs';
 import { RecursiveMenuItem, ShareIcon } from '@hyperaudio/common';
 
 const PREFIX = 'RemixTopbar';
