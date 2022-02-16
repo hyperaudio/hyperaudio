@@ -76,10 +76,7 @@ const MediaPage = () => {
           tags: media.tags ?? [],
           transcript: {
             title: transcript.title,
-            translations: [
-              { id: 'foo', lang: 'en-us', name: 'English', default: true },
-              { id: 'bar', lang: 'es-es', name: 'Spanish', default: false },
-            ],
+            translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
           },
           remixes: [],
           blocks: await (await fetch(transcript.url)).json(),

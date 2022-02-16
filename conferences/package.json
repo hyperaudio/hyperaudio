@@ -5,9 +5,10 @@
   "license": "AGPL-3.0-only",
   "scripts": {
     "dev": "PORT=7777 next dev",
-    "build": "next build",
+    "build": "next build && next export",
     "start": "PORT=7777 next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "____surge": "yarn build && mkdir -p ./build-surge && cp -r ./out/* ./build-surge && cp ./out/index.html ./build-surge/200.html && surge build-surge test2-hyperaudio.surge.sh"
   },
   "dependencies": {
     "@aws-amplify/ui-react": "2.3.0",

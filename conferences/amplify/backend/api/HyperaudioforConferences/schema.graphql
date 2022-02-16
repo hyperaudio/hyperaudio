@@ -50,4 +50,4 @@ type Remix @model @auth(rules: [{allow: private, operations: [read]}, {allow: ow
   metadata: AWSJSON
   media: [Media] @manyToMany(relationName: "RemixMedia")
 }
- 
+  
