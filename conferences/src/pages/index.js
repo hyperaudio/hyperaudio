@@ -114,20 +114,20 @@ const HomePage = props => {
                         return (
                           <Grid item key={media.mediaId} xs={6} sm={4}>
                             <Card sx={{ mb: 1 }}>
-                              <CardActionArea onClick={() => console.log('onMediaOpen', media.mediaId)}>
+                              <CardActionArea onClick={() => console.log('onMediaOpen', media.id)}>
                                 <CardMedia component="img" height="100%" image={media.poster} />
                               </CardActionArea>
                             </Card>
-                            <Tooltip title={media.name}>
+                            <Tooltip title={media.title}>
                               <Link
                                 color="primary"
                                 className={classes.thumbTitle}
                                 sx={{ cursor: 'pointer', display: 'block' }}
                                 underline="hover"
                                 variant="body2"
-                                onClick={() => console.log('onMediaOpen', media.mediaId)}
+                                onClick={() => console.log('onMediaOpen', media.id)}
                               >
-                                <TextTruncate line={2} element="span" truncateText="…" text={media.name} />
+                                <TextTruncate line={2} element="span" truncateText="…" text={media.title} />
                               </Link>
                             </Tooltip>
                           </Grid>
