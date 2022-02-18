@@ -120,6 +120,10 @@ function Status(props) {
 export function MediaTable(props) {
   const { channels, organization, account, media, onDeleteMedia, onEditMedia, onTranslateMedia } = props;
 
+  const flatMedia = media.map(o => {
+    return { ...o, channelId: o.channel?.id };
+  });
+
   const [focused, setFocused] = useState();
   const [itemMoreMenuAnchor, setItemMoreMenuAnchor] = useState(null);
   const [order, setOrder] = useState('asc');
@@ -130,11 +134,11 @@ export function MediaTable(props) {
 
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
 
-  const handleSelectClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleSelectClick = id => () => {
+    const selectedIndex = selected.indexOf(id);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -147,7 +151,7 @@ export function MediaTable(props) {
 
   const handleSelectAllClick = event => {
     if (event.target.checked) {
-      const newSelecteds = media.map(n => n.mediaId);
+      const newSelecteds = media.map(n => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -195,20 +199,20 @@ export function MediaTable(props) {
 
   const headCells = [
     {
-      id: 'name',
+      id: 'title',
       label: 'Media',
       span: 2,
     },
     // { id: "silentName", skip: true },
     {
       hide: true,
-      id: 'created',
+      id: 'createdAt',
       label: 'Created',
     },
     {
       hide: true,
-      id: 'modified',
-      label: 'Modified',
+      id: 'updatedAt',
+      label: 'Updated',
     },
     {
       hide: true,
@@ -252,7 +256,6 @@ export function MediaTable(props) {
           rowsPerPageOptions={[5, 10, 25]}
         />
       </Toolbar>
-      {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
       <TableContainer>
         <Table aria-labelledby="tableTitle" size="medium" sx={{ width: '100%' }}>
           <TableHead>
@@ -300,16 +303,25 @@ export function MediaTable(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {stableSort(media, getComparator(order, orderBy))
+            {stableSort(flatMedia, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
-                const isItemSelected = selected.indexOf(row.mediaId) !== -1;
+                const isItemSelected = selected.indexOf(row.id) !== -1;
                 const labelId = `enhanced-table-checkbox-${index}`;
+
+                console.log({ row });
+
+                const dateFormat = { day: 'numeric', month: 'short', year: 'numeric' };
+                const cDate = new Date(row.createdAt);
+                const cFormattedDate = new Intl.DateTimeFormat('en', dateFormat).format(cDate);
+                const uDate = new Date(row.updatedAt);
+                const uFormattedDate = new Intl.DateTimeFormat('en', dateFormat).format(uDate);
+
                 return (
                   <TableRow
                     hover
                     tabIndex={-1}
-                    key={row.mediaId}
+                    key={row.id}
                     onClick={() => console.log('open')}
                     selected={isItemSelected}
                   >
@@ -319,7 +331,7 @@ export function MediaTable(props) {
                         checked={isItemSelected}
                         role="checkbox"
                         aria-checked={isItemSelected}
-                        onClick={event => handleSelectClick(event, row.mediaId)}
+                        onClick={handleSelectClick(row.id)}
                         inputProps={{
                           'aria-labelledby': labelId,
                         }}
@@ -364,7 +376,7 @@ export function MediaTable(props) {
                         color={row.isProcessing ? 'text.disabled' : 'primary'}
                         variant="subtitle2"
                       >
-                        {row.name}
+                        {row.title}
                       </Link>
                     </TableCell>
                     <TableCell
@@ -373,7 +385,7 @@ export function MediaTable(props) {
                       }}
                     >
                       <Typography color="textSecondary" display="block" noWrap variant="body2">
-                        {row.createdAt || '—'}
+                        {row.createdAt ? cFormattedDate : '—'}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -382,7 +394,7 @@ export function MediaTable(props) {
                       }}
                     >
                       <Typography color="textSecondary" display="block" noWrap variant="body2">
-                        {row.updatedAt || '—'}
+                        {row.updatedAt ? uFormattedDate : '—'}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -403,9 +415,9 @@ export function MediaTable(props) {
                         fontSize="small"
                         onClick={e => {
                           e.stopPropagation();
-                          setFocused(row.mediaId);
+                          setFocused(row.id);
                           setItemMoreMenuAnchor(e.currentTarget);
-                          setSelected([row.mediaId]);
+                          setSelected([row.id]);
                         }}
                       >
                         <MoreHorizIcon fontSize="small" />
