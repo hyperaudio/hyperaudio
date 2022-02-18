@@ -338,7 +338,7 @@ export function MediaTable(props) {
                             console.log('hello');
                           }}
                         >
-                          <CardMedia component="img" height="100%" image={row.thumb} />
+                          <CardMedia component="img" height="100%" image={row.poster} />
                         </CardActionArea>
                       </Card>
                     </TableCell>
@@ -373,7 +373,7 @@ export function MediaTable(props) {
                       }}
                     >
                       <Typography color="textSecondary" display="block" noWrap variant="body2">
-                        {row.created || '—'}
+                        {row.createdAt || '—'}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -382,7 +382,7 @@ export function MediaTable(props) {
                       }}
                     >
                       <Typography color="textSecondary" display="block" noWrap variant="body2">
-                        {row.modified || '—'}
+                        {row.updatedAt || '—'}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -391,7 +391,7 @@ export function MediaTable(props) {
                       }}
                     >
                       <Typography color="textSecondary" display="block" noWrap variant="body2">
-                        {_.find(channels, o => o.channelId === row.channelId)?.name || '—'}
+                        {row.channel?.name ?? '—'}
                       </Typography>
                     </TableCell>
                     <TableCell>

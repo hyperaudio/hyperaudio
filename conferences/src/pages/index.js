@@ -1,9 +1,8 @@
+import React, { useState, useCallback, useEffect, useReducer, useMemo } from 'react';
 import Head from 'next/head';
-import React, { useState, useCallback, useEffect, useReducer } from 'react';
 import TextTruncate from 'react-text-truncate';
 import _ from 'lodash';
-import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
-import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
+import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
@@ -20,7 +19,7 @@ import { styled } from '@mui/material/styles';
 import { MediaTable } from '@hyperaudio/common';
 
 import { Main } from '../components';
-import { User } from '../models';
+import { Media, Channel } from '../models';
 
 const PREFIX = `HomePage`;
 const classes = {
@@ -37,68 +36,94 @@ const Root = styled(
   },
 }));
 
+const sampleMedia = [
+  {
+    id: 1,
+    name: 'Podcasting has no future.',
+    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
+    poster: 'https://picsum.photos/400/225',
+    createdAt: '2002-04-02',
+    updatedAt: null,
+    status: 'uploaded',
+    isPublic: false,
+    channelId: null,
+  },
+  {
+    id: 5,
+    name: 'What’s next for online conferences?',
+    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
+    poster: 'https://picsum.photos/400/225',
+    createdAt: '2001-11-12',
+    updatedAt: '2011-02-27',
+    status: 'corrected',
+    isPublic: false,
+    channelId: 1,
+  },
+  {
+    id: 20,
+    name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
+    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
+    poster: 'https://picsum.photos/400/225',
+    createdAt: '2001-06-13',
+    updatedAt: '2001-07-01',
+    status: 'ready',
+    isPublic: false,
+    channelId: 0,
+  },
+];
+
+const sampleChannels = [
+  {
+    id: 0,
+    name: 'Creative AI',
+    description:
+      'Can complex code be written creatively? Does art emerge from AI algorithms? How can we teach AI— or about AI—creatively? At MozFest you will have plenty of room to explore these questions in the Creative AI space! By fuelling a community that uses creativity to re-envision, question, and interact with AI and its effects on our daily lives, we will co-create a better future where humans and machines collaborate to unleash the best of us. Collaborative art making, hands-on learning, open studio sessions, critical reflection, forward facing discussions, web-native exhibitions and much more await you in the Creative AI space!',
+  },
+  {
+    id: 1,
+    name: 'AI Wellness',
+    description:
+      'AI Wellness is a transformative space changing artificial intelligence into authentic intelligence. This Space will channel community knowledge and experiences with technology to inform the future of human-centered AI that benefits society and individuals. If you are a dreamer, innovator, artist, technologist, storyteller, healer, or defender of healthy online communities, please join us. We invite you to contribute by sharing stories about how AI shapes our lives, by demystifying technology with understanding, and by creating community-centered solutions for healthier AI. Together, we will envision AI that promotes joy, healing, and wellbeing for all.',
+  },
+];
+
+const getMedia = async setMedia => setMedia(await DataStore.query(Media));
+const getChannels = async setMedia => setMedia(await DataStore.query(Channel));
+
 const HomePage = props => {
-  console.log(props);
+  const [media, setMedia] = useState([]);
+  const [channels, setChannels] = useState([]);
 
-  const media = [
-    {
-      mediaId: 1,
-      name: 'Podcasting has no future.',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2002-04-02',
-      modified: null,
-      status: 'uploaded',
-      isPublic: false,
-      channelId: null,
-    },
-    {
-      mediaId: 5,
-      name: 'What’s next for online conferences?',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-11-12',
-      modified: '2011-02-27',
-      status: 'corrected',
-      isPublic: false,
-      channelId: 1,
-    },
-    {
-      mediaId: 20,
-      name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-      description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-      thumb: 'https://picsum.photos/400/225',
-      created: '2001-06-13',
-      modified: '2001-07-01',
-      status: 'ready',
-      isPublic: false,
-      channelId: 0,
-    },
-  ];
+  console.log({ media, channels });
 
-  const channels = [
-    {
-      channelId: 0,
-      name: 'Creative AI',
-      description:
-        'Can complex code be written creatively? Does art emerge from AI algorithms? How can we teach AI— or about AI—creatively? At MozFest you will have plenty of room to explore these questions in the Creative AI space! By fuelling a community that uses creativity to re-envision, question, and interact with AI and its effects on our daily lives, we will co-create a better future where humans and machines collaborate to unleash the best of us. Collaborative art making, hands-on learning, open studio sessions, critical reflection, forward facing discussions, web-native exhibitions and much more await you in the Creative AI space!',
-    },
-    {
-      channelId: 1,
-      name: 'AI Wellness',
-      description:
-        'AI Wellness is a transformative space changing artificial intelligence into authentic intelligence. This Space will channel community knowledge and experiences with technology to inform the future of human-centered AI that benefits society and individuals. If you are a dreamer, innovator, artist, technologist, storyteller, healer, or defender of healthy online communities, please join us. We invite you to contribute by sharing stories about how AI shapes our lives, by demystifying technology with understanding, and by creating community-centered solutions for healthier AI. Together, we will envision AI that promotes joy, healing, and wellbeing for all.',
-    },
-  ];
+  useEffect(() => {
+    getMedia(setMedia);
 
-  const groups = channels.map(channel => {
-    const items = _.filter(media, o => o.channelId === channel.channelId);
-    return { ...channel, media: items };
-  });
-  // const channels = [];
+    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia));
+    window.addEventListener('online', () => navigator.onLine && getMedia(setMedia));
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    getChannels(setChannels);
+
+    const subscription = DataStore.observe(Channel).subscribe(msg => getChannels(setChannels));
+    window.addEventListener('online', () => navigator.onLine && getChannels(setChannels));
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const groups = useMemo(
+    () =>
+      channels.map(channel => {
+        const items = _.filter(media, o => o.channel?.id === channel.id);
+        return { ...channel, media: items };
+      }),
+    [channels, media],
+  );
 
   const user = true;
-  // const user = false;
 
   return (
     <Root className={classes.root}>
@@ -141,7 +166,7 @@ const HomePage = props => {
                           <Grid item key={media.mediaId} xs={6} sm={4}>
                             <Card sx={{ mb: 1 }}>
                               <CardActionArea onClick={() => console.log('onMediaOpen', media.mediaId)}>
-                                <CardMedia component="img" height="100%" image={media.thumb} />
+                                <CardMedia component="img" height="100%" image={media.poster} />
                               </CardActionArea>
                             </Card>
                             <Tooltip title={media.name}>
