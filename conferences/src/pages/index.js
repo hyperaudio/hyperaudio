@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect, useReducer, useMemo } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import TextTruncate from 'react-text-truncate';
 import _ from 'lodash';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
@@ -110,29 +111,9 @@ const HomePage = props => {
                   </Grid>
                   <Grid item xs={12} md={8} xl={8}>
                     <Grid container spacing={4}>
-                      {group.media.map(media => {
-                        return (
-                          <Grid item key={media.mediaId} xs={6} sm={4}>
-                            <Card sx={{ mb: 1 }}>
-                              <CardActionArea onClick={() => console.log('onMediaOpen', media.id)}>
-                                <CardMedia component="img" height="100%" image={media.poster} />
-                              </CardActionArea>
-                            </Card>
-                            <Tooltip title={media.title}>
-                              <Link
-                                color="primary"
-                                className={classes.thumbTitle}
-                                sx={{ cursor: 'pointer', display: 'block' }}
-                                underline="hover"
-                                variant="body2"
-                                onClick={() => console.log('onMediaOpen', media.id)}
-                              >
-                                <TextTruncate line={2} element="span" truncateText="…" text={media.title} />
-                              </Link>
-                            </Tooltip>
-                          </Grid>
-                        );
-                      })}
+                      {group.media.map(media => (
+                        <MediaCard media={media} key={media.id} />
+                      ))}
                     </Grid>
                   </Grid>
                 </Grid>
@@ -142,6 +123,33 @@ const HomePage = props => {
           })}
       </Main>
     </Root>
+  );
+};
+
+const MediaCard = ({ media }) => {
+  const router = useRouter();
+  const openMedia = useCallback(() => router.push(`/media/${media.id}`), [router, media]);
+
+  return (
+    <Grid item key={media.mediaId} xs={6} sm={4}>
+      <Card sx={{ mb: 1 }}>
+        <CardActionArea onClick={openMedia}>
+          <CardMedia component="img" height="100%" image={media.poster} />
+        </CardActionArea>
+      </Card>
+      <Tooltip title={media.title}>
+        <Link
+          color="primary"
+          className={classes.thumbTitle}
+          sx={{ cursor: 'pointer', display: 'block' }}
+          underline="hover"
+          variant="body2"
+          onClick={openMedia}
+        >
+          <TextTruncate line={2} element="span" truncateText="…" text={media.title} />
+        </Link>
+      </Tooltip>
+    </Grid>
   );
 };
 
