@@ -27,7 +27,11 @@ const Root = styled('div', {
   },
 }));
 
-const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+// const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
+const getMedia = async (setMedia, id) => {
+  const media = await DataStore.query(Media, m => m.id('eq', id));
+  setMedia(media?.[0]);
+};
 const getTranscripts = async (setTranscripts, id) =>
   setTranscripts((await DataStore.query(Transcript)).filter(t => t.media === id));
 
@@ -45,7 +49,6 @@ const MediaPage = () => {
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
     window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, id));
-
     return () => subscription.unsubscribe();
   }, [id]);
 
@@ -55,7 +58,6 @@ const MediaPage = () => {
 
     const subscription = DataStore.observe(Media).subscribe(msg => getTranscripts(setTranscripts, id));
     window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, id));
-
     return () => subscription.unsubscribe();
   }, [id]);
 
@@ -82,11 +84,39 @@ const MediaPage = () => {
           blocks: await (await fetch(transcript.url)).json(),
         })),
       );
-      setData({
-        sources,
-      });
+      // setData({
+      //   sources:
+      //     sources.length > 0
+      //       ? sources
+      //       : [
+      //           {
+      //             id: media.id,
+      //             title: media.title,
+      //             language: media.language,
+      //             channel: media.channel,
+      //             media: [
+      //               {
+      //                 id: media.playbackId,
+      //                 url: media.url,
+      //                 poster: media.poster,
+      //               },
+      //             ],
+      //             channel: media.channel,
+      //             tags: media.tags ?? [],
+      //             transcript: {
+      //               title: media.title,
+      //               translations: [{ id: media.id, lang: 'en-US', name: 'English', default: true }],
+      //             },
+      //             remixes: [],
+      //             blocks: [],
+      //           },
+      //         ],
+      // });
+      setData({ sources });
     })();
   }, [media, transcripts]);
+
+  console.log({ media, data });
 
   return (
     <Root className={classes.root}>
