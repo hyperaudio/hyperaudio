@@ -64,7 +64,7 @@ const DashboardPage = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Main>
+      <Main maxWidth="xl">
         {/* If logged in */}
         {user && (
           <MediaTable

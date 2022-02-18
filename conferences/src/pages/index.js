@@ -81,7 +81,7 @@ const HomePage = props => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Main>
+      <Main maxWidth="xl">
         {user &&
           displayChannels.map(channel => {
             return [
