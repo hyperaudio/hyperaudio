@@ -55,6 +55,7 @@ export declare class Media {
   readonly tags?: (string | null)[];
   readonly channel?: Channel;
   readonly remixes?: (RemixMedia | null)[];
+  readonly private?: boolean;
   readonly metadata?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;

@@ -36,57 +36,6 @@ const Root = styled(
   },
 }));
 
-const sampleMedia = [
-  {
-    id: 1,
-    name: 'Podcasting has no future.',
-    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-    poster: 'https://picsum.photos/400/225',
-    createdAt: '2002-04-02',
-    updatedAt: null,
-    status: 'uploaded',
-    isPublic: false,
-    channelId: null,
-  },
-  {
-    id: 5,
-    name: 'What’s next for online conferences?',
-    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-    poster: 'https://picsum.photos/400/225',
-    createdAt: '2001-11-12',
-    updatedAt: '2011-02-27',
-    status: 'corrected',
-    isPublic: false,
-    channelId: 1,
-  },
-  {
-    id: 20,
-    name: 'The Future of Podcasting is Adaptive, Open and Data ethical',
-    description: 'Dolor eiusmod quis non esse nulla quis amet ad nostrud non mollit quis culpa.',
-    poster: 'https://picsum.photos/400/225',
-    createdAt: '2001-06-13',
-    updatedAt: '2001-07-01',
-    status: 'ready',
-    isPublic: false,
-    channelId: 0,
-  },
-];
-
-const sampleChannels = [
-  {
-    id: 0,
-    name: 'Creative AI',
-    description:
-      'Can complex code be written creatively? Does art emerge from AI algorithms? How can we teach AI— or about AI—creatively? At MozFest you will have plenty of room to explore these questions in the Creative AI space! By fuelling a community that uses creativity to re-envision, question, and interact with AI and its effects on our daily lives, we will co-create a better future where humans and machines collaborate to unleash the best of us. Collaborative art making, hands-on learning, open studio sessions, critical reflection, forward facing discussions, web-native exhibitions and much more await you in the Creative AI space!',
-  },
-  {
-    id: 1,
-    name: 'AI Wellness',
-    description:
-      'AI Wellness is a transformative space changing artificial intelligence into authentic intelligence. This Space will channel community knowledge and experiences with technology to inform the future of human-centered AI that benefits society and individuals. If you are a dreamer, innovator, artist, technologist, storyteller, healer, or defender of healthy online communities, please join us. We invite you to contribute by sharing stories about how AI shapes our lives, by demystifying technology with understanding, and by creating community-centered solutions for healthier AI. Together, we will envision AI that promotes joy, healing, and wellbeing for all.',
-  },
-];
-
 const getMedia = async setMedia => setMedia(await DataStore.query(Media));
 const getChannels = async setMedia => setMedia(await DataStore.query(Channel));
 

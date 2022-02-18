@@ -243,6 +243,13 @@ export const schema = {
                         "associatedWith": "media"
                     }
                 },
+                "private": {
+                    "name": "private",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "metadata": {
                     "name": "metadata",
                     "isArray": false,
@@ -754,5 +761,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "14ad516e379f2daad4fd96e86740a80a"
+    "version": "7b7ace040a74cfd415428ef5d5368280"
 };
