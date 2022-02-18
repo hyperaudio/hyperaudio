@@ -12,12 +12,9 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import NoSsr from '@mui/material/NoSsr';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
-
-import { MediaTable } from '@hyperaudio/common';
 
 import { Main } from '../components';
 import { Media, Channel } from '../models';
@@ -28,50 +25,52 @@ const classes = {
   thumbTitle: `${PREFIX}-thumbTitle`,
 };
 
-const Root = styled(
-  'div',
-  {},
-)(({ theme }) => ({
+const Root = styled('div')(({ theme }) => ({
   [`& .${classes.thumbTitle} span`]: {
     lineHeight: '1.44em !important',
   },
 }));
 
-const getMedia = async setMedia => setMedia(await DataStore.query(Media));
-const getChannels = async setMedia => setMedia(await DataStore.query(Channel));
+const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
+const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Channel));
 
 const HomePage = props => {
-  const [media, setMedia] = useState([]);
-  const [channels, setChannels] = useState([]);
+  const [allMedia, setAllMedia] = useState([]);
+  const [allChannels, setAllChannels] = useState([]);
 
-  console.log({ media, channels });
+  console.log({ allMedia, allChannels });
 
   useEffect(() => {
-    getMedia(setMedia);
+    getMedia(setAllMedia);
 
-    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia));
-    window.addEventListener('online', () => navigator.onLine && getMedia(setMedia));
+    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setAllMedia));
+    window.addEventListener('online', () => navigator.onLine && getMedia(setAllMedia));
 
     return () => subscription.unsubscribe();
   }, []);
 
   useEffect(() => {
-    getChannels(setChannels);
+    getChannels(setAllChannels);
 
-    const subscription = DataStore.observe(Channel).subscribe(msg => getChannels(setChannels));
-    window.addEventListener('online', () => navigator.onLine && getChannels(setChannels));
+    const subscription = DataStore.observe(Channel).subscribe(msg => getChannels(setAllChannels));
+    window.addEventListener('online', () => navigator.onLine && getChannels(setAllChannels));
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const groups = useMemo(
-    () =>
-      channels.map(channel => {
-        const items = _.filter(media, o => o.channel?.id === channel.id);
-        return { ...channel, media: items };
-      }),
-    [channels, media],
-  );
+  const displayChannels = useMemo(() => {
+    const channelsWithMediaArrays = allChannels.map(channel => {
+      // add all but private media to appropriate channels
+      const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private);
+      return { ...channel, media };
+    });
+    const onlyChannelsWithAvailableMedia = _.filter(channelsWithMediaArrays, a => a.media.length > 0);
+    return onlyChannelsWithAvailableMedia;
+  }, [allChannels, allMedia]);
+
+  // console.group('Home');
+  // console.log({ allChannels, displayChannels });
+  // console.groupEnd();
 
   const user = true;
 
@@ -83,42 +82,29 @@ const HomePage = props => {
       </Head>
 
       <Main>
-        {/* If logged in */}
-        {user && (
-          <MediaTable
-            media={media}
-            onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
-            onEditMedia={payload => console.log('onEditMedia', { payload })}
-            onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
-          />
-        )}
-      </Main>
-
-      <Main>
-        {/* If logged out */}
         {user &&
-          groups.map(group => {
+          displayChannels.map(channel => {
             return [
-              <Container maxWidth={false} key={group.channelId}>
-                <Grid container key={`g-${group.channelId}`} spacing={{ xs: 4, md: 8 }}>
+              <Container maxWidth={false} key={channel.channelId}>
+                <Grid container key={`g-${channel.channelId}`} spacing={{ xs: 4, md: 8 }}>
                   <Grid item xs={12} md={4} xl={4}>
                     <Typography variant="h5" component="h1" gutterBottom>
-                      {group.name}
+                      {channel.name}
                     </Typography>
                     <Typography variant="body2" component="p">
-                      {group.description}
+                      {channel.description}
                     </Typography>
                   </Grid>
                   <Grid item xs={12} md={8} xl={8}>
                     <Grid container spacing={4}>
-                      {group.media.map(media => (
-                        <MediaCard media={media} key={media.id} />
+                      {channel.media.map(o => (
+                        <MediaCard media={o} key={o.id} />
                       ))}
                     </Grid>
                   </Grid>
                 </Grid>
               </Container>,
-              <Divider key={`d-${group.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
+              <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
             ];
           })}
       </Main>
@@ -131,7 +117,7 @@ const MediaCard = ({ media }) => {
   const openMedia = useCallback(() => router.push(`/media/${media.id}`), [router, media]);
 
   return (
-    <Grid item key={media.mediaId} xs={6} sm={4}>
+    <Grid item xs={6} sm={4}>
       <Card sx={{ mb: 1 }}>
         <CardActionArea onClick={openMedia}>
           <CardMedia component="img" height="100%" image={media.poster} />
