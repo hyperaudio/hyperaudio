@@ -46,6 +46,13 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "metadata": {
                     "name": "metadata",
                     "isArray": false,
@@ -247,6 +254,13 @@ export const schema = {
                     "name": "private",
                     "isArray": false,
                     "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "AWSJSON",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -493,8 +507,8 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "metadata": {
-                    "name": "metadata",
+                "status": {
+                    "name": "status",
                     "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
@@ -513,6 +527,13 @@ export const schema = {
                         "connectionType": "HAS_MANY",
                         "associatedWith": "remix"
                     }
+                },
+                "metadata": {
+                    "name": "metadata",
+                    "isArray": false,
+                    "type": "AWSJSON",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -761,5 +782,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "7b7ace040a74cfd415428ef5d5368280"
+    "version": "30e09c135e63dee9f64967d188ef9f56"
 };

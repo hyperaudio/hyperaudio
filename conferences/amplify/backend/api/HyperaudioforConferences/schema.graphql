@@ -5,6 +5,7 @@ type Transcript @model @auth(rules: [{allow: private, operations: [read]}, {allo
   description: String
   language: String!
   tags: [String]
+  status: AWSJSON
   metadata: AWSJSON
   media: ID! @index(name: "byMedia")
 }
@@ -22,6 +23,7 @@ type Media @model @auth(rules: [{allow: private, operations: [read]}, {allow: ow
   channel: Channel @hasOne
   remixes: [Remix] @manyToMany(relationName: "RemixMedia")
   private: Boolean
+  status: AWSJSON
   metadata: AWSJSON
 }
 
@@ -48,7 +50,8 @@ type Remix @model @auth(rules: [{allow: private, operations: [read]}, {allow: ow
   description: String
   language: String!
   tags: [String]
-  metadata: AWSJSON
+  status: AWSJSON
   media: [Media] @manyToMany(relationName: "RemixMedia")
+  metadata: AWSJSON
 }
  

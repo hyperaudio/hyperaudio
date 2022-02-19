@@ -68,14 +68,14 @@ function Status(props) {
         <CircularProgress color="primary" size={16} />
       </Tooltip>
     );
+  } else if (status === 'transcribed') {
+    return (
+      <Tooltip title="Ready to edit">
+        {/* <SpellcheckIcon fontSize="small" color="primary" /> */}
+        <CheckCircleIcon fontSize="small" color="primary" />
+      </Tooltip>
+    );
   }
-  //  else if (status === 'transcribed') {
-  //   return (
-  //     <Tooltip title="Ready to edit">
-  //       <SpellcheckIcon fontSize="small" color="primary" />
-  //     </Tooltip>
-  //   );
-  // }
   //  else if (status === 'edited') {
   //   return (
   //     <Tooltip title="Edited">
@@ -407,7 +407,7 @@ export function MediaTable(props) {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Status status={row.status} />
+                      <Status status={row.status?.label} />
                     </TableCell>
                     <TableCell padding="checkbox">
                       <IconButton

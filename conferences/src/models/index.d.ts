@@ -35,6 +35,7 @@ export declare class Transcript {
   readonly description?: string;
   readonly language: string;
   readonly tags?: (string | null)[];
+  readonly status?: string;
   readonly metadata?: string;
   readonly media: string;
   readonly createdAt?: string;
@@ -56,6 +57,7 @@ export declare class Media {
   readonly channel?: Channel;
   readonly remixes?: (RemixMedia | null)[];
   readonly private?: boolean;
+  readonly status?: string;
   readonly metadata?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
@@ -83,8 +85,9 @@ export declare class Remix {
   readonly description?: string;
   readonly language: string;
   readonly tags?: (string | null)[];
-  readonly metadata?: string;
+  readonly status?: string;
   readonly media?: (RemixMedia | null)[];
+  readonly metadata?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Remix, RemixMetaData>);

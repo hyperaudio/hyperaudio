@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "HyperaudioforConferences",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-470b79a9-722d-4b50-aaa4-d441f4d588a1/amplify/backend/api/HyperaudioforConferences/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-29796a85-da23-4eb1-ab23-2e15588a5d89/amplify/backend/api/HyperaudioforConferences/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",
