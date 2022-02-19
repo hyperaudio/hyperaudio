@@ -55,7 +55,7 @@ const Root = styled(
 }));
 
 function Status(props) {
-  const { status, isPublic } = props;
+  const { status, description, isPublic } = props;
   if (status === 'uploading') {
     return (
       <Tooltip title="Uploading… Keep the tab browser open for now…">
@@ -109,7 +109,7 @@ function Status(props) {
   // }
   else if (status === 'error') {
     return (
-      <Tooltip title="Processing failed. Try adding this media again.">
+      <Tooltip title={`Processing failed. Try adding this media again.${description ? ` [${description}]` : ''}`}>
         <ErrorIcon fontSize="small" color="error" />
       </Tooltip>
     );
@@ -407,7 +407,11 @@ export function MediaTable(props) {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Status status={row.status?.label} isPublic={!row.private} />
+                      <Status
+                        status={row.status?.label}
+                        description={row.status?.description}
+                        isPublic={!row.private}
+                      />
                     </TableCell>
                     <TableCell padding="checkbox">
                       <IconButton
