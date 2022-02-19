@@ -407,7 +407,7 @@ export function MediaTable(props) {
                       </Typography>
                     </TableCell>
                     <TableCell>
-                      <Status status={row.status?.label} />
+                      <Status status={row.status?.label} isPublic={!row.private} />
                     </TableCell>
                     <TableCell padding="checkbox">
                       <IconButton
