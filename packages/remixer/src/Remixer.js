@@ -125,6 +125,8 @@ const Remixer = props => {
     source: props.sources[0],
   });
 
+  console.log('REMIX', remix);
+
   const [showSource, setShowSource] = useState(true);
   const [showLibrary, setShowLibrary] = useState(false);
 

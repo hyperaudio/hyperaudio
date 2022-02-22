@@ -21,8 +21,15 @@ const remixReducer = (state, action) => {
         tabs: state.tabs.filter(source => source.id !== action.id),
       };
     case 'removeBlock':
-      // TODO clean-up media
-      return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
+      const usedMedia = [...new Set(state.remix.blocks.map(block => block.media))];
+      return {
+        ...state,
+        remix: {
+          ...state.remix,
+          media: state.remix.media.filter(m => usedMedia.includes(m.id)),
+          blocks: state.remix.blocks.filter(b => b.key !== action.key),
+        },
+      };
     case 'moveUpBlock': {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       return {
