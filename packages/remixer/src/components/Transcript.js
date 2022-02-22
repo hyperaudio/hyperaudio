@@ -218,7 +218,7 @@ export const Transcript = props => {
   const hideBlockContext = useCallback(() => {
     setContext(null);
     setContextData({});
-    setBlockOverride(null);
+    setBlockOverride && setBlockOverride(null);
   }, [focus, blocks, setBlockOverride]);
 
   const handleClick = useCallback(
@@ -237,7 +237,7 @@ export const Transcript = props => {
         if (!externalRange) {
           setContext(null);
           setContextData({});
-          setBlockOverride(null);
+          setBlockOverride && setBlockOverride(null);
         }
 
         const key = target.getAttribute('data-key');
