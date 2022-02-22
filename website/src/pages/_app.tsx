@@ -1,19 +1,19 @@
-import Head from "next/head";
-import { useState } from "react";
-import { AppProps } from "next/app";
-import { CacheProvider, EmotionCache } from "@emotion/react";
+import Head from 'next/head';
+import { useState } from 'react';
+import { AppProps } from 'next/app';
+import { CacheProvider, EmotionCache } from '@emotion/react';
 
-import CssBaseline from "@mui/material/CssBaseline";
-import GlobalStyles from "@mui/material/GlobalStyles";
-import { ThemeProvider, styled } from "@mui/material/styles";
-import { grey } from "@mui/material/colors";
+import CssBaseline from '@mui/material/CssBaseline';
+import GlobalStyles from '@mui/material/GlobalStyles';
+import { ThemeProvider, styled } from '@mui/material/styles';
+import { grey } from '@mui/material/colors';
 
-import { lightTheme } from "@hyperaudio/common";
+import { lightTheme } from '@hyperaudio/common';
 
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
-import Topbar from "../components/Topbar";
-import createEmotionCache from "../lib/createEmotionCache";
+import Footer from '../components/Footer';
+import Navbar from '../components/Navbar';
+import Topbar from '../components/Topbar';
+import createEmotionCache from '../lib/createEmotionCache';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -30,15 +30,15 @@ const classes = {
   top: `${PREFIX}-top`,
 };
 
-const Root = styled("div", {
+const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(() => ({
   backgroundImage: `linear-gradient(to top right, ${grey[300]}, ${grey[50]})`,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "space-between",
-  minHeight: "100vh",
-  position: "relative",
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  minHeight: '100vh',
+  position: 'relative',
 }));
 
 const globalStyles = `
@@ -95,7 +95,7 @@ export default function MyApp(props: MyAppProps) {
           <div className={classes.bottom}>
             <GlobalStyles styles={globalStyles} />
             <Footer />
-            <Navbar />
+            {/* <Navbar /> */}
           </div>
         </Root>
       </ThemeProvider>
