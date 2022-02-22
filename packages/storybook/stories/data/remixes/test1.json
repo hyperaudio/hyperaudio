@@ -17,13 +17,6 @@
   ],
   "blocks": [
       {
-          "key": "title-1637590696180",
-          "duration": 0,
-          "gap": 0,
-          "type": "title",
-          "text": "MLTalks Intro Collection"
-      },
-      {
           "media": "YVBNsWgjvPkGpubCchh2e5",
           "key": "bowowfDV1U_-1645544284076",
           "type": "block",
@@ -31,7 +24,7 @@
           "rate": 1000,
           "start": 4890,
           "end": 5960,
-          "duration": 235,
+          "duration": 1070,
           "gap": 580,
           "starts": [
               5125
