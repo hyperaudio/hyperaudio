@@ -79,9 +79,9 @@ export const MediaInfoDialog = props => {
   const container = React.useRef(null);
   const { open, onClose, source } = props;
 
-  // console.group('MediaInfo');
-  // console.log({ props });
-  // console.groupEnd();
+  console.group('MediaInfo');
+  console.log({ props });
+  console.groupEnd();
 
   return (
     <Portal container={container.current}>
@@ -165,7 +165,7 @@ export const MediaInfoDialog = props => {
                 <ul className={classes.ul}>
                   {source.remixes.map(r => (
                     <li className={classes.li} key={r.id}>
-                      <Link variant="body2" sx={{ cursor: 'pointer' }}>
+                      <Link variant="body2" sx={{ cursor: 'pointer' }} target="_blank" href={r.href ?? '#'}>
                         {r.title}
                       </Link>
                     </li>

@@ -18,6 +18,35 @@ const media = [
     // url: "https://vimeo.com/636017395/f0ea0fe391",
     url: "https://badideafactory-bbc.s3-eu-west-2.amazonaws.com/ha-test-sb/21LPML8F2h8zxd3tGb5Ain.mp4",
   },
+  // new media
+  // {
+  //   id: "YVBNsWgjvPkGpubCchh2e5",
+  //   url: "https://cdn.hyper.audio/HLS/YVBNsWgjvPkGpubCchh2e5/YVBNsWgjvPkGpubCchh2e5.m3u8",
+  // },
+  // {
+  //   id: "ACrY7ceZNUMQEbmeokbmNZ",
+  //   url: "https://cdn.hyper.audio/HLS/ACrY7ceZNUMQEbmeokbmNZ/ACrY7ceZNUMQEbmeokbmNZ.m3u8",
+  // },
+  // {
+  //   id: "Cdamja34SyvrgaZ8x5H9VR",
+  //   url: "https://cdn.hyper.audio/HLS/Cdamja34SyvrgaZ8x5H9VR/Cdamja34SyvrgaZ8x5H9VR.m3u8",
+  // },
+  // {
+  //   id: "DYXbRFUKMYbwUbWpwdNa62",
+  //   url: "https://cdn.hyper.audio/HLS/DYXbRFUKMYbwUbWpwdNa62/DYXbRFUKMYbwUbWpwdNa62.m3u8",
+  // },
+  // {
+  //   id: "FpF8Hvbyk93zgGAnAdJiHT",
+  //   url: "https://cdn.hyper.audio/HLS/FpF8Hvbyk93zgGAnAdJiHT/FpF8Hvbyk93zgGAnAdJiHT.m3u8",
+  // },
+  // {
+  //   id: "JniFbzYLAVaD12WAVfXMDF",
+  //   url: "https://cdn.hyper.audio/HLS/JniFbzYLAVaD12WAVfXMDF/JniFbzYLAVaD12WAVfXMDF.m3u8",
+  // },
+  // {
+  //   id: "N8dfdPHP3kdL7SESKQWZgY",
+  //   url: "https://cdn.hyper.audio/HLS/N8dfdPHP3kdL7SESKQWZgY/N8dfdPHP3kdL7SESKQWZgY.m3u8",
+  // },
 ];
 
 // prettier-ignore
@@ -788,3 +817,122 @@ export const remixData = {
 };
 
 console.log({ remixData });
+
+const testMap1 = (blocks) =>
+  blocks.map((block, i, arr) => {
+    const { pk, start, end, starts, ends } = block;
+    let gap = 0;
+
+    if (i < arr.length - 2) {
+      const next = arr[i + 1];
+      if (block.pk === next.pk) {
+        gap = next.start - end;
+      }
+    }
+    return {
+      ...block,
+      media: pk,
+      duration: end - start,
+      starts2: starts.map((s) => s - start),
+      ends2: ends.map((e) => e - start),
+      durations: ends.map((e, j) => e - starts[j]),
+      gap,
+    };
+  });
+
+const sampleInput = {
+  ends: [1032319.9999999999, 1032640.0000000001, 1033160.0000000001],
+  starts: [1032030, 1032329.9999999999, 1032640.0000000001],
+  status: "transcribed",
+  createdAt: "2021-10-06T21:25:06.533Z",
+  offsets: [0, 3, 11],
+  text: "in another video.",
+  type: "block",
+  version: 0,
+  keys: ["k8KLlGYp6MI0t", "o0PqDnx0ztwqZ", "xLEgZlxu3BRmP"],
+  lengths: [2, 7, 6],
+  updatedAt: "2021-10-06T21:25:06.533Z",
+  speaker: "spk_1",
+  sk: "v0_block:yHmpJ3yB4DNnG",
+  end: 1033170.0000000001,
+  pk: "21LPML8F2h8zxd3tGb5Ain",
+  key: "yHmpJ3yB4DNnG",
+  start: 1032030,
+};
+
+const sampleOutput = {
+  ends: [1032319.9999999999, 1032640.0000000001, 1033160.0000000001],
+  starts: [1032030, 1032329.9999999999, 1032640.0000000001],
+  status: "transcribed",
+  createdAt: "2021-10-06T21:25:06.533Z",
+  offsets: [0, 3, 11],
+  text: "in another video.",
+  type: "block",
+  version: 0,
+  keys: ["k8KLlGYp6MI0t", "o0PqDnx0ztwqZ", "xLEgZlxu3BRmP"],
+  lengths: [2, 7, 6],
+  updatedAt: "2021-10-06T21:25:06.533Z",
+  speaker: "spk_1",
+  sk: "v0_block:yHmpJ3yB4DNnG",
+  end: 1033170.0000000001,
+  pk: "21LPML8F2h8zxd3tGb5Ain",
+  key: "yHmpJ3yB4DNnG",
+  start: 1032030,
+  media: "21LPML8F2h8zxd3tGb5Ain", // NEW
+  duration: 1140.0000000001164, // NEW
+  starts2: [0, 299.9999999998836, 610.0000000001164], // NEW
+  ends2: [289.9999999998836, 610.0000000001164, 1130.0000000001164], // NEW
+  durations: [289.9999999998836, 310.00000000023283, 520], // NEW
+  gap: 0, // NEW
+};
+
+const mitSample = {
+  media: "N8dfdPHP3kdL7SESKQWZgY",
+  key: "b-mN3ffqWWp",
+  type: "block",
+  text: "Thank you.",
+  rate: 1000,
+  start: 4954740,
+  end: 4954740,
+  duration: 0,
+  gap: 0,
+  starts: [4954740, 4954740],
+  ends: [4954740, 4954740],
+  starts2: [0, 0],
+  ends2: [0, 0],
+  durations: [0, 0],
+  offsets: [0, 6],
+  lengths: [5, 4],
+};
+
+// blocks[] -> Track.1
+const idealFormat = {
+  key: "b-mN3ffqWWp", // id
+  type: "paragraph", // clip? -> Clip.1
+
+  rate: 1000, // FPS -> RationalTime.1 Rate
+
+  media: "N8dfdPHP3kdL7SESKQWZgY", // MediaReference.1, available_range = media duration
+  start: 4954740, // start time in media -> source_range start_time RationalTime.1 value
+  duration: 0, // duration in media -> source_range duration RationalTime.1 value
+
+  gap: 0, // gap between this and next block, should be a Gap.1 block next?
+
+  text: "Thank you.", // text
+  starts: [0, 0], // start times relative to start
+  durations: [0, 0], // durations
+  offsets: [0, 6], // offsets
+  lengths: [5, 4], // lengths
+
+  speaker: "spk_1",
+
+  status: "transcribed", // status
+  version: 0, // version
+  createdAt: "2021-10-06T21:25:06.533Z",
+  updatedAt: "2021-10-06T21:25:06.533Z",
+
+  keys: ["a", "b"], // keys
+
+  pk: "N8dfdPHP3kdL7SESKQWZgY",
+  sk: "v0_block:b-mN3ffqWWp",
+};

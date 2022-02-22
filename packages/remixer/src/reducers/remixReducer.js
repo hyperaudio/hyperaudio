@@ -1,10 +1,11 @@
 /* eslint-disable no-case-declarations */
+import { accordionActionsClasses } from '@mui/material';
 import { arrayMoveImmutable } from 'array-move';
 
 const remixReducer = (state, action) => {
   const { type, event: { draggableId, source, destination } = {} } = action;
 
-  console.log({ type, draggableId, source, destination });
+  console.log({ action });
 
   switch (type) {
     case 'sourceOpen':
@@ -237,6 +238,10 @@ const remixReducer = (state, action) => {
         };
       }
       return state;
+    }
+    case 'reset': {
+      console.log('RESET');
+      return action.state;
     }
     default:
       throw new Error(`unhandled action ${type}`, action);
