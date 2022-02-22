@@ -43,5 +43,8 @@
   "files": [
     "dist"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "lodash": "4.17.21",
+    "use-resize-observer": "8.0.0"
+  }
 }
