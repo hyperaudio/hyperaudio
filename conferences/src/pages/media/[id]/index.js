@@ -92,7 +92,7 @@ const MediaPage = () => {
             title: transcript.title,
             translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
           },
-          remixes: remixes.map(r => ({ ...r, href: `/remixes/${r.id}` })),
+          remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
           blocks: await (await fetch(transcript.url)).json(),
         })),
       );
