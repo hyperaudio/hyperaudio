@@ -4,6 +4,8 @@ import { arrayMoveImmutable } from 'array-move';
 const remixReducer = (state, action) => {
   const { type, event: { draggableId, source, destination } = {} } = action;
 
+  console.log({ type, draggableId, source, destination });
+
   switch (type) {
     case 'sourceOpen':
       // TODO deal with sources/library via API
@@ -197,7 +199,7 @@ const remixReducer = (state, action) => {
               ends2: block.ends2.slice(startIndex2, endIndex2),
               offsets: block.offsets.slice(startIndex2, endIndex2),
               lengths: block.lengths.slice(startIndex2, endIndex2),
-              keys: block.keys.slice(startIndex2, endIndex2),
+              keys: block.keys?.slice(startIndex2, endIndex2),
               durations: block.durations.slice(startIndex2, endIndex2),
               // start: block.starts.slice(startIndex2, endIndex2)[0],
               // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
