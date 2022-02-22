@@ -1,20 +1,20 @@
-import { useEffect, Dispatch, SetStateAction } from "react";
+import { useEffect, Dispatch, SetStateAction } from 'react';
 
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Toolbar from "@mui/material/Toolbar";
-import useScrollTrigger from "@mui/material/useScrollTrigger";
-import { grey } from "@mui/material/colors";
-import { styled } from "@mui/material/styles";
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+import Toolbar from '@mui/material/Toolbar';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
+import { grey } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
 
-import { Brandmark, useThrottledResizeObserver } from "@hyperaudio/common";
+import { Brandmark, useThrottledResizeObserver } from '@hyperaudio/common';
 
-import Link from "./Link";
-import { links } from "../config/links";
-import { menu } from "../config/menu";
+import Link from './Link';
+import { links } from '../config/links';
+import { menu } from '../config/menu';
 
 interface RootProps {
   useGrain?: Boolean;
@@ -33,19 +33,17 @@ const classes = {
 };
 
 const Root = styled(AppBar, {
-  shouldForwardProp: (prop: any) => !["useGrain"].includes(prop),
+  shouldForwardProp: (prop: any) => !['useGrain'].includes(prop),
 })<RootProps>(({ theme, useGrain }) => ({
-  backgroundImage: useGrain
-    ? `linear-gradient(to top right, ${grey[300]}, ${grey[50]})`
-    : "none",
+  backgroundImage: useGrain ? `linear-gradient(to top right, ${grey[300]}, ${grey[50]})` : 'none',
   color: theme.palette.text.primary,
   transition: `background ${theme.transitions.duration.standard}`,
   [`&:before`]: {
     bottom: 0,
     content: '" "',
     left: 0,
-    pointerEvents: "none",
-    position: "absolute",
+    pointerEvents: 'none',
+    position: 'absolute',
     right: 0,
     top: 0,
   },
@@ -77,8 +75,8 @@ const Topbar = (props: TopbarProps) => {
                   display="inline-block"
                   href="/"
                   sx={{
-                    color: "text.primary",
-                    "&:hover": { color: "primary.main" },
+                    color: 'text.primary',
+                    '&:hover': { color: 'primary.main' },
                   }}
                 >
                   <Brandmark />
@@ -89,7 +87,7 @@ const Topbar = (props: TopbarProps) => {
                 container
                 item
                 justifyContent="center"
-                sx={{ display: { xs: "none", md: "flex" } }}
+                sx={{ display: { xs: 'none', md: 'flex' } }}
                 xs
               >
                 {menu.map(({ href, label }) => (
@@ -99,10 +97,7 @@ const Topbar = (props: TopbarProps) => {
                     href={href}
                     key={href}
                     noLinkStyle
-                    // size="large"
                     sx={{
-                      color: "text.primary",
-                      "&:hover": { color: "primary.main" },
                       mx: { xs: 1, md: 2 },
                     }}
                   >
