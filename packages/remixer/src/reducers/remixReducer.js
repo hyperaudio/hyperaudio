@@ -21,6 +21,7 @@ const remixReducer = (state, action) => {
         tabs: state.tabs.filter(source => source.id !== action.id),
       };
     case 'removeBlock':
+      // TODO clean-up media
       return { ...state, remix: { ...state.remix, blocks: state.remix.blocks.filter(b => b.key !== action.key) } };
     case 'moveUpBlock': {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
@@ -206,14 +207,20 @@ const remixReducer = (state, action) => {
               duration:
                 block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0],
               gap: endIndex === -1 ? block.gap : 0,
-              debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
+              // debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
             };
           });
+
+        const sourceMedia = sourceSelectedBlocks.map(block => block.media);
+        const newMedia = [...new Set(sourceMedia.filter(media => !state.remix.media.find(m => m.id === media)))].map(
+          media => state.sources.find(m => m.media[0].id === media).media[0],
+        ); // FIXME look for more than [0]
 
         return {
           ...state,
           remix: {
             ...state.remix,
+            media: [...state.remix.media, ...newMedia],
             blocks: [
               ...state.remix.blocks.slice(0, destination.index),
               ...sourceSelectedBlocks,
