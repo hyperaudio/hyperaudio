@@ -48,7 +48,7 @@ const MATCH_URL_YOUTUBE =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 // const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
-export const Theatre = ({ blocks, media, players, reference, time }) => {
+export const Theatre = ({ blocks, media, players, reference, time = 0 }) => {
   const duration = useMemo(
     () =>
       blocks.reduce(
@@ -83,13 +83,25 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
             ...acc,
             prevInterval,
             [
-              offset, // TODO name these better
-              offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
-              { start, media, block },
+              // TODO name these better
+              offset, // offset (aka start) in timeline
+              offset + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0), // end in timeline
+              { start, media, block, offset, duration, useGap: i < arr.length - 2 && media === arr[i + 1].media, gap }, // start in block, media and block for debug
             ],
           ];
         }, [])
         .filter(i => !!i),
+    // .reduce((acc, interval, i, arr) => {
+    //   if (i === 0) return [interval];
+
+    //   const prevInterval = acc.pop();
+    //   const [prevStart, prevEnd, prevData] = prevInterval;
+    //   const [start, end, data] = interval;
+
+    //   if (prevEnd === start) return [...acc, [prevStart, end, { ...prevData, ...data }]];
+
+    //   return [...acc, prevInterval, interval];
+    // }, []),
     [blocks],
   );
 
@@ -101,15 +113,16 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
       const prevInterval = intervals[currentIntervalIndex - 1];
       console.log('previous', prevInterval);
 
-      if (prevInterval[2].block.type === 'title') {
-        console.log('TITLE', prevInterval[2].block.text);
-        setInsert(prevInterval[2].block);
-      } else if (prevInterval[2].block.type === 'transition') {
-        console.log('TRANSITION', prevInterval[2].block);
-        setInsert(prevInterval[2].block);
-      } else {
-        setInsert(null);
-      }
+      // FIXME this is based on intervals having one block
+      // if (prevInterval[2].block.type === 'title') {
+      //   console.log('TITLE', prevInterval[2].block.text);
+      //   setInsert(prevInterval[2].block);
+      // } else if (prevInterval[2].block.type === 'transition') {
+      //   console.log('TRANSITION', prevInterval[2].block);
+      //   setInsert(prevInterval[2].block);
+      // } else {
+      //   setInsert(null);
+      // }
     }
 
     if (currentInterval) {
@@ -141,8 +154,9 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
     reference.current.currentTime = value;
   };
 
-  console.log({ referencePlaying });
-  console.log({ active });
+  useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
+  useEffect(() => console.log({ active }), [active]);
+  useEffect(() => console.log({ intervals }), [intervals]);
 
   useEffect(() => {
     if (buffering && referencePlaying) {
@@ -161,7 +175,8 @@ export const Theatre = ({ blocks, media, players, reference, time }) => {
               <Player
                 key={id}
                 active={active === id}
-                time={(time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)) / 1e3}
+                time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                // time={(time - (interval?.[0] ?? 0)) / 1e3}
                 playing={referencePlaying && active === id}
                 media={{ id, url, poster }}
                 {...{ players, setActive, buffering, setBuffering }}
@@ -297,7 +312,7 @@ const Player = ({
   setActive,
   playing,
   setPlaying,
-  time,
+  time = 0,
   setBuffering,
 }) => {
   const ref = useRef();
@@ -314,8 +329,9 @@ const Player = ({
   );
 
   useEffect(() => {
-    if (Math.abs(ref.current.getCurrentTime() - time) > 0.3) {
-      ref.current?.seekTo(time, 'seconds');
+    if (Math.abs(ref.current.getCurrentTime() * 1e3 - time) > 500) {
+      console.log('SEEK', time, ref.current.getCurrentTime(), ref.current.getCurrentTime() * 1e3 - time);
+      ref.current.seekTo(time / 1e3, 'seconds');
     }
   }, [ref, time]);
 
@@ -336,22 +352,22 @@ const Player = ({
     }
   }, [id, primed]);
 
-  const onPause = useCallback(() => {
-    // setPlaying(false);
-  }, []);
+  // const onPause = useCallback(() => {
+  //   // setPlaying(false);
+  // }, []);
 
-  const onSeek = useCallback(() => {
-    // console.log('seek', id);
-    // setActive(id);
-  }, [id]);
+  // const onSeek = useCallback(() => {
+  //   // console.log('seek', id);
+  //   // setActive(id);
+  // }, [id]);
 
-  const onProgress = useCallback(
-    progress => {
-      // console.log(progress);
-      // setActive(id);
-    },
-    [id],
-  );
+  // const onProgress = useCallback(
+  //   progress => {
+  //     // console.log(progress);
+  //     // setActive(id);
+  //   },
+  //   [id],
+  // );
 
   const onBuffer = useCallback(() => {
     console.log('onBuffer', id);
@@ -374,7 +390,7 @@ const Player = ({
         top: 0,
       }}
       muted={!primed}
-      {...{ ref, config, url, playing, onReady, onPlay, onPause, onSeek, onProgress, onBuffer, onBufferEnd }}
+      {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
     />
   );
 };

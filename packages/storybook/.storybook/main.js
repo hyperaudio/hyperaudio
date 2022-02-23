@@ -9,4 +9,8 @@ module.exports = {
     "@storybook/addon-links",
     "storybook-dark-mode",
   ],
+  webpackFinal: async (config) => {
+    config.devtool = "inline-source-map";
+    return config;
+  },
 };

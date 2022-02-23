@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
 
-import { Media, Channel, Transcript } from '../../../models';
+import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -27,24 +27,29 @@ const Root = styled('div', {
   },
 }));
 
-// const getMedia = async (setMedia, id) => setMedia(await DataStore.query(Media, id));
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
   setMedia(media?.[0]);
 };
+
 const getTranscripts = async (setTranscripts, id) =>
   setTranscripts((await DataStore.query(Transcript)).filter(t => t.media === id));
+
+const getRemixes = async (setRemixes, id) =>
+  setRemixes((await DataStore.query(RemixMedia)).filter(r => r.media.id === id).map(r => r.remix));
 
 const MediaPage = () => {
   const router = useRouter();
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
+  const [remixes, setRemixes] = useState([]);
   const [data, setData] = useState();
 
-  console.log({ id, media, transcripts, data });
+  console.log({ id, media, transcripts, remixes, data });
 
   useEffect(() => {
+    window.DataStore = DataStore;
     getMedia(setMedia, id);
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
@@ -53,11 +58,18 @@ const MediaPage = () => {
   }, [id]);
 
   useEffect(() => {
-    window.DataStore = DataStore;
     getTranscripts(setTranscripts, id);
 
-    const subscription = DataStore.observe(Media).subscribe(msg => getTranscripts(setTranscripts, id));
+    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, id));
     window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, id));
+    return () => subscription.unsubscribe();
+  }, [id]);
+
+  useEffect(() => {
+    getRemixes(setRemixes, id);
+
+    const subscription = DataStore.observe(RemixMedia).subscribe(msg => getRemixes(setRemixes, id));
+    window.addEventListener('online', () => navigator.onLine && getRemixes(setRemixes, id));
     return () => subscription.unsubscribe();
   }, [id]);
 
@@ -80,7 +92,7 @@ const MediaPage = () => {
             title: transcript.title,
             translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
           },
-          remixes: [],
+          remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
           blocks: await (await fetch(transcript.url)).json(),
         })),
       );
@@ -114,7 +126,7 @@ const MediaPage = () => {
       // });
       setData({ sources });
     })();
-  }, [media, transcripts]);
+  }, [media, transcripts, remixes]);
 
   console.log({ media, data });
 

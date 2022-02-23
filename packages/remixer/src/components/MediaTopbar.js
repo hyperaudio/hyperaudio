@@ -85,6 +85,8 @@ const Root = styled('div', {
 export const MediaTopbar = ({ source, ...props }) => {
   const { transcript } = source;
 
+  console.log({ MediaTopbar: source });
+
   const defaultTranslation = _.find(transcript.translations, o => o.default === true);
 
   const [isInfoOpen, setIsInfoOpen] = React.useState(false);

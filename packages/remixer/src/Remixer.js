@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useCallback } from 'react';
+import React, { useReducer, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
@@ -124,6 +124,20 @@ const Remixer = props => {
     remix: props.remix,
     source: props.sources[0],
   });
+
+  console.log('REMIX', remix);
+
+  useEffect(() => {
+    dispatch({
+      type: 'reset',
+      state: {
+        sources: props.sources,
+        tabs: props.sources,
+        remix: props.remix,
+        source: props.sources[0],
+      },
+    });
+  }, [props]);
 
   const [showSource, setShowSource] = useState(true);
   const [showLibrary, setShowLibrary] = useState(false);
