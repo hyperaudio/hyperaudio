@@ -182,7 +182,7 @@ const Topbar = (props: TopbarProps) => {
             sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '300px' }}
           >
             <Typography variant="body2" color="primary" sx={{ fontWeight: 500 }}>
-              × Conferences
+              Conferences
             </Typography>
           </MenuItem>
           <MenuItem
@@ -193,7 +193,7 @@ const Topbar = (props: TopbarProps) => {
             sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '300px' }}
           >
             <Typography variant="body2" color="primary" sx={{ fontWeight: 500 }}>
-              × Podcasts
+              Podcasts
             </Typography>
             <Typography variant="overline" color="info">
               Coming soon
@@ -206,7 +206,7 @@ const Topbar = (props: TopbarProps) => {
             sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '300px' }}
           >
             <Typography variant="body2" color="primary" sx={{ fontWeight: 500 }}>
-              × Schools
+              Schools
             </Typography>
             <Typography variant="overline" color="info">
               Coming soon
