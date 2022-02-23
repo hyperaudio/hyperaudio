@@ -1,5 +1,5 @@
 export const config = {
-  description: 'A new way of looking at audio.',
+  description: 'A new way of looking at audio and video.',
   keywords: 'hyperaudio, audio, webmedia, media, online, speech, text, word, alignment, tools',
   title: 'Hyperaudio',
   url: 'https://hyper.audio/',

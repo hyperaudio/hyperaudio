@@ -87,11 +87,11 @@ export default function MyApp(props: MyAppProps) {
         <link rel="canonical" href={config.url} />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-        <meta name="author" content="Hyperaudio — https://hyper.audio" />
+        <meta name="author" content="Hyperaudio — https://hyper.audio" />
         <meta name="charset" content="utf-8" />
         <meta name="coverage" content="Worldwide" />
         <meta name="description" content={config.description} />
-        <meta name="designer" content="Hyperaudio — https://hyper.audio" />
+        <meta name="designer" content="Hyperaudio — https://hyper.audio" />
         <meta name="distribution" content="Global" />
         <meta name="google" content="nositelinkssearchbox" />
         <meta name="keywords" content={config.keywords} />
@@ -112,10 +112,10 @@ export default function MyApp(props: MyAppProps) {
 
         {/* og metadata */}
         <meta property="og:description" content={config.description} />
-        <meta property="og:image" content="/cover.png" />
+        <meta property="og:image" content="/images/cover.png" />
         <meta property="og:image:alt" content={config.title} />
         <meta property="og:image:height" content="627" />
-        <meta property="og:image:secure_url" content="/cover.png" />
+        <meta property="og:image:secure_url" content="/images/cover.png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:locale" content="en" />
         <meta property="og:site_name" content={config.title} />
