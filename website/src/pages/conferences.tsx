@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
-import { setLightness } from 'polished';
 import { useState } from 'react';
+import { deepPurple, indigo, teal, amber, red, pink } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -15,7 +15,7 @@ import Fade from '@mui/material/Fade';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 
 interface PageProps {
   yOffset: Number;
@@ -111,7 +111,6 @@ const Root = styled('div', {
 }));
 
 const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
-  const theme = useTheme();
   const { yOffset } = props;
   const [expanded, setExpanded] = useState<number | false>(0);
   const handleChange = (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -151,7 +150,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
   const features = [
     {
       id: 0,
-      color: setLightness(0.93, theme.palette.primary.main),
+      color: deepPurple[50],
       image: '/images/sample.png',
       title: 'Tailored for Conferences',
       text: 'Include slide decks, specify tracks and tags, see speaker listings.',
@@ -159,7 +158,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 1,
-      color: setLightness(0.93, theme.palette.success.main),
+      color: red[50],
       image: '/images/sample.png',
       title: 'Increase Accessibility',
       text: 'Our Interactive Transcripts make it easy for participants to quickly scan and navigate content.',
@@ -167,7 +166,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 2,
-      color: setLightness(0.93, theme.palette.secondary.main),
+      color: indigo[50],
       image: '/images/sample.png',
       title: 'Repurpose your Content',
       text: 'Create summaries, compilations and highlight reels by using our intuitive text based remixer.',
@@ -176,7 +175,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 3,
-      color: setLightness(0.93, theme.palette.warning.main),
+      color: teal[50],
       image: '/images/sample.png',
       title: 'Maintain Context',
       text: 'The source content for each clip can be viewed, allowing context to be preserved.',
@@ -185,7 +184,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 4,
-      color: setLightness(0.93, theme.palette.error.main),
+      color: amber[50],
       image: '/images/sample.png',
       title: 'Extend your Reach',
       text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
@@ -652,11 +651,11 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
               Start sharing your conference
             </Typography>
-            <Typography variant="h1" display="block" component="span" gutterBottom>
-              Access. Repurpouse. Share. Now.
+            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 2 }}>
+              Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: { xs: 0, md: 1 } }}>
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 1 }}>
             Request demo
           </Button>
         </Container>
