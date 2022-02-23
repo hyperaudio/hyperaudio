@@ -282,34 +282,23 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
         <Container
           fixed
           sx={{
-            py: { xs: 16, md: 26 },
+            py: { xs: 12, md: 18, xl: 24 },
             mt: `${yOffset * -1}px`,
           }}
           maxWidth="xl"
         >
-          <Grid container spacing={{ md: 6, lg: 12 }}>
-            <Grid item xs={12} lg={5}>
-              <Box sx={{ textAlign: { xs: 'center', lg: 'left' } }}>
-                <Container disableGutters maxWidth="sm">
-                  <Typography variant="h1" gutterBottom>
-                    Make the most of your conference content
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    component="p"
-                    sx={{
-                      fontWeight: 500,
-                      mt: { xs: 3, sm: 4 },
-                    }}
-                  >
-                    Transcribe, translate, repurpose and share — meet your audience wherever they are.
-                  </Typography>
-                </Container>
-              </Box>
+          <Box sx={{ py: 6, textAlign: 'center' }}>
+            <Container disableGutters maxWidth="xl">
+              <Typography variant="h1" gutterBottom>
+                Make the most of your conference content
+              </Typography>
+              <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
+                Transcribe, translate, repurpose and share — meet your audience wherever they are.
+              </Typography>
               <Box
                 sx={{
-                  mt: { xs: 3, sm: 4 },
-                  textAlign: { xs: 'center', lg: 'left' },
+                  mt: 4,
+                  textAlign: 'center',
                 }}
               >
                 <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
@@ -319,115 +308,114 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                   Request a demo
                 </Button>
               </Box>
-              <Box
-                sx={{
-                  mt: { xs: 4, md: 8 },
-                  mx: { md: 2 * -1 },
-                }}
-              >
-                <Container disableGutters maxWidth="sm">
-                  {herocordion.map(acc => {
-                    return (
-                      <Accordion
-                        elevation={0}
-                        sx={{
-                          background: 'none',
-                          border: 'none',
-                          px: 0,
-                          [`&:before`]: { display: 'none' },
-                        }}
-                        disableGutters
-                        expanded={expanded === acc.id}
-                        key={acc.id}
-                        onChange={handleChange(acc.id)}
-                      >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon color="disabled" />}
-                          aria-controls={`${acc.id}-content`}
-                          id={`${acc.id}-header`}
+            </Container>
+          </Box>
+          <Box sx={{ my: { xs: 3, md: 6, xl: 18 } }}>
+            <Grid container spacing={{ md: 6, lg: 12 }}>
+              <Grid item xs={12} lg={4}>
+                <Box sx={{ mx: { sm: 2 * -1 } }}>
+                  <Container disableGutters maxWidth="sm">
+                    {herocordion.map(acc => {
+                      return (
+                        <Accordion
+                          elevation={0}
+                          sx={{
+                            background: 'none',
+                            border: 'none',
+                            px: 0,
+                            [`&:before`]: { display: 'none' },
+                          }}
+                          disableGutters
+                          expanded={expanded === acc.id}
+                          key={acc.id}
+                          onChange={handleChange(acc.id)}
                         >
-                          <Typography component="h2">
-                            <Typography
-                              component="span"
-                              sx={{
-                                borderBottom: '3px solid',
-                                borderColor: acc.color,
-                              }}
-                              variant="subtitle1"
-                            >
-                              {acc.title}
-                            </Typography>
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography color="textSecondary" gutterBottom variant="body2">
-                            {acc.text}
-                          </Typography>
-                          <Box
-                            sx={{
-                              lineHeight: 0,
-                              mt: { xs: 2, sm: 3 },
-                              display: { lg: 'none' },
-                              border: '1px solid',
-                              borderColor: 'text.primary',
-                              borderRadius: 2,
-                              overflow: 'hidden',
-                              position: 'relative',
-                            }}
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon color="disabled" />}
+                            aria-controls={`${acc.id}-content`}
+                            id={`${acc.id}-header`}
                           >
-                            <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                          </Box>
-                        </AccordionDetails>
-                      </Accordion>
-                    );
-                  })}
-                </Container>
-              </Box>
+                            <Typography component="h2">
+                              <Typography
+                                component="span"
+                                sx={{
+                                  borderBottom: '3px solid',
+                                  borderColor: acc.color,
+                                }}
+                                variant="subtitle1"
+                              >
+                                {acc.title}
+                              </Typography>
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Typography color="textSecondary" gutterBottom variant="body2">
+                              {acc.text}
+                            </Typography>
+                            <Box
+                              sx={{
+                                lineHeight: 0,
+                                mt: { xs: 2, sm: 3 },
+                                display: { lg: 'none' },
+                                border: '1px solid',
+                                borderColor: 'text.primary',
+                                borderRadius: 2,
+                                overflow: 'hidden',
+                                position: 'relative',
+                              }}
+                            >
+                              <Image alt="Translate" height="600px" src={acc.image} width="900px" />
+                            </Box>
+                          </AccordionDetails>
+                        </Accordion>
+                      );
+                    })}
+                  </Container>
+                </Box>
+              </Grid>
+              <Grid
+                container
+                flexDirection="column"
+                item
+                justifyContent="center"
+                lg={8}
+                sx={{ position: 'relative' }}
+                xs={12}
+              >
+                {herocordion.map(acc => {
+                  return (
+                    <Fade in={expanded === acc.id}>
+                      <Paper
+                        elevation={6}
+                        sx={{
+                          border: '1px solid',
+                          borderColor: 'text.primary',
+                          borderRadius: 5,
+                          display: { xs: 'none', lg: 'block' },
+                          lineHeight: 0,
+                          overflow: 'hidden',
+                          position: 'absolute',
+                        }}
+                      >
+                        <Image alt="Translate" height="600px" src={acc.image} width="900px" />
+                      </Paper>
+                    </Fade>
+                  );
+                })}
+              </Grid>
             </Grid>
-            <Grid
-              container
-              flexDirection="column"
-              item
-              justifyContent="center"
-              lg={7}
-              sx={{ position: 'relative' }}
-              xs={12}
-            >
-              {herocordion.map(acc => {
-                return (
-                  <Fade in={expanded === acc.id}>
-                    <Paper
-                      elevation={6}
-                      sx={{
-                        border: '1px solid',
-                        borderColor: 'text.primary',
-                        borderRadius: 5,
-                        display: { xs: 'none', lg: 'block' },
-                        lineHeight: 0,
-                        overflow: 'hidden',
-                        position: 'absolute',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                      }}
-                    >
-                      <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                    </Paper>
-                  </Fade>
-                );
-              })}
-            </Grid>
-          </Grid>
-          <Typography variant="overline" display="block" align="center" sx={{ fontWeight: 500, mt: { xs: 6, md: 12 } }}>
-            As used by
-          </Typography>
-          <Box sx={{ mt: { xs: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {users.map(o => {
-              return (
+          </Box>
+          <Box sx={{ pt: 6, textAlign: 'center' }}>
+            <Typography variant="overline" display="block" sx={{ fontWeight: 500 }}>
+              As used by:
+            </Typography>
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {users.map(o => (
                 <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
-              );
-            })}
+              ))}
+            </Box>
           </Box>
         </Container>
       </div>
@@ -443,7 +431,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           fixed
           maxWidth="xl"
           sx={{
-            py: { xs: 0, sm: 12, md: 24 },
+            py: { sm: 12, md: 18, xl: 24 },
           }}
         >
           {features.map((f, i) => {
