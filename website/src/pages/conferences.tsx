@@ -1,17 +1,18 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { deepPurple, indigo, teal, amber, red, pink } from '@mui/material/colors';
+import { deepPurple, orange, indigo, teal, blue, red, green } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
+import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -43,18 +44,18 @@ const Root = styled('div', {
   [`& .${classes.hero}`]: {},
   [`& .${classes.features}`]: {
     backgroundColor: theme.palette.background.paper,
-    paddingTop: '1px',
-    paddingBottom: '1px',
+    paddingTop: '3px',
+    paddingBottom: '3px',
   },
   [`& .${classes.features2}`]: {
     backgroundColor: theme.palette.background.paper,
     [`& > div > div`]: {
-      background: theme.palette.primary.main,
+      // background: theme.palette.primary.main,
       // backgroundImage: 'url("/images/ornament.svg")',
       // backgroundSize: 'cover',
       // backgroundPosition: 'center center',
       // backgroundRepeat: 'no-repeat',
-      color: theme.palette.secondary.contrastText,
+      // color: theme.palette.secondary.contrastText,
     },
   },
   [`& .${classes.praises}`]: {
@@ -150,7 +151,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
   const features = [
     {
       id: 0,
-      color: deepPurple[50],
+      color: indigo[50],
       image: '/images/sample.png',
       title: 'Tailored for Conferences',
       text: 'Include slide decks, specify tracks and tags, see speaker listings.',
@@ -166,7 +167,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 2,
-      color: indigo[50],
+      color: teal[50],
       image: '/images/sample.png',
       title: 'Repurpose your Content',
       text: 'Create summaries, compilations and highlight reels by using our intuitive text based remixer.',
@@ -175,7 +176,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 3,
-      color: teal[50],
+      color: green[50],
       image: '/images/sample.png',
       title: 'Maintain Context',
       text: 'The source content for each clip can be viewed, allowing context to be preserved.',
@@ -184,7 +185,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 4,
-      color: amber[50],
+      color: blue[50],
       image: '/images/sample.png',
       title: 'Extend your Reach',
       text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
@@ -194,6 +195,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
   const features2 = [
     {
       id: 0,
+      color: orange[900],
       title: 'Harness Community',
       text: 'Grant access to community members allowing them to correct transcripts and translations.',
       text2:
@@ -201,6 +203,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 1,
+      color: blue[900],
       title: 'Own your Data',
       text: 'Archive videos, slides, transcripts and captions on an independent media storage service and CDN, thanks to our partners Permanent.org.',
       text2:
@@ -208,6 +211,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 2,
+      color: red[900],
       title: 'Create a Safe Space',
       text: 'Granular access control allows you to choose who sees your content',
       text2:
@@ -215,6 +219,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 3,
+      color: indigo[900],
       title: 'Maintain Context',
       text: 'The source content for each clip can be viewed, allowing context to be preserved.',
       text2:
@@ -282,34 +287,23 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
         <Container
           fixed
           sx={{
-            py: { xs: 16, md: 26 },
+            py: { xs: 12, md: 18, xl: 24 },
             mt: `${yOffset * -1}px`,
           }}
           maxWidth="xl"
         >
-          <Grid container spacing={{ md: 6, lg: 12 }}>
-            <Grid item xs={12} lg={5}>
-              <Box sx={{ textAlign: { xs: 'center', lg: 'left' } }}>
-                <Container disableGutters maxWidth="sm">
-                  <Typography variant="h1" gutterBottom>
-                    Make the most of your conference content
-                  </Typography>
-                  <Typography
-                    variant="h5"
-                    component="p"
-                    sx={{
-                      fontWeight: 500,
-                      mt: { xs: 3, sm: 4 },
-                    }}
-                  >
-                    Transcribe, translate, repurpose and share — meet your audience wherever they are.
-                  </Typography>
-                </Container>
-              </Box>
+          <Box sx={{ py: 6, textAlign: 'center' }}>
+            <Container disableGutters maxWidth="xl">
+              <Typography variant="h1" gutterBottom>
+                Make the most of your conference content
+              </Typography>
+              <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
+                Transcribe, translate, repurpose and share — meet your audience wherever they are.
+              </Typography>
               <Box
                 sx={{
-                  mt: { xs: 3, sm: 4 },
-                  textAlign: { xs: 'center', lg: 'left' },
+                  mt: 4,
+                  textAlign: 'center',
                 }}
               >
                 <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
@@ -319,115 +313,114 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                   Request a demo
                 </Button>
               </Box>
-              <Box
-                sx={{
-                  mt: { xs: 4, md: 8 },
-                  mx: { md: 2 * -1 },
-                }}
-              >
-                <Container disableGutters maxWidth="sm">
-                  {herocordion.map(acc => {
-                    return (
-                      <Accordion
-                        elevation={0}
-                        sx={{
-                          background: 'none',
-                          border: 'none',
-                          px: 0,
-                          [`&:before`]: { display: 'none' },
-                        }}
-                        disableGutters
-                        expanded={expanded === acc.id}
-                        key={acc.id}
-                        onChange={handleChange(acc.id)}
-                      >
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon color="disabled" />}
-                          aria-controls={`${acc.id}-content`}
-                          id={`${acc.id}-header`}
+            </Container>
+          </Box>
+          <Box sx={{ my: { xs: 3, md: 6, xl: 18 } }}>
+            <Grid container spacing={{ md: 6, lg: 12 }}>
+              <Grid item xs={12} lg={4}>
+                <Box sx={{ mx: { sm: 2 * -1 } }}>
+                  <Container disableGutters maxWidth="sm">
+                    {herocordion.map(acc => {
+                      return (
+                        <Accordion
+                          elevation={0}
+                          sx={{
+                            background: 'none',
+                            border: 'none',
+                            px: 0,
+                            [`&:before`]: { display: 'none' },
+                          }}
+                          disableGutters
+                          expanded={expanded === acc.id}
+                          key={acc.id}
+                          onChange={handleChange(acc.id)}
                         >
-                          <Typography component="h2">
-                            <Typography
-                              component="span"
-                              sx={{
-                                borderBottom: '3px solid',
-                                borderColor: acc.color,
-                              }}
-                              variant="subtitle1"
-                            >
-                              {acc.title}
-                            </Typography>
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <Typography color="textSecondary" gutterBottom variant="body2">
-                            {acc.text}
-                          </Typography>
-                          <Box
-                            sx={{
-                              lineHeight: 0,
-                              mt: { xs: 2, sm: 3 },
-                              display: { lg: 'none' },
-                              border: '1px solid',
-                              borderColor: 'text.primary',
-                              borderRadius: 2,
-                              overflow: 'hidden',
-                              position: 'relative',
-                            }}
+                          <AccordionSummary
+                            expandIcon={<ExpandMoreIcon color="disabled" />}
+                            aria-controls={`${acc.id}-content`}
+                            id={`${acc.id}-header`}
                           >
-                            <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                          </Box>
-                        </AccordionDetails>
-                      </Accordion>
-                    );
-                  })}
-                </Container>
-              </Box>
+                            <Typography component="h2">
+                              <Typography
+                                component="span"
+                                sx={{
+                                  borderBottom: '3px solid',
+                                  borderColor: acc.color,
+                                }}
+                                variant="subtitle1"
+                              >
+                                {acc.title}
+                              </Typography>
+                            </Typography>
+                          </AccordionSummary>
+                          <AccordionDetails>
+                            <Typography color="textSecondary" gutterBottom variant="body2">
+                              {acc.text}
+                            </Typography>
+                            <Box
+                              sx={{
+                                lineHeight: 0,
+                                mt: { xs: 2, sm: 3 },
+                                display: { lg: 'none' },
+                                border: '1px solid',
+                                borderColor: 'text.primary',
+                                borderRadius: 2,
+                                overflow: 'hidden',
+                                position: 'relative',
+                              }}
+                            >
+                              <Image alt="Translate" height="600px" src={acc.image} width="900px" />
+                            </Box>
+                          </AccordionDetails>
+                        </Accordion>
+                      );
+                    })}
+                  </Container>
+                </Box>
+              </Grid>
+              <Grid
+                container
+                flexDirection="column"
+                item
+                justifyContent="center"
+                lg={8}
+                sx={{ position: 'relative' }}
+                xs={12}
+              >
+                {herocordion.map(acc => {
+                  return (
+                    <Fade in={expanded === acc.id}>
+                      <Paper
+                        elevation={6}
+                        sx={{
+                          border: '1px solid',
+                          borderColor: 'text.primary',
+                          borderRadius: 5,
+                          display: { xs: 'none', lg: 'block' },
+                          lineHeight: 0,
+                          overflow: 'hidden',
+                          position: 'absolute',
+                        }}
+                      >
+                        <Image alt="Translate" height="600px" src={acc.image} width="900px" />
+                      </Paper>
+                    </Fade>
+                  );
+                })}
+              </Grid>
             </Grid>
-            <Grid
-              container
-              flexDirection="column"
-              item
-              justifyContent="center"
-              lg={7}
-              sx={{ position: 'relative' }}
-              xs={12}
-            >
-              {herocordion.map(acc => {
-                return (
-                  <Fade in={expanded === acc.id}>
-                    <Paper
-                      elevation={6}
-                      sx={{
-                        border: '1px solid',
-                        borderColor: 'text.primary',
-                        borderRadius: 5,
-                        display: { xs: 'none', lg: 'block' },
-                        lineHeight: 0,
-                        overflow: 'hidden',
-                        position: 'absolute',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                      }}
-                    >
-                      <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                    </Paper>
-                  </Fade>
-                );
-              })}
-            </Grid>
-          </Grid>
-          <Typography variant="overline" display="block" align="center" sx={{ fontWeight: 500, mt: { xs: 6, md: 12 } }}>
-            As used by
-          </Typography>
-          <Box sx={{ mt: { xs: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {users.map(o => {
-              return (
+          </Box>
+          <Box sx={{ pt: 6, textAlign: 'center' }}>
+            <Typography variant="overline" display="block" sx={{ fontWeight: 500 }}>
+              As used by:
+            </Typography>
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {users.map(o => (
                 <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
-              );
-            })}
+              ))}
+            </Box>
           </Box>
         </Container>
       </div>
@@ -439,15 +432,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.features}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            py: { xs: 0, sm: 12, md: 24 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ py: { sm: 12, md: 18, xl: 24 } }}>
           {features.map((f, i) => {
-            const isOdd = i % 2 == 0;
+            // const isOdd = i % 2 == 0;
             const isEven = Math.abs(i % 2) == 1;
             const isFirst = i !== 0;
             return (
@@ -456,55 +443,59 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 container
                 justifyContent="center"
                 spacing={{ xs: 0, md: 6, lg: 12 }}
-                sx={isFirst ? { mt: { xs: '1px', sm: 6, md: 12 } } : {}}
+                sx={isFirst ? { mt: { xs: '3px', sm: 6, md: 12 } } : {}}
               >
                 <Grid item xs={12} md={7} order={{ md: isEven ? 2 : 'unset' }}>
                   <Box
                     sx={{
-                      px: { xs: 6, sm: 6, xl: 10 },
-                      pt: { xs: 6, sm: 6, xl: 10 },
-                      pb: { xs: 3, sm: 3, md: 6, xl: 10 },
                       backgroundColor: f.color,
                       borderRadius: { sm: 5, lg: 10 },
                       mx: { xs: -2, sm: 0 },
+                      pb: { xs: 3, sm: 3, md: 3, lg: 5, xl: 10 },
+                      pt: { xs: 6, sm: 3, lg: 5, xl: 10 },
+                      px: { lg: 2, xl: 7 },
                     }}
                     className={classes.tileHead}
                   >
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        border: '1px solid',
-                        borderColor: f.color,
-                        borderRadius: { xs: 2 },
-                        lineHeight: 0,
-                        overflow: 'hidden',
-                        width: '100%',
-                      }}
-                    >
-                      <Image alt="Translate" height="600px" src={f.image} width="900px" />
-                    </Paper>
+                    <Container>
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          border: '2px solid',
+                          borderColor: 'white',
+                          borderRadius: { xs: 2 },
+                          lineHeight: 0,
+                          overflow: 'hidden',
+                          width: '100%',
+                        }}
+                      >
+                        <Image alt="Translate" height="600px" src={f.image} width="900px" />
+                      </Paper>
+                    </Container>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={5}>
                   <Box
                     sx={{
                       bgcolor: { xs: f.color, md: 'transparent' },
-                      pb: { xs: 6, sm: 6, md: 0 },
-                      px: { xs: 6, sm: 6, md: 0 },
+                      pb: { xs: 6, sm: 3, md: 0, lg: 5 },
                       borderRadius: { sm: 5, md: 0 },
                       mx: { xs: -2, sm: 0 },
+                      textAlign: { xs: 'center', sm: 'left' },
                     }}
                     className={classes.tileBody}
                   >
-                    <Typography variant="h3" component="h3" gutterBottom>
-                      {f.title}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
-                      {f.text}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
-                      {f.text2}
-                    </Typography>
+                    <Container>
+                      <Typography variant="h4" component="h3" gutterBottom>
+                        {f.title}
+                      </Typography>
+                      <Typography color="textSecondary" variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
+                        {f.text}
+                      </Typography>
+                      <Typography color="textSecondary" variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
+                        {f.text2}
+                      </Typography>
+                    </Container>
                   </Box>
                 </Grid>
               </Grid>
@@ -521,28 +512,19 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       */}
       <div className={classes.features2}>
         <Container fixed maxWidth="xl">
-          <Box
-            sx={{
-              bgcolor: 'primary.main',
-              borderRadius: { sm: 2, md: 5, lg: 10 },
-              color: 'primary.contrastText',
-              px: { xs: 2, sm: 6, md: 12 },
-              py: { xs: 6, md: 12 },
-              mx: { xs: -2, sm: 0 },
-            }}
-          >
-            <Grid container spacing={{ xs: 5, lg: 11 }}>
-              {features2.map(feature => (
-                <Grid item key={feature.id} xs={12} sm={6} xl={3}>
+          <Box sx={{ pt: { xs: 6, sm: 0 } }}>
+            <Grid container spacing={{ xs: 6, sm: 6, md: 8, lg: 16, xl: 8 }}>
+              {features2.map(f => (
+                <Grid item key={f.id} xs={12} sm={6} xl={3} sx={{ position: 'relative' }}>
                   <Box>
-                    <Typography component="h3" variant="h6">
-                      {feature.title}
+                    <Typography component="h3" variant="h5" color={f.color}>
+                      {f.title}
                     </Typography>
-                    <Typography variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
-                      {feature.text}
+                    <Typography color="textSecondary" variant="body1" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                      {f.text}
                     </Typography>
-                    <Typography variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
-                      {feature.text2}
+                    <Typography color="textSecondary" variant="body1" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                      {f.text2}
                     </Typography>
                   </Box>
                 </Grid>
@@ -559,13 +541,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.praises}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            pt: { xs: 8, md: 16 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ pt: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h2" variant="h3" display="block" align="center" sx={{ mt: { xs: 6, md: 12 } }}>
             Supported by organizations
           </Typography>
@@ -586,13 +562,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.quotes}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            pt: { xs: 8, md: 16 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ pt: { xs: 12, md: 18, xl: 24 } }}>
           <Typography align="center" component="h2" variant="h3" display="block" sx={{ mt: { xs: 6, md: 12 } }}>
             Praised by Experts
           </Typography>
@@ -640,23 +610,17 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.takeaway}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            py: { xs: 16, md: 26 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h1">
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
               Start sharing your conference
             </Typography>
-            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 2 }}>
+            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 1 }}>
-            Request demo
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
+            Request a demo
           </Button>
         </Container>
       </div>
