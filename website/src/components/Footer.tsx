@@ -11,7 +11,7 @@ import { styled } from '@mui/material/styles';
 import { HyperaudioMain } from '@hyperaudio/common';
 
 import Link from './Link';
-import { links } from '../config';
+import { config } from '../config';
 
 // interface Props {
 // children: React.ReactElement;
@@ -25,8 +25,12 @@ const classes = {
 const Root = styled('footer', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
-  background: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.main,
   color: theme.palette.primary.contrastText,
+  // backgroundImage: 'url("/images/ornament.svg")',
+  // backgroundSize: 'cover',
+  // backgroundPosition: 'center center',
+  // backgroundRepeat: 'no-repeat',
 }));
 
 const Footer = () => (
@@ -62,12 +66,12 @@ const Footer = () => (
         </Grid>
         <Grid item xs={12} lg={4} sx={{ textAlign: { xs: 'center', lg: 'right' } }}>
           <Tooltip title="Hyperaudio on Github">
-            <IconButton href={links.github} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
+            <IconButton href={config.github} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
               <GitHubIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Hyperaudio on Twitter">
-            <IconButton href={links.twitter} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
+            <IconButton href={config.twitter} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
               <TwitterIcon />
             </IconButton>
           </Tooltip>

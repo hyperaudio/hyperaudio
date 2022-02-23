@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
+import { setLightness } from 'polished';
 import { useState } from 'react';
 
 import Accordion from '@mui/material/Accordion';
@@ -14,7 +15,7 @@ import Fade from '@mui/material/Fade';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 
 interface PageProps {
   yOffset: Number;
@@ -22,15 +23,18 @@ interface PageProps {
 
 const PREFIX = `ConferencesPage`;
 const classes = {
+  features2: `${PREFIX}-features2`,
   features: `${PREFIX}-features`,
   hero: `${PREFIX}-hero`,
   logo: `${PREFIX}-logo`,
   praises: `${PREFIX}-praises`,
   quote: `${PREFIX}-quote`,
-  quotes: `${PREFIX}-quotes`,
   quoteIcon: `${PREFIX}-quoteIcon`,
+  quotes: `${PREFIX}-quotes`,
   root: `${PREFIX}-root`,
   takeaway: `${PREFIX}-takeaway`,
+  tileBody: `${PREFIX}-tileBody`,
+  tileHead: `${PREFIX}-tileHead`,
 };
 
 const Root = styled('div', {
@@ -38,7 +42,18 @@ const Root = styled('div', {
 })(({ theme }) => ({
   [`& .${classes.hero}`]: {},
   [`& .${classes.features}`]: {
-    background: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.paper,
+  },
+  [`& .${classes.features2}`]: {
+    backgroundColor: theme.palette.background.paper,
+    [`& > div > div`]: {
+      background: theme.palette.primary.main,
+      // backgroundImage: 'url("/images/ornament.svg")',
+      // backgroundSize: 'cover',
+      // backgroundPosition: 'center center',
+      // backgroundRepeat: 'no-repeat',
+      color: theme.palette.secondary.contrastText,
+    },
   },
   [`& .${classes.praises}`]: {
     background: theme.palette.background.paper,
@@ -47,7 +62,10 @@ const Root = styled('div', {
   [`& .${classes.quotes}`]: {
     background: theme.palette.background.paper,
     [`& .${classes.quote}`]: {
-      borderRadius: theme.shape.borderRadius * 10,
+      borderRadius: theme.shape.borderRadius * 5,
+      [theme.breakpoints.up('lg')]: {
+        borderRadius: theme.shape.borderRadius * 10,
+      },
     },
     [`& .${classes.quoteIcon}`]: {
       position: 'absolute',
@@ -59,9 +77,17 @@ const Root = styled('div', {
       },
     },
   },
-  [`& .${classes.takeaway}`]: {
-    background: theme.palette.background.paper,
-    textAlign: 'center',
+  [`& .${classes.tileHead}`]: {
+    [theme.breakpoints.down('md')]: {
+      borderBottomRightRadius: '0',
+      borderBottomLeftRadius: '0',
+    },
+  },
+  [`& .${classes.tileBody}`]: {
+    [theme.breakpoints.down('md')]: {
+      borderTopRightRadius: '0',
+      borderTopLeftRadius: '0',
+    },
   },
   [`& .${classes.logo}`]: {
     height: '30px',
@@ -69,9 +95,14 @@ const Root = styled('div', {
       height: '40px',
     },
   },
+  [`& .${classes.takeaway}`]: {
+    background: theme.palette.background.paper,
+    textAlign: 'center',
+  },
 }));
 
 const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
+  const theme = useTheme();
   const { yOffset } = props;
   const [expanded, setExpanded] = useState<number | false>(0);
   const handleChange = (panel: number) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -98,14 +129,88 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       id: 2,
       image: '/images/sample.png',
       text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
-      title: 'Remix',
+      title: 'Repurpose',
     },
     {
       color: 'warning.main',
       id: 3,
       image: '/images/sample.png',
       text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
-      title: 'Publish',
+      title: 'Share',
+    },
+  ];
+  const features = [
+    {
+      id: 0,
+      color: setLightness(0.93, theme.palette.primary.main),
+      image: '/images/sample.png',
+      title: 'Tailored for Conferences',
+      text: 'Include slide decks, specify tracks and tags, see speaker listings.',
+      text2: 'Easily create summaries, highlight reels or distilled versions of conference talks.',
+    },
+    {
+      id: 1,
+      color: setLightness(0.93, theme.palette.success.main),
+      image: '/images/sample.png',
+      title: 'Increase Accessibility',
+      text: 'Our Interactive Transcripts make it easy for participants to quickly scan and navigate content.',
+      text2: 'Transcript timings match the video, allowing you to jump to the right point by clicking on the text.',
+    },
+    {
+      id: 2,
+      color: setLightness(0.93, theme.palette.secondary.main),
+      image: '/images/sample.png',
+      title: 'Repurpose your Content',
+      text: 'Create summaries, compilations and highlight reels by using our intuitive text based remixer.',
+      text2:
+        'Remixes can be made from multiple video clips and simple video effects. Text can be used for blog posts and articles. Clips can be made for social media.',
+    },
+    {
+      id: 3,
+      color: setLightness(0.93, theme.palette.warning.main),
+      image: '/images/sample.png',
+      title: 'Maintain Context',
+      text: 'The source content for each clip can be viewed, allowing context to be preserved.',
+      text2:
+        'In the world of misinformation, it is important  distinguish context, intent and with content. And responsibly host content.',
+    },
+    {
+      id: 4,
+      color: setLightness(0.93, theme.palette.error.main),
+      image: '/images/sample.png',
+      title: 'Extend your Reach',
+      text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
+      text2: 'Support up to 30 translations for each piece of video content using our workflow.',
+    },
+  ];
+  const features2 = [
+    {
+      id: 0,
+      title: 'Harness Community',
+      text: 'Grant access to community members allowing them to correct transcripts and translations.',
+      text2:
+        'Bestow remixing superpowers on others, reward community contributions or choose to compensate them through web monetisation',
+    },
+    {
+      id: 1,
+      title: 'Own your Data',
+      text: 'Archive videos, slides, transcripts and captions on an independent media storage service and CDN, thanks to our partners Permanent.org.',
+      text2:
+        'You can export all your data at any time in a form easily publishable on any website independent of Hyperaudio.',
+    },
+    {
+      id: 2,
+      title: 'Create a Safe Space',
+      text: 'Granular access control allows you to choose who sees your content',
+      text2:
+        'Our ongoing focus on community safety allows us to adapt our  processes and moderation tooling to best keep safe our community members.',
+    },
+    {
+      id: 3,
+      title: 'Maintain Context',
+      text: 'The source content for each clip can be viewed, allowing context to be preserved.',
+      text2:
+        'In the world of misinformation, it is important  distinguish context, intent and with content. And responsibly host content.',
     },
   ];
   const users = [
@@ -158,6 +263,13 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
   return (
     <Root className={classes.root}>
+      {/*
+
+      -----------------------------------------------
+      HERO
+      -----------------------------------------------
+
+      */}
       <div className={classes.hero}>
         <Container
           fixed
@@ -175,12 +287,14 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                     Make the most of your conference content
                   </Typography>
                   <Typography
-                    variant="subtitle1"
+                    variant="h5"
+                    component="p"
                     sx={{
+                      fontWeight: 500,
                       mt: { xs: 3, sm: 4 },
                     }}
                   >
-                    Transcribe, translate, repurpose and share – meet your audience wherever they are.
+                    Transcribe, translate, repurpose and share—meet your audience wherever they are.
                   </Typography>
                 </Container>
               </Box>
@@ -199,12 +313,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               </Box>
               <Box
                 sx={{
-                  // borderColor: "info.main",
-                  // borderRadius: 5,
-                  // borderStyle: "solid",
-                  // borderWidth: 1,
                   mt: { xs: 4, md: 8 },
-                  // p: { xs: 2 },
                   mx: { md: 2 * -1 },
                 }}
               >
@@ -314,6 +423,13 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Box>
         </Container>
       </div>
+      {/*
+
+      -----------------------------------------------
+      FEATURES I
+      -----------------------------------------------
+
+      */}
       <div className={classes.features}>
         <Container
           fixed
@@ -322,15 +438,120 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             py: { xs: 16, md: 26 },
           }}
         >
-          Features
+          {features.map((f, i) => {
+            const isOdd = i % 2 == 0;
+            const isEven = Math.abs(i % 2) == 1;
+            const isFirst = i !== 0;
+            return (
+              <Grid
+                alignItems="center"
+                container
+                justifyContent="center"
+                spacing={{ xs: 0, md: 6, lg: 12 }}
+                sx={isFirst ? { mt: { xs: 3, sm: 6, md: 12 } } : {}}
+              >
+                <Grid item xs={12} md={7} order={{ md: isEven ? 2 : 'unset' }}>
+                  <Box
+                    sx={{
+                      p: { xs: 2, sm: 6, xl: 10 },
+                      backgroundColor: f.color,
+                      borderRadius: { xs: 5, lg: 10 },
+                    }}
+                    className={classes.tileHead}
+                  >
+                    <Paper
+                      elevation={0}
+                      sx={{
+                        border: '1px solid',
+                        borderColor: f.color,
+                        borderRadius: { xs: 2 },
+                        lineHeight: 0,
+                        overflow: 'hidden',
+                        width: '100%',
+                      }}
+                    >
+                      <Image alt="Translate" height="600px" src={f.image} width="900px" />
+                    </Paper>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={5}>
+                  <Box
+                    sx={{
+                      bgcolor: { xs: f.color, md: 'transparent' },
+                      pb: { xs: 2, sm: 6, md: 0 },
+                      px: { xs: 2, sm: 6, md: 0 },
+                      borderRadius: { xs: 5, md: 0 },
+                    }}
+                    className={classes.tileBody}
+                  >
+                    <Typography variant="h4" component="h3" gutterBottom>
+                      {f.title}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
+                      {f.text}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
+                      {f.text2}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
+            );
+          })}
         </Container>
       </div>
+      {/*
+
+      -----------------------------------------------
+      FEATURES II
+      -----------------------------------------------
+
+      */}
+      <div className={classes.features2}>
+        <Container fixed maxWidth="xl">
+          <Box
+            sx={{
+              bgcolor: 'primary.main',
+              borderRadius: { sm: 2, md: 5, lg: 10 },
+              color: 'primary.contrastText',
+              px: { xs: 2, sm: 6, md: 12 },
+              py: { xs: 6, md: 12 },
+              mx: { xs: -2, sm: 0 },
+            }}
+          >
+            <Grid container spacing={{ xs: 1, sm: 5, lg: 11 }}>
+              {features2.map(feature => (
+                <Grid item key={feature.id} xs={12} sm={6} xl={3}>
+                  <Box>
+                    <Typography component="h3" variant="h6">
+                      {feature.title}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                      {feature.text}
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                      {feature.text2}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Container>
+      </div>
+      {/*
+
+      -----------------------------------------------
+      PRAISES
+      -----------------------------------------------
+
+      */}
       <div className={classes.praises}>
         <Container
           fixed
           maxWidth="xl"
           sx={{
-            py: { xs: 8, md: 16 },
+            pt: { xs: 8, md: 16 },
           }}
         >
           <Typography component="h2" variant="h3" display="block" align="center" sx={{ mt: { xs: 6, md: 12 } }}>
@@ -345,12 +566,19 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Box>
         </Container>
       </div>
+      {/*
+
+      -----------------------------------------------
+      QUOTES
+      -----------------------------------------------
+
+      */}
       <div className={classes.quotes}>
         <Container
           fixed
           maxWidth="xl"
           sx={{
-            py: { xs: 8, md: 16 },
+            pt: { xs: 8, md: 16 },
           }}
         >
           <Typography align="center" component="h2" variant="h3" display="block" sx={{ mt: { xs: 6, md: 12 } }}>
@@ -358,24 +586,24 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Typography>
           <Grid container sx={{ mt: { xs: 2, md: 3 } }} spacing={{ xs: 3, md: 6, lg: 12 }}>
             {quotes.map((quote, i) => {
-              const isEven = i % 2 == 0;
-              const isOdd = Math.abs(i % 2) == 1;
+              const isOdd = i % 2 == 0;
+              const isEven = Math.abs(i % 2) == 1;
               const colors = ['primary.main', 'warning.main', 'info.main', 'error.main', 'success.main'];
               return (
                 <Grid item xs={12} md={6} key={quote.id}>
                   <Box
                     className={classes.quote}
                     sx={{
-                      borderBottomLeftRadius: isEven ? '0 !important' : 'inherit',
-                      borderBottomRightRadius: isOdd ? '0 !important' : 'inherit',
+                      borderBottomLeftRadius: isOdd ? '0 !important' : 'inherit',
+                      borderBottomRightRadius: isEven ? '0 !important' : 'inherit',
                       borderStyle: 'solid',
                       borderWidth: '1px',
                       borderColor: colors[i],
                       p: { xs: 5, md: 10 },
-                      transform: { md: isOdd ? 'translateY(50%)' : 'none' },
+                      transform: { md: isEven ? 'translateY(50%)' : 'none' },
                     }}
                   >
-                    <Typography color={colors[i]} gutterBottom sx={{ mb: 4, position: 'relative' }} variant="body1">
+                    <Typography color={colors[i]} gutterBottom sx={{ mb: 3, position: 'relative' }} variant="subtitle1">
                       <FormatQuoteIcon className={classes.quoteIcon} fontSize="large" />
                       {quote.text}
                     </Typography>
@@ -390,6 +618,13 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Grid>
         </Container>
       </div>
+      {/*
+
+      -----------------------------------------------
+      TAKEAWAY
+      -----------------------------------------------
+
+      */}
       <div className={classes.takeaway}>
         <Container
           fixed
@@ -398,7 +633,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             py: { xs: 16, md: 26 },
           }}
         >
-          <Typography component="h3">
+          <Typography component="h1">
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
               Start sharing your conference
             </Typography>

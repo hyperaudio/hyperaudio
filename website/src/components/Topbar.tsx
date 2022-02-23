@@ -20,7 +20,7 @@ import { styled } from '@mui/material/styles';
 import { HyperaudioConferences, HyperaudioMain, useThrottledResizeObserver } from '@hyperaudio/common';
 
 import Link from './Link';
-import { links } from '../config/links';
+import { config } from '../config';
 
 interface RootProps {
   useGrain?: Boolean;
@@ -124,7 +124,7 @@ const Topbar = (props: TopbarProps) => {
         ref={ref}
         useGrain={Boolean(trigger)}
       >
-        <Container maxWidth={false} sx={{ py: { md: 1, xl: 2 } }}>
+        <Container maxWidth={false} sx={{ py: { xs: 1, xl: 2 } }}>
           <Toolbar disableGutters>
             <Grid container alignItems="center">
               <Grid item xs={6}>
@@ -143,7 +143,7 @@ const Topbar = (props: TopbarProps) => {
                 </Button>
               </Grid>
               <Grid item xs={6} container justifyContent="flex-end">
-                <Button color="primary" variant="contained" href={links.signup}>
+                <Button color="primary" variant="contained" href={config.signup}>
                   Request a demo
                 </Button>
               </Grid>
