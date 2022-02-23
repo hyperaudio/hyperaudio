@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { deepPurple, indigo, teal, amber, red, pink } from '@mui/material/colors';
+import { deepPurple, indigo, teal, blue, red, green } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -150,7 +150,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
   const features = [
     {
       id: 0,
-      color: deepPurple[50],
+      color: indigo[50],
       image: '/images/sample.png',
       title: 'Tailored for Conferences',
       text: 'Include slide decks, specify tracks and tags, see speaker listings.',
@@ -166,7 +166,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 2,
-      color: indigo[50],
+      color: teal[50],
       image: '/images/sample.png',
       title: 'Repurpose your Content',
       text: 'Create summaries, compilations and highlight reels by using our intuitive text based remixer.',
@@ -175,7 +175,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 3,
-      color: teal[50],
+      color: green[50],
       image: '/images/sample.png',
       title: 'Maintain Context',
       text: 'The source content for each clip can be viewed, allowing context to be preserved.',
@@ -184,7 +184,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
     {
       id: 4,
-      color: amber[50],
+      color: blue[50],
       image: '/images/sample.png',
       title: 'Extend your Reach',
       text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
@@ -435,7 +435,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           }}
         >
           {features.map((f, i) => {
-            const isOdd = i % 2 == 0;
+            // const isOdd = i % 2 == 0;
             const isEven = Math.abs(i % 2) == 1;
             const isFirst = i !== 0;
             return (
@@ -449,50 +449,54 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 <Grid item xs={12} md={7} order={{ md: isEven ? 2 : 'unset' }}>
                   <Box
                     sx={{
-                      px: { xs: 6, sm: 6, xl: 10 },
-                      pt: { xs: 6, sm: 6, xl: 10 },
-                      pb: { xs: 3, sm: 3, md: 6, xl: 10 },
+                      pt: { xs: 6, sm: 3, lg: 5, xl: 10 },
+                      pb: { xs: 3, sm: 3, md: 3, lg: 5, xl: 10 },
+                      px: { lg: 2, xl: 7 },
                       backgroundColor: f.color,
                       borderRadius: { sm: 5, lg: 10 },
                       mx: { xs: -2, sm: 0 },
                     }}
                     className={classes.tileHead}
                   >
-                    <Paper
-                      elevation={0}
-                      sx={{
-                        border: '1px solid',
-                        borderColor: f.color,
-                        borderRadius: { xs: 2 },
-                        lineHeight: 0,
-                        overflow: 'hidden',
-                        width: '100%',
-                      }}
-                    >
-                      <Image alt="Translate" height="600px" src={f.image} width="900px" />
-                    </Paper>
+                    <Container>
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          border: '1px solid',
+                          borderColor: 'white',
+                          borderRadius: { xs: 2 },
+                          lineHeight: 0,
+                          overflow: 'hidden',
+                          width: '100%',
+                        }}
+                      >
+                        <Image alt="Translate" height="600px" src={f.image} width="900px" />
+                      </Paper>
+                    </Container>
                   </Box>
                 </Grid>
                 <Grid item xs={12} md={5}>
                   <Box
                     sx={{
                       bgcolor: { xs: f.color, md: 'transparent' },
-                      pb: { xs: 6, sm: 6, md: 0 },
-                      px: { xs: 6, sm: 6, md: 0 },
+                      pb: { xs: 6, sm: 3, md: 0, lg: 5 },
                       borderRadius: { sm: 5, md: 0 },
                       mx: { xs: -2, sm: 0 },
+                      textAlign: { xs: 'center', sm: 'left' },
                     }}
                     className={classes.tileBody}
                   >
-                    <Typography variant="h3" component="h3" gutterBottom>
-                      {f.title}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
-                      {f.text}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
-                      {f.text2}
-                    </Typography>
+                    <Container>
+                      <Typography variant="h4" component="h3" gutterBottom>
+                        {f.title}
+                      </Typography>
+                      <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
+                        {f.text}
+                      </Typography>
+                      <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
+                        {f.text2}
+                      </Typography>
+                    </Container>
                   </Box>
                 </Grid>
               </Grid>
