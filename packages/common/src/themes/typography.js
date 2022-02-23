@@ -63,7 +63,7 @@ const typography = {
     fontSize: '1.4rem',
     fontWeight: '600',
     letterSpacing: '0',
-    lineHeight: '1.22em',
+    lineHeight: '1.44em',
     [mui.breakpoints.up('md')]: {
       fontSize: '1.6rem',
     },
