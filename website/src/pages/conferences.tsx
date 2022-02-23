@@ -489,10 +489,10 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                       <Typography variant="h4" component="h3" gutterBottom>
                         {f.title}
                       </Typography>
-                      <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
+                      <Typography color="textSecondary" variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
                         {f.text}
                       </Typography>
-                      <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
+                      <Typography color="textSecondary" variant="body1" gutterBottom sx={{ mt: { xs: 2 } }}>
                         {f.text2}
                       </Typography>
                     </Container>
@@ -541,13 +541,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.praises}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            pt: { xs: 8, md: 16 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ pt: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h2" variant="h3" display="block" align="center" sx={{ mt: { xs: 6, md: 12 } }}>
             Supported by organizations
           </Typography>
@@ -568,13 +562,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.quotes}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            pt: { xs: 8, md: 16 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ pt: { xs: 12, md: 18, xl: 24 } }}>
           <Typography align="center" component="h2" variant="h3" display="block" sx={{ mt: { xs: 6, md: 12 } }}>
             Praised by Experts
           </Typography>
@@ -622,23 +610,17 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.takeaway}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            py: { xs: 16, md: 26 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h1">
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
               Start sharing your conference
             </Typography>
-            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 2 }}>
+            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 1 }}>
-            Request demo
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
+            Request a demo
           </Button>
         </Container>
       </div>
