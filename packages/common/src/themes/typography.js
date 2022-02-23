@@ -154,7 +154,7 @@ const typography = {
     fontWeight: '400',
     fontSize: '0.86rem',
     letterSpacing: '0.011em',
-    lineHeight: '1.44em',
+    lineHeight: '1.11em',
     [mui.breakpoints.up('md')]: {
       fontSize: '0.9rem',
     },
