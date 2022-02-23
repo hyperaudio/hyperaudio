@@ -43,6 +43,8 @@ const Root = styled('div', {
   [`& .${classes.hero}`]: {},
   [`& .${classes.features}`]: {
     backgroundColor: theme.palette.background.paper,
+    paddingTop: '1px',
+    paddingBottom: '1px',
   },
   [`& .${classes.features2}`]: {
     backgroundColor: theme.palette.background.paper,
@@ -62,9 +64,12 @@ const Root = styled('div', {
   [`& .${classes.quotes}`]: {
     background: theme.palette.background.paper,
     [`& .${classes.quote}`]: {
-      borderRadius: theme.shape.borderRadius * 5,
-      [theme.breakpoints.up('lg')]: {
-        borderRadius: theme.shape.borderRadius * 10,
+      borderRadius: theme.shape.borderRadius * 10,
+      [theme.breakpoints.up('md')]: {
+        borderRadius: theme.shape.borderRadius * 15,
+      },
+      [theme.breakpoints.up('xl')]: {
+        borderRadius: theme.shape.borderRadius * 30,
       },
     },
     [`& .${classes.quoteIcon}`]: {
@@ -90,9 +95,13 @@ const Root = styled('div', {
     },
   },
   [`& .${classes.logo}`]: {
-    height: '30px',
-    [theme.breakpoints.up('md')]: {
+    height: '32px',
+    opacity: 0.77,
+    [theme.breakpoints.up('sm')]: {
       height: '40px',
+    },
+    [theme.breakpoints.up('md')]: {
+      height: '48px',
     },
   },
   [`& .${classes.takeaway}`]: {
@@ -294,7 +303,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                       mt: { xs: 3, sm: 4 },
                     }}
                   >
-                    Transcribe, translate, repurpose and share—meet your audience wherever they are.
+                    Transcribe, translate, repurpose and share — meet your audience wherever they are.
                   </Typography>
                 </Container>
               </Box>
@@ -412,10 +421,10 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           <Typography variant="overline" display="block" align="center" sx={{ fontWeight: 500, mt: { xs: 6, md: 12 } }}>
             As used by
           </Typography>
-          <Box sx={{ mt: { xs: 2, md: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Box sx={{ mt: { xs: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             {users.map(o => {
               return (
-                <Box key={o.id} sx={{ m: { xs: 2, sm: 3, lg: 4 } }}>
+                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
               );
@@ -435,7 +444,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           fixed
           maxWidth="xl"
           sx={{
-            py: { xs: 16, md: 26 },
+            py: { xs: 0, sm: 12, md: 24 },
           }}
         >
           {features.map((f, i) => {
@@ -448,14 +457,17 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 container
                 justifyContent="center"
                 spacing={{ xs: 0, md: 6, lg: 12 }}
-                sx={isFirst ? { mt: { xs: 3, sm: 6, md: 12 } } : {}}
+                sx={isFirst ? { mt: { xs: '1px', sm: 6, md: 12 } } : {}}
               >
                 <Grid item xs={12} md={7} order={{ md: isEven ? 2 : 'unset' }}>
                   <Box
                     sx={{
-                      p: { xs: 2, sm: 6, xl: 10 },
+                      px: { xs: 6, sm: 6, xl: 10 },
+                      pt: { xs: 6, sm: 6, xl: 10 },
+                      pb: { xs: 3, sm: 3, md: 6, xl: 10 },
                       backgroundColor: f.color,
-                      borderRadius: { xs: 5, lg: 10 },
+                      borderRadius: { sm: 5, lg: 10 },
+                      mx: { xs: -2, sm: 0 },
                     }}
                     className={classes.tileHead}
                   >
@@ -478,13 +490,14 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                   <Box
                     sx={{
                       bgcolor: { xs: f.color, md: 'transparent' },
-                      pb: { xs: 2, sm: 6, md: 0 },
-                      px: { xs: 2, sm: 6, md: 0 },
-                      borderRadius: { xs: 5, md: 0 },
+                      pb: { xs: 6, sm: 6, md: 0 },
+                      px: { xs: 6, sm: 6, md: 0 },
+                      borderRadius: { sm: 5, md: 0 },
+                      mx: { xs: -2, sm: 0 },
                     }}
                     className={classes.tileBody}
                   >
-                    <Typography variant="h4" component="h3" gutterBottom>
+                    <Typography variant="h3" component="h3" gutterBottom>
                       {f.title}
                     </Typography>
                     <Typography variant="body1" gutterBottom sx={{ mt: { xs: 2, md: 3 } }}>
@@ -519,7 +532,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               mx: { xs: -2, sm: 0 },
             }}
           >
-            <Grid container spacing={{ xs: 1, sm: 5, lg: 11 }}>
+            <Grid container spacing={{ xs: 5, lg: 11 }}>
               {features2.map(feature => (
                 <Grid item key={feature.id} xs={12} sm={6} xl={3}>
                   <Box>
@@ -557,9 +570,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           <Typography component="h2" variant="h3" display="block" align="center" sx={{ mt: { xs: 6, md: 12 } }}>
             Supported by organizations
           </Typography>
-          <Box sx={{ mt: { xs: 2, md: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Box sx={{ mt: { xs: 3, md: 6 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             {praises.map(o => (
-              <Box key={o.id} sx={{ m: { xs: 2, sm: 3, lg: 4 } }}>
+              <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
                 <img src={o.image} alt={o.name} className={classes.logo} />
               </Box>
             ))}
@@ -599,7 +612,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                       borderStyle: 'solid',
                       borderWidth: '1px',
                       borderColor: colors[i],
-                      p: { xs: 5, md: 10 },
+                      py: { xs: 5, md: 10 },
+                      pr: { xs: 6, md: 10, xl: 15 },
+                      pl: { xs: 6, md: 12, xl: 17 },
                       transform: { md: isEven ? 'translateY(50%)' : 'none' },
                     }}
                   >
