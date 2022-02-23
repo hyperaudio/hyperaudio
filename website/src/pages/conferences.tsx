@@ -520,10 +520,10 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                     <Typography component="h3" variant="h5" color={f.color}>
                       {f.title}
                     </Typography>
-                    <Typography color="textSecondary" variant="body1" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                    <Typography color="textSecondary" variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
                       {f.text}
                     </Typography>
-                    <Typography color="textSecondary" variant="body1" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
+                    <Typography color="textSecondary" variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
                       {f.text2}
                     </Typography>
                   </Box>
