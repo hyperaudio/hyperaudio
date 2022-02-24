@@ -26,11 +26,10 @@ const Root = styled('footer', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
   backgroundColor: theme.palette.primary.main,
+  backgroundImage: 'url("/images/grain.png")',
+  backgroundPosition: 'center center',
+  backgroundRepeat: 'repeat',
   color: theme.palette.primary.contrastText,
-  // backgroundImage: 'url("/images/ornament.svg")',
-  // backgroundSize: 'cover',
-  // backgroundPosition: 'center center',
-  // backgroundRepeat: 'no-repeat',
 }));
 
 const Footer = () => (

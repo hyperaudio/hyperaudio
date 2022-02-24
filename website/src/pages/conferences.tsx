@@ -40,7 +40,11 @@ const classes = {
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
-  [`& .${classes.hero}`]: {},
+  [`& .${classes.hero}`]: {
+    backgroundImage: 'url("/images/grain.png")',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'repeat',
+  },
   [`& .${classes.features}`]: {
     backgroundColor: theme.palette.background.paper,
     paddingTop: '3px',
@@ -83,6 +87,9 @@ const Root = styled('div', {
     },
   },
   [`& .${classes.tileHead}`]: {
+    backgroundImage: 'url("/images/grain.png")',
+    backgroundPosition: 'center center',
+    backgroundRepeat: 'repeat',
     [theme.breakpoints.down('md')]: {
       borderBottomRightRadius: '0',
       borderBottomLeftRadius: '0',
