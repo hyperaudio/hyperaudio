@@ -59,13 +59,13 @@ const Footer = () => (
           </Typography>
         </Grid>
         <Grid item xs={12} lg={4} sx={{ textAlign: { xs: 'center', lg: 'right' } }}>
-          <Tooltip title="Hyperaudio on Github">
-            <IconButton href={config.github} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
+          <Tooltip title={config.elsewhere.github.tip}>
+            <IconButton href={config.elsewhere.github.url} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
               <GitHubIcon />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Hyperaudio on Twitter">
-            <IconButton href={config.twitter} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
+          <Tooltip title={config.elsewhere.twitter.tip}>
+            <IconButton href={config.elsewhere.twitter.url} sx={{ mx: { xs: 0.5, md: 1 } }} color="inherit">
               <TwitterIcon />
             </IconButton>
           </Tooltip>

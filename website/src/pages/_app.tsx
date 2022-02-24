@@ -82,7 +82,7 @@ export default function MyApp(props: MyAppProps) {
     <CacheProvider value={emotionCache}>
       <Head>
         <html lang="en" />
-        <title>Hyperaudio Site</title>
+        <title>{config.title}</title>
 
         <link rel="canonical" href={config.url} />
         <link rel="icon" href="/favicon.ico" type="image/x-icon" />

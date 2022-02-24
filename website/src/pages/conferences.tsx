@@ -16,6 +16,8 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+import { config } from '../config';
+
 interface PageProps {
   yOffset: number;
 }
@@ -309,10 +311,10 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 Transcribe, translate, repurpose and share — meet your audience wherever they are.
               </Typography>
               <Box sx={{ mt: 4, textAlign: 'center' }}>
-                <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
+                <Button color="primary" href={config.newsletter} size="large" sx={{ mr: 1 }} variant="contained">
                   Stay informed
                 </Button>
-                <Button color="primary" sx={{ ml: 1 }} size="large" variant="outlined">
+                <Button color="primary" href={config.requestDemo} size="large" sx={{ ml: 1 }} variant="outlined">
                   Request a demo
                 </Button>
               </Box>
@@ -619,7 +621,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }} href={config.requestDemo}>
             Request a demo
           </Button>
         </Container>

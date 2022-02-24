@@ -16,6 +16,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+import { config } from '../config';
+
 interface PageProps {
   yOffset: number;
 }
@@ -182,10 +184,10 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   textAlign: 'center',
                 }}
               >
-                <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
+                <Button color="primary" href={config.newsletter} size="large" sx={{ mr: 1 }} variant="contained">
                   Stay informed
                 </Button>
-                <Button color="primary" sx={{ ml: 1 }} size="large" variant="outlined">
+                <Button color="primary" href={config.requestDemo} size="large" sx={{ ml: 1 }} variant="outlined">
                   Request a demo
                 </Button>
               </Box>
@@ -400,11 +402,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                 </TextField>
                 <input
                   aria-hidden="true"
+                  defaultValue=""
                   name="b_ebee85ce694a947a39dec9f26_f90488e03a"
                   style={{ position: 'absolute', left: '-5000px', visibility: 'hidden' }}
                   tab-index="-1"
                   type="text"
-                  value=""
                 />
                 <Button
                   color="primary"
@@ -441,7 +443,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }} href={config.requestDemo}>
             Request a demo
           </Button>
         </Container>
