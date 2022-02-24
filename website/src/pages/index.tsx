@@ -431,7 +431,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
         <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h1">
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
-              Start sharing your conference
+              Start looking at media in a completely new way
             </Typography>
             <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>
               Transcribe. Repurpouse. Share. Now.
