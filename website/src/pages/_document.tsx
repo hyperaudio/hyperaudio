@@ -9,34 +9,10 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          {/* <link
-            as="font"
-            crossOrigin=""
-            href="/fonts/CeraRoundPro/Cera-Round-Pro-Regular.woff"
-            rel="preload"
-            type="font/woff"
-          />
-          <link
-            as="font"
-            crossOrigin=""
-            href="/fonts/CeraRoundPro/Cera-Round-Pro-Medium.woff"
-            rel="preload"
-            type="font/woff"
-          />
-          <link
-            as="font"
-            crossOrigin=""
-            href="/fonts/CeraRoundPro/Cera-Round-Pro-Bold.woff"
-            rel="preload"
-            type="font/woff"
-          />
-          <link
-            as="font"
-            crossOrigin=""
-            href="/fonts/CeraRoundPro/Cera-Round-Pro-Black.woff"
-            rel="preload"
-            type="font/woff"
-          /> */}
+          <link as="font" crossOrigin="" href="/fonts/InterInter-Regular.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/InterInter-Medium.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/InterInter-Bold.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/InterInter-Black.woff" rel="preload" type="font/woff" />
         </Head>
         <body>
           <Main />

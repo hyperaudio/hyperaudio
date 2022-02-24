@@ -43,34 +43,34 @@ const Root = styled('div', {
 }));
 
 const globalStyles = `
-  // @font-face {
-  //   font-family: 'Cera Round Pro';
-  //   src: url('/fonts/CeraRoundPro/Cera-Round-Pro-Regular.woff') format('woff');
-  //   font-style: normal;
-  //   font-weight: 400;
-  //   font-display: swap;
-  // }
-  // @font-face {
-  //   font-family: 'Cera Round Pro';
-  //   src: url('/fonts/CeraRoundPro/Cera-Round-Pro-Medium.woff') format('woff');
-  //   font-style: normal;
-  //   font-weight: 500;
-  //   font-display: swap;
-  // }
-  // @font-face {
-  //   font-family: 'Cera Round Pro';
-  //   src: url('/fonts/CeraRoundPro/Cera-Round-Pro-Bold.woff') format('woff');
-  //   font-style: normal;
-  //   font-weight: 600;
-  //   font-display: swap;
-  // }
-  // @font-face {
-  //   font-family: 'Cera Round Pro';
-  //   src: url('/fonts/CeraRoundPro/Cera-Round-Pro-Black.woff') format('woff');
-  //   font-style: normal;
-  //   font-weight: 700;
-  //   font-display: swap;
-  // }
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter/Inter-Regular.woff') format('woff');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter/Inter-Medium.woff') format('woff');
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter/Inter-Bold.woff') format('woff');
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter/Inter-Black.woff') format('woff');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
 `;
 
 export default function MyApp(props: MyAppProps) {
