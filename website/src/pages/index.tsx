@@ -262,7 +262,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                 xs={12}
               >
                 {herocordion.map(acc => (
-                  <Fade in={expanded === acc.id}>
+                  <Fade key={acc.id} in={expanded === acc.id}>
                     <Paper
                       elevation={6}
                       sx={{
@@ -399,12 +399,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   <option value="All of the above!">All of the above!</option>
                 </TextField>
                 <input
-                  style={{ position: 'absolute', left: '-5000px', visibility: 'hidden' }}
-                  ariaHidden="true"
-                  type="text"
+                  aria-hidden="true"
                   name="b_ebee85ce694a947a39dec9f26_f90488e03a"
-                  // @ts-ignore
-                  tabIndex="-1"
+                  style={{ position: 'absolute', left: '-5000px', visibility: 'hidden' }}
+                  tab-index="-1"
+                  type="text"
                   value=""
                 />
                 <Button

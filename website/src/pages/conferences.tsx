@@ -243,11 +243,11 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
   ];
   const praises = [
     { id: 0, name: 'Grant For The Web', image: '/images/logo-gftw.svg' },
-    { id: 0, name: 'Permanent.org', image: '/images/logo-permanent.png' },
-    { id: 0, name: 'Mozilla', image: '/images/logo-mozilla.svg' },
-    { id: 1, name: 'Creative Commons', image: '/images/logo-cc.svg' },
-    { id: 2, name: 'Internet Archive', image: '/images/logo-ia.svg' },
-    { id: 4, name: 'Knight Foundation', image: '/images/logo-kf.svg' },
+    { id: 1, name: 'Permanent.org', image: '/images/logo-permanent.png' },
+    { id: 2, name: 'Mozilla', image: '/images/logo-mozilla.svg' },
+    { id: 3, name: 'Creative Commons', image: '/images/logo-cc.svg' },
+    { id: 4, name: 'Internet Archive', image: '/images/logo-ia.svg' },
+    { id: 5, name: 'Knight Foundation', image: '/images/logo-kf.svg' },
   ];
   const quotes = [
     {
@@ -389,7 +389,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 xs={12}
               >
                 {herocordion.map(acc => (
-                  <Fade in={expanded === acc.id}>
+                  <Fade key={acc.id} in={expanded === acc.id}>
                     <Paper
                       elevation={6}
                       sx={{
@@ -440,6 +440,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               <Grid
                 alignItems="center"
                 container
+                key={f.id}
                 justifyContent="center"
                 spacing={{ xs: 0, md: 6, lg: 12 }}
                 sx={isFirst ? { mt: { xs: '3px', sm: 6, md: 12 } } : {}}
