@@ -1,7 +1,7 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "composite": true,
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
@@ -14,13 +14,9 @@
     "noEmitOnError": true,
     "noImplicitAny": true,
     "outDir": "dist",
-    "rootDir": "src",
     "sourceMap": true,
     "strict": true,
     "target": "es5",
-    "paths": {
-      "@hyperaudio/common": ["../packages/common"]
-    },
     "allowJs": true,
     "skipLibCheck": true,
     "noEmit": true,
@@ -28,11 +24,6 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "references": [
-    {
-      "path": "../packages/common"
-    }
-  ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
 }

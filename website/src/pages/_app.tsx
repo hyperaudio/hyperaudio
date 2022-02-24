@@ -1,3 +1,4 @@
+import * as React from 'react';
 import Head from 'next/head';
 import { useState } from 'react';
 import { AppProps } from 'next/app';
@@ -11,7 +12,6 @@ import { grey } from '@mui/material/colors';
 import { lightTheme } from '@hyperaudio/common';
 
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 import Topbar from '../components/Topbar';
 import createEmotionCache from '../lib/createEmotionCache';
 import { config } from '../config';

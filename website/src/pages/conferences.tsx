@@ -1,7 +1,6 @@
-import Image from 'next/image';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { orange, indigo, teal, blue, red, green } from '@mui/material/colors';
-import { useState } from 'react';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -18,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 interface PageProps {
-  yOffset: Number;
+  yOffset: number;
 }
 
 const PREFIX = `ConferencesPage`;
@@ -68,11 +67,14 @@ const Root = styled('div', {
   [`& .${classes.quotes}`]: {
     background: theme.palette.background.paper,
     [`& .${classes.quote}`]: {
+      // @ts-ignore
       borderRadius: theme.shape.borderRadius * 10,
       [theme.breakpoints.up('md')]: {
+        // @ts-ignore
         borderRadius: theme.shape.borderRadius * 15,
       },
       [theme.breakpoints.up('xl')]: {
+        // @ts-ignore
         borderRadius: theme.shape.borderRadius * 30,
       },
     },
@@ -321,61 +323,59 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               <Grid item xs={12} lg={4}>
                 <Box sx={{ mx: { sm: 2 * -1 } }}>
                   <Container disableGutters maxWidth="sm">
-                    {herocordion.map(acc => {
-                      return (
-                        <Accordion
-                          elevation={0}
-                          sx={{
-                            background: 'none',
-                            border: 'none',
-                            px: 0,
-                            [`&:before`]: { display: 'none' },
-                          }}
-                          disableGutters
-                          expanded={expanded === acc.id}
-                          key={acc.id}
-                          onChange={handleChange(acc.id)}
+                    {herocordion.map(acc => (
+                      <Accordion
+                        elevation={0}
+                        sx={{
+                          background: 'none',
+                          border: 'none',
+                          px: 0,
+                          [`&:before`]: { display: 'none' },
+                        }}
+                        disableGutters
+                        expanded={expanded === acc.id}
+                        key={acc.id}
+                        onChange={handleChange(acc.id)}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon color="disabled" />}
+                          aria-controls={`${acc.id}-content`}
+                          id={`${acc.id}-header`}
                         >
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon color="disabled" />}
-                            aria-controls={`${acc.id}-content`}
-                            id={`${acc.id}-header`}
-                          >
-                            <Typography component="h2">
-                              <Typography
-                                component="span"
-                                sx={{
-                                  borderBottom: '3px solid',
-                                  borderColor: acc.color,
-                                }}
-                                variant="subtitle1"
-                              >
-                                {acc.title}
-                              </Typography>
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <Typography color="textSecondary" gutterBottom variant="body2">
-                              {acc.text}
-                            </Typography>
-                            <Box
+                          <Typography component="h2">
+                            <Typography
+                              component="span"
                               sx={{
-                                lineHeight: 0,
-                                mt: { xs: 2, sm: 3 },
-                                display: { lg: 'none' },
-                                border: '1px solid',
-                                borderColor: 'text.primary',
-                                borderRadius: 2,
-                                overflow: 'hidden',
-                                position: 'relative',
+                                borderBottom: '3px solid',
+                                borderColor: acc.color,
                               }}
+                              variant="subtitle1"
                             >
-                              <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                            </Box>
-                          </AccordionDetails>
-                        </Accordion>
-                      );
-                    })}
+                              {acc.title}
+                            </Typography>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography color="textSecondary" gutterBottom variant="body2">
+                            {acc.text}
+                          </Typography>
+                          <Box
+                            sx={{
+                              lineHeight: 0,
+                              mt: { xs: 2, sm: 3 },
+                              display: { lg: 'none' },
+                              border: '1px solid',
+                              borderColor: 'text.primary',
+                              borderRadius: 2,
+                              overflow: 'hidden',
+                              position: 'relative',
+                            }}
+                          >
+                            <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                          </Box>
+                        </AccordionDetails>
+                      </Accordion>
+                    ))}
                   </Container>
                 </Box>
               </Grid>
@@ -388,26 +388,24 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                 sx={{ position: 'relative' }}
                 xs={12}
               >
-                {herocordion.map(acc => {
-                  return (
-                    <Fade in={expanded === acc.id}>
-                      <Paper
-                        elevation={6}
-                        sx={{
-                          border: '1px solid',
-                          borderColor: 'text.primary',
-                          borderRadius: 5,
-                          display: { xs: 'none', lg: 'block' },
-                          lineHeight: 0,
-                          overflow: 'hidden',
-                          position: 'absolute',
-                        }}
-                      >
-                        <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                      </Paper>
-                    </Fade>
-                  );
-                })}
+                {herocordion.map(acc => (
+                  <Fade in={expanded === acc.id}>
+                    <Paper
+                      elevation={6}
+                      sx={{
+                        border: '1px solid',
+                        borderColor: 'text.primary',
+                        borderRadius: 5,
+                        display: { xs: 'none', lg: 'block' },
+                        lineHeight: 0,
+                        overflow: 'hidden',
+                        position: 'absolute',
+                      }}
+                    >
+                      <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                    </Paper>
+                  </Fade>
+                ))}
               </Grid>
             </Grid>
           </Box>
@@ -436,7 +434,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
         <Container fixed maxWidth="xl" sx={{ py: { sm: 12, md: 18, xl: 24 } }}>
           {features.map((f, i) => {
             // const isOdd = i % 2 == 0;
-            const isEven = Math.abs(i % 2) == 1;
+            const isEven = Math.abs(i % 2) === 1;
             const isFirst = i !== 0;
             return (
               <Grid
@@ -470,7 +468,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                           width: '100%',
                         }}
                       >
-                        <Image alt="Translate" height="600px" src={f.image} width="900px" />
+                        <img alt="Translate" height="600px" src={f.image} width="900px" />
                       </Paper>
                     </Container>
                   </Box>
@@ -569,8 +567,8 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Typography>
           <Grid container sx={{ mt: { xs: 2, md: 3 } }} spacing={{ xs: 3, md: 6, lg: 12 }}>
             {quotes.map((quote, i) => {
-              const isOdd = i % 2 == 0;
-              const isEven = Math.abs(i % 2) == 1;
+              const isOdd = i % 2 === 0;
+              const isEven = Math.abs(i % 2) === 1;
               const colors = ['primary.main', 'warning.main', 'info.main', 'error.main', 'success.main'];
               return (
                 <Grid item xs={12} md={6} key={quote.id}>

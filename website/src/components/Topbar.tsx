@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Dispatch, SetStateAction } from 'react';
-import Image from 'next/image';
 
 import { useRouter } from 'next/router';
 
@@ -62,56 +61,17 @@ const Topbar = (props: TopbarProps) => {
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 0 });
   const { ref, height = 0 } = useThrottledResizeObserver(500);
 
-  useEffect(() => setOffset(height), [height]);
-
-  console.log({ router });
+  useEffect(() => setOffset(height), [height, setOffset]);
 
   const isConferences = pathname === '/conferences';
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [selectedIndex, setSelectedIndex] = useState(1);
   const open = Boolean(anchorEl);
   const handleClickListItem = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, index: number) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const branches = [
-    {
-      id: 'main',
-      slug: '/',
-      image: '',
-      name: 'Hyperaudio',
-    },
-    {
-      id: 'conferences',
-      slug: '/conferences',
-      image: '',
-      name: 'Conferences',
-    },
-    {
-      disabled: true,
-      id: 'podcasts',
-      image: '',
-      name: 'Podcasts',
-      slug: '/podcasts',
-    },
-    {
-      disabled: true,
-      id: 'schools',
-      image: '',
-      name: 'Schools',
-      slug: '/schools',
-    },
-  ];
+  const handleClose = () => setAnchorEl(null);
 
   return (
     <>

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Container from '@mui/material/Container';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import Grid from '@mui/material/Grid';
@@ -38,17 +40,10 @@ const Footer = () => (
       <Grid alignItems="center" container spacing={{ xs: 3, md: 6 }}>
         <Grid item xs={12} lg={8} sx={{ textAlign: { xs: 'center', lg: 'left' } }}>
           <HyperaudioMain size="large" />
-          <Typography
-            gutterBottom
-            color="textSecondary"
-            variant="caption"
-            component="p"
-            color="primary.contrastText"
-            sx={{ mb: 1 }}
-          >
+          <Typography gutterBottom variant="caption" component="p" color="primary.contrastText" sx={{ mb: 1 }}>
             © The Hyperaudio Project. All Rights Reserved.
           </Typography>
-          <Typography gutterBottom color="textSecondary" variant="caption" component="p" color="primary.contrastText">
+          <Typography gutterBottom variant="caption" component="p" color="primary.contrastText">
             <Link href="/privacy-policy" color="primary.contrastText">
               Privacy Policy
             </Link>

@@ -1,7 +1,6 @@
-import Image from 'next/image';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { deepPurple, indigo, teal, amber, red, pink } from '@mui/material/colors';
-import { useState } from 'react';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -17,10 +16,8 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { config } from '../config';
-
 interface PageProps {
-  yOffset: Number;
+  yOffset: number;
 }
 
 const PREFIX = `HomePage`;
@@ -199,61 +196,59 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               <Grid item xs={12} lg={4}>
                 <Box sx={{ mx: { md: 2 * -1 } }}>
                   <Container disableGutters maxWidth="sm">
-                    {herocordion.map(acc => {
-                      return (
-                        <Accordion
-                          elevation={0}
-                          sx={{
-                            background: 'none',
-                            border: 'none',
-                            px: 0,
-                            [`&:before`]: { display: 'none' },
-                          }}
-                          disableGutters
-                          expanded={expanded === acc.id}
-                          key={acc.id}
-                          onChange={handleChange(acc.id)}
+                    {herocordion.map(acc => (
+                      <Accordion
+                        elevation={0}
+                        sx={{
+                          background: 'none',
+                          border: 'none',
+                          px: 0,
+                          [`&:before`]: { display: 'none' },
+                        }}
+                        disableGutters
+                        expanded={expanded === acc.id}
+                        key={acc.id}
+                        onChange={handleChange(acc.id)}
+                      >
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon color="disabled" />}
+                          aria-controls={`${acc.id}-content`}
+                          id={`${acc.id}-header`}
                         >
-                          <AccordionSummary
-                            expandIcon={<ExpandMoreIcon color="disabled" />}
-                            aria-controls={`${acc.id}-content`}
-                            id={`${acc.id}-header`}
-                          >
-                            <Typography component="h2">
-                              <Typography
-                                component="span"
-                                sx={{
-                                  borderBottom: '3px solid',
-                                  borderColor: acc.color,
-                                }}
-                                variant="subtitle1"
-                              >
-                                {acc.title}
-                              </Typography>
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <Typography color="textSecondary" gutterBottom variant="body2">
-                              {acc.text}
-                            </Typography>
-                            <Box
+                          <Typography component="h2">
+                            <Typography
+                              component="span"
                               sx={{
-                                lineHeight: 0,
-                                mt: { xs: 2, sm: 3 },
-                                display: { lg: 'none' },
-                                border: '1px solid',
-                                borderColor: 'text.primary',
-                                borderRadius: 2,
-                                overflow: 'hidden',
-                                position: 'relative',
+                                borderBottom: '3px solid',
+                                borderColor: acc.color,
                               }}
+                              variant="subtitle1"
                             >
-                              <Image alt="Translate" height="600px" src={acc.image} width="900px" />
-                            </Box>
-                          </AccordionDetails>
-                        </Accordion>
-                      );
-                    })}
+                              {acc.title}
+                            </Typography>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Typography color="textSecondary" gutterBottom variant="body2">
+                            {acc.text}
+                          </Typography>
+                          <Box
+                            sx={{
+                              lineHeight: 0,
+                              mt: { xs: 2, sm: 3 },
+                              display: { lg: 'none' },
+                              border: '1px solid',
+                              borderColor: 'text.primary',
+                              borderRadius: 2,
+                              overflow: 'hidden',
+                              position: 'relative',
+                            }}
+                          >
+                            <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                          </Box>
+                        </AccordionDetails>
+                      </Accordion>
+                    ))}
                   </Container>
                 </Box>
               </Grid>
@@ -280,7 +275,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                         position: 'absolute',
                       }}
                     >
-                      <Image alt="Translate" height="600px" src={acc.image} width="900px" />
+                      <img alt="Translate" height="600px" src={acc.image} width="900px" />
                     </Paper>
                   </Fade>
                 ))}
@@ -404,10 +399,12 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   <option value="All of the above!">All of the above!</option>
                 </TextField>
                 <input
-                  style={{ position: 'absolute', left: '-5000px', ariaHidden: 'true', visibility: 'hidden' }}
+                  style={{ position: 'absolute', left: '-5000px', visibility: 'hidden' }}
+                  ariaHidden="true"
                   type="text"
                   name="b_ebee85ce694a947a39dec9f26_f90488e03a"
-                  tabindex="-1"
+                  // @ts-ignore
+                  tabIndex="-1"
                   value=""
                 />
                 <Button
