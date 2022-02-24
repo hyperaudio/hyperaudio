@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
+import { orange, indigo, teal, blue, red, green } from '@mui/material/colors';
 import { useState } from 'react';
-import { deepPurple, orange, indigo, teal, blue, red, green } from '@mui/material/colors';
 
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -9,7 +9,6 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
@@ -300,12 +299,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
                 Transcribe, translate, repurpose and share — meet your audience wherever they are.
               </Typography>
-              <Box
-                sx={{
-                  mt: 4,
-                  textAlign: 'center',
-                }}
-              >
+              <Box sx={{ mt: 4, textAlign: 'center' }}>
                 <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
                   Stay informed
                 </Button>

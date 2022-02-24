@@ -1,10 +1,9 @@
 import Image from 'next/image';
 import type { NextPage } from 'next';
-import { useState } from 'react';
 import { deepPurple, indigo, teal, amber, red, pink } from '@mui/material/colors';
+import { useState } from 'react';
 
 import Accordion from '@mui/material/Accordion';
-import Divider from '@mui/material/Divider';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Box from '@mui/material/Box';
@@ -42,15 +41,19 @@ const Root = styled('div', {
     backgroundColor: theme.palette.background.paper,
   },
   [`& .${classes.logo}`]: {
-    height: '30px',
-    [theme.breakpoints.up('md')]: {
+    height: '32px',
+    opacity: 0.77,
+    [theme.breakpoints.up('sm')]: {
       height: '40px',
+    },
+    [theme.breakpoints.up('md')]: {
+      height: '48px',
     },
   },
   [`& .${classes.subscribe}`]: {
     backgroundColor: theme.palette.background.paper,
-    // backgroundColor: amber[50],
     textAlign: 'center',
+    // color: theme.palette.primary.contrastText,
   },
   [`& .${classes.takeaway}`]: {
     backgroundColor: theme.palette.background.paper,
@@ -103,7 +106,6 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
     { id: 3, name: 'BBC', image: '/images/logo-bbc.svg' },
     { id: 4, name: 'WMFT', image: '/images/logo-wfmt.svg' },
   ];
-
   const blurbs = [
     {
       id: 0,
@@ -145,46 +147,46 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
 
   return (
     <Root className={classes.root}>
+      {/*
+
+      -----------------------------------------------
+      HERO
+      -----------------------------------------------
+
+      */}
       <div className={classes.hero}>
         <Container
           fixed
           sx={{
-            py: { xs: 16, md: 26 },
+            py: { xs: 12, md: 18, xl: 24 },
             mt: `${yOffset * -1}px`,
           }}
           maxWidth="xl"
         >
-          <Box sx={{ textAlign: { xs: 'center' } }}>
+          <Box sx={{ py: 6, textAlign: 'center' }}>
             <Container disableGutters maxWidth="xl">
               <Typography variant="h1" gutterBottom>
                 A new way of looking at audio and video.
               </Typography>
-              <Typography
-                variant="h5"
-                component="p"
-                sx={{
-                  fontWeight: 500,
-                  mt: { xs: 3, sm: 4 },
-                }}
-              >
+              <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
                 Transcribe, translate, repurpose and share.
               </Typography>
+              <Box
+                sx={{
+                  mt: 4,
+                  textAlign: 'center',
+                }}
+              >
+                <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
+                  Stay informed
+                </Button>
+                <Button color="primary" sx={{ ml: 1 }} size="large" variant="outlined">
+                  Request a demo
+                </Button>
+              </Box>
             </Container>
           </Box>
-          {/* <Box
-            sx={{
-              mt: { xs: 3, sm: 4 },
-              textAlign: 'center',
-            }}
-          >
-            <Button color="primary" sx={{ mr: 1 }} size="large" variant="contained">
-              Stay informed
-            </Button>
-            <Button color="primary" sx={{ ml: 1 }} size="large" variant="outlined">
-              Request a demo
-            </Button>
-          </Box> */}
-          <Box sx={{ my: { xs: 4, md: 8, lg: 16, xl: 22 } }}>
+          <Box sx={{ my: { xs: 3, md: 6, xl: 18 } }}>
             <Grid container spacing={{ md: 6, lg: 12 }}>
               <Grid item xs={12} lg={4}>
                 <Box sx={{ mx: { md: 2 * -1 } }}>
@@ -277,17 +279,17 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               </Grid>
             </Grid>
           </Box>
-          <Typography variant="overline" display="block" align="center" sx={{ fontWeight: 500, mt: { xs: 6, md: 12 } }}>
-            As used by
-          </Typography>
-          <Box sx={{ mt: { xs: 2, md: 3 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
-            {users.map(o => {
-              return (
-                <Box key={o.id} sx={{ m: { xs: 2, sm: 3, lg: 4 } }}>
+          <Box sx={{ pt: 6, textAlign: 'center' }}>
+            <Typography variant="overline" display="block" sx={{ fontWeight: 500 }}>
+              As used by:
+            </Typography>
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {users.map(o => (
+                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
-              );
-            })}
+              ))}
+            </Box>
           </Box>
         </Container>
       </div>
@@ -299,17 +301,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.blurbs}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            py: { xs: 16, md: 26 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography variant="h2" display="block" component="h2" gutterBottom align="center">
             Dunno, lets find a title
           </Typography>
-          <Box sx={{ mt: { xs: 4, md: 8 } }}>
+          <Box sx={{ mt: { xs: 6, md: 8 } }}>
             <Grid container spacing={{ xs: 3, sm: 6, md: 6, lg: 12 }} sx={{ position: 'relative' }}>
               {blurbs.map(blurb => (
                 <Grid item key={blurb.id} xs={12} sm={6} md={4}>
@@ -336,7 +332,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
       {/*
 
       -----------------------------------------------
-      TAKEAWAY
+      SUBSCRIBE
       -----------------------------------------------
 
       */}
@@ -345,9 +341,10 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
           <Box
             sx={{
               bgcolor: deepPurple[50],
-              borderRadius: { sm: 5, lg: 10 },
-              mx: { xs: -2, sm: 0 },
-              py: { xs: 16, md: 26 },
+              borderRadius: { xs: 5, lg: 10 },
+              // mx: { xs: -2, sm: 0 },
+              py: { xs: 8, sm: 16, md: 26 },
+              px: { xs: 4, md: 0 },
             }}
           >
             <Typography variant="h2" display="block" component="h3" gutterBottom>
@@ -363,15 +360,30 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                 noValidate
                 target="_blank"
               >
-                <TextField fullWidth type="email" id="mce-EMAIL" name="EMAIL" label="Enter e-mail" margin="normal" />
                 <TextField
+                  color="primary"
+                  fullWidth
+                  id="mce-EMAIL"
+                  label="Enter e-mail"
+                  margin="normal"
+                  name="EMAIL"
+                  required
+                  size="medium"
+                  type="email"
+                  variant="filled"
+                />
+                <TextField
+                  color="primary"
                   defaultValue=""
                   fullWidth
                   id="mce-MMERGE1"
                   label="Select area of interest"
                   margin="normal"
                   name="MMERGE1"
+                  required
                   select
+                  size="medium"
+                  variant="filled"
                   SelectProps={{
                     native: true,
                   }}
@@ -416,23 +428,17 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
 
       */}
       <div className={classes.takeaway}>
-        <Container
-          fixed
-          maxWidth="xl"
-          sx={{
-            py: { xs: 16, md: 26 },
-          }}
-        >
+        <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h1">
             <Typography variant="subtitle1" display="block" component="span" gutterBottom>
-              Start looking at media in a completely new way
+              Start sharing your conference
             </Typography>
-            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 2 }}>
+            <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 1 }}>
-            Request demo
+          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }}>
+            Request a demo
           </Button>
         </Container>
       </div>
