@@ -373,7 +373,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                               position: 'relative',
                             }}
                           >
-                            <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                            <img alt={acc.title} src={acc.image} width="100%" />
                           </Box>
                         </AccordionDetails>
                       </Accordion>
@@ -404,7 +404,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                         position: 'absolute',
                       }}
                     >
-                      <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                      <img alt={acc.title} src={acc.image} width="100%" />
                     </Paper>
                   </Fade>
                 ))}
@@ -471,7 +471,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                           width: '100%',
                         }}
                       >
-                        <img alt="Translate" height="600px" src={f.image} width="900px" />
+                        <img alt={f.title} src={f.image} width="100%" />
                       </Paper>
                     </Container>
                   </Box>

@@ -246,7 +246,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                               position: 'relative',
                             }}
                           >
-                            <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                            <img alt={acc.title} src={acc.image} width="100%" />
                           </Box>
                         </AccordionDetails>
                       </Accordion>
@@ -277,7 +277,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                         position: 'absolute',
                       }}
                     >
-                      <img alt="Translate" height="600px" src={acc.image} width="900px" />
+                      <img alt={acc.title} src={acc.image} width="100%" />
                     </Paper>
                   </Fade>
                 ))}
