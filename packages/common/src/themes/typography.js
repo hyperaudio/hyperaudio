@@ -138,15 +138,15 @@ const typography = {
   },
   button: {
     fontFamily,
-    fontSize: '0.88rem',
-    fontWeight: '600',
+    fontSize: '0.77rem',
+    fontWeight: '500',
     letterSpacing: '0.055em',
     lineHeight: '1.44em',
     [mui.breakpoints.up('md')]: {
-      fontSize: '0.92rem',
+      fontSize: '0.88rem',
     },
     [mui.breakpoints.up('xl')]: {
-      fontSize: '0.96rem',
+      fontSize: '0.99rem',
     },
   },
   caption: {
