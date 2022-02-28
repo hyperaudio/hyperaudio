@@ -68,7 +68,7 @@ const Root = styled(Container, {
 });
 
 export const RemixTopbar = props => {
-  const { editable, showSource, setShowSource, remix } = props;
+  const { editable, showSource, setShowSource, remix, hideToggleSource } = props;
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [shareDialog, setShareDialog] = React.useState(false);
@@ -103,7 +103,7 @@ export const RemixTopbar = props => {
       <Root maxWidth={false}>
         <Grid container alignItems="center">
           <Grid item className={`${classes.side} ${classes.sideL}`}>
-            {!editable && (
+            {!editable && !hideToggleSource && (
               <Tooltip title={`Toggle source panel`}>
                 <IconButton onClick={onToggleSource}>
                   {!showSource ? (

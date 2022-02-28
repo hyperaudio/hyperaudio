@@ -81,6 +81,7 @@ const RemixPage = () => {
           editable={false}
           // isSingleMedia={true}
           showSource={false}
+          hideToggleSource={true}
           media={data.sources}
           remix={data.remix}
           sources={data.sources}
