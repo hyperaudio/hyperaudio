@@ -67,7 +67,7 @@ const RemixPage = () => {
         },
       ];
 
-      setData({ sources });
+      setData({ sources, remix: r });
     })();
   }, [media, remix]);
 
@@ -77,7 +77,14 @@ const RemixPage = () => {
     <Root className={classes.root}>
       <div className={classes.push} />
       {data && data.sources && data.sources.length > 0 ? (
-        <Remixer editable={false} isSingleMedia={true} media={data.sources} remix={null} sources={data.sources} />
+        <Remixer
+          editable={false}
+          // isSingleMedia={true}
+          showSource={false}
+          media={data.sources}
+          remix={data.remix}
+          sources={data.sources}
+        />
       ) : null}
     </Root>
   );
