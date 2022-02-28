@@ -175,12 +175,12 @@ export const ShareDialog = props => {
         <Grid container spacing={2}>
           <Grid item xs>
             <Tooltip title="Share on Facebook">
-              <IconButton onClick={() => console.log('Share on Facebook')}>
+              <IconButton onClick={() => console.log('Share on Facebook')} disabled={true}>
                 <FacebookIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Share on Twitter">
-              <IconButton onClick={() => console.log('Share on Twitter')}>
+              <IconButton onClick={() => console.log('Share on Twitter')} disabled={true}>
                 <TwitterIcon />
               </IconButton>
             </Tooltip>
