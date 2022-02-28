@@ -48,7 +48,7 @@ export const ShareDialog = props => {
   const inputRef = React.useRef();
 
   const [isCopied, setIsCopied] = React.useState(false);
-  const [includeSource, setIncludeSource] = React.useState(true);
+  const [includeSource, setIncludeSource] = React.useState(false);
 
   // This is the function we wrote earlier
   async function copyToClipboard(text) {
@@ -125,6 +125,7 @@ export const ShareDialog = props => {
               selected={includeSource}
               size="large"
               value="includesource"
+              disabled={true}
             >
               <Share2Panes sx={{ fontSize: 40 }} />
             </ToggleButton>
@@ -151,7 +152,7 @@ export const ShareDialog = props => {
             onFocus: e => e.target.select(),
             readOnly: true,
           }}
-          value={`https://hyper.audio/xyz${includeSource ? '?includesource' : ''}`}
+          value={document.location.href}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -184,7 +185,7 @@ export const ShareDialog = props => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Share via Email">
-              <IconButton onClick={() => console.log('Share via Email')}>
+              <IconButton onClick={() => console.log('Share via Email')} disabled={true}>
                 <MailOutlineIcon />
               </IconButton>
             </Tooltip>
