@@ -417,7 +417,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             </Typography>
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
               {users.map(o => (
-                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
+                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
               ))}
@@ -548,7 +548,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           </Typography>
           <Box sx={{ mt: { xs: 3, md: 6 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             {praises.map(o => (
-              <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
+              <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
                 <img src={o.image} alt={o.name} className={classes.logo} />
               </Box>
             ))}
