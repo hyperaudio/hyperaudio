@@ -48,7 +48,7 @@ export const ShareDialog = props => {
   const inputRef = React.useRef();
 
   const [isCopied, setIsCopied] = React.useState(false);
-  const [includeSource, setIncludeSource] = React.useState(true);
+  const [includeSource, setIncludeSource] = React.useState(false);
 
   // This is the function we wrote earlier
   async function copyToClipboard(text) {
@@ -125,6 +125,7 @@ export const ShareDialog = props => {
               selected={includeSource}
               size="large"
               value="includesource"
+              disabled={true}
             >
               <Share2Panes sx={{ fontSize: 40 }} />
             </ToggleButton>
@@ -151,7 +152,7 @@ export const ShareDialog = props => {
             onFocus: e => e.target.select(),
             readOnly: true,
           }}
-          value={`https://hyper.audio/xyz${includeSource ? '?includesource' : ''}`}
+          value={document.location.href}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -174,17 +175,17 @@ export const ShareDialog = props => {
         <Grid container spacing={2}>
           <Grid item xs>
             <Tooltip title="Share on Facebook">
-              <IconButton onClick={() => console.log('Share on Facebook')}>
+              <IconButton onClick={() => console.log('Share on Facebook')} disabled={true}>
                 <FacebookIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Share on Twitter">
-              <IconButton onClick={() => console.log('Share on Twitter')}>
+              <IconButton onClick={() => console.log('Share on Twitter')} disabled={true}>
                 <TwitterIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Share via Email">
-              <IconButton onClick={() => console.log('Share via Email')}>
+              <IconButton onClick={() => console.log('Share via Email')} disabled={true}>
                 <MailOutlineIcon />
               </IconButton>
             </Tooltip>

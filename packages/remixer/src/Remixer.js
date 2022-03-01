@@ -139,7 +139,7 @@ const Remixer = props => {
     });
   }, [props]);
 
-  const [showSource, setShowSource] = useState(true);
+  const [showSource, setShowSource] = useState(props.showSource === undefined ? true : props.showSource);
   const [showLibrary, setShowLibrary] = useState(false);
 
   const onSourceChange = useCallback(

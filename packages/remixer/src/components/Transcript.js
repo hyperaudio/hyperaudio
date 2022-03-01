@@ -185,7 +185,9 @@ export const Transcript = props => {
     const blockIndex = blocks.findIndex(b => b.key === focus);
     const block = blocks[blockIndex];
     const offset = blocks.slice(0, blockIndex).reduce((acc, b) => acc + b.duration + b.gap, 0);
-    const source = sources.find(source => source.id === block.media);
+    const source =
+      sources.find(source => source.id === block.media) ??
+      sources.find(source => source.media.find(m => m.id === block.media));
 
     if (!editable) {
       if (block.type === 'block') {
