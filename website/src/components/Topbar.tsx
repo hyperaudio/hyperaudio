@@ -103,8 +103,8 @@ const Topbar = (props: TopbarProps) => {
                 </Button>
               </Grid>
               <Grid item xs={6} container justifyContent="flex-end">
-                <Button color="primary" variant="contained" href={config.requestDemo}>
-                  Request a demo
+                <Button color="primary" href={config.newsletter} variant="contained">
+                  Stay informed
                 </Button>
               </Grid>
             </Grid>

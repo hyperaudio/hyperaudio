@@ -81,28 +81,28 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
       color: 'info.main',
       id: 0,
       image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      text: 'Make audio and video more accessible by using the interactive transcripts and captions we produce from transcribing your media. You can edit transcripts and specify speakers using our intuitive Transcript Editor.',
       title: 'Transcribe',
     },
     {
       color: 'error.main',
       id: 1,
       image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      text: 'Reach a larger audience by requesting automatically translated multilingual transcripts and captions. We can transcribe into over 20 languages and translate into around 80! Our Editor allows you to tweak both translated transcripts and captions.',
       title: 'Translate',
     },
     {
       color: 'success.main',
       id: 2,
       image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      text: 'Make the most of your content by converting it into various formats — whether it’s text for blogs, captioned video snippets for social media or audio clips for your podcast. Our Remixer provides a unique text-based way of creating mixes from one or more sources.',
       title: 'Repurpose',
     },
     {
       color: 'warning.main',
       id: 3,
       image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      text: 'Leverage the power of your community to remix media and share clips, summaries and mixes. Export and embed Interactive Transcripts on your website. Share a link to a transcript or remix or share an excerpt by highlighting the corresponding text.',
       title: 'Share',
     },
   ];
@@ -184,11 +184,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   textAlign: 'center',
                 }}
               >
-                <Button color="primary" href={config.newsletter} size="large" sx={{ mr: 1 }} variant="contained">
-                  Stay informed
-                </Button>
-                <Button color="primary" href={config.requestDemo} size="large" sx={{ ml: 1 }} variant="outlined">
+                <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
                   Request a demo
+                </Button>
+                <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
+                  Stay informed
                 </Button>
               </Box>
             </Container>
@@ -443,9 +443,19 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               Transcribe. Repurpouse. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }} href={config.requestDemo}>
-            Request a demo
-          </Button>
+          <Box
+            sx={{
+              mt: 4,
+              textAlign: 'center',
+            }}
+          >
+            <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
+              Request a demo
+            </Button>
+            <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
+              Stay informed
+            </Button>
+          </Box>
         </Container>
       </div>
     </Root>
