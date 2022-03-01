@@ -133,28 +133,28 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       color: 'info.main',
       id: 0,
       image: '/images/sample.png',
-      text: 'Make audio and video more accessible by using the interactive transcripts and captions we produce from transcribing your media. You can edit transcripts and specify speakers using our intuitive Transcript Editor.',
+      text: 'Make audio and video more accessible by using the interactive transcripts and captions we produce from transcribing your media. \n\nYou can edit transcripts and specify speakers using our intuitive Transcript Editor.',
       title: 'Transcribe',
     },
     {
       color: 'error.main',
       id: 1,
       image: '/images/sample.png',
-      text: 'Reach a larger audience by requesting automatically translated multilingual transcripts and captions. We can transcribe into over 20 languages and translate into around 80! Our Editor allows you to tweak both translated transcripts and captions.',
+      text: 'Reach a larger audience by requesting automatically translated multilingual transcripts and captions. We can transcribe into over 20 languages and translate into around 80! \n\nOur Editor allows you to tweak both translated transcripts and captions.',
       title: 'Translate',
     },
     {
       color: 'success.main',
       id: 2,
       image: '/images/sample.png',
-      text: 'Make the most of your content by converting it into various formats — whether it’s text for blogs, captioned video snippets for social media or audio clips for your podcast. Our Remixer provides a unique text-based way of creating mixes from one or more sources.',
+      text: 'Make the most of your content by converting it into various formats — whether it’s text for blogs, captioned video snippets for social media or audio clips for your podcast. \n\nOur Remixer provides a unique text-based way of creating mixes from one or more sources.',
       title: 'Repurpose',
     },
     {
       color: 'warning.main',
       id: 3,
       image: '/images/sample.png',
-      text: 'Leverage the power of your community to remix media and share clips, summaries and mixes. Export and embed Interactive Transcripts on your website. Share a link to a transcript or remix or share an excerpt by highlighting the corresponding text.',
+      text: 'Leverage the power of your community to remix media and share clips, summaries and mixes. Export and embed Interactive Transcripts on your website. \n\nShare a link to a transcript or remix or share an excerpt by highlighting the corresponding text.',
       title: 'Share',
     },
   ];
@@ -358,7 +358,12 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <Typography color="textSecondary" gutterBottom variant="body2">
+                          <Typography
+                            color="textSecondary"
+                            gutterBottom
+                            sx={{ whiteSpace: 'pre-line' }}
+                            variant="body2"
+                          >
                             {acc.text}
                           </Typography>
                           <Box
