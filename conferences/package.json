@@ -11,7 +11,7 @@
     "____surge": "yarn build && mkdir -p ./build-surge && cp -r ./out/* ./build-surge && cp ./out/index.html ./build-surge/200.html && surge build-surge test2-hyperaudio.surge.sh"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "2.3.0",
+    "@aws-amplify/ui-react": "2.6.2",
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.7.1",
     "@emotion/server": "11.4.0",
@@ -19,7 +19,7 @@
     "@fontsource/roboto": "4.5.3",
     "@mui/icons-material": "5.4.1",
     "@mui/material": "5.4.1",
-    "aws-amplify": "4.3.14",
+    "aws-amplify": "4.3.15",
     "clsx": "1.1.1",
     "lodash": "4.17.21",
     "next": "12.0.10",
@@ -30,7 +30,7 @@
   },
   "devDependencies": {
     "eslint": "8.9.0",
-    "eslint-config-next": "12.0.10",
+    "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "8.3.0"
   }
 }
