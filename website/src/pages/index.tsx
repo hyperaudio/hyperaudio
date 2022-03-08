@@ -12,6 +12,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
@@ -178,11 +179,12 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
                 Transcribe, translate, repurpose and share.
               </Typography>
-              <Box
-                sx={{
-                  mt: 4,
-                  textAlign: 'center',
-                }}
+              <Stack
+                sx={{ mt: 4, textAlign: 'center' }}
+                spacing={2}
+                alignItems="center"
+                direction={{ xs: 'column', sm: 'row' }}
+                justifyContent="center"
               >
                 <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
                   Request a demo
@@ -190,7 +192,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                 <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
                   Stay informed
                 </Button>
-              </Box>
+              </Stack>
             </Container>
           </Box>
           <Box sx={{ my: { xs: 3, md: 6, xl: 18 } }}>
@@ -448,11 +450,12 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               Transcribe. Repurpose. Share. Now.
             </Typography>
           </Typography>
-          <Box
-            sx={{
-              mt: 4,
-              textAlign: 'center',
-            }}
+          <Stack
+            sx={{ mt: 4, textAlign: 'center' }}
+            spacing={2}
+            alignItems="center"
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="center"
           >
             <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
               Request a demo
@@ -460,7 +463,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
             <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
               Stay informed
             </Button>
-          </Box>
+          </Stack>
         </Container>
       </div>
     </Root>

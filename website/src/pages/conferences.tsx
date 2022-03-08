@@ -11,6 +11,7 @@ import Container from '@mui/material/Container';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
+import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
@@ -193,14 +194,6 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       text2:
         'In the world of misinformation, it is important  distinguish context, intent and with content. And responsibly host content.',
     },
-    {
-      id: 4,
-      color: blue[50],
-      image: '/images/sample.png',
-      title: 'Extend your Reach',
-      text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
-      text2: 'Support up to 30 translations for each piece of video content using our workflow.',
-    },
   ];
   const features2 = [
     {
@@ -230,10 +223,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       id: 3,
       color: indigo[900],
-      title: 'Maintain Context',
-      text: 'The source content for each clip can be viewed, allowing context to be preserved.',
-      text2:
-        'In the world of misinformation, it is important  distinguish context, intent and with content. And responsibly host content.',
+      title: 'Extend your Reach',
+      text: 'Our multi-lingual transcription tools and captioning algorithm help you make your content accessible to an international audience.',
+      text2: 'Support up to 30 translations for each piece of video content using our workflow.',
     },
   ];
   const users = [
@@ -310,14 +302,20 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               <Typography variant="h5" component="p" sx={{ fontWeight: 500, mt: 3 }}>
                 Transcribe, translate, repurpose and share — meet your audience wherever they are.
               </Typography>
-              <Box sx={{ mt: 4, textAlign: 'center' }}>
+              <Stack
+                sx={{ mt: 4, textAlign: 'center' }}
+                spacing={2}
+                alignItems="center"
+                direction={{ xs: 'column', sm: 'row' }}
+                justifyContent="center"
+              >
                 <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
                   Request a demo
                 </Button>
                 <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
                   Stay informed
                 </Button>
-              </Box>
+              </Stack>
             </Container>
           </Box>
           <Box sx={{ my: { xs: 3, md: 6, xl: 18 } }}>
@@ -625,11 +623,12 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               Transcribe. Repurpose. Share. Now.
             </Typography>
           </Typography>
-          <Box
-            sx={{
-              mt: 4,
-              textAlign: 'center',
-            }}
+          <Stack
+            sx={{ mt: 4, textAlign: 'center' }}
+            spacing={2}
+            alignItems="center"
+            direction={{ xs: 'column', sm: 'row' }}
+            justifyContent="center"
           >
             <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
               Request a demo
@@ -637,7 +636,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
               Stay informed
             </Button>
-          </Box>
+          </Stack>
         </Container>
       </div>
     </Root>
