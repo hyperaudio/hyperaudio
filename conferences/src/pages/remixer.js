@@ -6,7 +6,7 @@ import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
 
-import { Media, Channel, Transcript, Remix, RemixMedia } from '../../models';
+import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -27,56 +27,77 @@ const Root = styled('div', {
   },
 }));
 
-const getRemix = async (setRemixes, id) => {
-  return setRemixes((await DataStore.query(RemixMedia)).filter(r => r.remix.id === id).map(r => r.remix)[0]);
-};
+const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
+const getTranscripts = async setAllTranscripts => setAllTranscripts(await DataStore.query(Transcript)); // .filter(t => t.media === id)
 
 const RemixerPage = () => {
   const router = useRouter();
   // const id = useMemo(() => router.query.id, [router.query]);
+  const [allMedia, setAllMedia] = useState([]);
+  const [allTranscripts, setAllTranscripts] = useState([]);
   const [media, setMedia] = useState();
   const [remix, setRemix] = useState([]);
   const [data, setData] = useState();
 
-  // console.log({ id, media, remix, data });
+  console.log({ id: null, allMedia, allTranscripts, media, remix, data });
 
-  // useEffect(() => {
-  //   getRemix(setRemix, id);
+  useEffect(() => {
+    getTranscripts(setAllTranscripts);
 
-  //   const subscription = DataStore.observe(RemixMedia).subscribe(msg => getRemix(setRemix, id));
-  //   window.addEventListener('online', () => navigator.onLine && getRemix(setRemix, id));
-  //   return () => subscription.unsubscribe();
-  // }, [id]);
+    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setAllTranscripts));
+    window.addEventListener('online', () => navigator.onLine && getTranscripts(setAllTranscripts));
 
-  // useEffect(() => {
-  //   if (!remix) return;
-  //   (async () => {
-  //     const r = await (await fetch(remix.url)).json();
-  //     const sources = [
-  //       {
-  //         ...remix,
-  //         media: r.media,
-  //         channel: { id: 0, name: 'no channel' },
-  //         // tags: media.tags ?? [],
-  //         transcript: {
-  //           title: remix.title,
-  //           translations: [{ id: remix.id, lang: 'en-US', name: 'English', default: true }],
-  //         },
-  //         remixes: [],
-  //         blocks: r.blocks,
-  //       },
-  //     ];
+    return () => subscription.unsubscribe();
+  }, []);
 
-  //     setData({ sources, remix: r });
-  //   })();
-  // }, [media, remix]);
+  useEffect(() => {
+    getMedia(setAllMedia);
+
+    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setAllMedia));
+    window.addEventListener('online', () => navigator.onLine && getMedia(setAllMedia));
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (allTranscripts.length === 0 || allMedia.length === 0) return;
+
+    (async () => {
+      const transcripts = await Promise.all(
+        allTranscripts.map(async t => ({ ...t, blocks: await (await fetch(t.url)).json() })),
+      );
+
+      console.log({ transcripts });
+
+      const sources = transcripts.map(t => {
+        const media = allMedia.find(m => m.id === t.media);
+        return {
+          ...t,
+          // blocks2: t.blocks.map(b => ({ ...b, media: t.media })),
+          media: [{ id: media.playbackId, url: media.url, poster: media.poster }],
+        };
+      });
+
+      setData({
+        sources,
+        remix: {
+          id: 'remix-id',
+          title: '',
+          media: sources.map(s => s.media[0]),
+          blocks: [],
+        },
+      });
+    })();
+  }, [allMedia, allTranscripts]);
 
   console.log({ media, data });
 
   return (
     <Root className={classes.root}>
       <div className={classes.push} />
-      {data && data.sources && data.sources.length > 0 ? <p>test</p> : null}
+      {data && data.sources && data.sources.length > 0 ? (
+        <Remixer editable={true} remix={data.remix} sources={data.sources} media={[]} />
+      ) : null}
     </Root>
   );
 };

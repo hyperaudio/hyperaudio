@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -15,19 +15,22 @@ const Source = props => {
     source: { id, blocks, media },
   } = props;
 
+  const animationFrame = useRef(0);
   const reference = useRef();
   const players = useRef({});
 
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
-  }, [reference]);
+  // useEffect(() => {
+  //   reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+  // }, [reference]);
+
+  // useEffect(() => console.log({ time }), [time]);
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       {isSingleMedia ? <MediaTopbar {...props} /> : <SourceTopbar {...props} />}
-      <Theatre {...{ blocks, media, players, reference, time }} />
+      <Theatre {...{ blocks, media, players, reference, time, setTime }} />
       <div className="transcriptWrap">
         <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
       </div>

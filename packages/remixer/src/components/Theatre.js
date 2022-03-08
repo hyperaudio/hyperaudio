@@ -48,7 +48,7 @@ const MATCH_URL_YOUTUBE =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 // const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
-export const Theatre = ({ blocks, media, players, reference, time = 0 }) => {
+export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }) => {
   const duration = useMemo(
     () =>
       blocks.reduce(
@@ -59,10 +59,17 @@ export const Theatre = ({ blocks, media, players, reference, time = 0 }) => {
     [blocks],
   );
 
+  // useEffect(() => {
+  //   reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+  // }, [reference, duration]);
+
   useEffect(() => {
     // @ts-ignore
     reference.current.src = createSilentAudio(Math.ceil(duration / 1e3), 44100);
-  }, [reference, duration]);
+    reference.current.addEventListener('timeupdate', () => {
+      setTime && setTime(1e3 * (reference.current?.currentTime ?? 0));
+    });
+  }, [reference, duration, setTime]);
 
   const [active, setActive] = useState();
   const [interval, setInterval] = useState();
