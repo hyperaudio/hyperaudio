@@ -133,28 +133,28 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       color: 'info.main',
       id: 0,
-      image: '/images/hero-transcribe.png',
+      image: '/images/jpg/hero-transcribe.jpg',
       text: 'Make audio and video more accessible by using the interactive transcripts and captions we produce from transcribing your media. \n\nYou can edit transcripts and specify speakers using our intuitive Transcript Editor.',
       title: 'Transcribe',
     },
     {
       color: 'error.main',
       id: 1,
-      image: '/images/hero-translate.png',
+      image: '/images/jpg/hero-translate.jpg',
       text: 'Reach a larger audience by requesting automatically translated multilingual transcripts and captions. We can transcribe into over 20 languages and translate into around 80! \n\nOur Editor allows you to tweak both translated transcripts and captions.',
       title: 'Translate',
     },
     {
       color: 'success.main',
       id: 2,
-      image: '/images/hero-remix.png',
+      image: '/images/jpg/hero-remix.jpg',
       text: 'Make the most of your content by converting it into various formats — whether it’s text for blogs, captioned video snippets for social media or audio clips for your podcast. \n\nOur Remixer provides a unique text-based way of creating mixes from one or more sources.',
       title: 'Repurpose',
     },
     {
       color: 'warning.main',
       id: 3,
-      image: '/images/hero-share.png',
+      image: '/images/jpg/hero-share.jpg',
       text: 'Leverage the power of your community to remix media and share clips, summaries and mixes. Export and embed Interactive Transcripts on your website. \n\nShare a link to a transcript or remix or share an excerpt by highlighting the corresponding text.',
       title: 'Share',
     },
@@ -163,7 +163,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       id: 0,
       color: indigo[50],
-      image: '/images/sample.png',
+      image: '/images/jpg/feature-tailored-for-conferences.jpg',
       title: 'Tailored for Conferences',
       text: 'Include slide decks, specify tracks and tags, see speaker listings.',
       text2: 'Easily create summaries, highlight reels or distilled versions of conference talks.',
@@ -171,7 +171,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       id: 1,
       color: red[50],
-      image: '/images/sample.png',
+      image: '/images/jpg/feature-increase-accessibility.jpg',
       title: 'Increase Accessibility',
       text: 'Our Interactive Transcripts make it easy for participants to quickly scan and navigate content.',
       text2: 'Transcript timings match the video, allowing you to jump to the right point by clicking on the text.',
@@ -179,7 +179,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       id: 2,
       color: teal[50],
-      image: '/images/sample.png',
+      image: '/images/jpg/feature-repurpose.jpg',
       title: 'Repurpose your Content',
       text: 'Create summaries, compilations and highlight reels by using our intuitive text based remixer.',
       text2:
@@ -188,7 +188,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     {
       id: 3,
       color: green[50],
-      image: '/images/sample.png',
+      image: '/images/jpg/feature-context.jpg',
       title: 'Maintain Context',
       text: 'The source content for each clip can be viewed, allowing context to be preserved.',
       text2:
