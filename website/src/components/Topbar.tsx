@@ -88,12 +88,12 @@ const Topbar = (props: TopbarProps) => {
           <Typography variant="body2" sx={{ fontWeight: 500 }}>
             New: Hyperaudio for Conferences{' '}
             <Button
-              color="secondary"
+              color="inherit"
               component={Button}
               href="/conferences"
               size="small"
               variant="contained"
-              sx={{ ml: 0.5 }}
+              sx={{ ml: 0.5, color: 'primary.main' }}
             >
               Visit now
             </Button>
