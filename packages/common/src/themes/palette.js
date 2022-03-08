@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import { deepOrange, deepPurple } from '@mui/material/colors';
+import { amber, deepPurple } from '@mui/material/colors';
 
 const mui = createTheme();
 
@@ -13,7 +13,7 @@ const palette = {
   },
   divider: 'rgba(0,0,0,0.088)',
   primary: deepPurple,
-  secondary: deepOrange,
+  secondary: amber,
 };
 
 export default palette;

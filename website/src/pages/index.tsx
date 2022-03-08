@@ -80,29 +80,29 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
     {
       color: 'info.main',
       id: 0,
-      image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      image: '/images/hero-transcribe.png',
+      text: 'Make audio and video more accessible by using the interactive transcripts and captions we produce from transcribing your media. \n\nYou can edit transcripts and specify speakers using our intuitive Transcript Editor.',
       title: 'Transcribe',
     },
     {
       color: 'error.main',
       id: 1,
-      image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      image: '/images/hero-translate.png',
+      text: 'Reach a larger audience by requesting automatically translated multilingual transcripts and captions. We can transcribe into over 20 languages and translate into around 80! \n\nOur Editor allows you to tweak both translated transcripts and captions.',
       title: 'Translate',
     },
     {
       color: 'success.main',
       id: 2,
-      image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      image: '/images/hero-remix.png',
+      text: 'Make the most of your content by converting it into various formats — whether it’s text for blogs, captioned video snippets for social media or audio clips for your podcast. \n\nOur Remixer provides a unique text-based way of creating mixes from one or more sources.',
       title: 'Repurpose',
     },
     {
       color: 'warning.main',
       id: 3,
-      image: '/images/sample.png',
-      text: 'Non nostrud eiusmod culpa anim adipisicing aliqua excepteur cillum cupidatat. Occaecat voluptate voluptate enim culpa fugiat nulla consectetur cillum pariatur. Occaecat pariatur laborum ut. Culpa esse labore aliqua ea.',
+      image: '/images/hero-share.png',
+      text: 'Leverage the power of your community to remix media and share clips, summaries and mixes. Export and embed Interactive Transcripts on your website. \n\nShare a link to a transcript or remix or share an excerpt by highlighting the corresponding text.',
       title: 'Share',
     },
   ];
@@ -184,11 +184,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   textAlign: 'center',
                 }}
               >
-                <Button color="primary" href={config.newsletter} size="large" sx={{ mr: 1 }} variant="contained">
-                  Stay informed
-                </Button>
-                <Button color="primary" href={config.requestDemo} size="large" sx={{ ml: 1 }} variant="outlined">
+                <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
                   Request a demo
+                </Button>
+                <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
+                  Stay informed
                 </Button>
               </Box>
             </Container>
@@ -231,7 +231,12 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <Typography color="textSecondary" gutterBottom variant="body2">
+                          <Typography
+                            color="textSecondary"
+                            gutterBottom
+                            sx={{ whiteSpace: 'pre-line' }}
+                            variant="body2"
+                          >
                             {acc.text}
                           </Typography>
                           <Box
@@ -290,7 +295,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
             </Typography>
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
               {users.map(o => (
-                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4, lg: 5, xl: 6 }, my: { xs: 2, sm: 3 } }}>
+                <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
                   <img src={o.image} alt={o.name} className={classes.logo} />
                 </Box>
               ))}
@@ -308,7 +313,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
       <div className={classes.blurbs}>
         <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography variant="h2" display="block" component="h2" gutterBottom align="center">
-            Dunno, lets find a title
+            How can Hyperaudio help?
           </Typography>
           <Box sx={{ mt: { xs: 6, md: 8 } }}>
             <Grid container spacing={{ xs: 3, sm: 6, md: 6, lg: 12 }} sx={{ position: 'relative' }}>
@@ -440,12 +445,22 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
               Start looking at media in a completely new way
             </Typography>
             <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>
-              Transcribe. Repurpouse. Share. Now.
+              Transcribe. Repurpose. Share. Now.
             </Typography>
           </Typography>
-          <Button variant="contained" color="primary" size="large" sx={{ mt: 2 }} href={config.requestDemo}>
-            Request a demo
-          </Button>
+          <Box
+            sx={{
+              mt: 4,
+              textAlign: 'center',
+            }}
+          >
+            <Button color="primary" href={config.requestDemo} size="large" sx={{ mr: 1 }} variant="outlined">
+              Request a demo
+            </Button>
+            <Button color="primary" href={config.newsletter} size="large" sx={{ ml: 1 }} variant="contained">
+              Stay informed
+            </Button>
+          </Box>
         </Container>
       </div>
     </Root>

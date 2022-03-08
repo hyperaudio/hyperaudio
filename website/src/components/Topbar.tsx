@@ -84,6 +84,21 @@ const Topbar = (props: TopbarProps) => {
         ref={ref}
         useGrain={Boolean(trigger)}
       >
+        <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', p: 1, textAlign: 'center' }}>
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            New: Hyperaudio for Conferences{' '}
+            <Button
+              color="secondary"
+              component={Button}
+              href="/conferences"
+              size="small"
+              variant="contained"
+              sx={{ ml: 0.5 }}
+            >
+              Visit now
+            </Button>
+          </Typography>
+        </Box>
         <Container maxWidth={false} sx={{ py: { xs: 1, xl: 2 } }}>
           <Toolbar disableGutters>
             <Grid container alignItems="center">
@@ -103,8 +118,8 @@ const Topbar = (props: TopbarProps) => {
                 </Button>
               </Grid>
               <Grid item xs={6} container justifyContent="flex-end">
-                <Button color="primary" variant="contained" href={config.requestDemo}>
-                  Request a demo
+                <Button color="primary" href={config.newsletter} variant="contained">
+                  Stay informed
                 </Button>
               </Grid>
             </Grid>
