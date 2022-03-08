@@ -56,10 +56,10 @@ const Remix = props => {
 
   const [time, setTime] = useState(0);
 
-  useEffect(() => {
-    if (reference.current)
-      reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
-  }, [reference]);
+  // useEffect(() => {
+  //   if (reference.current)
+  //     reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
+  // }, [reference]);
 
   const [blocksOverride, setBlockOverride] = useState();
 
@@ -69,7 +69,7 @@ const Remix = props => {
         <RemixTopbar {...props} />
         {blocks?.length > 0 ? (
           <>
-            <Theatre {...{ media, players, reference, time }} blocks={blocksOverride ?? blocks} />
+            <Theatre {...{ media, players, reference, time, setTime }} blocks={blocksOverride ?? blocks} />
             <div className="transcriptWrap">
               <Transcript
                 {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride, onSourceChange }}

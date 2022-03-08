@@ -192,8 +192,11 @@ const remixReducer = (state, action) => {
             if (startIndex === -1) startIndex2 = 0;
             if (endIndex === -1) endIndex2 = block.starts2.length - 1;
 
-            return {
-              ...block,
+            let duration =
+              block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0];
+            if (isNaN(duration)) duration = 0;
+
+            const data = {
               key: `${block.key}-${Date.now()}`, // TODO: better random key
               text: block.text.substring(
                 startIndex === -1 ? 0 : block.offsets[startIndex],
@@ -212,10 +215,19 @@ const remixReducer = (state, action) => {
               durations: block.durations.slice(startIndex2, endIndex2),
               // start: block.starts.slice(startIndex2, endIndex2)[0],
               // end: block.ends.slice(startIndex2, endIndex2)[endIndex2 - startIndex2],
-              duration:
-                block.ends2.slice(startIndex2, endIndex2).pop() - block.starts2.slice(startIndex2, endIndex2)[0],
+              duration,
               gap: endIndex === -1 ? block.gap : 0,
               // debug: { block, range, startIndex, endIndex, startIndex2, endIndex2 },
+            };
+
+            if (isNaN(data.duration) || data.duration === 0) {
+              console.log('NaN/0', { block, data, arr, index: i });
+              // data.duration = block.duration;
+            }
+
+            return {
+              ...block,
+              ...data,
             };
           });
 

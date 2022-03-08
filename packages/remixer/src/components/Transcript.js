@@ -236,6 +236,8 @@ export const Transcript = props => {
       if (selection.isCollapsed && target.getAttribute('data-key')) {
         setRange(null);
 
+        console.log('click', target.getAttribute('data-key'));
+
         if (!externalRange) {
           setContext(null);
           setContextData({});
@@ -247,12 +249,19 @@ export const Transcript = props => {
         const offset = parseInt(target.getAttribute('data-offset') ?? 0);
 
         const block = blocks.find(block => block.key === key);
+
+        console.log('click', block, reference.current, sources);
+
         const index = block.offsets.findIndex(
           (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
         );
 
         const time = index > 0 ? block.starts2[index] + offset : offset;
-        if (reference.current) reference.current.currentTime = time / 1e3;
+        if (reference.current) {
+          console.log('click SEEK from', reference.current.currentTime, time / 1e3);
+          reference.current.currentTime = time / 1e3;
+          console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
+        }
       } else if (!selection.isCollapsed && editable && isSource) {
         const key = anchorNode?.parentNode?.getAttribute('data-key');
         const textOffset = parseInt(anchorNode?.parentNode?.getAttribute('data-text-offset') ?? 0);
@@ -281,7 +290,7 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks, externalRange],
+    [blocks, externalRange, reference, sources],
   );
 
   useEffect(() => {
