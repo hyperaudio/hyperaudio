@@ -81,7 +81,6 @@ export default function MyApp(props: MyAppProps) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <html lang="en" />
         <title>{config.title}</title>
 
         <link rel="canonical" href={config.url} />
