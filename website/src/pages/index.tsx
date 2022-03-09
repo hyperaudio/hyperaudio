@@ -108,11 +108,11 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
     },
   ];
   const users = [
-    { id: 0, name: 'Mozilla', image: '/images/logo-mozilla.svg' },
-    { id: 1, name: 'WNYC', image: '/images/logo-wnyc.svg' },
-    { id: 2, name: 'Al Jazeera', image: '/images/logo-aljazeera.svg' },
-    { id: 3, name: 'BBC', image: '/images/logo-bbc.svg' },
-    { id: 4, name: 'WMFT', image: '/images/logo-wfmt.svg' },
+    { id: 0, name: 'Mozilla', image: '/images/logo-mozilla.svg', url: 'https://www.mozilla.org/en-US/' },
+    { id: 1, name: 'WNYC', image: '/images/logo-wnyc.svg', url: 'https://www.wnyc.org/' },
+    { id: 2, name: 'Al Jazeera', image: '/images/logo-aljazeera.svg', url: 'https://www.aljazeera.com/' },
+    { id: 3, name: 'BBC', image: '/images/logo-bbc.svg', url: 'https://www.bbc.com/' },
+    { id: 4, name: 'WMFT', image: '/images/logo-wfmt.svg', url: 'https://www.wfmt.com/' },
   ];
   const blurbs = [
     {
@@ -298,7 +298,9 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
               {users.map(o => (
                 <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
-                  <img src={o.image} alt={o.name} className={classes.logo} />
+                  <Button href={o.url}>
+                    <img src={o.image} alt={o.name} className={classes.logo} />
+                  </Button>
                 </Box>
               ))}
             </Box>

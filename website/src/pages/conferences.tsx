@@ -11,9 +11,9 @@ import Container from '@mui/material/Container';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
@@ -229,19 +229,19 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
     },
   ];
   const users = [
-    { id: 0, name: 'Mozilla', image: '/images/logo-mozilla.svg' },
-    { id: 1, name: 'WNYC', image: '/images/logo-wnyc.svg' },
-    { id: 2, name: 'Al Jazeera', image: '/images/logo-aljazeera.svg' },
-    { id: 3, name: 'BBC', image: '/images/logo-bbc.svg' },
-    { id: 4, name: 'WMFT', image: '/images/logo-wfmt.svg' },
+    { id: 0, name: 'Mozilla', image: '/images/logo-mozilla.svg', url: 'https://www.mozilla.org/en-US/' },
+    { id: 1, name: 'WNYC', image: '/images/logo-wnyc.svg', url: 'https://www.wnyc.org/' },
+    { id: 2, name: 'Al Jazeera', image: '/images/logo-aljazeera.svg', url: 'https://www.aljazeera.com/' },
+    { id: 3, name: 'BBC', image: '/images/logo-bbc.svg', url: 'https://www.bbc.com/' },
+    { id: 4, name: 'WMFT', image: '/images/logo-wfmt.svg', url: 'https://www.wfmt.com/' },
   ];
   const praises = [
-    { id: 0, name: 'Grant For The Web', image: '/images/logo-gftw.svg' },
-    { id: 1, name: 'Permanent.org', image: '/images/logo-permanent.png' },
-    { id: 2, name: 'Mozilla', image: '/images/logo-mozilla.svg' },
-    { id: 3, name: 'Creative Commons', image: '/images/logo-cc.svg' },
-    { id: 4, name: 'Internet Archive', image: '/images/logo-ia.svg' },
-    { id: 5, name: 'Knight Foundation', image: '/images/logo-kf.svg' },
+    { id: 0, name: 'Grant For The Web', image: '/images/logo-gftw.svg', url: 'https://www.grantfortheweb.org/' },
+    { id: 1, name: 'Permanent.org', image: '/images/logo-permanent.png', url: 'https://permanent.org/' },
+    { id: 2, name: 'Mozilla', image: '/images/logo-mozilla.svg', url: 'https://www.mozilla.org/en-US/' },
+    { id: 3, name: 'Creative Commons', image: '/images/logo-cc.svg', url: 'https://creativecommons.org/' },
+    { id: 4, name: 'Internet Archive', image: '/images/logo-ia.svg', url: 'https://archive.org/' },
+    { id: 5, name: 'Knight Foundation', image: '/images/logo-kf.svg', url: 'https://knightfoundation.org/' },
   ];
   const quotes = [
     {
@@ -421,7 +421,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
               {users.map(o => (
                 <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
-                  <img src={o.image} alt={o.name} className={classes.logo} />
+                  <Button href={o.url}>
+                    <img src={o.image} alt={o.name} className={classes.logo} />
+                  </Button>
                 </Box>
               ))}
             </Box>
@@ -552,7 +554,9 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
           <Box sx={{ mt: { xs: 3, md: 6 }, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
             {praises.map(o => (
               <Box key={o.id} sx={{ mx: { xs: 2, sm: 3, md: 4 }, my: { xs: 2, sm: 3 } }}>
-                <img src={o.image} alt={o.name} className={classes.logo} />
+                <Button href={o.url}>
+                  <img src={o.image} alt={o.name} className={classes.logo} />
+                </Button>
               </Box>
             ))}
           </Box>
