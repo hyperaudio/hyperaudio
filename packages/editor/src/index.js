@@ -2,4 +2,24 @@ import Draftjs, { EditorState, EditorBlock, convertFromRaw, convertToRaw, getVis
 
 import Editor from './Editor';
 
-export { Editor, Draftjs, EditorBlock, getVisibleSelectionRect, convertFromRaw, convertToRaw };
+const flatten = list => list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+
+const createEntityMap = blocks =>
+  flatten(blocks.map(block => block.entityRanges)).reduce(
+    (acc, data) => ({
+      ...acc,
+      [data.key]: { type: 'TOKEN', mutability: 'MUTABLE', data },
+    }),
+    {},
+  );
+
+export {
+  Editor,
+  EditorState,
+  Draftjs,
+  EditorBlock,
+  getVisibleSelectionRect,
+  convertFromRaw,
+  convertToRaw,
+  createEntityMap,
+};

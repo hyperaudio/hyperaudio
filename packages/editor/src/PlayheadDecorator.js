@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PlayheadSpan = props => (
-  <span className="Playhead" style={{ fontWeight: 'bold' }}>
+  <span className="Playhead" style={{ color: '#673ab7' }}>
     {props.children}
   </span>
 );

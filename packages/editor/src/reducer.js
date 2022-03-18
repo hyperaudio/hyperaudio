@@ -187,7 +187,7 @@ const reducer = (editorState, { type, editorState: changedEditorState, aligner, 
   switch (type) {
     case 'insert-characters':
       deferAlignment(changedEditorState, aligner, dispatch);
-      return editorState;
+      return changedEditorState;
     case 'remove-range':
       return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
     case 'backspace-character':
@@ -200,7 +200,7 @@ const reducer = (editorState, { type, editorState: changedEditorState, aligner, 
       return editorState;
     default:
       deferAlignment(changedEditorState, aligner, dispatch);
-      return editorState;
+      return changedEditorState;
   }
 };
 
