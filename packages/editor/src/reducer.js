@@ -177,7 +177,7 @@ const deferAlignment = (changedEditorState, aligner, dispatch) => {
   }
 };
 
-export const reducer = (editorState, { type, editorState: changedEditorState, aligner, dispatch }) => {
+const reducer = (editorState, { type, editorState: changedEditorState, aligner, dispatch }) => {
   const contentState = editorState.getCurrentContent();
   const changedContentState = changedEditorState.getCurrentContent();
 
@@ -203,3 +203,5 @@ export const reducer = (editorState, { type, editorState: changedEditorState, al
       return editorState;
   }
 };
+
+export default reducer;

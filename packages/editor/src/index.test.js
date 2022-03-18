@@ -1,7 +1,7 @@
-import { ExampleComponent } from '.';
+import { Editor } from '.';
 
-describe('ExampleComponent', () => {
+describe('Editor', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy();
+    expect(Editor).toBeTruthy();
   });
 });

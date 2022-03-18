@@ -23,20 +23,20 @@
   "devDependencies": {
     "babel-eslint": "10.1.0",
     "cross-env": "7.0.3",
-    "eslint": "7.32.0",
-    "eslint-config-prettier": "8.3.0",
+    "eslint": "8.11.0",
+    "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "16.0.3",
     "eslint-config-standard-react": "11.0.1",
-    "eslint-plugin-import": "2.25.3",
+    "eslint-plugin-import": "2.25.4",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-prettier": "3.4.1",
-    "eslint-plugin-promise": "4.3.1",
-    "eslint-plugin-react": "7.27.1",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-promise": "6.0.0",
+    "eslint-plugin-react": "7.29.4",
     "eslint-plugin-standard": "4.1.0",
     "gh-pages": "3.2.3",
     "microbundle-crl": "0.13.11",
     "npm-run-all": "4.1.5",
-    "prettier": "2.5.0"
+    "prettier": "2.6.0"
   },
   "files": [
     "dist"
