@@ -5,7 +5,6 @@ import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -15,9 +14,35 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+const PREFIX = 'SourceTopbar';
+const classes = {
+  tabText: `${PREFIX}-tabText`,
+};
+
 const Root = styled(Toolbar)(({ theme }) => ({
   alignItems: 'stretch !important',
   backgroundColor: theme.palette.background.default,
+  [`&.topbar`]: {
+    alignItems: 'stretch',
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    minHeight: 'auto',
+    position: 'absolute',
+  },
+  [`& .topbarSide`]: {
+    alignItems: 'center',
+    display: 'flex',
+    flexBasis: 'auto',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: theme.spacing(0, 0.5),
+    [`&.topbarSide--left`]: {
+      borderRight: `1px solid ${theme.palette.divider}`,
+    },
+    [`&.topbarSide--right`]: {
+      borderLeft: `1px solid ${theme.palette.divider}`,
+      // marginLeft: `-1px`,
+    },
+  },
   [`.topbarCore`]: {
     overflowX: 'auto !important',
     overflow: 'visible',
@@ -55,19 +80,13 @@ const Tab = styled(Button, {
   [`& .MuiButton-endIcon > span`]: {
     lineHeight: 0,
   },
-}));
-
-const TabClose = styled(IconButton, {
-  shouldForwardProp: prop => prop !== 'isActive',
-})(({ theme, isActive }) => ({
-  background: theme.palette.background.default,
-  [`&, & *`]: {
-    color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
+  [`& .${classes.tabText}`]: {
+    color: theme.palette.primary.dark,
   },
 }));
 
 export const SourceTopbar = props => {
-  const { editable, media, sources, source, onSourceChange, onSourceClose, onShowLibrary } = props;
+  const { editable, media, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -98,31 +117,37 @@ export const SourceTopbar = props => {
         )}
         <div className="topbarCore">
           <Tabs className="SourceTopbar">
-            {sources.map(o => (
+            {tabs.map(o => (
               <Tab
                 color="inherit"
                 component="a"
                 endIcon={
                   editable && (
                     <span>
-                      {sources.length > 1 && (
+                      {tabs.length > 1 && (
                         <Tooltip title="Close">
-                          <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
+                          <IconButton edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
                             <CloseIcon sx={{ fontSize: '16px' }} />
-                          </TabClose>
+                          </IconButton>
                         </Tooltip>
                       )}
                     </span>
                   )
                 }
-                isActive={o.id === source.id}
-                isSingle={sources.length < 2}
+                isActive={o.id === source?.id}
+                isSingle={tabs.length < 2}
                 key={o.id}
                 onClick={() => onSourceChange(o.id)}
                 size="small"
                 variant="contained"
               >
-                <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption">
+                <Typography
+                  className={classes.tabText}
+                  noWrap
+                  sx={{ maxWidth: '150px' }}
+                  variant="caption"
+                  title={o.title}
+                >
                   {o.title}
                 </Typography>
               </Tab>
@@ -130,9 +155,9 @@ export const SourceTopbar = props => {
           </Tabs>
         </div>
         <div className="topbarSide topbarSide--right">
-          <Tooltip title="All source transcripts…">
+          <Tooltip title="All sources">
             <span>
-              <IconButton size="small" onClick={onTranscriptsOpen} disabled={sources.length < 2}>
+              <IconButton size="small" onClick={onTranscriptsOpen}>
                 <MoreVertIcon fontSize="small" />
               </IconButton>
             </span>
@@ -169,13 +194,20 @@ export const SourceTopbar = props => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            {sources.map((o, i) => (
-              <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
-                <Tooltip enterDelay={1500} title={o.title}>
-                  <ListItemText primaryTypographyProps={{ noWrap: true, variant: 'body2' }} sx={{ maxWidth: '200px' }}>
-                    {o.title}
-                  </ListItemText>
-                </Tooltip>
+            {tabs.map((o, i) => (
+              <MenuItem
+                disabled={tabs.length === 1}
+                key={o.id}
+                onClick={() => onSourceChange(o.id)}
+                selected={o.id === source.id}
+              >
+                <ListItemText
+                  primaryTypographyProps={{ noWrap: true, variant: 'body2' }}
+                  sx={{ maxWidth: '200px' }}
+                  title={o.title}
+                >
+                  {o.title}
+                </ListItemText>
                 <span>
                   {editable && (
                     <Tooltip enterDelay={1500} title="Close">
@@ -195,10 +227,7 @@ export const SourceTopbar = props => {
             ))}
             <Divider />
             <MenuItem disabled={media?.length === 0} onClick={onShowLibrary}>
-              <ListItemIcon>
-                <AddCircleOutlineIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Add source transcript…" primaryTypographyProps={{ color: 'primary' }} />
+              <ListItemText primary="Add source…" primaryTypographyProps={{ color: 'primary' }} />
             </MenuItem>
           </Menu>
         </div>

@@ -17,6 +17,7 @@
 
 # misc
 .DS_Store
+*.pem
 
 # debug
 npm-debug.log*
@@ -29,8 +30,8 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# vercel
 .vercel
-.serverless_nextjs
 
 #amplify-do-not-edit-begin
 amplify/\#current-cloud-backend
@@ -38,7 +39,6 @@ amplify/.config/local-*
 amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
-amplify/backend/awscloudformation
 amplify/backend/.temp
 build/
 dist/
@@ -51,4 +51,5 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+**.sample
 #amplify-do-not-edit-end

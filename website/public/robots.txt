@@ -1,9 +1,0 @@
-User-agent: *
-Disallow: /
-Disallow: /TOS
-Disallow: /CLA
-Disallow: /COC
-Disallow: /PP
-Disallow: /License
-Disallow: /api
-Disallow: /auth

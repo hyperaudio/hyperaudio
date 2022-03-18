@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
-import { lighten } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 import Container from '@mui/material/Container';
@@ -18,10 +17,11 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import { styled } from '@mui/material/styles';
 
-import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '../icons';
+import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '@hyperaudio/common';
 import { InsertSlide } from './InsertSlide';
 import { InsertTitle } from './InsertTitle';
 import { InsertTransition } from './InsertTransition';
+import { ContextFrame } from './ContextFrame';
 
 const PREFIX = 'Transcript';
 const classes = {
@@ -29,14 +29,7 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-  alignItems: 'center',
-  borderTop: `1px solid ${theme.palette.divider}`,
-  display: 'flex',
-  flex: '2 2 66%',
-  flexFlow: 'column nowrap',
-  justifyContent: 'flex-start',
-  overflow: 'auto',
-  padding: theme.spacing(4, 2, 18, 2),
+  width: '100%',
   [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
     borderRadius: theme.shape.borderRadius,
     [`&:hover`]: {
@@ -95,7 +88,7 @@ const Section = styled('p')(({ theme }) => ({
   [`& span.playhead`]: {
     color: theme.palette.primary.main,
   },
-  [`&:before`]: {
+  [`&.showSpeaker:before`]: {
     ...theme.typography.overline,
     backgroundColor: theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
@@ -118,20 +111,41 @@ const Section = styled('p')(({ theme }) => ({
     // backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    backgroundColor: lighten(0.3, theme.palette.secondary.main),
+    backgroundColor: theme.palette.secondary.light,
     padding: theme.spacing(0.3, 0),
   },
 }));
 
 export const Transcript = props => {
-  const { id, blocks, sources, reference, time, editable, isSource = false, dispatch } = props;
-  const [range, setRange] = useState();
+  const {
+    id,
+    blocks,
+    sources,
+    reference,
+    time,
+    editable,
+    isSource = false,
+    noMenu,
+    dispatch,
+    setBlockOverride,
+    externalRange,
+    onSourceChange,
+  } = props;
+  const container = useRef();
+
+  const [range, setRange] = useState(externalRange);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [focus, setFocus] = useState(null);
+  const [context, setContext] = useState(null);
+  const [contextData, setContextData] = useState({});
+  const [hideContextMenu, setHideContextMenu] = useState(false);
+
   const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
   const onMoreOpen = (e, key) => {
+    const block = blocks.find(b => b.key === key);
+    setHideContextMenu(block.type !== 'block');
     setFocus(key);
     setAnchorEl(e.currentTarget);
   };
@@ -139,6 +153,7 @@ export const Transcript = props => {
   const onMoreClose = useCallback(() => {
     setFocus(null);
     setAnchorEl(null);
+    setHideContextMenu(false);
   }, []);
 
   const moveUpDisabled = useMemo(() => _.findIndex(blocks, o => o.key === focus) === 0, [blocks, focus]);
@@ -155,17 +170,64 @@ export const Transcript = props => {
     () => dispatch({ type: 'appendInsert', insert: 'slides', key: focus }),
     [focus, dispatch],
   );
+
   const appendTitleBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'title', key: focus }),
     [focus, dispatch],
   );
+
   const appendTransitionBlock = useCallback(
     () => dispatch({ type: 'appendInsert', insert: 'transition', key: focus }),
     [focus, dispatch],
   );
 
+  const showBlockContext = useCallback(() => {
+    const blockIndex = blocks.findIndex(b => b.key === focus);
+    const block = blocks[blockIndex];
+    const offset = blocks.slice(0, blockIndex).reduce((acc, b) => acc + b.duration + b.gap, 0);
+    const source =
+      sources.find(source => source.id === block.media) ??
+      sources.find(source => source.media.find(m => m.id === block.media));
+
+    if (!editable) {
+      if (block.type === 'block') {
+        setContextData({
+          id: block.media,
+          title: source.title,
+          index: blockIndex,
+          offset,
+          blocks: source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })), // TODO: better random key
+          externalRange: [block.start, block.end],
+        });
+
+        setBlockOverride([
+          ...blocks.slice(0, blockIndex),
+          ...source.blocks.map(b => ({ ...b, key: `${b.key}-${Date.now()}`, offset })),
+          ...blocks.slice(blockIndex + 1),
+        ]);
+        setContext(focus);
+      } else {
+        setContext(null);
+        setContextData({});
+      }
+    } else {
+      console.log({ type: 'sourceOpen', source });
+      onSourceChange(source.id);
+      dispatch({ type: 'sourceOpen', source });
+    }
+  }, [focus, blocks, setBlockOverride, editable, dispatch, onSourceChange]);
+
+  const hideBlockContext = useCallback(() => {
+    setContext(null);
+    setContextData({});
+    setBlockOverride && setBlockOverride(null);
+  }, [focus, blocks, setBlockOverride]);
+
   const handleClick = useCallback(
-    ({ target }) => {
+    event => {
+      if (externalRange) event.stopPropagation();
+      const { target } = event;
+
       const selection = window.getSelection();
       console.log(target, selection);
 
@@ -174,17 +236,32 @@ export const Transcript = props => {
       if (selection.isCollapsed && target.getAttribute('data-key')) {
         setRange(null);
 
+        console.log('click', target.getAttribute('data-key'));
+
+        if (!externalRange) {
+          setContext(null);
+          setContextData({});
+          setBlockOverride && setBlockOverride(null);
+        }
+
         const key = target.getAttribute('data-key');
         const textOffset = parseInt(target.getAttribute('data-text-offset') ?? 0);
         const offset = parseInt(target.getAttribute('data-offset') ?? 0);
 
         const block = blocks.find(block => block.key === key);
+
+        console.log('click', block, reference.current, sources);
+
         const index = block.offsets.findIndex(
           (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
         );
 
         const time = index > 0 ? block.starts2[index] + offset : offset;
-        if (reference.current) reference.current.currentTime = time / 1e3;
+        if (reference.current) {
+          console.log('click SEEK from', reference.current.currentTime, time / 1e3);
+          reference.current.currentTime = time / 1e3;
+          console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
+        }
       } else if (!selection.isCollapsed && editable && isSource) {
         const key = anchorNode?.parentNode?.getAttribute('data-key');
         const textOffset = parseInt(anchorNode?.parentNode?.getAttribute('data-text-offset') ?? 0);
@@ -213,14 +290,20 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks],
+    [blocks, externalRange, reference, sources],
   );
+
+  useEffect(() => {
+    if (externalRange) {
+      container.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [externalRange, container]);
 
   useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
     <Root>
-      <Container maxWidth="sm" onClick={handleClick}>
+      <Container ref={container} maxWidth="sm" onClick={handleClick}>
         {editable && !isSource ? (
           <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
             {(provided, snapshot) => (
@@ -233,8 +316,22 @@ export const Transcript = props => {
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (
-                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
-                        ) : block.type === 'title' ? (
+                          context === block.key ? (
+                            <ContextFrame title={contextData.title}>
+                              <Transcript
+                                {...{
+                                  ...props,
+                                  editable: false,
+                                  isSource: false,
+                                  noMenu: true,
+                                  ...contextData,
+                                }}
+                              />
+                            </ContextFrame>
+                          ) : (
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                          )
+                        ) : block.type === 'title' && editable ? (
                           <div className={classes.insertWrap}>
                             <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                           </div>
@@ -242,7 +339,7 @@ export const Transcript = props => {
                           <div className={classes.insertWrap}>
                             <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
                           </div>
-                        ) : block.type === 'transition' ? (
+                        ) : block.type === 'transition' && editable ? (
                           <div className={classes.insertWrap}>
                             <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
                           </div>
@@ -312,20 +409,71 @@ export const Transcript = props => {
               </div>
             )}
           </Droppable>
+        ) : range ? (
+          <>
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="before-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="in-range" />
+              ))}
+
+            {blocks
+              ?.filter(({ type }) => type === 'block')
+              .map((block, i) => (
+                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="after-range" />
+              ))}
+          </>
         ) : (
           blocks?.map((block, i) =>
             block.type === 'block' ? (
-              <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} />
-            ) : block.type === 'title' ? (
-              <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+              <DragBlock key={`${id}:${block.key}:${i}`}>
+                {context === block.key ? (
+                  <ContextFrame title={contextData.title}>
+                    <Transcript
+                      {...{
+                        ...props,
+                        editable: false,
+                        isSource: false,
+                        noMenu: true,
+                        ...contextData,
+                      }}
+                    />
+                  </ContextFrame>
+                ) : (
+                  <Block
+                    key={`${id}:${block.key}:${i}`}
+                    {...{ blocks, block, time, range }}
+                    // offset={contextData && contextData.index > i ? contextData.offset : 0}
+                  />
+                )}
+                {!isSource && !noMenu ? (
+                  <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                    <MoreHorizIcon fontSize="small" />
+                  </BlockMenu>
+                ) : null}
+              </DragBlock>
+            ) : block.type === 'title' && editable ? (
+              <div className={classes.insertWrap}>
+                <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+              </div>
             ) : block.type === 'slides' ? (
-              <InsertSlide
-                key={`${id}:${block.key}:${i}`}
-                onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
-                {...{ sources, block, dispatch }}
-              />
-            ) : block.type === 'transition' ? (
-              <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch }} />
+              <div className={classes.insertWrap}>
+                <InsertSlide
+                  key={`${id}:${block.key}:${i}`}
+                  onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
+                  {...{ sources, block, dispatch, editable }}
+                />
+              </div>
+            ) : block.type === 'transition' && editable ? (
+              <div className={classes.insertWrap}>
+                <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+              </div>
             ) : null,
           )
         )}
@@ -362,62 +510,78 @@ export const Transcript = props => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={() => console.log('Show context')}>
-          <ListItemIcon>
-            <ShowContextIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock}>
-          <ListItemIcon>
-            <MoveUpIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock}>
-          <ListItemIcon>
-            <MoveDownIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={appendSlidesBlock}>
-          <ListItemIcon>
-            <SlideshowIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem onClick={appendTitleBlock}>
-          <ListItemIcon>
-            <TextFieldsIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <MenuItem onClick={appendTransitionBlock}>
-          <ListItemIcon>
-            <MovieFilterIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={removeBlock}>
-          <ListItemIcon>
-            <DeleteIcon color="error" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
-        </MenuItem>
+        {!hideContextMenu ? (
+          context && context === focus && !editable ? (
+            <MenuItem onClick={hideBlockContext}>
+              <ListItemIcon>
+                <ShowContextIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Hide context" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+          ) : (
+            <MenuItem onClick={showBlockContext}>
+              <ListItemIcon>
+                <ShowContextIcon color="primary" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText primary="Show context" primaryTypographyProps={{ color: 'primary' }} />
+            </MenuItem>
+          )
+        ) : null}
+        {editable ? <Divider /> : null}
+        {editable
+          ? [
+              <MenuItem disabled={moveUpDisabled} onClick={moveUpBlock} key="moveUp">
+                <ListItemIcon>
+                  <MoveUpIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Move up" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem disabled={moveDownDisabled} onClick={moveDownBlock} key="moveDown">
+                <ListItemIcon>
+                  <MoveDownIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Move down" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <Divider key="divider1" />,
+              <MenuItem onClick={appendSlidesBlock} key="appendSlide">
+                ,
+                <ListItemIcon>
+                  <SlideshowIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append slide…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem onClick={appendTitleBlock} key="appendTitle">
+                <ListItemIcon>
+                  <TextFieldsIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append title…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <MenuItem onClick={appendTransitionBlock} key="appendTransition">
+                <ListItemIcon>
+                  <MovieFilterIcon color="primary" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Append transition…" primaryTypographyProps={{ color: 'primary' }} />
+              </MenuItem>,
+              <Divider key="divider2" />,
+              <MenuItem onClick={removeBlock} key="removeBlock">
+                <ListItemIcon>
+                  <DeleteIcon color="error" fontSize="small" />
+                </ListItemIcon>
+                <ListItemText primary="Remove section" primaryTypographyProps={{ color: 'error' }} />
+              </MenuItem>,
+            ]
+          : null}
       </Menu>
     </Root>
   );
 };
 
 const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
-  const { key, pk, speaker, text, duration } = block;
+  const { key, pk, speaker, text, duration, offset: _offset = 0 } = block;
 
   const offset = useMemo(() => {
     const index = blocks.findIndex(b => b === block);
-    return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, 0);
+    return blocks.slice(0, index).reduce((acc, b) => acc + b.duration + b.gap, _offset);
   }, [blocks, block]);
 
   const include = useMemo(() => {
@@ -446,7 +610,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       data-offset={offset}
       data-text-offset={0}
       data-speaker={`${speaker}:`}
-      className={`${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
+      className={`${speaker ? 'showSpeaker' : ''} ${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
     >

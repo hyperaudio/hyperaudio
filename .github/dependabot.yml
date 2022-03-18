@@ -4,8 +4,7 @@ updates:
     directory: "/website"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "maboa"
     assignees:
@@ -20,143 +19,17 @@ updates:
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/datastream/src"
+    directory: "/conferences"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
+    reviewers:
+      - "maboa"
     assignees:
       - "Laurian"
     labels:
       - "npm"
       - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/eventstream/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/items/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/postauth/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/probe/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/transcode/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "npm"
-    directory: "/website/amplify/backend/function/transcribe/src"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "npm"
-      - "dependencies"
-      - "backend"
-    allow:
-      - dependency-type: "direct"
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
-
-  - package-ecosystem: "pip"
-    directory: "/website/amplify/backend/function/ytdl"
-    target-branch: "develop"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    assignees:
-      - "Laurian"
-    labels:
-      - "pip"
-      - "dependencies"
-      - "backend"
     allow:
       - dependency-type: "direct"
     ignore:
@@ -167,8 +40,7 @@ updates:
     directory: "/packages/remixer"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
     reviewers:
       - "maboa"
       - "Laurian"
@@ -187,8 +59,43 @@ updates:
     directory: "/packages/storybook"
     target-branch: "develop"
     schedule:
-      interval: "weekly"
-      day: "monday"
+      interval: "monthly"
+    reviewers:
+      - "Laurian"
+    assignees:
+      - "piotrf"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/packages/common"
+    target-branch: "develop"
+    schedule:
+      interval: "monthly"
+    reviewers:
+      - "Laurian"
+    assignees:
+      - "piotrf"
+    labels:
+      - "npm"
+      - "dependencies"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "npm"
+    directory: "/packages/app"
+    target-branch: "develop"
+    schedule:
+      interval: "monthly"
     reviewers:
       - "Laurian"
     assignees:

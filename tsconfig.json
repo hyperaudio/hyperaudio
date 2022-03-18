@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@hyperaudio/common": ["packages/common"]
+    },
+    "noEmit": true
+  }
+}
