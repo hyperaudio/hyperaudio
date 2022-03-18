@@ -13,7 +13,7 @@ const Editor = ({
   seekTo,
   showDialog,
   aligner,
-  speakers,
+  speakers = {},
   ...rest
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
