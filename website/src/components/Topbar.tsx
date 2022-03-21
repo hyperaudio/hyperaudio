@@ -90,7 +90,7 @@ const Topbar = (props: TopbarProps) => {
           <Typography variant="body2" sx={{ fontWeight: 500, textTransform: 'none' }} color="primary.contrastText">
             New:{' '}
             <Link href="/conferences" color="inherit" underline="hover">
-              Hyperaudio for Conferences {!pathname.includes('conferences') && <> — Visit now</>}
+              Hyperaudio for Conferences {!pathname.includes('conferences') && ' — Visit now'}
             </Link>
           </Typography>
         </Box>
