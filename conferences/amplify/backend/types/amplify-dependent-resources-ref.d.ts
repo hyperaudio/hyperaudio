@@ -34,5 +34,11 @@ export type AmplifyDependentResourcesAttributes = {
             "region": "string",
             "language": "string"
         }
+    },
+    "storage": {
+        "s3hyperaudioconferencesstoragestaging": {
+            "BucketName": "string",
+            "Region": "string"
+        }
     }
 }
