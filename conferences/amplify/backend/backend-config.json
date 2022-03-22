@@ -54,5 +54,11 @@
         }
       }
     }
+  },
+  "analytics": {
+    "ha4conferences": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
   }
 }

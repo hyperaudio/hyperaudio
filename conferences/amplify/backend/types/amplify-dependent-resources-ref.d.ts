@@ -16,5 +16,12 @@ export type AmplifyDependentResourcesAttributes = {
             "GraphQLAPIIdOutput": "string",
             "GraphQLAPIEndpointOutput": "string"
         }
+    },
+    "analytics": {
+        "ha4conferences": {
+            "Region": "string",
+            "Id": "string",
+            "appName": "string"
+        }
     }
 }

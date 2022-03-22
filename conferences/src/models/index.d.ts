@@ -32,36 +32,36 @@ export declare class Transcript {
   readonly id: string;
   readonly url: string;
   readonly title: string;
-  readonly description?: string;
+  readonly description?: string | null;
   readonly language: string;
-  readonly tags?: (string | null)[];
-  readonly status?: string;
-  readonly metadata?: string;
+  readonly tags?: (string | null)[] | null;
+  readonly status?: string | null;
+  readonly metadata?: string | null;
   readonly media: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
   constructor(init: ModelInit<Transcript, TranscriptMetaData>);
   static copyOf(source: Transcript, mutator: (draft: MutableModel<Transcript, TranscriptMetaData>) => MutableModel<Transcript, TranscriptMetaData> | void): Transcript;
 }
 
 export declare class Media {
   readonly id: string;
-  readonly playbackId?: string;
+  readonly playbackId?: string | null;
   readonly url: string;
-  readonly poster?: string;
+  readonly poster?: string | null;
   readonly title: string;
-  readonly description?: string;
+  readonly description?: string | null;
   readonly language: string;
-  readonly transcripts?: (Transcript | null)[];
-  readonly tags?: (string | null)[];
-  readonly channel?: Channel;
-  readonly remixes?: (RemixMedia | null)[];
-  readonly private?: boolean;
-  readonly status?: string;
-  readonly metadata?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  readonly mediaChannelId?: string;
+  readonly transcripts?: (Transcript | null)[] | null;
+  readonly tags?: (string | null)[] | null;
+  readonly channel?: Channel | null;
+  readonly remixes?: (RemixMedia | null)[] | null;
+  readonly private?: boolean | null;
+  readonly status?: string | null;
+  readonly metadata?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  readonly mediaChannelId?: string | null;
   constructor(init: ModelInit<Media, MediaMetaData>);
   static copyOf(source: Media, mutator: (draft: MutableModel<Media, MediaMetaData>) => MutableModel<Media, MediaMetaData> | void): Media;
 }
@@ -69,11 +69,11 @@ export declare class Media {
 export declare class Channel {
   readonly id: string;
   readonly name: string;
-  readonly description?: string;
-  readonly tags?: (string | null)[];
-  readonly metadata?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly description?: string | null;
+  readonly tags?: (string | null)[] | null;
+  readonly metadata?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
   constructor(init: ModelInit<Channel, ChannelMetaData>);
   static copyOf(source: Channel, mutator: (draft: MutableModel<Channel, ChannelMetaData>) => MutableModel<Channel, ChannelMetaData> | void): Channel;
 }
@@ -82,14 +82,14 @@ export declare class Remix {
   readonly id: string;
   readonly url: string;
   readonly title: string;
-  readonly description?: string;
+  readonly description?: string | null;
   readonly language: string;
-  readonly tags?: (string | null)[];
-  readonly status?: string;
-  readonly media?: (RemixMedia | null)[];
-  readonly metadata?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly tags?: (string | null)[] | null;
+  readonly status?: string | null;
+  readonly media?: (RemixMedia | null)[] | null;
+  readonly metadata?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
   constructor(init: ModelInit<Remix, RemixMetaData>);
   static copyOf(source: Remix, mutator: (draft: MutableModel<Remix, RemixMetaData>) => MutableModel<Remix, RemixMetaData> | void): Remix;
 }
@@ -98,10 +98,10 @@ export declare class User {
   readonly id: string;
   readonly identityId: string;
   readonly name: string;
-  readonly bio?: string;
-  readonly metadata?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly bio?: string | null;
+  readonly metadata?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
   constructor(init: ModelInit<User, UserMetaData>);
   static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
 }
@@ -110,8 +110,8 @@ export declare class RemixMedia {
   readonly id: string;
   readonly media: Media;
   readonly remix: Remix;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
   constructor(init: ModelInit<RemixMedia, RemixMediaMetaData>);
   static copyOf(source: RemixMedia, mutator: (draft: MutableModel<RemixMedia, RemixMediaMetaData>) => MutableModel<RemixMedia, RemixMediaMetaData> | void): RemixMedia;
 }
