@@ -121,10 +121,10 @@ const BlockStyle = ({ block, speakers, time }) => {
           left: 0;
           content: url(data:image/svg+xml,${encodeURIComponent(`
             <svg width="100" height="40" xmlns="http://www.w3.org/2000/svg">
-              <text x="16" y="12" style="font-family: sans-serif; font-size: 14px; fill: #673ab7">
+              <text x="90" y="18" text-anchor="end" style="font-family: sans-serif; font-size: 13px; fill: #673ab7">
                 ${speaker}
               </text>
-              <text x="16" y="30" style="font-family: monospace; font-size: 10px; fill: #cccccc">
+              <text x="90" y="30" text-anchor="end" style="font-family: monospace; font-size: 9px; fill: #cccccc">
                 ${tc}
               </text>
             </svg>
@@ -133,10 +133,10 @@ const BlockStyle = ({ block, speakers, time }) => {
         div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]:hover::before {
           content: url(data:image/svg+xml,${encodeURIComponent(`
             <svg width="100" height="40" xmlns="http://www.w3.org/2000/svg">
-              <text x="16" y="12" style="font-family: sans-serif; font-size: 14px; fill: #000000">
+              <text x="90" y="18" text-anchor="end" style="font-family: sans-serif; font-size: 13px; fill: #000000">
                 ${speaker}
               </text>
-              <text x="16" y="30" style="font-family: monospace; font-size: 10px; fill: #aaaaaa">
+              <text x="90" y="30" text-anchor="end" style="font-family: monospace; font-size: 9px; fill: #aaaaaa">
                 ${tc}
               </text>
             </svg>
