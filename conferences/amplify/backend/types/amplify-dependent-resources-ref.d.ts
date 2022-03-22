@@ -23,5 +23,16 @@ export type AmplifyDependentResourcesAttributes = {
             "Id": "string",
             "appName": "string"
         }
+    },
+    "predictions": {
+        "translateText7839f237": {
+            "region": "string",
+            "sourceLang": "string",
+            "targetLang": "string"
+        },
+        "transcription2d7be2e3": {
+            "region": "string",
+            "language": "string"
+        }
     }
 }

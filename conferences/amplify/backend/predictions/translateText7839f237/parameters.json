@@ -1,0 +1,14 @@
+{
+    "resourceName": "translateText7839f237",
+    "convertPolicyName": "translateTextPolicy7839f237",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "convertType": "translateText",
+    "sourceLang": "en",
+    "targetLang": "es",
+    "access": "auth"
+}
