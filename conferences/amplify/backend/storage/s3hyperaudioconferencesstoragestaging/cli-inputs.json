@@ -1,0 +1,14 @@
+{
+  "resourceName": "s3hyperaudioconferencesstoragestaging",
+  "bucketName": "hyperaudio-conferences-storage-staging",
+  "policyUUID": "a595cc1e",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "CREATE_AND_UPDATE",
+    "READ",
+    "DELETE"
+  ]
+}

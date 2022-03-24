@@ -17,7 +17,23 @@ import awsconfig from './aws-config';
 // global.Amplify = Amplify;
 
 Amplify.configure({ ...awsexports, ...awsconfig });
-// Analytics.record();
+
+Analytics.autoTrack('session', {
+  enable: true,
+  provider: 'AWSPinpoint',
+});
+
+Analytics.autoTrack('pageView', {
+  enable: true,
+  eventName: 'pageView',
+  // OPTIONAL, by default is 'multiPageApp'
+  // you need to change it to 'SPA' if your app is a single-page app like React
+  type: 'SPA',
+  provider: 'AWSPinpoint',
+  getUrl: () => {
+    return window.location.origin + window.location.pathname;
+  },
+});
 
 Hub.listen('auth', async data => {
   if (data.payload.event === 'signOut') {
