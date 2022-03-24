@@ -1,10 +1,21 @@
 import React from 'react';
 
-const PlayheadSpan = props => (
-  <span className="Playhead" style={{ color: '#673ab7' }}>
-    {props.children}
-  </span>
-);
+import { styled } from '@mui/material/styles';
+
+const PREFIX = 'Playhead';
+const classes = {
+  root: `${PREFIX}`,
+};
+
+const Root = styled('span')(({ theme }) => ({
+  color: theme.palette.secondary.dark,
+  textShadow: `-0.03ex 0 0 currentColor, 0.03ex 0 0 currentColor, 0 -0.02ex 0 currentColor, 0 0.02ex 0 currentColor`,
+  transition: `all ${theme.transitions.duration.standard}`,
+}));
+
+const PlayheadSpan = props => {
+  return <Root className={classes.root}>{props.children}</Root>;
+};
 
 const PlayheadDecorator = {
   strategy: (contentBlock, callback, contentState, time = 0) => {
