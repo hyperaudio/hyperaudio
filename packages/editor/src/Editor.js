@@ -129,7 +129,7 @@ const Editor = ({
   const handleClick = useCallback(
     e => {
       if (!editorState) return;
-      console.log(e);
+      // console.log(e);
 
       if (e.target.tagName === 'DIV') {
         const mx = e.clientX;
@@ -149,12 +149,12 @@ const Editor = ({
       } else {
         const selectionState = editorState.getSelection();
         const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
-        console.log(block.toJS());
+        // console.log(block.toJS());
 
         const start = selectionState.getStartOffset();
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
-        console.log(item);
+        // console.log(item);
 
         item?.start && seekTo && seekTo(item.start);
       }
@@ -337,7 +337,7 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
 const wordAligner = (words, text, start, end, callback) => {
   const aligned =
     words.length > 5 ? alignSTT({ words }, text, start, end) : alignSTTwithPadding({ words }, text, start, end);
-  console.log({ text, words, aligned });
+  // console.log({ text, words, aligned });
 
   const items = aligned.map(({ start, end, text }, i, arr) => ({
     start,

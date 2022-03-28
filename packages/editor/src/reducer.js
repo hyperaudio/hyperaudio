@@ -197,13 +197,13 @@ const reducer = (editorState, { type, editorState: changedEditorState, aligner, 
       deferAlignment(editorState, changedEditorState, aligner, dispatch);
       return changedEditorState;
     case 'remove-range':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'backspace-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'delete-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'split-block':
-      return split ? processBlockSplit(editorState, changedEditorState, aligner) : editorState;
+      return split ? processBlockSplit(editorState, changedEditorState, aligner) : changedEditorState;
     case 'change-block-data':
       return changedEditorState;
     default:
