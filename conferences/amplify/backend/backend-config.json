@@ -54,5 +54,30 @@
         }
       }
     }
+  },
+  "analytics": {
+    "ha4conferences": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "predictions": {
+    "translateText7839f237": {
+      "providerPlugin": "awscloudformation",
+      "service": "Translate",
+      "convertType": "translateText"
+    },
+    "transcription2d7be2e3": {
+      "providerPlugin": "awscloudformation",
+      "service": "Transcribe",
+      "convertType": "transcription"
+    }
+  },
+  "storage": {
+    "s3hyperaudioconferencesstoragestaging": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": []
+    }
   }
 }

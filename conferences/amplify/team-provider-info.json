@@ -1,4 +1,22 @@
 {
+  "mozfest": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-hyperaudioforconfere-mozfest-114058-authRole",
+      "UnauthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudioforconfere-mozfest-114058-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::585082712647:role/amplify-hyperaudioforconfere-mozfest-114058-authRole",
+      "Region": "eu-west-1",
+      "DeploymentBucketName": "amplify-hyperaudioforconfere-mozfest-114058-deployment",
+      "UnauthRoleName": "amplify-hyperaudioforconfere-mozfest-114058-unauthRole",
+      "StackName": "amplify-hyperaudioforconfere-mozfest-114058",
+      "StackId": "arn:aws:cloudformation:eu-west-1:585082712647:stack/amplify-hyperaudioforconfere-mozfest-114058/f1a31340-a9d4-11ec-aa5d-0aa8c5360009",
+      "AmplifyAppId": "d31i7y6k7m6n2k"
+    },
+    "categories": {
+      "auth": {
+        "HyperaudioforConferences": {}
+      }
+    }
+  },
   "staging": {
     "awscloudformation": {
       "AuthRoleName": "amplify-hyperaudioforconfere-staging-115132-authRole",
