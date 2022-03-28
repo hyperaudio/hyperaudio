@@ -131,11 +131,11 @@ export const MediaTopbar = ({ source, ...props }) => {
               </IconButton>
             </Tooltip>
             <Tooltip title="Create captions">
-              <IconButton onClick={onCaption}>
+              <IconButton onClick={onCaption} disabled={true}>
                 <SubtitlesIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Remix media">
+            <Tooltip title="Remix media" disabled={true}>
               <IconButton onClick={onRemix}>
                 <ShuffleIcon />
               </IconButton>
@@ -213,7 +213,7 @@ export const MediaTopbar = ({ source, ...props }) => {
           );
         })}
         <Divider />
-        <MenuItem onClick={onAddTranslation}>
+        <MenuItem onClick={onAddTranslation} disabled={true}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
       </Menu>
@@ -230,16 +230,16 @@ export const MediaTopbar = ({ source, ...props }) => {
           'aria-labelledby': 'export-button',
         }}
       >
-        <MenuItem onClick={onExport('text')}>
+        <MenuItem onClick={onExport('text')} disabled={true}>
           <ListItemText primary="Text" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={onExport('json')}>
+        <MenuItem onClick={onExport('json')} disabled={true}>
           <ListItemText primary="JSON" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={onExport('wphtml')}>
+        <MenuItem onClick={onExport('wphtml')} disabled={true}>
           <ListItemText primary="WP Plugin-compatible HTML" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
-        <MenuItem onClick={onExport('itranscript')}>
+        <MenuItem onClick={onExport('itranscript')} disabled={true}>
           <ListItemText primary="Interactive Transcript" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
       </Menu>
