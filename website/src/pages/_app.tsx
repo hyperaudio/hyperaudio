@@ -45,28 +45,28 @@ const Root = styled('div', {
 const globalStyles = `
   @font-face {
     font-family: 'Inter';
-    src: url('/fonts/Inter/Inter-Regular.woff') format('woff');
+    src: url('/fonts/inter/Inter-Regular.woff2') format('woff');
     font-style: normal;
     font-weight: 400;
     font-display: swap;
   }
   @font-face {
     font-family: 'Inter';
-    src: url('/fonts/Inter/Inter-Medium.woff') format('woff');
+    src: url('/fonts/inter/Inter-Medium.woff2') format('woff2');
     font-style: normal;
     font-weight: 500;
     font-display: swap;
   }
   @font-face {
     font-family: 'Inter';
-    src: url('/fonts/Inter/Inter-Bold.woff') format('woff');
+    src: url('/fonts/inter/Inter-Bold.woff2') format('woff');
     font-style: normal;
     font-weight: 600;
     font-display: swap;
   }
   @font-face {
     font-family: 'Inter';
-    src: url('/fonts/Inter/Inter-Black.woff') format('woff');
+    src: url('/fonts/inter/Inter-Black.woff2') format('woff');
     font-style: normal;
     font-weight: 700;
     font-display: swap;

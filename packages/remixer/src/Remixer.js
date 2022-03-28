@@ -12,8 +12,6 @@ import Source from './Source';
 
 import remixReducer from './reducers/remixReducer';
 
-import '@hyperaudio/common/src/fonts/Inter/inter.css';
-
 const Root = styled('div', {
   shouldForwardProp: prop => !['showSource', 'isSingleMedia'].includes(prop),
 })(({ theme, showSource, isSingleMedia }) => ({
