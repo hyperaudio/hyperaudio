@@ -48,6 +48,7 @@ OneSource.args = {
   editable: true,
   remix: { ...remixData.remix, title: "" },
   sources: [remixData.sources[0]],
+  autoScroll: true,
 };
 
 export const LibraryEmpty = Template.bind({});
