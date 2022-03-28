@@ -46,31 +46,23 @@ const Root = styled(AppBar)(({ theme }) => ({
   },
 }));
 
-const getUser = async (setUser, identityId) => {
-  DataStore.configure({
-    syncExpressions: [
-      syncExpression(User, () => {
-        return user => user.identityId('eq', identityId);
-      }),
-    ],
-  });
+// const getUser = async (setUser, identityId) => {
+//   DataStore.configure({
+//     syncExpressions: [
+//       syncExpression(User, () => {
+//         return user => user.identityId('eq', identityId);
+//       }),
+//     ],
+//   });
 
-  const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
-  setUser(Array.isArray(user) ? user[0] : user);
-};
+//   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
+//   setUser(Array.isArray(user) ? user[0] : user);
+// };
 
 const Topbar = props => {
   const router = useRouter();
-
-  const { identityId } = props;
-  const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
-
-  useEffect(() => identityId && getUser(setUser, identityId), [identityId]);
-
-  useEffect(() => {
-    const subscription = DataStore.observe(User).subscribe(() => identityId && getUser(setUser, identityId));
-    return () => subscription.unsubscribe();
-  }, [identityId]);
+  // const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
+  const { user, groups } = props;
 
   const navigateToAccountPage = useCallback(() => router.push('/account'), [router]);
   const logoutToHomePage = useCallback(async () => {
@@ -78,8 +70,7 @@ const Topbar = props => {
     window.location.href = '/';
   }, []);
 
-  const meh = useMemo(() => user, [user]);
-
+  // const meh = useMemo(() => user, [user]);
   // console.group('Topbar');
   // console.log({ props });
   // console.log({ meh });
@@ -102,8 +93,7 @@ const Topbar = props => {
 
   const title = ''; // TODO: Grab page title
 
-  const userName = 'Monsiuer Pieutre';
-  const [fname, lname] = useMemo(() => (userName ? [...userName.split(' '), ''] : ['', '']), [user]);
+  const [fname, lname] = useMemo(() => (user?.name ? [...user.name.split(' '), ''] : ['', '']), [user]);
 
   return (
     <NoSsr>
@@ -144,36 +134,40 @@ const Topbar = props => {
               </Typography>
             </Grid>
             <Grid item xs={4} align="right">
-              <Tooltip title="Add new…">
-                <IconButton
-                  aria-expanded={openAddMenu ? 'true' : undefined}
-                  aria-haspopup="true"
-                  aria-label="Add new…"
-                  color="primary"
-                  edge="start"
-                  id="openAddMenuButton"
-                  onClick={e => setAddMenuAnchor(e.currentTarget)}
-                  sx={{ marginRight: 1 }}
-                >
-                  <AddIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
-              <Button
-                onClick={e => setProfileMenuAnchor(e.currentTarget)}
-                color="primary"
-                size="small"
-                startIcon={
-                  <Avatar sx={{ height: 30, width: 30 }} alt={user?.name}>
-                    {fname.charAt(0)} {lname.charAt(0)}
-                  </Avatar>
-                }
-              >
-                {' '}
-                <Hidden mdDown>
-                  {fname} {`${lname.charAt(0)}${lname.charAt(0) !== '' ? '.' : ''}`}
-                </Hidden>{' '}
-                <ArrowDropDownIcon fontSize="small" />
-              </Button>
+              {user ? (
+                <>
+                  <Tooltip title="Add new…">
+                    <IconButton
+                      aria-expanded={openAddMenu ? 'true' : undefined}
+                      aria-haspopup="true"
+                      aria-label="Add new…"
+                      color="primary"
+                      edge="start"
+                      id="openAddMenuButton"
+                      onClick={e => setAddMenuAnchor(e.currentTarget)}
+                      sx={{ marginRight: 1 }}
+                    >
+                      <AddIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Button
+                    onClick={e => setProfileMenuAnchor(e.currentTarget)}
+                    color="primary"
+                    size="small"
+                    startIcon={
+                      <Avatar sx={{ height: 30, width: 30 }} alt={user?.name}>
+                        {fname.charAt(0)} {lname.charAt(0)}
+                      </Avatar>
+                    }
+                  >
+                    {' '}
+                    <Hidden mdDown>
+                      {fname} {`${lname.charAt(0)}${lname.charAt(0) !== '' ? '.' : ''}`}
+                    </Hidden>{' '}
+                    <ArrowDropDownIcon fontSize="small" />
+                  </Button>
+                </>
+              ) : null}
             </Grid>
           </Grid>
         </Toolbar>

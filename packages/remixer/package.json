@@ -51,6 +51,7 @@
     "lodash": "4.17.21",
     "react-beautiful-dnd": "^13.1.0",
     "react-draggable": "4.4.4",
-    "react-player": "2.9.0"
+    "react-player": "2.9.0",
+    "smpte-timecode": "1.2.3"
   }
 }

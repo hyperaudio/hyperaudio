@@ -11,7 +11,10 @@ const Redirect = () => {
   } = router;
 
   useEffect(() => {
-    setTimeout(() => router.push(redirect), 3000); // FIXME no need to wait for 3 seconds
+    setTimeout(() => {
+      // router.push(redirect);
+      window.location.href = redirect;
+    }, 500);
   }, [redirect, router]);
 
   return (

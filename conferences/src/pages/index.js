@@ -85,28 +85,30 @@ const HomePage = props => {
       <Main maxWidth="xl">
         {user &&
           displayChannels.map(channel => {
-            return [
-              <Container maxWidth={false} key={channel.channelId}>
-                <Grid container key={`g-${channel.channelId}`} spacing={{ xs: 4, md: 8 }}>
-                  <Grid item xs={12} md={4} xl={4}>
-                    <Typography variant="h5" component="h1" gutterBottom>
-                      {channel.name}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {channel.description}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={8} xl={8}>
-                    <Grid container spacing={4}>
-                      {channel.media.map(o => (
-                        <MediaCard media={o} key={o.id} />
-                      ))}
+            return (
+              <div key={channel.id}>
+                <Container maxWidth={false} key={channel.id}>
+                  <Grid container key={`g-${channel.id}`} spacing={{ xs: 4, md: 8 }}>
+                    <Grid item xs={12} md={4} xl={4}>
+                      <Typography variant="h5" component="h1" gutterBottom>
+                        {channel.name}
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        {channel.description}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={8} xl={8}>
+                      <Grid container spacing={4}>
+                        {channel.media.map(o => (
+                          <MediaCard media={o} key={o.id} />
+                        ))}
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Container>,
-              <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
-            ];
+                </Container>
+                <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
+              </div>
+            );
           })}
       </Main>
     </Root>

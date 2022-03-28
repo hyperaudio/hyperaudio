@@ -20,18 +20,18 @@ const classes = {
 
 const Root = styled('div', {})(({ theme }) => ({}));
 
-const getUser = async (dispatch, identityId) => {
-  DataStore.configure({
-    syncExpressions: [
-      syncExpression(User, () => {
-        return user => user.identityId('eq', identityId);
-      }),
-    ],
-  });
+// const getUser = async (dispatch, identityId) => {
+//   DataStore.configure({
+//     syncExpressions: [
+//       syncExpression(User, () => {
+//         return user => user.identityId('eq', identityId);
+//       }),
+//     ],
+//   });
 
-  const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
-  dispatch({ type: 'loadUser', payload: Array.isArray(user) ? user[0] : user });
-};
+//   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
+//   dispatch({ type: 'loadUser', payload: Array.isArray(user) ? user[0] : user });
+// };
 
 export const userReducer = (state, action) => {
   const { type, payload } = action;
@@ -74,11 +74,13 @@ const AccountPage = initialData => {
   );
   const handleSave = useCallback(() => dispatch({ type: 'save' }), [dispatch]);
 
-  useEffect(() => identityId && getUser(dispatch, identityId), [identityId]);
-  useEffect(() => {
-    const subscription = DataStore.observe(User).subscribe(() => identityId && getUser(dispatch, identityId));
-    return () => subscription.unsubscribe();
-  }, [identityId]);
+  // useEffect(() => identityId && getUser(dispatch, identityId), [identityId]);
+  // useEffect(() => {
+  //   const subscription = DataStore.observe(User).subscribe(() => identityId && getUser(dispatch, identityId));
+  //   return () => subscription.unsubscribe();
+  // }, [identityId]);
+
+  useEffect(() => dispatch({ type: 'loadUser', payload: initialData.user }), [initialData.user]);
 
   console.group('AccountPage');
   console.log({ user, dispatch });
@@ -133,7 +135,7 @@ const AccountPage = initialData => {
             </form>
           </Root>
         </NoSsr>
-        <pre>{JSON.stringify(user, null, 2)}</pre>
+        {/* <pre>{JSON.stringify(user, null, 2)}</pre> */}
       </Main>
     </>
   );
