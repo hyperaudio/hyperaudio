@@ -16,44 +16,44 @@ const TermsOfService: NextPage = () => (
   <Root>
     <Container fixed maxWidth="md" sx={{ py: { xs: 6, lg: 12 } }}>
       <Typography variant="h1" gutterBottom>
-        Hyperaudio Terms of Service.
+        Hyperaudio Terms of Service
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         1. Your Acceptance
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         By using or visiting the Hyperaudio website or any Hyperaudio products, software, data feeds, and services
         provided to you on, from, or through the Hyperaudio website (known collectively as the “Service”) you signify
         your agreement to (1) these terms and conditions (the “Terms of Service”), and (2) Hyperaudio’s privacy policy
         incorporated herein by reference. If you do not agree to any of these terms, or the Hyperaudio privacy policy,
         please do not use the Service.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio may, in its sole discretion, modify or revise these Terms of Service and policies at any time, and
         you agree to be bound by such modifications or revisions. Nothing in these Terms of Service shall be deemed to
         confer any third-party rights or benefits.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         2. Service
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         These Terms of Service apply to all users of the Service, including users who are also contributors of Content
         on the Service. “Content” includes the text, software, graphics, interactive features and other materials you
         may view on, access through, or contribute to the Service. The Service includes all aspects of Hyperaudio,
         including but not limited to all products, software and services offered via the Hyperaudio website and other
         applications.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         The Service may contain links to third party websites that are not owned or controlled by Hyperaudio. Hyperaudio
         has no control over, and assumes no responsibility for, the content, privacy policies, or practices of any third
         party websites. In addition, Hyperaudio will not and cannot censor or edit the content of any third-party site.
         By using the Service, you expressly relieve Hyperaudio from any and all liability arising from your use of any
         third-party website.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         3. General Use of the Service—Permissions and Restrictions
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio hereby grants you permission to access and use the Service as set forth in these Terms of Service,
         provided that:
       </Typography>
@@ -88,10 +88,10 @@ const TermsOfService: NextPage = () => (
           </Typography>
         </li>
       </ul>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         4. Your Use of Content
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         In addition to the general restrictions above, the following restrictions and conditions apply specifically to
         your use of Content.
       </Typography>
@@ -116,16 +116,16 @@ const TermsOfService: NextPage = () => (
           </Typography>
         </li>
       </ul>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         5. Your Content and Conduct
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         As an Hyperaudio account holder you may submit Content to the Service, including captions and subtitles. You
         understand that Hyperaudio does not guarantee any confidentiality with respect to any Content you submit. You
         affirm, represent, and warrant that you own or have the necessary licenses, rights, consents, and permissions to
         publish Content you submit.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         As between Hyperaudio and the copyright owners of the videos and subtitles on hyperaud.io and all Intellectual
         Property Rights in or relating to any of the foregoing, are and will remain the exclusive property of copyright
         owners or its licensors. Users hereby grants Hyperaudio a limited, non-exclusive, royalty-free, license to copy,
@@ -134,7 +134,7 @@ const TermsOfService: NextPage = () => (
         Term. Hyperaudio does not claim any additional rights and copyright of all audio, videos and all subtitles and
         other derivative works remain the property of the publisher.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         For clarity, you retain all of your ownership rights in your Content. By submitting Content to Hyperaudio, you
         hereby grant Hyperaudio a worldwide, non-exclusive, royalty-free, license to use, reproduce, distribute, prepare
         derivative works of, display, and transmit the Content in connection with the Service and Hyperaudio (and its
@@ -150,39 +150,39 @@ const TermsOfService: NextPage = () => (
         display, distribute, or perform, server copies of your captions and subtitles that have been removed or deleted.
         The above licenses granted by you in user comments you submit are perpetual and irrevocable.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         You further agree that Content you submit to the Service will not contain third party copyrighted material, or
         material that is subject to other third party proprietary rights, unless you have permission from the rightful
         owner of the material or you are otherwise legally entitled to post the material and to grant Hyperaudio all of
         the license rights granted herein.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio does not endorse any Content submitted to the Service by any user or other licensor, or any opinion,
         recommendation, or advice expressed therein, and Hyperaudio expressly disclaims any and all liability in
         connection with Content. Hyperaudio does not permit copyright infringing activities and infringement of
         intellectual property rights on the Service, and Hyperaudio will remove all Content if properly notified that
         such Content infringes on another’s intellectual property rights.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio reserves the right to remove Content without prior notice.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         6. Account Termination Policy
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio will terminate a user’s access to the Service if, under appropriate circumstances, the user is
         determined to be an infringer.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio reserves the right to decide whether Content violates these Terms of Service for reasons other than
         copyright infringement, such as, but not limited to, inappropriate content, or excessive length. Hyperaudio may
         at any time, without prior notice and in its sole discretion, remove such Content and/or terminate a user’s
         account for submitting such material in violation of these Terms of Service.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         7. Digital Millennium Copyright Act
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         If you are a copyright owner or an agent thereof and believe that any Content infringes upon your copyrights,
         you may submit a notification pursuant to the Digital Millennium Copyright Act (“DMCA”) by providing our
         Copyright Agent with the following information in writing (see 17 U.S.C 512(c)(3) for further detail):
@@ -226,14 +226,14 @@ const TermsOfService: NextPage = () => (
           </Typography>
         </li>
       </ul>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Hyperaudio’s designated Copyright Agent to receive notifications of claimed infringement is Dan Schultz, 239
         Glenwood Rd., Elkins Park, PA, 19027 email: dan@biffud.com. For clarity, only DMCA notices should go to the
         Copyright Agent; any other feedback, comments, requests for technical support, and other communications should
         be directed to Mark Boas, mark@hyperaud.io. You acknowledge that if you fail to comply with all of the
         requirements of this Section 5(D), your DMCA notice may not be valid.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         Counter-Notice. If you believe that your Content that was removed (or to which access was disabled) is not
         infringing, or that you have the authorization from the copyright owner, the copyright owner’s agent, or
         pursuant to the law, to post and use the material in your Content, you may send a counter-notice containing the
@@ -260,17 +260,17 @@ const TermsOfService: NextPage = () => (
           </Typography>
         </li>
       </ul>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         If a counter-notice is received by the Copyright Agent, Hyperaudio may send a copy of the counter-notice to the
         original complaining party informing that person that it may replace the removed Content or cease disabling it
         in 10 business days. Unless the copyright owner files an action seeking a court order against the Content
         provider, member or user, the removed Content may be replaced, or access to it restored, in 10 to 14 business
         days or more after receipt of the counter-notice, at Hyperaudio’s sole discretion.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         8. Warranty Disclaimer
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         YOU AGREE THAT YOUR USE OF THE SERVICES SHALL BE AT YOUR SOLE RISK. TO THE FULLEST EXTENT PERMITTED BY LAW,
         HYPERAUDIO, ITS OFFICERS, DIRECTORS, EMPLOYEES, AND AGENTS DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, IN
         CONNECTION WITH THE SERVICES AND YOUR USE THEREOF. HYPERAUDIO MAKES NO WARRANTIES OR REPRESENTATIONS ABOUT THE
@@ -289,10 +289,10 @@ const TermsOfService: NextPage = () => (
         THROUGH ANY MEDIUM OR IN ANY ENVIRONMENT, YOU SHOULD USE YOUR BEST JUDGMENT AND EXERCISE CAUTION WHERE
         APPROPRIATE.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         9. Limitation of Liability
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         IN NO EVENT SHALL HYPERAUDIO, ITS OFFICERS, DIRECTORS, EMPLOYEES, OR AGENTS, BE LIABLE TO YOU FOR ANY DIRECT,
         INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES WHATSOEVER RESULTING FROM ANY (I) ERRORS,
         MISTAKES, OR INACCURACIES OF CONTENT, (II) PERSONAL INJURY OR PROPERTY DAMAGE, OF ANY NATURE WHATSOEVER,
@@ -306,21 +306,21 @@ const TermsOfService: NextPage = () => (
         FOREGOING LIMITATION OF LIABILITY SHALL APPLY TO THE FULLEST EXTENT PERMITTED BY LAW IN THE APPLICABLE
         JURISDICTION.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         YOU SPECIFICALLY ACKNOWLEDGE THAT HYPERAUDIO SHALL NOT BE LIABLE FOR CONTENT OR THE DEFAMATORY, OFFENSIVE, OR
         ILLEGAL CONDUCT OF ANY THIRD PARTY AND THAT THE RISK OF HARM OR DAMAGE FROM THE FOREGOING RESTS ENTIRELY WITH
         YOU.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         The Service is controlled and offered by Hyperaudio from its facilities in the United States of America.
         Hyperaudio makes no representations that the Service is appropriate or available for use in other locations.
         Those who access or use the Service from other jurisdictions do so at their own volition and are responsible for
         compliance with local law.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         10. Indemnity
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         To the extent permitted by applicable law, you agree to defend, indemnify and hold harmless Hyperaudio, its
         parent corporation, officers, directors, employees and agents, from and against any and all claims, damages,
         obligations, losses, liabilities, costs or debt, and expenses (including but not limited to attorney’s fees)
@@ -329,26 +329,26 @@ const TermsOfService: NextPage = () => (
         privacy right; or (iv) any claim that your Content caused damage to a third party. This defense and
         indemnification obligation will survive theseTerms of Service and your use of the Service.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         11. Ability to Accept Terms of Service
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         You affirm that you are either more than 18 years of age, or an emancipated minor, or possess legal parental or
         guardian consent, and are fully able and competent to enter into the terms, conditions, obligations,
         affirmations, representations, and warranties set forth in these Terms of Service, and to abide by and comply
         with these Terms of Service.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         12. Assignment
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         These Terms of Service, and any rights and licenses granted hereunder, may not be transferred or assigned by
         you, but may be assigned by Hyperaudio without restriction.
       </Typography>
-      <Typography variant="h4" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
+      <Typography variant="h5" component="h2" gutterBottom sx={{ mt: 6, mb: 3 }}>
         13. General
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         You agree that: (i) the Service shall be deemed solely based in Pennsylvania; and (ii) the Service shall be
         deemed a passive website that does not give rise to personal jurisdiction over Hyperaudio, either specific or
         general, in jurisdictions other than Pennsylvania. These Terms of Service shall be governed by the internal
@@ -356,7 +356,7 @@ const TermsOfService: NextPage = () => (
         dispute between you and Hyperaudio that arises in whole or in part from the Service shall be decided exclusively
         by a court of competent jurisdiction located in Philadelphia, Pennsylvania.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         These Terms of Service, together with the Privacy Policy at http://hyper.audio/privacy/ and any other legal
         notices published by Hyperaudio on the Service, shall constitute the entire agreement between you and Hyperaudio
         concerning the Service. If any provision of these Terms of Service is deemed invalid by a court of competent
@@ -369,7 +369,7 @@ const TermsOfService: NextPage = () => (
         following any amendment of these Terms of Service will signify your assent to and acceptance of its revised
         terms.
       </Typography>
-      <Typography variant="body1" gutterBottom>
+      <Typography variant="body2" gutterBottom>
         YOU AND HYPERAUDIO AGREE THAT ANY CAUSE OF ACTION ARISING OUT OF OR RELATED TO THE SERVICES MUST COMMENCE WITHIN
         ONE (1) YEAR AFTER THE CAUSE OF ACTION ACCRUES. OTHERWISE, SUCH CAUSE OF ACTION IS PERMANENTLY BARRED.
       </Typography>

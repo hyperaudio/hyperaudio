@@ -1,15 +1,24 @@
 import { createTheme } from '@mui/material/styles';
-import { deepOrange } from '@mui/material/colors';
+import { deepPurple, grey } from '@mui/material/colors';
+
+import { getTypography } from './typography';
 
 const mui = createTheme();
 
-import palette from './palette';
-
 const components = {
   MuiCssBaseline: {
-    html: {
-      [`& *::selection`]: {
-        backgroundColor: deepOrange[500],
+    styleOverrides: {
+      body: {
+        [`& > div`]: {
+          minHeight: '100%',
+        },
+      },
+      html: {
+        minHeight: '100%',
+        scrollBehavior: 'smooth',
+        [`& *::selection`]: {
+          backgroundColor: deepPurple[100],
+        },
       },
     },
   },
@@ -76,6 +85,22 @@ const components = {
       },
     },
   },
+  MuiFilledInput: {
+    defaultProps: {
+      disableUnderline: true,
+    },
+    styleOverrides: {
+      root: {
+        borderRadius: mui.shape.borderRadius,
+      },
+      input: {
+        borderRadius: mui.shape.borderRadius,
+        '&:focus': {
+          borderRadius: mui.shape.borderRadius,
+        },
+      },
+    },
+  },
   MuiTablePagination: {
     styleOverrides: {
       actions: {
@@ -102,9 +127,10 @@ const components = {
   MuiTooltip: {
     styleOverrides: {
       tooltip: {
-        background: palette.primary.dark,
-        color: palette.primary.contrastText,
-        lineHeight: '1.44em',
+        ...getTypography().caption,
+        background: grey[100],
+        boxShadow: mui.shadows[1],
+        color: deepPurple[700],
       },
     },
   },

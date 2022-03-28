@@ -9,7 +9,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import { ThemeProvider, styled } from '@mui/material/styles';
 import { grey } from '@mui/material/colors';
 
-import { lightTheme } from '@hyperaudio/common';
+import { getTheme } from '@hyperaudio/common';
 
 import Footer from '../components/Footer';
 import Topbar from '../components/Topbar';
@@ -71,6 +71,27 @@ const globalStyles = `
     font-weight: 700;
     font-display: swap;
   }
+  @font-face {
+    font-family: 'Quicksand';
+    src: url('/fonts/inter/Quicksand_Light.woff') format('woff');
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Quicksand';
+    src: url('/fonts/inter/Quicksand_Book.woff') format('woff');
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Quicksand';
+    src: url('/fonts/inter/Quicksand_Bold.woff') format('woff');
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+  }
 `;
 
 export default function MyApp(props: MyAppProps) {
@@ -121,7 +142,7 @@ export default function MyApp(props: MyAppProps) {
         <meta property="og:title" content={config.title} />
         <meta property="og:url" content={config.url} />
       </Head>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={getTheme({ typography: 'responsive' })}>
         <CssBaseline />
         <Root className={`${classes.root} useGrain`}>
           <div className={classes.top}>
