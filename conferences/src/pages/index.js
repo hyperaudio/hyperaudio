@@ -42,6 +42,7 @@ const HomePage = props => {
 
   useEffect(() => {
     getMedia(setAllMedia);
+    window.DataStore = DataStore;
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setAllMedia));
     window.addEventListener('online', () => navigator.onLine && getMedia(setAllMedia));
