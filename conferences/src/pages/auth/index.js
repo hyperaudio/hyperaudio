@@ -11,7 +11,10 @@ const Redirect = () => {
   } = router;
 
   useEffect(() => {
-    setTimeout(() => router.push(redirect), 500);
+    setTimeout(() => {
+      // router.push(redirect);
+      window.location.href = redirect;
+    }, 500);
   }, [redirect, router]);
 
   return (

@@ -8,7 +8,10 @@ const Logout = () => {
   useEffect(() => {
     (async () => {
       await Auth.signOut({ global: true });
-      setTimeout(() => router.push('/'), 1000);
+      setTimeout(() => {
+        // router.push('/');
+        window.location.href = '/';
+      }, 1000);
     })();
   });
 
