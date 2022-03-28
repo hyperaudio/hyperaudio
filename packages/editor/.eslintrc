@@ -10,11 +10,14 @@
     "ecmaFeatures": {
       "legacyDecorators": true,
       "jsx": true
+    },
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
     }
   },
   "settings": {
     "react": {
-      "version": "16"
+      "version": "detect"
     }
   },
   "rules": {
