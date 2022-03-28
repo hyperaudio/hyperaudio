@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Amplify, { Hub, DataStore, Analytics } from 'aws-amplify';
+import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
-import { defaultTheme } from '@hyperaudio/common';
+import { lightTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
 import Topbar from './components/Topbar';
@@ -15,7 +15,10 @@ import Topbar from './components/Topbar';
 import awsexports from './aws-exports';
 import awsconfig from './aws-config';
 
+import { User } from './models';
+
 // global.Amplify = Amplify;
+global.Auth = Auth;
 
 Amplify.configure({ ...awsexports, ...awsconfig });
 
@@ -38,7 +41,7 @@ Analytics.autoTrack('pageView', {
 
 Hub.listen('auth', async data => {
   if (data.payload.event === 'signOut') {
-    await DataStore.clear();
+    // await DataStore.clear();
   }
 });
 
@@ -93,9 +96,48 @@ const inputGlobalStyles = (
 `}
   />
 );
+const getUser = async (setUser, identityId) => {
+  DataStore.configure({
+    syncExpressions: [
+      syncExpression(User, () => {
+        return user => user.identityId('eq', identityId);
+      }),
+    ],
+  });
+
+  const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
+  setUser(Array.isArray(user) ? user[0] : user);
+};
 
 const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const [user, setUser] = useState();
+  const [groups, setGroups] = useState([]);
+
+  useEffect(
+    () =>
+      (async () => {
+        try {
+          const {
+            attributes: { sub: identityId },
+            signInUserSession: {
+              idToken: { payload },
+            },
+          } = await Auth.currentAuthenticatedUser();
+          // setUser(user);
+          getUser(setUser, identityId);
+          setGroups(payload['cognito:groups']);
+        } catch (ignored) {}
+      })(),
+    [],
+  );
+
+  useEffect(() => {
+    if (!user) return;
+
+    const subscription = DataStore.observe(User).subscribe(() => getUser(setUser, user.identityId));
+    return () => subscription.unsubscribe();
+  }, [user]);
 
   return (
     <CacheProvider value={emotionCache}>
@@ -103,8 +145,8 @@ const App = props => {
         <Root className={classes.root}>
           <CssBaseline />
           {inputGlobalStyles}
-          <Topbar {...pageProps} />
-          <Component {...pageProps} />
+          <Topbar {...pageProps} user={user} groups={groups} />
+          <Component {...pageProps} user={user} groups={groups} />
         </Root>
       </ThemeProvider>
     </CacheProvider>
