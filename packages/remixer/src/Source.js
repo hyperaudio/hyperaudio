@@ -13,6 +13,7 @@ const Source = props => {
     editable,
     isSingleMedia,
     source: { id, blocks, media },
+    autoScroll,
   } = props;
 
   const animationFrame = useRef(0);
@@ -32,7 +33,7 @@ const Source = props => {
       {isSingleMedia ? <MediaTopbar {...props} /> : <SourceTopbar {...props} />}
       <Theatre {...{ blocks, media, players, reference, time, setTime }} />
       <div className="transcriptWrap">
-        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true }} />
+        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true, autoScroll }} />
       </div>
     </Root>
   );

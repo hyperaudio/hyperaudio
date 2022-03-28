@@ -169,7 +169,14 @@ const MediaPage = () => {
     <Root className={classes.root}>
       <div className={classes.push} />
       {data && data.sources && data.sources.length > 0 ? (
-        <Remixer editable={false} isSingleMedia={true} media={data.sources} remix={null} sources={data.sources} />
+        <Remixer
+          editable={false}
+          isSingleMedia={true}
+          media={data.sources}
+          remix={null}
+          sources={data.sources}
+          autoScroll={true}
+        />
       ) : null}
     </Root>
   );

@@ -141,6 +141,7 @@ const Remixer = props => {
 
   const [showSource, setShowSource] = useState(props.showSource === undefined ? true : props.showSource);
   const [showLibrary, setShowLibrary] = useState(false);
+  const [autoScroll, setAutoScroll] = useState(props.autoScroll);
 
   const onSourceChange = useCallback(
     id => dispatch({ type: 'sourceOpen', source: props.sources.find(m => m.id === id) }),
@@ -200,17 +201,33 @@ const Remixer = props => {
           {editable ? (
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
               {showSource && (
-                <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose }} />
+                <Source
+                  {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose, autoScroll }}
+                />
               )}
               {!isSingleMedia && (
-                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, dispatch }} />
+                <Remix
+                  {...{
+                    ...props,
+                    remix,
+                    sources,
+                    tabs,
+                    showSource,
+                    setShowSource,
+                    onSourceChange,
+                    dispatch,
+                    autoScroll,
+                  }}
+                />
               )}
             </DragDropContext>
           ) : (
             <>
-              {showSource && <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange }} />}
+              {showSource && (
+                <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, autoScroll }} />
+              )}
               {!isSingleMedia && (
-                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange }} />
+                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
               )}
             </>
           )}
