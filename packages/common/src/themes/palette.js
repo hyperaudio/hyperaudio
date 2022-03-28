@@ -13,7 +13,7 @@ export const lightPalette = {
   },
   text: {
     primary: grey[900],
-    secondary: grey[800],
+    secondary: grey[700],
     disabled: grey[600],
   },
   divider: 'rgba(0,0,0,0.088)',

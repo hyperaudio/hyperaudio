@@ -153,6 +153,7 @@ export const ShareDialog = props => {
             readOnly: true,
           }}
           value={document.location.href}
+          variant="filled"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

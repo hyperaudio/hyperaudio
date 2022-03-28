@@ -190,7 +190,7 @@ export const InsertSlide = props => {
     <Root className={classes.root} editable={editable}>
       {editable && (
         <div className={classes.head}>
-          <Typography className={classes.title} color="primary" component="h2" variant="subtitle2">
+          <Typography className={classes.title} color="primary" component="h2" variant="body2" sx={{ fontWeight: 500 }}>
             <SlideshowIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
             Slide
           </Typography>

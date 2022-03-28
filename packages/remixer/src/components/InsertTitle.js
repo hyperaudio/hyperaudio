@@ -91,7 +91,14 @@ export const InsertTitle = ({
   return (
     <Root className={classes.root} fullSize={fullSize}>
       <div className={classes.head}>
-        <Typography className={classes.title} color="primary" component="h2" id="insert-title" variant="subtitle2">
+        <Typography
+          className={classes.title}
+          color="primary"
+          component="h2"
+          id="insert-title"
+          variant="body2"
+          sx={{ fontWeight: 500 }}
+        >
           <TextFieldsIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
           Title
         </Typography>

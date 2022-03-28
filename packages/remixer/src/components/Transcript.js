@@ -26,6 +26,7 @@ import { ContextFrame } from './ContextFrame';
 const PREFIX = 'Transcript';
 const classes = {
   insertWrap: `${PREFIX}-insertWrap`,
+  dragHandle: `${PREFIX}-dragHandle`,
 };
 
 const Root = styled('div')(({ theme }) => ({
@@ -50,6 +51,7 @@ const DragBlock = styled('div', {
   outline: isFocused ? `1px solid ${theme.palette.divider}` : 'none',
   position: 'relative',
   [`&:hover`]: {
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper,
     outline: `1px solid ${theme.palette.divider}`,
   },
@@ -81,12 +83,21 @@ const Section = styled('p')(({ theme }) => ({
   // transitionDuration: `${theme.transitions.duration.short}s`, // TODO: figure out why transitions have no effect
   // transitionProperty: 'background-color',
   // transitionTimingFunction: 'ease-in',
+  ...theme.typography.body2,
   borderRadius: theme.shape.borderRadius,
-  color: theme.palette.text.primary,
+  color: theme.palette.text.secondary,
   margin: theme.spacing(0),
   padding: theme.spacing(1),
-  [`& span.playhead`]: {
-    color: theme.palette.primary.main,
+  [`&:hover`]: {
+    color: theme.palette.text.primary,
+  },
+  [`& span.playhead `]: {
+    color: theme.palette.text.primary,
+  },
+  [`& span.playhead span`]: {
+    color: theme.palette.primary.dark,
+    textShadow: `-0.03ex 0 0 currentColor, 0.03ex 0 0 currentColor, 0 -0.02ex 0 currentColor, 0 0.02ex 0 currentColor`,
+    transition: `all ${theme.transitions.duration.standard}`,
   },
   [`&.showSpeaker:before`]: {
     ...theme.typography.overline,
@@ -108,7 +119,7 @@ const Section = styled('p')(({ theme }) => ({
     color: theme.palette.text.disabled,
   },
   [`&.in-range`]: {
-    // backgroundColor: 'lightyellow',
+    backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
     backgroundColor: theme.palette.primary.light,
@@ -313,7 +324,12 @@ export const Transcript = props => {
                   <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
                     {(provided, snapshot) => (
                       <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                        <DragHandle {...provided.dragHandleProps} color="default" size="small">
+                        <DragHandle
+                          {...provided.dragHandleProps}
+                          color="default"
+                          size="small"
+                          className={classes.dragHandle}
+                        >
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (

@@ -4,7 +4,7 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { defaultTheme } from '@hyperaudio/common';
+import { getTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
@@ -190,7 +190,7 @@ const Remixer = props => {
   }, []);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
       <Root showSource={showSource} isSingleMedia={isSingleMedia}>
         <div
           className="Layout"

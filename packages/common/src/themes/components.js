@@ -128,9 +128,9 @@ const components = {
     styleOverrides: {
       tooltip: {
         ...getTypography().caption,
-        background: grey[100],
+        background: grey[200],
         boxShadow: mui.shadows[1],
-        color: deepPurple[700],
+        color: deepPurple[600],
       },
     },
   },

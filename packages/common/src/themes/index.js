@@ -1,2 +1,1 @@
-export * from './lightTheme';
-export * from './defaultTheme';
+export * from './getTheme';
