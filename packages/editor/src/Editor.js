@@ -25,8 +25,8 @@ const classes = {
   input: `${PREFIX}-input`,
 };
 const Root = styled('div')(({ theme }) => ({
+  ...theme.typography.body2,
   [`div[data-block='true'] + div[data-block='true']`]: {
-    ...theme.typography.body1,
     marginTop: theme.spacing(3),
   },
   [`div[data-block='true']`]: {
@@ -58,7 +58,7 @@ const Root = styled('div')(({ theme }) => ({
     fontWeight: '600',
     height: `${SPEAKER_AREA_HEIGHT}px`,
     left: 0,
-    lineHeight: 'inherit',
+    lineHeight: `${SPEAKER_AREA_HEIGHT}px`,
     overflow: 'hidden',
     paddingRight: theme.spacing(1.44),
     textOverflow: 'ellipsis',
@@ -219,7 +219,7 @@ const Editor = ({
               sx={{
                 left: '-11px',
                 position: 'relative',
-                top: '-1px',
+                top: '-2px',
                 transform: 'translate(0, 100%) !important',
                 width: SPEAKER_AREA_WIDTH,
               }}
