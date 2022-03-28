@@ -79,10 +79,6 @@ export const MediaInfoDialog = props => {
   const container = React.useRef(null);
   const { open, onClose, source } = props;
 
-  console.group('MediaInfo');
-  console.log({ props });
-  console.groupEnd();
-
   return (
     <Portal container={container.current}>
       <Draggable handle="#media-detail-dialog" bounds="body">
