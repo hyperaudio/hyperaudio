@@ -49,6 +49,7 @@ const Remix = props => {
     sources,
     dispatch,
     onSourceChange,
+    autoScroll,
   } = props;
 
   const reference = useRef();
@@ -72,7 +73,18 @@ const Remix = props => {
             <Theatre {...{ media, players, reference, time, setTime }} blocks={blocksOverride ?? blocks} />
             <div className="transcriptWrap">
               <Transcript
-                {...{ id, blocks, sources, players, reference, time, dispatch, setBlockOverride, onSourceChange }}
+                {...{
+                  id,
+                  blocks,
+                  sources,
+                  players,
+                  reference,
+                  time,
+                  dispatch,
+                  setBlockOverride,
+                  onSourceChange,
+                  autoScroll,
+                }}
                 editable={editable && !blocksOverride}
               />
             </div>

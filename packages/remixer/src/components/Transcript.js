@@ -130,6 +130,7 @@ export const Transcript = props => {
     setBlockOverride,
     externalRange,
     onSourceChange,
+    autoScroll,
   } = props;
   const container = useRef();
 
@@ -299,7 +300,7 @@ export const Transcript = props => {
     }
   }, [externalRange, container]);
 
-  useEffect(() => console.log({ blocks }), [blocks]);
+  // useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
     <Root>
@@ -329,7 +330,7 @@ export const Transcript = props => {
                               />
                             </ContextFrame>
                           ) : (
-                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
                           )
                         ) : block.type === 'title' && editable ? (
                           <div className={classes.insertWrap}>
@@ -363,7 +364,7 @@ export const Transcript = props => {
                   .map((block, i) => (
                     <Block
                       key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range }}
+                      {...{ blocks, block, time, range, autoScroll }}
                       rangeMode="before-range"
                     />
                   ))}
@@ -377,7 +378,7 @@ export const Transcript = props => {
                           .map((block, i) => (
                             <Block
                               key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range }}
+                              {...{ blocks, block, time, range, autoScroll }}
                               rangeMode="in-range"
                               onlyRange={snapshot.isDragging}
                             />
@@ -389,7 +390,7 @@ export const Transcript = props => {
                           .map((block, i) => (
                             <Block
                               key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range }}
+                              {...{ blocks, block, time, range, autoScroll }}
                               rangeMode="in-range"
                             />
                           ))}
@@ -402,7 +403,7 @@ export const Transcript = props => {
                   .map((block, i) => (
                     <Block
                       key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range }}
+                      {...{ blocks, block, time, range, autoScroll }}
                       rangeMode="after-range"
                     />
                   ))}
@@ -414,19 +415,31 @@ export const Transcript = props => {
             {blocks
               ?.filter(({ type }) => type === 'block')
               .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="before-range" />
+                <Block
+                  key={`${id}:${block.key}:${i}`}
+                  {...{ blocks, block, time, range, autoScroll }}
+                  rangeMode="before-range"
+                />
               ))}
 
             {blocks
               ?.filter(({ type }) => type === 'block')
               .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="in-range" />
+                <Block
+                  key={`${id}:${block.key}:${i}`}
+                  {...{ blocks, block, time, range, autoScroll }}
+                  rangeMode="in-range"
+                />
               ))}
 
             {blocks
               ?.filter(({ type }) => type === 'block')
               .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="after-range" />
+                <Block
+                  key={`${id}:${block.key}:${i}`}
+                  {...{ blocks, block, time, range, autoScroll }}
+                  rangeMode="after-range"
+                />
               ))}
           </>
         ) : (
@@ -448,7 +461,7 @@ export const Transcript = props => {
                 ) : (
                   <Block
                     key={`${id}:${block.key}:${i}`}
-                    {...{ blocks, block, time, range }}
+                    {...{ blocks, block, time, range, autoScroll }}
                     // offset={contextData && contextData.index > i ? contextData.offset : 0}
                   />
                 )}
@@ -576,7 +589,7 @@ export const Transcript = props => {
   );
 };
 
-const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
+const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false, autoScroll }) => {
   const { key, pk, speaker, text, duration, offset: _offset = 0 } = block;
 
   const offset = useMemo(() => {
@@ -617,7 +630,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       {range && rangeMode === 'in-range' ? (
         <Range {...{ block, offset, range, onlyRange }} />
       ) : time >= offset && time < offset + duration ? (
-        <Playhead {...{ block, offset, time }} />
+        <Playhead {...{ block, offset, time, autoScroll }} />
       ) : (
         text
       )}
@@ -625,7 +638,9 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
   ) : null;
 };
 
-const Playhead = ({ block, offset, time }) => {
+const Playhead = ({ block, offset, time, autoScroll }) => {
+  const playhead = useRef();
+
   const [start, end] = useMemo(() => {
     const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
     if (index === -1) return [block.text.length - 1, block.text.length - 1];
@@ -633,9 +648,21 @@ const Playhead = ({ block, offset, time }) => {
     return [block.offsets[index], block.offsets[index] + block.lengths[index]];
   }, [block, offset, time]);
 
+  useEffect(() => {
+    if (!autoScroll) return;
+    playhead.current.scrollIntoView && playhead.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [autoScroll, playhead, start, end]);
+
   return (
     <>
-      <span className="playhead" data-media={block.pk} data-key={block.key} data-text-offset={0} data-offset={offset}>
+      <span
+        ref={playhead}
+        className="playhead"
+        data-media={block.pk}
+        data-key={block.key}
+        data-text-offset={0}
+        data-offset={offset}
+      >
         {block.text.substring(0, start)}
         <span>{block.text.substring(start, end)}</span>
       </span>
