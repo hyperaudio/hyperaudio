@@ -5,8 +5,9 @@ import { CacheProvider } from '@emotion/react';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import GlobalStyles from '@mui/material/GlobalStyles';
 
-import { defaultTheme } from '@hyperaudio/common';
+import { lightTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
 import Topbar from './components/Topbar';
@@ -57,6 +58,44 @@ const Root = styled('div', {
 
 const clientSideEmotionCache = createEmotionCache();
 
+const inputGlobalStyles = (
+  <GlobalStyles
+    styles={`
+      html, body {
+        background: white;
+        min-height: 100%;
+      }
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/fonts/inter/Inter-Regular.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 400;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/fonts/inter/Inter-Medium.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 500;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/fonts/inter/Inter-Bold.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 600;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Manrope';
+        src: url('/fonts/inter/Inter-Black.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 700;
+        font-display: optional;
+      }
+`}
+  />
+);
 const getUser = async (setUser, identityId) => {
   DataStore.configure({
     syncExpressions: [
@@ -102,9 +141,10 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={lightTheme}>
         <Root className={classes.root}>
           <CssBaseline />
+          {inputGlobalStyles}
           <Topbar {...pageProps} user={user} groups={groups} />
           <Component {...pageProps} user={user} groups={groups} />
         </Root>

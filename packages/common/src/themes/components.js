@@ -24,7 +24,7 @@ const components = {
     },
     styleOverrides: {
       root: {
-        borderRadius: mui.spacing(2.5),
+        borderRadius: mui.spacing(3),
       },
     },
   },

@@ -82,7 +82,7 @@ const Section = styled('p')(({ theme }) => ({
   // transitionProperty: 'background-color',
   // transitionTimingFunction: 'ease-in',
   borderRadius: theme.shape.borderRadius,
-  color: theme.palette.text.secondary,
+  color: theme.palette.text.primary,
   margin: theme.spacing(0),
   padding: theme.spacing(1),
   [`& span.playhead`]: {
@@ -111,7 +111,7 @@ const Section = styled('p')(({ theme }) => ({
     // backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    backgroundColor: theme.palette.secondary.light,
+    backgroundColor: theme.palette.primary.light,
     padding: theme.spacing(0.3, 0),
   },
 }));

@@ -2,9 +2,10 @@ import { createTheme } from '@mui/material/styles';
 
 const mui = createTheme();
 
-const fontFamily = "'Inter', 'Helvetica', 'Arial', sans-serif";
+const fontFamily = 'Inter, Helvetica, Arial, sans-serif';
 
 const typography = {
+  ...mui.typography,
   fontFamily,
   h1: {
     fontFamily,

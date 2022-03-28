@@ -8,7 +8,7 @@ const classes = {
 };
 
 const Root = styled('span')(({ theme }) => ({
-  color: theme.palette.secondary.dark,
+  color: theme.palette.primary.dark,
   textShadow: `-0.03ex 0 0 currentColor, 0.03ex 0 0 currentColor, 0 -0.02ex 0 currentColor, 0 0.02ex 0 currentColor`,
   transition: `all ${theme.transitions.duration.standard}`,
 }));
