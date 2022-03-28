@@ -1,6 +1,7 @@
 import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react';
 import ReactPlayer from 'react-player';
 import { createSilentAudio } from 'create-silent-audio';
+import TC from 'smpte-timecode';
 
 import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
@@ -172,6 +173,9 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
       reference.current.play();
     }
   }, [buffering, reference]);
+
+  // TIMECODE
+  // const tc = useMemo(() => timecode(time / 1e3), [time]);
 
   return (
     <Root>
@@ -401,3 +405,10 @@ const Player = ({
     />
   );
 };
+
+const timecode = (seconds, frameRate = 25, dropFrame = false) =>
+  TC(seconds * frameRate, frameRate, dropFrame)
+    .toString()
+    .split(':')
+    .slice(0, 3)
+    .join(':');
