@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Linux\",\"createdBy\":\"AmplifyAdmin\",\"createdWith\":\"7.6.25\",\"stackType\":\"predictions-Transcribe\",\"metadata\":{}}",
+  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.6.25\",\"stackType\":\"predictions-Transcribe\",\"metadata\":{}}",
   "Parameters": {
     "authRoleName": {
       "Type": "String"

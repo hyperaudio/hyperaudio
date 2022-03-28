@@ -31,7 +31,8 @@
     },
     "categories": {
       "auth": {
-        "HyperaudioforConferences": {}
+        "HyperaudioforConferences": {},
+        "true": {}
       }
     }
   }

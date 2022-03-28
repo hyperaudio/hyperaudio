@@ -12,7 +12,7 @@
     "build": "lerna run build",
     "start": "lerna run --parallel start",
     "postinstall": "patch-package",
-    "dev": "concurrently \"yarn workspace @hyperaudio/common start\" \"yarn workspace storybook start\""
+    "dev": "concurrently \"yarn workspace @hyperaudio/common start\" \"yarn workspace storybook start\" \"yarn workspace @hyperaudio/editor start\""
   },
   "workspaces": [
     "website",
