@@ -1,6 +1,7 @@
-import React, { useRef, useMemo, useCallback, useReducer } from 'react';
-import { Editor as DraftEditor, EditorState, SelectionState, CompositeDecorator, Modifier } from 'draft-js';
+import React, { useMemo, useCallback, useReducer } from 'react';
+import { Editor as DraftEditor, EditorState, CompositeDecorator } from 'draft-js';
 import TC from 'smpte-timecode';
+import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -20,10 +21,12 @@ const SPEAKER_AREA_WIDTH = 120;
 const SPEAKER_AREA_HEIGHT = 26;
 
 const PREFIX = 'Editor';
+
 const classes = {
   root: `${PREFIX}`,
   input: `${PREFIX}-input`,
 };
+
 const Root = styled('div')(({ theme }) => ({
   [`div[data-block='true'] + div[data-block='true']`]: {
     ...theme.typography.body1,
@@ -94,7 +97,7 @@ const Editor = ({
   time = 0,
   seekTo,
   showDialog,
-  aligner,
+  aligner = wordAligner,
   speakers = {},
   ...rest
 }) => {
@@ -126,7 +129,7 @@ const Editor = ({
   const handleClick = useCallback(
     e => {
       if (!editorState) return;
-      // console.log(e);
+      console.log(e);
 
       if (e.target.tagName === 'DIV') {
         const mx = e.clientX;
@@ -136,36 +139,30 @@ const Editor = ({
         const x = mx - bx;
         const y = my - by;
 
-        // console.log({ x, y });
-        // console.log({ bx, by });
         if (x < SPEAKER_AREA_WIDTH - 10 && y < SPEAKER_AREA_HEIGHT) {
           const selectionState = editorState.getSelection();
           const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
           const data = block.getData().toJS();
           setSpeaker({ id: data.speaker, name: speakers[data.speaker].name });
           setSpeakerAnchor(e.target);
-          // showDialog &&
-          // showDialog({
-          //   target: e.target,
-          //   x,
-          //   y,
-          //   block,
-          //   data: block.getData().toJS(),
-          // });
         }
       } else {
         const selectionState = editorState.getSelection();
         const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
+        console.log(block.toJS());
+
         const start = selectionState.getStartOffset();
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
+        console.log(item);
+
         item?.start && seekTo && seekTo(item.start);
       }
     },
     [seekTo, editorState],
   );
 
-  const handleSpeakerSet = (e, newValue) => {
+  const handleSpeakerSet = useCallback((e, newValue) => {
     e.stopPropagation();
     setSpeakerAnchor(null);
     if (typeof newValue === 'string') {
@@ -181,11 +178,15 @@ const Editor = ({
       setSpeaker(newValue);
       console.log('TODO: handleSpeakerSet, EXISTING:', newValue);
     }
-  };
+  }, []);
 
-  const handleClickAway = e => {
-    if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
-  };
+  const handleClickAway = useCallback(
+    e => {
+      // eslint-disable-next-line no-extra-boolean-cast
+      if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
+    },
+    [speakerAnchor],
+  );
 
   return (
     <Root className={classes.root} onClick={handleClick}>
@@ -319,7 +320,7 @@ const BlockStyle = ({ block, speakers, time }) => {
           content: '${speaker}';
         }
         div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
-          content: '${tc}:';
+          content: '${tc}';
         }
       `}
     </style>
@@ -332,6 +333,27 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
     .split(':')
     .slice(0, 3)
     .join(':');
+
+const wordAligner = (words, text, start, end, callback) => {
+  const aligned =
+    words.length > 5 ? alignSTT({ words }, text, start, end) : alignSTTwithPadding({ words }, text, start, end);
+  console.log({ text, words, aligned });
+
+  const items = aligned.map(({ start, end, text }, i, arr) => ({
+    start,
+    end,
+    text,
+    length: text.length,
+    offset:
+      arr
+        .slice(0, i)
+        .map(({ text }) => text)
+        .join(' ').length + (i === 0 ? 0 : 1),
+  }));
+
+  callback && callback(items);
+  return items;
+};
 
 export default Editor;
 
