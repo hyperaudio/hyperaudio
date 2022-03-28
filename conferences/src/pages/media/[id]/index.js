@@ -142,7 +142,9 @@ const MediaPage = () => {
           sources={data.sources}
           autoScroll={true}
         />
-      ) : null}
+      ) : (
+        <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>Loading…</div>
+      )}
     </Root>
   );
 };
