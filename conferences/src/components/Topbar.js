@@ -147,13 +147,13 @@ const Topbar = props => {
                 aria-label="Return home"
                 className={classes.fab}
                 component={Link}
-                href={user && groups.includes('Organisers') ? '/dashboard' : '/'}
+                href={user && groups?.includes('Organisers') ? '/dashboard' : '/'}
                 size="small"
                 variant="extended"
               >
                 <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organization.name}</Box>
               </Fab>
-              {user && groups.includes('Organisers') && (
+              {user && groups?.includes('Organisers') && (
                 <>
                   <Tooltip title="More…">
                     <IconButton
@@ -218,7 +218,7 @@ const Topbar = props => {
               )}
             </Grid>
             <Grid item xs={6} align="right">
-              {user && (groups.includes('Editors') || groups.includes('Organisers')) ? (
+              {user && (groups?.includes('Editors') || groups?.includes('Organisers')) ? (
                 <>
                   <Tooltip title="New…">
                     <IconButton
