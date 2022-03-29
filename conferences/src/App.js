@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression } from 'aws-amplify';
+import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 
@@ -20,6 +20,7 @@ import { User } from './models';
 
 // global.Amplify = Amplify;
 global.Auth = Auth;
+global.DataStore = DataStore;
 
 Amplify.configure({ ...awsexports, ...awsconfig });
 
@@ -44,6 +45,11 @@ Hub.listen('auth', async data => {
   if (data.payload.event === 'signOut') {
     // await DataStore.clear();
   }
+});
+
+DataStore.configure({
+  fullSyncInterval: 60, // minutes
+  authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
 });
 
 const PREFIX = 'App';
@@ -106,13 +112,13 @@ const inputGlobalStyles = (
 );
 
 const getUser = async (setUser, identityId) => {
-  DataStore.configure({
-    syncExpressions: [
-      syncExpression(User, () => {
-        return user => user.identityId('eq', identityId);
-      }),
-    ],
-  });
+  // DataStore.configure({
+  //   syncExpressions: [
+  //     syncExpression(User, () => {
+  //       return user => user.identityId('eq', identityId);
+  //     }),
+  //   ],
+  // });
 
   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
   setUser(Array.isArray(user) ? user[0] : user);
