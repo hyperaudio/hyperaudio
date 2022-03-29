@@ -145,7 +145,7 @@ const HomePage = props => {
       <Container maxWidth="xl" disableGutters>
         {displayChannels.map(channel => (
           <Container maxWidth={false} key={channel.id} sx={{ my: { xs: '1px', lg: 20 } }}>
-            <CardGrid title={channel.name} text={channel.description} items={channel.media} />
+            <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
           </Container>
         ))}
       </Container>
