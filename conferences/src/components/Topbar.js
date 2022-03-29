@@ -120,9 +120,9 @@ const Topbar = props => {
   const [fname, lname] = useMemo(() => (user?.name ? [...user.name.split(' '), ''] : ['', '']), [user]);
 
   const menuProps = {
-    anchorOrigin: { horizontal: 'left', vertical: 'bottom' },
+    anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+    transformOrigin: { horizontal: 'right', vertical: 'top' },
     disablePortal: true,
-    transformOrigin: { horizontal: 'left', vertical: 'top' },
     variant: 'menu',
   };
   const primaryTypographyProps = {
@@ -171,6 +171,8 @@ const Topbar = props => {
                   </Tooltip>
                   <Menu
                     {...menuProps}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    transformOrigin={{ horizontal: 'left', vertical: 'top' }}
                     MenuListProps={{ 'aria-labelledby': 'openOrgMenuButton', dense: true }}
                     anchorEl={orgMenuAnchor}
                     id="orgMenu"
