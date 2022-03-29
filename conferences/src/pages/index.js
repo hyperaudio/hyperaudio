@@ -142,7 +142,7 @@ const HomePage = props => {
           maxWidth="xl"
           sx={{ mt: { xs: '1px' }, mb: { xs: 3, sm: 3 }, my: { md: 4, lg: 12, xl: 16 } }}
         >
-          <CardGrid title={channel.name} text={channel.description} items={channel.media} />
+          <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
         </Container>
       ))}
     </Root>

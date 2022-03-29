@@ -147,13 +147,13 @@ const Topbar = props => {
                 aria-label="Return home"
                 className={classes.fab}
                 component={Link}
-                href={user ? '/dashboard' : '/'}
+                href={user && groups?.includes('Organisers') ? '/dashboard' : '/'}
                 size="small"
                 variant="extended"
               >
                 <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organization.name}</Box>
               </Fab>
-              {user && (
+              {user && groups?.includes('Organisers') && (
                 <>
                   <Tooltip title="More…">
                     <IconButton
@@ -201,6 +201,7 @@ const Topbar = props => {
                       component={Link}
                       href="/organization"
                       onClick={() => setOrgMenuAnchor(null)}
+                      disabled={true}
                     >
                       <ListItemIcon>
                         <SettingsIcon sx={{ color: 'primary.light' }} />
@@ -217,7 +218,7 @@ const Topbar = props => {
               )}
             </Grid>
             <Grid item xs={6} align="right">
-              {user ? (
+              {user && (groups?.includes('Editors') || groups?.includes('Organisers')) ? (
                 <>
                   <Tooltip title="New…">
                     <IconButton
@@ -244,7 +245,7 @@ const Topbar = props => {
                     onClose={() => setAddMenuAnchor(null)}
                     open={openAddMenu}
                   >
-                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)}>
+                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)} disabled={true}>
                       <ListItemIcon>
                         <VideocamIcon sx={{ color: 'primary.light' }} />
                       </ListItemIcon>
@@ -256,7 +257,7 @@ const Topbar = props => {
                       />
                     </MenuItem>
                     <Divider />
-                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)}>
+                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)} disabled={true}>
                       <ListItemIcon>
                         <LibraryAddIcon sx={{ color: 'primary.light' }} />
                       </ListItemIcon>
@@ -268,6 +269,11 @@ const Topbar = props => {
                       />
                     </MenuItem>
                   </Menu>
+                </>
+              ) : null}
+
+              {user ? (
+                <>
                   <Fab
                     aria-expanded={openAccountMenu ? 'true' : undefined}
                     aria-haspopup="true"

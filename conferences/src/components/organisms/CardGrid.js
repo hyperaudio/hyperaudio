@@ -93,7 +93,7 @@ const Root = styled(Box)(({ theme }) => ({
 }));
 
 const CardGrid = props => {
-  const { title, text, items } = props;
+  const { title, text, items, disableLinks } = props;
   console.log({ items });
 
   return (
@@ -116,7 +116,12 @@ const CardGrid = props => {
           <Grid item key={item.id} xs={6} md={4} lg={4} xl={3}>
             <Card className={classes.card} key={item.id} sx={{ borderRadius: 2 }}>
               <Box sx={{ flex: '0 0 auto', p: { xs: 2, lg: 0 } }}>
-                <CardActionArea component={Link} href={`/media/${item.id}`} className={classes.actionArea}>
+                <CardActionArea
+                  component={Link}
+                  href={disableLinks ? '/' : `/media/${item.id}`}
+                  className={classes.actionArea}
+                  scroll={!disableLinks}
+                >
                   <CardMedia
                     component="img"
                     image={item.poster}
@@ -143,7 +148,12 @@ const CardGrid = props => {
                   px: { xs: 2, lg: 4 },
                 }}
               >
-                <Link href={`/media/${item.id}`} variant="subtitle2" sx={{ overflowWrap: 'break-word' }}>
+                <Link
+                  href={disableLinks ? '/' : `/media/${item.id}`}
+                  variant="subtitle2"
+                  sx={{ overflowWrap: 'break-word' }}
+                  scroll={!disableLinks}
+                >
                   {item.title}
                 </Link>
                 <Typography
