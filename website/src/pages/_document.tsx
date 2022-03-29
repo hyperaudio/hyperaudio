@@ -9,10 +9,13 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link as="font" crossOrigin="" href="/fonts/InterInter-Regular.woff" rel="preload" type="font/woff" />
-          <link as="font" crossOrigin="" href="/fonts/InterInter-Medium.woff" rel="preload" type="font/woff" />
-          <link as="font" crossOrigin="" href="/fonts/InterInter-Bold.woff" rel="preload" type="font/woff" />
-          <link as="font" crossOrigin="" href="/fonts/InterInter-Black.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Black.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Bold.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Medium.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Regular.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/quicksand/Quicksand_Bold.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/quicksand/Quicksand_Book.woff" rel="preload" type="font/woff" />
+          <link as="font" crossOrigin="" href="/fonts/quicksand/Quicksand_Light.woff" rel="preload" type="font/woff" />
         </Head>
         <body>
           <Main />

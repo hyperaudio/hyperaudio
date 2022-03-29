@@ -38,8 +38,8 @@ const Root = styled(Dialog)(({ theme }) => ({
     marginTop: theme.spacing(3),
   },
   [`& .${classes.copiedButton}`]: {
-    background: theme.palette.secondary.main,
-    color: theme.palette.secondary.contrastText,
+    background: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   },
 }));
 
@@ -153,6 +153,7 @@ export const ShareDialog = props => {
             readOnly: true,
           }}
           value={document.location.href}
+          variant="filled"
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">

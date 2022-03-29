@@ -226,7 +226,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                                 borderBottom: '3px solid',
                                 borderColor: acc.color,
                               }}
-                              variant="subtitle1"
+                              variant="subtitle2"
                             >
                               {acc.title}
                             </Typography>
@@ -292,7 +292,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
             </Grid>
           </Box>
           <Box sx={{ pt: 6, textAlign: 'center' }}>
-            <Typography variant="overline" display="block" sx={{ fontWeight: 500 }}>
+            <Typography variant="overline" display="block">
               As used by:
             </Typography>
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -327,13 +327,14 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   // sx={{ height: '100%', p: { xs: 4, md: 8, lg: 12 } }}
                   >
                     <Typography
-                      variant="subtitle1"
+                      variant="body1"
                       gutterBottom
+                      sx={{ fontWeight: '500' }}
                       // color={blurb.color}
                     >
                       {blurb.title}
                     </Typography>
-                    <Typography variant="body1" gutterBottom color="textSecondary">
+                    <Typography variant="body2" gutterBottom color="textSecondary">
                       {blurb.text}
                     </Typography>
                   </Box>
@@ -383,6 +384,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   name="EMAIL"
                   required
                   size="medium"
+                  InputProps={{ disableUnderline: true }}
                   type="email"
                   variant="filled"
                 />
@@ -398,6 +400,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                   select
                   size="medium"
                   variant="filled"
+                  InputProps={{ disableUnderline: true }}
                   SelectProps={{
                     native: true,
                   }}

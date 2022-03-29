@@ -54,7 +54,7 @@ export const InsertTransition = ({ editable = false, block: { key, transition: d
   return (
     <Root className={classes.root}>
       <div className={classes.head}>
-        <Typography className={classes.title} color="primary" component="h2" variant="subtitle2">
+        <Typography className={classes.title} color="primary" component="h2" variant="body2" sx={{ fontWeight: 500 }}>
           <MovieFilterIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
           <span id="insert-slide-title">Transition</span>
         </Typography>

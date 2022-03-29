@@ -7,15 +7,16 @@ import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
+import Fab from '@mui/material/Fab';
 import Grid from '@mui/material/Grid';
-import Hidden from '@mui/material/Hidden';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,25 +25,49 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import VideocamIcon from '@mui/icons-material/Videocam';
+import { deepPurple } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 
 import { User } from '../models';
+import Link from './MuiNextLink';
 
 const PREFIX = `Topbar`;
 const classes = {
-  root: `${PREFIX}-Root`,
+  root: `${PREFIX}-root`,
+  fab: `${PREFIX}-fab`,
+  menuItem: `${PREFIX}-menuItem`,
+  avatar: `${PREFIX}-avatar`,
 };
 
-const Root = styled(AppBar)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  borderBottom: `1px solid ${theme.palette.divider}`,
-  [`& .MuiAvatar-root`]: {
-    fontSize: '1em !important',
-    fontWeight: '600',
-    letterSpacing: 0,
-    lineHeight: 1,
+const Root = styled(AppBar, {
+  shouldForwardProp: prop => prop !== 'user',
+})(({ theme, user }) => ({
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
+  [`.${classes.fab}`]: {
+    backgroundColor: deepPurple[user ? 400 : 500],
+    border: `1px solid ${deepPurple[user ? 300 : 400]}`,
+    borderRadius: theme.shape.borderRadius * 6,
+    color: theme.palette.primary.contrastText,
+    height: 'auto',
+    padding: theme.spacing(0.75),
+    transition: `all ${theme.transitions.duration.standard}`,
+    '&:hover': {
+      backgroundColor: deepPurple[user ? 300 : 400],
+    },
+  },
+  [`.${classes.avatar}`]: {
+    ...theme.typography.caption,
+    backgroundColor: deepPurple[user ? 500 : 400],
+    color: deepPurple[100],
+    fontWeight: 500,
+    height: '30px',
+    width: '30px',
+  },
+  [`.${classes.menuItem}`]: {
+    padding: theme.spacing(1.25, 2),
+    textAlign: 'left',
   },
 }));
 
@@ -64,7 +89,6 @@ const Topbar = props => {
   // const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
   const { user, groups } = props;
 
-  const navigateToAccountPage = useCallback(() => router.push('/account'), [router]);
   const logoutToHomePage = useCallback(async () => {
     await Auth.signOut({ global: true });
     window.location.href = '/';
@@ -79,15 +103,15 @@ const Topbar = props => {
 
   const [addMenuAnchor, setAddMenuAnchor] = React.useState(null);
   const [orgMenuAnchor, setOrgMenuAnchor] = React.useState(null);
-  const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
+  const [accountMenuAnchor, setAccountMenuAnchor] = React.useState(null);
 
   const openAddMenu = Boolean(addMenuAnchor);
   const openOrgMenu = Boolean(orgMenuAnchor);
-  const openProfileMenu = Boolean(profileMenuAnchor);
+  const openAccountMenu = Boolean(accountMenuAnchor);
 
   const organization = {
     // TODO: Load real time org data
-    name: 'Mozilla Festival',
+    name: 'Mozilla Festival 2022',
     slug: '/',
   };
 
@@ -95,162 +119,230 @@ const Topbar = props => {
 
   const [fname, lname] = useMemo(() => (user?.name ? [...user.name.split(' '), ''] : ['', '']), [user]);
 
+  const menuProps = {
+    anchorOrigin: { horizontal: 'right', vertical: 'bottom' },
+    transformOrigin: { horizontal: 'right', vertical: 'top' },
+    disablePortal: true,
+    variant: 'menu',
+  };
+  const primaryTypographyProps = {
+    color: 'primary',
+    gutterBottom: true,
+    sx: { fontWeight: '600' },
+  };
+  const secondaryTypographyProps = {
+    variant: 'caption',
+  };
+  const buttonLabelProps = {
+    sx: { display: { xs: 'none', md: 'inline-block' }, mx: 1 },
+  };
+
   return (
     <NoSsr>
-      <Root position="fixed" elevation={0} className={classes.root}>
-        <Toolbar>
+      <Root position="fixed" elevation={12} className={classes.root} user={user}>
+        <Toolbar sx={{ px: { xs: 1, md: 2 } }}>
           <Grid container alignItems="center">
-            <Grid item xs={4}>
-              <Button
-                onClick={e => setOrgMenuAnchor(e.currentTarget)}
+            <Grid item xs={6}>
+              <Fab
+                aria-label="Return home"
+                className={classes.fab}
+                component={Link}
+                href={user ? '/dashboard' : '/'}
                 size="small"
-                color="primary"
-                startIcon={
-                  <Avatar sx={{ height: 28, width: 28 }} alt={organization.name}>
-                    {organization.name.charAt(0)}
-                  </Avatar>
-                }
+                variant="extended"
               >
-                {' '}
-                <Hidden mdDown>{organization.name}</Hidden>
-                <ArrowDropDownIcon fontSize="small" />
-              </Button>
-              <Tooltip title="Open your organization’s home page">
-                <IconButton
-                  color="primary"
-                  edge="end"
-                  href={organization.slug}
-                  sx={{ marginLeft: 1 }}
-                  target="_blank"
-                  variant="contained"
-                >
-                  <HomeIcon fontSize="small" />
-                </IconButton>
-              </Tooltip>
+                <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organization.name}</Box>
+              </Fab>
+              {user && (
+                <>
+                  <Tooltip title="More…">
+                    <IconButton
+                      aria-expanded={openOrgMenu ? 'true' : undefined}
+                      aria-haspopup="true"
+                      aria-label="Event options"
+                      className={classes.fab}
+                      color="inherit"
+                      id="openOrgMenuButton"
+                      onClick={e => setOrgMenuAnchor(e.currentTarget)}
+                      sx={{ ml: { xs: 1, md: 1.5 } }}
+                    >
+                      <ArrowDropDownIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Menu
+                    {...menuProps}
+                    anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+                    transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+                    MenuListProps={{ 'aria-labelledby': 'openOrgMenuButton', dense: true }}
+                    anchorEl={orgMenuAnchor}
+                    id="orgMenu"
+                    onClose={() => setOrgMenuAnchor(null)}
+                    open={openOrgMenu}
+                  >
+                    <MenuItem
+                      className={classes.menuItem}
+                      component={Link}
+                      href="/"
+                      onClick={() => setOrgMenuAnchor(null)}
+                    >
+                      <ListItemIcon>
+                        <HomeIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Home page"
+                        primaryTypographyProps={primaryTypographyProps}
+                        secondary="Preview your event home page"
+                        secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem
+                      className={classes.menuItem}
+                      component={Link}
+                      href="/organization"
+                      onClick={() => setOrgMenuAnchor(null)}
+                    >
+                      <ListItemIcon>
+                        <SettingsIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Settings"
+                        primaryTypographyProps={primaryTypographyProps}
+                        secondary="Edit event details, members & more…"
+                        secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem>
+                  </Menu>
+                </>
+              )}
             </Grid>
-            <Grid item xs={4} align="center">
-              <Typography variant="h6" sx={{ fontSize: '1.11rem' }} color="primary">
-                {title}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} align="right">
+            <Grid item xs={6} align="right">
               {user ? (
                 <>
-                  <Tooltip title="Add new…">
+                  <Tooltip title="New…">
                     <IconButton
                       aria-expanded={openAddMenu ? 'true' : undefined}
                       aria-haspopup="true"
-                      aria-label="Add new…"
-                      color="primary"
-                      edge="start"
+                      aria-label="New…"
+                      className={classes.fab}
+                      color="inherit"
                       id="openAddMenuButton"
                       onClick={e => setAddMenuAnchor(e.currentTarget)}
-                      sx={{ marginRight: 1 }}
+                      sx={{ mr: { xs: 1, md: 1.5 } }}
                     >
                       <AddIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
-                  <Button
-                    onClick={e => setProfileMenuAnchor(e.currentTarget)}
-                    color="primary"
-                    size="small"
-                    startIcon={
-                      <Avatar sx={{ height: 30, width: 30 }} alt={user?.name}>
-                        {fname.charAt(0)} {lname.charAt(0)}
-                      </Avatar>
-                    }
+                  <Menu
+                    {...menuProps}
+                    anchorEl={addMenuAnchor}
+                    id="addMenu"
+                    MenuListProps={{
+                      'aria-labelledby': 'openAddMenuButton',
+                      dense: true,
+                    }}
+                    onClose={() => setAddMenuAnchor(null)}
+                    open={openAddMenu}
                   >
-                    {' '}
-                    <Hidden mdDown>
-                      {fname} {`${lname.charAt(0)}${lname.charAt(0) !== '' ? '.' : ''}`}
-                    </Hidden>{' '}
-                    <ArrowDropDownIcon fontSize="small" />
-                  </Button>
+                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)}>
+                      <ListItemIcon>
+                        <VideocamIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="New media"
+                        primaryTypographyProps={primaryTypographyProps}
+                        secondary="Upload or add new media"
+                        secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem className={classes.menuItem} onClick={() => setAddMenuAnchor(null)}>
+                      <ListItemIcon>
+                        <LibraryAddIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="New channel"
+                        primaryTypographyProps={primaryTypographyProps}
+                        secondary="Create new channel to assign media to"
+                        secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem>
+                  </Menu>
+                  <Fab
+                    aria-expanded={openAccountMenu ? 'true' : undefined}
+                    aria-haspopup="true"
+                    aria-label="Account"
+                    className={classes.fab}
+                    id="openAccountMenuButton"
+                    onClick={e => setAccountMenuAnchor(e.currentTarget)}
+                    size="small"
+                    variant="extended"
+                  >
+                    <Avatar className={classes.avatar} alt={user?.name}>
+                      {user.name.charAt(0)}
+                    </Avatar>{' '}
+                    <Box {...buttonLabelProps}>{user.name}</Box>
+                    <ArrowDropDownIcon fontSize="small" sx={{ mx: 0.5 }} />
+                  </Fab>
+                  <Menu
+                    {...menuProps}
+                    anchorEl={accountMenuAnchor}
+                    id="accountMenu"
+                    MenuListProps={{
+                      'aria-labelledby': 'openAccountMenuButton',
+                      dense: true,
+                    }}
+                    onClose={() => setAccountMenuAnchor(null)}
+                    open={openAccountMenu}
+                  >
+                    <MenuItem
+                      className={classes.menuItem}
+                      component={Link}
+                      href="/account"
+                      onClick={() => setAccountMenuAnchor(null)}
+                    >
+                      <ListItemIcon>
+                        <PersonIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="My account"
+                        primaryTypographyProps={primaryTypographyProps}
+                        secondary="Account & security options…"
+                        secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem>
+                    <Divider />
+                    <MenuItem
+                      className={classes.menuItem}
+                      onClick={() => {
+                        setAccountMenuAnchor(null);
+                        logoutToHomePage();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <LogoutIcon sx={{ color: 'error.light' }} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary="Log out"
+                        primaryTypographyProps={{ ...primaryTypographyProps, color: 'error' }}
+                      />
+                    </MenuItem>
+                  </Menu>
                 </>
+              ) : false ? (
+                <Fab aria-label="Authenticate" className={classes.fab} component={Link} href="/auth" variant="extended">
+                  <Avatar className={classes.avatar}>
+                    <PersonIcon fontSize="small" />
+                  </Avatar>
+                  <Box {...buttonLabelProps}>Sign in</Box>
+                  <LoginIcon fontSize="small" sx={{ mx: 0.5 }} />
+                </Fab>
               ) : null}
             </Grid>
           </Grid>
         </Toolbar>
       </Root>
       <Toolbar />
-      <Menu
-        anchorEl={addMenuAnchor}
-        id="addMenu"
-        MenuListProps={{
-          'aria-labelledby': 'openAddMenuButton',
-          dense: true,
-        }}
-        onClose={() => setAddMenuAnchor(null)}
-        open={openAddMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <VideocamIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>New media…</ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setAddMenuAnchor(null)}>
-          <ListItemIcon>
-            <LibraryAddIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>New channel…</ListItemText>
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={profileMenuAnchor}
-        id="profileMenu"
-        MenuListProps={{
-          'aria-labelledby': 'openProfileMenuButton',
-          dense: true,
-        }}
-        onClose={() => setProfileMenuAnchor(null)}
-        open={openProfileMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemIcon>
-            <PersonIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }} onClick={navigateToAccountPage}>
-            My account
-          </ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={() => setProfileMenuAnchor(null)}>
-          <ListItemIcon>
-            <LogoutIcon color="error" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'error' }} onClick={logoutToHomePage}>
-            Log out
-          </ListItemText>
-        </MenuItem>
-      </Menu>
-      <Menu
-        anchorEl={orgMenuAnchor}
-        id="orgMenu"
-        MenuListProps={{
-          'aria-labelledby': 'openOrgMenuButton',
-          dense: true,
-        }}
-        onClose={() => setOrgMenuAnchor(null)}
-        open={openOrgMenu}
-        variant="menu"
-        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={() => setOrgMenuAnchor(null)}>
-          <ListItemIcon>
-            <SettingsIcon color="primary" fontSize="small" />
-          </ListItemIcon>
-          <ListItemText primaryTypographyProps={{ color: 'primary' }}>Organization settings</ListItemText>
-        </MenuItem>
-      </Menu>
     </NoSsr>
   );
 };

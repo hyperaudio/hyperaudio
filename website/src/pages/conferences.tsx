@@ -254,7 +254,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       id: 1,
       text: 'Hyperaudio has made extending access to our collections even more dynamic and engaging.',
       author: 'Allison Schein Holmes',
-      bio: 'Director of Media Archives — wfmt, Studs Terkel Radio Archive, wttw',
+      bio: 'Director of Media Archives, wfmt, Studs Terkel Radio Archive, wttw',
     },
     {
       id: 2,
@@ -349,7 +349,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                                 borderBottom: '3px solid',
                                 borderColor: acc.color,
                               }}
-                              variant="subtitle1"
+                              variant="subtitle2"
                             >
                               {acc.title}
                             </Typography>
@@ -415,7 +415,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
             </Grid>
           </Box>
           <Box sx={{ pt: 6, textAlign: 'center' }}>
-            <Typography variant="overline" display="block" sx={{ fontWeight: 500 }}>
+            <Typography variant="overline" display="block">
               As used by:
             </Typography>
             <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -523,7 +523,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
               {features2.map(f => (
                 <Grid item key={f.id} xs={12} sm={6} xl={3} sx={{ position: 'relative' }}>
                   <Box>
-                    <Typography component="h3" variant="h5" color={f.color}>
+                    <Typography component="h3" variant="h6" color={f.color}>
                       {f.title}
                     </Typography>
                     <Typography color="textSecondary" variant="body2" sx={{ mt: { xs: 1, md: 2, xl: 3 } }}>
@@ -595,14 +595,16 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
                       transform: { md: isEven ? 'translateY(50%)' : 'none' },
                     }}
                   >
-                    <Typography color={colors[i]} gutterBottom sx={{ mb: 3, position: 'relative' }} variant="subtitle1">
+                    <Typography color={colors[i]} gutterBottom sx={{ mb: 3, position: 'relative' }} variant="subtitle2">
                       <FormatQuoteIcon className={classes.quoteIcon} fontSize="large" />
                       {quote.text}
                     </Typography>
-                    <Typography variant="subtitle2" gutterBottom>
+                    <Typography variant="overline" gutterBottom>
                       {quote.author}
                     </Typography>
-                    <Typography variant="caption">{quote.bio}</Typography>
+                    <Typography variant="caption" color="textSecondary" display="block">
+                      {quote.bio}
+                    </Typography>
                   </Box>
                 </Grid>
               );
@@ -620,7 +622,7 @@ const ConferencesPage: NextPage<PageProps> = (props: PageProps) => {
       <div className={classes.takeaway}>
         <Container fixed maxWidth="xl" sx={{ py: { xs: 12, md: 18, xl: 24 } }}>
           <Typography component="h1">
-            <Typography variant="subtitle1" display="block" component="span" gutterBottom>
+            <Typography variant="h5" display="block" component="span" gutterBottom sx={{ fontWeight: 500 }}>
               Start sharing your conference
             </Typography>
             <Typography variant="h1" display="block" component="span" gutterBottom sx={{ mt: 3 }}>

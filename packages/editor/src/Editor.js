@@ -1,6 +1,7 @@
-import React, { useRef, useMemo, useCallback, useReducer } from 'react';
-import { Editor as DraftEditor, EditorState, SelectionState, CompositeDecorator, Modifier } from 'draft-js';
+import React, { useMemo, useCallback, useReducer, useState } from 'react';
+import { Editor as DraftEditor, EditorState, CompositeDecorator } from 'draft-js';
 import TC from 'smpte-timecode';
+import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -20,13 +21,15 @@ const SPEAKER_AREA_WIDTH = 120;
 const SPEAKER_AREA_HEIGHT = 26;
 
 const PREFIX = 'Editor';
+
 const classes = {
   root: `${PREFIX}`,
   input: `${PREFIX}-input`,
 };
+
 const Root = styled('div')(({ theme }) => ({
+  ...theme.typography.body2,
   [`div[data-block='true'] + div[data-block='true']`]: {
-    ...theme.typography.body1,
     marginTop: theme.spacing(3),
   },
   [`div[data-block='true']`]: {
@@ -58,7 +61,7 @@ const Root = styled('div')(({ theme }) => ({
     fontWeight: '600',
     height: `${SPEAKER_AREA_HEIGHT}px`,
     left: 0,
-    lineHeight: 'inherit',
+    lineHeight: `${SPEAKER_AREA_HEIGHT}px`,
     overflow: 'hidden',
     paddingRight: theme.spacing(1.44),
     textOverflow: 'ellipsis',
@@ -94,14 +97,21 @@ const Editor = ({
   time = 0,
   seekTo,
   showDialog,
-  aligner,
-  speakers = {},
+  aligner = wordAligner,
+  speakers: initialSpeakers = {},
   ...rest
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [speakerAnchor, setSpeakerAnchor] = React.useState(null);
-  const [speaker, setSpeaker] = React.useState(null);
-  const [speakerQuery, setSpeakerQuery] = React.useState('');
+  const [speakers, setSpeakers] = useState(
+    Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
+      return { ...acc, [id]: { ...speaker, id } };
+    }, {}),
+  );
+
+  const [currentBlock, setCurrentBlock] = useState(null);
+  const [speakerAnchor, setSpeakerAnchor] = useState(null);
+  const [speaker, setSpeaker] = useState(null);
+  const [speakerQuery, setSpeakerQuery] = useState('');
 
   const onChange = useCallback(
     editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch }),
@@ -136,56 +146,89 @@ const Editor = ({
         const x = mx - bx;
         const y = my - by;
 
-        // console.log({ x, y });
-        // console.log({ bx, by });
         if (x < SPEAKER_AREA_WIDTH - 10 && y < SPEAKER_AREA_HEIGHT) {
           const selectionState = editorState.getSelection();
           const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
           const data = block.getData().toJS();
-          setSpeaker({ id: data.speaker, name: speakers[data.speaker].name });
+          setCurrentBlock(block);
+          setSpeaker({ id: data.speaker, name: speakers?.[data.speaker]?.name });
           setSpeakerAnchor(e.target);
-          // showDialog &&
-          // showDialog({
-          //   target: e.target,
-          //   x,
-          //   y,
-          //   block,
-          //   data: block.getData().toJS(),
-          // });
         }
       } else {
+        setCurrentBlock(null);
         const selectionState = editorState.getSelection();
         const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
+        // console.log(block.toJS());
+
         const start = selectionState.getStartOffset();
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
+        // console.log(item);
+
         item?.start && seekTo && seekTo(item.start);
       }
     },
     [seekTo, editorState],
   );
 
-  const handleSpeakerSet = (e, newValue) => {
-    e.stopPropagation();
-    setSpeakerAnchor(null);
-    if (typeof newValue === 'string') {
-      // A: Create new by type-in and Enter press
-      setSpeaker({ name: newValue });
-      console.log('TODO: handleSpeakerSet, NEW-a:', newValue);
-    } else if (newValue && newValue.inputValue) {
-      // B: Create new by type-in and click on the `Add xyz` option
-      setSpeaker({ name: newValue.inputValue });
-      console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue);
-    } else {
-      // C: Choose an already existing speaker
-      setSpeaker(newValue);
-      console.log('TODO: handleSpeakerSet, EXISTING:', newValue);
-    }
-  };
+  const handleSpeakerSet = useCallback(
+    (e, newValue) => {
+      e.preventDefault();
+      e.stopPropagation();
+      setSpeakerAnchor(null);
+      if (typeof newValue === 'string') {
+        // A: Create new by type-in and Enter press
+        const id = `S${Date.now()}`;
+        setSpeakers({ ...speakers, [id]: { name: newValue, id } });
+        setSpeaker({ name: newValue, id });
+        console.log('TODO: handleSpeakerSet, NEW-a:', newValue, id);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      } else if (newValue && newValue.inputValue) {
+        // B: Create new by type-in and click on the `Add xyz` option
+        const id = `S${Date.now()}`;
+        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
+        setSpeaker({ name: newValue.inputValue, id });
+        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue, id);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      } else {
+        // C: Choose an already existing speaker
+        setSpeaker(newValue);
+        console.log('TODO: handleSpeakerSet, EXISTING:', newValue);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: newValue.id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      }
+    },
+    [speakers, currentBlock, editorState, aligner],
+  );
 
-  const handleClickAway = e => {
-    if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
-  };
+  const handleClickAway = useCallback(
+    e => {
+      // eslint-disable-next-line no-extra-boolean-cast
+      if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
+      setCurrentBlock(null);
+    },
+    [speakerAnchor],
+  );
 
   return (
     <Root className={classes.root} onClick={handleClick}>
@@ -219,7 +262,7 @@ const Editor = ({
               sx={{
                 left: '-11px',
                 position: 'relative',
-                top: '-1px',
+                top: '-2px',
                 transform: 'translate(0, 100%) !important',
                 width: SPEAKER_AREA_WIDTH,
               }}
@@ -305,7 +348,7 @@ const Editor = ({
 const BlockStyle = ({ block, speakers, time }) => {
   const theme = useTheme();
 
-  const speaker = useMemo(() => speakers[block.getData().get('speaker')]?.name ?? 'n/a', [block, speakers]);
+  const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? 'n/a', [block, speakers]);
   const start = useMemo(() => block.getData().get('start'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 
@@ -319,7 +362,7 @@ const BlockStyle = ({ block, speakers, time }) => {
           content: '${speaker}';
         }
         div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
-          content: '${tc}:';
+          content: '${tc}';
         }
       `}
     </style>
@@ -332,6 +375,27 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
     .split(':')
     .slice(0, 3)
     .join(':');
+
+const wordAligner = (words, text, start, end, callback) => {
+  const aligned =
+    words.length > 5 ? alignSTT({ words }, text, start, end) : alignSTTwithPadding({ words }, text, start, end);
+  // console.log({ text, words, aligned });
+
+  const items = aligned.map(({ start, end, text }, i, arr) => ({
+    start,
+    end,
+    text,
+    length: text.length,
+    offset:
+      arr
+        .slice(0, i)
+        .map(({ text }) => text)
+        .join(' ').length + (i === 0 ? 0 : 1),
+  }));
+
+  callback && callback(items);
+  return items;
+};
 
 export default Editor;
 

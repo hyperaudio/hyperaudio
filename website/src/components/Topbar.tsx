@@ -73,8 +73,6 @@ const Topbar = (props: TopbarProps) => {
 
   const handleClose = () => setAnchorEl(null);
 
-  console.log({ pathname });
-
   return (
     <>
       <Root
@@ -86,8 +84,8 @@ const Topbar = (props: TopbarProps) => {
         ref={ref}
         useGrain={Boolean(trigger)}
       >
-        <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', p: 1, textAlign: 'center' }}>
-          <Typography variant="body2" sx={{ fontWeight: 500, textTransform: 'none' }} color="primary.contrastText">
+        <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', lineHeight: 1, p: 1, textAlign: 'center' }}>
+          <Typography variant="button" color="primary.contrastText">
             New:{' '}
             <Link href="/conferences" color="inherit" underline="hover">
               Hyperaudio for Conferences {!pathname.includes('conferences') && ' — Visit now'}
@@ -138,7 +136,7 @@ const Topbar = (props: TopbarProps) => {
             selected={pathname === '/'}
             sx={{ display: 'flex', justifyContent: 'space-between', minWidth: '300px' }}
           >
-            <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 500 }}>
+            <Typography variant="body1" color="primary" sx={{ fontWeight: 500 }}>
               Hyperaudio
             </Typography>
           </MenuItem>

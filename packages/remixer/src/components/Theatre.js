@@ -5,6 +5,7 @@ import TC from 'smpte-timecode';
 
 import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
@@ -50,6 +51,7 @@ const MATCH_URL_YOUTUBE =
 // const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
 export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }) => {
+  const [seekTime, setSeekTime] = useState(36 * 1e6);
   const duration = useMemo(
     () =>
       blocks.reduce(
@@ -119,7 +121,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 
     if (currentInterval !== interval && currentIntervalIndex > 0) {
       const prevInterval = intervals[currentIntervalIndex - 1];
-      console.log('previous', prevInterval);
+      // console.log('previous', prevInterval);
 
       // FIXME this is based on intervals having one block
       // if (prevInterval[2].block.type === 'title') {
@@ -159,12 +161,13 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   const pause = useCallback(() => reference.current?.pause(), [reference]);
 
   const handleSliderChange = (event, value) => {
+    // setSeekTime(value * 1e3);
     reference.current.currentTime = value;
   };
 
-  useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
-  useEffect(() => console.log({ active }), [active]);
-  useEffect(() => console.log({ intervals }), [intervals]);
+  // useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
+  // useEffect(() => console.log({ active }), [active]);
+  // useEffect(() => console.log({ intervals }), [intervals]);
 
   useEffect(() => {
     if (buffering && referencePlaying) {
@@ -272,16 +275,14 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
         <div className={classes.controls}>
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
-              {referencePlaying ? (
-                buffering ? (
-                  <IconButton onClick={pause} size="small">
-                    <FastForwardIcon />
-                  </IconButton>
-                ) : (
-                  <IconButton onClick={pause} size="small">
-                    <PauseIcon />
-                  </IconButton>
-                )
+              {buffering && seekTime !== time ? (
+                <IconButton onClick={pause} size="small">
+                  {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                </IconButton>
+              ) : referencePlaying ? (
+                <IconButton onClick={pause} size="small">
+                  <PauseIcon />
+                </IconButton>
               ) : (
                 <IconButton onClick={play} size="small">
                   <PlayArrowIcon />
@@ -381,12 +382,12 @@ const Player = ({
   // );
 
   const onBuffer = useCallback(() => {
-    console.log('onBuffer', id);
+    // console.log('onBuffer', id);
     setBuffering(true);
   }, [id, setBuffering]);
 
   const onBufferEnd = useCallback(() => {
-    console.log('onBufferEnd', id);
+    // console.log('onBufferEnd', id);
     setBuffering(false);
   }, [id, setBuffering]);
 

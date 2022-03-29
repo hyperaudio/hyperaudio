@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
+import PlausibleProvider from 'next-plausible';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import GlobalStyles from '@mui/material/GlobalStyles';
 
-import { defaultTheme } from '@hyperaudio/common';
+import { getTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
 import Topbar from './components/Topbar';
@@ -57,6 +59,44 @@ const Root = styled('div', {
 
 const clientSideEmotionCache = createEmotionCache();
 
+const inputGlobalStyles = (
+  <GlobalStyles
+    styles={`
+      html, body {
+        background: white;
+        min-height: 100%;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url('/fonts/inter/Inter-Regular.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 400;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url('/fonts/inter/Inter-Medium.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 500;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url('/fonts/inter/Inter-Bold.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 600;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Inter';
+        src: url('/fonts/inter/Inter-Black.woff2') format('woff2');
+        font-style: normal;
+        font-weight: 700;
+        font-display: optional;
+      }
+`}
+  />
+);
 const getUser = async (setUser, identityId) => {
   DataStore.configure({
     syncExpressions: [
@@ -74,6 +114,7 @@ const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
+  const [domain, setDomain] = useState();
 
   useEffect(
     () =>
@@ -100,14 +141,19 @@ const App = props => {
     return () => subscription.unsubscribe();
   }, [user]);
 
+  useEffect(() => setDomain(window.location.hostname), []);
+
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={defaultTheme}>
-        <Root className={classes.root}>
-          <CssBaseline />
-          <Topbar {...pageProps} user={user} groups={groups} />
-          <Component {...pageProps} user={user} groups={groups} />
-        </Root>
+      <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
+        <PlausibleProvider domain={domain}>
+          <Root className={classes.root}>
+            <CssBaseline />
+            {inputGlobalStyles}
+            <Topbar {...pageProps} user={user} groups={groups} />
+            <Component {...pageProps} user={user} groups={groups} />
+          </Root>
+        </PlausibleProvider>
       </ThemeProvider>
     </CacheProvider>
   );

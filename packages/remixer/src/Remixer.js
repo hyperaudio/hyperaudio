@@ -4,15 +4,13 @@ import { DragDropContext } from 'react-beautiful-dnd';
 
 import { styled, ThemeProvider } from '@mui/material/styles';
 
-import { defaultTheme } from '@hyperaudio/common';
+import { getTheme } from '@hyperaudio/common';
 
 import Library from './Library';
 import Remix from './Remix';
 import Source from './Source';
 
 import remixReducer from './reducers/remixReducer';
-
-import '@hyperaudio/common/src/fonts/Inter/inter.css';
 
 const Root = styled('div', {
   shouldForwardProp: prop => !['showSource', 'isSingleMedia'].includes(prop),
@@ -125,7 +123,7 @@ const Remixer = props => {
     source: props.sources[0],
   });
 
-  console.log('REMIX', remix);
+  // console.log('REMIX', remix);
 
   useEffect(() => {
     dispatch({
@@ -167,32 +165,32 @@ const Remixer = props => {
 
   console.group('index.js');
   // console.log('sources', sources);
-  console.log('source', source);
+  // console.log('source', source);
   console.groupEnd();
 
   const onBeforeCapture = useCallback(e => {
-    console.log({ onBeforeCapture: e });
+    // console.log({ onBeforeCapture: e });
   }, []);
 
   const onBeforeDragStart = useCallback(e => {
-    console.log({ onBeforeDragStart: e });
+    // console.log({ onBeforeDragStart: e });
   }, []);
 
   const onDragStart = useCallback(e => {
-    console.log({ onDragStart: e });
+    // console.log({ onDragStart: e });
   }, []);
 
   const onDragUpdate = useCallback(e => {
-    console.log({ onDragUpdate: e });
+    // console.log({ onDragUpdate: e });
   }, []);
 
   const onDragEnd = useCallback(event => {
-    console.log({ onDragEnd: event });
+    // console.log({ onDragEnd: event });
     event.destination && dispatch({ type: 'dragEnd', event });
   }, []);
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
       <Root showSource={showSource} isSingleMedia={isSingleMedia}>
         <div
           className="Layout"

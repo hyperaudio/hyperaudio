@@ -230,7 +230,7 @@ export function MediaTable(props) {
       <Toolbar disableGutters>
         {selected.length > 0 ? (
           <Box sx={{ flex: '1 1 auto', display: 'flex', alignItems: 'center' }}>
-            <Typography color="inherit" component="div" display="inline-block" sx={{ mr: 2 }} variant="h6">
+            <Typography color="inherit" component="div" display="inline-block" sx={{ mr: 2 }} variant="h3">
               {selected.length} selected:
             </Typography>
             <Button color="error" onClick={() => handleDelete(selected)} size="small" startIcon={<DeleteIcon />}>
@@ -239,7 +239,7 @@ export function MediaTable(props) {
           </Box>
         ) : (
           <Box sx={{ flex: '1 1 auto', display: 'flex', alignItems: 'center' }}>
-            <Typography component="div" id="tableTitle" variant="h6">
+            <Typography component="div" id="tableTitle" variant="h3">
               All media
             </Typography>
           </Box>
@@ -361,6 +361,7 @@ export function MediaTable(props) {
                         display="block"
                         sx={{
                           cursor: 'pointer',
+                          fontWeight: 500,
                           maxWidth: {
                             xs: '180px',
                             sm: '320px',
@@ -374,7 +375,7 @@ export function MediaTable(props) {
                         }}
                         noWrap
                         color={row.isProcessing ? 'text.disabled' : 'primary'}
-                        variant="subtitle2"
+                        variant="body2"
                       >
                         {row.title}
                       </Link>
@@ -384,7 +385,7 @@ export function MediaTable(props) {
                         display: { xs: 'none', lg: 'table-cell' },
                       }}
                     >
-                      <Typography color="textSecondary" display="block" noWrap variant="body2">
+                      <Typography color="textSecondary" display="block" noWrap variant="caption">
                         {row.createdAt ? cFormattedDate : '—'}
                       </Typography>
                     </TableCell>
@@ -393,7 +394,7 @@ export function MediaTable(props) {
                         display: { xs: 'none', lg: 'table-cell' },
                       }}
                     >
-                      <Typography color="textSecondary" display="block" noWrap variant="body2">
+                      <Typography color="textSecondary" display="block" noWrap variant="caption">
                         {row.updatedAt ? uFormattedDate : '—'}
                       </Typography>
                     </TableCell>
@@ -402,7 +403,7 @@ export function MediaTable(props) {
                         display: { xs: 'none', lg: 'table-cell' },
                       }}
                     >
-                      <Typography color="textSecondary" display="block" noWrap variant="body2">
+                      <Typography color="textSecondary" display="block" noWrap variant="caption">
                         {row.channel?.name ?? '—'}
                       </Typography>
                     </TableCell>

@@ -35,6 +35,8 @@ const classes = {
   side: `${PREFIX}-side`,
   sideL: `${PREFIX}-sideL`,
   sideR: `${PREFIX}-sideR`,
+  title: `${PREFIX}-title`,
+  titleField: `${PREFIX}-titleField`,
 };
 
 const Root = styled(Container, {
@@ -63,6 +65,12 @@ const Root = styled(Container, {
       [`& > *`]: {
         marginLeft: theme.spacing(1),
       },
+    },
+    [`& .${classes.titleField}`]: {
+      ...theme.typography.body1,
+      fontWeight: '500',
+      padding: theme.spacing(1, 1),
+      textAlign: 'center',
     },
   };
 });
@@ -135,20 +143,21 @@ export const RemixTopbar = props => {
                 fullWidth
                 placeholder="Give your remix a title…"
                 required
-                size="small"
                 disabled={!editable}
                 type="text"
                 value={remix.title}
                 InputProps={{
-                  className: 'RemixTitleField',
+                  className: classes.title,
                   readOnly: !editable,
                 }}
                 inputProps={{
-                  className: 'RemixTitle',
+                  className: classes.titleField,
                   minLength: 1,
                   onBlur: onTitleBlur,
                   onFocus: onTitleFocus,
                 }}
+                variant="filled"
+                size="small"
               />
             </Container>
           </Grid>
