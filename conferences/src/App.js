@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
+import PlausibleProvider from 'next-plausible';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -113,6 +114,7 @@ const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
+  const [domain, setDomain] = useState();
 
   useEffect(
     () =>
@@ -139,15 +141,19 @@ const App = props => {
     return () => subscription.unsubscribe();
   }, [user]);
 
+  useEffect(() => setDomain(window.location.hostname), []);
+
   return (
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
-        <Root className={classes.root}>
-          <CssBaseline />
-          {inputGlobalStyles}
-          <Topbar {...pageProps} user={user} groups={groups} />
-          <Component {...pageProps} user={user} groups={groups} />
-        </Root>
+        <PlausibleProvider domain={domain}>
+          <Root className={classes.root}>
+            <CssBaseline />
+            {inputGlobalStyles}
+            <Topbar {...pageProps} user={user} groups={groups} />
+            <Component {...pageProps} user={user} groups={groups} />
+          </Root>
+        </PlausibleProvider>
       </ThemeProvider>
     </CacheProvider>
   );
