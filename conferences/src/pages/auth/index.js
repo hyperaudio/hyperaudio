@@ -40,7 +40,12 @@ const Redirect = ({ user }) => {
       await getUser(async user => {
         console.log('existing user', user);
         if (!user) {
-          console.log('new user', await DataStore.save(new User({ identityId, name: email.split('@')[0] })));
+          console.log(
+            'new user',
+            await DataStore.save(
+              new User({ identityId, name: email.split('@')[0], metadata: { lastLogin: new Date() } }),
+            ),
+          );
         } else {
           await DataStore.save(
             User.copyOf(user, updated => {
@@ -52,8 +57,8 @@ const Redirect = ({ user }) => {
         setTimeout(() => {
           console.log('redirect', redirect);
           // router.push(redirect);
-          // window.location.href = redirect;
-        }, 100);
+          window.location.href = redirect;
+        }, 50);
       }, identityId);
     })();
   }, [redirect, router, user]);
