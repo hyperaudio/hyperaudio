@@ -151,6 +151,10 @@ const App = props => {
 
   useEffect(() => setDomain(window.location.hostname), []);
 
+  const organisation = {
+    name: 'Mozilla Festival 2022',
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <CssBaseline />
@@ -158,8 +162,8 @@ const App = props => {
         <PlausibleProvider domain={domain}>
           <Root className={classes.root}>
             {inputGlobalStyles}
-            <Topbar {...pageProps} user={user} groups={groups} />
-            <Component {...pageProps} user={user} groups={groups} />
+            <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
+            <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
           </Root>
         </PlausibleProvider>
       </ThemeProvider>

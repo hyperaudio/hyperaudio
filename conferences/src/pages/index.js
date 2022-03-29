@@ -5,6 +5,7 @@ import TextTruncate from 'react-text-truncate';
 import _ from 'lodash';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
@@ -16,11 +17,16 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+import { HyperaudioIcon } from '@hyperaudio/common';
+
 import { Main } from '../components';
 import { Media, Channel } from '../models';
 
 const PREFIX = `HomePage`;
 const classes = {
+  hero: `${PREFIX}-hero`,
+  heroOrnament: `${PREFIX}-heroOrnament`,
+  herotitle: `${PREFIX}-herotitle`,
   root: `${PREFIX}-Root`,
   thumbTitle: `${PREFIX}-thumbTitle`,
 };
@@ -29,13 +35,66 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.thumbTitle} span`]: {
     lineHeight: '1.44em !important',
   },
+  [`& .${classes.hero}`]: {
+    background: theme.palette.primary.main,
+    backgroundImage: `linear-gradient(to bottom, ${theme.palette.primary.dark} -50%, ${theme.palette.secondary.dark} 150%)`,
+    color: theme.palette.primary.contrastText,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    minHeight: '50vh',
+    position: 'relative',
+  },
+  [`& .${classes.herotitle}`]: {
+    fontSize: '100px',
+    lineHeight: '0.85em',
+    position: 'relative',
+    top: '0.1em',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '150px',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: '225px',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '250px',
+    },
+    [theme.breakpoints.up('xl')]: {
+      fontSize: '250px',
+    },
+  },
+  [`& .${classes.heroOrnament}`]: {
+    fontSize: '1000px',
+    left: '50%',
+    opacity: 0.1,
+    pointerEvents: 'none',
+    position: 'absolute',
+    top: '50%',
+    transform: 'translate(-50%, -50%)',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '1500px',
+      top: '50%',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: '2000px',
+      top: '25%',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '2500px',
+      top: '-0%',
+    },
+    [theme.breakpoints.up('xl')]: {
+      top: '-25%',
+      fontSize: '3000px',
+    },
+  },
 }));
 
 const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
 const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Channel));
 
 const HomePage = props => {
-  const { user, groups } = props;
+  const { user, groups, organisation } = props;
   const [allMedia, setAllMedia] = useState([]);
   const [allChannels, setAllChannels] = useState([]);
 
@@ -80,6 +139,15 @@ const HomePage = props => {
         <title>Hyperaudio</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <Box className={classes.hero}>
+        <Container maxWidth="xl">
+          <Typography variant="h1" className={classes.herotitle}>
+            {organisation.name}
+          </Typography>
+        </Container>
+        <HyperaudioIcon className={classes.heroOrnament} />
+      </Box>
 
       <Main maxWidth="xl">
         {displayChannels.map(channel => {
