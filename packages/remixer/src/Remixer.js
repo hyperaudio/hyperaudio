@@ -123,7 +123,7 @@ const Remixer = props => {
     source: props.sources[0],
   });
 
-  console.log('REMIX', remix);
+  // console.log('REMIX', remix);
 
   useEffect(() => {
     dispatch({
@@ -165,27 +165,27 @@ const Remixer = props => {
 
   console.group('index.js');
   // console.log('sources', sources);
-  console.log('source', source);
+  // console.log('source', source);
   console.groupEnd();
 
   const onBeforeCapture = useCallback(e => {
-    console.log({ onBeforeCapture: e });
+    // console.log({ onBeforeCapture: e });
   }, []);
 
   const onBeforeDragStart = useCallback(e => {
-    console.log({ onBeforeDragStart: e });
+    // console.log({ onBeforeDragStart: e });
   }, []);
 
   const onDragStart = useCallback(e => {
-    console.log({ onDragStart: e });
+    // console.log({ onDragStart: e });
   }, []);
 
   const onDragUpdate = useCallback(e => {
-    console.log({ onDragUpdate: e });
+    // console.log({ onDragUpdate: e });
   }, []);
 
   const onDragEnd = useCallback(event => {
-    console.log({ onDragEnd: event });
+    // console.log({ onDragEnd: event });
     event.destination && dispatch({ type: 'dragEnd', event });
   }, []);
 

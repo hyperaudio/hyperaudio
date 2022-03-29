@@ -121,7 +121,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 
     if (currentInterval !== interval && currentIntervalIndex > 0) {
       const prevInterval = intervals[currentIntervalIndex - 1];
-      console.log('previous', prevInterval);
+      // console.log('previous', prevInterval);
 
       // FIXME this is based on intervals having one block
       // if (prevInterval[2].block.type === 'title') {
@@ -165,9 +165,9 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
     reference.current.currentTime = value;
   };
 
-  useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
-  useEffect(() => console.log({ active }), [active]);
-  useEffect(() => console.log({ intervals }), [intervals]);
+  // useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
+  // useEffect(() => console.log({ active }), [active]);
+  // useEffect(() => console.log({ intervals }), [intervals]);
 
   useEffect(() => {
     if (buffering && referencePlaying) {
@@ -382,12 +382,12 @@ const Player = ({
   // );
 
   const onBuffer = useCallback(() => {
-    console.log('onBuffer', id);
+    // console.log('onBuffer', id);
     setBuffering(true);
   }, [id, setBuffering]);
 
   const onBufferEnd = useCallback(() => {
-    console.log('onBufferEnd', id);
+    // console.log('onBufferEnd', id);
     setBuffering(false);
   }, [id, setBuffering]);
 
