@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useReducer } from 'react';
+import React, { useMemo, useCallback, useReducer, useState } from 'react';
 import { Editor as DraftEditor, EditorState, CompositeDecorator } from 'draft-js';
 import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
@@ -98,13 +98,21 @@ const Editor = ({
   seekTo,
   showDialog,
   aligner = wordAligner,
-  speakers = {},
+  speakers: initialSpeakers = {},
   ...rest
 }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [speakerAnchor, setSpeakerAnchor] = React.useState(null);
-  const [speaker, setSpeaker] = React.useState(null);
-  const [speakerQuery, setSpeakerQuery] = React.useState('');
+  const [speakers, setSpeakers] = useState(
+    Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
+      return { ...acc, [id]: { ...speaker, id } };
+    }, {}),
+  );
+  console.log({ speakers });
+
+  const [currentBlock, setCurrentBlock] = useState(null);
+  const [speakerAnchor, setSpeakerAnchor] = useState(null);
+  const [speaker, setSpeaker] = useState(null);
+  const [speakerQuery, setSpeakerQuery] = useState('');
 
   const onChange = useCallback(
     editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch }),
@@ -143,10 +151,12 @@ const Editor = ({
           const selectionState = editorState.getSelection();
           const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
           const data = block.getData().toJS();
-          setSpeaker({ id: data.speaker, name: speakers[data.speaker].name });
+          setCurrentBlock(block);
+          setSpeaker({ id: data.speaker, name: speakers?.[data.speaker]?.name });
           setSpeakerAnchor(e.target);
         }
       } else {
+        setCurrentBlock(null);
         const selectionState = editorState.getSelection();
         const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
         // console.log(block.toJS());
@@ -162,28 +172,60 @@ const Editor = ({
     [seekTo, editorState],
   );
 
-  const handleSpeakerSet = useCallback((e, newValue) => {
-    e.stopPropagation();
-    setSpeakerAnchor(null);
-    if (typeof newValue === 'string') {
-      // A: Create new by type-in and Enter press
-      setSpeaker({ name: newValue });
-      console.log('TODO: handleSpeakerSet, NEW-a:', newValue);
-    } else if (newValue && newValue.inputValue) {
-      // B: Create new by type-in and click on the `Add xyz` option
-      setSpeaker({ name: newValue.inputValue });
-      console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue);
-    } else {
-      // C: Choose an already existing speaker
-      setSpeaker(newValue);
-      console.log('TODO: handleSpeakerSet, EXISTING:', newValue);
-    }
-  }, []);
+  const handleSpeakerSet = useCallback(
+    (e, newValue) => {
+      e.stopPropagation();
+      setSpeakerAnchor(null);
+      if (typeof newValue === 'string') {
+        // A: Create new by type-in and Enter press
+        const id = `S${Date.now()}`;
+        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
+        setSpeaker({ name: newValue, id });
+        console.log('TODO: handleSpeakerSet, NEW-a:', newValue, id);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      } else if (newValue && newValue.inputValue) {
+        // B: Create new by type-in and click on the `Add xyz` option
+        const id = `S${Date.now()}`;
+        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
+        setSpeaker({ name: newValue.inputValue, id });
+        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue, id);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      } else {
+        // C: Choose an already existing speaker
+        setSpeaker(newValue);
+        console.log('TODO: handleSpeakerSet, EXISTING:', newValue);
+        dispatch({
+          type: 'change-speaker',
+          currentBlock,
+          speaker: newValue.id,
+          editorState,
+          aligner,
+          dispatch,
+        });
+      }
+    },
+    [speakers, currentBlock, editorState, aligner],
+  );
 
   const handleClickAway = useCallback(
     e => {
       // eslint-disable-next-line no-extra-boolean-cast
       if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
+      setCurrentBlock(null);
     },
     [speakerAnchor],
   );
@@ -306,7 +348,7 @@ const Editor = ({
 const BlockStyle = ({ block, speakers, time }) => {
   const theme = useTheme();
 
-  const speaker = useMemo(() => speakers[block.getData().get('speaker')]?.name ?? 'n/a', [block, speakers]);
+  const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? 'n/a', [block, speakers]);
   const start = useMemo(() => block.getData().get('start'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 

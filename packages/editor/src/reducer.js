@@ -183,7 +183,7 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   }
 };
 
-const reducer = (editorState, { type, editorState: changedEditorState, aligner, dispatch }) => {
+const reducer = (editorState, { type, editorState: changedEditorState, currentBlock, speaker, aligner, dispatch }) => {
   const contentState = editorState.getCurrentContent();
   const changedContentState = changedEditorState.getCurrentContent();
 
@@ -204,6 +204,26 @@ const reducer = (editorState, { type, editorState: changedEditorState, aligner, 
       return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'split-block':
       return split ? processBlockSplit(editorState, changedEditorState, aligner) : changedEditorState;
+    case 'change-speaker': {
+      const blockKey = currentBlock.getKey();
+      const data = currentBlock.getData().toJS();
+
+      const contentStateWithBlockData = Modifier.setBlockData(
+        changedContentState,
+        SelectionState.createEmpty(blockKey),
+        Map({
+          ...data,
+          speaker,
+        }),
+      );
+
+      const editorStateWithBlockData = EditorState.forceSelection(
+        EditorState.push(changedEditorState, contentStateWithBlockData, 'change-block-data'),
+        changedEditorState.getSelection(),
+      );
+
+      return editorStateWithBlockData;
+    }
     case 'change-block-data':
       return changedEditorState;
     default:
