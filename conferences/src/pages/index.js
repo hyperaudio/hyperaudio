@@ -1,24 +1,18 @@
-import React, { useState, useCallback, useEffect, useReducer, useMemo } from 'react';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
+import React, { useState, useCallback, useEffect, useReducer, useMemo } from 'react';
 import TextTruncate from 'react-text-truncate';
 import _ from 'lodash';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { useRouter } from 'next/router';
 
 import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardMedia from '@mui/material/CardMedia';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { HyperaudioIcon } from '@hyperaudio/common';
 
+import CardGrid from '../components/organisms/CardGrid';
 import { Main } from '../components';
 import { Media, Channel } from '../models';
 
@@ -31,18 +25,19 @@ const classes = {
   thumbTitle: `${PREFIX}-thumbTitle`,
 };
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled(Box)(({ theme }) => ({
   [`& .${classes.thumbTitle} span`]: {
     lineHeight: '1.44em !important',
   },
   [`& .${classes.hero}`]: {
     background: theme.palette.primary.main,
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.primary.dark} -50%, ${theme.palette.secondary.dark} 150%)`,
+    backgroundImage: `linear-gradient(to bottom, ${theme.palette.secondary.dark} -50%, ${theme.palette.primary.dark} 150%)`,
     color: theme.palette.primary.contrastText,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
     minHeight: '33vh',
+    overflow: 'hidden',
     paddingTop: theme.spacing(12),
     position: 'relative',
   },
@@ -139,7 +134,6 @@ const HomePage = props => {
         <title>Hyperaudio</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <Box className={classes.hero}>
         <Container maxWidth="xl">
           <Typography variant="h1" className={classes.herotitle}>
@@ -148,63 +142,14 @@ const HomePage = props => {
         </Container>
         <HyperaudioIcon className={classes.heroOrnament} />
       </Box>
-
-      <Main maxWidth="xl">
-        {displayChannels.map(channel => {
-          return (
-            <div key={channel.id}>
-              <Container maxWidth={false} key={channel.id}>
-                <Grid container key={`g-${channel.id}`} spacing={{ xs: 4, md: 8 }}>
-                  <Grid item xs={12} md={4} xl={4}>
-                    <Typography variant="h5" component="h1" gutterBottom>
-                      {channel.name}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {channel.description}
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={12} md={8} xl={8}>
-                    <Grid container spacing={4}>
-                      {channel.media.map(o => (
-                        <MediaCard media={o} key={o.id} user={user} />
-                      ))}
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Container>
-              <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
-            </div>
-          );
-        })}
-      </Main>
+      <Container maxWidth="xl" disableGutters>
+        {displayChannels.map(channel => (
+          <Container maxWidth={false} key={channel.id} sx={{ my: { xs: '1px', lg: 20 } }}>
+            <CardGrid title={channel.name} text={channel.description} items={channel.media} />
+          </Container>
+        ))}
+      </Container>
     </Root>
-  );
-};
-
-const MediaCard = ({ media, user }) => {
-  const router = useRouter();
-  const openMedia = useCallback(() => user && router.push(`/media/${media.id}`), [router, media]);
-
-  return (
-    <Grid item xs={6} sm={4}>
-      <Card sx={{ mb: 1 }}>
-        <CardActionArea onClick={openMedia}>
-          <CardMedia component="img" height="100%" image={media.poster} />
-        </CardActionArea>
-      </Card>
-      <Tooltip title={media.title}>
-        <Link
-          color="primary"
-          className={classes.thumbTitle}
-          sx={{ cursor: 'pointer', display: 'block' }}
-          underline="hover"
-          variant="body2"
-          onClick={openMedia}
-        >
-          <TextTruncate line={2} element="span" truncateText="…" text={media.title} />
-        </Link>
-      </Tooltip>
-    </Grid>
   );
 };
 

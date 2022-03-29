@@ -96,7 +96,7 @@ const inputGlobalStyles = (
       }
       @font-face {
         font-family: 'Quicksand';
-        src: url('/fonts/inter/Quicksand_Bold.woff') format('woff');
+        src: url('/fonts/quicksand/Quicksand_Bold.woff') format('woff');
         font-style: normal;
         font-weight: 700;
         font-display: optional;
