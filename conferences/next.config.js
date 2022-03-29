@@ -19,6 +19,9 @@ const moduleExports = {
     disableServerWebpackPlugin: true,
     disableClientWebpackPlugin: true,
   },
+  experimental: {
+    emotion: true,
+  },
 };
 
 const sentryWebpackPluginOptions = {

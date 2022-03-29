@@ -68,7 +68,7 @@ const inputGlobalStyles = (
       }
       @font-face {
         font-family: 'Inter';
-        src: url('/fonts/inter/Inter-Regular.woff2') format('woff2');
+        src: url('/fonts/inter/Inter-Regular.woff2') format('woff');
         font-style: normal;
         font-weight: 400;
         font-display: optional;
@@ -82,14 +82,21 @@ const inputGlobalStyles = (
       }
       @font-face {
         font-family: 'Inter';
-        src: url('/fonts/inter/Inter-Bold.woff2') format('woff2');
+        src: url('/fonts/inter/Inter-SemiBold.woff2') format('woff');
         font-style: normal;
         font-weight: 600;
         font-display: optional;
       }
       @font-face {
         font-family: 'Inter';
-        src: url('/fonts/inter/Inter-Black.woff2') format('woff2');
+        src: url('/fonts/inter/Inter-Bold.woff2') format('woff');
+        font-style: normal;
+        font-weight: 700;
+        font-display: optional;
+      }
+      @font-face {
+        font-family: 'Quicksand';
+        src: url('/fonts/inter/Quicksand_Bold.woff') format('woff');
         font-style: normal;
         font-weight: 700;
         font-display: optional;
@@ -97,6 +104,7 @@ const inputGlobalStyles = (
 `}
   />
 );
+
 const getUser = async (setUser, identityId) => {
   DataStore.configure({
     syncExpressions: [
@@ -145,10 +153,10 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
+      <CssBaseline />
       <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
         <PlausibleProvider domain={domain}>
           <Root className={classes.root}>
-            <CssBaseline />
             {inputGlobalStyles}
             <Topbar {...pageProps} user={user} groups={groups} />
             <Component {...pageProps} user={user} groups={groups} />
