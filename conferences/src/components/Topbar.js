@@ -164,7 +164,7 @@ const Topbar = props => {
                       color="inherit"
                       id="openOrgMenuButton"
                       onClick={e => setOrgMenuAnchor(e.currentTarget)}
-                      sx={{ ml: 1.5 }}
+                      sx={{ ml: { xs: 1, md: 1.5 } }}
                     >
                       <ArrowDropDownIcon fontSize="small" />
                     </IconButton>
@@ -226,7 +226,7 @@ const Topbar = props => {
                       color="inherit"
                       id="openAddMenuButton"
                       onClick={e => setAddMenuAnchor(e.currentTarget)}
-                      sx={{ marginRight: 1.5 }}
+                      sx={{ mr: { xs: 1, md: 1.5 } }}
                     >
                       <AddIcon fontSize="small" />
                     </IconButton>
