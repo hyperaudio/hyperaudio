@@ -107,7 +107,6 @@ const Editor = ({
       return { ...acc, [id]: { ...speaker, id } };
     }, {}),
   );
-  console.log({ speakers });
 
   const [currentBlock, setCurrentBlock] = useState(null);
   const [speakerAnchor, setSpeakerAnchor] = useState(null);
@@ -174,12 +173,13 @@ const Editor = ({
 
   const handleSpeakerSet = useCallback(
     (e, newValue) => {
+      e.preventDefault();
       e.stopPropagation();
       setSpeakerAnchor(null);
       if (typeof newValue === 'string') {
         // A: Create new by type-in and Enter press
         const id = `S${Date.now()}`;
-        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
+        setSpeakers({ ...speakers, [id]: { name: newValue, id } });
         setSpeaker({ name: newValue, id });
         console.log('TODO: handleSpeakerSet, NEW-a:', newValue, id);
         dispatch({
