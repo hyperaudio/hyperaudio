@@ -329,7 +329,7 @@ const Topbar = props => {
                     </MenuItem>
                   </Menu>
                 </>
-              ) : (
+              ) : false ? (
                 <Fab aria-label="Authenticate" className={classes.fab} component={Link} href="/auth" variant="extended">
                   <Avatar className={classes.avatar}>
                     <PersonIcon fontSize="small" />
@@ -337,7 +337,7 @@ const Topbar = props => {
                   <Box {...buttonLabelProps}>Sign in</Box>
                   <LoginIcon fontSize="small" sx={{ mx: 0.5 }} />
                 </Fab>
-              )}
+              ) : null}
             </Grid>
           </Grid>
         </Toolbar>
