@@ -82,13 +82,13 @@ export const getTypography = mode => {
     },
     subtitle1: {
       ...getSizes('subtitle1', mode),
-      fontWeight: 500,
-      lineHeight: '1.44em',
+      fontWeight: 600,
+      lineHeight: '1.33em',
     },
     subtitle2: {
       ...getSizes('subtitle2', mode),
-      fontWeight: 500,
-      lineHeight: '1.44em',
+      fontWeight: 600,
+      lineHeight: '1.33em',
     },
     body1: {
       ...getSizes('body1', mode),
