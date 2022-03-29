@@ -1,9 +1,11 @@
 import { EditorState, SelectionState, Modifier } from 'draft-js';
 import { Map } from 'immutable';
 
-const blockAligners = {};
+const blockAligners = { current: {} };
 
 const processBlockJoin = (editorState, changedEditorState, aligner) => {
+  const contentState = editorState.getCurrentContent();
+  const changedContentState = changedEditorState.getCurrentContent();
   const blockKey = changedEditorState.getSelection().getStartKey();
 
   const blockA = changedEditorState.getCurrentContent().getBlockForKey(blockKey);
@@ -51,6 +53,7 @@ const processBlockJoin = (editorState, changedEditorState, aligner) => {
 };
 
 const processBlockSplit = (editorState, changedEditorState, aligner) => {
+  const changedContentState = changedEditorState.getCurrentContent();
   const blockKey = changedEditorState.getSelection().getStartKey();
 
   const blockA = changedEditorState.getCurrentContent().getBlockBefore(blockKey);
@@ -121,8 +124,11 @@ const processBlockSplit = (editorState, changedEditorState, aligner) => {
   );
 };
 
-const deferAlignment = (changedEditorState, aligner, dispatch) => {
+const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   if (!aligner) return;
+
+  const contentState = editorState.getCurrentContent();
+  const changedContentState = changedEditorState.getCurrentContent();
 
   const blockKey = changedEditorState.getSelection().getStartKey();
   const block = changedEditorState.getCurrentContent().getBlockForKey(blockKey);
@@ -184,22 +190,24 @@ const reducer = (editorState, { type, editorState: changedEditorState, aligner, 
   const join = changedContentState.getBlockMap().size < contentState.getBlockMap().size;
   const split = changedContentState.getBlockMap().size > contentState.getBlockMap().size;
 
+  // console.log({ type, join, split });
+
   switch (type) {
     case 'insert-characters':
-      deferAlignment(changedEditorState, aligner, dispatch);
+      deferAlignment(editorState, changedEditorState, aligner, dispatch);
       return changedEditorState;
     case 'remove-range':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'backspace-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'delete-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : editorState;
+      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
     case 'split-block':
-      return split ? processBlockSplit(editorState, changedEditorState, aligner) : editorState;
+      return split ? processBlockSplit(editorState, changedEditorState, aligner) : changedEditorState;
     case 'change-block-data':
-      return editorState;
+      return changedEditorState;
     default:
-      deferAlignment(changedEditorState, aligner, dispatch);
+      deferAlignment(editorState, changedEditorState, aligner, dispatch);
       return changedEditorState;
   }
 };
