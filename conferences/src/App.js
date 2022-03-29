@@ -7,7 +7,7 @@ import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 
-import { lightTheme } from '@hyperaudio/common';
+import { getTheme } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
 import Topbar from './components/Topbar';
@@ -66,28 +66,28 @@ const inputGlobalStyles = (
         min-height: 100%;
       }
       @font-face {
-        font-family: 'Manrope';
+        font-family: 'Inter';
         src: url('/fonts/inter/Inter-Regular.woff2') format('woff2');
         font-style: normal;
         font-weight: 400;
         font-display: optional;
       }
       @font-face {
-        font-family: 'Manrope';
+        font-family: 'Inter';
         src: url('/fonts/inter/Inter-Medium.woff2') format('woff2');
         font-style: normal;
         font-weight: 500;
         font-display: optional;
       }
       @font-face {
-        font-family: 'Manrope';
+        font-family: 'Inter';
         src: url('/fonts/inter/Inter-Bold.woff2') format('woff2');
         font-style: normal;
         font-weight: 600;
         font-display: optional;
       }
       @font-face {
-        font-family: 'Manrope';
+        font-family: 'Inter';
         src: url('/fonts/inter/Inter-Black.woff2') format('woff2');
         font-style: normal;
         font-weight: 700;
@@ -141,7 +141,7 @@ const App = props => {
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={lightTheme}>
+      <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
         <Root className={classes.root}>
           <CssBaseline />
           {inputGlobalStyles}
