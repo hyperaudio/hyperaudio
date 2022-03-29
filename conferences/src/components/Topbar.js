@@ -269,6 +269,11 @@ const Topbar = props => {
                       />
                     </MenuItem>
                   </Menu>
+                </>
+              ) : null}
+
+              {user ? (
+                <>
                   <Fab
                     aria-expanded={openAccountMenu ? 'true' : undefined}
                     aria-haspopup="true"
