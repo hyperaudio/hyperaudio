@@ -1,4 +1,13 @@
-type Transcript @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, update, delete, create]}, {allow: public, provider: apiKey, operations: [read]}]) {
+type Transcript
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: owner }
+      { allow: groups, groups: ["Editors"], operations: [read, update, delete, create] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
   id: ID!
   url: AWSURL!
   title: String!
@@ -10,7 +19,16 @@ type Transcript @model @auth(rules: [{allow: private, operations: [read]}, {allo
   media: ID! @index(name: "byMedia")
 }
 
-type Media @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, update, delete, create]}, {allow: public, provider: apiKey, operations: [read]}]) {
+type Media
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: owner }
+      { allow: groups, groups: ["Editors"], operations: [read, update, delete, create] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
   id: ID!
   playbackId: String
   url: AWSURL!
@@ -27,7 +45,16 @@ type Media @model @auth(rules: [{allow: private, operations: [read]}, {allow: ow
   metadata: AWSJSON
 }
 
-type User @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}, {allow: groups, groups: ["Organisers"], operations: [read, create, update, delete]}, {allow: public, provider: apiKey, operations: [read]}]) {
+type User
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: owner }
+      { allow: groups, groups: ["Organisers"], operations: [read, create, update, delete] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
   id: ID!
   identityId: String!
   name: String!
@@ -35,7 +62,16 @@ type User @model @auth(rules: [{allow: private, operations: [read]}, {allow: own
   metadata: AWSJSON
 }
 
-type Channel @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, update, delete, create]}, {allow: public, provider: apiKey, operations: [read]}]) {
+type Channel
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: owner }
+      { allow: groups, groups: ["Editors"], operations: [read, update, delete, create] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
   id: ID!
   name: String!
   description: String
@@ -43,7 +79,16 @@ type Channel @model @auth(rules: [{allow: private, operations: [read]}, {allow: 
   metadata: AWSJSON
 }
 
-type Remix @model @auth(rules: [{allow: private, operations: [read]}, {allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, update, delete, create]}, {allow: public, provider: apiKey, operations: [read]}]) {
+type Remix
+  @model
+  @auth(
+    rules: [
+      { allow: private, operations: [read] }
+      { allow: owner }
+      { allow: groups, groups: ["Editors"], operations: [read, update, delete, create] }
+      { allow: public, provider: apiKey, operations: [read] }
+    ]
+  ) {
   id: ID!
   url: AWSURL!
   title: String!
@@ -54,4 +99,3 @@ type Remix @model @auth(rules: [{allow: private, operations: [read]}, {allow: ow
   media: [Media] @manyToMany(relationName: "RemixMedia")
   metadata: AWSJSON
 }
- 
