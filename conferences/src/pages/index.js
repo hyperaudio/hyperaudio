@@ -35,6 +35,7 @@ const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
 const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Channel));
 
 const HomePage = props => {
+  const { user, groups } = props;
   const [allMedia, setAllMedia] = useState([]);
   const [allChannels, setAllChannels] = useState([]);
 
@@ -73,8 +74,6 @@ const HomePage = props => {
   // console.log({ allChannels, displayChannels });
   // console.groupEnd();
 
-  const user = true;
-
   return (
     <Root className={classes.root}>
       <Head>
@@ -83,41 +82,40 @@ const HomePage = props => {
       </Head>
 
       <Main maxWidth="xl">
-        {user &&
-          displayChannels.map(channel => {
-            return (
-              <div key={channel.id}>
-                <Container maxWidth={false} key={channel.id}>
-                  <Grid container key={`g-${channel.id}`} spacing={{ xs: 4, md: 8 }}>
-                    <Grid item xs={12} md={4} xl={4}>
-                      <Typography variant="h5" component="h1" gutterBottom>
-                        {channel.name}
-                      </Typography>
-                      <Typography variant="body2" component="p">
-                        {channel.description}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={8} xl={8}>
-                      <Grid container spacing={4}>
-                        {channel.media.map(o => (
-                          <MediaCard media={o} key={o.id} />
-                        ))}
-                      </Grid>
+        {displayChannels.map(channel => {
+          return (
+            <div key={channel.id}>
+              <Container maxWidth={false} key={channel.id}>
+                <Grid container key={`g-${channel.id}`} spacing={{ xs: 4, md: 8 }}>
+                  <Grid item xs={12} md={4} xl={4}>
+                    <Typography variant="h5" component="h1" gutterBottom>
+                      {channel.name}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                      {channel.description}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12} md={8} xl={8}>
+                    <Grid container spacing={4}>
+                      {channel.media.map(o => (
+                        <MediaCard media={o} key={o.id} user={user} />
+                      ))}
                     </Grid>
                   </Grid>
-                </Container>
-                <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
-              </div>
-            );
-          })}
+                </Grid>
+              </Container>
+              <Divider key={`d-${channel.channelId}`} light sx={{ mt: 8, mb: 8 }} variant="fullWidth" />,
+            </div>
+          );
+        })}
       </Main>
     </Root>
   );
 };
 
-const MediaCard = ({ media }) => {
+const MediaCard = ({ media, user }) => {
   const router = useRouter();
-  const openMedia = useCallback(() => router.push(`/media/${media.id}`), [router, media]);
+  const openMedia = useCallback(() => user && router.push(`/media/${media.id}`), [router, media]);
 
   return (
     <Grid item xs={6} sm={4}>

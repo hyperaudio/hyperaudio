@@ -223,7 +223,7 @@ export const Transcript = props => {
         setContextData({});
       }
     } else {
-      console.log({ type: 'sourceOpen', source });
+      // console.log({ type: 'sourceOpen', source });
       onSourceChange(source.id);
       dispatch({ type: 'sourceOpen', source });
     }
@@ -666,7 +666,7 @@ const Playhead = ({ block, offset, time, autoScroll }) => {
 
   useEffect(() => {
     if (!autoScroll) return;
-    playhead.current.scrollIntoView && playhead.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    playhead.current.scrollIntoView && playhead.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [autoScroll, playhead, start, end]);
 
   return (

@@ -56,3 +56,6 @@ amplifytools.xcconfig
 
 src/pages/media-test
 build-surge
+
+# Sentry
+.sentryclirc

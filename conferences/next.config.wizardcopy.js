@@ -1,8 +1,3 @@
-// module.exports = {
-//   reactStrictMode: true,
-//   productionBrowserSourceMaps: true,
-// };
-
 // This file sets a custom webpack configuration to use your Next.js app
 // with Sentry.
 // https://nextjs.org/docs/api-reference/next.config.js/introduction
@@ -12,13 +7,6 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 const moduleExports = {
   // Your existing module.exports
-  reactStrictMode: true,
-  productionBrowserSourceMaps: true,
-  // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#disable-sentrywebpackplugin
-  sentry: {
-    disableServerWebpackPlugin: true,
-    disableClientWebpackPlugin: true,
-  },
 };
 
 const sentryWebpackPluginOptions = {

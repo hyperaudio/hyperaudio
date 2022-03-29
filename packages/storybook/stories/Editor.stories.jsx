@@ -158,6 +158,8 @@ const Template = (args) => {
             </Grid>
           </Grid>
         </div>
+        <button>Save</button>
+        <button>Publish</button>
       </div>
       <Editor
         {...{ initialState, time, seekTo, speakers, ...args }}
