@@ -37,12 +37,9 @@ const processBlockJoin = (editorState, changedEditorState, aligner) => {
       speaker: dataA.get('speaker'),
       start: dataA.get('start'),
       end: dataB.get('end'),
+      minStart: dataA.get('minStart') ?? dataA.get('start'),
+      maxEnd: dataB.get('maxEnd') ?? dataB.get('end'),
       items: alignedItems ?? items,
-      cue: {
-        color: dataA.get('cue')?.color ?? 'white',
-        start: dataA.get('cue')?.start ?? dataA.get('start'),
-        end: dataB.get('cue')?.end ?? dataB.get('end'),
-      },
     }),
   );
 
@@ -92,12 +89,9 @@ const processBlockSplit = (editorState, changedEditorState, aligner) => {
       speaker: dataA.get('speaker'),
       start: dataA.get('start'),
       end: (alignedItemsA ?? itemsA)[itemsA.length - 1].end,
+      minStart: dataA.get('minStart') ?? dataA.get('start'),
+      maxEnd: (alignedItemsA ?? itemsA)[itemsA.length - 1].end,
       items: alignedItemsA ?? itemsA,
-      cue: {
-        color: dataA.get('cue')?.color ?? 'white',
-        start: dataA.get('cue')?.start ?? dataA.get('start'),
-        end: (alignedItemsA ?? itemsA)[itemsA.length - 1].end,
-      },
     }),
   );
 
@@ -134,13 +128,58 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   const block = changedEditorState.getCurrentContent().getBlockForKey(blockKey);
   const text = block.getText();
 
-  const { items, start, end } = block.getData().toJS();
+  const data = block.getData().toJS();
+
+  let { items, start, end } = data;
+  const { minStart = start, maxEnd = end } = data;
+
+  start = Math.min(start, minStart);
+  end = Math.max(end, maxEnd);
+
+  // TODO skip wide interval if items count = tokens count
+  // if (items.length !== text.trim().split(' ').length) {
+  //   const itemsText = items.map(({ text }) => text).join(' ');
+  //   const offset = text.trim().indexOf(itemsText);
+
+  //   console.log('OFFSET', offset, [text, itemsText]);
+
+  //   if (offset > 0) {
+  //     console.log('minStart', offset, text, itemsText);
+  //     start = Math.min(start, minStart);
+  //   }
+
+  //   if (offset === 0 && text.trim().length - itemsText.length > 0) {
+  //     console.log('maxEnd', text.trim().length - itemsText.length, text, itemsText);
+  //     end = Math.max(end, maxEnd);
+  //   }
+  // }
+
+  // TBD use index of item.text.join in text, +/- fuzzy margins to detect which margin changed?
+
+  // const tokens = text.split(' ');
+  // TODO check if item0 is part of 1st token -> if so do not use minStart
+  // if (text.substring(items[0].offset, items[0].offset + items[0].length) !== items[0].text) {
+  //   console.log('useMinStart', text.substring(items[0].offset, items[0].offset + items[0].length), items[0].text);
+  //   start = Math.min(start, minStart);
+  // }
+
+  // TODO check if last item is part of last token -> if so do not use maxEnd
+  // if (
+  //   text.trim().substring(text.trim().length - items[items.length - 1].text.length) !== items[items.length - 1].text
+  // ) {
+  //   console.log(
+  //     'useMaxEnd',
+  //     text.trim().substring(text.trim().length - items[items.length - 1].text.length),
+  //     items[items.length - 1].text,
+  //   );
+  //   end = Math.max(end, maxEnd);
+  // }
 
   if (
     contentState.getBlockForKey(blockKey) &&
     contentState.getBlockForKey(blockKey).getText() !== text &&
     items &&
-    items.length > 2 &&
+    items.length > 2 && // TBD use 1?
     text.split(' ').length > 2
   ) {
     blockAligners.current[blockKey] &&
@@ -150,12 +189,17 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
     blockAligners.current[blockKey] = window.requestIdleCallback(
       () =>
         aligner(items, text, start, end, alignedItems => {
+          const textStart = alignedItems?.[0]?.start ?? start;
+          const textEnd = alignedItems?.[alignedItems.length - 1]?.end ?? end;
+
           const data = {
             block: block.getData().get('block'), // TBD: do we need this?
             speaker: block.getData().get('speaker'),
             items: alignedItems,
-            start: alignedItems?.[0]?.start ?? start,
-            end: alignedItems?.[alignedItems.length - 1]?.end ?? end,
+            start: textStart,
+            end: textEnd,
+            minStart: Math.min(textStart, start, minStart),
+            maxEnd: Math.max(textEnd, end, maxEnd),
             prealign: { items, start, end },
           };
 
