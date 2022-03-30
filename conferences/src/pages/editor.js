@@ -62,7 +62,7 @@ const EditorPage = ({ user, groups }) => {
   useEffect(() => {
     if (user === null)
       router.push(`/auth?redirect=${encodeURIComponent(`/editor?media=${mediaId}&transcript=${transcriptId}`)}`);
-  }, [user]);
+  }, [user, mediaId, transcriptId]);
 
   const [time, setTime] = useState(0);
   const [media, setMedia] = useState();
