@@ -121,7 +121,7 @@ const getUser = async (setUser, identityId) => {
   // });
 
   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
-  setUser(Array.isArray(user) ? user[0] : user);
+  setUser(Array.isArray(user) ? user[0] : user ?? null);
 };
 
 const App = props => {
@@ -140,10 +140,11 @@ const App = props => {
               idToken: { payload },
             },
           } = await Auth.currentAuthenticatedUser();
-          // setUser(user);
           getUser(setUser, identityId);
-          setGroups(payload['cognito:groups']);
-        } catch (ignored) {}
+          setGroups(payload?.['cognito:groups'] ?? []);
+        } catch (ignored) {
+          setUser(null);
+        }
       })(),
     [],
   );
@@ -158,7 +159,7 @@ const App = props => {
   useEffect(() => setDomain(window.location.hostname), []);
 
   const organisation = {
-    name: 'Mozilla Festival 2022',
+    name: 'MozFest 2022',
   };
 
   return (

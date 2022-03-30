@@ -2,10 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Amplify, { Auth, DataStore, syncExpression } from 'aws-amplify';
 
-import { Authenticator } from '@aws-amplify/ui-react';
+import { AmplifyProvider, Authenticator, createTheme } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
 
 import { User } from '../../models';
+
+// https://ui.docs.amplify.aws/theming
+const theme = createTheme({
+  name: 'hyperaudio-theme',
+  overrides: [
+    {
+      colorMode: 'dark',
+      tokens: {
+        colors: {
+          font: {
+            primary: { value: 'red' },
+          },
+        },
+      },
+    },
+  ],
+});
 
 const getUser = async (setUser, identityId) => {
   // DataStore.configure({
@@ -72,14 +89,18 @@ const Redirect = ({ user }) => {
 
 const AuthPage = () => {
   return (
-    <Authenticator>
-      {({ signOut, user }) => (
-        <div>
-          {user.username}
-          <Redirect user={user} />
-        </div>
-      )}
-    </Authenticator>
+    <AmplifyProvider theme={theme}>
+      <div style={{ marginTop: 50 }}>
+        <Authenticator>
+          {({ signOut, user }) => (
+            <div>
+              {user.username}
+              <Redirect user={user} />
+            </div>
+          )}
+        </Authenticator>
+      </div>
+    </AmplifyProvider>
   );
 };
 

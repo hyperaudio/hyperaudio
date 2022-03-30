@@ -1,6 +1,5 @@
 import Head from 'next/head';
 import React, { useState, useCallback, useEffect, useReducer, useMemo } from 'react';
-import TextTruncate from 'react-text-truncate';
 import _ from 'lodash';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { useRouter } from 'next/router';
@@ -13,25 +12,20 @@ import { styled } from '@mui/material/styles';
 import { HyperaudioIcon } from '@hyperaudio/common';
 
 import CardGrid from '../components/organisms/CardGrid';
-import { Main } from '../components';
 import { Media, Channel } from '../models';
 
 const PREFIX = `HomePage`;
 const classes = {
   hero: `${PREFIX}-hero`,
   heroOrnament: `${PREFIX}-heroOrnament`,
-  herotitle: `${PREFIX}-herotitle`,
+  heroTitle: `${PREFIX}-heroTitle`,
   root: `${PREFIX}-Root`,
-  thumbTitle: `${PREFIX}-thumbTitle`,
 };
 
 const Root = styled(Box)(({ theme }) => ({
-  [`& .${classes.thumbTitle} span`]: {
-    lineHeight: '1.44em !important',
-  },
   [`& .${classes.hero}`]: {
     background: theme.palette.primary.main,
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.secondary.dark} -50%, ${theme.palette.primary.dark} 150%)`,
+    backgroundImage: `linear-gradient(to bottom right, ${theme.palette.secondary.light} -50%, ${theme.palette.primary.dark} 150%)`,
     color: theme.palette.primary.contrastText,
     display: 'flex',
     flexDirection: 'column',
@@ -41,11 +35,11 @@ const Root = styled(Box)(({ theme }) => ({
     paddingTop: theme.spacing(12),
     position: 'relative',
   },
-  [`& .${classes.herotitle}`]: {
+  [`& .${classes.heroTitle}`]: {
     fontSize: '110px',
+    fontWeight: '300',
     lineHeight: '0.85em',
     position: 'relative',
-    fontWeight: '300',
     top: '0.088em',
     [theme.breakpoints.up('sm')]: {
       fontSize: '160px',
@@ -136,19 +130,21 @@ const HomePage = props => {
       </Head>
       <Box className={classes.hero}>
         <Container maxWidth="xl">
-          <Typography variant="h1" className={classes.herotitle}>
+          <Typography variant="h1" className={classes.heroTitle}>
             {organisation.name}
           </Typography>
         </Container>
         <HyperaudioIcon className={classes.heroOrnament} />
       </Box>
-      <Container maxWidth="xl" disableGutters>
-        {displayChannels.map(channel => (
-          <Container maxWidth={false} key={channel.id} sx={{ my: { xs: '1px', lg: 20 } }}>
-            <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
-          </Container>
-        ))}
-      </Container>
+      {displayChannels.map(channel => (
+        <Container
+          key={channel.id}
+          maxWidth="xl"
+          sx={{ mt: { xs: '1px' }, mb: { xs: 3, sm: 3 }, my: { md: 4, lg: 12, xl: 16 } }}
+        >
+          <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
+        </Container>
+      ))}
     </Root>
   );
 };

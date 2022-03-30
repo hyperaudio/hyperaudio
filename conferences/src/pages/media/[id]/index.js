@@ -50,7 +50,6 @@ const MediaPage = () => {
   console.log({ id, media, transcripts, remixes, data });
 
   useEffect(() => {
-    window.DataStore = DataStore;
     getMedia(setMedia, id);
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));

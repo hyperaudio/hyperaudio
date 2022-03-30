@@ -87,7 +87,7 @@ const Root = styled(AppBar, {
 const Topbar = props => {
   const router = useRouter();
   // const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
-  const { user, groups } = props;
+  const { user, groups, organisation } = props;
 
   const logoutToHomePage = useCallback(async () => {
     await Auth.signOut({ global: true });
@@ -109,11 +109,11 @@ const Topbar = props => {
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openAccountMenu = Boolean(accountMenuAnchor);
 
-  const organization = {
-    // TODO: Load real time org data
-    name: 'Mozilla Festival 2022',
-    slug: '/',
-  };
+  // const organization = {
+  //   // TODO: Load real time org data
+  //   name: 'Mozilla Festival 2022',
+  //   slug: '/',
+  // };
 
   const title = ''; // TODO: Grab page title
 
@@ -151,7 +151,7 @@ const Topbar = props => {
                 size="small"
                 variant="extended"
               >
-                <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organization.name}</Box>
+                <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organisation.name}</Box>
               </Fab>
               {user && groups?.includes('Organisers') && (
                 <>
