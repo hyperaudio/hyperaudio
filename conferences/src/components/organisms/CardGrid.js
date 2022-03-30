@@ -133,7 +133,7 @@ const CardGrid = props => {
               key={item.id}
               sx={{ borderRadius: 2, opacity: disableLinks ? 0.8 : 1, '&:hover': { opacity: 1 } }}
             >
-              <Box sx={{ flex: '0 0 auto', p: { xs: 2, lg: 0 } }}>
+              <Box sx={{ flex: '0 0 auto', p: { xs: 1, sm: 2, lg: 0 } }}>
                 <CardActionArea
                   className={classes.actionArea}
                   component={Link}
@@ -167,9 +167,10 @@ const CardGrid = props => {
                   flex: '0 0 100%',
                   maxHeight: '260px',
                   overflow: 'auto',
-                  pb: { xs: 2, lg: 0 },
-                  pt: { xs: 0, lg: 4 },
+                  pb: { xs: 1, lg: 0 },
+                  pt: { xs: 1, sm: 0, lg: 4 },
                   px: { xs: 2, lg: 4 },
+                  '&:last-child': { pb: { xs: 2, lg: 4 } },
                 }}
               >
                 {disableLinks ? (
@@ -189,7 +190,11 @@ const CardGrid = props => {
                 <Typography
                   color="textSecondary"
                   component="div"
-                  sx={{ overflow: 'auto', display: { xs: 'none', sm: 'block' } }}
+                  sx={{
+                    '& > *:last-child': { marginBottom: 0 },
+                    display: { xs: 'none', sm: 'block' },
+                    overflow: 'auto',
+                  }}
                   variant="body2"
                 >
                   <ReactMarkdown>{item.description}</ReactMarkdown>
