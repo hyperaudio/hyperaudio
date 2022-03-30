@@ -150,17 +150,21 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
     blockAligners.current[blockKey] = window.requestIdleCallback(
       () =>
         aligner(items, text, start, end, alignedItems => {
+          const data = {
+            block: block.getData().get('block'), // TBD: do we need this?
+            speaker: block.getData().get('speaker'),
+            items: alignedItems,
+            start: alignedItems?.[0]?.start ?? start,
+            end: alignedItems?.[alignedItems.length - 1]?.end ?? end,
+            prealign: { items, start, end },
+          };
+
+          console.log('aligner', data);
+
           const contentStateWithBlockData = Modifier.setBlockData(
             changedContentState,
             SelectionState.createEmpty(blockKey),
-            Map({
-              block: block.getData().get('block'),
-              speaker: block.getData().get('speaker'),
-              items: alignedItems,
-              start,
-              end,
-              // prealign: { items, start, end },
-            }), // have prealign data as debug
+            Map(data),
           );
 
           const editorStateWithBlockData = EditorState.forceSelection(
@@ -190,20 +194,48 @@ const reducer = (editorState, { type, editorState: changedEditorState, currentBl
   const join = changedContentState.getBlockMap().size < contentState.getBlockMap().size;
   const split = changedContentState.getBlockMap().size > contentState.getBlockMap().size;
 
-  // console.log({ type, join, split });
+  console.log({ type, join, split });
 
   switch (type) {
     case 'insert-characters':
       deferAlignment(editorState, changedEditorState, aligner, dispatch);
       return changedEditorState;
     case 'remove-range':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
+      if (join) {
+        const changedEditorState2 = processBlockJoin(editorState, changedEditorState, aligner);
+        deferAlignment(editorState, changedEditorState2, aligner, dispatch);
+        return changedEditorState2;
+      } else {
+        deferAlignment(editorState, changedEditorState, aligner, dispatch);
+        return changedEditorState;
+      }
     case 'backspace-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
+      if (join) {
+        const changedEditorState2 = processBlockJoin(editorState, changedEditorState, aligner);
+        deferAlignment(editorState, changedEditorState2, aligner, dispatch);
+        return changedEditorState2;
+      } else {
+        deferAlignment(editorState, changedEditorState, aligner, dispatch);
+        return changedEditorState;
+      }
     case 'delete-character':
-      return join ? processBlockJoin(editorState, changedEditorState, aligner) : changedEditorState;
+      if (join) {
+        const changedEditorState2 = processBlockJoin(editorState, changedEditorState, aligner);
+        deferAlignment(editorState, changedEditorState2, aligner, dispatch);
+        return changedEditorState2;
+      } else {
+        deferAlignment(editorState, changedEditorState, aligner, dispatch);
+        return changedEditorState;
+      }
     case 'split-block':
-      return split ? processBlockSplit(editorState, changedEditorState, aligner) : changedEditorState;
+      if (split) {
+        const changedEditorState2 = processBlockSplit(editorState, changedEditorState, aligner);
+        deferAlignment(editorState, changedEditorState2, aligner, dispatch);
+        return changedEditorState2;
+      } else {
+        deferAlignment(editorState, changedEditorState, aligner, dispatch);
+        return changedEditorState;
+      }
     case 'change-speaker': {
       const blockKey = currentBlock.getKey();
       const data = currentBlock.getData().toJS();
