@@ -1,12 +1,14 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { DataStore, Predicates, SortDirection, Storage } from 'aws-amplify';
+import { nanoid } from 'nanoid';
 
 import { styled } from '@mui/material/styles';
 
 import { Editor } from '@hyperaudio/editor';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
+import { isArray } from 'lodash';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -39,8 +41,8 @@ const EditorPage = ({ user, groups }) => {
   const router = useRouter();
   const {
     query: {
-      media: mediaId = '3c703162-6597-4c14-8d61-7aa9ec46a8f7',
-      transcript: transcriptId = '9a4d56c4-f6f3-4472-8283-5655cd3ebf26',
+      media: mediaId = '335471dd-681e-4ab1-8e23-21595938024c',
+      transcript: transcriptId = '052da9b5-02a3-4c52-b272-684e659d3f9e',
     },
   } = router;
 
@@ -51,6 +53,8 @@ const EditorPage = ({ user, groups }) => {
 
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
+  const [data, setData] = useState();
+  const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
 
   useEffect(() => {
     getMedia(setMedia, mediaId);
@@ -68,9 +72,33 @@ const EditorPage = ({ user, groups }) => {
     return () => subscription.unsubscribe();
   }, [mediaId]);
 
-  const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
+  useEffect(() => {
+    if (!transcript) return;
 
-  console.log({ mediaId, transcriptId, media, transcripts, transcript });
+    (async () => {
+      let { speakers, blocks } = await (await fetch(transcript.url)).json();
+
+      // fix simple list of speakers (array -> map)
+      if (isArray(speakers)) {
+        speakers = speakers.reduce((acc, speaker) => {
+          const id = `S${nanoid(5)}`;
+          return { ...acc, [id]: { name: speaker, id } };
+        }, {});
+
+        blocks = blocks.map(block => ({
+          ...block,
+          data: {
+            ...block.data,
+            speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+          },
+        }));
+      }
+
+      setData({ speakers, blocks });
+    })();
+  }, [transcript]);
+
+  console.log({ mediaId, transcriptId, media, transcripts, transcript, data });
 
   const handleSave = useCallback(async () => {
     const result = await Storage.put('test.txt', 'Test Content', {

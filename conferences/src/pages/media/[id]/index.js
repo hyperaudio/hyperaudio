@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { nanoid } from 'nanoid';
 
 import { styled } from '@mui/material/styles';
 
@@ -49,7 +50,6 @@ const MediaPage = () => {
   console.log({ id, media, transcripts, remixes, data });
 
   useEffect(() => {
-    window.DataStore = DataStore;
     getMedia(setMedia, id);
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
@@ -77,24 +77,60 @@ const MediaPage = () => {
     if (!media) return;
     (async () => {
       const sources = await Promise.all(
-        transcripts.map(async transcript => ({
-          ...transcript,
-          media: [
-            {
-              id: media.playbackId,
-              url: media.url,
-              poster: media.poster,
+        transcripts.map(async transcript => {
+          let blocks = await (await fetch(transcript.url)).json();
+          if (blocks.blocks) {
+            blocks = blocks.blocks
+              .map(({ text, data: { start, end, speaker, items } }) => {
+                return {
+                  text,
+                  type: 'block',
+                  key: nanoid(5),
+                  media: media.playbackId,
+                  speaker,
+                  start: items[0].start * 1e3,
+                  end: items[items.length - 1].end * 1e3,
+                  starts: items.map(({ start }) => start * 1e3),
+                  duration: (items[items.length - 1].end - items[0].start) * 1e3,
+                  ends: items.map(({ end }) => end * 1e3),
+                  durations: items.map(({ start, end }) => (end - start) * 1e3),
+                  starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
+                  ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
+                  offsets: items.map(({ text }, i, arr) => {
+                    if (i === 0) return 0;
+                    return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
+                  }),
+                  lengths: items.map(({ text }) => text.length),
+                  gap: 0,
+                };
+              })
+              .reduce((acc, block, i) => {
+                if (i === 0) return [block];
+                const p = acc.pop();
+                p.gap = block.start - p.end;
+                return [...acc, p, block];
+              }, []);
+          }
+
+          return {
+            ...transcript,
+            media: [
+              {
+                id: media.playbackId,
+                url: media.url,
+                poster: media.poster,
+              },
+            ],
+            channel: media.channel,
+            tags: media.tags ?? [],
+            transcript: {
+              title: transcript.title,
+              translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
             },
-          ],
-          channel: media.channel,
-          tags: media.tags ?? [],
-          transcript: {
-            title: transcript.title,
-            translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
-          },
-          remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
-          blocks: await (await fetch(transcript.url)).json(),
-        })),
+            remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
+            blocks,
+          };
+        }),
       );
       // setData({
       //   sources:
