@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import _ from 'lodash';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -107,7 +107,10 @@ export const MediaTopbar = ({ source, ...props }) => {
     console.log('onAddTranslation:', e);
   };
   const onCaption = () => console.log('onCaption');
-  const onEdit = () => console.log('onEdit');
+  const onEdit = useCallback(
+    () => global.router.push(`/editor?media=${source.media[0].mediaId}&transcript=${source.id}`),
+    [],
+  );
   const onInfoClose = () => setIsInfoOpen(false);
   const onInfoOpen = () => setIsInfoOpen(true);
   const onRemix = () => console.log('onRemix');
