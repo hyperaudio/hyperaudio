@@ -68,7 +68,7 @@ export const getTypography = mode => {
     h4: {
       ...getSizes('h4', mode),
       fontWeight: '600',
-      lineHeight: '1.44em',
+      lineHeight: '1.33em',
     },
     h5: {
       ...getSizes('h5', mode),
