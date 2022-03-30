@@ -133,11 +133,28 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   let { items, start, end } = data;
   const { minStart = start, maxEnd = end } = data;
 
-  // start = Math.min(start, minStart);
-  // end = Math.max(end, maxEnd);
+  start = Math.min(start, minStart);
+  end = Math.max(end, maxEnd);
 
-  // TODO use 2nd item?
   // TODO skip wide interval if items count = tokens count
+  // if (items.length !== text.trim().split(' ').length) {
+  //   const itemsText = items.map(({ text }) => text).join(' ');
+  //   const offset = text.trim().indexOf(itemsText);
+
+  //   console.log('OFFSET', offset, [text, itemsText]);
+
+  //   if (offset > 0) {
+  //     console.log('minStart', offset, text, itemsText);
+  //     start = Math.min(start, minStart);
+  //   }
+
+  //   if (offset === 0 && text.trim().length - itemsText.length > 0) {
+  //     console.log('maxEnd', text.trim().length - itemsText.length, text, itemsText);
+  //     end = Math.max(end, maxEnd);
+  //   }
+  // }
+
+  // TBD use index of item.text.join in text, +/- fuzzy margins to detect which margin changed?
 
   // const tokens = text.split(' ');
   // TODO check if item0 is part of 1st token -> if so do not use minStart
@@ -181,8 +198,8 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
             items: alignedItems,
             start: textStart,
             end: textEnd,
-            minStart: Math.min(textStart, start),
-            maxEnd: Math.max(textEnd, end),
+            minStart: Math.min(textStart, start, minStart),
+            maxEnd: Math.max(textEnd, end, maxEnd),
             prealign: { items, start, end },
           };
 

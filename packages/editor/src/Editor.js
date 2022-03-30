@@ -405,8 +405,9 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
     .join(':');
 
 const wordAligner = (words, text, start, end, callback) => {
-  const aligned =
-    words.length > 5 ? alignSTT({ words }, text, start, end) : alignSTTwithPadding({ words }, text, start, end);
+  const aligned = alignSTTwithPadding({ words }, text, start, end);
+  // const aligned =
+  //   words.length > 5 ? alignSTT({ words }, text, start, end) : alignSTTwithPadding({ words }, text, start, end);
   // console.log({ text, words, aligned });
 
   const items = aligned.map(({ start, end, text }, i, arr) => ({
