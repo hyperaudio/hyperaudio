@@ -9,9 +9,9 @@ const Logout = () => {
     (async () => {
       await Auth.signOut({ global: true });
       setTimeout(() => {
-        // router.push('/');
-        window.location.href = '/';
-      }, 1000);
+        router.push('/');
+        // window.location.href = '/';
+      }, 0);
     })();
   });
 

@@ -73,9 +73,9 @@ const Redirect = ({ user }) => {
 
         setTimeout(() => {
           console.log('redirect', redirect);
-          // router.push(redirect);
-          window.location.href = redirect;
-        }, 50);
+          router.push(redirect);
+          // window.location.href = redirect;
+        }, 0);
       }, identityId);
     })();
   }, [redirect, router, user]);
@@ -91,14 +91,7 @@ const AuthPage = () => {
   return (
     <AmplifyProvider theme={theme}>
       <div style={{ marginTop: 50 }}>
-        <Authenticator>
-          {({ signOut, user }) => (
-            <div>
-              {user.username}
-              <Redirect user={user} />
-            </div>
-          )}
-        </Authenticator>
+        <Authenticator>{({ signOut, user }) => <Redirect user={user} />}</Authenticator>
       </div>
     </AmplifyProvider>
   );

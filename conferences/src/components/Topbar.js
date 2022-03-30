@@ -91,7 +91,8 @@ const Topbar = props => {
 
   const logoutToHomePage = useCallback(async () => {
     await Auth.signOut({ global: true });
-    window.location.href = '/';
+    // window.location.href = '/';
+    router.push('/');
   }, []);
 
   // const meh = useMemo(() => user, [user]);
