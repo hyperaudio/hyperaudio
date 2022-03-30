@@ -198,8 +198,13 @@ const EditorPage = ({ user, groups }) => {
       <Toolbar>
         <Grid container>
           <Grid item sx={{ mr: 1 }}>
-            <Button color="primary" startIcon={<SaveIcon fontSize="small" />} onClick={() => console.log('🪄')}>
-              Save changes
+            <Button
+              color="primary"
+              startIcon={<SaveIcon fontSize="small" />}
+              onClick={() => console.log('🪄')}
+              disabled={true}
+            >
+              Save draft
             </Button>
           </Grid>
           <Grid item xs>
@@ -207,7 +212,12 @@ const EditorPage = ({ user, groups }) => {
           </Grid>
           <Grid item sx={{ ml: 1 }}>
             <Stack direction="row" spacing={1}>
-              <Button color="primary" endIcon={<PublishIcon fontSize="small" />} onClick={() => console.log('🪄')}>
+              <Button
+                color="primary"
+                endIcon={<PublishIcon fontSize="small" />}
+                onClick={() => console.log('🪄')}
+                disabled={true}
+              >
                 Publish
               </Button>
             </Stack>
