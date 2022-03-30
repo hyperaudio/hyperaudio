@@ -40,6 +40,7 @@ const processBlockJoin = (editorState, changedEditorState, aligner) => {
       minStart: dataA.get('minStart') ?? dataA.get('start'),
       maxEnd: dataB.get('maxEnd') ?? dataB.get('end'),
       items: alignedItems ?? items,
+      // stt: [...dataA.get('stt'), ...dataB.get('stt')], // TODO
     }),
   );
 
@@ -92,6 +93,7 @@ const processBlockSplit = (editorState, changedEditorState, aligner) => {
       minStart: dataA.get('minStart') ?? dataA.get('start'),
       maxEnd: (alignedItemsA ?? itemsA)[itemsA.length - 1].end,
       items: alignedItemsA ?? itemsA,
+      // stt: // TODO
     }),
   );
 
@@ -131,10 +133,30 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   const data = block.getData().toJS();
 
   let { items, start, end } = data;
-  const { minStart = start, maxEnd = end } = data;
+  const { minStart = start, maxEnd = end, stt = items } = data;
 
-  // start = Math.min(start, minStart);
-  // end = Math.max(end, maxEnd);
+  start = Math.min(start, minStart);
+  end = Math.max(end, maxEnd);
+
+  // TODO skip wide interval if items count = tokens count
+  // if (items.length !== text.trim().split(' ').length) {
+  //   const itemsText = items.map(({ text }) => text).join(' ');
+  //   const offset = text.trim().indexOf(itemsText);
+
+  //   console.log('OFFSET', offset, [text, itemsText]);
+
+  //   if (offset > 0) {
+  //     console.log('minStart', offset, text, itemsText);
+  //     start = Math.min(start, minStart);
+  //   }
+
+  //   if (offset === 0 && text.trim().length - itemsText.length > 0) {
+  //     console.log('maxEnd', text.trim().length - itemsText.length, text, itemsText);
+  //     end = Math.max(end, maxEnd);
+  //   }
+  // }
+
+  // TBD use index of item.text.join in text, +/- fuzzy margins to detect which margin changed?
 
   // const tokens = text.split(' ');
   // TODO check if item0 is part of 1st token -> if so do not use minStart
@@ -173,13 +195,14 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
           const textEnd = alignedItems?.[alignedItems.length - 1]?.end ?? end;
 
           const data = {
-            block: block.getData().get('block'), // TBD: do we need this?
+            // block: block.getData().get('block'), // TBD: do we need this?
             speaker: block.getData().get('speaker'),
             items: alignedItems,
+            stt,
             start: textStart,
             end: textEnd,
-            minStart: Math.min(textStart, start),
-            maxEnd: Math.max(textEnd, end),
+            minStart: Math.min(textStart, start, minStart),
+            maxEnd: Math.max(textEnd, end, maxEnd),
             prealign: { items, start, end },
           };
 

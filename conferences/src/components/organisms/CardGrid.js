@@ -52,6 +52,11 @@ const Root = styled(Box)(({ theme }) => ({
     flexDirection: 'column',
     justifyContent: 'center',
     overflow: 'auto',
+    '&::-webkit-scrollbar': {
+      display: 'none',
+    },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
     [theme.breakpoints.up('md')]: {
       bottom: 0,
       justifyContent: 'flex-start',
@@ -116,7 +121,7 @@ const CardGrid = props => {
         <Grid item xs={12} md={4} lg={4} xl={3}>
           <Paper className={classes.coverCard} sx={{ mx: { xs: -2, sm: -3, md: 0 } }}>
             <Box className={classes.coverContent} sx={{ py: { xs: 4, md: 4, lg: 6 }, px: { xs: 2, sm: 3, md: 4 } }}>
-              <Typography component="h2" display="block" gutterBottom variant="h1" sx={{ overflowWrap: 'break-word' }}>
+              <Typography component="h2" display="block" gutterBottom variant="h4" sx={{ overflowWrap: 'break-word' }}>
                 {title}
               </Typography>
               <Typography variant="body1" color="inherit" display="block" component="div">
@@ -167,6 +172,11 @@ const CardGrid = props => {
                   flex: '0 0 100%',
                   maxHeight: '260px',
                   overflow: 'auto',
+                  '&::-webkit-scrollbar': {
+                    display: 'none',
+                  },
+                  '-ms-overflow-style': 'none',
+                  'scrollbar-width': 'none',
                   pb: { xs: 1, lg: 0 },
                   pt: { xs: 1, sm: 0, lg: 4 },
                   px: { xs: 2, lg: 4 },
