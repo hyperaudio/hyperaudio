@@ -41,11 +41,11 @@ Analytics.autoTrack('pageView', {
   },
 });
 
-Hub.listen('auth', async data => {
-  if (data.payload.event === 'signOut') {
-    // await DataStore.clear();
-  }
-});
+// Hub.listen('auth', async data => {
+//   if (data.payload.event === 'signOut') {
+//     // await DataStore.clear();
+//   }
+// });
 
 DataStore.configure({
   fullSyncInterval: 60, // minutes
@@ -148,6 +148,31 @@ const App = props => {
     const subscription = DataStore.observe(User).subscribe(() => getUser(setUser, user.identityId));
     return () => subscription.unsubscribe();
   }, [user]);
+
+  useEffect(() => {
+    Hub.listen('auth', async data => {
+      console.log({ data });
+      if (data.payload.event === 'signOut') {
+        // await DataStore.clear();
+        setUser(null);
+      }
+
+      if (data.payload.event === 'signIn') {
+        try {
+          const {
+            attributes: { sub: identityId },
+            signInUserSession: {
+              idToken: { payload },
+            },
+          } = data.payload.data;
+          getUser(setUser, identityId);
+          setGroups(payload?.['cognito:groups'] ?? []);
+        } catch (ignored) {
+          setUser(null);
+        }
+      }
+    });
+  }, []);
 
   useEffect(() => setDomain(window.location.hostname), []);
 

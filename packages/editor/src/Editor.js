@@ -338,7 +338,7 @@ const Editor = ({
                     renderOption={(props, option) => (
                       <li {...props}>
                         <Typography variant="body2" noWrap>
-                          {option.name}
+                          {option?.name}
                         </Typography>
                       </li>
                     )}
@@ -377,7 +377,7 @@ const Editor = ({
 const BlockStyle = ({ block, speakers, time }) => {
   const theme = useTheme();
 
-  const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? 'n/a', [block, speakers]);
+  const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? '', [block, speakers]);
   const start = useMemo(() => block.getData().get('start'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 
