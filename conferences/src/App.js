@@ -159,7 +159,7 @@ const App = props => {
   useEffect(() => setDomain(window.location.hostname), []);
 
   const organisation = {
-    name: 'Mozilla Festival 2022',
+    name: 'MozFest 2022',
   };
 
   return (
