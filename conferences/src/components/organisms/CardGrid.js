@@ -25,7 +25,7 @@ const classes = {
 };
 const Root = styled(Box)(({ theme }) => ({
   [`& .${classes.coverCard}`]: {
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.secondary.dark} -200%, ${theme.palette.primary.dark} 150%)`,
+    backgroundImage: `linear-gradient(to bottom left, ${theme.palette.secondary.main} -250%, ${theme.palette.primary.dark} 100%)`,
     borderRadius: 0,
     color: theme.palette.primary.contrastText,
     display: 'flex',
@@ -35,9 +35,9 @@ const Root = styled(Box)(({ theme }) => ({
     minHeight: '25vh',
     overflow: 'hidden',
     position: 'relative',
+    boxShadow: theme.shadows[12],
     [theme.breakpoints.up('md')]: {
       borderRadius: theme.shape.borderRadius * 2,
-      boxShadow: theme.shadows[12],
       minHeight: 'auto',
     },
     [theme.breakpoints.up('lg')]: {
@@ -100,7 +100,7 @@ const CardGrid = props => {
       <Grid container spacing={{ xs: 2, sm: 3, md: 4, lg: 6 }}>
         <Grid item xs={12} md={4} lg={4} xl={3}>
           <Paper className={classes.coverCard} sx={{ mx: { xs: -2, sm: -3, md: 0 } }}>
-            <Box className={classes.coverContent} sx={{ pt: { xs: 4, md: 4, lg: 6 }, px: { xs: 2, sm: 3, md: 4 } }}>
+            <Box className={classes.coverContent} sx={{ py: { xs: 4, md: 4, lg: 6 }, px: { xs: 2, sm: 3, md: 4 } }}>
               <Typography component="h2" display="block" gutterBottom variant="h1" sx={{ overflowWrap: 'break-word' }}>
                 {title}
               </Typography>

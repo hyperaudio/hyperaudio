@@ -25,7 +25,7 @@ const classes = {
 const Root = styled(Box)(({ theme }) => ({
   [`& .${classes.hero}`]: {
     background: theme.palette.primary.main,
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.secondary.dark} -50%, ${theme.palette.primary.dark} 150%)`,
+    backgroundImage: `linear-gradient(to bottom right, ${theme.palette.secondary.light} -50%, ${theme.palette.primary.dark} 150%)`,
     color: theme.palette.primary.contrastText,
     display: 'flex',
     flexDirection: 'column',
