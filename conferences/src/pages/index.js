@@ -36,13 +36,13 @@ const Root = styled(Box)(({ theme }) => ({
     position: 'relative',
   },
   [`& .${classes.heroTitle}`]: {
-    fontSize: '110px',
+    fontSize: '80px',
     fontWeight: '300',
     lineHeight: '0.85em',
     position: 'relative',
     top: '0.088em',
     [theme.breakpoints.up('sm')]: {
-      fontSize: '160px',
+      fontSize: '130px',
     },
     [theme.breakpoints.up('md')]: {
       fontSize: '210px',
