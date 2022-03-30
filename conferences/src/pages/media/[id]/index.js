@@ -82,6 +82,7 @@ const MediaPage = () => {
         transcripts.map(async transcript => {
           let blocks = await (await fetch(transcript.url)).json();
           if (blocks.blocks) {
+            const speakers = blocks.speakers;
             blocks = blocks.blocks
               .map(({ text, data: { start, end, speaker, items } }) => {
                 return {
@@ -89,7 +90,7 @@ const MediaPage = () => {
                   type: 'block',
                   key: nanoid(5),
                   media: media.playbackId,
-                  speaker,
+                  speaker: speakers?.[speaker]?.name ?? speaker,
                   start: items[0].start * 1e3,
                   end: items[items.length - 1].end * 1e3,
                   starts: items.map(({ start }) => start * 1e3),
