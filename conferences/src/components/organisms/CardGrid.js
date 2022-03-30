@@ -26,7 +26,7 @@ const classes = {
 };
 const Root = styled(Box)(({ theme }) => ({
   [`& .${classes.coverCard}`]: {
-    backgroundImage: `linear-gradient(to bottom left, ${theme.palette.secondary.main} -250%, ${theme.palette.primary.dark} 100%)`,
+    backgroundImage: `linear-gradient(to bottom left, ${theme.palette.secondary.dark} -150%, ${theme.palette.primary.dark} 150%)`,
     borderRadius: 0,
     color: theme.palette.primary.contrastText,
     display: 'flex',
