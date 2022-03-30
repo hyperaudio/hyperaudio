@@ -93,22 +93,27 @@ const EditorPage = ({ user, groups }) => {
           return { ...acc, [id]: { name: speaker, id } };
         }, {});
 
-        blocks = blocks.map(block => ({
-          ...block,
-          key: `B${nanoid(5)}`,
-          data: {
-            ...block.data,
-            start: block.data.items?.[0]?.start ?? 0,
-            end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-            speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-            items: block.data.items.map((item, i, arr) => {
-              const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-              return { ...item, offset, length: item.text.length };
-            }),
-          },
-          entityRanges: [],
-          inlineStyleRanges: [],
-        }));
+        blocks = blocks.map(block => {
+          const items = block.data.items.map((item, i, arr) => {
+            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+            return { ...item, offset, length: item.text.length };
+          });
+
+          return {
+            ...block,
+            key: `B${nanoid(5)}`,
+            data: {
+              ...block.data,
+              start: block.data.items?.[0]?.start ?? 0,
+              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+              items,
+              stt: items,
+            },
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+        });
       }
 
       setData({ speakers, blocks });

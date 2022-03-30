@@ -40,6 +40,7 @@ const processBlockJoin = (editorState, changedEditorState, aligner) => {
       minStart: dataA.get('minStart') ?? dataA.get('start'),
       maxEnd: dataB.get('maxEnd') ?? dataB.get('end'),
       items: alignedItems ?? items,
+      // stt: [...dataA.get('stt'), ...dataB.get('stt')], // TODO
     }),
   );
 
@@ -92,6 +93,7 @@ const processBlockSplit = (editorState, changedEditorState, aligner) => {
       minStart: dataA.get('minStart') ?? dataA.get('start'),
       maxEnd: (alignedItemsA ?? itemsA)[itemsA.length - 1].end,
       items: alignedItemsA ?? itemsA,
+      // stt: // TODO
     }),
   );
 
@@ -131,7 +133,7 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   const data = block.getData().toJS();
 
   let { items, start, end } = data;
-  const { minStart = start, maxEnd = end } = data;
+  const { minStart = start, maxEnd = end, stt = items } = data;
 
   start = Math.min(start, minStart);
   end = Math.max(end, maxEnd);
@@ -193,9 +195,10 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
           const textEnd = alignedItems?.[alignedItems.length - 1]?.end ?? end;
 
           const data = {
-            block: block.getData().get('block'), // TBD: do we need this?
+            // block: block.getData().get('block'), // TBD: do we need this?
             speaker: block.getData().get('speaker'),
             items: alignedItems,
+            stt,
             start: textStart,
             end: textEnd,
             minStart: Math.min(textStart, start, minStart),
