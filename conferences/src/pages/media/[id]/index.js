@@ -41,6 +41,8 @@ const getRemixes = async (setRemixes, id) =>
 
 const MediaPage = () => {
   const router = useRouter();
+  global.router = router;
+
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
@@ -119,6 +121,7 @@ const MediaPage = () => {
                 id: media.playbackId,
                 url: media.url,
                 poster: media.poster,
+                mediaId: media.id,
               },
             ],
             channel: media.channel,

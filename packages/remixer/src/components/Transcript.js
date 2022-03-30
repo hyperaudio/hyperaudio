@@ -666,7 +666,8 @@ const Playhead = ({ block, offset, time, autoScroll }) => {
 
   useEffect(() => {
     if (!autoScroll) return;
-    playhead.current.scrollIntoView && playhead.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    playhead.current.scrollIntoView &&
+      playhead.current.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [autoScroll, playhead, start, end]);
 
   return (
