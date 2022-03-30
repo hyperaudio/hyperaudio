@@ -151,7 +151,8 @@ const Topbar = props => {
                 size="small"
                 variant="extended"
               >
-                <Avatar className={classes.avatar}>MF</Avatar> <Box {...buttonLabelProps}>{organisation.name}</Box>
+                <Avatar className={classes.avatar} src="/images/mozfest-avatar.png" />
+                <Box {...buttonLabelProps}>{organisation.name}</Box>
               </Fab>
               {user && groups?.includes('Organisers') && (
                 <>
