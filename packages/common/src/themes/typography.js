@@ -13,12 +13,11 @@ const sizes = {
   subtitle2: { xs: '1.1rem', md: '1.3rem', xl: '1.5rem' },
   body1: { xs: '1.2rem', md: '1.3rem', xl: '1.4rem' },
   body2: { xs: '1.0rem', md: '1.1rem', xl: '1.2rem' },
-  button: { xs: '0.96rem', md: '1.0rem', xl: '1.04rem' },
+  button: { xs: '0.88rem', md: '0.90rem', xl: '0.92rem' },
   overline: { xs: '0.8rem', md: '0.8rem', xl: '0.9rem' },
   caption: { xs: '0.8rem', md: '0.85rem', xl: '0.9rem' },
 };
 
-const title = 'Quicksand, Helvetica, Arial, sans-serif';
 const body = 'Inter, Helvetica, Arial, sans-serif';
 
 const getSizes = (variant, mode, responsive = false) => {
@@ -102,13 +101,12 @@ export const getTypography = mode => {
     },
     button: {
       ...getSizes('button', mode),
-      fontFamily: title,
-      letterSpacing: '0.033em',
-      fontWeight: '700',
+      // fontFamily: title,
+      letterSpacing: '0.044em',
+      fontWeight: '600',
     },
     overline: {
       ...getSizes('overline', mode),
-      fontFamily: title,
       fontWeight: '700',
       letterSpacing: '0.033em',
       lineHeight: '1.44em',
