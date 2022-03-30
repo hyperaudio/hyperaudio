@@ -21,6 +21,7 @@ const classes = {
   coverCard: `${PREFIX}-coverCard`,
   coverContent: `${PREFIX}-coverContent`,
   coverOrnament: `${PREFIX}-coverOrnament`,
+  cardBadge: `${PREFIX}-cardBadge`,
   root: `${PREFIX}-root`,
 };
 const Root = styled(Box)(({ theme }) => ({
@@ -90,6 +91,20 @@ const Root = styled(Box)(({ theme }) => ({
       opacity: 0,
     },
   },
+  [`& .${classes.cardBadge}`]: {
+    backgroundImage: `linear-gradient(to bottom left, ${theme.palette.secondary.main} -250%, ${theme.palette.primary.dark} 100%)`,
+    borderTopRightRadius: theme.shape.borderRadius,
+    bottom: 0,
+    color: theme.palette.primary.contrastText,
+    left: 0,
+    lineHeight: 1,
+    padding: theme.spacing(1),
+    position: 'absolute',
+    zIndex: 1,
+    [theme.breakpoints.down('lg')]: {
+      borderBottomLeftRadius: theme.shape.borderRadius,
+    },
+  },
 }));
 
 const CardGrid = props => {
@@ -113,12 +128,17 @@ const CardGrid = props => {
         </Grid>
         {items.map(item => (
           <Grid item key={item.id} xs={6} md={4} lg={4} xl={3}>
-            <Card className={classes.card} key={item.id} sx={{ borderRadius: 2 }}>
+            <Card
+              className={classes.card}
+              key={item.id}
+              sx={{ borderRadius: 2, opacity: disableLinks ? 0.8 : 1, '&:hover': { opacity: 1 } }}
+            >
               <Box sx={{ flex: '0 0 auto', p: { xs: 2, lg: 0 } }}>
                 <CardActionArea
-                  component={Link}
-                  href={disableLinks ? '/' : `/media/${item.id}`}
                   className={classes.actionArea}
+                  component={Link}
+                  disabled={disableLinks}
+                  href={disableLinks ? '/' : `/media/${item.id}`}
                   scroll={!disableLinks}
                 >
                   <CardMedia
@@ -135,6 +155,11 @@ const CardGrid = props => {
                       justifyContent: 'center',
                     }}
                   />
+                  {disableLinks && (
+                    <Typography variant="overline" className={classes.cardBadge}>
+                      Coming soon
+                    </Typography>
+                  )}
                 </CardActionArea>
               </Box>
               <CardContent
@@ -147,14 +172,20 @@ const CardGrid = props => {
                   px: { xs: 2, lg: 4 },
                 }}
               >
-                <Link
-                  href={disableLinks ? '/' : `/media/${item.id}`}
-                  variant="subtitle2"
-                  sx={{ overflowWrap: 'break-word' }}
-                  scroll={!disableLinks}
-                >
-                  {item.title}
-                </Link>
+                {disableLinks ? (
+                  <Typography variant="subtitle2" sx={{ overflowWrap: 'break-word' }}>
+                    {item.title}
+                  </Typography>
+                ) : (
+                  <Link
+                    href={`/media/${item.id}`}
+                    variant="subtitle2"
+                    sx={{ overflowWrap: 'break-word' }}
+                    scroll={!disableLinks}
+                  >
+                    {item.title}
+                  </Link>
+                )}
                 <Typography
                   color="textSecondary"
                   component="div"
