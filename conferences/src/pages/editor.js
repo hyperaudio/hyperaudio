@@ -48,10 +48,7 @@ const getTranscripts = async (setTranscripts, id) =>
 const EditorPage = ({ user, groups }) => {
   const router = useRouter();
   const {
-    query: {
-      media: mediaId = '335471dd-681e-4ab1-8e23-21595938024c',
-      transcript: transcriptId = '052da9b5-02a3-4c52-b272-684e659d3f9e',
-    },
+    query: { media: mediaId, transcript: transcriptId },
   } = router;
 
   useEffect(() => {
@@ -66,19 +63,21 @@ const EditorPage = ({ user, groups }) => {
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
 
   useEffect(() => {
+    if (!mediaId) return;
     getMedia(setMedia, mediaId);
 
-    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, mediaId));
-    window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, mediaId));
-    return () => subscription.unsubscribe();
+    // const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, mediaId));
+    // window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, mediaId));
+    // return () => subscription.unsubscribe();
   }, [mediaId]);
 
   useEffect(() => {
+    if (!mediaId) return;
     getTranscripts(setTranscripts, mediaId);
 
-    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, mediaId));
-    window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, mediaId));
-    return () => subscription.unsubscribe();
+    // const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, mediaId));
+    // window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, mediaId));
+    // return () => subscription.unsubscribe();
   }, [mediaId]);
 
   useEffect(() => {

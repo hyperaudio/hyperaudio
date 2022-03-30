@@ -226,7 +226,7 @@ const HomePage: NextPage<PageProps> = (props: PageProps) => {
                                 borderBottom: '3px solid',
                                 borderColor: acc.color,
                               }}
-                              variant="subtitle2"
+                              variant="subtitle1"
                             >
                               {acc.title}
                             </Typography>

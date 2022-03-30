@@ -9,8 +9,8 @@ const sizes = {
   h4: { xs: '1.8rem', md: '2.3rem', xl: '2.3rem' },
   h5: { xs: '1.6rem', md: '1.7rem', xl: '1.8rem' },
   h6: { xs: '1.4rem', md: '1.5rem', xl: '1.6rem' },
-  subtitle1: { xs: '1.5rem', md: '1.6rem', xl: '1.7rem' },
-  subtitle2: { xs: '1.3rem', md: '1.4rem', xl: '1.5rem' },
+  subtitle1: { xs: '1.2rem', md: '1.4rem', xl: '1.6rem' },
+  subtitle2: { xs: '1.1rem', md: '1.3rem', xl: '1.5rem' },
   body1: { xs: '1.2rem', md: '1.3rem', xl: '1.4rem' },
   body2: { xs: '1.0rem', md: '1.1rem', xl: '1.2rem' },
   button: { xs: '0.96rem', md: '1.0rem', xl: '1.04rem' },
@@ -21,11 +21,11 @@ const sizes = {
 const title = 'Quicksand, Helvetica, Arial, sans-serif';
 const body = 'Inter, Helvetica, Arial, sans-serif';
 
-const getSizes = (variant, mode) => {
+const getSizes = (variant, mode, responsive = false) => {
   let base = { fontSize: sizes[variant].xs };
   let extension;
 
-  if (mode === 'responsive') {
+  if (mode === 'responsive' || responsive) {
     extension = {
       [mui.breakpoints.up('md')]: {
         fontSize: sizes[variant].md,
@@ -86,7 +86,7 @@ export const getTypography = mode => {
       lineHeight: '1.33em',
     },
     subtitle2: {
-      ...getSizes('subtitle2', mode),
+      ...getSizes('subtitle2', mode, true),
       fontWeight: 600,
       lineHeight: '1.33em',
     },
