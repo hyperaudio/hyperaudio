@@ -13,7 +13,6 @@ export default class MyDocument extends Document {
           <link as="font" crossOrigin="" href="/fonts/inter/Inter-Medium.woff2" rel="preload" type="font/woff2" />
           <link as="font" crossOrigin="" href="/fonts/inter/Inter-Regular.woff2" rel="preload" type="font/woff2" />
           <link as="font" crossOrigin="" href="/fonts/inter/Inter-SemiBold.woff2" rel="preload" type="font/woff2" />
-          <link as="font" crossOrigin="" href="/fonts/quicksand/Quicksand_Bold.woff" rel="preload" type="font/woff" />
 
           <link rel="icon" href="/favicon.ico" sizes="any" />
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
