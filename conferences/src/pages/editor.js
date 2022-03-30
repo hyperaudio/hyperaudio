@@ -1,22 +1,30 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
-import { useRouter } from 'next/router';
-import { DataStore, Predicates, SortDirection, Storage } from 'aws-amplify';
-import { nanoid } from 'nanoid';
 import ReactPlayer from 'react-player';
+import { DataStore, Predicates, SortDirection, Storage } from 'aws-amplify';
+import { isArray } from 'lodash';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
 
-import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
-
+import Container from '@mui/material/Container';
+import Button from '@mui/material/Button';
+import Fab from '@mui/material/Fab';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PublishIcon from '@mui/icons-material/Publish';
+import SaveIcon from '@mui/icons-material/Save';
 import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 
+import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
+
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
-import { isArray } from 'lodash';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -187,6 +195,25 @@ const EditorPage = ({ user, groups }) => {
   return (
     <Root className={classes.root}>
       <div className={classes.push} />
+      <Toolbar>
+        <Grid container>
+          <Grid item sx={{ mr: 1 }}>
+            <Button color="primary" startIcon={<SaveIcon fontSize="small" />} onClick={() => console.log('🪄')}>
+              Save changes
+            </Button>
+          </Grid>
+          <Grid item xs>
+            <Container maxWidth="sm"></Container>
+          </Grid>
+          <Grid item sx={{ ml: 1 }}>
+            <Stack direction="row" spacing={1}>
+              <Button color="primary" endIcon={<PublishIcon fontSize="small" />} onClick={() => console.log('🪄')}>
+                Publish
+              </Button>
+            </Stack>
+          </Grid>
+        </Grid>
+      </Toolbar>
       <div style={{ height: '100vh', maxWidth: '600px', margin: '0 auto', paddingBottom: 300 }}>
         {media ? (
           <div style={{ marginBottom: 40 }}>
