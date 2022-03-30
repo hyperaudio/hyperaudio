@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback, useReducer, useState } from 'react';
-import { Editor as DraftEditor, EditorState, CompositeDecorator } from 'draft-js';
+import React, { useMemo, useCallback, useReducer, useState, useRef } from 'react';
+import { Editor as DraftEditor, EditorState, ContentState, Modifier, CompositeDecorator } from 'draft-js';
 import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 
@@ -230,9 +230,37 @@ const Editor = ({
     [speakerAnchor],
   );
 
+  const handlePastedText = useCallback(
+    text => {
+      const blockKey = editorState.getSelection().getStartKey();
+      const blocks = editorState.getCurrentContent().getBlocksAsArray();
+      const block = blocks.find(block => block.getKey() === blockKey);
+      const data = block.getData();
+
+      const blockMap = ContentState.createFromText(text).blockMap;
+      const newState = Modifier.replaceWithFragment(
+        editorState.getCurrentContent(),
+        editorState.getSelection(),
+        blockMap,
+      );
+
+      const changedEditorState = Modifier.setBlockData(newState, editorState.getSelection(), data);
+      onChange(EditorState.push(editorState, changedEditorState, 'insert-fragment'));
+
+      return 'handled';
+    },
+    [editorState],
+  );
+
   return (
     <Root className={classes.root} onClick={handleClick}>
-      <DraftEditor {...{ editorState, onChange, ...rest }} />
+      <DraftEditor
+        {...{ editorState, onChange, ...rest }}
+        handleDrop={() => true}
+        handleDroppedFiles={() => true}
+        handlePastedFiles={() => true}
+        handlePastedText={handlePastedText}
+      />
       {editorState
         .getCurrentContent()
         .getBlocksAsArray()

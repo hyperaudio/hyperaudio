@@ -136,6 +136,9 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   // start = Math.min(start, minStart);
   // end = Math.max(end, maxEnd);
 
+  // TODO use 2nd item?
+  // TODO skip wide interval if items count = tokens count
+
   // const tokens = text.split(' ');
   // TODO check if item0 is part of 1st token -> if so do not use minStart
   // if (text.substring(items[0].offset, items[0].offset + items[0].length) !== items[0].text) {
