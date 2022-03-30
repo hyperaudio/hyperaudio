@@ -117,7 +117,7 @@ const EditorPage = ({ user, groups }) => {
 
   const { speakers, blocks } = data ?? {};
 
-  console.log({ mediaId, transcriptId, media, transcripts, transcript, data });
+  // console.log({ mediaId, transcriptId, media, transcripts, transcript, data });
 
   const initialState = useMemo(
     () =>
