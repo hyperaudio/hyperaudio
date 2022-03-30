@@ -25,7 +25,7 @@ const classes = {
 };
 const Root = styled(Box)(({ theme }) => ({
   [`& .${classes.coverCard}`]: {
-    backgroundImage: `linear-gradient(to bottom, ${theme.palette.primary.dark} -50%, ${theme.palette.secondary.dark} 150%)`,
+    backgroundImage: `linear-gradient(to bottom, ${theme.palette.secondary.dark} -200%, ${theme.palette.primary.dark} 150%)`,
     borderRadius: 0,
     color: theme.palette.primary.contrastText,
     display: 'flex',
@@ -94,7 +94,6 @@ const Root = styled(Box)(({ theme }) => ({
 
 const CardGrid = props => {
   const { title, text, items, disableLinks } = props;
-  console.log({ items });
 
   return (
     <Root className={classes.root}>
