@@ -330,7 +330,8 @@ const EditorPage = ({ user, groups }) => {
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
-        // updated.url = result2.key;
+        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
+        updated.metadata = { ...(transcript.metadata ?? {}), original: transcript.url };
       }),
     );
 
@@ -363,6 +364,9 @@ const EditorPage = ({ user, groups }) => {
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'transcribed' };
+        updated.url =
+          transcript.metadata?.original ??
+          `https://stream.hyper.audio/q3xsh/transcript/${media.playbackId}/transcript.json`;
       }),
     );
 
