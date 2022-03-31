@@ -656,6 +656,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
 
 const Playhead = ({ block, offset, time, autoScroll }) => {
   const playhead = useRef();
+  const scrollTarget = useRef();
 
   const [start, end] = useMemo(() => {
     const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
@@ -666,9 +667,11 @@ const Playhead = ({ block, offset, time, autoScroll }) => {
 
   useEffect(() => {
     if (!autoScroll) return;
-    playhead.current.scrollIntoView &&
+    if (playhead.current?.parentElement !== scrollTarget.current) {
+      scrollTarget.current = playhead.current.parentElement;
       playhead.current.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [autoScroll, playhead, start, end]);
+    }
+  }, [autoScroll, playhead, start, end, scrollTarget]);
 
   return (
     <>
