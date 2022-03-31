@@ -81,7 +81,7 @@ const Redirect = ({ user }) => {
   }, [redirect, router, user]);
 
   return (
-    <p>
+    <p style={{ textAlign: 'center' }}>
       Redirecting to <a href={redirect}>{redirect}</a>
     </p>
   );

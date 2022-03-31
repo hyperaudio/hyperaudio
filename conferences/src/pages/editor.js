@@ -277,111 +277,109 @@ const EditorPage = ({ user, groups }) => {
   const div = useRef();
   const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
 
-  return (
-    user && (
-      <Root className={classes.root}>
-        <div className={classes.push} />
-        <Toolbar>
-          <Grid container>
-            <Grid item sx={{ mr: 1 }}>
+  return user ? (
+    <Root className={classes.root}>
+      <div className={classes.push} />
+      <Toolbar>
+        <Grid container>
+          <Grid item sx={{ mr: 1 }}>
+            <Button
+              color="primary"
+              startIcon={
+                saving === 0 ? (
+                  <SaveIcon fontSize="small" />
+                ) : saving === 3 ? (
+                  <HourglassEmptyIcon fontSize="small" />
+                ) : saving === 2 ? (
+                  <HourglassTopIcon fontSize="small" />
+                ) : (
+                  <HourglassBottomIcon fontSize="small" />
+                )
+              }
+              onClick={handleSave}
+              disabled={!draft || saving !== 0}
+            >
+              Save draft
+            </Button>
+          </Grid>
+          <Grid item xs>
+            <Container maxWidth="sm"></Container>
+          </Grid>
+          <Grid item sx={{ ml: 1 }}>
+            <Stack direction="row" spacing={1}>
               <Button
                 color="primary"
-                startIcon={
-                  saving === 0 ? (
-                    <SaveIcon fontSize="small" />
-                  ) : saving === 3 ? (
-                    <HourglassEmptyIcon fontSize="small" />
-                  ) : saving === 2 ? (
-                    <HourglassTopIcon fontSize="small" />
-                  ) : (
-                    <HourglassBottomIcon fontSize="small" />
-                  )
-                }
-                onClick={handleSave}
-                disabled={!draft || saving !== 0}
+                endIcon={<PublishIcon fontSize="small" />}
+                onClick={() => console.log('🪄')}
+                disabled={true}
               >
-                Save draft
+                Publish
               </Button>
-            </Grid>
-            <Grid item xs>
-              <Container maxWidth="sm"></Container>
-            </Grid>
-            <Grid item sx={{ ml: 1 }}>
-              <Stack direction="row" spacing={1}>
-                <Button
-                  color="primary"
-                  endIcon={<PublishIcon fontSize="small" />}
-                  onClick={() => console.log('🪄')}
-                  disabled={true}
-                >
-                  Publish
-                </Button>
-              </Stack>
-            </Grid>
+            </Stack>
           </Grid>
-        </Toolbar>
-        <div style={{ height: '100vh', maxWidth: '600px', margin: '0 auto', paddingBottom: 300 }}>
-          {media ? (
-            <div style={{ marginBottom: 40 }}>
-              <ReactPlayer
-                width="100%"
-                ref={video}
-                config={config}
-                playing={playing}
-                url={media.url}
-                onProgress={onProgress}
-                onBuffer={onBuffer}
-                onBufferEnd={onBufferEnd}
-                onPlay={play}
-                onDuration={onDuration}
-                progressInterval={100}
-              />
-              <div>
-                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                  <Grid item>
-                    {buffering && seekTime !== time ? (
-                      <IconButton onClick={pause} size="small">
-                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                      </IconButton>
-                    ) : playing ? (
-                      <IconButton onClick={pause} size="small">
-                        <PauseIcon />
-                      </IconButton>
-                    ) : (
-                      <IconButton onClick={play} size="small">
-                        <PlayArrowIcon />
-                      </IconButton>
-                    )}
-                  </Grid>
-                  <Grid container item xs>
-                    <Slider
-                      aria-label="timeline"
-                      defaultValue={0}
-                      max={duration}
-                      min={0}
-                      onChange={handleSliderChange}
-                      size="small"
-                      value={time}
-                      valueLabelDisplay="auto"
-                    />
-                  </Grid>
+        </Grid>
+      </Toolbar>
+      <div style={{ height: '100vh', maxWidth: '600px', margin: '0 auto', paddingBottom: 300 }}>
+        {media ? (
+          <div style={{ marginBottom: 40 }}>
+            <ReactPlayer
+              width="100%"
+              ref={video}
+              config={config}
+              playing={playing}
+              url={media.url}
+              onProgress={onProgress}
+              onBuffer={onBuffer}
+              onBufferEnd={onBufferEnd}
+              onPlay={play}
+              onDuration={onDuration}
+              progressInterval={100}
+            />
+            <div>
+              <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+                <Grid item>
+                  {buffering && seekTime !== time ? (
+                    <IconButton onClick={pause} size="small">
+                      {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                    </IconButton>
+                  ) : playing ? (
+                    <IconButton onClick={pause} size="small">
+                      <PauseIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={play} size="small">
+                      <PlayArrowIcon />
+                    </IconButton>
+                  )}
                 </Grid>
-              </div>
+                <Grid container item xs>
+                  <Slider
+                    aria-label="timeline"
+                    defaultValue={0}
+                    max={duration}
+                    min={0}
+                    onChange={handleSliderChange}
+                    size="small"
+                    value={time}
+                    valueLabelDisplay="auto"
+                  />
+                </Grid>
+              </Grid>
             </div>
-          ) : (
-            'Loading media…'
-          )}
-          <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
-            {initialState ? (
-              <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
-            ) : (
-              'Loading transcript…'
-            )}
           </div>
+        ) : (
+          'Loading media…'
+        )}
+        <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
+          {initialState ? (
+            <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+          ) : (
+            'Loading transcript…'
+          )}
         </div>
-      </Root>
-    )
-  );
+      </div>
+    </Root>
+  ) : null;
 };
 
 export default EditorPage;
