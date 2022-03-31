@@ -203,10 +203,10 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
             end: textEnd,
             minStart: Math.min(textStart, start, minStart),
             maxEnd: Math.max(textEnd, end, maxEnd),
-            prealign: { items, start, end },
+            // prealign: { items, start, end },
           };
 
-          console.log('aligner', data);
+          console.log('aligner', { prealign: { items, start, end } }, data);
 
           const contentStateWithBlockData = Modifier.setBlockData(
             changedContentState,
