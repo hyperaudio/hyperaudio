@@ -4,6 +4,7 @@ import { DataStore, Predicates, SortDirection, Storage } from 'aws-amplify';
 import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -70,6 +71,7 @@ const EditorPage = ({ user, groups }) => {
   const [time, setTime] = useState(0);
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
+  const [progress, setProgress] = useState(0);
   const [data, setData] = useState();
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
 
@@ -93,6 +95,7 @@ const EditorPage = ({ user, groups }) => {
 
   useEffect(() => {
     if (!transcript || !media) return;
+    console.log({ media, transcript });
 
     (async () => {
       let speakers;
@@ -115,13 +118,36 @@ const EditorPage = ({ user, groups }) => {
           },
         );
 
-        const result = await (await fetch(signedURL)).json();
+        // const result = await (await fetch(signedURL)).json();
+
+        const result = (
+          await axios.get(signedURL, {
+            onDownloadProgress: progressEvent => {
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+            },
+          })
+        ).data;
 
         speakers = result.speakers;
         blocks = result.blocks;
       } catch (error) {
         // use transcript's url
-        const result = await (await fetch(transcript.url)).json();
+        // const result = await (await fetch(transcript.url)).json();
+        // console.log(await axios.head(transcript.url));
+
+        const result = (
+          await axios.get(transcript.url, {
+            onDownloadProgress: progressEvent => {
+              // console.log(progressEvent);
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setProgress(
+                progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
+              );
+            },
+          })
+        ).data;
+
         speakers = result.speakers;
         blocks = result.blocks;
       }
@@ -158,13 +184,14 @@ const EditorPage = ({ user, groups }) => {
         });
       }
 
+      console.log({ speakers, blocks });
       setData({ speakers, blocks });
     })();
   }, [media, transcript]);
 
   const { speakers, blocks } = data ?? {};
 
-  console.log({ user, mediaId, transcriptId, media, transcripts, transcript, data });
+  // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
 
   const initialState = useMemo(
     () =>
@@ -213,10 +240,14 @@ const EditorPage = ({ user, groups }) => {
 
   const [draft, setDraft] = useState();
   const [saving, setSaving] = useState(0);
+  const [savingProgress, setSavingProgress] = useState(0);
+  const [publishingProgress, setPublishingProgress] = useState(0);
+  const [publishing, setPublishing] = useState(0);
 
   const handleSave = useCallback(async () => {
     if (!draft || !media || !transcript) return;
     console.log(draft);
+    setSavingProgress(0);
     setSaving(2); // 3
 
     const result = await Storage.put(
@@ -228,36 +259,18 @@ const EditorPage = ({ user, groups }) => {
         metadata: {
           user: user.id,
         },
+        progressCallback(progress) {
+          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+          const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
+          setSavingProgress(percentCompleted);
+        },
       },
     );
 
     console.log(result);
     setSaving(1); // 2
 
-    // const result2 = await Storage.copy({
-    //   src: {
-    //     key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-    //     // level: 'public',
-    //   },
-    //   dest: {
-    //     key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}/${Date.now()}.json`,
-    //     // level: 'public',
-    //   },
-    // });
-
-    // const result2 = await Storage.put(
-    //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}/${Date.now()}.json`,
-    //   JSON.stringify(draft),
-    //   {
-    //     level: 'public',
-    //     contentType: 'application/json',
-    //     metadata: {
-    //       user: user.id,
-    //     },
-    //   },
-    // );
-
-    // console.log(result2);
+    // version save
 
     // setSaving(1);
     setTimeout(() => setSaving(0), 500);
@@ -268,11 +281,100 @@ const EditorPage = ({ user, groups }) => {
     console.log(signedURL);
   }, [draft, media, transcript, user]);
 
-  // global.resetTranscript = useCallback(async () => {
-  //   await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
-  //     level: 'public',
-  //   });
-  // }, [media, transcript]);
+  const handlePublish = useCallback(async () => {
+    if (!draft || !media || !transcript) return;
+    console.log(draft);
+    setPublishing(3);
+
+    const result = await Storage.put(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+      JSON.stringify(draft),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        metadata: {
+          user: user.id,
+        },
+        progressCallback(progress) {
+          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+          const percentCompleted = Math.round((progress.loaded * 50) / progress.total);
+          setPublishingProgress(percentCompleted);
+        },
+      },
+    );
+
+    console.log(result);
+    setPublishing(2);
+
+    // PUBLISH!
+    const result2 = await Storage.put(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
+      JSON.stringify(draft),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        metadata: {
+          user: user.id,
+        },
+        progressCallback(progress) {
+          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+          const percentCompleted = Math.round((progress.loaded * 50) / progress.total);
+          setPublishingProgress(50 + percentCompleted);
+        },
+      },
+    );
+
+    console.log(result2);
+
+    await DataStore.save(
+      Transcript.copyOf(transcript, updated => {
+        updated.status = { label: 'published' };
+        // updated.url = result2.key;
+      }),
+    );
+
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.status = { label: 'published' };
+      }),
+    );
+
+    setPublishing(1);
+    setTimeout(() => setPublishing(0), 500);
+
+    const signedURL = await Storage.get(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
+      {
+        level: 'public',
+      },
+    );
+    console.log(signedURL);
+  }, [draft, media, transcript, user]);
+
+  global.resetTranscript = useCallback(async () => {
+    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
+      level: 'public',
+    });
+    console.log('please reload page');
+  }, [media, transcript]);
+
+  global.unpublishTranscript = useCallback(async () => {
+    await DataStore.save(
+      Transcript.copyOf(transcript, updated => {
+        updated.status = { label: 'transcribed' };
+      }),
+    );
+
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.status = { label: 'transcribed' };
+      }),
+    );
+
+    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`, {
+      level: 'public',
+    });
+  }, [media, transcript]);
 
   const div = useRef();
   const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
@@ -299,7 +401,7 @@ const EditorPage = ({ user, groups }) => {
               onClick={handleSave}
               disabled={!draft || saving !== 0}
             >
-              Save draft
+              {saving ? `Saving ${savingProgress}%` : 'Save draft'}
             </Button>
           </Grid>
           <Grid item xs>
@@ -309,11 +411,21 @@ const EditorPage = ({ user, groups }) => {
             <Stack direction="row" spacing={1}>
               <Button
                 color="primary"
-                endIcon={<PublishIcon fontSize="small" />}
-                onClick={() => console.log('🪄')}
-                disabled={true}
+                endIcon={
+                  publishing === 0 ? (
+                    <PublishIcon fontSize="small" />
+                  ) : publishing === 3 ? (
+                    <HourglassEmptyIcon fontSize="small" />
+                  ) : publishing === 2 ? (
+                    <HourglassTopIcon fontSize="small" />
+                  ) : (
+                    <HourglassBottomIcon fontSize="small" />
+                  )
+                }
+                onClick={handlePublish}
+                disabled={!draft || saving !== 0 || publishing !== 0 || !groups.includes('Editors')}
               >
-                Publish
+                {publishing ? `Publishing ${savingProgress}%` : 'Publish'}
               </Button>
             </Stack>
           </Grid>
@@ -374,7 +486,7 @@ const EditorPage = ({ user, groups }) => {
           {initialState ? (
             <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
           ) : (
-            'Loading transcript…'
+            `Loading transcript ${progress}%`
           )}
         </div>
       </div>

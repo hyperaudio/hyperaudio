@@ -46,6 +46,7 @@ export const userReducer = (state, action) => {
     case 'updateBio':
       return { ...state, bio: payload };
     case 'save':
+      // FIXME await?
       DataStore.save(
         User.copyOf(state.user, updated => {
           updated.name = state.name ?? updated.name;
