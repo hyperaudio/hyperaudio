@@ -118,7 +118,7 @@ function Status(props) {
 }
 
 export function MediaTable(props) {
-  const { channels, organization, account, media, onDeleteMedia, onEditMedia, onTranslateMedia } = props;
+  const { channels, organization, account, media, onDeleteMedia, onEditMedia, onTranslateMedia, onClickMedia } = props;
 
   const flatMedia = media.map(o => {
     return { ...o, channelId: o.channel?.id };
@@ -233,7 +233,13 @@ export function MediaTable(props) {
             <Typography color="inherit" component="div" display="inline-block" sx={{ mr: 2 }} variant="h3">
               {selected.length} selected:
             </Typography>
-            <Button color="error" onClick={() => handleDelete(selected)} size="small" startIcon={<DeleteIcon />}>
+            <Button
+              color="error"
+              onClick={() => handleDelete(selected)}
+              size="small"
+              startIcon={<DeleteIcon />}
+              disabled={true}
+            >
               Delete
             </Button>
           </Box>
@@ -347,7 +353,8 @@ export function MediaTable(props) {
                         <CardActionArea
                           onClick={e => {
                             e.stopPropagation();
-                            console.log('hello');
+                            // console.log('hello', row);
+                            onClickMedia(row.id);
                           }}
                         >
                           <CardMedia component="img" height="100%" image={row.poster} />
@@ -371,7 +378,8 @@ export function MediaTable(props) {
                         }}
                         onClick={e => {
                           e.stopPropagation();
-                          console.log('hello');
+                          // console.log('hello2', row);
+                          onClickMedia(row.id);
                         }}
                         noWrap
                         color={row.isProcessing ? 'text.disabled' : 'primary'}
@@ -478,6 +486,7 @@ export function MediaTable(props) {
               setFocused(null);
               setSelected([]);
             }}
+            disabled={true}
           >
             <ListItemIcon>
               <TranslateIcon color="primary" fontSize="small" />
@@ -489,6 +498,7 @@ export function MediaTable(props) {
             onClick={() => {
               handleDelete([focused]);
             }}
+            disabled={true}
           >
             <ListItemIcon>
               <DeleteIcon color="error" fontSize="small" />

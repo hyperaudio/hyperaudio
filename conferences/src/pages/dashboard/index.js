@@ -30,8 +30,16 @@ const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
 const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Channel));
 
 const DashboardPage = props => {
+  const router = useRouter();
+  const { user, groups = [] } = props;
+  console.log({ user, groups }, typeof groups);
+
   const [allMedia, setAllMedia] = useState([]);
   const [allChannels, setChannels] = useState([]);
+
+  useEffect(() => {
+    if (user === null) router.push(`/auth?redirect=${encodeURIComponent(`/dashboard`)}`);
+  }, [user, router]);
 
   useEffect(() => {
     getMedia(setAllMedia);
@@ -51,11 +59,11 @@ const DashboardPage = props => {
     return () => subscription.unsubscribe();
   }, []);
 
-  console.group('DashboardPage');
-  console.log({ allMedia, allChannels });
-  console.groupEnd();
+  // console.group('DashboardPage');
+  // console.log({ allMedia, allChannels });
+  // console.groupEnd();
 
-  const user = true;
+  const onClickMedia = useCallback(id => router.push(`/media/${id}`), [router]);
 
   return (
     <Root className={classes.root}>
@@ -65,14 +73,16 @@ const DashboardPage = props => {
       </Head>
 
       <Main maxWidth="xl">
-        {/* If logged in */}
-        {user && (
+        {user && groups && (groups.includes('Editors') || groups.includes('Organisers')) ? (
           <MediaTable
             media={allMedia}
             onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
             onEditMedia={payload => console.log('onEditMedia', { payload })}
             onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
+            onClickMedia={onClickMedia}
           />
+        ) : (
+          'Access Denied!'
         )}
       </Main>
     </Root>

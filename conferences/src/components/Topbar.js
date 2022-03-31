@@ -148,14 +148,14 @@ const Topbar = props => {
                 aria-label="Return home"
                 className={classes.fab}
                 component={Link}
-                href={user && groups?.includes('Organisers') ? '/dashboard' : '/'}
+                href={user && (groups?.includes('Organisers') || groups?.includes('Editors')) ? '/dashboard' : '/'}
                 size="small"
                 variant="extended"
               >
                 <Avatar className={classes.avatar} src="/images/mozfest-avatar.png" />
                 <Box {...buttonLabelProps}>{organisation.name}</Box>
               </Fab>
-              {user && groups?.includes('Organisers') && (
+              {user && (groups?.includes('Organisers') || groups?.includes('Editors')) && (
                 <>
                   <Tooltip title="More…">
                     <IconButton
