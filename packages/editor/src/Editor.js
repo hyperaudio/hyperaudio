@@ -145,7 +145,7 @@ const Editor = ({
   const handleClick = useCallback(
     e => {
       if (!editorState) return;
-      // console.log(e);
+      // console.log(e.target);
 
       if (e.target.tagName === 'DIV') {
         const mx = e.clientX;
@@ -156,8 +156,10 @@ const Editor = ({
         const y = my - by;
 
         if (x < SPEAKER_AREA_WIDTH - 10 && y < SPEAKER_AREA_HEIGHT) {
-          const selectionState = editorState.getSelection();
-          const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
+          // const selectionState = editorState.getSelection();
+          // const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
+          const key = e.target.getAttribute('data-offset-key').replace('-0-0', '');
+          const block = editorState.getCurrentContent().getBlockForKey(key);
           const data = block.getData().toJS();
           setCurrentBlock(block);
           setSpeaker({ id: data.speaker, name: speakers?.[data.speaker]?.name });
