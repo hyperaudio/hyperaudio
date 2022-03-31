@@ -93,7 +93,7 @@ const Topbar = props => {
     await Auth.signOut({ global: true });
     // window.location.href = '/';
     router.push('/');
-  }, []);
+  }, [router]);
 
   // const meh = useMemo(() => user, [user]);
   // console.group('Topbar');
