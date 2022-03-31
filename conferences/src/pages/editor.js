@@ -284,6 +284,7 @@ const EditorPage = ({ user, groups }) => {
   const handlePublish = useCallback(async () => {
     if (!draft || !media || !transcript) return;
     console.log(draft);
+    setPublishingProgress(0);
     setPublishing(3);
 
     const result = await Storage.put(
@@ -425,7 +426,7 @@ const EditorPage = ({ user, groups }) => {
                 onClick={handlePublish}
                 disabled={!draft || saving !== 0 || publishing !== 0 || !groups.includes('Editors')}
               >
-                {publishing ? `Publishing ${savingProgress}%` : 'Publish'}
+                {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
               </Button>
             </Stack>
           </Grid>
@@ -486,7 +487,10 @@ const EditorPage = ({ user, groups }) => {
           {initialState ? (
             <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
           ) : (
-            <p style={{ textAlign: 'center' }}>{`Loading transcript ${progress}%`}</p>
+            <p style={{ textAlign: 'center' }}>
+              Loading transcript{' '}
+              <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+            </p>
           )}
         </div>
       </div>
