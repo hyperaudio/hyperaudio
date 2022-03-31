@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Amplify, { Auth, Hub, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
+import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 
@@ -40,6 +40,8 @@ Analytics.autoTrack('pageView', {
     return window.location.origin + window.location.pathname;
   },
 });
+
+Storage.configure({ track: true });
 
 // Hub.listen('auth', async data => {
 //   if (data.payload.event === 'signOut') {
