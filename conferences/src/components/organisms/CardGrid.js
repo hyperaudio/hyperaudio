@@ -140,7 +140,8 @@ const CardGrid = props => {
 };
 
 const MediaCard = ({ item, disableLinks }) => {
-  const disableLink = disableLinks && item.status.label !== 'published';
+  // const disableLink = disableLinks && item.status.label !== 'published';
+  const disableLink = item.status.label !== 'published';
 
   return (
     <Grid item xs={6} md={4} lg={4} xl={3}>

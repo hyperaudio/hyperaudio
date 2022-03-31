@@ -71,27 +71,12 @@ const Root = styled(AppBar, {
   },
 }));
 
-// const getUser = async (setUser, identityId) => {
-//   DataStore.configure({
-//     syncExpressions: [
-//       syncExpression(User, () => {
-//         return user => user.identityId('eq', identityId);
-//       }),
-//     ],
-//   });
-
-//   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
-//   setUser(Array.isArray(user) ? user[0] : user);
-// };
-
 const Topbar = props => {
   const router = useRouter();
-  // const [user, setUser] = useState(props.user ? deserializeModel(User, props.user) : null);
   const { user, groups, organisation } = props;
 
   const logoutToHomePage = useCallback(async () => {
     await Auth.signOut({ global: true });
-    // window.location.href = '/';
     router.push('/');
   }, [router]);
 
@@ -110,12 +95,6 @@ const Topbar = props => {
   const openOrgMenu = Boolean(orgMenuAnchor);
   const openAccountMenu = Boolean(accountMenuAnchor);
 
-  // const organization = {
-  //   // TODO: Load real time org data
-  //   name: 'Mozilla Festival 2022',
-  //   slug: '/',
-  // };
-
   const title = ''; // TODO: Grab page title
 
   const [fname, lname] = useMemo(() => (user?.name ? [...user.name.split(' '), ''] : ['', '']), [user]);
@@ -126,17 +105,23 @@ const Topbar = props => {
     disablePortal: true,
     variant: 'menu',
   };
+
   const primaryTypographyProps = {
     color: 'primary',
     gutterBottom: true,
     sx: { fontWeight: '600' },
   };
+
   const secondaryTypographyProps = {
     variant: 'caption',
   };
+
   const buttonLabelProps = {
     sx: { display: { xs: 'none', md: 'inline-block' }, mx: 1 },
   };
+
+  // temporary
+  const showSignIn = useMemo(() => global.location && global.location.hostname === 'localhost', []);
 
   return (
     <NoSsr>
@@ -337,8 +322,14 @@ const Topbar = props => {
                     </MenuItem>
                   </Menu>
                 </>
-              ) : false ? (
-                <Fab aria-label="Authenticate" className={classes.fab} component={Link} href="/auth" variant="extended">
+              ) : showSignIn ? (
+                <Fab
+                  aria-label="Authenticate"
+                  className={classes.fab}
+                  component={Link}
+                  href={`/auth?redirect=${encodeURIComponent(global.location.pathname + global.location.search)}`}
+                  variant="extended"
+                >
                   <Avatar className={classes.avatar}>
                     <PersonIcon fontSize="small" />
                   </Avatar>

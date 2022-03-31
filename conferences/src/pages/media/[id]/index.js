@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { Storage, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { nanoid } from 'nanoid';
+import axios from 'axios';
 
 import { styled } from '@mui/material/styles';
 
@@ -41,7 +42,11 @@ const getRemixes = async (setRemixes, id) =>
 
 const MediaPage = () => {
   const router = useRouter();
-  global.router = router;
+  global.router = router; // FIXME
+
+  const {
+    query: { showDraft, transcript: transcriptId },
+  } = router;
 
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
@@ -80,40 +85,71 @@ const MediaPage = () => {
     (async () => {
       const sources = await Promise.all(
         transcripts.map(async transcript => {
-          let blocks = await (await fetch(transcript.url)).json();
-          if (blocks.blocks) {
-            const speakers = blocks.speakers;
-            blocks = blocks.blocks
-              .map(({ text, data: { start, end, speaker, items } }) => {
-                return {
-                  text,
-                  type: 'block',
-                  key: nanoid(5),
-                  media: media.playbackId,
-                  speaker: speakers?.[speaker]?.name ?? speaker,
-                  start: items[0].start * 1e3,
-                  end: items[items.length - 1].end * 1e3,
-                  starts: items.map(({ start }) => start * 1e3),
-                  duration: (items[items.length - 1].end - items[0].start) * 1e3,
-                  ends: items.map(({ end }) => end * 1e3),
-                  durations: items.map(({ start, end }) => (end - start) * 1e3),
-                  starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
-                  ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
-                  offsets: items.map(({ text }, i, arr) => {
-                    if (i === 0) return 0;
-                    return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
-                  }),
-                  lengths: items.map(({ text }) => text.length),
-                  gap: 0,
-                };
-              })
-              .reduce((acc, block, i) => {
-                if (i === 0) return [block];
-                const p = acc.pop();
-                p.gap = block.start - p.end;
-                return [...acc, p, block];
-              }, []);
+          let speakers;
+          let blocks;
+
+          if (showDraft) {
+            try {
+              const signedURL = await Storage.get(
+                `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+                {
+                  level: 'public',
+                },
+              );
+
+              const result = (
+                await axios.get(signedURL, {
+                  // onDownloadProgress: progressEvent => {
+                  //   const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                  //   setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+                  // },
+                })
+              ).data;
+
+              speakers = result.speakers;
+              blocks = result.blocks;
+            } catch (e) {}
           }
+
+          if (!speakers || !blocks) {
+            const result = await (await fetch(transcript.url)).json();
+            speakers = result.speakers;
+            blocks = result.blocks;
+          }
+
+          // if (blocks.blocks) {
+          // const speakers = blocks.speakers;
+          blocks = blocks
+            .map(({ text, data: { start, end, speaker, items } }) => {
+              return {
+                text,
+                type: 'block',
+                key: nanoid(5),
+                media: media.playbackId,
+                speaker: speakers?.[speaker]?.name ?? speaker,
+                start: items[0].start * 1e3,
+                end: items[items.length - 1].end * 1e3,
+                starts: items.map(({ start }) => start * 1e3),
+                duration: (items[items.length - 1].end - items[0].start) * 1e3,
+                ends: items.map(({ end }) => end * 1e3),
+                durations: items.map(({ start, end }) => (end - start) * 1e3),
+                starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
+                ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
+                offsets: items.map(({ text }, i, arr) => {
+                  if (i === 0) return 0;
+                  return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
+                }),
+                lengths: items.map(({ text }) => text.length),
+                gap: 0,
+              };
+            })
+            .reduce((acc, block, i) => {
+              if (i === 0) return [block];
+              const p = acc.pop();
+              p.gap = block.start - p.end;
+              return [...acc, p, block];
+            }, []);
+          // }
 
           return {
             ...transcript,

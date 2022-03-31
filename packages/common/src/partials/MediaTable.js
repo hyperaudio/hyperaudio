@@ -315,7 +315,7 @@ export function MediaTable(props) {
                 const isItemSelected = selected.indexOf(row.id) !== -1;
                 const labelId = `enhanced-table-checkbox-${index}`;
 
-                console.log({ row });
+                // console.log({ row });
 
                 const dateFormat = { day: 'numeric', month: 'short', year: 'numeric' };
                 const cDate = new Date(row.createdAt);
