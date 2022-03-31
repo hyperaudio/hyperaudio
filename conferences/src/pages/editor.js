@@ -480,13 +480,13 @@ const EditorPage = ({ user, groups }) => {
             </div>
           </div>
         ) : (
-          'Loading media…'
+          <p style={{ textAlign: 'center' }}>'Loading media…'</p>
         )}
         <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
           {initialState ? (
             <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
           ) : (
-            `Loading transcript ${progress}%`
+            <p style={{ textAlign: 'center' }}>`Loading transcript ${progress}%`</p>
           )}
         </div>
       </div>
