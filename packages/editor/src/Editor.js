@@ -1,5 +1,5 @@
-import React, { useMemo, useCallback, useReducer, useState, useRef } from 'react';
-import { Editor as DraftEditor, EditorState, ContentState, Modifier, CompositeDecorator } from 'draft-js';
+import React, { useMemo, useCallback, useReducer, useState, useRef, useEffect } from 'react';
+import { Editor as DraftEditor, EditorState, ContentState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
 import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 
@@ -93,6 +93,7 @@ const Editor = ({
   showDialog,
   aligner = wordAligner,
   speakers: initialSpeakers = {},
+  onChange: onChangeProp,
   ...rest
 }) => {
   const theme = useTheme();
@@ -113,6 +114,18 @@ const Editor = ({
     editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch }),
     [aligner],
   );
+
+  // FIMXE debounce
+  useEffect(() => {
+    onChangeProp({
+      speakers,
+      blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
+        delete block.depth;
+        delete block.type;
+        return block;
+      }),
+    });
+  }, [state, speakers, onChangeProp]);
 
   const editorState = useMemo(
     () =>

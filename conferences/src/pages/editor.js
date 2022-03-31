@@ -16,6 +16,9 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
@@ -89,10 +92,41 @@ const EditorPage = ({ user, groups }) => {
   }, [mediaId]);
 
   useEffect(() => {
-    if (!transcript) return;
+    if (!transcript || !media) return;
 
     (async () => {
-      let { speakers, blocks } = await (await fetch(transcript.url)).json();
+      let speakers;
+      let blocks;
+
+      try {
+        // load saved version
+        // const result = JSON.parse(
+        //   await (
+        //     await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
+        //       download: true,
+        //     })
+        //   ).Body.text(),
+        // );
+
+        const signedURL = await Storage.get(
+          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+          {
+            level: 'public',
+          },
+        );
+
+        const result = await (await fetch(signedURL)).json();
+
+        speakers = result.speakers;
+        blocks = result.blocks;
+      } catch (error) {
+        // use transcript's url
+        const result = await (await fetch(transcript.url)).json();
+        speakers = result.speakers;
+        blocks = result.blocks;
+      }
+
+      // let { speakers, blocks } = await (await fetch(transcript.url)).json();
 
       // fix simple list of speakers (array -> map)
       if (isArray(speakers)) {
@@ -126,11 +160,11 @@ const EditorPage = ({ user, groups }) => {
 
       setData({ speakers, blocks });
     })();
-  }, [transcript]);
+  }, [media, transcript]);
 
   const { speakers, blocks } = data ?? {};
 
-  // console.log({ mediaId, transcriptId, media, transcripts, transcript, data });
+  console.log({ user, mediaId, transcriptId, media, transcripts, transcript, data });
 
   const initialState = useMemo(
     () =>
@@ -177,17 +211,68 @@ const EditorPage = ({ user, groups }) => {
   const onBufferEnd = useCallback(() => setBuffering(false), []);
   const onDuration = useCallback(duration => setDuration(duration), []);
 
+  const [draft, setDraft] = useState();
+  const [saving, setSaving] = useState(0);
+
   const handleSave = useCallback(async () => {
-    const result = await Storage.put('test.txt', 'Test Content', {
-      level: 'public',
-      contentType: 'text/plain',
-    });
+    if (!draft || !media || !transcript) return;
+    console.log(draft);
+    setSaving(2); // 3
+
+    const result = await Storage.put(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+      JSON.stringify(draft),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        metadata: {
+          user: user.id,
+        },
+      },
+    );
 
     console.log(result);
+    setSaving(1); // 2
 
-    const signedURL = await Storage.get('test.txt', { level: 'public' });
+    // const result2 = await Storage.copy({
+    //   src: {
+    //     key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+    //     // level: 'public',
+    //   },
+    //   dest: {
+    //     key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}/${Date.now()}.json`,
+    //     // level: 'public',
+    //   },
+    // });
+
+    // const result2 = await Storage.put(
+    //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}/${Date.now()}.json`,
+    //   JSON.stringify(draft),
+    //   {
+    //     level: 'public',
+    //     contentType: 'application/json',
+    //     metadata: {
+    //       user: user.id,
+    //     },
+    //   },
+    // );
+
+    // console.log(result2);
+
+    // setSaving(1);
+    setTimeout(() => setSaving(0), 500);
+
+    const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
+      level: 'public',
+    });
     console.log(signedURL);
-  }, []);
+  }, [draft, media, transcript, user]);
+
+  // global.resetTranscript = useCallback(async () => {
+  //   await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
+  //     level: 'public',
+  //   });
+  // }, [media, transcript]);
 
   const div = useRef();
   const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
@@ -200,9 +285,19 @@ const EditorPage = ({ user, groups }) => {
           <Grid item sx={{ mr: 1 }}>
             <Button
               color="primary"
-              startIcon={<SaveIcon fontSize="small" />}
-              onClick={() => console.log('🪄')}
-              disabled={true}
+              startIcon={
+                saving === 0 ? (
+                  <SaveIcon fontSize="small" />
+                ) : saving === 3 ? (
+                  <HourglassEmptyIcon fontSize="small" />
+                ) : saving === 2 ? (
+                  <HourglassTopIcon fontSize="small" />
+                ) : (
+                  <HourglassBottomIcon fontSize="small" />
+                )
+              }
+              onClick={handleSave}
+              disabled={!draft || saving !== 0}
             >
               Save draft
             </Button>
@@ -273,10 +368,14 @@ const EditorPage = ({ user, groups }) => {
             </div>
           </div>
         ) : (
-          'Loading…'
+          'Loading media…'
         )}
         <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
-          {initialState && <Editor {...{ initialState, time, seekTo, speakers }} />}
+          {initialState ? (
+            <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+          ) : (
+            'Loading transcript…'
+          )}
         </div>
       </div>
     </Root>
