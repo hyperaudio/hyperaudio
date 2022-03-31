@@ -486,7 +486,7 @@ const EditorPage = ({ user, groups }) => {
           {initialState ? (
             <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
           ) : (
-            <p style={{ textAlign: 'center' }}>`Loading transcript ${progress}%`</p>
+            <p style={{ textAlign: 'center' }}>{`Loading transcript ${progress}%`}</p>
           )}
         </div>
       </div>
