@@ -132,89 +132,96 @@ const CardGrid = props => {
           </Paper>
         </Grid>
         {items.map(item => (
-          <Grid item key={item.id} xs={6} md={4} lg={4} xl={3}>
-            <Card
-              className={classes.card}
-              key={item.id}
-              sx={{ borderRadius: 2, opacity: disableLinks ? 0.8 : 1, '&:hover': { opacity: 1 } }}
-            >
-              <Box sx={{ flex: '0 0 auto', p: { xs: 1, sm: 2, lg: 0 } }}>
-                <CardActionArea
-                  className={classes.actionArea}
-                  component={Link}
-                  disabled={disableLinks}
-                  href={disableLinks ? '/' : `/media/${item.id}`}
-                  scroll={!disableLinks}
-                >
-                  <CardMedia
-                    component="img"
-                    image={item.poster}
-                    alt={item.title}
-                    sx={{
-                      alignContent: 'center',
-                      aspectRatio: `16 / 9`,
-                      bgcolor: 'primary',
-                      borderRadius: { xs: 1, lg: 0 },
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                    }}
-                  />
-                  {disableLinks && (
-                    <Typography variant="overline" className={classes.cardBadge}>
-                      Coming soon
-                    </Typography>
-                  )}
-                </CardActionArea>
-              </Box>
-              <CardContent
-                sx={{
-                  flex: '0 0 100%',
-                  maxHeight: '260px',
-                  overflow: 'auto',
-                  '&::-webkit-scrollbar': {
-                    display: 'none',
-                  },
-                  '-ms-overflow-style': 'none',
-                  'scrollbar-width': 'none',
-                  pb: { xs: 1, lg: 0 },
-                  pt: { xs: 1, sm: 0, lg: 4 },
-                  px: { xs: 2, lg: 4 },
-                  '&:last-child': { pb: { xs: 2, lg: 4 } },
-                }}
-              >
-                {disableLinks ? (
-                  <Typography variant="subtitle2" sx={{ overflowWrap: 'break-word' }}>
-                    {item.title}
-                  </Typography>
-                ) : (
-                  <Link
-                    href={`/media/${item.id}`}
-                    variant="subtitle2"
-                    sx={{ overflowWrap: 'break-word' }}
-                    scroll={!disableLinks}
-                  >
-                    {item.title}
-                  </Link>
-                )}
-                <Typography
-                  color="textSecondary"
-                  component="div"
-                  sx={{
-                    '& > *:last-child': { marginBottom: 0 },
-                    display: { xs: 'none', sm: 'block' },
-                    overflow: 'auto',
-                  }}
-                  variant="body2"
-                >
-                  <ReactMarkdown>{item.description}</ReactMarkdown>
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          <MediaCard key={item.id} {...{ item, disableLinks }} />
         ))}
       </Grid>
     </Root>
+  );
+};
+
+const MediaCard = ({ item, disableLinks }) => {
+  const disableLink = disableLinks && item.status.label !== 'published';
+
+  return (
+    <Grid item xs={6} md={4} lg={4} xl={3}>
+      <Card
+        className={classes.card}
+        sx={{ borderRadius: 2, opacity: disableLink ? 0.8 : 1, '&:hover': { opacity: 1 } }}
+      >
+        <Box sx={{ flex: '0 0 auto', p: { xs: 1, sm: 2, lg: 0 } }}>
+          <CardActionArea
+            className={classes.actionArea}
+            component={Link}
+            disabled={disableLink}
+            href={disableLink ? '/' : `/media/${item.id}`}
+            scroll={!disableLink}
+          >
+            <CardMedia
+              component="img"
+              image={item.poster}
+              alt={item.title}
+              sx={{
+                alignContent: 'center',
+                aspectRatio: `16 / 9`,
+                bgcolor: 'primary',
+                borderRadius: { xs: 1, lg: 0 },
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            />
+            {disableLink && (
+              <Typography variant="overline" className={classes.cardBadge}>
+                Coming soon
+              </Typography>
+            )}
+          </CardActionArea>
+        </Box>
+        <CardContent
+          sx={{
+            flex: '0 0 100%',
+            maxHeight: '260px',
+            overflow: 'auto',
+            '&::-webkit-scrollbar': {
+              display: 'none',
+            },
+            '-ms-overflow-style': 'none',
+            'scrollbar-width': 'none',
+            pb: { xs: 1, lg: 0 },
+            pt: { xs: 1, sm: 0, lg: 4 },
+            px: { xs: 2, lg: 4 },
+            '&:last-child': { pb: { xs: 2, lg: 4 } },
+          }}
+        >
+          {disableLink ? (
+            <Typography variant="subtitle2" sx={{ overflowWrap: 'break-word' }}>
+              {item.title}
+            </Typography>
+          ) : (
+            <Link
+              href={`/media/${item.id}`}
+              variant="subtitle2"
+              sx={{ overflowWrap: 'break-word' }}
+              scroll={!disableLink}
+            >
+              {item.title}
+            </Link>
+          )}
+          <Typography
+            color="textSecondary"
+            component="div"
+            sx={{
+              '& > *:last-child': { marginBottom: 0 },
+              display: { xs: 'none', sm: 'block' },
+              overflow: 'auto',
+            }}
+            variant="body2"
+          >
+            <ReactMarkdown>{item.description}</ReactMarkdown>
+          </Typography>
+        </CardContent>
+      </Card>
+    </Grid>
   );
 };
 
