@@ -66,7 +66,7 @@ const EditorPage = ({ user, groups }) => {
   useEffect(() => {
     if (user === null)
       router.push(`/auth?redirect=${encodeURIComponent(`/editor?media=${mediaId}&transcript=${transcriptId}`)}`);
-  }, [user, mediaId, transcriptId]);
+  }, [user, mediaId, transcriptId, router]);
 
   const [time, setTime] = useState(0);
   const [media, setMedia] = useState();
@@ -196,7 +196,7 @@ const EditorPage = ({ user, groups }) => {
   const initialState = useMemo(
     () =>
       blocks && EditorState.createWithContent(convertFromRaw({ blocks: blocks, entityMap: createEntityMap(blocks) })),
-    [data],
+    [blocks],
   );
 
   const video = useRef();
@@ -481,7 +481,7 @@ const EditorPage = ({ user, groups }) => {
             </div>
           </div>
         ) : (
-          <p style={{ textAlign: 'center' }}>'Loading media…'</p>
+          <p style={{ textAlign: 'center' }}>Loading media…</p>
         )}
         <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
           {initialState ? (
