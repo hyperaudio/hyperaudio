@@ -9,7 +9,7 @@ import { styled } from '@mui/material/styles';
 import { MediaTable } from '@hyperaudio/common';
 
 import { Main } from '../../components';
-import { Media, Channel } from '../../models';
+import { Media, Channel, Transcript } from '../../models';
 
 const PREFIX = `DashboardPage`;
 const classes = {
@@ -27,14 +27,15 @@ const Root = styled(
 }));
 
 const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
+const getTranscripts = async setAllMedia => setAllMedia(await DataStore.query(Transcript));
 const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Channel));
 
 const DashboardPage = props => {
   const router = useRouter();
   const { user, groups = [] } = props;
-  console.log({ user, groups }, typeof groups);
 
   const [allMedia, setAllMedia] = useState([]);
+  const [allTranscripts, setAllTranscripts] = useState([]);
   const [allChannels, setChannels] = useState([]);
 
   useEffect(() => {
@@ -46,6 +47,15 @@ const DashboardPage = props => {
 
     const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setAllMedia));
     window.addEventListener('online', () => navigator.onLine && getMedia(setAllMedia));
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    getTranscripts(setAllTranscripts);
+
+    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setAllTranscripts));
+    window.addEventListener('online', () => navigator.onLine && getTranscripts(setAllTranscripts));
 
     return () => subscription.unsubscribe();
   }, []);
@@ -64,6 +74,13 @@ const DashboardPage = props => {
   // console.groupEnd();
 
   const onClickMedia = useCallback(id => router.push(`/media/${id}`), [router]);
+  const onEditMedia = useCallback(
+    ([id]) => {
+      const transcript = allTranscripts.find(t => t.media === id);
+      router.push(`/editor?media=${id}&transcript=${transcript.id}`);
+    },
+    [router],
+  );
 
   return (
     <Root className={classes.root}>
@@ -77,7 +94,7 @@ const DashboardPage = props => {
           <MediaTable
             media={allMedia}
             onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
-            onEditMedia={payload => console.log('onEditMedia', { payload })}
+            onEditMedia={onEditMedia}
             onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
             onClickMedia={onClickMedia}
           />
