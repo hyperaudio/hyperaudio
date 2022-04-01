@@ -99,9 +99,9 @@ const DashboardPage = props => {
             onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
             onClickMedia={onClickMedia}
           />
-        ) : (
+        ) : user === null ? (
           'Access Denied!'
-        )}
+        ) : null}
       </Main>
     </Root>
   );
