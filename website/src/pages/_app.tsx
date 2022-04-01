@@ -3,6 +3,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { AppProps } from 'next/app';
 import { CacheProvider, EmotionCache } from '@emotion/react';
+import PlausibleProvider from 'next-plausible';
 
 import CssBaseline from '@mui/material/CssBaseline';
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -83,64 +84,66 @@ export default function MyApp(props: MyAppProps) {
   const [yOffset, setYOffset] = useState(0);
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>{config.title}</title>
+    <PlausibleProvider domain="hyper.audio">
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>{config.title}</title>
 
-        <link rel="canonical" href={config.url} />
-        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+          <link rel="canonical" href={config.url} />
+          <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 
-        <meta name="author" content="Hyperaudio — https://hyper.audio" />
-        <meta name="charset" content="utf-8" />
-        <meta name="coverage" content="Worldwide" />
-        <meta name="description" content={config.description} />
-        <meta name="designer" content="Hyperaudio — https://hyper.audio" />
-        <meta name="distribution" content="Global" />
-        <meta name="google" content="nositelinkssearchbox" />
-        <meta name="keywords" content={config.keywords} />
-        <meta name="language" content="en" />
-        <meta name="rating" content="General" />
-        <meta name="revist-after" content="after 1 days" />
-        <meta name="robots" content="index,follow" />
-        <meta name="title" content={config.title} />
-        <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
-        <meta
-          name="viewport"
-          content="width=device-width, minimum-scale = 1.0, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no, shrink-to-fit=no"
-        />
+          <meta name="author" content="Hyperaudio — https://hyper.audio" />
+          <meta name="charset" content="utf-8" />
+          <meta name="coverage" content="Worldwide" />
+          <meta name="description" content={config.description} />
+          <meta name="designer" content="Hyperaudio — https://hyper.audio" />
+          <meta name="distribution" content="Global" />
+          <meta name="google" content="nositelinkssearchbox" />
+          <meta name="keywords" content={config.keywords} />
+          <meta name="language" content="en" />
+          <meta name="rating" content="General" />
+          <meta name="revist-after" content="after 1 days" />
+          <meta name="robots" content="index,follow" />
+          <meta name="title" content={config.title} />
+          <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
+          <meta
+            name="viewport"
+            content="width=device-width, minimum-scale = 1.0, initial-scale = 1.0, maximum-scale = 1.0, user-scalable=no, shrink-to-fit=no"
+          />
 
-        {/* twitter metadata */}
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:creator" content="@hyperaudio" />
+          {/* twitter metadata */}
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:creator" content="@hyperaudio" />
 
-        {/* og metadata */}
-        <meta property="og:description" content={config.description} />
-        <meta property="og:image" content="/images/cover.png" />
-        <meta property="og:image:alt" content={config.title} />
-        <meta property="og:image:height" content="627" />
-        <meta property="og:image:secure_url" content="/images/cover.png" />
-        <meta property="og:image:width" content="1200" />
-        <meta property="og:locale" content="en" />
-        <meta property="og:site_name" content={config.title} />
-        <meta property="og:title" content={config.title} />
-        <meta property="og:url" content={config.url} />
-      </Head>
-      <CssBaseline />
-      <ThemeProvider theme={getTheme({ typography: 'responsive' })}>
-        <Root className={`${classes.root} useGrain`}>
-          <div className={classes.top}>
-            <Topbar setOffset={setYOffset} />
-            <main className={classes.main}>
-              <Component {...pageProps} yOffset={yOffset} />
-            </main>
-          </div>
-          <div className={classes.bottom}>
-            {inputGlobalStyles}
-            <Footer />
-            {/* <Navbar /> */}
-          </div>
-        </Root>
-      </ThemeProvider>
-    </CacheProvider>
+          {/* og metadata */}
+          <meta property="og:description" content={config.description} />
+          <meta property="og:image" content="/images/cover.png" />
+          <meta property="og:image:alt" content={config.title} />
+          <meta property="og:image:height" content="627" />
+          <meta property="og:image:secure_url" content="/images/cover.png" />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:locale" content="en" />
+          <meta property="og:site_name" content={config.title} />
+          <meta property="og:title" content={config.title} />
+          <meta property="og:url" content={config.url} />
+        </Head>
+        <CssBaseline />
+        <ThemeProvider theme={getTheme({ typography: 'responsive' })}>
+          <Root className={`${classes.root} useGrain`}>
+            <div className={classes.top}>
+              <Topbar setOffset={setYOffset} />
+              <main className={classes.main}>
+                <Component {...pageProps} yOffset={yOffset} />
+              </main>
+            </div>
+            <div className={classes.bottom}>
+              {inputGlobalStyles}
+              <Footer />
+              {/* <Navbar /> */}
+            </div>
+          </Root>
+        </ThemeProvider>
+      </CacheProvider>
+    </PlausibleProvider>
   );
 }
