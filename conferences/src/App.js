@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
 import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
+import { usePlausible } from 'next-plausible';
 
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -121,6 +122,7 @@ const getUser = async (setUser, identityId) => {
 
 const App = props => {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+  const plausible = usePlausible();
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
   const [domain, setDomain] = useState();
@@ -157,6 +159,7 @@ const App = props => {
       if (data.payload.event === 'signOut') {
         // await DataStore.clear();
         setUser(null);
+        plausible('signOut');
       }
 
       if (data.payload.event === 'signIn') {
@@ -172,9 +175,10 @@ const App = props => {
         } catch (ignored) {
           setUser(null);
         }
+        plausible('signIn');
       }
     });
-  }, []);
+  }, [plausible]);
 
   useEffect(() => setDomain(window.location.hostname), []);
 
