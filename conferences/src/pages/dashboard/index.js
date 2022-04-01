@@ -70,16 +70,17 @@ const DashboardPage = props => {
   }, []);
 
   // console.group('DashboardPage');
-  // console.log({ allMedia, allChannels });
+  // console.log({ allMedia, allChannels, allTranscripts });
   // console.groupEnd();
 
   const onClickMedia = useCallback(id => router.push(`/media/${id}`), [router]);
   const onEditMedia = useCallback(
     ([id]) => {
       const transcript = allTranscripts.find(t => t.media === id);
+      // console.log({ id, transcript, allTranscripts });
       router.push(`/editor?media=${id}&transcript=${transcript.id}`);
     },
-    [router],
+    [router, allTranscripts],
   );
 
   return (
