@@ -224,7 +224,7 @@ const MediaPage = () => {
       // });
       setData({ sources });
     })();
-  }, [media, transcripts, remixes]);
+  }, [media, transcripts, remixes, showDraft, showPreview]);
 
   console.log({ media, data });
 
