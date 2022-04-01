@@ -45,7 +45,7 @@ const MediaPage = ({ user, groups = [] }) => {
   global.router = router; // FIXME
 
   const {
-    query: { showPreview, transcript: transcriptId },
+    query: { showPreview, test, transcript: transcriptId },
   } = router;
   const showDraft = useMemo(() => groups.includes('Editors'), [groups]);
 
@@ -91,7 +91,7 @@ const MediaPage = ({ user, groups = [] }) => {
           let speakers;
           let blocks;
 
-          if (showDraft || showPreview) {
+          if (showDraft || showPreview || test) {
             try {
               const signedURL = await Storage.get(
                 `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
@@ -103,7 +103,7 @@ const MediaPage = ({ user, groups = [] }) => {
               );
 
               const result = (
-                await axios.get(signedURL, {
+                await axios.get(test ? test : signedURL, {
                   onDownloadProgress: progressEvent => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
@@ -225,7 +225,7 @@ const MediaPage = ({ user, groups = [] }) => {
       // });
       setData({ sources });
     })();
-  }, [media, transcripts, remixes, showDraft, showPreview]);
+  }, [media, transcripts, remixes, showDraft, showPreview, test]);
 
   console.log({ media, data });
 
