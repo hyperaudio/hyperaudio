@@ -17,6 +17,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
+import PreviewIcon from '@mui/icons-material/Preview';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
@@ -73,6 +74,8 @@ const EditorPage = ({ user, groups }) => {
   const [transcripts, setTranscripts] = useState([]);
   const [progress, setProgress] = useState(0);
   const [data, setData] = useState();
+  const [error, setError] = useState();
+
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
 
   useEffect(() => {
@@ -132,24 +135,30 @@ const EditorPage = ({ user, groups }) => {
         speakers = result.speakers;
         blocks = result.blocks;
       } catch (error) {
+        // setError(error);
+
+        // FIXME use transcript original url
         // use transcript's url
         // const result = await (await fetch(transcript.url)).json();
         // console.log(await axios.head(transcript.url));
+        try {
+          const result = (
+            await axios.get(transcript.url, {
+              onDownloadProgress: progressEvent => {
+                // console.log(progressEvent);
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setProgress(
+                  progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
+                );
+              },
+            })
+          ).data;
 
-        const result = (
-          await axios.get(transcript.url, {
-            onDownloadProgress: progressEvent => {
-              // console.log(progressEvent);
-              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-              setProgress(
-                progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
-              );
-            },
-          })
-        ).data;
-
-        speakers = result.speakers;
-        blocks = result.blocks;
+          speakers = result.speakers;
+          blocks = result.blocks;
+        } catch (error) {
+          setError(error);
+        }
       }
 
       // let { speakers, blocks } = await (await fetch(transcript.url)).json();
@@ -214,6 +223,10 @@ const EditorPage = ({ user, groups }) => {
         attributes: {
           poster: media?.poster,
         },
+        hlsOptions: {
+          backBufferLength: 30,
+          maxMaxBufferLength: 30,
+        },
       },
     }),
     [media],
@@ -240,7 +253,9 @@ const EditorPage = ({ user, groups }) => {
 
   const [draft, setDraft] = useState();
   const [saving, setSaving] = useState(0);
+  const [previewing, setPreviewing] = useState(0);
   const [savingProgress, setSavingProgress] = useState(0);
+  const [previewingProgress, setPreviewingProgress] = useState(0);
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
 
@@ -270,7 +285,12 @@ const EditorPage = ({ user, groups }) => {
     console.log(result);
     setSaving(1); // 2
 
-    // version save
+    // touch transcript
+    await DataStore.save(
+      Transcript.copyOf(transcript, updated => {
+        updated.metadata = { ...(transcript.metadata ?? {}), lastEdit: new Date() };
+      }),
+    );
 
     // setSaving(1);
     setTimeout(() => setSaving(0), 500);
@@ -279,6 +299,43 @@ const EditorPage = ({ user, groups }) => {
       level: 'public',
     });
     console.log(signedURL);
+  }, [draft, media, transcript, user]);
+
+  const handlePreview = useCallback(async () => {
+    if (!draft || !media || !transcript) return;
+    console.log(draft);
+    setPreviewingProgress(0);
+    setPreviewing(2); // 3
+
+    const result = await Storage.put(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`,
+      JSON.stringify(draft),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        metadata: {
+          user: user.id,
+        },
+        progressCallback(progress) {
+          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+          const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
+          setPreviewingProgress(percentCompleted);
+        },
+      },
+    );
+
+    console.log(result);
+    setPreviewing(1); // 2
+
+    // setPreviewing(1);
+    setTimeout(() => setPreviewing(0), 500);
+
+    // const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`, {
+    //   level: 'public',
+    // });
+    // console.log(signedURL);
+
+    window.open(`/media/${media.id}?showPreview=true`, '_blank');
   }, [draft, media, transcript, user]);
 
   const handlePublish = useCallback(async () => {
@@ -404,9 +461,29 @@ const EditorPage = ({ user, groups }) => {
                 )
               }
               onClick={handleSave}
-              disabled={!draft || saving !== 0}
+              disabled={!draft || saving !== 0 || !groups.includes('Editors')}
             >
               {saving ? `Saving ${savingProgress}%` : 'Save draft'}
+            </Button>
+          </Grid>
+          <Grid item sx={{ mr: 1 }}>
+            <Button
+              color="primary"
+              startIcon={
+                previewing === 0 ? (
+                  <PreviewIcon fontSize="small" />
+                ) : previewing === 3 ? (
+                  <HourglassEmptyIcon fontSize="small" />
+                ) : previewing === 2 ? (
+                  <HourglassTopIcon fontSize="small" />
+                ) : (
+                  <HourglassBottomIcon fontSize="small" />
+                )
+              }
+              onClick={handlePreview}
+              disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+            >
+              {previewing ? `Previewing ${previewingProgress}%` : 'Preview draft'}
             </Button>
           </Grid>
           <Grid item xs>
@@ -428,7 +505,7 @@ const EditorPage = ({ user, groups }) => {
                   )
                 }
                 onClick={handlePublish}
-                disabled={!draft || saving !== 0 || publishing !== 0 || !groups.includes('Editors')}
+                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
               >
                 {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
               </Button>
@@ -491,10 +568,11 @@ const EditorPage = ({ user, groups }) => {
           {initialState ? (
             <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
           ) : (
-            <p style={{ textAlign: 'center' }}>
+            <div style={{ textAlign: 'center' }}>
               Loading transcript{' '}
               <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-            </p>
+              {error && <p>Error: {error?.message}</p>}
+            </div>
           )}
         </div>
       </div>

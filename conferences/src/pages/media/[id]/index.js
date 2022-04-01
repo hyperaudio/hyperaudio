@@ -45,7 +45,7 @@ const MediaPage = () => {
   global.router = router; // FIXME
 
   const {
-    query: { showDraft, transcript: transcriptId },
+    query: { showDraft, showPreview, transcript: transcriptId },
   } = router;
 
   const id = useMemo(() => router.query.id, [router.query]);
@@ -53,6 +53,8 @@ const MediaPage = () => {
   const [transcripts, setTranscripts] = useState([]);
   const [remixes, setRemixes] = useState([]);
   const [data, setData] = useState();
+  const [progress, setProgress] = useState(0);
+  const [error, setError] = useState();
 
   console.log({ id, media, transcripts, remixes, data });
 
@@ -88,10 +90,12 @@ const MediaPage = () => {
           let speakers;
           let blocks;
 
-          if (showDraft) {
+          if (showDraft || showPreview) {
             try {
               const signedURL = await Storage.get(
-                `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+                `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
+                  showPreview ? '-preview' : ''
+                }.json`,
                 {
                   level: 'public',
                 },
@@ -99,22 +103,40 @@ const MediaPage = () => {
 
               const result = (
                 await axios.get(signedURL, {
-                  // onDownloadProgress: progressEvent => {
-                  //   const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                  //   setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
-                  // },
+                  onDownloadProgress: progressEvent => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+                  },
                 })
               ).data;
 
               speakers = result.speakers;
               blocks = result.blocks;
-            } catch (e) {}
+            } catch (error) {
+              console.error(error);
+              setError(error);
+            }
           }
 
           if (!speakers || !blocks) {
-            const result = await (await fetch(transcript.url)).json();
-            speakers = result.speakers;
-            blocks = result.blocks;
+            try {
+              const result = (
+                await axios.get(transcript.url, {
+                  onDownloadProgress: progressEvent => {
+                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                    // setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+                    setProgress(
+                      progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
+                    );
+                  },
+                })
+              ).data;
+              speakers = result.speakers;
+              blocks = result.blocks;
+            } catch (error) {
+              console.error(error);
+              setError(error);
+            }
           }
 
           // if (blocks.blocks) {
@@ -219,7 +241,10 @@ const MediaPage = () => {
           autoScroll={true}
         />
       ) : (
-        <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>Loading…</div>
+        <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
+          Loading <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+          {error && <p>Error: {error?.message}</p>}
+        </div>
       )}
     </Root>
   );
