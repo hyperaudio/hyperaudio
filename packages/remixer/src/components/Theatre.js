@@ -339,10 +339,10 @@ const Player = ({
           poster,
           preload: 'none',
         },
-        hlsOptions: {
-          backBufferLength: 30,
-          maxMaxBufferLength: 30,
-        },
+        // hlsOptions: {
+        //   backBufferLength: 30,
+        //   maxMaxBufferLength: 30,
+        // },
       },
     }),
     [poster],
