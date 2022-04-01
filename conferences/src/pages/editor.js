@@ -5,6 +5,7 @@ import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import axios from 'axios';
+import { usePlausible } from 'next-plausible';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -63,6 +64,7 @@ const EditorPage = ({ user, groups }) => {
   const {
     query: { media: mediaId, transcript: transcriptId },
   } = router;
+  const plausible = usePlausible();
 
   useEffect(() => {
     if (user === null)
@@ -295,11 +297,12 @@ const EditorPage = ({ user, groups }) => {
     // setSaving(1);
     setTimeout(() => setSaving(0), 500);
 
-    const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
-      level: 'public',
-    });
-    console.log(signedURL);
-  }, [draft, media, transcript, user]);
+    // const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
+    //   level: 'public',
+    // });
+    // console.log(signedURL);
+    plausible('save');
+  }, [draft, media, transcript, user, plausible]);
 
   const handlePreview = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -336,7 +339,8 @@ const EditorPage = ({ user, groups }) => {
     // console.log(signedURL);
 
     window.open(`/media/${media.id}?showPreview=true`, '_blank');
-  }, [draft, media, transcript, user]);
+    plausible('preview');
+  }, [draft, media, transcript, user, plausible]);
 
   const handlePublish = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -401,14 +405,15 @@ const EditorPage = ({ user, groups }) => {
     setPublishing(1);
     setTimeout(() => setPublishing(0), 500);
 
-    const signedURL = await Storage.get(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
-      {
-        level: 'public',
-      },
-    );
-    console.log(signedURL);
-  }, [draft, media, transcript, user]);
+    // const signedURL = await Storage.get(
+    //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
+    //   {
+    //     level: 'public',
+    //   },
+    // );
+    // console.log(signedURL);
+    plausible('publish');
+  }, [draft, media, transcript, user, plausible]);
 
   global.resetTranscript = useCallback(async () => {
     await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
