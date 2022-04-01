@@ -239,6 +239,7 @@ const MediaPage = () => {
           remix={null}
           sources={data.sources}
           autoScroll={true}
+          mediaLabel={showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null}
         />
       ) : (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>

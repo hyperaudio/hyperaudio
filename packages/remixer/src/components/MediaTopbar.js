@@ -82,7 +82,7 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source, ...props }) => {
+export const MediaTopbar = ({ source, mediaLabel, ...props }) => {
   const { transcript } = source;
 
   // console.log({ MediaTopbar: source });
@@ -145,6 +145,7 @@ export const MediaTopbar = ({ source, ...props }) => {
             </Tooltip>
           </div>
           <div className={`${classes.side} ${classes.sideR}`}>
+            {mediaLabel ? <span style={{ color: 'red', fontWeight: 'bold' }}>{mediaLabel}</span> : null}
             <Tooltip title="Toggle info">
               <IconButton onClick={isInfoOpen ? onInfoClose : onInfoOpen}>
                 {isInfoOpen ? <InfoIcon /> : <InfoOutlinedIcon />}
