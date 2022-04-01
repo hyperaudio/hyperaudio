@@ -392,7 +392,7 @@ const EditorPage = ({ user, groups }) => {
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
         updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
-        updated.metadata = { ...(transcript.metadata ?? {}), original: transcript.url };
+        updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
       }),
     );
 

@@ -49,6 +49,8 @@ const MediaPage = ({ user, groups = [] }) => {
   } = router;
   const showDraft = useMemo(() => groups.includes('Editors'), [groups]);
 
+  const [label, setLabel] = useState();
+
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
@@ -92,6 +94,7 @@ const MediaPage = ({ user, groups = [] }) => {
           let blocks;
 
           if (showDraft || showPreview || test) {
+            setLabel(showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null);
             try {
               const signedURL = await Storage.get(
                 `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
@@ -115,14 +118,21 @@ const MediaPage = ({ user, groups = [] }) => {
               blocks = result.blocks;
             } catch (error) {
               console.error(error);
-              setError(error);
+              // setError({
+              //   message: `${showDraft ? 'Draft' : showPreview ? 'Preview' : 'Published'} transcript: ${
+              //     error.message
+              //   }; Failover: loading original transcript`,
+              // });
+              setLabel(null);
             }
           }
 
           if (!speakers || !blocks) {
+            setLabel(null);
             try {
               const result = (
                 await axios.get(transcript.url, {
+                  // TODO use original url as fallback
                   onDownloadProgress: progressEvent => {
                     const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
                     // setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
@@ -240,7 +250,7 @@ const MediaPage = ({ user, groups = [] }) => {
           remix={null}
           sources={data.sources}
           autoScroll={true}
-          mediaLabel={showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null}
+          mediaLabel={label}
         />
       ) : (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
