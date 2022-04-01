@@ -40,13 +40,14 @@ const getTranscripts = async (setTranscripts, id) =>
 const getRemixes = async (setRemixes, id) =>
   setRemixes((await DataStore.query(RemixMedia)).filter(r => r.media.id === id).map(r => r.remix));
 
-const MediaPage = () => {
+const MediaPage = ({ user, groups = [] }) => {
   const router = useRouter();
   global.router = router; // FIXME
 
   const {
-    query: { showDraft, showPreview, transcript: transcriptId },
+    query: { showPreview, transcript: transcriptId },
   } = router;
+  const showDraft = useMemo(() => groups.includes('Editors'), [groups]);
 
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
