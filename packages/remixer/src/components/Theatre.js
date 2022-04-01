@@ -334,6 +334,11 @@ const Player = ({
       file: {
         attributes: {
           poster,
+          preload: 'none',
+        },
+        hlsOptions: {
+          backBufferLength: 30,
+          maxMaxBufferLength: 30,
         },
       },
     }),
