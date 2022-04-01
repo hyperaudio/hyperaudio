@@ -49,6 +49,7 @@
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
     "lodash": "4.17.21",
+    "mux-embed": "4.7.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-draggable": "4.4.4",
     "react-player": "2.9.0",

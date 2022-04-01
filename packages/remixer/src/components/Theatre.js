@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useState, useEffect, useMemo } from 'react'
 import ReactPlayer from 'react-player';
 import { createSilentAudio } from 'create-silent-audio';
 import TC from 'smpte-timecode';
+import mux from 'mux-embed';
 
 import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
@@ -328,6 +329,8 @@ const Player = ({
   setBuffering,
 }) => {
   const ref = useRef();
+  // console.log(ref);
+
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
   const config = useMemo(
     () => ({
@@ -351,6 +354,21 @@ const Player = ({
       ref.current.seekTo(time / 1e3, 'seconds');
     }
   }, [ref, time]);
+
+  // useEffect(() => {
+  //   if (ref.current?.getInternalPlayer() && global.MUX_KEY) {
+  //     const initTime = Date.now();
+  //     mux.monitor(ref.current.getInternalPlayer(), {
+  //       debug: false,
+  //       data: {
+  //         env_key: global.MUX_KEY,
+  //         player_name: 'Theatre',
+  //         player_init_time: initTime,
+  //         video_id: id,
+  //       },
+  //     });
+  //   }
+  // }, [ref]);
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
