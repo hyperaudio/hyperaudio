@@ -147,6 +147,9 @@ const Editor = ({
       if (!editorState) return;
       // console.log(e.target);
 
+      const selectionState = editorState.getSelection();
+      if (!selectionState.isCollapsed()) return;
+
       if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor')) {
         const mx = e.clientX;
         const my = e.clientY;
@@ -156,8 +159,6 @@ const Editor = ({
         const y = my - by;
 
         if (x < SPEAKER_AREA_WIDTH - 10 && y < SPEAKER_AREA_HEIGHT) {
-          // const selectionState = editorState.getSelection();
-          // const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
           const key = e.target.getAttribute('data-offset-key').replace('-0-0', '');
           const block = editorState.getCurrentContent().getBlockForKey(key);
           const data = block.getData().toJS();
@@ -167,14 +168,11 @@ const Editor = ({
         }
       } else {
         setCurrentBlock(null);
-        const selectionState = editorState.getSelection();
         const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
-        // console.log(block.toJS());
 
         const start = selectionState.getStartOffset();
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
-        // console.log(item);
 
         item?.start && seekTo && seekTo(item.start);
       }
