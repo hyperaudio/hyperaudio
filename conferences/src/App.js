@@ -126,6 +126,7 @@ const App = props => {
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
   const [domain, setDomain] = useState();
+  const [supportsIndexedDB, setSupportsIndexedDB] = useState(true);
 
   useEffect(
     () =>
@@ -182,6 +183,19 @@ const App = props => {
 
   useEffect(() => setDomain(window.location.hostname), []);
 
+  useEffect(() => {
+    try {
+      const db = window.indexedDB.open('test');
+      db.onerror = error => {
+        console.error(error);
+        setSupportsIndexedDB(false);
+      };
+    } catch (error) {
+      console.error(error);
+      setSupportsIndexedDB(false);
+    }
+  }, []);
+
   const organisation = {
     name: 'MozFest 2022',
   };
@@ -194,6 +208,22 @@ const App = props => {
           <Root className={classes.root}>
             {inputGlobalStyles}
             <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
+            {!supportsIndexedDB ? (
+              <div
+                style={{
+                  backgroundColor: 'yellow',
+                  height: 200,
+                  textAlign: 'center',
+                  paddingTop: 40,
+                }}
+              >
+                <h1>Your browser doesn&apos;t support IndexedDB</h1>
+                <p>
+                  This is a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">known issue</a> with Firefox
+                  in private browsing mode.
+                </p>
+              </div>
+            ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
           </Root>
         </PlausibleProvider>
@@ -201,6 +231,8 @@ const App = props => {
     </CacheProvider>
   );
 };
+
+global.MUX_KEY = process.env.NEXT_PUBLIC_MUX_KEY;
 
 export default App;
 

@@ -330,6 +330,7 @@ const Player = ({
 }) => {
   const ref = useRef();
   // console.log(ref);
+  // console.log(ref.current?.getInternalPlayer('hls'));
 
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
   const config = useMemo(
@@ -356,19 +357,8 @@ const Player = ({
   }, [ref, time]);
 
   // useEffect(() => {
-  //   if (ref.current?.getInternalPlayer() && global.MUX_KEY) {
-  //     const initTime = Date.now();
-  //     mux.monitor(ref.current.getInternalPlayer(), {
-  //       debug: false,
-  //       data: {
-  //         env_key: global.MUX_KEY,
-  //         player_name: 'Theatre',
-  //         player_init_time: initTime,
-  //         video_id: id,
-  //       },
-  //     });
-  //   }
-  // }, [ref]);
+  //   console.log('MUX???', ref.current?.getInternalPlayer('hls'));
+  // }, [ref.current?.getInternalPlayer('hls')]);
 
   const onReady = useCallback(() => {
     players.current[id] = ref.current;
@@ -376,6 +366,33 @@ const Player = ({
       // setPlaying(id); // TODO make this via ref?
       // setActive(id);
     }
+    //
+    if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
+      console.log('MUX ON');
+      const initTime = Date.now();
+      // mux.monitor(ref.current.getInternalPlayer(), {
+      //   debug: false,
+      //   data: {
+      //     env_key: global.MUX_KEY,
+      //     player_name: 'Theatre',
+      //     player_init_time: initTime,
+      //     video_id: id,
+      //   },
+      // });
+
+      mux.monitor(ref.current.getInternalPlayer(), {
+        debug: false,
+        hlsjs: ref.current?.getInternalPlayer('hls'),
+        data: {
+          env_key: global.MUX_KEY,
+          player_name: 'Theatre',
+          player_init_time: initTime,
+          video_id: id,
+        },
+      });
+      // console.log('MUX?');
+    }
+    //
   }, [id, primed]);
 
   const onPlay = useCallback(() => {
