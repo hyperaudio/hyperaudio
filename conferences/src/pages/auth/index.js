@@ -90,7 +90,16 @@ const Redirect = ({ user }) => {
 const AuthPage = () => {
   return (
     <AmplifyProvider theme={theme}>
-      <div style={{ marginTop: 50 }}>
+      <div
+        style={{
+          marginTop: 50,
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Authenticator>{({ signOut, user }) => <Redirect user={user} />}</Authenticator>
       </div>
     </AmplifyProvider>
