@@ -147,7 +147,7 @@ const Editor = ({
       if (!editorState) return;
       // console.log(e.target);
 
-      if (e.target.tagName === 'DIV') {
+      if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor')) {
         const mx = e.clientX;
         const my = e.clientY;
         const { x: bx, y: by } = e.target.getBoundingClientRect();
