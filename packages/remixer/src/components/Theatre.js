@@ -185,7 +185,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
     <Root>
       <Container className={classes.core} maxWidth="sm">
         <div className={classes.stage}>
-          {media?.map(({ id, url, poster }) => (
+          {media?.map(({ id, url, poster, title }) => (
             <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
               <Player
                 key={id}
@@ -193,7 +193,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
                 time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
                 // time={(time - (interval?.[0] ?? 0)) / 1e3}
                 playing={referencePlaying && active === id}
-                media={{ id, url, poster }}
+                media={{ id, url, poster, title }}
                 {...{ players, setActive, buffering, setBuffering }}
               />
             </div>
@@ -319,7 +319,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 };
 
 const Player = ({
-  media: { id, url, poster },
+  media: { id, url, poster, title },
   players,
   active,
   setActive,
@@ -388,9 +388,16 @@ const Player = ({
           player_name: 'Theatre',
           player_init_time: initTime,
           video_id: id,
+          video_title: title,
         },
       });
-      // console.log('MUX?');
+      // console.log({
+      //   // env_key: global.MUX_KEY,
+      //   player_name: 'Theatre',
+      //   player_init_time: initTime,
+      //   video_id: id,
+      //   video_title: title,
+      // });
     }
     //
   }, [id, primed]);

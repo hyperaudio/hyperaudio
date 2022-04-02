@@ -192,6 +192,7 @@ const MediaPage = ({ user, groups = [] }) => {
                 url: media.url,
                 poster: media.poster,
                 mediaId: media.id,
+                title: media.title,
               },
             ],
             channel: media.channel,
