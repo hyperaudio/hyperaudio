@@ -45,7 +45,7 @@ const MediaPage = ({ user, groups = [] }) => {
   global.router = router; // FIXME
 
   const {
-    query: { showPreview, test, transcript: transcriptId },
+    query: { showPreview, transcriptUrl, transcript: transcriptId },
   } = router;
   const showDraft = useMemo(() => groups.includes('Editors'), [groups]);
 
@@ -59,7 +59,7 @@ const MediaPage = ({ user, groups = [] }) => {
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState();
 
-  console.log({ id, media, transcripts, remixes, data });
+  useEffect(() => console.log({ id, media, transcripts, remixes, data }), [id, media, transcripts, remixes, data]);
 
   useEffect(() => {
     getMedia(setMedia, id);
@@ -86,125 +86,127 @@ const MediaPage = ({ user, groups = [] }) => {
   }, [id]);
 
   useEffect(() => {
-    if (!media) return;
+    if (!media || transcripts.length === 0) return;
     (async () => {
       const sources = await Promise.all(
-        transcripts.map(async transcript => {
-          let speakers;
-          let blocks;
+        transcripts
+          .filter(({ language }) => language === media.language)
+          .map(async transcript => {
+            let speakers;
+            let blocks;
 
-          if (showDraft || showPreview || test) {
-            setLabel(showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null);
-            try {
-              const signedURL = await Storage.get(
-                `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
-                  showPreview ? '-preview' : ''
-                }.json`,
-                {
-                  level: 'public',
-                },
-              );
-
-              const result = (
-                await axios.get(test ? test : signedURL, {
-                  onDownloadProgress: progressEvent => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+            if (showDraft || showPreview || transcriptUrl) {
+              setLabel(showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null);
+              try {
+                const signedURL = await Storage.get(
+                  `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
+                    showPreview ? '-preview' : ''
+                  }.json`,
+                  {
+                    level: 'public',
                   },
-                })
-              ).data;
+                );
 
-              speakers = result.speakers;
-              blocks = result.blocks;
-            } catch (error) {
-              console.error(error);
-              // setError({
-              //   message: `${showDraft ? 'Draft' : showPreview ? 'Preview' : 'Published'} transcript: ${
-              //     error.message
-              //   }; Failover: loading original transcript`,
-              // });
+                const result = (
+                  await axios.get(transcriptUrl ? transcriptUrl : signedURL, {
+                    onDownloadProgress: progressEvent => {
+                      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                      setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+                    },
+                  })
+                ).data;
+
+                speakers = result.speakers;
+                blocks = result.blocks;
+              } catch (error) {
+                console.error(error);
+                // setError({
+                //   message: `${showDraft ? 'Draft' : showPreview ? 'Preview' : 'Published'} transcript: ${
+                //     error.message
+                //   }; Failover: loading original transcript`,
+                // });
+                setLabel(null);
+              }
+            }
+
+            if (!speakers || !blocks) {
               setLabel(null);
+              try {
+                const result = (
+                  await axios.get(transcript.url, {
+                    // TODO use original url as fallback
+                    onDownloadProgress: progressEvent => {
+                      const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                      // setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+                      setProgress(
+                        progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
+                      );
+                    },
+                  })
+                ).data;
+                speakers = result.speakers;
+                blocks = result.blocks;
+              } catch (error) {
+                console.error(error);
+                setError(error);
+              }
             }
-          }
 
-          if (!speakers || !blocks) {
-            setLabel(null);
-            try {
-              const result = (
-                await axios.get(transcript.url, {
-                  // TODO use original url as fallback
-                  onDownloadProgress: progressEvent => {
-                    const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-                    // setProgress(percentCompleted === Infinity ? 100 : percentCompleted);
-                    setProgress(
-                      progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
-                    );
-                  },
-                })
-              ).data;
-              speakers = result.speakers;
-              blocks = result.blocks;
-            } catch (error) {
-              console.error(error);
-              setError(error);
-            }
-          }
+            // if (blocks.blocks) {
+            // const speakers = blocks.speakers;
+            blocks = blocks
+              .map(({ text, data: { start, end, speaker, items } }) => {
+                return {
+                  text,
+                  type: 'block',
+                  key: nanoid(5),
+                  media: media.playbackId,
+                  speaker: speakers?.[speaker]?.name ?? speaker,
+                  start: items[0].start * 1e3,
+                  end: items[items.length - 1].end * 1e3,
+                  starts: items.map(({ start }) => start * 1e3),
+                  duration: (items[items.length - 1].end - items[0].start) * 1e3,
+                  ends: items.map(({ end }) => end * 1e3),
+                  durations: items.map(({ start, end }) => (end - start) * 1e3),
+                  starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
+                  ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
+                  offsets: items.map(({ text }, i, arr) => {
+                    if (i === 0) return 0;
+                    return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
+                  }),
+                  lengths: items.map(({ text }) => text.length),
+                  gap: 0,
+                };
+              })
+              .reduce((acc, block, i) => {
+                if (i === 0) return [block];
+                const p = acc.pop();
+                p.gap = block.start - p.end;
+                return [...acc, p, block];
+              }, []);
+            // }
 
-          // if (blocks.blocks) {
-          // const speakers = blocks.speakers;
-          blocks = blocks
-            .map(({ text, data: { start, end, speaker, items } }) => {
-              return {
-                text,
-                type: 'block',
-                key: nanoid(5),
-                media: media.playbackId,
-                speaker: speakers?.[speaker]?.name ?? speaker,
-                start: items[0].start * 1e3,
-                end: items[items.length - 1].end * 1e3,
-                starts: items.map(({ start }) => start * 1e3),
-                duration: (items[items.length - 1].end - items[0].start) * 1e3,
-                ends: items.map(({ end }) => end * 1e3),
-                durations: items.map(({ start, end }) => (end - start) * 1e3),
-                starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
-                ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
-                offsets: items.map(({ text }, i, arr) => {
-                  if (i === 0) return 0;
-                  return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
-                }),
-                lengths: items.map(({ text }) => text.length),
-                gap: 0,
-              };
-            })
-            .reduce((acc, block, i) => {
-              if (i === 0) return [block];
-              const p = acc.pop();
-              p.gap = block.start - p.end;
-              return [...acc, p, block];
-            }, []);
-          // }
-
-          return {
-            ...transcript,
-            media: [
-              {
-                id: media.playbackId,
-                url: media.url,
-                poster: media.poster,
-                mediaId: media.id,
-                title: media.title,
+            return {
+              ...transcript,
+              media: [
+                {
+                  id: media.playbackId,
+                  url: media.url,
+                  poster: media.poster,
+                  mediaId: media.id,
+                  title: media.title,
+                },
+              ],
+              channel: media.channel,
+              tags: media.tags ?? [],
+              transcript: {
+                title: transcript.title,
+                translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
               },
-            ],
-            channel: media.channel,
-            tags: media.tags ?? [],
-            transcript: {
-              title: transcript.title,
-              translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
-            },
-            remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
-            blocks,
-          };
-        }),
+              remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
+              blocks,
+            };
+          }),
       );
       // setData({
       //   sources:
@@ -236,9 +238,9 @@ const MediaPage = ({ user, groups = [] }) => {
       // });
       setData({ sources });
     })();
-  }, [media, transcripts, remixes, showDraft, showPreview, test]);
+  }, [media, transcripts, remixes, showDraft, showPreview, transcriptUrl]);
 
-  console.log({ media, data });
+  // console.log({ media, data });
 
   return (
     <Root className={classes.root}>
@@ -252,6 +254,7 @@ const MediaPage = ({ user, groups = [] }) => {
           sources={data.sources}
           autoScroll={true}
           mediaLabel={label}
+          canEdit={groups.includes('Editors')}
         />
       ) : (
         <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>

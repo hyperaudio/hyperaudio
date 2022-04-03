@@ -11,6 +11,7 @@
     "____surge": "yarn build && mkdir -p ./build-surge && cp -r ./out/* ./build-surge && cp ./out/index.html ./build-surge/200.html && surge build-surge test2-hyperaudio.surge.sh"
   },
   "dependencies": {
+    "@aws-amplify/predictions": "4.0.36",
     "@aws-amplify/ui-react": "2.13.0",
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.8.2",
@@ -21,6 +22,7 @@
     "@sentry/nextjs": "6.19.3",
     "aws-amplify": "4.3.18",
     "axios": "0.26.1",
+    "cldr-segmentation": "2.2.0",
     "clsx": "1.1.1",
     "lodash": "4.17.21",
     "mux-embed": "4.7.0",

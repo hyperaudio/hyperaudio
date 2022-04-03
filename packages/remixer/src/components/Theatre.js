@@ -356,30 +356,13 @@ const Player = ({
     }
   }, [ref, time]);
 
-  // useEffect(() => {
-  //   console.log('MUX???', ref.current?.getInternalPlayer('hls'));
-  // }, [ref.current?.getInternalPlayer('hls')]);
+  // const initTime = useMemo(() => Date.now(), []);
 
-  const onReady = useCallback(() => {
-    players.current[id] = ref.current;
-    if (!primed) {
-      // setPlaying(id); // TODO make this via ref?
-      // setActive(id);
-    }
-    //
+  const waitForPlayer = useCallback(() => {
+    // console.log('MUX?');
     if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
       console.log('MUX ON');
       const initTime = Date.now();
-      // mux.monitor(ref.current.getInternalPlayer(), {
-      //   debug: false,
-      //   data: {
-      //     env_key: global.MUX_KEY,
-      //     player_name: 'Theatre',
-      //     player_init_time: initTime,
-      //     video_id: id,
-      //   },
-      // });
-
       mux.monitor(ref.current.getInternalPlayer(), {
         debug: false,
         hlsjs: ref.current?.getInternalPlayer('hls'),
@@ -391,14 +374,52 @@ const Player = ({
           video_title: title,
         },
       });
-      // console.log({
-      //   // env_key: global.MUX_KEY,
-      //   player_name: 'Theatre',
-      //   player_init_time: initTime,
-      //   video_id: id,
-      //   video_title: title,
-      // });
+    } else if (global.MUX_KEY) {
+      setTimeout(() => waitForPlayer(), (1e3 * 1) / 60); // TODO use reqAnimFrame
     }
+  }, [ref]);
+
+  useEffect(() => waitForPlayer(), [waitForPlayer]);
+
+  const onReady = useCallback(() => {
+    players.current[id] = ref.current;
+    if (!primed) {
+      // setPlaying(id); // TODO make this via ref?
+      // setActive(id);
+    }
+    //
+    // if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
+    // console.log('MUX ON');
+    // const initTime = Date.now();
+    // mux.monitor(ref.current.getInternalPlayer(), {
+    //   debug: false,
+    //   data: {
+    //     env_key: global.MUX_KEY,
+    //     player_name: 'Theatre',
+    //     player_init_time: initTime,
+    //     video_id: id,
+    //   },
+    // });
+
+    // mux.monitor(ref.current.getInternalPlayer(), {
+    //   debug: false,
+    //   hlsjs: ref.current?.getInternalPlayer('hls'),
+    //   data: {
+    //     env_key: global.MUX_KEY,
+    //     player_name: 'Theatre',
+    //     player_init_time: initTime,
+    //     video_id: id,
+    //     video_title: title,
+    //   },
+    // });
+    // console.log({
+    //   // env_key: global.MUX_KEY,
+    //   player_name: 'Theatre',
+    //   player_init_time: initTime,
+    //   video_id: id,
+    //   video_title: title,
+    // });
+    // }
     //
   }, [id, primed]);
 

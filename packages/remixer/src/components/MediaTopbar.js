@@ -82,7 +82,7 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source, mediaLabel, ...props }) => {
+export const MediaTopbar = ({ source, mediaLabel, canEdit, ...props }) => {
   const { transcript } = source;
 
   // console.log({ MediaTopbar: source });
@@ -129,7 +129,7 @@ export const MediaTopbar = ({ source, mediaLabel, ...props }) => {
         <Container className={classes.sides} maxWidth="sm">
           <div className={`${classes.side} ${classes.sideL}`}>
             <Tooltip title="Edit transcript">
-              <IconButton onClick={onEdit}>
+              <IconButton onClick={onEdit} disabled={!canEdit}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
