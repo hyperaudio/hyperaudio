@@ -18,12 +18,21 @@ const PlayheadSpan = props => {
 };
 
 const PlayheadDecorator = {
-  strategy: (contentBlock, callback, contentState, time = 0) => {
+  strategy: (contentBlock, callback, contentState, time = 0, autoScroll = false) => {
     const { start, end, items } = contentBlock.getData().toJS();
 
     if (start <= time && time < end) {
       const item = items?.filter(({ start }) => start <= time).pop();
       if (!item) return;
+
+      if (autoScroll)
+        setTimeout(
+          () =>
+            document
+              .querySelector(`div[data-block='true'][data-offset-key="${contentBlock.getKey()}-0-0"]`)
+              .scrollIntoView({ behavior: 'smooth', block: 'start' }),
+          0,
+        );
 
       callback(item.offset, item.offset + item.length);
     }

@@ -84,19 +84,22 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const Editor = ({
-  initialState = EditorState.createEmpty(),
-  playheadDecorator = PlayheadDecorator,
-  decorators = [],
-  time = 0,
-  seekTo,
-  showDialog,
-  aligner = wordAligner,
-  speakers: initialSpeakers = {},
-  onChange: onChangeProp,
-  pseudoReadOnly,
-  ...rest
-}) => {
+const Editor = props => {
+  const {
+    initialState = EditorState.createEmpty(),
+    playheadDecorator = PlayheadDecorator,
+    decorators = [],
+    time = 0,
+    seekTo,
+    showDialog,
+    aligner = wordAligner,
+    speakers: initialSpeakers = {},
+    onChange: onChangeProp,
+    pseudoReadOnly,
+    autoScroll,
+    ...rest
+  } = props;
+
   const theme = useTheme();
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -135,13 +138,13 @@ const Editor = ({
         decorator: new CompositeDecorator([
           {
             strategy: (contentBlock, callback, contentState) =>
-              playheadDecorator.strategy(contentBlock, callback, contentState, time),
+              playheadDecorator.strategy(contentBlock, callback, contentState, time, autoScroll),
             component: playheadDecorator.component,
           },
           ...decorators,
         ]),
       }),
-    [state, time],
+    [state, time, autoScroll],
   );
 
   const handleClick = useCallback(
@@ -277,8 +280,21 @@ const Editor = ({
     [editorState],
   );
 
+  const wrapper = useRef();
+  // const scrollTarget = useRef();
+  // useEffect(() => {
+  //   if (!autoScroll) return;
+
+  //   const playhead = wrapper.current?.querySelector('.Playhead');
+
+  //   if (playhead && playhead?.parentElement !== scrollTarget.current) {
+  //     scrollTarget.current = playhead.parentElement;
+  //     playhead.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  //   }
+  // }, [autoScroll, time, scrollTarget, wrapper]);
+
   return (
-    <Root className={classes.root} onClick={handleClick}>
+    <Root className={classes.root} onClick={handleClick} ref={wrapper}>
       <DraftEditor
         {...{ editorState, onChange, ...rest }}
         handleDrop={() => true}
@@ -292,7 +308,6 @@ const Editor = ({
         .map(block => (
           <BlockStyle key={block.getKey()} {...{ block, speakers, time }} />
         ))}
-
       {Boolean(speakerAnchor) && (
         <Popper
           anchorEl={speakerAnchor}
@@ -410,22 +425,40 @@ const BlockStyle = ({ block, speakers, time }) => {
   const start = useMemo(() => block.getData().get('start'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 
-  return (
-    <style scoped>
-      {`
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"] {
-          color: ${time < start ? theme.palette.text.disabled : theme.palette.common.black};
-        }
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::before {
-          content: '${speaker}';
-        }
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
-          content: '${tc}';
-        }
-      `}
-    </style>
-  );
+  return <Style {...{ theme, speaker, tc }} played={time < start} blockKey={block.getKey()} />;
+
+  // return (
+  //   <style scoped>
+  //     {`
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"] {
+  //         color: ${time < start ? theme.palette.text.disabled : theme.palette.common.black};
+  //       }
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::before {
+  //         content: '${speaker}';
+  //       }
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
+  //         content: '${tc}';
+  //       }
+  //     `}
+  //   </style>
+  // );
 };
+
+const Style = ({ theme, blockKey, speaker, played, tc }) => (
+  <style scoped>
+    {`
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
+        color: ${played ? theme.palette.text.disabled : theme.palette.common.black};
+      }
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"]::before {
+        content: '${speaker}';
+      }
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"]::after {
+        content: '${tc}';
+      }
+    `}
+  </style>
+);
 
 const timecode = (seconds, frameRate = 25, dropFrame = false) =>
   TC(seconds * frameRate, frameRate, dropFrame)
