@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
 import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
@@ -129,7 +129,7 @@ const App = props => {
   const plausible = usePlausible();
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
-  const [domain, setDomain] = useState();
+  const [domain, setDomain] = useState(global?.location?.hostname);
   const [supportsIndexedDB, setSupportsIndexedDB] = useState(true);
 
   useEffect(
@@ -200,9 +200,12 @@ const App = props => {
     }
   }, []);
 
-  const organisation = {
-    name: 'MozFest 2022',
-  };
+  const organisation = useMemo(
+    () => ({
+      name: 'MozFest 2022',
+    }),
+    [],
+  );
 
   return (
     <CacheProvider value={emotionCache}>
