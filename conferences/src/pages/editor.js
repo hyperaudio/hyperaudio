@@ -1,11 +1,13 @@
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
-import { DataStore, Predicates, SortDirection, Storage } from 'aws-amplify';
+import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
+import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { usePlausible } from 'next-plausible';
+import * as cldrSegmentation from 'cldr-segmentation';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -60,25 +62,33 @@ const getTranscripts = async (setTranscripts, id) =>
   setTranscripts((await DataStore.query(Transcript)).filter(t => t.media === id));
 
 const EditorPage = ({ user, groups }) => {
+  const plausible = usePlausible();
   const router = useRouter();
   const {
-    query: { media: mediaId, transcript: transcriptId },
+    query: { media: mediaId, transcript: transcriptId, original: originalId },
   } = router;
-  const plausible = usePlausible();
 
   useEffect(() => {
-    if (user === null)
-      router.push(`/auth?redirect=${encodeURIComponent(`/editor?media=${mediaId}&transcript=${transcriptId}`)}`);
-  }, [user, mediaId, transcriptId, router]);
+    if (user === null) {
+      router.push(
+        `/auth?redirect=${encodeURIComponent(
+          `/editor?media=${mediaId}${originalId ? `&original=${originalId}` : ''}&transcript=${transcriptId}`,
+        )}`,
+      );
+    }
+  }, [user, mediaId, transcriptId, originalId, router]);
 
   const [time, setTime] = useState(0);
   const [media, setMedia] = useState();
   const [transcripts, setTranscripts] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [originalProgress, setOriginalProgress] = useState(0);
   const [data, setData] = useState();
+  const [originalData, setOriginalData] = useState();
   const [error, setError] = useState();
 
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
+  const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
 
   useEffect(() => {
     if (!mediaId) return;
@@ -200,6 +210,92 @@ const EditorPage = ({ user, groups }) => {
     })();
   }, [media, transcript]);
 
+  useEffect(() => {
+    if (!original || !media) return;
+    console.log({ media, original });
+
+    (async () => {
+      let speakers;
+      let blocks;
+
+      try {
+        const signedURL = await Storage.get(`transcript/${media.playbackId}/${original.language}/${original.id}.json`, {
+          level: 'public',
+        });
+
+        const result = (
+          await axios.get(signedURL, {
+            onDownloadProgress: progressEvent => {
+              const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+              setOriginalProgress(percentCompleted === Infinity ? 100 : percentCompleted);
+            },
+          })
+        ).data;
+
+        speakers = result.speakers;
+        blocks = result.blocks;
+      } catch (error) {
+        // setError(error);
+
+        // FIXME use transcript original url
+        // use transcript's url
+        // const result = await (await fetch(transcript.url)).json();
+        // console.log(await axios.head(transcript.url));
+        try {
+          const result = (
+            await axios.get(original.url, {
+              onDownloadProgress: progressEvent => {
+                // console.log(progressEvent);
+                const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                setOriginalProgress(
+                  progressEvent.lengthComputable ? (percentCompleted === Infinity ? 100 : percentCompleted) : 75,
+                );
+              },
+            })
+          ).data;
+
+          speakers = result.speakers;
+          blocks = result.blocks;
+        } catch (error) {
+          setError(error);
+        }
+      }
+
+      // fix simple list of speakers (array -> map)
+      if (isArray(speakers)) {
+        speakers = speakers.reduce((acc, speaker) => {
+          const id = `S${nanoid(5)}`;
+          return { ...acc, [id]: { name: speaker, id } };
+        }, {});
+
+        blocks = blocks.map(block => {
+          const items = block.data.items.map((item, i, arr) => {
+            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+            return { ...item, offset, length: item.text.length };
+          });
+
+          return {
+            ...block,
+            key: `B${nanoid(5)}`,
+            data: {
+              ...block.data,
+              start: block.data.items?.[0]?.start ?? 0,
+              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+              items,
+              stt: items,
+            },
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+        });
+      }
+
+      console.log('original', { speakers, blocks });
+      setOriginalData({ speakers, blocks });
+    })();
+  }, [media, original]);
+
   const { speakers, blocks } = data ?? {};
 
   // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
@@ -208,6 +304,15 @@ const EditorPage = ({ user, groups }) => {
     () =>
       blocks && EditorState.createWithContent(convertFromRaw({ blocks: blocks, entityMap: createEntityMap(blocks) })),
     [blocks],
+  );
+
+  const originalState = useMemo(
+    () =>
+      originalData?.blocks &&
+      EditorState.createWithContent(
+        convertFromRaw({ blocks: originalData.blocks, entityMap: createEntityMap(originalData.blocks) }),
+      ),
+    [originalData],
   );
 
   const video = useRef();
@@ -285,7 +390,7 @@ const EditorPage = ({ user, groups }) => {
     );
 
     console.log(result);
-    setSaving(1); // 2
+    setSaving(1);
 
     // touch transcript
     await DataStore.save(
@@ -294,13 +399,7 @@ const EditorPage = ({ user, groups }) => {
       }),
     );
 
-    // setSaving(1);
     setTimeout(() => setSaving(0), 500);
-
-    // const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
-    //   level: 'public',
-    // });
-    // console.log(signedURL);
     plausible('save');
   }, [draft, media, transcript, user, plausible]);
 
@@ -308,7 +407,7 @@ const EditorPage = ({ user, groups }) => {
     if (!draft || !media || !transcript) return;
     console.log(draft);
     setPreviewingProgress(0);
-    setPreviewing(2); // 3
+    setPreviewing(2);
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`,
@@ -328,15 +427,8 @@ const EditorPage = ({ user, groups }) => {
     );
 
     console.log(result);
-    setPreviewing(1); // 2
-
-    // setPreviewing(1);
+    setPreviewing(1);
     setTimeout(() => setPreviewing(0), 500);
-
-    // const signedURL = await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`, {
-    //   level: 'public',
-    // });
-    // console.log(signedURL);
 
     window.open(`/media/${media.id}?showPreview=true`, '_blank');
     plausible('preview');
@@ -443,6 +535,134 @@ const EditorPage = ({ user, groups }) => {
     });
   }, [media, transcript]);
 
+  global.newTranslation = useCallback(
+    async (language = 'it-IT') => {
+      const suppressions = cldrSegmentation.suppressions.all;
+
+      const blocks = draft.blocks.map(block => {
+        const sentences = cldrSegmentation.sentenceSplit(block.text, suppressions).map((sentence, i, arr) => {
+          const offset = arr.slice(0, i).reduce((acc, s) => acc + s.length, 0);
+          const length = sentence.trim().length;
+          const startItem = block.data.items.find(item => item.offset === offset);
+          const endItem = block.data.items.find(item => item.offset === offset + length - item.length);
+
+          return {
+            offset,
+            length,
+            // startItem,
+            // endItem,
+            start: startItem?.start,
+            end: endItem?.end,
+            text: sentence.trim(),
+            // text_: block.text.substring(offset, offset + length),
+          };
+        });
+        return { ...block, data: { ...block.data, sentences } };
+      });
+
+      // console.log(blocks);
+
+      const MAX_CHUNK_LENGTH = 4.5 * 1e3;
+
+      const chunks = blocks
+        .map((block, i) => {
+          const text = `§§${i}§\n\n` + block.data.sentences.map(sentence => sentence.text).join('\n\n');
+          return {
+            // key: block.key,
+            text,
+            length: text.length,
+          };
+        })
+        .reduce((acc, chunk, i, arr) => {
+          if (i === 0) return [chunk];
+
+          const prev = acc.pop();
+          if (prev.length + chunk.length < MAX_CHUNK_LENGTH) {
+            prev.text = prev.text + '\n\n' + chunk.text;
+            prev.length = prev.text.length;
+            return [...acc, prev];
+          }
+
+          return [...acc, prev, chunk];
+        }, []);
+
+      console.log(chunks.length, chunks);
+
+      const translatedChunks = await Promise.all(
+        chunks.map(({ text }) =>
+          Predictions.convert({
+            translateText: {
+              source: {
+                text,
+                language: transcript.language,
+              },
+              targetLanguage: language,
+            },
+          }),
+        ),
+      );
+
+      console.log(translatedChunks);
+
+      const translatedBlocks = translatedChunks
+        .map(({ text }) => text)
+        .join('\n\n')
+        .split('\n\n§§')
+        .map((line, i) => {
+          const sentences = line.split('\n\n').slice(1);
+          // if (!line.startsWith(`${i}§`)) console.log(`${i}§`, line); // sometimes 299 translates to 29!
+          const block = blocks[i];
+
+          const newBlock = {
+            ...block,
+            data: {
+              ...block.data,
+              // block,
+              sentences: sentences.map((sentence, j) => {
+                return {
+                  start: block.data.sentences[j].start,
+                  end: block.data.sentences[j].end,
+                  text: sentence,
+                  // original: block.data.sentences[j],
+                };
+              }),
+            },
+          };
+
+          newBlock.text = newBlock.data.sentences.map(({ text }) => text).join(' ');
+          newBlock.data.items = newBlock.data.sentences
+            .flatMap(({ text, start, end }) => text.split(' ').map(text => ({ text, start, end, length: text.length })))
+            .map((item, j, arr) => ({
+              ...item,
+              offset: arr.slice(0, j).reduce((acc, item) => acc + item.length + 1, 0),
+            }));
+          return newBlock;
+        });
+
+      console.log(translatedBlocks);
+
+      const result = await Storage.put(
+        `transcript/${media.playbackId}/it-IT/${transcript.id}.json`,
+        JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
+        {
+          level: 'public',
+          contentType: 'application/json',
+          metadata: {
+            user: user.id,
+          },
+          progressCallback(progress) {
+            // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+            const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
+            setSavingProgress(percentCompleted);
+          },
+        },
+      );
+
+      console.log(result);
+    },
+    [media, transcripts, transcript, draft],
+  );
+
   const div = useRef();
   const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
 
@@ -518,9 +738,9 @@ const EditorPage = ({ user, groups }) => {
           </Grid>
         </Grid>
       </Toolbar>
-      <div style={{ height: '100vh', maxWidth: '600px', margin: '0 auto', paddingBottom: 300 }}>
+      <div style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}>
         {media ? (
-          <div style={{ marginBottom: 40 }}>
+          <div style={{ marginBottom: 40, maxWidth: '600px' }}>
             <ReactPlayer
               width="100%"
               ref={video}
@@ -569,20 +789,57 @@ const EditorPage = ({ user, groups }) => {
         ) : (
           <p style={{ textAlign: 'center' }}>Loading media…</p>
         )}
-        <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
-          {initialState ? (
-            <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
-          ) : (
-            <div style={{ textAlign: 'center' }}>
-              Loading transcript{' '}
-              <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-              {error && <p>Error: {error?.message}</p>}
+        {!originalId ? (
+          <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
+            {initialState ? (
+              <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+            ) : (
+              <div style={{ textAlign: 'center' }}>
+                Loading transcript{' '}
+                <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+                {error && <p>Error: {error?.message}</p>}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
+            <div style={{ width: '49%', float: 'left' }}>
+              {originalState ? (
+                <Editor
+                  {...{ time, seekTo, speakers }}
+                  initialState={originalState}
+                  onChange={NOOP}
+                  pseudoReadOnly={true}
+                  readOnly={true}
+                />
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+                  Loading transcript{' '}
+                  <span
+                    style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}
+                  >{`${originalProgress}%`}</span>
+                  {error && <p>Error: {error?.message}</p>}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+            <div style={{ width: '49%', float: 'left', marginLeft: '2%' }}>
+              {initialState ? (
+                <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+              ) : (
+                <div style={{ textAlign: 'center' }}>
+                  Loading transcript{' '}
+                  <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+                  {error && <p>Error: {error?.message}</p>}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </Root>
   ) : null;
 };
+
+const NOOP = () => {};
 
 export default EditorPage;

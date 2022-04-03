@@ -94,6 +94,7 @@ const Editor = ({
   aligner = wordAligner,
   speakers: initialSpeakers = {},
   onChange: onChangeProp,
+  pseudoReadOnly,
   ...rest
 }) => {
   const theme = useTheme();
@@ -111,12 +112,13 @@ const Editor = ({
   const [speakerQuery, setSpeakerQuery] = useState('');
 
   const onChange = useCallback(
-    editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch }),
-    [aligner],
+    editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch, pseudoReadOnly }),
+    [aligner, pseudoReadOnly],
   );
 
   // FIMXE debounce
   useEffect(() => {
+    if (pseudoReadOnly) return;
     onChangeProp({
       speakers,
       blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
@@ -125,7 +127,7 @@ const Editor = ({
         return block;
       }),
     });
-  }, [state, speakers, onChangeProp]);
+  }, [state, speakers, onChangeProp, pseudoReadOnly]);
 
   const editorState = useMemo(
     () =>
@@ -145,12 +147,12 @@ const Editor = ({
   const handleClick = useCallback(
     e => {
       if (!editorState) return;
-      // console.log(e.target);
+      console.log(e.target);
 
       const selectionState = editorState.getSelection();
       if (!selectionState.isCollapsed()) return;
 
-      if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor')) {
+      if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor') && !pseudoReadOnly) {
         const mx = e.clientX;
         const my = e.clientY;
         const { x: bx, y: by } = e.target.getBoundingClientRect();
@@ -168,16 +170,30 @@ const Editor = ({
         }
       } else {
         setCurrentBlock(null);
-        const block = editorState.getCurrentContent().getBlockForKey(selectionState.getAnchorKey());
 
-        const start = selectionState.getStartOffset();
+        let key = selectionState.getAnchorKey();
+        if (pseudoReadOnly) {
+          key = e.target.parentElement.parentElement.getAttribute('data-offset-key')?.replace('-0-0', '');
+        }
+
+        if (!key) return;
+        const block = editorState.getCurrentContent().getBlockForKey(key);
+
+        let start = selectionState.getStartOffset();
+        if (pseudoReadOnly) {
+          start =
+            window.getSelection().anchorOffset +
+            (e.target.parentElement?.previousSibling?.textContent.length ?? 0) +
+            (e.target.parentElement?.previousSibling?.previousSibling?.textContent.length ?? 0);
+        }
+
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
 
         item?.start && seekTo && seekTo(item.start);
       }
     },
-    [seekTo, editorState],
+    [seekTo, editorState, pseudoReadOnly],
   );
 
   const handleSpeakerSet = useCallback(
