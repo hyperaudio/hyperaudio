@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { usePlausible } from 'next-plausible';
 import * as cldrSegmentation from 'cldr-segmentation';
+import { createSilentAudio } from 'create-silent-audio';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -52,6 +53,11 @@ const Root = styled('div', {
     ...theme.mixins.toolbar,
   },
 }));
+
+export const DIFF_BEHIND = 0.3;
+export const DIFF_IN_FRONT = 0.3;
+export const SPEED_UP = 1.05;
+export const SLOW_DOWN = 0.95;
 
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
@@ -315,13 +321,30 @@ const EditorPage = ({ user, groups }) => {
     [originalData],
   );
 
+  useEffect(() => console.log({ initialState }), [initialState]);
+  useEffect(() => console.log({ originalState }), [originalState]);
+
+  const reference = useRef();
   const video = useRef();
   const seekTo = useCallback(
     time => {
       setSeekTime(time);
+      if (reference.current) reference.current.currentTime = time;
       if (video.current) video.current.seekTo(time, 'seconds');
     },
-    [video],
+    [video, reference],
+  );
+
+  const [tempAutoScroll, setTempAutoScroll] = useState(false);
+  const originalSeekTo = useCallback(
+    time => {
+      setSeekTime(time);
+      if (reference.current) reference.current.currentTime = time;
+      if (video.current) video.current.seekTo(time, 'seconds');
+      setTempAutoScroll(true);
+      setTimeout(() => setTempAutoScroll(false), 2000);
+    },
+    [video, reference],
   );
 
   const config = useMemo(
@@ -330,10 +353,10 @@ const EditorPage = ({ user, groups }) => {
         attributes: {
           poster: media?.poster,
         },
-        hlsOptions: {
-          backBufferLength: 30,
-          maxMaxBufferLength: 30,
-        },
+        // hlsOptions: {
+        //   backBufferLength: 30,
+        //   maxMaxBufferLength: 30,
+        // },
       },
     }),
     [media],
@@ -344,19 +367,70 @@ const EditorPage = ({ user, groups }) => {
   const [playing, setPlaying] = useState(false);
   const [buffering, setBuffering] = useState(false);
 
-  const onProgress = useCallback(({ playedSeconds }) => setTime(playedSeconds), []);
-  const play = useCallback(() => setPlaying(true), []);
-  const pause = useCallback(() => setPlaying(false), []);
+  const onProgress = useCallback(({ playedSeconds }) => {
+    setTime(playedSeconds);
+  }, []);
+
+  const play = useCallback(() => {
+    // reference.current.play();
+    setPlaying(true);
+  }, [reference]);
+
+  const pause = useCallback(() => {
+    // reference.current.pause();
+    setPlaying(false);
+  }, [reference]);
+
   const handleSliderChange = useCallback(
     (event, value) => {
+      // if (reference.current) reference.current.currentTime = value;
       setSeekTime(value);
       if (video.current) video.current.seekTo(value, 'seconds');
     },
-    [video],
+    [video, reference],
   );
+
   const onBuffer = useCallback(() => setBuffering(true), []);
   const onBufferEnd = useCallback(() => setBuffering(false), []);
   const onDuration = useCallback(duration => setDuration(duration), []);
+
+  // useEffect(() => {
+  //   if (duration === 0 || reference.current.src) return;
+  //   // @ts-ignore
+  //   reference.current.src = createSilentAudio(Math.ceil(duration), 44100 / 8);
+  //   reference.current.addEventListener('timeupdate', () => {
+  //     // console.log(reference.current?.currentTime);
+  //     setTime && setTime(reference.current?.currentTime ?? 0);
+  //   });
+  // }, [reference, duration, setTime]);
+
+  // const useAnimationFrame = useCallback(() => {
+  //   setTime(reference.current?.currentTime ?? 0);
+  //   window.requestAnimationFrame(useAnimationFrame);
+  // }, [reference]);
+
+  // useEffect(() => window.requestAnimationFrame(useAnimationFrame), [useAnimationFrame]);
+
+  const [playbackRate, setPlaybackRate] = useState(1);
+  // useEffect(() => {
+  //   if (!video.current) return;
+  //   const masterTime = time;
+  //   const minionTime = video.current.getCurrentTime();
+  //   if (minionTime < masterTime && masterTime - minionTime > DIFF_BEHIND) {
+  //     setPlaybackRate(SPEED_UP);
+  //     console.log('speed up');
+  //   } else if (minionTime > masterTime && minionTime - masterTime > DIFF_IN_FRONT) {
+  //     setPlaybackRate(SLOW_DOWN);
+  //     console.log('slow down');
+  //   } else {
+  //     setPlaybackRate(1.0);
+  //     console.log('normal');
+  //   }
+  //   // if (Math.abs(video.current.getCurrentTime() - time) > 0.5) {
+  //   //   console.log('SEEK', time, video.current.getCurrentTime(), video.current.getCurrentTime() - time);
+  //   //   video.current.seekTo(time, 'seconds');
+  //   // }
+  // }, [video, time]);
 
   const [draft, setDraft] = useState();
   const [saving, setSaving] = useState(0);
@@ -615,6 +689,7 @@ const EditorPage = ({ user, groups }) => {
 
           const newBlock = {
             ...block,
+            key: `t${nanoid(5)}`,
             data: {
               ...block.data,
               // block,
@@ -642,7 +717,7 @@ const EditorPage = ({ user, groups }) => {
       console.log(translatedBlocks);
 
       const result = await Storage.put(
-        `transcript/${media.playbackId}/it-IT/${transcript.id}.json`,
+        `transcript/${media.playbackId}/it-IT/c1751895-c49a-46f4-85be-8d9127e3da25.json`,
         JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
         {
           level: 'public',
@@ -742,6 +817,7 @@ const EditorPage = ({ user, groups }) => {
         {media ? (
           <div style={{ marginBottom: 40, maxWidth: '600px' }}>
             <ReactPlayer
+              controls
               width="100%"
               ref={video}
               config={config}
@@ -753,6 +829,7 @@ const EditorPage = ({ user, groups }) => {
               onPlay={play}
               onDuration={onDuration}
               progressInterval={100}
+              playbackRate={playbackRate}
             />
             <div>
               <Grid container spacing={2} sx={{ alignItems: 'center' }}>
@@ -785,6 +862,15 @@ const EditorPage = ({ user, groups }) => {
                 </Grid>
               </Grid>
             </div>
+            {/* <audio
+              controls
+              muted
+              // @ts-ignore
+              ref={reference}
+              onPlay={play}
+              onPause={pause}
+              style={{ display: 'xnone', width: '100%' }}
+            /> */}
           </div>
         ) : (
           <p style={{ textAlign: 'center' }}>Loading media…</p>
@@ -801,16 +887,19 @@ const EditorPage = ({ user, groups }) => {
               </div>
             )}
           </div>
-        ) : (
-          <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
-            <div style={{ width: '49%', float: 'left' }}>
+        ) : true ? (
+          <div ref={div} style={{ height: `calc(100vh - ${top}px)` }}>
+            <div style={{ width: '49%', float: 'left', overflow: 'scroll', paddingTop: 20, height: '100%' }}>
               {originalState ? (
                 <Editor
-                  {...{ time, seekTo, speakers }}
+                  time={time}
+                  speakers={originalData.speakers}
                   initialState={originalState}
                   onChange={NOOP}
                   pseudoReadOnly={true}
                   readOnly={true}
+                  autoScroll={true}
+                  seekTo={originalSeekTo}
                 />
               ) : (
                 <div style={{ textAlign: 'center' }}>
@@ -822,9 +911,18 @@ const EditorPage = ({ user, groups }) => {
                 </div>
               )}
             </div>
-            <div style={{ width: '49%', float: 'left', marginLeft: '2%' }}>
+            <div
+              style={{
+                width: '49%',
+                float: 'left',
+                marginLeft: '2%',
+                overflow: 'scroll',
+                paddingTop: 20,
+                height: '100%',
+              }}
+            >
               {initialState ? (
-                <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+                <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} autoScroll={tempAutoScroll} />
               ) : (
                 <div style={{ textAlign: 'center' }}>
                   Loading transcript{' '}
@@ -834,7 +932,7 @@ const EditorPage = ({ user, groups }) => {
               )}
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </Root>
   ) : null;
