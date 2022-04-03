@@ -135,7 +135,7 @@ const Remixer = props => {
         source: props.sources[0],
       },
     });
-  }, [props]);
+  }, [props.sources, props.remix]);
 
   const [showSource, setShowSource] = useState(props.showSource === undefined ? true : props.showSource);
   const [showLibrary, setShowLibrary] = useState(false);
@@ -162,11 +162,6 @@ const Remixer = props => {
     },
     [media],
   );
-
-  console.group('index.js');
-  // console.log('sources', sources);
-  // console.log('source', source);
-  console.groupEnd();
 
   const onBeforeCapture = useCallback(e => {
     // console.log({ onBeforeCapture: e });

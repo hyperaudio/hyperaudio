@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
+import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
@@ -24,6 +25,9 @@ global.Auth = Auth;
 global.DataStore = DataStore;
 
 Amplify.configure({ ...awsexports, ...awsconfig });
+try {
+  Amplify.addPluggable(new AmazonAIPredictionsProvider());
+} catch (ignored) {}
 
 Analytics.autoTrack('session', {
   enable: true,

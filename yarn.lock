@@ -8078,6 +8078,13 @@ classnames@2.3.1:
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.1.tgz#dfcfa3891e306ec1dad105d0e88f4417b8535e8e"
   integrity sha512-OlQdbZ7gLfGarSqxesMesDa5uz7KFbID8Kpq/SxIoNGDqY8lSYs0D+hhtBXhcdB3rcbXArFr7vlHheLk1voeNA==
 
+cldr-segmentation@2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/cldr-segmentation/-/cldr-segmentation-2.2.0.tgz#b8ad19c7fe098b89fa1003790201fc3444ccee9a"
+  integrity sha512-127qogDH4NVSbtrnkPUjCBH6604d6lo+269tMpQuVd8lJniLefhHzQpkZbINevEYMEOBh/98ACQ1pyUDXTOF/A==
+  dependencies:
+    utfstring "~2.0"
+
 clean-css@^4.2.3:
   version "4.2.4"
   resolved "https://registry.yarnpkg.com/clean-css/-/clean-css-4.2.4.tgz#733bf46eba4e607c6891ea57c24a989356831178"
@@ -18167,6 +18174,11 @@ use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/use/-/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"
   integrity sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==
+
+utfstring@~2.0:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/utfstring/-/utfstring-2.0.2.tgz#39c10134a0b1f3234e88c4573f362bdd6a17292d"
+  integrity sha512-dlLwDU6nUrUVsUbA3bUQ6LzRpt8cmJFNCarbESKFqZGMdivOFmzapOlQq54ifHXB9zgR00lKpcpCo6CITG2bjQ==
 
 util-deprecate@^1.0.1, util-deprecate@^1.0.2, util-deprecate@~1.0.1:
   version "1.0.2"
