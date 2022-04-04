@@ -10,6 +10,7 @@ import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
+import mux from 'mux-embed';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -124,23 +125,12 @@ const EditorPage = ({ organisation, user, groups }) => {
       let blocks;
 
       try {
-        // load saved version
-        // const result = JSON.parse(
-        //   await (
-        //     await Storage.get(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
-        //       download: true,
-        //     })
-        //   ).Body.text(),
-        // );
-
         const signedURL = await Storage.get(
           `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
           {
             level: 'public',
           },
         );
-
-        // const result = await (await fetch(signedURL)).json();
 
         const result = (
           await axios.get(signedURL, {
@@ -158,8 +148,6 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         // FIXME use transcript original url
         // use transcript's url
-        // const result = await (await fetch(transcript.url)).json();
-        // console.log(await axios.head(transcript.url));
         try {
           const result = (
             await axios.get(transcript.url, {
@@ -202,38 +190,6 @@ const EditorPage = ({ organisation, user, groups }) => {
           setError(error);
         }
       }
-
-      // let { speakers, blocks } = await (await fetch(transcript.url)).json();
-
-      // fix simple list of speakers (array -> map)
-      // if (isArray(speakers)) {
-      //   speakers = speakers.reduce((acc, speaker) => {
-      //     const id = `S${nanoid(5)}`;
-      //     return { ...acc, [id]: { name: speaker, id } };
-      //   }, {});
-
-      //   blocks = blocks.map(block => {
-      //     const items = block.data.items.map((item, i, arr) => {
-      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-      //       return { ...item, offset, length: item.text.length };
-      //     });
-
-      //     return {
-      //       ...block,
-      //       key: `B${nanoid(5)}`,
-      //       data: {
-      //         ...block.data,
-      //         start: block.data.items?.[0]?.start ?? 0,
-      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-      //         speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-      //         items,
-      //         stt: items,
-      //       },
-      //       entityRanges: [],
-      //       inlineStyleRanges: [],
-      //     };
-      //   });
-      // }
 
       console.log({ speakers, blocks });
       setData({ speakers, blocks });
@@ -292,8 +248,6 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         // FIXME use transcript original url
         // use transcript's url
-        // const result = await (await fetch(transcript.url)).json();
-        // console.log(await axios.head(transcript.url));
         try {
           const result = (
             await axios.get(original.url, {
@@ -313,36 +267,6 @@ const EditorPage = ({ organisation, user, groups }) => {
           setError(error);
         }
       }
-
-      // fix simple list of speakers (array -> map)
-      // if (isArray(speakers)) {
-      //   speakers = speakers.reduce((acc, speaker) => {
-      //     const id = `S${nanoid(5)}`;
-      //     return { ...acc, [id]: { name: speaker, id } };
-      //   }, {});
-
-      //   blocks = blocks.map(block => {
-      //     const items = block.data.items.map((item, i, arr) => {
-      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-      //       return { ...item, offset, length: item.text.length };
-      //     });
-
-      //     return {
-      //       ...block,
-      //       key: `B${nanoid(5)}`,
-      //       data: {
-      //         ...block.data,
-      //         start: block.data.items?.[0]?.start ?? 0,
-      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-      //         speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-      //         items,
-      //         stt: items,
-      //       },
-      //       entityRanges: [],
-      //       inlineStyleRanges: [],
-      //     };
-      //   });
-      // }
 
       console.log('original', { speakers, blocks });
       setOriginalData({ speakers, blocks });
@@ -371,27 +295,50 @@ const EditorPage = ({ organisation, user, groups }) => {
   useEffect(() => console.log({ initialState }), [initialState]);
   useEffect(() => console.log({ originalState }), [originalState]);
 
-  const reference = useRef();
   const video = useRef();
+
+  const waitForPlayer = useCallback(() => {
+    if (!media) return;
+
+    console.log('MUX?');
+    if (video.current?.getInternalPlayer('hls') && global.MUX_KEY) {
+      console.log('MUX ON');
+      const initTime = Date.now();
+      mux.monitor(video.current.getInternalPlayer(), {
+        debug: false,
+        hlsjs: video.current?.getInternalPlayer('hls'),
+        data: {
+          env_key: global.MUX_KEY,
+          player_name: 'Editor',
+          player_init_time: initTime,
+          video_id: media.playbackId,
+          video_title: media.title,
+        },
+      });
+    } else if (global.MUX_KEY) {
+      setTimeout(() => waitForPlayer(), (1e3 * 1) / 60); // TODO use reqAnimFrame?
+    }
+  }, [video, media]);
+
+  useEffect(() => waitForPlayer(), [waitForPlayer]);
+
   const seekTo = useCallback(
     time => {
       setSeekTime(time);
-      if (reference.current) reference.current.currentTime = time;
       if (video.current) video.current.seekTo(time, 'seconds');
     },
-    [video, reference],
+    [video],
   );
 
   const [tempAutoScroll, setTempAutoScroll] = useState(false);
   const originalSeekTo = useCallback(
     time => {
       setSeekTime(time);
-      if (reference.current) reference.current.currentTime = time;
       if (video.current) video.current.seekTo(time, 'seconds');
       setTempAutoScroll(true);
       setTimeout(() => setTempAutoScroll(false), 2000);
     },
-    [video, reference],
+    [video],
   );
 
   const config = useMemo(
@@ -419,23 +366,15 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTime(playedSeconds);
   }, []);
 
-  const play = useCallback(() => {
-    // reference.current.play();
-    setPlaying(true);
-  }, [reference]);
-
-  const pause = useCallback(() => {
-    // reference.current.pause();
-    setPlaying(false);
-  }, [reference]);
+  const play = useCallback(() => setPlaying(true), []);
+  const pause = useCallback(() => setPlaying(false), []);
 
   const handleSliderChange = useCallback(
     (event, value) => {
-      // if (reference.current) reference.current.currentTime = value;
       setSeekTime(value);
       if (video.current) video.current.seekTo(value, 'seconds');
     },
-    [video, reference],
+    [video],
   );
 
   const onEnablePIP = useCallback(() => setPip(true), []);
@@ -443,44 +382,6 @@ const EditorPage = ({ organisation, user, groups }) => {
   const onBuffer = useCallback(() => setBuffering(true), []);
   const onBufferEnd = useCallback(() => setBuffering(false), []);
   const onDuration = useCallback(duration => setDuration(duration), []);
-
-  // useEffect(() => {
-  //   if (duration === 0 || reference.current.src) return;
-  //   // @ts-ignore
-  //   reference.current.src = createSilentAudio(Math.ceil(duration), 44100 / 8);
-  //   reference.current.addEventListener('timeupdate', () => {
-  //     // console.log(reference.current?.currentTime);
-  //     setTime && setTime(reference.current?.currentTime ?? 0);
-  //   });
-  // }, [reference, duration, setTime]);
-
-  // const useAnimationFrame = useCallback(() => {
-  //   setTime(reference.current?.currentTime ?? 0);
-  //   window.requestAnimationFrame(useAnimationFrame);
-  // }, [reference]);
-
-  // useEffect(() => window.requestAnimationFrame(useAnimationFrame), [useAnimationFrame]);
-
-  const [playbackRate, setPlaybackRate] = useState(1);
-  // useEffect(() => {
-  //   if (!video.current) return;
-  //   const masterTime = time;
-  //   const minionTime = video.current.getCurrentTime();
-  //   if (minionTime < masterTime && masterTime - minionTime > DIFF_BEHIND) {
-  //     setPlaybackRate(SPEED_UP);
-  //     console.log('speed up');
-  //   } else if (minionTime > masterTime && minionTime - masterTime > DIFF_IN_FRONT) {
-  //     setPlaybackRate(SLOW_DOWN);
-  //     console.log('slow down');
-  //   } else {
-  //     setPlaybackRate(1.0);
-  //     console.log('normal');
-  //   }
-  //   // if (Math.abs(video.current.getCurrentTime() - time) > 0.5) {
-  //   //   console.log('SEEK', time, video.current.getCurrentTime(), video.current.getCurrentTime() - time);
-  //   //   video.current.seekTo(time, 'seconds');
-  //   // }
-  // }, [video, time]);
 
   const [draft, setDraft] = useState();
   const [saving, setSaving] = useState(0);
@@ -785,7 +686,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
       console.log(result);
     },
-    [media, transcripts, transcript, draft],
+    [media, transcripts, transcript, draft, user],
   );
 
   const div = useRef();
@@ -895,7 +796,6 @@ const EditorPage = ({ organisation, user, groups }) => {
                   onPlay={play}
                   onDuration={onDuration}
                   progressInterval={100}
-                  playbackRate={playbackRate}
                   onEnablePIP={onEnablePIP}
                   onDisablePIP={onDisablePIP}
                 />
@@ -931,15 +831,6 @@ const EditorPage = ({ organisation, user, groups }) => {
                   </Grid>
                 </Grid>
               </div>
-              {/* <audio
-              controls
-              muted
-              // @ts-ignore
-              ref={reference}
-              onPlay={play}
-              onPause={pause}
-              style={{ display: 'xnone', width: '100%' }}
-            /> */}
             </div>
           ) : (
             <p style={{ textAlign: 'center' }}>Loading media…</p>
