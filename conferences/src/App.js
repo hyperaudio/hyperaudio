@@ -245,9 +245,9 @@ const App = props => {
             {!supportsIndexedDB ? (
               <Alert severity="error">
                 <Link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
-                  Firefox does not yet support a technology called IndexDB in Private Mode
+                  Firefox does not yet support a technology called IndexDB in Private Mode.
                 </Link>
-                . Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox's
+                Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox&apos;s
                 private mode at this time.
               </Alert>
             ) : null}
