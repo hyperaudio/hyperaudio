@@ -134,17 +134,19 @@ const Editor = props => {
 
   const editorState = useMemo(
     () =>
-      EditorState.set(state, {
-        decorator: new CompositeDecorator([
-          {
-            strategy: (contentBlock, callback, contentState) =>
-              playheadDecorator.strategy(contentBlock, callback, contentState, time, autoScroll),
-            component: playheadDecorator.component,
-          },
-          ...decorators,
-        ]),
-      }),
-    [state, time, autoScroll],
+      playheadDecorator
+        ? EditorState.set(state, {
+            decorator: new CompositeDecorator([
+              {
+                strategy: (contentBlock, callback, contentState) =>
+                  playheadDecorator.strategy(contentBlock, callback, contentState, time, autoScroll),
+                component: playheadDecorator.component,
+              },
+              ...decorators,
+            ]),
+          })
+        : state,
+    [state, time, autoScroll, playheadDecorator],
   );
 
   const handleClick = useCallback(
@@ -281,17 +283,26 @@ const Editor = props => {
   );
 
   const wrapper = useRef();
-  // const scrollTarget = useRef();
-  // useEffect(() => {
-  //   if (!autoScroll) return;
+  const scrollTarget = useRef();
+  useEffect(() => {
+    if (!autoScroll || playheadDecorator) return;
 
-  //   const playhead = wrapper.current?.querySelector('.Playhead');
+    const blocks = editorState.getCurrentContent().getBlocksAsArray();
+    // console.log({ blocks });
+    const block = blocks
+      .slice()
+      .reverse()
+      .find(block => block.getData().get('start') <= time);
+    if (!block) return;
+    // console.log(block.getKey(), block.getText());
 
-  //   if (playhead && playhead?.parentElement !== scrollTarget.current) {
-  //     scrollTarget.current = playhead.parentElement;
-  //     playhead.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  //   }
-  // }, [autoScroll, time, scrollTarget, wrapper]);
+    const playhead = wrapper.current?.querySelector(`div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]`);
+
+    if (playhead && playhead !== scrollTarget.current) {
+      scrollTarget.current = playhead;
+      playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [autoScroll, time, scrollTarget, wrapper, playheadDecorator]);
 
   return (
     <Root className={classes.root} onClick={handleClick} ref={wrapper}>

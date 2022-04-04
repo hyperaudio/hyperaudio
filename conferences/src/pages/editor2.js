@@ -898,8 +898,9 @@ const EditorPage = ({ user, groups }) => {
                   onChange={NOOP}
                   pseudoReadOnly={true}
                   readOnly={true}
-                  autoScroll={false}
+                  autoScroll={true}
                   seekTo={originalSeekTo}
+                  playheadDecorator={null}
                 />
               ) : (
                 <div style={{ textAlign: 'center' }}>
@@ -922,7 +923,12 @@ const EditorPage = ({ user, groups }) => {
               }}
             >
               {initialState ? (
-                <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} autoScroll={tempAutoScroll} />
+                <Editor
+                  {...{ initialState, time, seekTo, speakers }}
+                  onChange={setDraft}
+                  autoScroll={tempAutoScroll}
+                  playheadDecorator={null}
+                />
               ) : (
                 <div style={{ textAlign: 'center' }}>
                   Loading transcript{' '}
