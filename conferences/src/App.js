@@ -9,6 +9,7 @@ import { usePlausible } from 'next-plausible';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import Alert from '@mui/material/Alert';
 
 import { getTheme } from '@hyperaudio/common';
 
@@ -216,20 +217,13 @@ const App = props => {
             {inputGlobalStyles}
             <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
             {!supportsIndexedDB ? (
-              <div
-                style={{
-                  backgroundColor: 'yellow',
-                  height: 200,
-                  textAlign: 'center',
-                  paddingTop: 40,
-                }}
-              >
-                <h1>Your browser doesn&apos;t support IndexedDB</h1>
-                <p>
-                  This is a <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">known issue</a> with Firefox
-                  in private browsing mode.
-                </p>
-              </div>
+              <Alert severity="error">
+                <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
+                  Firefox does not yet support a technology called IndexDB in Private Mode
+                </a>
+                . Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox's
+                private mode at this time.
+              </Alert>
             ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
           </Root>
