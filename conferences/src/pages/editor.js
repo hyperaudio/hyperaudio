@@ -878,7 +878,7 @@ const EditorPage = ({ user, groups }) => {
         {!originalId ? (
           <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
             {initialState ? (
-              <Editor {...{ initialState, time, seekTo, speakers }} onChange={setDraft} />
+              <Editor {...{ initialState, time, seekTo, speakers, playing, play, pause }} onChange={setDraft} />
             ) : (
               <div style={{ textAlign: 'center' }}>
                 Loading transcript{' '}
@@ -901,6 +901,9 @@ const EditorPage = ({ user, groups }) => {
                   autoScroll={true}
                   seekTo={originalSeekTo}
                   playheadDecorator={null}
+                  play={play}
+                  playing={playing}
+                  pause={pause}
                 />
               ) : (
                 <div style={{ textAlign: 'center' }}>
@@ -924,7 +927,7 @@ const EditorPage = ({ user, groups }) => {
             >
               {initialState ? (
                 <Editor
-                  {...{ initialState, time, seekTo, speakers }}
+                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
                   onChange={setDraft}
                   autoScroll={tempAutoScroll}
                   playheadDecorator={null}
