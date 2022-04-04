@@ -97,6 +97,9 @@ const Editor = props => {
     onChange: onChangeProp,
     pseudoReadOnly,
     autoScroll,
+    play,
+    playing,
+    pause,
     ...rest
   } = props;
 
@@ -109,6 +112,7 @@ const Editor = props => {
     }, {}),
   );
 
+  const [wasPlaying, setWasPlaying] = useState(false);
   const [currentBlock, setCurrentBlock] = useState(null);
   const [speakerAnchor, setSpeakerAnchor] = useState(null);
   const [speaker, setSpeaker] = useState(null);
@@ -170,6 +174,10 @@ const Editor = props => {
           const block = editorState.getCurrentContent().getBlockForKey(key);
           const data = block.getData().toJS();
           setCurrentBlock(block);
+
+          setWasPlaying(playing);
+          pause && pause();
+
           setSpeaker({ id: data.speaker, name: speakers?.[data.speaker]?.name });
           setSpeakerAnchor(e.target);
         }
@@ -198,7 +206,7 @@ const Editor = props => {
         item?.start && seekTo && seekTo(item.start);
       }
     },
-    [seekTo, editorState, pseudoReadOnly],
+    [seekTo, editorState, pseudoReadOnly, playing, pause],
   );
 
   const handleSpeakerSet = useCallback(
@@ -206,6 +214,8 @@ const Editor = props => {
       e.preventDefault();
       e.stopPropagation();
       setSpeakerAnchor(null);
+      wasPlaying && play && play();
+
       if (typeof newValue === 'string') {
         // A: Create new by type-in and Enter press
         const id = `S${Date.now()}`;
@@ -248,7 +258,7 @@ const Editor = props => {
         });
       }
     },
-    [speakers, currentBlock, editorState, aligner],
+    [speakers, currentBlock, editorState, aligner, wasPlaying, play],
   );
 
   const handleClickAway = useCallback(
@@ -256,8 +266,10 @@ const Editor = props => {
       // eslint-disable-next-line no-extra-boolean-cast
       if (Boolean(speakerAnchor)) setSpeakerAnchor(null);
       setCurrentBlock(null);
+
+      wasPlaying && play && play();
     },
-    [speakerAnchor],
+    [speakerAnchor, wasPlaying, play],
   );
 
   const handlePastedText = useCallback(
