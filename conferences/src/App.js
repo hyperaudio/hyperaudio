@@ -7,10 +7,14 @@ import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
 
 import Alert from '@mui/material/Alert';
+import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Link from '@mui/material/Link';
+import Stack from '@mui/material/Stack';
+import Slide from '@mui/material/Slide';
 import Tooltip from '@mui/material/Tooltip';
+import useScrollTrigger from '@mui/material/useScrollTrigger';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -66,12 +70,23 @@ DataStore.configure({
 const PREFIX = 'App';
 const classes = {
   root: `${PREFIX}-root`,
+  foot: `${PREFIX}-foot`,
 };
 
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
   minHeight: '100%',
+  [`& .${classes.foot}`]: {
+    background: theme.palette.background.paper,
+    borderColor: theme.palette.divider,
+    borderStyle: 'solid',
+    borderWidth: '1px 1px 0 0',
+    bottom: 0,
+    left: 0,
+    position: 'fixed',
+    padding: theme.spacing(0.5, 1),
+  },
 }));
 
 const clientSideEmotionCache = createEmotionCache();
@@ -129,6 +144,8 @@ const getUser = async (setUser, identityId) => {
 };
 
 const App = props => {
+  const trigger = useScrollTrigger();
+
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
   const plausible = usePlausible();
   const [user, setUser] = useState();
@@ -239,6 +256,36 @@ const App = props => {
                 <HyperaudioIcon />
               </Fab>
             </Tooltip>
+            <Slide appear={false} direction="up" in={!trigger}>
+              <Box className={classes.foot}>
+                <Stack direction="row" spacing={1}>
+                  <Link
+                    href="https://hyper.audio/privacy-policy"
+                    sx={{ fontSize: '12px' }}
+                    target="_blank"
+                    variant="caption"
+                  >
+                    Privacy Policy
+                  </Link>
+                  <Link
+                    href="https://hyper.audio/terms-of-service"
+                    sx={{ fontSize: '12px' }}
+                    target="_blank"
+                    variant="caption"
+                  >
+                    Terms of Service
+                  </Link>
+                  <Link
+                    href="https://hyper.audio/code-of-conduct"
+                    sx={{ fontSize: '12px' }}
+                    target="_blank"
+                    variant="caption"
+                  >
+                    Code of Conduct
+                  </Link>
+                </Stack>
+              </Box>
+            </Slide>
           </Root>
         </PlausibleProvider>
       </ThemeProvider>
