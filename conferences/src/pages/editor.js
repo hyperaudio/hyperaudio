@@ -1,7 +1,7 @@
 import * as cldrSegmentation from 'cldr-segmentation';
 import Head from 'next/head';
 import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
-import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
+import React, { useMemo, useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
 import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
@@ -413,6 +413,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [duration, setDuration] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [buffering, setBuffering] = useState(false);
+  const [pip, setPip] = useState(false);
 
   const onProgress = useCallback(({ playedSeconds }) => {
     setTime(playedSeconds);
@@ -437,6 +438,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     [video, reference],
   );
 
+  const onEnablePIP = useCallback(() => setPip(true), []);
+  const onDisablePIP = useCallback(() => setPip(false), []);
   const onBuffer = useCallback(() => setBuffering(true), []);
   const onBufferEnd = useCallback(() => setBuffering(false), []);
   const onDuration = useCallback(duration => setDuration(duration), []);
@@ -786,7 +789,13 @@ const EditorPage = ({ organisation, user, groups }) => {
   );
 
   const div = useRef();
-  const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
+  const [top, setTop] = useState(500);
+
+  useLayoutEffect(() => {
+    const value = div.current?.getBoundingClientRect().top ?? 500;
+    console.log(div.current?.getBoundingClientRect(), value, pip);
+    setTop(value);
+  }, [div, pip]);
 
   return user ? (
     <>
@@ -873,20 +882,24 @@ const EditorPage = ({ organisation, user, groups }) => {
         >
           {media ? (
             <div style={{ marginBottom: 40, maxWidth: '600px' }}>
-              <ReactPlayer
-                width="100%"
-                ref={video}
-                config={config}
-                playing={playing}
-                url={media.url}
-                onProgress={onProgress}
-                onBuffer={onBuffer}
-                onBufferEnd={onBufferEnd}
-                onPlay={play}
-                onDuration={onDuration}
-                progressInterval={100}
-                playbackRate={playbackRate}
-              />
+              <div style={{ display: pip ? 'none' : 'block' }}>
+                <ReactPlayer
+                  width="100%"
+                  ref={video}
+                  config={config}
+                  playing={playing}
+                  url={media.url}
+                  onProgress={onProgress}
+                  onBuffer={onBuffer}
+                  onBufferEnd={onBufferEnd}
+                  onPlay={play}
+                  onDuration={onDuration}
+                  progressInterval={100}
+                  playbackRate={playbackRate}
+                  onEnablePIP={onEnablePIP}
+                  onDisablePIP={onDisablePIP}
+                />
+              </div>
               <div>
                 <Grid container spacing={2} sx={{ alignItems: 'center' }}>
                   <Grid item>
