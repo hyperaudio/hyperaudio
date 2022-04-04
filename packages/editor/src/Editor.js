@@ -84,19 +84,22 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-const Editor = ({
-  initialState = EditorState.createEmpty(),
-  playheadDecorator = PlayheadDecorator,
-  decorators = [],
-  time = 0,
-  seekTo,
-  showDialog,
-  aligner = wordAligner,
-  speakers: initialSpeakers = {},
-  onChange: onChangeProp,
-  pseudoReadOnly,
-  ...rest
-}) => {
+const Editor = props => {
+  const {
+    initialState = EditorState.createEmpty(),
+    playheadDecorator = PlayheadDecorator,
+    decorators = [],
+    time = 0,
+    seekTo,
+    showDialog,
+    aligner = wordAligner,
+    speakers: initialSpeakers = {},
+    onChange: onChangeProp,
+    pseudoReadOnly,
+    autoScroll,
+    ...rest
+  } = props;
+
   const theme = useTheme();
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -131,17 +134,19 @@ const Editor = ({
 
   const editorState = useMemo(
     () =>
-      EditorState.set(state, {
-        decorator: new CompositeDecorator([
-          {
-            strategy: (contentBlock, callback, contentState) =>
-              playheadDecorator.strategy(contentBlock, callback, contentState, time),
-            component: playheadDecorator.component,
-          },
-          ...decorators,
-        ]),
-      }),
-    [state, time],
+      playheadDecorator
+        ? EditorState.set(state, {
+            decorator: new CompositeDecorator([
+              {
+                strategy: (contentBlock, callback, contentState) =>
+                  playheadDecorator.strategy(contentBlock, callback, contentState, time, autoScroll),
+                component: playheadDecorator.component,
+              },
+              ...decorators,
+            ]),
+          })
+        : state,
+    [state, time, autoScroll, playheadDecorator],
   );
 
   const handleClick = useCallback(
@@ -277,8 +282,30 @@ const Editor = ({
     [editorState],
   );
 
+  const wrapper = useRef();
+  const scrollTarget = useRef();
+  useEffect(() => {
+    if (!autoScroll || playheadDecorator) return;
+
+    const blocks = editorState.getCurrentContent().getBlocksAsArray();
+    // console.log({ blocks });
+    const block = blocks
+      .slice()
+      .reverse()
+      .find(block => block.getData().get('start') <= time);
+    if (!block) return;
+    // console.log(block.getKey(), block.getText());
+
+    const playhead = wrapper.current?.querySelector(`div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]`);
+
+    if (playhead && playhead !== scrollTarget.current) {
+      scrollTarget.current = playhead;
+      playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [autoScroll, time, scrollTarget, wrapper, playheadDecorator]);
+
   return (
-    <Root className={classes.root} onClick={handleClick}>
+    <Root className={classes.root} onClick={handleClick} ref={wrapper}>
       <DraftEditor
         {...{ editorState, onChange, ...rest }}
         handleDrop={() => true}
@@ -292,7 +319,6 @@ const Editor = ({
         .map(block => (
           <BlockStyle key={block.getKey()} {...{ block, speakers, time }} />
         ))}
-
       {Boolean(speakerAnchor) && (
         <Popper
           anchorEl={speakerAnchor}
@@ -410,22 +436,40 @@ const BlockStyle = ({ block, speakers, time }) => {
   const start = useMemo(() => block.getData().get('start'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 
-  return (
-    <style scoped>
-      {`
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"] {
-          color: ${time < start ? theme.palette.text.disabled : theme.palette.common.black};
-        }
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::before {
-          content: '${speaker}';
-        }
-        div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
-          content: '${tc}';
-        }
-      `}
-    </style>
-  );
+  return <Style {...{ theme, speaker, tc }} played={time < start} blockKey={block.getKey()} />;
+
+  // return (
+  //   <style scoped>
+  //     {`
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"] {
+  //         color: ${time < start ? theme.palette.text.disabled : theme.palette.common.black};
+  //       }
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::before {
+  //         content: '${speaker}';
+  //       }
+  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
+  //         content: '${tc}';
+  //       }
+  //     `}
+  //   </style>
+  // );
 };
+
+const Style = ({ theme, blockKey, speaker, played, tc }) => (
+  <style scoped>
+    {`
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
+        color: ${played ? theme.palette.text.disabled : theme.palette.common.black};
+      }
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"]::before {
+        content: '${speaker}';
+      }
+      div[data-block='true'][data-offset-key="${blockKey}-0-0"]::after {
+        content: '${tc}';
+      }
+    `}
+  </style>
+);
 
 const timecode = (seconds, frameRate = 25, dropFrame = false) =>
   TC(seconds * frameRate, frameRate, dropFrame)
