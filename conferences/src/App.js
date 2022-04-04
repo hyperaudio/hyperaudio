@@ -230,7 +230,12 @@ const App = props => {
             ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
             <Tooltip title="About Hyperaudio">
-              <Fab color="primary" href="https://hyper.audio" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+              <Fab
+                color="primary"
+                href="https://hyper.audio"
+                sx={{ position: 'fixed', bottom: 20, right: 20 }}
+                target="_blank"
+              >
                 <HyperaudioIcon />
               </Fab>
             </Tooltip>
