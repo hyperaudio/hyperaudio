@@ -817,7 +817,6 @@ const EditorPage = ({ user, groups }) => {
         {media ? (
           <div style={{ marginBottom: 40, maxWidth: '600px' }}>
             <ReactPlayer
-              controls
               width="100%"
               ref={video}
               config={config}
