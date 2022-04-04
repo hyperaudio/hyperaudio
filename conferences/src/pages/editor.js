@@ -1,13 +1,15 @@
+import * as cldrSegmentation from 'cldr-segmentation';
+import Head from 'next/head';
+import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import React, { useMemo, useState, useEffect, useCallback, useRef } from 'react';
 import ReactPlayer from 'react-player';
+import axios from 'axios';
 import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
-import Predictions from '@aws-amplify/predictions';
+import { createSilentAudio } from 'create-silent-audio';
 import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
-import { useRouter } from 'next/router';
-import axios from 'axios';
 import { usePlausible } from 'next-plausible';
-import * as cldrSegmentation from 'cldr-segmentation';
+import { useRouter } from 'next/router';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -53,6 +55,11 @@ const Root = styled('div', {
   },
 }));
 
+export const DIFF_BEHIND = 0.3;
+export const DIFF_IN_FRONT = 0.3;
+export const SPEED_UP = 1.05;
+export const SLOW_DOWN = 0.95;
+
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
   setMedia(media?.[0]);
@@ -61,7 +68,7 @@ const getMedia = async (setMedia, id) => {
 const getTranscripts = async (setTranscripts, id) =>
   setTranscripts((await DataStore.query(Transcript)).filter(t => t.media === id));
 
-const EditorPage = ({ user, groups }) => {
+const EditorPage = ({ organisation, user, groups }) => {
   const plausible = usePlausible();
   const router = useRouter();
   const {
@@ -168,31 +175,6 @@ const EditorPage = ({ user, groups }) => {
 
           speakers = result.speakers;
           blocks = result.blocks;
-
-          // fixes
-          blocks = blocks.map(block => {
-            const items = block.data.items.map((item, i, arr) => {
-              const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-              return { ...item, offset, length: item.text.length };
-            });
-
-            return {
-              ...block,
-              key: `B${nanoid(5)}`,
-              data: {
-                ...block.data,
-                start: block.data.items?.[0]?.start ?? 0,
-                end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-                // speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-                speaker: block.data.speaker,
-                items,
-                stt: items,
-              },
-              entityRanges: [],
-              inlineStyleRanges: [],
-            };
-          });
-          // fixes
         } catch (error) {
           setError(error);
         }
@@ -200,36 +182,35 @@ const EditorPage = ({ user, groups }) => {
 
       // let { speakers, blocks } = await (await fetch(transcript.url)).json();
 
-      // // fix simple list of speakers (array -> map)
-      // if (true || isArray(speakers)) {
-      //   // speakers = speakers.reduce((acc, speaker) => {
-      //   //   const id = `S${nanoid(5)}`;
-      //   //   return { ...acc, [id]: { name: speaker, id } };
-      //   // }, {});
+      // fix simple list of speakers (array -> map)
+      if (isArray(speakers)) {
+        speakers = speakers.reduce((acc, speaker) => {
+          const id = `S${nanoid(5)}`;
+          return { ...acc, [id]: { name: speaker, id } };
+        }, {});
 
-      //   blocks = blocks.map(block => {
-      //     const items = block.data.items.map((item, i, arr) => {
-      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-      //       return { ...item, offset, length: item.text.length };
-      //     });
+        blocks = blocks.map(block => {
+          const items = block.data.items.map((item, i, arr) => {
+            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+            return { ...item, offset, length: item.text.length };
+          });
 
-      //     return {
-      //       ...block,
-      //       key: `B${nanoid(5)}`,
-      //       data: {
-      //         ...block.data,
-      //         start: block.data.items?.[0]?.start ?? 0,
-      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-      //         // speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-      //         speaker: block.data.speaker,
-      //         items,
-      //         stt: items,
-      //       },
-      //       entityRanges: [],
-      //       inlineStyleRanges: [],
-      //     };
-      //   });
-      // }
+          return {
+            ...block,
+            key: `B${nanoid(5)}`,
+            data: {
+              ...block.data,
+              start: block.data.items?.[0]?.start ?? 0,
+              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+              items,
+              stt: items,
+            },
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+        });
+      }
 
       console.log({ speakers, blocks });
       setData({ speakers, blocks });
@@ -282,64 +263,40 @@ const EditorPage = ({ user, groups }) => {
 
           speakers = result.speakers;
           blocks = result.blocks;
-          // fixes
-          blocks = blocks.map(block => {
-            const items = block.data.items.map((item, i, arr) => {
-              const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-              return { ...item, offset, length: item.text.length };
-            });
-
-            return {
-              ...block,
-              key: `B${nanoid(5)}`,
-              data: {
-                ...block.data,
-                start: block.data.items?.[0]?.start ?? 0,
-                end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-                // speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-                speaker: block.data.speaker,
-                items,
-                stt: items,
-              },
-              entityRanges: [],
-              inlineStyleRanges: [],
-            };
-          });
-          // fixes
         } catch (error) {
           setError(error);
         }
       }
 
       // fix simple list of speakers (array -> map)
-      // if (isArray(speakers)) {
-      //   speakers = speakers.reduce((acc, speaker) => {
-      //     const id = `S${nanoid(5)}`;
-      //     return { ...acc, [id]: { name: speaker, id } };
-      //   }, {});
+      if (isArray(speakers)) {
+        speakers = speakers.reduce((acc, speaker) => {
+          const id = `S${nanoid(5)}`;
+          return { ...acc, [id]: { name: speaker, id } };
+        }, {});
 
-      //   blocks = blocks.map(block => {
-      //     const items = block.data.items.map((item, i, arr) => {
-      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-      //       return { ...item, offset, length: item.text.length };
-      //     });
+        blocks = blocks.map(block => {
+          const items = block.data.items.map((item, i, arr) => {
+            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+            return { ...item, offset, length: item.text.length };
+          });
 
-      //     return {
-      //       ...block,
-      //       key: `B${nanoid(5)}`,
-      //       data: {
-      //         ...block.data,
-      //         start: block.data.items?.[0]?.start ?? 0,
-      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-      //         speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-      //         items,
-      //         stt: items,
-      //       },
-      //       entityRanges: [],
-      //       inlineStyleRanges: [],
-      //     };
-      //   });
-      // }
+          return {
+            ...block,
+            key: `B${nanoid(5)}`,
+            data: {
+              ...block.data,
+              start: block.data.items?.[0]?.start ?? 0,
+              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+              items,
+              stt: items,
+            },
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+        });
+      }
 
       console.log('original', { speakers, blocks });
       setOriginalData({ speakers, blocks });
@@ -368,24 +325,27 @@ const EditorPage = ({ user, groups }) => {
   useEffect(() => console.log({ initialState }), [initialState]);
   useEffect(() => console.log({ originalState }), [originalState]);
 
+  const reference = useRef();
   const video = useRef();
   const seekTo = useCallback(
     time => {
       setSeekTime(time);
+      if (reference.current) reference.current.currentTime = time;
       if (video.current) video.current.seekTo(time, 'seconds');
     },
-    [video],
+    [video, reference],
   );
 
   const [tempAutoScroll, setTempAutoScroll] = useState(false);
   const originalSeekTo = useCallback(
     time => {
       setSeekTime(time);
+      if (reference.current) reference.current.currentTime = time;
       if (video.current) video.current.seekTo(time, 'seconds');
       setTempAutoScroll(true);
       setTimeout(() => setTempAutoScroll(false), 2000);
     },
-    [video],
+    [video, reference],
   );
 
   const config = useMemo(
@@ -412,20 +372,66 @@ const EditorPage = ({ user, groups }) => {
     setTime(playedSeconds);
   }, []);
 
-  const play = useCallback(() => setPlaying(true), []);
-  const pause = useCallback(() => setPlaying(false), []);
+  const play = useCallback(() => {
+    // reference.current.play();
+    setPlaying(true);
+  }, [reference]);
+
+  const pause = useCallback(() => {
+    // reference.current.pause();
+    setPlaying(false);
+  }, [reference]);
 
   const handleSliderChange = useCallback(
     (event, value) => {
+      // if (reference.current) reference.current.currentTime = value;
       setSeekTime(value);
       if (video.current) video.current.seekTo(value, 'seconds');
     },
-    [video],
+    [video, reference],
   );
 
   const onBuffer = useCallback(() => setBuffering(true), []);
   const onBufferEnd = useCallback(() => setBuffering(false), []);
   const onDuration = useCallback(duration => setDuration(duration), []);
+
+  // useEffect(() => {
+  //   if (duration === 0 || reference.current.src) return;
+  //   // @ts-ignore
+  //   reference.current.src = createSilentAudio(Math.ceil(duration), 44100 / 8);
+  //   reference.current.addEventListener('timeupdate', () => {
+  //     // console.log(reference.current?.currentTime);
+  //     setTime && setTime(reference.current?.currentTime ?? 0);
+  //   });
+  // }, [reference, duration, setTime]);
+
+  // const useAnimationFrame = useCallback(() => {
+  //   setTime(reference.current?.currentTime ?? 0);
+  //   window.requestAnimationFrame(useAnimationFrame);
+  // }, [reference]);
+
+  // useEffect(() => window.requestAnimationFrame(useAnimationFrame), [useAnimationFrame]);
+
+  const [playbackRate, setPlaybackRate] = useState(1);
+  // useEffect(() => {
+  //   if (!video.current) return;
+  //   const masterTime = time;
+  //   const minionTime = video.current.getCurrentTime();
+  //   if (minionTime < masterTime && masterTime - minionTime > DIFF_BEHIND) {
+  //     setPlaybackRate(SPEED_UP);
+  //     console.log('speed up');
+  //   } else if (minionTime > masterTime && minionTime - masterTime > DIFF_IN_FRONT) {
+  //     setPlaybackRate(SLOW_DOWN);
+  //     console.log('slow down');
+  //   } else {
+  //     setPlaybackRate(1.0);
+  //     console.log('normal');
+  //   }
+  //   // if (Math.abs(video.current.getCurrentTime() - time) > 0.5) {
+  //   //   console.log('SEEK', time, video.current.getCurrentTime(), video.current.getCurrentTime() - time);
+  //   //   video.current.seekTo(time, 'seconds');
+  //   // }
+  // }, [video, time]);
 
   const [draft, setDraft] = useState();
   const [saving, setSaving] = useState(0);
@@ -737,185 +743,152 @@ const EditorPage = ({ user, groups }) => {
   const top = useMemo(() => div.current?.getBoundingClientRect().top ?? 500, [div]);
 
   return user ? (
-    <Root className={classes.root}>
-      <div className={classes.push} />
-      <Toolbar>
-        <Grid container>
-          <Grid item sx={{ mr: 1 }}>
-            <Button
-              color="primary"
-              startIcon={
-                saving === 0 ? (
-                  <SaveIcon fontSize="small" />
-                ) : saving === 3 ? (
-                  <HourglassEmptyIcon fontSize="small" />
-                ) : saving === 2 ? (
-                  <HourglassTopIcon fontSize="small" />
-                ) : (
-                  <HourglassBottomIcon fontSize="small" />
-                )
-              }
-              onClick={handleSave}
-              disabled={!draft || saving !== 0 || !groups.includes('Editors')}
-            >
-              {saving ? `Saving ${savingProgress}%` : 'Save draft'}
-            </Button>
-          </Grid>
-          <Grid item sx={{ mr: 1 }}>
-            <Button
-              color="primary"
-              startIcon={
-                previewing === 0 ? (
-                  <PreviewIcon fontSize="small" />
-                ) : previewing === 3 ? (
-                  <HourglassEmptyIcon fontSize="small" />
-                ) : previewing === 2 ? (
-                  <HourglassTopIcon fontSize="small" />
-                ) : (
-                  <HourglassBottomIcon fontSize="small" />
-                )
-              }
-              onClick={handlePreview}
-              disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-            >
-              {previewing ? `Previewing ${previewingProgress}%` : 'Preview draft'}
-            </Button>
-          </Grid>
-          <Grid item xs>
-            <Container maxWidth="sm"></Container>
-          </Grid>
-          <Grid item sx={{ ml: 1 }}>
-            <Stack direction="row" spacing={1}>
+    <>
+      <Head>
+        <title>
+          Edit: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
+        </title>
+      </Head>
+      <Root className={classes.root}>
+        <div className={classes.push} />
+        <Toolbar>
+          <Grid container>
+            <Grid item sx={{ mr: 1 }}>
               <Button
                 color="primary"
-                endIcon={
-                  publishing === 0 ? (
-                    <PublishIcon fontSize="small" />
-                  ) : publishing === 3 ? (
+                startIcon={
+                  saving === 0 ? (
+                    <SaveIcon fontSize="small" />
+                  ) : saving === 3 ? (
                     <HourglassEmptyIcon fontSize="small" />
-                  ) : publishing === 2 ? (
+                  ) : saving === 2 ? (
                     <HourglassTopIcon fontSize="small" />
                   ) : (
                     <HourglassBottomIcon fontSize="small" />
                   )
                 }
-                onClick={handlePublish}
-                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+                onClick={handleSave}
+                disabled={!draft || saving !== 0 || !groups.includes('Editors')}
               >
-                {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
+                {saving ? `Saving ${savingProgress}%` : 'Save draft'}
               </Button>
-            </Stack>
-          </Grid>
-        </Grid>
-      </Toolbar>
-      <div style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}>
-        {media ? (
-          <div style={{ marginBottom: 40, maxWidth: '600px' }}>
-            <ReactPlayer
-              width="100%"
-              ref={video}
-              config={config}
-              playing={playing}
-              url={media.url}
-              onProgress={onProgress}
-              onBuffer={onBuffer}
-              onBufferEnd={onBufferEnd}
-              onPlay={play}
-              onDuration={onDuration}
-              progressInterval={100}
-            />
-            <div>
-              <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                <Grid item>
-                  {buffering && seekTime !== time ? (
-                    <IconButton onClick={pause} size="small">
-                      {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                    </IconButton>
-                  ) : playing ? (
-                    <IconButton onClick={pause} size="small">
-                      <PauseIcon />
-                    </IconButton>
+            </Grid>
+            <Grid item sx={{ mr: 1 }}>
+              <Button
+                color="primary"
+                startIcon={
+                  previewing === 0 ? (
+                    <PreviewIcon fontSize="small" />
+                  ) : previewing === 3 ? (
+                    <HourglassEmptyIcon fontSize="small" />
+                  ) : previewing === 2 ? (
+                    <HourglassTopIcon fontSize="small" />
                   ) : (
-                    <IconButton onClick={play} size="small">
-                      <PlayArrowIcon />
-                    </IconButton>
-                  )}
+                    <HourglassBottomIcon fontSize="small" />
+                  )
+                }
+                onClick={handlePreview}
+                disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+              >
+                {previewing ? `Previewing ${previewingProgress}%` : 'Preview draft'}
+              </Button>
+            </Grid>
+            <Grid item xs>
+              <Container maxWidth="sm"></Container>
+            </Grid>
+            <Grid item sx={{ ml: 1 }}>
+              <Stack direction="row" spacing={1}>
+                <Button
+                  color="primary"
+                  endIcon={
+                    publishing === 0 ? (
+                      <PublishIcon fontSize="small" />
+                    ) : publishing === 3 ? (
+                      <HourglassEmptyIcon fontSize="small" />
+                    ) : publishing === 2 ? (
+                      <HourglassTopIcon fontSize="small" />
+                    ) : (
+                      <HourglassBottomIcon fontSize="small" />
+                    )
+                  }
+                  onClick={handlePublish}
+                  disabled={
+                    !draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')
+                  }
+                >
+                  {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
+                </Button>
+              </Stack>
+            </Grid>
+          </Grid>
+        </Toolbar>
+        <div
+          style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}
+        >
+          {media ? (
+            <div style={{ marginBottom: 40, maxWidth: '600px' }}>
+              <ReactPlayer
+                width="100%"
+                ref={video}
+                config={config}
+                playing={playing}
+                url={media.url}
+                onProgress={onProgress}
+                onBuffer={onBuffer}
+                onBufferEnd={onBufferEnd}
+                onPlay={play}
+                onDuration={onDuration}
+                progressInterval={100}
+                playbackRate={playbackRate}
+              />
+              <div>
+                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+                  <Grid item>
+                    {buffering && seekTime !== time ? (
+                      <IconButton onClick={pause} size="small">
+                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                      </IconButton>
+                    ) : playing ? (
+                      <IconButton onClick={pause} size="small">
+                        <PauseIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton onClick={play} size="small">
+                        <PlayArrowIcon />
+                      </IconButton>
+                    )}
+                  </Grid>
+                  <Grid container item xs>
+                    <Slider
+                      aria-label="timeline"
+                      defaultValue={0}
+                      max={duration}
+                      min={0}
+                      onChange={handleSliderChange}
+                      size="small"
+                      value={time}
+                      valueLabelDisplay="auto"
+                    />
+                  </Grid>
                 </Grid>
-                <Grid container item xs>
-                  <Slider
-                    aria-label="timeline"
-                    defaultValue={0}
-                    max={duration}
-                    min={0}
-                    onChange={handleSliderChange}
-                    size="small"
-                    value={time}
-                    valueLabelDisplay="auto"
-                  />
-                </Grid>
-              </Grid>
-            </div>
-          </div>
-        ) : (
-          <p style={{ textAlign: 'center' }}>Loading media…</p>
-        )}
-        {!originalId ? (
-          <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
-            {initialState ? (
-              <Editor {...{ initialState, time, seekTo, speakers, playing, play, pause }} onChange={setDraft} />
-            ) : (
-              <div style={{ textAlign: 'center' }}>
-                Loading transcript{' '}
-                <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-                {error && <p>Error: {error?.message}</p>}
               </div>
-            )}
-          </div>
-        ) : true ? (
-          <div ref={div} style={{ height: `calc(100vh - ${top}px)` }}>
-            <div style={{ width: '49%', float: 'left', overflow: 'scroll', paddingTop: 20, height: '100%' }}>
-              {originalState ? (
-                <Editor
-                  time={time}
-                  speakers={originalData.speakers}
-                  initialState={originalState}
-                  onChange={NOOP}
-                  pseudoReadOnly={true}
-                  readOnly={true}
-                  autoScroll={true}
-                  seekTo={originalSeekTo}
-                  playheadDecorator={null}
-                  play={play}
-                  playing={playing}
-                  pause={pause}
-                />
-              ) : (
-                <div style={{ textAlign: 'center' }}>
-                  Loading transcript{' '}
-                  <span
-                    style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}
-                  >{`${originalProgress}%`}</span>
-                  {error && <p>Error: {error?.message}</p>}
-                </div>
-              )}
+              {/* <audio
+              controls
+              muted
+              // @ts-ignore
+              ref={reference}
+              onPlay={play}
+              onPause={pause}
+              style={{ display: 'xnone', width: '100%' }}
+            /> */}
             </div>
-            <div
-              style={{
-                width: '49%',
-                float: 'left',
-                marginLeft: '2%',
-                overflow: 'scroll',
-                paddingTop: 20,
-                height: '100%',
-              }}
-            >
+          ) : (
+            <p style={{ textAlign: 'center' }}>Loading media…</p>
+          )}
+          {!originalId ? (
+            <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
               {initialState ? (
-                <Editor
-                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
-                  onChange={setDraft}
-                  autoScroll={tempAutoScroll}
-                  playheadDecorator={null}
-                />
+                <Editor {...{ initialState, time, seekTo, speakers, playing, play, pause }} onChange={setDraft} />
               ) : (
                 <div style={{ textAlign: 'center' }}>
                   Loading transcript{' '}
@@ -924,10 +897,64 @@ const EditorPage = ({ user, groups }) => {
                 </div>
               )}
             </div>
-          </div>
-        ) : null}
-      </div>
-    </Root>
+          ) : true ? (
+            <div ref={div} style={{ height: `calc(100vh - ${top}px)` }}>
+              <div style={{ width: '49%', float: 'left', overflow: 'scroll', paddingTop: 20, height: '100%' }}>
+                {originalState ? (
+                  <Editor
+                    time={time}
+                    speakers={originalData.speakers}
+                    initialState={originalState}
+                    onChange={NOOP}
+                    pseudoReadOnly={true}
+                    readOnly={true}
+                    autoScroll={true}
+                    seekTo={originalSeekTo}
+                    playheadDecorator={null}
+                    play={play}
+                    playing={playing}
+                    pause={pause}
+                  />
+                ) : (
+                  <div style={{ textAlign: 'center' }}>
+                    Loading transcript{' '}
+                    <span
+                      style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}
+                    >{`${originalProgress}%`}</span>
+                    {error && <p>Error: {error?.message}</p>}
+                  </div>
+                )}
+              </div>
+              <div
+                style={{
+                  width: '49%',
+                  float: 'left',
+                  marginLeft: '2%',
+                  overflow: 'scroll',
+                  paddingTop: 20,
+                  height: '100%',
+                }}
+              >
+                {initialState ? (
+                  <Editor
+                    {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                    onChange={setDraft}
+                    autoScroll={tempAutoScroll}
+                    playheadDecorator={null}
+                  />
+                ) : (
+                  <div style={{ textAlign: 'center' }}>
+                    Loading transcript{' '}
+                    <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+                    {error && <p>Error: {error?.message}</p>}
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      </Root>
+    </>
   ) : null;
 };
 
