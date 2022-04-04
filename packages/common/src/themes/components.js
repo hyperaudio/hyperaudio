@@ -91,7 +91,11 @@ const components = {
     },
     styleOverrides: {
       root: {
+        backgroundColor: 'rgba(0,0,0,0.022)',
         borderRadius: mui.shape.borderRadius,
+        '&.Mui-disabled': {
+          backgroundColor: 'rgba(0,0,0,0.044)',
+        },
       },
       input: {
         borderRadius: mui.shape.borderRadius,

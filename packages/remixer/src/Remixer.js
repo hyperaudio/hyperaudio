@@ -12,6 +12,11 @@ import Source from './Source';
 
 import remixReducer from './reducers/remixReducer';
 
+const PREFIX = 'Remixer';
+const classes = {
+  root: `${PREFIX}-root`,
+};
+
 const Root = styled('div', {
   shouldForwardProp: prop => !['showSource', 'isSingleMedia'].includes(prop),
 })(({ theme, showSource, isSingleMedia }) => ({
@@ -19,7 +24,7 @@ const Root = styled('div', {
   position: 'relative',
 
   // layout
-  [`& .Layout`]: {
+  [`& .${classes.root}`]: {
     alignContent: 'flex-start',
     alignItems: 'stretch',
     display: 'flex',
@@ -188,8 +193,8 @@ const Remixer = props => {
     <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
       <Root showSource={showSource} isSingleMedia={isSingleMedia}>
         <div
-          className="Layout"
-          id="Layout" // used as Dragbar’s bounds
+          className={classes.root}
+          id={classes.root} // used as Dragbar’s bounds
         >
           {editable ? (
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>

@@ -14,7 +14,7 @@ const sizes = {
   body1: { xs: '1.2rem', md: '1.3rem', xl: '1.4rem' },
   body2: { xs: '1.0rem', md: '1.1rem', xl: '1.2rem' },
   button: { xs: '0.88rem', md: '0.90rem', xl: '0.92rem' },
-  overline: { xs: '0.8rem', md: '0.8rem', xl: '0.9rem' },
+  overline: { xs: '0.7rem', md: '0.75rem', xl: '0.8rem' },
   caption: { xs: '0.8rem', md: '0.85rem', xl: '0.9rem' },
 };
 
@@ -108,7 +108,7 @@ export const getTypography = mode => {
     overline: {
       ...getSizes('overline', mode),
       fontWeight: '700',
-      letterSpacing: '0.033em',
+      letterSpacing: '0.044em',
       lineHeight: '1.44em',
     },
     caption: {
