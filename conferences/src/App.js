@@ -6,10 +6,11 @@ import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
 
+import Alert from '@mui/material/Alert';
+import GlobalStyles from '@mui/material/GlobalStyles';
+import Link from '@mui/material/Link';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import GlobalStyles from '@mui/material/GlobalStyles';
-import Alert from '@mui/material/Alert';
 
 import { getTheme } from '@hyperaudio/common';
 
@@ -218,9 +219,9 @@ const App = props => {
             <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
             {!supportsIndexedDB ? (
               <Alert severity="error">
-                <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
+                <Link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
                   Firefox does not yet support a technology called IndexDB in Private Mode
-                </a>
+                </Link>
                 . Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox's
                 private mode at this time.
               </Alert>
