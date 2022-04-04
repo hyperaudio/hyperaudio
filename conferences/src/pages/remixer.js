@@ -1,6 +1,7 @@
+import Head from 'next/head';
 import React, { useMemo, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { useRouter } from 'next/router';
 
 import { styled } from '@mui/material/styles';
 
@@ -30,7 +31,7 @@ const Root = styled('div', {
 const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
 const getTranscripts = async setAllTranscripts => setAllTranscripts(await DataStore.query(Transcript)); // .filter(t => t.media === id)
 
-const RemixerPage = () => {
+const RemixerPage = ({ organisation }) => {
   const router = useRouter();
   // const id = useMemo(() => router.query.id, [router.query]);
   const [allMedia, setAllMedia] = useState([]);
@@ -90,15 +91,22 @@ const RemixerPage = () => {
     })();
   }, [allMedia, allTranscripts]);
 
-  console.log({ media, data });
+  // console.log({ media, data });
 
   return (
-    <Root className={classes.root}>
-      <div className={classes.push} />
-      {data && data.sources && data.sources.length > 0 ? (
-        <Remixer editable={true} remix={data.remix} sources={data.sources} media={[]} />
-      ) : null}
-    </Root>
+    <>
+      <Head>
+        <title>
+          Remix: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
+        </title>
+      </Head>
+      <Root className={classes.root}>
+        <div className={classes.push} />
+        {data && data.sources && data.sources.length > 0 ? (
+          <Remixer editable={true} remix={data.remix} sources={data.sources} media={[]} />
+        ) : null}
+      </Root>
+    </>
   );
 };
 

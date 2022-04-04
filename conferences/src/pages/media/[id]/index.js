@@ -1,8 +1,9 @@
+import Head from 'next/head';
 import React, { useMemo, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import axios from 'axios';
 import { Storage, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { nanoid } from 'nanoid';
-import axios from 'axios';
+import { useRouter } from 'next/router';
 
 import { styled } from '@mui/material/styles';
 
@@ -40,7 +41,7 @@ const getTranscripts = async (setTranscripts, id) =>
 const getRemixes = async (setRemixes, id) =>
   setRemixes((await DataStore.query(RemixMedia)).filter(r => r.media.id === id).map(r => r.remix));
 
-const MediaPage = ({ user, groups = [] }) => {
+const MediaPage = ({ organisation, user, groups = [] }) => {
   const router = useRouter();
   global.router = router; // FIXME
 
@@ -240,29 +241,36 @@ const MediaPage = ({ user, groups = [] }) => {
     })();
   }, [media, transcripts, remixes, showDraft, showPreview, transcriptUrl]);
 
-  // console.log({ media, data });
+  // console.log('————_THIS', media, data);
 
   return (
-    <Root className={classes.root}>
-      <div className={classes.push} />
-      {data && data.sources && data.sources.length > 0 ? (
-        <Remixer
-          editable={false}
-          isSingleMedia={true}
-          media={data.sources}
-          remix={null}
-          sources={data.sources}
-          autoScroll={true}
-          mediaLabel={label}
-          canEdit={groups.includes('Editors')}
-        />
-      ) : (
-        <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
-          Loading <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-          {error && <p>Error: {error?.message}</p>}
-        </div>
-      )}
-    </Root>
+    <>
+      <Head>
+        <title>
+          Media: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
+        </title>
+      </Head>
+      <Root className={classes.root}>
+        <div className={classes.push} />
+        {data && data.sources && data.sources.length > 0 ? (
+          <Remixer
+            editable={false}
+            isSingleMedia={true}
+            media={data.sources}
+            remix={null}
+            sources={data.sources}
+            autoScroll={true}
+            mediaLabel={label}
+            canEdit={groups.includes('Editors')}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
+            Loading <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+            {error && <p>Error: {error?.message}</p>}
+          </div>
+        )}
+      </Root>
+    </>
   );
 };
 

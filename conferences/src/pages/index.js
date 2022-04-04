@@ -123,29 +123,30 @@ const HomePage = props => {
   // console.groupEnd();
 
   return (
-    <Root className={classes.root}>
+    <>
       <Head>
-        <title>Hyperaudio</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Home • {organisation.name} @ hyper.audio</title>
       </Head>
-      <Box className={classes.hero}>
-        <Container maxWidth="xl">
-          <Typography variant="h1" className={classes.heroTitle}>
-            {organisation.name}
-          </Typography>
-        </Container>
-        <HyperaudioIcon className={classes.heroOrnament} />
-      </Box>
-      {displayChannels.map(channel => (
-        <Container
-          key={channel.id}
-          maxWidth="xl"
-          sx={{ mt: { xs: '1px' }, mb: { xs: 3, sm: 3 }, my: { md: 4, lg: 12, xl: 16 } }}
-        >
-          <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
-        </Container>
-      ))}
-    </Root>
+      <Root className={classes.root}>
+        <Box className={classes.hero}>
+          <Container maxWidth="xl">
+            <Typography variant="h1" className={classes.heroTitle}>
+              {organisation.name}
+            </Typography>
+          </Container>
+          <HyperaudioIcon className={classes.heroOrnament} />
+        </Box>
+        {displayChannels.map(channel => (
+          <Container
+            key={channel.id}
+            maxWidth="xl"
+            sx={{ mt: { xs: '1px' }, mb: { xs: 3, sm: 3 }, my: { md: 4, lg: 12, xl: 16 } }}
+          >
+            <CardGrid title={channel.name} text={channel.description} items={channel.media} disableLinks={!user} />
+          </Container>
+        ))}
+      </Root>
+    </>
   );
 };
 

@@ -32,7 +32,7 @@ const getChannels = async setAllMedia => setAllMedia(await DataStore.query(Chann
 
 const DashboardPage = props => {
   const router = useRouter();
-  const { user, groups = [] } = props;
+  const { user, organisation, groups = [] } = props;
 
   const [allMedia, setAllMedia] = useState([]);
   const [allTranscripts, setAllTranscripts] = useState([]);
@@ -84,26 +84,26 @@ const DashboardPage = props => {
   );
 
   return (
-    <Root className={classes.root}>
+    <>
       <Head>
-        <title>Hyperaudio</title>
-        <link rel="icon" href="/favicon.ico" />
+        <title>Dashboard • {organisation.name} @ hyper.audio</title>
       </Head>
-
-      <Main maxWidth="xl">
-        {user && groups && (groups.includes('Editors') || groups.includes('Organisers')) ? (
-          <MediaTable
-            media={allMedia}
-            onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
-            onEditMedia={onEditMedia}
-            onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
-            onClickMedia={onClickMedia}
-          />
-        ) : user === null ? (
-          'Access Denied!'
-        ) : null}
-      </Main>
-    </Root>
+      <Root className={classes.root}>
+        <Main maxWidth="xl">
+          {user && groups && (groups.includes('Editors') || groups.includes('Organisers')) ? (
+            <MediaTable
+              media={allMedia}
+              onDeleteMedia={payload => console.log('onDeleteMedia', { payload })}
+              onEditMedia={onEditMedia}
+              onTranslateMedia={payload => console.log('onTranslateMedia', { payload })}
+              onClickMedia={onClickMedia}
+            />
+          ) : user === null ? (
+            'Access Denied!'
+          ) : null}
+        </Main>
+      </Root>
+    </>
   );
 };
 
