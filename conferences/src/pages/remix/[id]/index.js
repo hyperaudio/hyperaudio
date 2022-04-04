@@ -32,7 +32,7 @@ const getRemix = async (setRemixes, id) => {
   return setRemixes((await DataStore.query(RemixMedia)).filter(r => r.remix.id === id).map(r => r.remix)[0]);
 };
 
-const RemixPage = () => {
+const RemixPage = ({ user, groups: [], organisation }) => {
   const router = useRouter();
   const id = useMemo(() => router.query.id, [router.query]);
   const [media, setMedia] = useState();
