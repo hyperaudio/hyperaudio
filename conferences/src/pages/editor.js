@@ -175,6 +175,28 @@ const EditorPage = ({ organisation, user, groups }) => {
 
           speakers = result.speakers;
           blocks = result.blocks;
+
+          blocks = blocks.map(block => {
+            const items = block.data.items.map((item, i, arr) => {
+              const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+              return { ...item, offset, length: item.text.length };
+            });
+
+            return {
+              ...block,
+              key: `B${nanoid(5)}`,
+              data: {
+                ...block.data,
+                start: block.data.items?.[0]?.start ?? 0,
+                end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+                speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+                items,
+                stt: items,
+              },
+              entityRanges: [],
+              inlineStyleRanges: [],
+            };
+          });
         } catch (error) {
           setError(error);
         }
@@ -183,34 +205,34 @@ const EditorPage = ({ organisation, user, groups }) => {
       // let { speakers, blocks } = await (await fetch(transcript.url)).json();
 
       // fix simple list of speakers (array -> map)
-      if (isArray(speakers)) {
-        speakers = speakers.reduce((acc, speaker) => {
-          const id = `S${nanoid(5)}`;
-          return { ...acc, [id]: { name: speaker, id } };
-        }, {});
+      // if (isArray(speakers)) {
+      //   speakers = speakers.reduce((acc, speaker) => {
+      //     const id = `S${nanoid(5)}`;
+      //     return { ...acc, [id]: { name: speaker, id } };
+      //   }, {});
 
-        blocks = blocks.map(block => {
-          const items = block.data.items.map((item, i, arr) => {
-            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-            return { ...item, offset, length: item.text.length };
-          });
+      //   blocks = blocks.map(block => {
+      //     const items = block.data.items.map((item, i, arr) => {
+      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+      //       return { ...item, offset, length: item.text.length };
+      //     });
 
-          return {
-            ...block,
-            key: `B${nanoid(5)}`,
-            data: {
-              ...block.data,
-              start: block.data.items?.[0]?.start ?? 0,
-              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-              items,
-              stt: items,
-            },
-            entityRanges: [],
-            inlineStyleRanges: [],
-          };
-        });
-      }
+      //     return {
+      //       ...block,
+      //       key: `B${nanoid(5)}`,
+      //       data: {
+      //         ...block.data,
+      //         start: block.data.items?.[0]?.start ?? 0,
+      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+      //         speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+      //         items,
+      //         stt: items,
+      //       },
+      //       entityRanges: [],
+      //       inlineStyleRanges: [],
+      //     };
+      //   });
+      // }
 
       console.log({ speakers, blocks });
       setData({ speakers, blocks });
@@ -241,6 +263,28 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         speakers = result.speakers;
         blocks = result.blocks;
+
+        blocks = blocks.map(block => {
+          const items = block.data.items.map((item, i, arr) => {
+            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+            return { ...item, offset, length: item.text.length };
+          });
+
+          return {
+            ...block,
+            key: `B${nanoid(5)}`,
+            data: {
+              ...block.data,
+              start: block.data.items?.[0]?.start ?? 0,
+              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+              items,
+              stt: items,
+            },
+            entityRanges: [],
+            inlineStyleRanges: [],
+          };
+        });
       } catch (error) {
         // setError(error);
 
@@ -269,34 +313,34 @@ const EditorPage = ({ organisation, user, groups }) => {
       }
 
       // fix simple list of speakers (array -> map)
-      if (isArray(speakers)) {
-        speakers = speakers.reduce((acc, speaker) => {
-          const id = `S${nanoid(5)}`;
-          return { ...acc, [id]: { name: speaker, id } };
-        }, {});
+      // if (isArray(speakers)) {
+      //   speakers = speakers.reduce((acc, speaker) => {
+      //     const id = `S${nanoid(5)}`;
+      //     return { ...acc, [id]: { name: speaker, id } };
+      //   }, {});
 
-        blocks = blocks.map(block => {
-          const items = block.data.items.map((item, i, arr) => {
-            const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
-            return { ...item, offset, length: item.text.length };
-          });
+      //   blocks = blocks.map(block => {
+      //     const items = block.data.items.map((item, i, arr) => {
+      //       const offset = arr.slice(0, i).reduce((acc, { text }) => acc + text.length + 1, 0);
+      //       return { ...item, offset, length: item.text.length };
+      //     });
 
-          return {
-            ...block,
-            key: `B${nanoid(5)}`,
-            data: {
-              ...block.data,
-              start: block.data.items?.[0]?.start ?? 0,
-              end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
-              speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
-              items,
-              stt: items,
-            },
-            entityRanges: [],
-            inlineStyleRanges: [],
-          };
-        });
-      }
+      //     return {
+      //       ...block,
+      //       key: `B${nanoid(5)}`,
+      //       data: {
+      //         ...block.data,
+      //         start: block.data.items?.[0]?.start ?? 0,
+      //         end: block.data.items?.[block.data.items.length - 1]?.end ?? 0,
+      //         speaker: Object.entries(speakers).find(([id, { name }]) => name === block.data.speaker)?.[0],
+      //         items,
+      //         stt: items,
+      //       },
+      //       entityRanges: [],
+      //       inlineStyleRanges: [],
+      //     };
+      //   });
+      // }
 
       console.log('original', { speakers, blocks });
       setOriginalData({ speakers, blocks });
