@@ -1,6 +1,7 @@
+import Head from 'next/head';
 import React, { useMemo, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
+import { useRouter } from 'next/router';
 
 import { styled } from '@mui/material/styles';
 
@@ -74,20 +75,27 @@ const RemixPage = () => {
   console.log({ media, data });
 
   return (
-    <Root className={classes.root}>
-      <div className={classes.push} />
-      {data && data.sources && data.sources.length > 0 ? (
-        <Remixer
-          editable={false}
-          // isSingleMedia={true}
-          showSource={false}
-          hideToggleSource={true}
-          media={data.sources}
-          remix={data.remix}
-          sources={data.sources}
-        />
-      ) : null}
-    </Root>
+    <>
+      <Head>
+        <title>
+          Remix: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
+        </title>
+      </Head>
+      <Root className={classes.root}>
+        <div className={classes.push} />
+        {data && data.sources && data.sources.length > 0 ? (
+          <Remixer
+            editable={false}
+            // isSingleMedia={true}
+            showSource={false}
+            hideToggleSource={true}
+            media={data.sources}
+            remix={data.remix}
+            sources={data.sources}
+          />
+        ) : null}
+      </Root>
+    </>
   );
 };
 

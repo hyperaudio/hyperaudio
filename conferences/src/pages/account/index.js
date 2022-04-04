@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useState, useCallback, useEffect, useReducer } from 'react';
 import { Auth, DataStore, syncExpression, withSSRContext } from 'aws-amplify';
 import { serializeModel, deserializeModel } from '@aws-amplify/datastore/ssr';
@@ -60,7 +61,7 @@ export const userReducer = (state, action) => {
 };
 
 const AccountPage = initialData => {
-  const { identityId } = initialData;
+  const { identityId, organisation } = initialData;
   const [{ user, name, bio }, dispatch] = useReducer(userReducer, {
     user: initialData.user ? deserializeModel(User, initialData.user) : null,
   });
@@ -89,6 +90,11 @@ const AccountPage = initialData => {
 
   return (
     <>
+      <Head>
+        <title>
+          Account: {user?.name} • {organisation.name} @ hyper.audio
+        </title>
+      </Head>
       <Main>
         <NoSsr>
           <Root className={classes.root}>

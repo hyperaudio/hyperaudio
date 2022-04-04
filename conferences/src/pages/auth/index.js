@@ -1,6 +1,7 @@
+import Amplify, { Auth, DataStore, syncExpression } from 'aws-amplify';
+import Head from 'next/head';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Amplify, { Auth, DataStore, syncExpression } from 'aws-amplify';
 
 import { AmplifyProvider, Authenticator, createTheme } from '@aws-amplify/ui-react';
 import '@aws-amplify/ui-react/styles.css';
@@ -87,22 +88,27 @@ const Redirect = ({ user }) => {
   );
 };
 
-const AuthPage = () => {
+const AuthPage = ({ organisation }) => {
   return (
-    <AmplifyProvider theme={theme}>
-      <div
-        style={{
-          marginTop: 50,
-          display: 'flex',
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <Authenticator>{({ signOut, user }) => <Redirect user={user} />}</Authenticator>
-      </div>
-    </AmplifyProvider>
+    <>
+      <Head>
+        <title>Sign in • {organisation.name} @ hyper.audio</title>
+      </Head>
+      <AmplifyProvider theme={theme}>
+        <div
+          style={{
+            marginTop: 50,
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Authenticator>{({ signOut, user }) => <Redirect user={user} />}</Authenticator>
+        </div>
+      </AmplifyProvider>
+    </>
   );
 };
 
