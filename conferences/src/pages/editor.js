@@ -10,6 +10,7 @@ import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
+import mux from 'mux-embed';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -295,6 +296,32 @@ const EditorPage = ({ organisation, user, groups }) => {
   useEffect(() => console.log({ originalState }), [originalState]);
 
   const video = useRef();
+
+  const waitForPlayer = useCallback(() => {
+    if (!media) return;
+
+    console.log('MUX?');
+    if (video.current?.getInternalPlayer('hls') && global.MUX_KEY) {
+      console.log('MUX ON');
+      const initTime = Date.now();
+      mux.monitor(video.current.getInternalPlayer(), {
+        debug: false,
+        hlsjs: video.current?.getInternalPlayer('hls'),
+        data: {
+          env_key: global.MUX_KEY,
+          player_name: 'Editor',
+          player_init_time: initTime,
+          video_id: media.playbackId,
+          video_title: media.title,
+        },
+      });
+    } else if (global.MUX_KEY) {
+      setTimeout(() => waitForPlayer(), (1e3 * 1) / 60); // TODO use reqAnimFrame?
+    }
+  }, [video, media]);
+
+  useEffect(() => waitForPlayer(), [waitForPlayer]);
+
   const seekTo = useCallback(
     time => {
       setSeekTime(time);
