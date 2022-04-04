@@ -7,12 +7,14 @@ import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
 
 import Alert from '@mui/material/Alert';
+import Fab from '@mui/material/Fab';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Link from '@mui/material/Link';
+import Tooltip from '@mui/material/Tooltip';
 import { ThemeProvider, CssBaseline } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-import { getTheme } from '@hyperaudio/common';
+import { getTheme, HyperaudioIcon } from '@hyperaudio/common';
 
 import createEmotionCache from './util/createEmotionCache';
 import Topbar from './components/Topbar';
@@ -227,6 +229,11 @@ const App = props => {
               </Alert>
             ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
+            <Tooltip title="About Hyperaudio">
+              <Fab color="primary" href="https://hyper.audio" sx={{ position: 'fixed', bottom: 20, right: 20 }}>
+                <HyperaudioIcon />
+              </Fab>
+            </Tooltip>
           </Root>
         </PlausibleProvider>
       </ThemeProvider>
