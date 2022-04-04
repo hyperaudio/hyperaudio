@@ -10,6 +10,7 @@ import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Slide from '@mui/material/Slide';
@@ -81,11 +82,9 @@ const Root = styled('div', {
     background: theme.palette.background.paper,
     borderColor: theme.palette.divider,
     borderStyle: 'solid',
-    borderWidth: '1px 1px 0 0',
     bottom: 0,
-    left: 0,
-    position: 'fixed',
     padding: theme.spacing(0.5, 1),
+    position: 'fixed',
   },
 }));
 
@@ -228,6 +227,13 @@ const App = props => {
     [],
   );
 
+  const linkProps = {
+    sx: { fontSize: '12px' },
+    target: '_blank',
+    underline: 'hover',
+    variant: 'caption',
+  };
+
   return (
     <CacheProvider value={emotionCache}>
       <CssBaseline />
@@ -246,41 +252,43 @@ const App = props => {
               </Alert>
             ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
-            <Tooltip title="About Hyperaudio">
+            <Tooltip title="Visit Hyperaudio" placement="top">
               <Fab
                 color="primary"
                 href="https://hyper.audio"
-                sx={{ position: 'fixed', bottom: 20, right: 20 }}
+                sx={{
+                  bottom: { xs: 30, md: 40, lg: 50 },
+                  display: { xs: 'none', md: 'inline-flex' },
+                  position: 'fixed',
+                  right: { xs: 30, md: 40, lg: 50 },
+                }}
                 target="_blank"
               >
                 <HyperaudioIcon />
               </Fab>
             </Tooltip>
             <Slide appear={false} direction="up" in={!trigger}>
-              <Box className={classes.foot}>
+              <Box className={classes.foot} sx={{ left: 0, borderWidth: '1px 1px 0 0' }}>
                 <Stack direction="row" spacing={1}>
-                  <Link
-                    href="https://hyper.audio/privacy-policy"
-                    sx={{ fontSize: '12px' }}
-                    target="_blank"
-                    variant="caption"
-                  >
+                  <Typography color="textSecondary" variant="caption" sx={{ fontSize: '12px' }}>
+                    ©{' '}
+                    <Link {...linkProps} href="https://hyper.audio">
+                      The Hyperaudio Project
+                    </Link>
+                  </Typography>
+                </Stack>
+              </Box>
+            </Slide>
+            <Slide appear={false} direction="up" in={!trigger}>
+              <Box className={classes.foot} sx={{ right: 0, borderWidth: '1px 0 0 1px' }}>
+                <Stack direction="row" spacing={1}>
+                  <Link {...linkProps} href="https://hyper.audio/privacy-policy">
                     Privacy Policy
                   </Link>
-                  <Link
-                    href="https://hyper.audio/terms-of-service"
-                    sx={{ fontSize: '12px' }}
-                    target="_blank"
-                    variant="caption"
-                  >
+                  <Link {...linkProps} href="https://hyper.audio/terms-of-service">
                     Terms of Service
                   </Link>
-                  <Link
-                    href="https://hyper.audio/code-of-conduct"
-                    sx={{ fontSize: '12px' }}
-                    target="_blank"
-                    variant="caption"
-                  >
+                  <Link {...linkProps} href="https://hyper.audio/code-of-conduct">
                     Code of Conduct
                   </Link>
                 </Stack>
