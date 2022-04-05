@@ -57,11 +57,6 @@ const Root = styled('div', {
   },
 }));
 
-export const DIFF_BEHIND = 0.3;
-export const DIFF_IN_FRONT = 0.3;
-export const SPEED_UP = 1.05;
-export const SLOW_DOWN = 0.95;
-
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
   setMedia(media?.[0]);
@@ -284,6 +279,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     [blocks],
   );
 
+  useEffect(() => setSaved({ contentState: initialState?.getCurrentContent() }), [initialState]);
+
   const originalState = useMemo(
     () =>
       originalData?.blocks &&
@@ -385,12 +382,24 @@ const EditorPage = ({ organisation, user, groups }) => {
   const onDuration = useCallback(duration => setDuration(duration), []);
 
   const [draft, setDraft] = useState();
+  const [saved, setSaved] = useState();
   const [saving, setSaving] = useState(0);
   const [previewing, setPreviewing] = useState(0);
   const [savingProgress, setSavingProgress] = useState(0);
   const [previewingProgress, setPreviewingProgress] = useState(0);
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
+
+  useEffect(() => {
+    window.onbeforeunload = e => {
+      if (draft && draft.contentState !== saved?.contentState) {
+        e.preventDefault();
+        e.returnValue = '';
+      } else {
+        delete e['returnValue'];
+      }
+    };
+  }, [draft, saved]);
 
   const handleSave = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -400,7 +409,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify(draft),
+      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       {
         level: 'public',
         contentType: 'application/json',
@@ -427,6 +436,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     setTimeout(() => setSaving(0), 500);
     plausible('save');
+    setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
 
   const handlePreview = useCallback(async () => {
@@ -437,7 +447,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`,
-      JSON.stringify(draft),
+      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       {
         level: 'public',
         contentType: 'application/json',
@@ -468,7 +478,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify(draft),
+      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       {
         level: 'public',
         contentType: 'application/json',
@@ -489,7 +499,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     // PUBLISH!
     const result2 = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
-      JSON.stringify(draft),
+      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       {
         level: 'public',
         contentType: 'application/json',
@@ -531,6 +541,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     // );
     // console.log(signedURL);
     plausible('publish');
+    setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
 
   global.resetTranscript = useCallback(async () => {
@@ -698,6 +709,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     console.log(div.current?.getBoundingClientRect(), value, pip);
     setTop(value);
   }, [div, pip]);
+  console.log({ draft, saved });
 
   return user ? (
     <>
@@ -725,7 +737,9 @@ const EditorPage = ({ organisation, user, groups }) => {
                   )
                 }
                 onClick={handleSave}
-                disabled={!draft || saving !== 0 || !groups.includes('Editors')}
+                disabled={
+                  !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
+                }
               >
                 {saving ? `Saving ${savingProgress}%` : 'Save draft'}
               </Button>

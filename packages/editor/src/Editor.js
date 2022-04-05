@@ -126,6 +126,14 @@ const Editor = props => {
   // FIMXE debounce
   useEffect(() => {
     if (pseudoReadOnly) return;
+    // onChangeProp({
+    //   speakers,
+    //   blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
+    //     delete block.depth;
+    //     delete block.type;
+    //     return block;
+    //   }),
+    // });
     onChangeProp({
       speakers,
       blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
@@ -133,6 +141,7 @@ const Editor = props => {
         delete block.type;
         return block;
       }),
+      contentState: state.getCurrentContent(),
     });
   }, [state, speakers, onChangeProp, pseudoReadOnly]);
 
