@@ -30,7 +30,11 @@ const Source = props => {
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
-      {isSingleMedia ? <MediaTopbar {...props} /> : <SourceTopbar {...props} />}
+      {isSingleMedia ? (
+        <MediaTopbar source={props.source} mediaLabel={props.mediaLabel} canEdit={props.canEdit} />
+      ) : (
+        <SourceTopbar {...props} />
+      )}
       <Theatre {...{ blocks, media, players, reference, time, setTime }} />
       <div className="transcriptWrap">
         <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true, autoScroll }} />

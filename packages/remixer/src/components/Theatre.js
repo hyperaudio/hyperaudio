@@ -178,9 +178,6 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
     }
   }, [buffering, reference]);
 
-  // TIMECODE
-  // const tc = useMemo(() => timecode(time / 1e3), [time]);
-
   return (
     <Root>
       <Container className={classes.core} maxWidth="sm">
@@ -300,6 +297,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
                 size="small"
                 value={time / 1e3}
                 valueLabelDisplay="auto"
+                valueLabelFormat={timecode}
               />
             </Grid>
           </Grid>
@@ -476,7 +474,7 @@ const Player = ({
 };
 
 const timecode = (seconds, frameRate = 25, dropFrame = false) =>
-  TC(seconds * frameRate, frameRate, dropFrame)
+  TC(seconds * 25, 25, false)
     .toString()
     .split(':')
     .slice(0, 3)

@@ -6,6 +6,7 @@ import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Fade from '@mui/material/Fade';
+import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 import TextField from '@mui/material/TextField';
@@ -19,14 +20,12 @@ const filter = createFilterOptions();
 
 const SPEAKER_AREA_WIDTH = 120;
 const SPEAKER_AREA_HEIGHT = 26;
-
 const PREFIX = 'Editor';
-
 const classes = {
   root: `${PREFIX}`,
 };
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled(Box)(({ theme }) => ({
   ...theme.typography.body2,
   [`div[data-block='true'] + div[data-block='true']`]: {
     marginTop: theme.spacing(3),

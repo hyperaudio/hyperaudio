@@ -82,7 +82,7 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source, mediaLabel, canEdit, ...props }) => {
+export const MediaTopbar = ({ source, mediaLabel, canEdit }) => {
   const { transcript } = source;
 
   // console.log({ MediaTopbar: source });
