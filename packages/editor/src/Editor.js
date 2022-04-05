@@ -15,6 +15,7 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import PlayheadDecorator from './PlayheadDecorator';
 import reducer from './reducer';
+import { red } from '@mui/material/colors';
 
 const filter = createFilterOptions();
 
@@ -34,9 +35,9 @@ const Root = styled(Box)(({ theme }) => ({
     paddingLeft: `${SPEAKER_AREA_WIDTH}px`,
     position: 'relative',
   },
-  [`div[data-block='true'] .Playhead ~ span`]: {
-    color: theme.palette.text.disabled,
-  },
+  // [`div[data-block='true'] .Playhead ~ span`]: {
+  //   color: theme.palette.text.disabled,
+  // },
   [`div[data-block='true'][data-offset-key]`]: {
     [`&:after, &:before`]: {
       position: 'absolute',
@@ -126,6 +127,14 @@ const Editor = props => {
   // FIMXE debounce
   useEffect(() => {
     if (pseudoReadOnly) return;
+    // onChangeProp({
+    //   speakers,
+    //   blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
+    //     delete block.depth;
+    //     delete block.type;
+    //     return block;
+    //   }),
+    // });
     onChangeProp({
       speakers,
       blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
@@ -133,6 +142,7 @@ const Editor = props => {
         delete block.type;
         return block;
       }),
+      contentState: state.getCurrentContent(),
     });
   }, [state, speakers, onChangeProp, pseudoReadOnly]);
 
@@ -147,14 +157,14 @@ const Editor = props => {
             decorator: new CompositeDecorator([
               {
                 strategy: (contentBlock, callback, contentState) =>
-                  playheadDecorator.strategy(contentBlock, callback, contentState, time, autoScroll),
+                  playheadDecorator.strategy(contentBlock, callback, contentState, time),
                 component: playheadDecorator.component,
               },
               ...decorators,
             ]),
           })
         : state,
-    [state, time, autoScroll, playheadDecorator, focused],
+    [state, time, playheadDecorator, decorators, focused],
   );
 
   const handleClick = useCallback(
@@ -301,16 +311,14 @@ const Editor = props => {
   const wrapper = useRef();
   const scrollTarget = useRef();
   useEffect(() => {
-    if (!autoScroll || playheadDecorator) return;
+    if (!autoScroll || focused) return;
 
     const blocks = editorState.getCurrentContent().getBlocksAsArray();
-    // console.log({ blocks });
     const block = blocks
       .slice()
       .reverse()
       .find(block => block.getData().get('start') <= time);
     if (!block) return;
-    // console.log(block.getKey(), block.getText());
 
     const playhead = wrapper.current?.querySelector(`div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]`);
 
@@ -318,7 +326,7 @@ const Editor = props => {
       scrollTarget.current = playhead;
       playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [autoScroll, time, scrollTarget, wrapper, playheadDecorator]);
+  }, [autoScroll, time, scrollTarget, wrapper, focused]);
 
   return (
     <Root className={`${classes.root} focus-${focused}`} onClick={handleClick} ref={wrapper}>
@@ -441,6 +449,13 @@ const Editor = props => {
           )}
         </Popper>
       )}
+      <style scoped>
+        {`
+          .focus-false div[data-block='true'] .Playhead ~ span {
+            color: #757575;
+          }
+        `}
+      </style>
     </Root>
   );
 };

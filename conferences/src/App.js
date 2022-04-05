@@ -228,7 +228,7 @@ const App = props => {
   );
 
   const linkProps = {
-    sx: { fontSize: '12px' },
+    sx: { fontSize: '12px', mh: 1 },
     target: '_blank',
     underline: 'hover',
     variant: 'caption',
@@ -280,18 +280,23 @@ const App = props => {
               </Box>
             </Slide>
             <Slide appear={false} direction="up" in={!trigger}>
-              <Box
-                className={classes.foot}
-                sx={{ right: 0, borderWidth: '1px 0 0 1px', display: { xs: 'none', md: 'block' } }}
-              >
-                <Stack direction="row" spacing={1}>
-                  <Link {...linkProps} href="https://hyper.audio/privacy-policy">
-                    Privacy Policy
-                  </Link>
+              <Box className={classes.foot} sx={{ right: 0, borderWidth: '1px 0 0 1px' }}>
+                <Stack direction="row" spacing={2}>
                   <Link {...linkProps} href="https://hyper.audio/terms-of-service">
                     Terms of Service
                   </Link>
-                  <Link {...linkProps} href="https://hyper.audio/code-of-conduct">
+                  <Link
+                    {...linkProps}
+                    href="https://hyper.audio/privacy-policy"
+                    sx={{ ...linkProps.sx, display: { xs: 'none', sm: 'inline' } }}
+                  >
+                    Privacy Policy
+                  </Link>
+                  <Link
+                    {...linkProps}
+                    href="https://hyper.audio/code-of-conduct"
+                    sx={{ ...linkProps.sx, display: { xs: 'none', md: 'inline' } }}
+                  >
                     Code of Conduct
                   </Link>
                 </Stack>
