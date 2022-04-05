@@ -280,7 +280,10 @@ const App = props => {
               </Box>
             </Slide>
             <Slide appear={false} direction="up" in={!trigger}>
-              <Box className={classes.foot} sx={{ right: 0, borderWidth: '1px 0 0 1px' }}>
+              <Box
+                className={classes.foot}
+                sx={{ right: 0, borderWidth: '1px 0 0 1px', display: { xs: 'none', md: 'block' } }}
+              >
                 <Stack direction="row" spacing={1}>
                   <Link {...linkProps} href="https://hyper.audio/privacy-policy">
                     Privacy Policy

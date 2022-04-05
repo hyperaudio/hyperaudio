@@ -34,6 +34,7 @@ const Root = styled(Paper, {
   return {
     alignContent: 'flexStart',
     alignItems: 'flexStart',
+    border: `3px solid ${theme.palette.primary.main}`,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'stretch',
@@ -45,12 +46,12 @@ const Root = styled(Paper, {
     top: '33%',
     userSelect: 'none',
     width: '100%',
-    zIndex: theme.zIndex.modal,
+    zIndex: 9999,
     [`& .${classes.head}`]: {
       alignItems: 'center',
-      background: theme.palette.background.default,
+      background: theme.palette.primary.main,
       borderBottom: `1px solid ${theme.palette.divider}`,
-      color: theme.palette.primary.dark,
+      color: theme.palette.primary.contrastText,
       cursor: 'move',
       display: 'flex',
       fontWeight: '500',
@@ -83,13 +84,14 @@ export const MediaInfoDialog = props => {
           open={true}
           elevation={2}
           className={classes.root}
+          sx={{ display: open ? 'block' : 'none' }}
         >
           <Box className={classes.head}>
             <Typography id="media-detail-dialog" sx={{ flexGrow: 1, fontWeight: 500 }} variant="body2">
               Media details
             </Typography>
-            <IconButton edge="end" aria-label="close" size="small" onClick={onClose}>
-              <CloseIcon fontSize="small" color="primary" />
+            <IconButton edge="end" aria-label="close" size="small" onClick={onClose} color="inherit">
+              <CloseIcon fontSize="small" />
             </IconButton>
           </Box>
           <Box className={classes.body}>
