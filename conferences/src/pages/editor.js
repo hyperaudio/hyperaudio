@@ -857,6 +857,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                 <Editor
                   {...{ initialState, time, seekTo, speakers, playing, play, pause }}
                   onChange={setDraft}
+                  autoScroll={true}
                   playheadDecorator={noKaraoke ? null : undefined}
                 />
               ) : (
