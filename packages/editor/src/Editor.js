@@ -15,6 +15,7 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import PlayheadDecorator from './PlayheadDecorator';
 import reducer from './reducer';
+import { red } from '@mui/material/colors';
 
 const filter = createFilterOptions();
 
@@ -34,9 +35,9 @@ const Root = styled(Box)(({ theme }) => ({
     paddingLeft: `${SPEAKER_AREA_WIDTH}px`,
     position: 'relative',
   },
-  [`div[data-block='true'] .Playhead ~ span`]: {
-    color: theme.palette.text.disabled,
-  },
+  // [`div[data-block='true'] .Playhead ~ span`]: {
+  //   color: theme.palette.text.disabled,
+  // },
   [`div[data-block='true'][data-offset-key]`]: {
     [`&:after, &:before`]: {
       position: 'absolute',
@@ -450,6 +451,13 @@ const Editor = props => {
           )}
         </Popper>
       )}
+      <style scoped>
+        {`
+          .focus-false div[data-block='true'] .Playhead ~ span {
+            color: #757575;
+          }
+        `}
+      </style>
     </Root>
   );
 };
