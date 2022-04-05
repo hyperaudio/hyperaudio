@@ -179,7 +179,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   }, [buffering, reference]);
 
   // TIMECODE
-  // const tc = useMemo(() => timecode(time / 1e3), [time]);
+  const tc = useMemo(() => timecode(time / 1e3), [time]);
 
   return (
     <Root>
@@ -300,6 +300,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
                 size="small"
                 value={time / 1e3}
                 valueLabelDisplay="auto"
+                valueLabelFormat={x => tc}
               />
             </Grid>
           </Grid>
