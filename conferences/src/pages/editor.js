@@ -74,7 +74,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const plausible = usePlausible();
   const router = useRouter();
   const {
-    query: { media: mediaId, transcript: transcriptId, original: originalId, noKaraoke = false },
+    query: { media: mediaId, transcript: transcriptId, original: originalId, noKaraoke = true },
   } = router;
 
   useEffect(() => {
