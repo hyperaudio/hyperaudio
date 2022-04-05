@@ -74,7 +74,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const plausible = usePlausible();
   const router = useRouter();
   const {
-    query: { media: mediaId, transcript: transcriptId, original: originalId },
+    query: { media: mediaId, transcript: transcriptId, original: originalId, noKaraoke = false },
   } = router;
 
   useEffect(() => {
@@ -840,7 +840,11 @@ const EditorPage = ({ organisation, user, groups }) => {
           {!originalId ? (
             <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
               {initialState ? (
-                <Editor {...{ initialState, time, seekTo, speakers, playing, play, pause }} onChange={setDraft} />
+                <Editor
+                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                  onChange={setDraft}
+                  playheadDecorator={noKaraoke ? null : undefined}
+                />
               ) : (
                 <div style={{ textAlign: 'center' }}>
                   Loading transcript{' '}
