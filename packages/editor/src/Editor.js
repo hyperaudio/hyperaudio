@@ -87,6 +87,7 @@ const Editor = props => {
   const {
     initialState = EditorState.createEmpty(),
     playheadDecorator = PlayheadDecorator,
+    // focusPlayheadDecorator,
     decorators = [],
     time = 0,
     seekTo,
@@ -135,9 +136,13 @@ const Editor = props => {
     });
   }, [state, speakers, onChangeProp, pseudoReadOnly]);
 
+  const [focused, setFocused] = useState(false);
+  const onFocus = useCallback(() => setFocused(true), []);
+  const onBlur = useCallback(() => setFocused(false), []);
+
   const editorState = useMemo(
     () =>
-      playheadDecorator
+      !focused && playheadDecorator
         ? EditorState.set(state, {
             decorator: new CompositeDecorator([
               {
@@ -149,7 +154,7 @@ const Editor = props => {
             ]),
           })
         : state,
-    [state, time, autoScroll, playheadDecorator],
+    [state, time, autoScroll, playheadDecorator, focused],
   );
 
   const handleClick = useCallback(
@@ -316,9 +321,9 @@ const Editor = props => {
   }, [autoScroll, time, scrollTarget, wrapper, playheadDecorator]);
 
   return (
-    <Root className={classes.root} onClick={handleClick} ref={wrapper}>
+    <Root className={`${classes.root} focus-${focused}`} onClick={handleClick} ref={wrapper}>
       <DraftEditor
-        {...{ editorState, onChange, ...rest }}
+        {...{ editorState, onChange, onFocus, onBlur, ...rest }}
         handleDrop={() => true}
         handleDroppedFiles={() => true}
         handlePastedFiles={() => true}

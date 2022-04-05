@@ -72,7 +72,7 @@ const Root = styled(Paper, {
 export const MediaInfoDialog = props => {
   const { open, onClose, source } = props;
 
-  console.log({ source });
+  // console.log({ source });
 
   return (
     <Draggable handle="#media-detail-dialog" bounds="#Remixer-root">

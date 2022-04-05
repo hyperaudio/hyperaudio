@@ -11,6 +11,7 @@ import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
 import mux from 'mux-embed';
+import TC from 'smpte-timecode';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -73,7 +74,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const plausible = usePlausible();
   const router = useRouter();
   const {
-    query: { media: mediaId, transcript: transcriptId, original: originalId },
+    query: { media: mediaId, transcript: transcriptId, original: originalId, noKaraoke = true },
   } = router;
 
   useEffect(() => {
@@ -827,6 +828,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                       size="small"
                       value={time}
                       valueLabelDisplay="auto"
+                      valueLabelFormat={timecode}
                     />
                   </Grid>
                 </Grid>
@@ -838,7 +840,11 @@ const EditorPage = ({ organisation, user, groups }) => {
           {!originalId ? (
             <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
               {initialState ? (
-                <Editor {...{ initialState, time, seekTo, speakers, playing, play, pause }} onChange={setDraft} />
+                <Editor
+                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                  onChange={setDraft}
+                  playheadDecorator={noKaraoke ? null : undefined}
+                />
               ) : (
                 <div style={{ textAlign: 'center' }}>
                   Loading transcript{' '}
@@ -909,5 +915,12 @@ const EditorPage = ({ organisation, user, groups }) => {
 };
 
 const NOOP = () => {};
+
+const timecode = (seconds, frameRate = 25, dropFrame = false) =>
+  TC(seconds * 25, 25, false)
+    .toString()
+    .split(':')
+    .slice(0, 3)
+    .join(':');
 
 export default EditorPage;
