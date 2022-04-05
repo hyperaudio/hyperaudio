@@ -129,7 +129,7 @@ export function MediaTable(props) {
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('created');
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(150);
   const [selected, setSelected] = useState([]);
 
   const openItemMoreMenu = Boolean(itemMoreMenuAnchor);
@@ -259,7 +259,7 @@ export function MediaTable(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
           page={page}
           rowsPerPage={rowsPerPage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100, 150, 200]}
         />
       </Toolbar>
       <TableContainer>
