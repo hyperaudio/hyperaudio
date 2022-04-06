@@ -234,17 +234,12 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
   }
 };
 
-const reducer = (
-  editorState,
-  { type, editorState: changedEditorState, currentBlock, speaker, aligner, dispatch, pseudoReadOnly },
-) => {
+const reducer = (editorState, { type, editorState: changedEditorState, currentBlock, speaker, aligner, dispatch }) => {
   const contentState = editorState.getCurrentContent();
   const changedContentState = changedEditorState.getCurrentContent();
 
   const join = changedContentState.getBlockMap().size < contentState.getBlockMap().size;
   const split = changedContentState.getBlockMap().size > contentState.getBlockMap().size;
-
-  // if (pseudoReadOnly) {}
 
   console.log({ type, join, split });
 

@@ -114,7 +114,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   useEffect(() => {
     if (!transcript || !media) return;
-    console.log({ media, transcript });
+    console.log('LOADING', { media, transcript });
 
     (async () => {
       let speakers;
@@ -194,7 +194,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   useEffect(() => {
     if (!original || !media) return;
-    console.log({ media, original });
+    console.log('LOADING original', { media, original });
 
     (async () => {
       let speakers;
@@ -296,6 +296,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const video = useRef();
 
   const waitForPlayer = useCallback(() => {
+    console.log('waitForPlayer');
     if (!media) return;
 
     console.log('MUX?');
@@ -390,16 +391,17 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
 
-  useEffect(() => {
-    window.onbeforeunload = e => {
-      if (draft && draft.contentState !== saved?.contentState) {
-        e.preventDefault();
-        e.returnValue = '';
-      } else {
-        delete e['returnValue'];
-      }
-    };
-  }, [draft, saved]);
+  // useEffect(() => {
+  //   console.log('onbeforeunload');
+  //   window.onbeforeunload = e => {
+  //     if (draft && draft.contentState !== saved?.contentState) {
+  //       e.preventDefault();
+  //       e.returnValue = '';
+  //     } else {
+  //       delete e['returnValue'];
+  //     }
+  //   };
+  // }, []);
 
   const handleSave = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -705,11 +707,11 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [top, setTop] = useState(500);
 
   useLayoutEffect(() => {
+    // console.log('useLayoutEffect');
     const value = div.current?.getBoundingClientRect().top ?? 500;
     console.log(div.current?.getBoundingClientRect(), value, pip);
     setTop(value);
   }, [div, pip]);
-  console.log({ draft, saved });
 
   return user ? (
     <>
@@ -877,7 +879,6 @@ const EditorPage = ({ organisation, user, groups }) => {
                     speakers={originalData.speakers}
                     initialState={originalState}
                     onChange={NOOP}
-                    pseudoReadOnly={true}
                     readOnly={true}
                     autoScroll={true}
                     seekTo={originalSeekTo}
@@ -908,10 +909,17 @@ const EditorPage = ({ organisation, user, groups }) => {
               >
                 {initialState ? (
                   <Editor
-                    {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                    time={time}
+                    speakers={speakers}
+                    initialState={initialState}
                     onChange={setDraft}
-                    autoScroll={tempAutoScroll}
+                    // autoScroll={tempAutoScroll}
+                    autoScroll={true}
+                    seekTo={seekTo}
                     playheadDecorator={null}
+                    play={play}
+                    playing={playing}
+                    pause={pause}
                   />
                 ) : (
                   <div style={{ textAlign: 'center' }}>
