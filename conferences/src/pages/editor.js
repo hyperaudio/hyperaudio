@@ -428,7 +428,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     });
 
     console.log({ speakers, blocks });
-    setDraft({ speakers, blocks });
+    // setDraft({ speakers, blocks });
   }, [draft]);
 
   const handleSave = useCallback(async () => {
@@ -438,6 +438,11 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSaving(2); // 3
 
     const data = { speakers: draft.speakers, blocks: draft.blocks };
+
+    const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
+    const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
+    const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
+    unusedSpeakerIds.forEach(id => delete data.speakers[id]);
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
