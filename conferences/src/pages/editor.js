@@ -63,6 +63,49 @@ function CircularProgressWithLabel(props) {
   );
 }
 
+function SkeletonLoader({ progress }) {
+  return (
+    <>
+      {[...Array(5).keys()].map(key1 => (
+        <>
+          <Grid container spacing={1} key={key1}>
+            <Grid item xs={2}>
+              <Skeleton variation="text" sx={{ width: '100%' }} />
+            </Grid>
+            <Grid item xs={10}>
+              <Skeleton variation="text" sx={{ width: '100%' }} />
+            </Grid>
+          </Grid>
+          {[...Array(5).keys()].map(key2 => (
+            <Grid container spacing={1} key={key2}>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={10}>
+                <Skeleton variation="text" sx={{ width: '100%' }} />
+              </Grid>
+            </Grid>
+          ))}
+        </>
+      ))}
+      <Box
+        sx={{
+          alignItems: 'center',
+          bgcolor: 'rgba(255,255,255,0.5)',
+          bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          left: 0,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+        }}
+      >
+        <CircularProgressWithLabel color="primary" size={64} thickness={2} value={progress} variant="determinate" />
+      </Box>
+    </>
+  );
+}
+
 const PREFIX = 'EditorPage';
 const classes = {
   root: `${PREFIX}-root`,
@@ -71,11 +114,15 @@ const classes = {
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
+  alignItems: 'center',
   bottom: 0,
+  display: 'flex',
+  flexDirection: 'column',
   left: 0,
   position: 'fixed',
   right: 0,
   top: 0,
+  width: '100%',
 }));
 
 const getMedia = async (setMedia, id) => {
@@ -777,7 +824,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       </Head>
       <Root className={classes.root}>
         <Toolbar />
-        <Toolbar>
+        <Toolbar sx={{ width: '100%' }}>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs>
               <Stack direction="row" spacing={1}>
@@ -837,8 +884,8 @@ const EditorPage = ({ organisation, user, groups }) => {
         {/* THEATRE
         ------------------------------------
         */}
-        <Container maxWidth={originalId ? 'xl' : 'sm'}>
-          <Grid container spacing={originalId ? 1 : 0}>
+        <Container maxWidth={originalId ? 'xl' : 'sm'} sx={{ pb: 2 }}>
+          <Grid container spacing={originalId ? 1 : 0} sx={{ height: '100%' }}>
             <Grid item xs={originalId ? 6 : 12}>
               {media ? (
                 <Box>
@@ -918,111 +965,132 @@ const EditorPage = ({ organisation, user, groups }) => {
             ) : null}
           </Grid>
         </Container>
-        <Divider />
+        <Divider sx={{ width: '100%' }} />
         {/* TRANSCRIPT
         ------------------------------------
         */}
-        <Container maxWidth={originalId ? 'xl' : 'sm'}>
-          <Grid container spacing={1}>
-            <Grid item xs={original ? 6 : 12}></Grid>
-            <Grid item xs={6}></Grid>
-          </Grid>
-        </Container>
-        <div
-          style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}
-        >
-          {!originalId ? (
-            <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
+        {originalId ? (
+          <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1 }}>
+            <Grid container sx={{ height: '100%' }}>
+              <Grid item xs={6} sx={{ position: 'relative' }}>
+                <Box
+                  ref={div}
+                  sx={{
+                    borderColor: 'divider',
+                    borderStyle: 'solid',
+                    borderWidth: { xs: '0 1px 0 0', lg: '0 1px' },
+                    overflow: originalState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'relative',
+                    pt: 2,
+                    width: '100%',
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <Container maxWidth="sm">
+                    {originalState ? (
+                      <Editor
+                        time={time}
+                        speakers={originalData.speakers}
+                        initialState={originalState}
+                        onChange={NOOP}
+                        readOnly={true}
+                        autoScroll={true}
+                        seekTo={originalSeekTo}
+                        playheadDecorator={null}
+                        play={play}
+                        playing={playing}
+                        pause={pause}
+                      />
+                    ) : error ? (
+                      <Typography color="error" variant="body2">
+                        Error: {error?.message}
+                      </Typography>
+                    ) : (
+                      <SkeletonLoader progress={originalProgress} />
+                    )}
+                  </Container>
+                </Box>
+              </Grid>
+              <Grid item xs={6} sx={{ position: 'relative' }}>
+                <Box
+                  ref={div}
+                  sx={{
+                    borderColor: 'divider',
+                    borderStyle: 'solid',
+                    borderWidth: { xs: '0', lg: '0 1px 0 0' },
+                    overflow: initialState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'relative',
+                    pt: 2,
+                    width: '100%',
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    left: 0,
+                  }}
+                >
+                  <Container maxWidth="sm">
+                    {initialState ? (
+                      <Editor
+                        time={time}
+                        speakers={speakers}
+                        initialState={initialState}
+                        onChange={setDraft}
+                        // autoScroll={tempAutoScroll}
+                        autoScroll={true}
+                        seekTo={seekTo}
+                        playheadDecorator={null}
+                        play={play}
+                        playing={playing}
+                        pause={pause}
+                      />
+                    ) : error ? (
+                      <Typography color="error" variant="body2">
+                        Error: {error?.message}
+                      </Typography>
+                    ) : (
+                      <SkeletonLoader progress={progress} />
+                    )}
+                  </Container>
+                </Box>
+              </Grid>
+            </Grid>
+          </Container>
+        ) : (
+          <Box
+            ref={div}
+            sx={{
+              overflow: initialState ? 'auto' : 'hidden',
+              position: 'relative',
+              pb: 12,
+              pt: 2,
+              width: '100%',
+            }}
+          >
+            <Container maxWidth="sm">
               {initialState ? (
                 <Editor
                   {...{ initialState, time, seekTo, speakers, playing, play, pause }}
-                  onChange={setDraft}
                   autoScroll={true}
+                  onChange={setDraft}
                   playheadDecorator={noKaraoke ? null : undefined}
                 />
+              ) : error ? (
+                <Typography color="error" variant="body2">
+                  Error: {error?.message}
+                </Typography>
               ) : (
-                <div style={{ textAlign: 'center' }}>
-                  <CircularProgressWithLabel
-                    color="primary"
-                    size={64}
-                    thickness={2}
-                    value={progress}
-                    variant="determinate"
-                  />
-                  {error && <p>Error: {error?.message}</p>}
-                </div>
+                <SkeletonLoader progress={progress} />
               )}
-            </div>
-          ) : true ? (
-            <div ref={div} style={{ height: `calc(100vh - ${top}px)` }}>
-              <div style={{ width: '49%', float: 'left', overflow: 'scroll', paddingTop: 20, height: '100%' }}>
-                {originalState ? (
-                  <Editor
-                    time={time}
-                    speakers={originalData.speakers}
-                    initialState={originalState}
-                    onChange={NOOP}
-                    readOnly={true}
-                    autoScroll={true}
-                    seekTo={originalSeekTo}
-                    playheadDecorator={null}
-                    play={play}
-                    playing={playing}
-                    pause={pause}
-                  />
-                ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    <CircularProgressWithLabel
-                      color="primary"
-                      size={64}
-                      thickness={2}
-                      value={originalProgress}
-                      variant="determinate"
-                    />
-                    {error && <p>Error: {error?.message}</p>}
-                  </div>
-                )}
-              </div>
-              <div
-                style={{
-                  width: '49%',
-                  float: 'left',
-                  marginLeft: '2%',
-                  overflow: 'scroll',
-                  paddingTop: 20,
-                  height: '100%',
-                }}
-              >
-                {initialState ? (
-                  <Editor
-                    time={time}
-                    speakers={speakers}
-                    initialState={initialState}
-                    onChange={setDraft}
-                    // autoScroll={tempAutoScroll}
-                    autoScroll={true}
-                    seekTo={seekTo}
-                    playheadDecorator={null}
-                    play={play}
-                    playing={playing}
-                    pause={pause}
-                  />
-                ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    <CircularProgressWithLabel
-                      color="primary"
-                      size={64}
-                      thickness={2}
-                      value={progress}
-                      variant="determinate"
-                    />
-                    {error && <p>Error: {error?.message}</p>}
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : null}
-        </div>
+            </Container>
+          </Box>
+        )}
       </Root>
     </>
   ) : null;
