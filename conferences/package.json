@@ -23,6 +23,7 @@
     "@welldone-software/why-did-you-render": "7.0.0",
     "aws-amplify": "4.3.18",
     "axios": "0.26.1",
+    "bs58": "5.0.0",
     "cldr-segmentation": "2.2.0",
     "clsx": "1.1.1",
     "create-silent-audio": "0.1.1",

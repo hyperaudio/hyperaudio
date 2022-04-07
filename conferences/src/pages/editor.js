@@ -12,6 +12,7 @@ import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
 import mux from 'mux-embed';
 import TC from 'smpte-timecode';
+import bs58 from 'bs58';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -403,15 +404,44 @@ const EditorPage = ({ organisation, user, groups }) => {
   //   };
   // }, []);
 
+  global.listUnusedSpeakers = useCallback(() => {
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+
+    const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
+    const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
+    const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
+    console.log({
+      allSpeakerIds,
+      usedSpeakerIds,
+      unusedSpeakerIds,
+      names: unusedSpeakerIds.map(id => data.speakers[id].name),
+    });
+
+    const speakers = {};
+    const blocks = data.blocks.map(block => {
+      const speakerName = data.speakers[block.data.speaker].name.trim();
+      const speakerId = 'S' + bs58.encode(Buffer.from(speakerName));
+
+      speakers[speakerId] = { name: speakerName };
+
+      return { ...block, data: { ...block.data, speaker: speakerId } };
+    });
+
+    console.log({ speakers, blocks });
+    setDraft({ speakers, blocks });
+  }, [draft]);
+
   const handleSave = useCallback(async () => {
     if (!draft || !media || !transcript) return;
     console.log(draft);
     setSavingProgress(0);
     setSaving(2); // 3
 
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      JSON.stringify(data),
       {
         level: 'public',
         contentType: 'application/json',
