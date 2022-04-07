@@ -573,19 +573,19 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     console.log(result2);
 
-    // await DataStore.save(
-    //   Transcript.copyOf(transcript, updated => {
-    //     updated.status = { label: 'published' };
-    //     updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
-    //     updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
-    //   }),
-    // );
+    await DataStore.save(
+      Transcript.copyOf(transcript, updated => {
+        updated.status = { label: 'published' };
+        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
+        updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
+      }),
+    );
 
-    // await DataStore.save(
-    //   Media.copyOf(media, updated => {
-    //     updated.status = { label: 'published' };
-    //   }),
-    // );
+    await DataStore.save(
+      Media.copyOf(media, updated => {
+        updated.status = { label: 'published' };
+      }),
+    );
 
     setPublishing(1);
     setTimeout(() => setPublishing(0), 500);
