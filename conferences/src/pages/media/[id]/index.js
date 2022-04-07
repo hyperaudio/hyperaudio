@@ -1,10 +1,11 @@
 import Head from 'next/head';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Storage, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import ISO6391 from 'iso-639-1';
 
 import { styled } from '@mui/material/styles';
 
@@ -224,13 +225,26 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               transcript: {
                 title: transcript.title,
                 // translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
-                translations: transcripts.map(({ id, language: lang, title }) => ({
-                  id,
-                  lang,
-                  name: lang,
-                  title,
-                  default: language === (language ?? media.language),
-                })),
+                translations: [
+                  ...transcripts
+                    .filter(t => t.language === (language ?? media.language))
+                    .map(({ id, language: lang, title }) => ({
+                      id,
+                      lang,
+                      name: ISO6391.getName(lang.split('-')[0]),
+                      title,
+                      default: true,
+                    })),
+                  ...transcripts
+                    .filter(t => t.language !== language)
+                    .map(({ id, language: lang, title }) => ({
+                      id,
+                      lang,
+                      name: ISO6391.getName(lang.split('-')[0]),
+                      title,
+                      default: false,
+                    })),
+                ],
               },
               remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
               blocks,
@@ -270,6 +284,15 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
   }, [media, transcripts, remixes, language, showDraft, showPreview, transcriptUrl]);
 
   useEffect(() => console.log({ data }), [data]);
+  // console.log({ data });
+
+  const onSelectTranslation = useCallback(
+    t => {
+      // console.log('onSelectTranslation:', t);
+      router.push(`/media/${media.id}?language=${t.lang}`, undefined, { shallow: true });
+    },
+    [router, media],
+  );
 
   return (
     <>
@@ -290,6 +313,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             autoScroll={true}
             mediaLabel={label}
             canEdit={groups.includes('Editors')}
+            onSelectTranslation={onSelectTranslation}
           />
         ) : (
           <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
