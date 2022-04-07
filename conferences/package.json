@@ -41,7 +41,8 @@
     "react-markdown": "8.0.2",
     "react-player": "2.10.0",
     "react-text-truncate": "0.18.0",
-    "smpte-timecode": "1.2.3"
+    "smpte-timecode": "1.2.3",
+    "use-interval": "1.4.0"
   },
   "devDependencies": {
     "eslint": "8.12.0",

@@ -14,6 +14,7 @@ import mux from 'mux-embed';
 import TC from 'smpte-timecode';
 import bs58 from 'bs58';
 import Queue from 'queue-promise';
+import useInterval from 'use-interval';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -293,7 +294,10 @@ const EditorPage = ({ organisation, user, groups }) => {
     [blocks],
   );
 
-  useEffect(() => setSaved({ contentState: initialState?.getCurrentContent() }), [initialState]);
+  useEffect(() => {
+    setSaved({ contentState: initialState?.getCurrentContent() });
+    setAutoSaved({ contentState: initialState?.getCurrentContent() });
+  }, [initialState]);
 
   const originalState = useMemo(
     () =>
@@ -398,6 +402,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const [draft, setDraft] = useState();
   const [saved, setSaved] = useState();
+  const [autoSaved, setAutoSaved] = useState();
   const [saving, setSaving] = useState(0);
   const [previewing, setPreviewing] = useState(0);
   const [savingProgress, setSavingProgress] = useState(0);
@@ -488,6 +493,36 @@ const EditorPage = ({ organisation, user, groups }) => {
     plausible('save');
     setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
+
+  const autoSave = useCallback(async () => {
+    if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
+    console.log('autoSaving!');
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+
+    const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
+    const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
+    const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
+    unusedSpeakerIds.forEach(id => delete data.speakers[id]);
+
+    const result = await Storage.put(
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json`,
+      JSON.stringify(data),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        metadata: {
+          user: user.id,
+        },
+      },
+    );
+
+    setAutoSaved(draft);
+  }, [draft, media, transcript, user, autoSaved]);
+
+  useInterval(() => {
+    console.log('autoSave?');
+    autoSave();
+  }, 60 * 1e3);
 
   const handlePreview = useCallback(async () => {
     if (!draft || !media || !transcript) return;
