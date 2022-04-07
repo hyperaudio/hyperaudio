@@ -16,19 +16,19 @@ import bs58 from 'bs58';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Divider from '@mui/material/Divider';
+import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import IconButton from '@mui/material/IconButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PreviewIcon from '@mui/icons-material/Preview';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
+import Skeleton from '@mui/material/Skeleton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
@@ -833,64 +833,104 @@ const EditorPage = ({ organisation, user, groups }) => {
             </Grid>
           </Grid>
         </Toolbar>
+
+        {/* THEATRE
+        ------------------------------------
+        */}
+        <Container maxWidth={originalId ? 'xl' : 'sm'}>
+          <Grid container spacing={originalId ? 1 : 0}>
+            <Grid item xs={originalId ? 6 : 12}>
+              {media ? (
+                <Box>
+                  <Box
+                    sx={{
+                      bgcolor: 'text.primary',
+                      borderRadius: 1,
+                      display: pip ? 'none' : 'block',
+                      overflow: 'hidden',
+                    }}
+                  >
+                    <ReactPlayer
+                      config={config}
+                      onBuffer={onBuffer}
+                      onBufferEnd={onBufferEnd}
+                      onDisablePIP={onDisablePIP}
+                      onDuration={onDuration}
+                      onEnablePIP={onEnablePIP}
+                      onPlay={play}
+                      onProgress={onProgress}
+                      playing={playing}
+                      progressInterval={100}
+                      ref={video}
+                      url={media.url}
+                      width="100%"
+                    />
+                  </Box>
+                  <Box sx={{ mt: 1 }}>
+                    <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+                      <Grid item>
+                        {buffering && seekTime !== time ? (
+                          <IconButton onClick={pause} size="small">
+                            {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                          </IconButton>
+                        ) : playing ? (
+                          <IconButton onClick={pause} size="small">
+                            <PauseIcon />
+                          </IconButton>
+                        ) : (
+                          <IconButton onClick={play} size="small">
+                            <PlayArrowIcon />
+                          </IconButton>
+                        )}
+                      </Grid>
+                      <Grid container item xs>
+                        <Slider
+                          aria-label="timeline"
+                          defaultValue={0}
+                          max={duration}
+                          min={0}
+                          onChange={handleSliderChange}
+                          size="small"
+                          value={time}
+                          valueLabelDisplay="auto"
+                          valueLabelFormat={timecode}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Box>
+                </Box>
+              ) : (
+                <Box>
+                  <Skeleton
+                    variant="rectangular"
+                    width="100%"
+                    height="360px"
+                    sx={{ lineHeight: 0, mb: 2, borderRadius: 1 }}
+                  />
+                  <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
+                </Box>
+              )}
+            </Grid>
+            {originalId ? (
+              <Grid item xs={6}>
+                <Box>Hello Meta</Box>
+              </Grid>
+            ) : null}
+          </Grid>
+        </Container>
+        <Divider />
+        {/* TRANSCRIPT
+        ------------------------------------
+        */}
+        <Container maxWidth={originalId ? 'xl' : 'sm'}>
+          <Grid container spacing={1}>
+            <Grid item xs={original ? 6 : 12}></Grid>
+            <Grid item xs={6}></Grid>
+          </Grid>
+        </Container>
         <div
           style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}
         >
-          {media ? (
-            <div style={{ marginBottom: 40, maxWidth: '600px' }}>
-              <div style={{ display: pip ? 'none' : 'block' }}>
-                <ReactPlayer
-                  width="100%"
-                  ref={video}
-                  config={config}
-                  playing={playing}
-                  url={media.url}
-                  onProgress={onProgress}
-                  onBuffer={onBuffer}
-                  onBufferEnd={onBufferEnd}
-                  onPlay={play}
-                  onDuration={onDuration}
-                  progressInterval={100}
-                  onEnablePIP={onEnablePIP}
-                  onDisablePIP={onDisablePIP}
-                />
-              </div>
-              <div>
-                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                  <Grid item>
-                    {buffering && seekTime !== time ? (
-                      <IconButton onClick={pause} size="small">
-                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                      </IconButton>
-                    ) : playing ? (
-                      <IconButton onClick={pause} size="small">
-                        <PauseIcon />
-                      </IconButton>
-                    ) : (
-                      <IconButton onClick={play} size="small">
-                        <PlayArrowIcon />
-                      </IconButton>
-                    )}
-                  </Grid>
-                  <Grid container item xs>
-                    <Slider
-                      aria-label="timeline"
-                      defaultValue={0}
-                      max={duration}
-                      min={0}
-                      onChange={handleSliderChange}
-                      size="small"
-                      value={time}
-                      valueLabelDisplay="auto"
-                      valueLabelFormat={timecode}
-                    />
-                  </Grid>
-                </Grid>
-              </div>
-            </div>
-          ) : (
-            <p style={{ textAlign: 'center' }}>Loading media…</p>
-          )}
           {!originalId ? (
             <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
               {initialState ? (
