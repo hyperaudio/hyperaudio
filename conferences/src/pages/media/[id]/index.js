@@ -227,6 +227,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 // translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
                 translations: [
                   ...transcripts
+                    // .filter(t => showDraft || t.status?.label === 'published')
                     .filter(t => t.language === (language ?? media.language))
                     .map(({ id, language: lang, title }) => ({
                       id,
@@ -236,7 +237,8 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                       default: true,
                     })),
                   ...transcripts
-                    .filter(t => t.language !== language)
+                    .filter(t => showDraft || t.status?.label === 'published')
+                    .filter(t => t.language !== (language ?? media.language))
                     .map(({ id, language: lang, title }) => ({
                       id,
                       lang,

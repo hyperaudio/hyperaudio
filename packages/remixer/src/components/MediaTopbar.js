@@ -93,7 +93,7 @@ export const MediaTopbar = ({ source, mediaLabel, canEdit, onSelectTranslation }
   const [exportAnchorEl, setExportAnchorEl] = useState(null);
   const [langAnchorEl, setLangAnchorEl] = useState(null);
   // const [translation, setTranslation] = useState(transcript.translations.find(o => o.default === true));
-  console.log({ transcript, translation });
+  // console.log({ transcript, translation });
 
   const onCloseExport = () => setExportAnchorEl(null);
   const onCloseTranslations = () => setLangAnchorEl(null);
