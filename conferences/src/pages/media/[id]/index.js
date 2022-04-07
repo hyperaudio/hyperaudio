@@ -1,21 +1,26 @@
 import Head from 'next/head';
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { Storage, DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { nanoid } from 'nanoid';
 import { useRouter } from 'next/router';
+import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
+import ISO6391 from 'iso-639-1';
 
 import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
+import { QueuePlayNext } from '@mui/icons-material';
 
 const PREFIX = 'MediaPage';
 const classes = {
   root: `${PREFIX}-root`,
   push: `${PREFIX}-push`,
 };
+
+global.diff = diff;
 
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
@@ -32,7 +37,7 @@ const Root = styled('div', {
 
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
-  setMedia(media?.[0]);
+  if (media?.[0]) setMedia(media?.[0]);
 };
 
 const getTranscripts = async (setTranscripts, id) =>
@@ -46,7 +51,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
   global.router = router; // FIXME
 
   const {
-    query: { showPreview, transcriptUrl, transcript: transcriptId },
+    query: { language, showPreview, transcriptUrl, transcript: transcriptId },
   } = router;
   const showDraft = useMemo(() => groups.includes('Editors'), [groups]);
 
@@ -65,25 +70,25 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
   useEffect(() => {
     getMedia(setMedia, id);
 
-    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
-    window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, id));
-    return () => subscription.unsubscribe();
+    // const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
+    // window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, id));
+    // return () => subscription.unsubscribe();
   }, [id]);
 
   useEffect(() => {
     getTranscripts(setTranscripts, id);
 
-    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, id));
-    window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, id));
-    return () => subscription.unsubscribe();
+    // const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, id));
+    // window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, id));
+    // return () => subscription.unsubscribe();
   }, [id]);
 
   useEffect(() => {
     getRemixes(setRemixes, id);
 
-    const subscription = DataStore.observe(RemixMedia).subscribe(msg => getRemixes(setRemixes, id));
-    window.addEventListener('online', () => navigator.onLine && getRemixes(setRemixes, id));
-    return () => subscription.unsubscribe();
+    // const subscription = DataStore.observe(RemixMedia).subscribe(msg => getRemixes(setRemixes, id));
+    // window.addEventListener('online', () => navigator.onLine && getRemixes(setRemixes, id));
+    // return () => subscription.unsubscribe();
   }, [id]);
 
   useEffect(() => {
@@ -91,7 +96,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
     (async () => {
       const sources = await Promise.all(
         transcripts
-          .filter(({ language }) => language === media.language)
+          .filter(({ language: lang }) => lang === (language ?? media.language))
           .map(async transcript => {
             let speakers;
             let blocks;
@@ -156,21 +161,38 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             // if (blocks.blocks) {
             // const speakers = blocks.speakers;
             blocks = blocks
-              .map(({ text, data: { start, end, speaker, items } }) => {
+              .map(({ key, text, data: { start: _start, end: _end, speaker, items: _items } }, i, arr) => {
+                const prev = i > 0 ? arr[i - 1] : null;
+                const next = i < arr.length - 1 ? arr[i + 1] : null;
+
+                const start = (_items[0].start ?? _start ?? prev?.data?.end ?? 0) * 1e3;
+                const end = (_items[_items.length - 1].end ?? _end ?? next?.data?.start ?? start) * 1e3;
+
+                const items = _items.map((item, j) => {
+                  const pitem = j > 0 ? _items[j - 1] : null;
+                  const nitem = j < _items.length - 1 ? _items[j + 1] : null;
+
+                  return {
+                    text: item.text,
+                    start: (item.start ?? pitem?.end ?? start / 1e3) * 1e3,
+                    end: (item.end ?? nitem?.start ?? item.start ?? end / 1e3) * 1e3,
+                  };
+                });
+
                 return {
                   text,
                   type: 'block',
-                  key: nanoid(5),
+                  key: key ?? nanoid(5),
                   media: media.playbackId,
                   speaker: speakers?.[speaker]?.name ?? speaker,
-                  start: items[0].start * 1e3,
-                  end: items[items.length - 1].end * 1e3,
-                  starts: items.map(({ start }) => start * 1e3),
-                  duration: (items[items.length - 1].end - items[0].start) * 1e3,
-                  ends: items.map(({ end }) => end * 1e3),
-                  durations: items.map(({ start, end }) => (end - start) * 1e3),
-                  starts2: items.map(({ start }) => (start - items[0].start) * 1e3),
-                  ends2: items.map(({ end }) => (end - items[0].start) * 1e3),
+                  start,
+                  end,
+                  starts: items.map(({ start }) => start),
+                  duration: end - start,
+                  ends: items.map(({ end }) => end),
+                  durations: items.map(({ start, end }) => end - start),
+                  starts2: items.map(({ start }) => start - items[0].start),
+                  ends2: items.map(({ end }) => end - items[0].start),
                   offsets: items.map(({ text }, i, arr) => {
                     if (i === 0) return 0;
                     return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
@@ -182,7 +204,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               .reduce((acc, block, i) => {
                 if (i === 0) return [block];
                 const p = acc.pop();
-                p.gap = block.start - p.end;
+                p.gap = p.end ? block.start - p.end : 0;
                 return [...acc, p, block];
               }, []);
             // }
@@ -202,7 +224,29 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               tags: media.tags ?? [],
               transcript: {
                 title: transcript.title,
-                translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
+                // translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
+                translations: [
+                  ...transcripts
+                    // .filter(t => showDraft || t.status?.label === 'published')
+                    .filter(t => t.language === (language ?? media.language))
+                    .map(({ id, language: lang, title }) => ({
+                      id,
+                      lang,
+                      name: ISO6391.getName(lang.split('-')[0]),
+                      title,
+                      default: true,
+                    })),
+                  ...transcripts
+                    .filter(t => showDraft || t.status?.label === 'published')
+                    .filter(t => t.language !== (language ?? media.language))
+                    .map(({ id, language: lang, title }) => ({
+                      id,
+                      lang,
+                      name: ISO6391.getName(lang.split('-')[0]),
+                      title,
+                      default: false,
+                    })),
+                ],
               },
               remixes: remixes.map(r => ({ ...r, href: `/remix/${r.id}` })),
               blocks,
@@ -239,9 +283,18 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
       // });
       setData({ sources });
     })();
-  }, [media, transcripts, remixes, showDraft, showPreview, transcriptUrl]);
+  }, [media, transcripts, remixes, language, showDraft, showPreview, transcriptUrl]);
 
-  // console.log('————_THIS', media, data);
+  useEffect(() => console.log({ data }), [data]);
+  // console.log({ data });
+
+  const onSelectTranslation = useCallback(
+    t => {
+      // console.log('onSelectTranslation:', t);
+      router.push(`/media/${media.id}?language=${t.lang}`, undefined, { shallow: true });
+    },
+    [router, media],
+  );
 
   return (
     <>
@@ -262,6 +315,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             autoScroll={true}
             mediaLabel={label}
             canEdit={groups.includes('Editors')}
+            onSelectTranslation={onSelectTranslation}
           />
         ) : (
           <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>

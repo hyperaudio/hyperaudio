@@ -14,6 +14,7 @@ const Source = props => {
     isSingleMedia,
     source: { id, blocks, media },
     autoScroll,
+    onSelectTranslation,
   } = props;
 
   const animationFrame = useRef(0);
@@ -31,7 +32,12 @@ const Source = props => {
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
       {isSingleMedia ? (
-        <MediaTopbar source={props.source} mediaLabel={props.mediaLabel} canEdit={props.canEdit} />
+        <MediaTopbar
+          source={props.source}
+          mediaLabel={props.mediaLabel}
+          canEdit={props.canEdit}
+          onSelectTranslation={onSelectTranslation}
+        />
       ) : (
         <SourceTopbar {...props} />
       )}

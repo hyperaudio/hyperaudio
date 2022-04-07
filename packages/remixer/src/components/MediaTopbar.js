@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import _ from 'lodash';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -82,27 +82,27 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source, mediaLabel, canEdit }) => {
+export const MediaTopbar = ({ source, mediaLabel, canEdit, onSelectTranslation }) => {
   const { transcript } = source;
 
   // console.log({ MediaTopbar: source });
 
-  const defaultTranslation = _.find(transcript.translations, o => o.default === true);
+  const translation = useMemo(() => transcript.translations.find(o => o.default), [transcript]);
 
-  const [isInfoOpen, setIsInfoOpen] = React.useState(false);
-  const [exportAnchorEl, setExportAnchorEl] = React.useState(null);
-  const [langAnchorEl, setLangAnchorEl] = React.useState(null);
-  const [translation, setTranslation] = useState(defaultTranslation);
+  const [isInfoOpen, setIsInfoOpen] = useState(false);
+  const [exportAnchorEl, setExportAnchorEl] = useState(null);
+  const [langAnchorEl, setLangAnchorEl] = useState(null);
+  // const [translation, setTranslation] = useState(transcript.translations.find(o => o.default === true));
+  // console.log({ transcript, translation });
 
   const onCloseExport = () => setExportAnchorEl(null);
   const onCloseTranslations = () => setLangAnchorEl(null);
   const onOpenExport = e => setExportAnchorEl(e.currentTarget);
   const onOpenTranslations = e => setLangAnchorEl(e.currentTarget);
 
-  const onSelectTranslation = id => e => {
-    console.log('onSelectTranslation:', e, id);
-    setTranslation(id);
-  };
+  // const onSelectTranslation = id => {
+  //   console.log('onSelectTranslation:', id);
+  // };
   const onAddTranslation = e => {
     console.log('onAddTranslation:', e);
   };
@@ -177,7 +177,7 @@ export const MediaTopbar = ({ source, mediaLabel, canEdit }) => {
                     size="small"
                     sx={{ mr: 1 * -1 }}
                   >
-                    {translation.name}
+                    {translation?.name}
                   </Button>
                 </InputAdornment>
               ),
@@ -210,11 +210,12 @@ export const MediaTopbar = ({ source, mediaLabel, canEdit }) => {
         }}
       >
         {transcript.translations.map(t => {
-          return (
-            <MenuItem selected={t.id === translation.id} key={t.id} onClick={onSelectTranslation(t)}>
-              {t.name}
-            </MenuItem>
-          );
+          // return (
+          //   <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onSelectTranslation(t)}>
+          //     {t.name}
+          //   </MenuItem>
+          // );
+          return <TranslationMenuItem key={t.id} {...{ translation, t, onSelectTranslation }} />;
         })}
         <Divider />
         <MenuItem onClick={onAddTranslation} disabled={true}>
@@ -248,5 +249,15 @@ export const MediaTopbar = ({ source, mediaLabel, canEdit }) => {
         </MenuItem>
       </Menu>
     </>
+  );
+};
+
+const TranslationMenuItem = ({ t, onSelectTranslation, translation }) => {
+  const onClick = useCallback(() => onSelectTranslation(t), [onSelectTranslation, t]);
+
+  return (
+    <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onClick}>
+      {t.name}
+    </MenuItem>
   );
 };
