@@ -654,7 +654,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
   ) : null;
 };
 
-const Playhead = ({ block, offset, time, autoScroll }) => {
+const Playhead = ({ block, offset, time, autoScroll, allWords = true }) => {
   const playhead = useRef();
   const scrollTarget = useRef();
 
@@ -662,8 +662,18 @@ const Playhead = ({ block, offset, time, autoScroll }) => {
     const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
     if (index === -1) return [block.text.length - 1, block.text.length - 1];
 
+    if (allWords) {
+      const index2 = block.starts2
+        .map((s, i) => ({ s, i }))
+        .slice(index)
+        .filter(({ s }) => s === block.starts2[index])
+        ?.pop()?.i;
+
+      if (index2 && index2 > index) return [block.offsets[index], block.offsets[index2] + block.lengths[index2]];
+    }
+
     return [block.offsets[index], block.offsets[index] + block.lengths[index]];
-  }, [block, offset, time]);
+  }, [block, offset, time, allWords]);
 
   useEffect(() => {
     if (!autoScroll) return;
