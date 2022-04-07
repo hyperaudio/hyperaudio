@@ -2,6 +2,8 @@ import React, { useMemo, useCallback, useReducer, useState, useRef, useEffect } 
 import { Editor as DraftEditor, EditorState, ContentState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
 import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
+import bs58 from 'bs58';
+import { useDebounce } from 'use-debounce';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -88,7 +90,6 @@ const Editor = props => {
   const {
     initialState = EditorState.createEmpty(),
     playheadDecorator = PlayheadDecorator,
-    // focusPlayheadDecorator,
     decorators = [],
     time = 0,
     seekTo,
@@ -96,11 +97,11 @@ const Editor = props => {
     aligner = wordAligner,
     speakers: initialSpeakers = {},
     onChange: onChangeProp,
-    pseudoReadOnly,
     autoScroll,
     play,
     playing,
     pause,
+    readOnly,
     ...rest
   } = props;
 
@@ -120,31 +121,25 @@ const Editor = props => {
   const [speakerQuery, setSpeakerQuery] = useState('');
 
   const onChange = useCallback(
-    editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch, pseudoReadOnly }),
-    [aligner, pseudoReadOnly],
+    editorState => dispatch({ type: editorState.getLastChangeType(), editorState, aligner, dispatch }),
+    [aligner],
   );
 
-  // FIMXE debounce
+  const [debouncedState] = useDebounce(state, 1000);
+
   useEffect(() => {
-    if (pseudoReadOnly) return;
-    // onChangeProp({
-    //   speakers,
-    //   blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
-    //     delete block.depth;
-    //     delete block.type;
-    //     return block;
-    //   }),
-    // });
+    if (readOnly) return;
+    console.log('onChangeProp');
     onChangeProp({
       speakers,
-      blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
+      blocks: convertToRaw(debouncedState.getCurrentContent()).blocks.map(block => {
         delete block.depth;
         delete block.type;
         return block;
       }),
-      contentState: state.getCurrentContent(),
+      contentState: debouncedState.getCurrentContent(),
     });
-  }, [state, speakers, onChangeProp, pseudoReadOnly]);
+  }, [debouncedState, speakers, onChangeProp]);
 
   const [focused, setFocused] = useState(false);
   const onFocus = useCallback(() => setFocused(true), []);
@@ -175,7 +170,7 @@ const Editor = props => {
       const selectionState = editorState.getSelection();
       if (!selectionState.isCollapsed()) return;
 
-      if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor') && !pseudoReadOnly) {
+      if (e.target.tagName === 'DIV' && e.target.getAttribute('data-editor') && !rest.readOnly) {
         const mx = e.clientX;
         const my = e.clientY;
         const { x: bx, y: by } = e.target.getBoundingClientRect();
@@ -199,7 +194,7 @@ const Editor = props => {
         setCurrentBlock(null);
 
         let key = selectionState.getAnchorKey();
-        if (pseudoReadOnly) {
+        if (rest.readOnly) {
           key = e.target.parentElement.parentElement.getAttribute('data-offset-key')?.replace('-0-0', '');
         }
 
@@ -207,7 +202,7 @@ const Editor = props => {
         const block = editorState.getCurrentContent().getBlockForKey(key);
 
         let start = selectionState.getStartOffset();
-        if (pseudoReadOnly) {
+        if (rest.readOnly) {
           start =
             window.getSelection().anchorOffset +
             (e.target.parentElement?.previousSibling?.textContent.length ?? 0) +
@@ -220,7 +215,7 @@ const Editor = props => {
         item?.start && seekTo && seekTo(item.start);
       }
     },
-    [seekTo, editorState, pseudoReadOnly, playing, pause],
+    [seekTo, editorState, rest, playing, pause],
   );
 
   const handleSpeakerSet = useCallback(
@@ -232,9 +227,10 @@ const Editor = props => {
 
       if (typeof newValue === 'string') {
         // A: Create new by type-in and Enter press
-        const id = `S${Date.now()}`;
-        setSpeakers({ ...speakers, [id]: { name: newValue, id } });
-        setSpeaker({ name: newValue, id });
+        // const id = `S${Date.now()}`;
+        const id = 'S' + bs58.encode(Buffer.from(newValue.trim()));
+        setSpeakers({ ...speakers, [id]: { name: newValue.trim(), id } });
+        setSpeaker({ name: newValue.trim(), id });
         console.log('TODO: handleSpeakerSet, NEW-a:', newValue, id);
         dispatch({
           type: 'change-speaker',
@@ -246,10 +242,11 @@ const Editor = props => {
         });
       } else if (newValue && newValue.inputValue) {
         // B: Create new by type-in and click on the `Add xyz` option
-        const id = `S${Date.now()}`;
-        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
-        setSpeaker({ name: newValue.inputValue, id });
-        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue, id);
+        // const id = `S${Date.now()}`;
+        const id = 'S' + bs58.encode(Buffer.from(newValue.inputValue.trim()));
+        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue.trim(), id } });
+        setSpeaker({ name: newValue.inputValue.trim(), id });
+        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue.trim(), id);
         dispatch({
           type: 'change-speaker',
           currentBlock,
@@ -312,6 +309,7 @@ const Editor = props => {
   const scrollTarget = useRef();
   useEffect(() => {
     if (!autoScroll || focused) return;
+    // console.log({ autoScroll });
 
     const blocks = editorState.getCurrentContent().getBlocksAsArray();
     const block = blocks
@@ -326,12 +324,12 @@ const Editor = props => {
       scrollTarget.current = playhead;
       playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-  }, [autoScroll, time, scrollTarget, wrapper, focused]);
+  }, [autoScroll, wrapper, time, focused]);
 
   return (
     <Root className={`${classes.root} focus-${focused}`} onClick={handleClick} ref={wrapper}>
       <DraftEditor
-        {...{ editorState, onChange, onFocus, onBlur, ...rest }}
+        {...{ editorState, onChange, onFocus, onBlur, readOnly, ...rest }}
         handleDrop={() => true}
         handleDroppedFiles={() => true}
         handlePastedFiles={() => true}

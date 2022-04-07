@@ -28,6 +28,8 @@
     "@babel/core": "7.17.8",
     "@babel/eslint-parser": "7.17.0",
     "@babel/preset-react": "7.16.7",
+    "@mui/icons-material": "5.5.1",
+    "@mui/material": "5.5.3",
     "cross-env": "7.0.3",
     "eslint": "8.12.0",
     "eslint-config-prettier": "8.5.0",
@@ -37,8 +39,6 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-promise": "6.0.0",
-    "@mui/icons-material": "5.5.1",
-    "@mui/material": "5.5.3",
     "eslint-plugin-react": "7.29.4",
     "eslint-plugin-standard": "4.1.0",
     "gh-pages": "3.2.3",
@@ -53,8 +53,10 @@
   ],
   "dependencies": {
     "@bbc/stt-align-node": "1.4.3",
+    "bs58": "5.0.0",
     "draft-js": "0.11.7",
     "immutable": "~3.7.4",
-    "smpte-timecode": "1.2.3"
+    "smpte-timecode": "1.2.3",
+    "use-debounce": "7.0.1"
   }
 }
