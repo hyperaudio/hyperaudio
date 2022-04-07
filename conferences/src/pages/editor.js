@@ -14,35 +14,59 @@ import mux from 'mux-embed';
 import TC from 'smpte-timecode';
 import bs58 from 'bs58';
 
-import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
+import CircularProgress from '@mui/material/CircularProgress';
+import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PreviewIcon from '@mui/icons-material/Preview';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
-import PreviewIcon from '@mui/icons-material/Preview';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
-const PREFIX = 'MediaPage';
+function CircularProgressWithLabel(props) {
+  return (
+    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+      <CircularProgress variant="determinate" {...props} />
+      <Box
+        sx={{
+          top: 0,
+          left: 0,
+          bottom: 0,
+          right: 0,
+          position: 'absolute',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Typography variant="caption" component="div" color="text.secondary">{`${Math.round(
+          props.value,
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
+const PREFIX = 'EditorPage';
 const classes = {
   root: `${PREFIX}-root`,
-  push: `${PREFIX}-push`,
 };
 
 const Root = styled('div', {
@@ -53,9 +77,6 @@ const Root = styled('div', {
   position: 'fixed',
   right: 0,
   top: 0,
-  [`& .${classes.push}`]: {
-    ...theme.mixins.toolbar,
-  },
 }));
 
 const getMedia = async (setMedia, id) => {
@@ -756,7 +777,7 @@ const EditorPage = ({ organisation, user, groups }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <div className={classes.push} />
+        <Toolbar />
         <Toolbar>
           <Grid container>
             <Grid item sx={{ mr: 1 }}>
@@ -899,8 +920,13 @@ const EditorPage = ({ organisation, user, groups }) => {
                 />
               ) : (
                 <div style={{ textAlign: 'center' }}>
-                  Loading transcript{' '}
-                  <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+                  <CircularProgressWithLabel
+                    color="primary"
+                    size={64}
+                    thickness={2}
+                    value={progress}
+                    variant="determinate"
+                  />
                   {error && <p>Error: {error?.message}</p>}
                 </div>
               )}
@@ -924,10 +950,13 @@ const EditorPage = ({ organisation, user, groups }) => {
                   />
                 ) : (
                   <div style={{ textAlign: 'center' }}>
-                    Loading transcript{' '}
-                    <span
-                      style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}
-                    >{`${originalProgress}%`}</span>
+                    <CircularProgressWithLabel
+                      color="primary"
+                      size={64}
+                      thickness={2}
+                      value={originalProgress}
+                      variant="determinate"
+                    />
                     {error && <p>Error: {error?.message}</p>}
                   </div>
                 )}
@@ -958,8 +987,13 @@ const EditorPage = ({ organisation, user, groups }) => {
                   />
                 ) : (
                   <div style={{ textAlign: 'center' }}>
-                    Loading transcript{' '}
-                    <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+                    <CircularProgressWithLabel
+                      color="primary"
+                      size={64}
+                      thickness={2}
+                      value={progress}
+                      variant="determinate"
+                    />
                     {error && <p>Error: {error?.message}</p>}
                   </div>
                 )}
