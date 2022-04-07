@@ -102,6 +102,13 @@ const EditorPage = ({ organisation, user, groups }) => {
   const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
 
   useEffect(() => {
+    if (originalId || !media || !transcripts || !transcript) return;
+
+    const original = transcripts.find(t => t.language === media.language);
+    router.push(`/editor?media=${mediaId}&original=${original.id}&transcript=${transcriptId}`);
+  }, [media, transcript, mediaId, transcriptId, originalId, transcripts, router]);
+
+  useEffect(() => {
     if (!mediaId) return;
     getMedia(setMedia, mediaId);
 
