@@ -15,9 +15,8 @@ import TC from 'smpte-timecode';
 import bs58 from 'bs58';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
-import Container from '@mui/material/Container';
+import LoadingButton from '@mui/lab/LoadingButton';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
@@ -574,19 +573,19 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     console.log(result2);
 
-    await DataStore.save(
-      Transcript.copyOf(transcript, updated => {
-        updated.status = { label: 'published' };
-        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
-        updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
-      }),
-    );
+    // await DataStore.save(
+    //   Transcript.copyOf(transcript, updated => {
+    //     updated.status = { label: 'published' };
+    //     updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
+    //     updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
+    //   }),
+    // );
 
-    await DataStore.save(
-      Media.copyOf(media, updated => {
-        updated.status = { label: 'published' };
-      }),
-    );
+    // await DataStore.save(
+    //   Media.copyOf(media, updated => {
+    //     updated.status = { label: 'published' };
+    //   }),
+    // );
 
     setPublishing(1);
     setTimeout(() => setPublishing(0), 500);
@@ -779,75 +778,58 @@ const EditorPage = ({ organisation, user, groups }) => {
       <Root className={classes.root}>
         <Toolbar />
         <Toolbar>
-          <Grid container>
-            <Grid item sx={{ mr: 1 }}>
-              <Button
-                color="primary"
-                startIcon={
-                  saving === 0 ? (
-                    <SaveIcon fontSize="small" />
-                  ) : saving === 3 ? (
-                    <HourglassEmptyIcon fontSize="small" />
-                  ) : saving === 2 ? (
-                    <HourglassTopIcon fontSize="small" />
-                  ) : (
-                    <HourglassBottomIcon fontSize="small" />
-                  )
-                }
-                onClick={handleSave}
-                disabled={
-                  !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
-                }
-              >
-                {saving ? `Saving ${savingProgress}%` : 'Save draft'}
-              </Button>
-            </Grid>
-            <Grid item sx={{ mr: 1 }}>
-              <Button
-                color="primary"
-                startIcon={
-                  previewing === 0 ? (
-                    <PreviewIcon fontSize="small" />
-                  ) : previewing === 3 ? (
-                    <HourglassEmptyIcon fontSize="small" />
-                  ) : previewing === 2 ? (
-                    <HourglassTopIcon fontSize="small" />
-                  ) : (
-                    <HourglassBottomIcon fontSize="small" />
-                  )
-                }
-                onClick={handlePreview}
-                disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-              >
-                {previewing ? `Previewing ${previewingProgress}%` : 'Preview draft'}
-              </Button>
-            </Grid>
+          <Grid container spacing={1} alignItems="center">
             <Grid item xs>
-              <Container maxWidth="sm"></Container>
-            </Grid>
-            <Grid item sx={{ ml: 1 }}>
               <Stack direction="row" spacing={1}>
-                <Button
+                <LoadingButton
                   color="primary"
-                  endIcon={
-                    publishing === 0 ? (
-                      <PublishIcon fontSize="small" />
-                    ) : publishing === 3 ? (
-                      <HourglassEmptyIcon fontSize="small" />
-                    ) : publishing === 2 ? (
-                      <HourglassTopIcon fontSize="small" />
-                    ) : (
-                      <HourglassBottomIcon fontSize="small" />
-                    )
-                  }
-                  onClick={handlePublish}
                   disabled={
-                    !draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')
+                    !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
                   }
+                  loading={saving !== 0}
+                  loadingPosition="start"
+                  onClick={handleSave}
+                  startIcon={<SaveIcon fontSize="small" />}
                 >
-                  {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
-                </Button>
+                  Save
+                  <Box
+                    component="span"
+                    variant="button"
+                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
+                  >
+                    draft
+                  </Box>
+                </LoadingButton>
+                <LoadingButton
+                  color="primary"
+                  disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+                  loading={previewing > 0}
+                  loadingPosition="start"
+                  onClick={handlePreview}
+                  startIcon={<PreviewIcon fontSize="small" />}
+                >
+                  Preview
+                  <Box
+                    component="span"
+                    variant="button"
+                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
+                  >
+                    draft
+                  </Box>
+                </LoadingButton>
               </Stack>
+            </Grid>
+            <Grid item>
+              <LoadingButton
+                color="primary"
+                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+                endIcon={<PublishIcon fontSize="small" />}
+                loading={publishing !== 0}
+                loadingPosition="end"
+                onClick={handlePublish}
+              >
+                Publish
+              </LoadingButton>
             </Grid>
           </Grid>
         </Toolbar>
