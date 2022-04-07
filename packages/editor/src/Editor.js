@@ -2,6 +2,8 @@ import React, { useMemo, useCallback, useReducer, useState, useRef, useEffect } 
 import { Editor as DraftEditor, EditorState, ContentState, Modifier, CompositeDecorator, convertToRaw } from 'draft-js';
 import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
+import bs58 from 'bs58';
+import { useDebounce } from 'use-debounce';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -123,28 +125,21 @@ const Editor = props => {
     [aligner],
   );
 
-  // FIXME debounce
+  const [debouncedState] = useDebounce(state, 1000);
+
   useEffect(() => {
     if (readOnly) return;
-    // console.log('onchangeprop');
-    // onChangeProp({
-    //   speakers,
-    //   blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
-    //     delete block.depth;
-    //     delete block.type;
-    //     return block;
-    //   }),
-    // });
+    console.log('onChangeProp');
     onChangeProp({
       speakers,
-      blocks: convertToRaw(state.getCurrentContent()).blocks.map(block => {
+      blocks: convertToRaw(debouncedState.getCurrentContent()).blocks.map(block => {
         delete block.depth;
         delete block.type;
         return block;
       }),
-      contentState: state.getCurrentContent(),
+      contentState: debouncedState.getCurrentContent(),
     });
-  }, [state, speakers, onChangeProp]);
+  }, [debouncedState, speakers, onChangeProp]);
 
   const [focused, setFocused] = useState(false);
   const onFocus = useCallback(() => setFocused(true), []);
@@ -232,9 +227,10 @@ const Editor = props => {
 
       if (typeof newValue === 'string') {
         // A: Create new by type-in and Enter press
-        const id = `S${Date.now()}`;
-        setSpeakers({ ...speakers, [id]: { name: newValue, id } });
-        setSpeaker({ name: newValue, id });
+        // const id = `S${Date.now()}`;
+        const id = 'S' + bs58.encode(Buffer.from(newValue.trim()));
+        setSpeakers({ ...speakers, [id]: { name: newValue.trim(), id } });
+        setSpeaker({ name: newValue.trim(), id });
         console.log('TODO: handleSpeakerSet, NEW-a:', newValue, id);
         dispatch({
           type: 'change-speaker',
@@ -246,10 +242,11 @@ const Editor = props => {
         });
       } else if (newValue && newValue.inputValue) {
         // B: Create new by type-in and click on the `Add xyz` option
-        const id = `S${Date.now()}`;
-        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue, id } });
-        setSpeaker({ name: newValue.inputValue, id });
-        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue, id);
+        // const id = `S${Date.now()}`;
+        const id = 'S' + bs58.encode(Buffer.from(newValue.inputValue.trim()));
+        setSpeakers({ ...speakers, [id]: { name: newValue.inputValue.trim(), id } });
+        setSpeaker({ name: newValue.inputValue.trim(), id });
+        console.log(`TODO: handleSpeakerSet, NEW-b:`, newValue.inputValue.trim(), id);
         dispatch({
           type: 'change-speaker',
           currentBlock,
