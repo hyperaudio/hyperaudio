@@ -55,11 +55,10 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   const [seekTime, setSeekTime] = useState(36 * 1e6);
   const duration = useMemo(
     () =>
-      blocks.reduce(
-        (acc, { media, duration, gap }, i, arr) =>
-          acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
-        0,
-      ),
+      blocks.reduce((acc, { media, duration, gap }, i, arr) => {
+        // console.log({ i, duration, gap });
+        return acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0);
+      }, 0),
     [blocks],
   );
 
@@ -69,7 +68,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 
   useEffect(() => {
     // @ts-ignore
-    reference.current.src = createSilentAudio(Math.ceil(duration / 1e3), 44100);
+    reference.current.src = createSilentAudio(duration > 0 ? Math.ceil(duration / 1e3) : 60, 44100);
     reference.current.addEventListener('timeupdate', () => {
       setTime && setTime(1e3 * (reference.current?.currentTime ?? 0));
     });

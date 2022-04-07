@@ -503,7 +503,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPreviewing(1);
     setTimeout(() => setPreviewing(0), 500);
 
-    window.open(`/media/${media.id}?showPreview=true`, '_blank');
+    window.open(`/media/${media.id}?language=${transcript.language}&showPreview=true`, '_blank');
     plausible('preview');
   }, [draft, media, transcript, user, plausible]);
 
