@@ -64,6 +64,7 @@ function CircularProgressWithLabel(props) {
 }
 
 function SkeletonLoader({ progress }) {
+  const dummytextarr = [...Array(5).keys()];
   return (
     <>
       {[...Array(5).keys()].map(key1 => (
@@ -76,17 +77,17 @@ function SkeletonLoader({ progress }) {
               <Skeleton variation="text" sx={{ width: '100%' }} />
             </Grid>
           </Grid>
-          {[...Array(5).keys()].map(key2 => (
+          {dummytextarr.map((key2, i) => (
             <Grid container spacing={1} key={key2}>
               <Grid item xs={2}></Grid>
               <Grid item xs={10}>
-                <Skeleton variation="text" sx={{ width: '100%' }} />
+                <Skeleton variation="text" sx={{ width: i === dummytextarr.length - 1 ? '66%' : '100%' }} />
               </Grid>
             </Grid>
           ))}
         </>
       ))}
-      <Box
+      {/* <Box
         sx={{
           alignItems: 'center',
           bgcolor: 'rgba(255,255,255,0.5)',
@@ -101,7 +102,7 @@ function SkeletonLoader({ progress }) {
         }}
       >
         <CircularProgressWithLabel color="primary" size={64} thickness={2} value={progress} variant="determinate" />
-      </Box>
+      </Box> */}
     </>
   );
 }
@@ -973,22 +974,40 @@ const EditorPage = ({ organisation, user, groups }) => {
           <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1 }}>
             <Grid container sx={{ height: '100%' }}>
               <Grid item xs={6} sx={{ position: 'relative' }}>
+                <Typography
+                  sx={{
+                    background: 'white',
+                    color: 'text.disabled',
+                    left: '50%',
+                    position: 'absolute',
+                    top: 0,
+                    px: 0.5,
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 9999,
+                  }}
+                  variant="overline"
+                  component="h2"
+                >
+                  Original
+                </Typography>
                 <Box
                   ref={div}
                   sx={{
                     borderColor: 'divider',
                     borderStyle: 'solid',
                     borderWidth: { xs: '0 1px 0 0', lg: '0 1px' },
-                    overflow: originalState ? 'auto' : 'hidden',
-                    pb: 12,
-                    position: 'relative',
-                    pt: 2,
-                    width: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
                     bottom: 0,
                     left: 0,
+                    overflow: originalState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'absolute',
+                    pt: 2,
+                    right: 0,
+                    top: 0,
+                    width: '100%',
+                    ['& .public-DraftStyleDefault-block span']: {
+                      cursor: 'pointer',
+                    },
                   }}
                 >
                   <Container maxWidth="sm">
@@ -1017,22 +1036,39 @@ const EditorPage = ({ organisation, user, groups }) => {
                 </Box>
               </Grid>
               <Grid item xs={6} sx={{ position: 'relative' }}>
+                <Typography
+                  sx={{
+                    background: 'white',
+                    color: 'text.secondary',
+                    left: '50%',
+                    position: 'absolute',
+                    top: 0,
+                    color: 'text.disabled',
+                    transform: 'translate(-50%, -50%)',
+                    px: 0.5,
+                    zIndex: 9999,
+                  }}
+                  variant="overline"
+                  component="h2"
+                >
+                  Translation
+                </Typography>
                 <Box
                   ref={div}
                   sx={{
                     borderColor: 'divider',
+                    bgcolor: 'background.default',
                     borderStyle: 'solid',
                     borderWidth: { xs: '0', lg: '0 1px 0 0' },
-                    overflow: initialState ? 'auto' : 'hidden',
-                    pb: 12,
-                    position: 'relative',
-                    pt: 2,
-                    width: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    right: 0,
                     bottom: 0,
                     left: 0,
+                    overflow: initialState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'absolute',
+                    pt: 2,
+                    right: 0,
+                    top: 0,
+                    width: '100%',
                   }}
                 >
                   <Container maxWidth="sm">
