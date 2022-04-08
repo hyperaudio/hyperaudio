@@ -21,8 +21,9 @@ const Source = props => {
   const reference = useRef();
   const players = useRef({});
 
-  const singlePlayer = useMemo(() => media.length === 1, [media]);
   const [time, setTime] = useState(0);
+  const singlePlayer = useMemo(() => media.length === 1, [media]);
+  const singlePlayerOffset = useMemo(() => blocks?.[0]?.data?.start ?? 0, [blocks]);
 
   // useEffect(() => {
   //   reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
@@ -42,9 +43,22 @@ const Source = props => {
       ) : (
         <SourceTopbar {...props} />
       )}
-      <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer }} />
+      <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
       <div className="transcriptWrap">
-        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true, autoScroll, singlePlayer }} />
+        <Transcript
+          {...{
+            id,
+            blocks,
+            players,
+            reference,
+            time,
+            editable,
+            isSource: true,
+            autoScroll,
+            singlePlayer,
+            singlePlayerOffset,
+          }}
+        />
       </div>
     </Root>
   );
