@@ -1080,7 +1080,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                       width="100%"
                     />
                   </Box>
-                  <Stack spacing={2} direction="row" sx={{ alignItems: 'center' }}>
+                  <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
                     {buffering && seekTime !== time ? (
                       <IconButton onClick={pause} color="inherit">
                         {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
