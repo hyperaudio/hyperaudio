@@ -90,8 +90,8 @@ function createSilence(seconds = 1) {
   return url;
 }
 
-export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }) => {
-  const [seekTime, setSeekTime] = useState(36 * 1e6);
+export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer }) => {
+  const [seekTime, setSeekTime] = useState(36 * 1e6); // FIXME why magic number?
   const duration = useMemo(
     () =>
       blocks.reduce((acc, { media, duration, gap }, i, arr) => {
@@ -106,13 +106,18 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   // }, [reference, duration]);
 
   useEffect(() => {
-    // @ts-ignore
-    // reference.current.src = createSilentAudio(duration > 0 ? Math.ceil(duration / 1e3) : 60, 8000); // 44100
-    reference.current.src = createSilence(duration > 0 ? Math.ceil(duration / 1e3) : 60);
-    reference.current.addEventListener('timeupdate', () => {
-      setTime && setTime(1e3 * (reference.current?.currentTime ?? 0));
-    });
-  }, [reference, duration, setTime]);
+    if (!singlePlayer) {
+      // reference.current.src = createSilentAudio(duration > 0 ? Math.ceil(duration / 1e3) : 60, 8000); // 44100
+      reference.current.src = createSilence(duration > 0 ? Math.ceil(duration / 1e3) : 60);
+      reference.current.addEventListener('timeupdate', () => {
+        setTime && setTime(1e3 * (reference.current?.currentTime ?? 0));
+      });
+    } else {
+      // reference.current?.getInternalPlayer()?.addEventListener('timeupdate', () => {
+      //   setTime && setTime(1e3 * (reference.current?getInternalPlayer()?.currentTime ?? 0));
+      // });
+    }
+  }, [reference, duration, setTime, singlePlayer]);
 
   const [active, setActive] = useState();
   const [interval, setInterval] = useState();
@@ -200,9 +205,29 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
 
+  const [firstPlay, setFirstPlay] = useState(true);
+  const handlePlay = useCallback(async () => {
+    setFirstPlay(false);
+
+    !singlePlayer && reference.current?.play();
+    singlePlayer && reference.current?.getInternalPlayer().play();
+
+    // if (players.current[active].getInternalPlayer()) {
+    //   players.current[active].getInternalPlayer().muted = false;
+    //   players.current[active].getInternalPlayer().volume = 1;
+    // }
+  }, [players, active, reference, firstPlay]);
+
+  const handlePause = useCallback(() => {
+    !singlePlayer && reference.current?.pause();
+    singlePlayer && reference.current?.getInternalPlayer().pause();
+  }, []);
+
   const handleSliderChange = (event, value) => {
     // setSeekTime(value * 1e3);
-    reference.current.currentTime = value;
+    console.log(value);
+    if (!singlePlayer) reference.current.currentTime = value;
+    if (singlePlayer) reference.current.seekTo(value, 'seconds');
   };
 
   // useEffect(() => console.log({ referencePlaying }), [referencePlaying]);
@@ -210,30 +235,46 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   // useEffect(() => console.log({ intervals }), [intervals]);
 
   useEffect(() => {
+    console.log('buf', { reference });
     if (buffering && referencePlaying) {
-      reference.current.pause();
+      !singlePlayer && reference.current?.pause();
+      singlePlayer && reference.current?.getInternalPlayer().pause();
     } else if (!buffering && referencePlaying) {
-      reference.current.play();
+      !singlePlayer && reference.current?.play();
+      singlePlayer && reference.current?.getInternalPlayer().play();
     }
-  }, [buffering, reference]);
+  }, [buffering, reference, singlePlayer]);
 
   return (
     <Root>
       <Container className={classes.core} maxWidth="sm">
         <div className={classes.stage}>
-          {media?.map(({ id, url, poster, title }) => (
-            <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
-              <Player
-                key={id}
-                active={active === id}
-                time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
-                // time={(time - (interval?.[0] ?? 0)) / 1e3}
-                playing={referencePlaying && active === id}
-                media={{ id, url, poster, title }}
-                {...{ players, setActive, buffering, setBuffering }}
+          {!singlePlayer
+            ? media?.map(({ id, url, poster, title }) => (
+                <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
+                  <Player
+                    key={id}
+                    active={active === id}
+                    time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                    // time={(time - (interval?.[0] ?? 0)) / 1e3}
+                    playing={referencePlaying && active === id}
+                    media={{ id, url, poster, title }}
+                    {...{ players, setActive, buffering, setBuffering }}
+                  />
+                </div>
+              ))
+            : null}
+
+          {singlePlayer ? (
+            <div className={classes.player} style={{ display: 'block' }}>
+              <SinglePlayer
+                media={media[0]}
+                {...{ buffering, setBuffering, onPlay, onPause, setTime }}
+                playing={referencePlaying}
+                ref={reference}
               />
             </div>
-          ))}
+          ) : null}
 
           {insert && insert.type === 'title' && (
             <>
@@ -313,15 +354,15 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
           <Grid container spacing={2} sx={{ alignItems: 'center' }}>
             <Grid item>
               {buffering && seekTime !== time ? (
-                <IconButton onClick={pause} size="small">
+                <IconButton onClick={handlePause} size="small">
                   {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
                 </IconButton>
               ) : referencePlaying ? (
-                <IconButton onClick={pause} size="small">
+                <IconButton onClick={handlePause} size="small">
                   <PauseIcon />
                 </IconButton>
               ) : (
-                <IconButton onClick={play} size="small">
+                <IconButton onClick={handlePlay} size="small">
                   <PlayArrowIcon />
                 </IconButton>
               )}
@@ -340,15 +381,17 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
               />
             </Grid>
           </Grid>
-          <audio
-            controls
-            muted
-            // @ts-ignore
-            ref={reference}
-            onPlay={onPlay}
-            onPause={onPause}
-            style={{ display: 'none' }}
-          />
+          {!singlePlayer ? (
+            <audio
+              controls
+              muted
+              // @ts-ignore
+              ref={reference}
+              onPlay={onPlay}
+              onPause={onPause}
+              style={{ display: 'none' }}
+            />
+          ) : null}
         </div>
       </Container>
     </Root>
@@ -369,6 +412,7 @@ const Player = ({
   // console.log(ref);
   // console.log(ref.current?.getInternalPlayer('hls'));
 
+  const [controls, setControls] = useState(false);
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
   const config = useMemo(
     () => ({
@@ -377,6 +421,7 @@ const Player = ({
           poster,
           preload: 'none',
           playsinline: 'true',
+          // muted: 'true',
         },
         // hlsOptions: {
         //   backBufferLength: 30,
@@ -398,6 +443,7 @@ const Player = ({
 
   const waitForPlayer = useCallback(() => {
     // console.log('MUX?');
+    setControls(!ref.current?.getInternalPlayer('hls'));
     if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
       console.log('MUX ON');
       const initTime = Date.now();
@@ -499,7 +545,8 @@ const Player = ({
 
   return (
     <ReactPlayer
-      // controls
+      controls={controls}
+      muted={controls}
       height="100%"
       key={id}
       width="100%"
@@ -508,11 +555,120 @@ const Player = ({
         position: 'absolute',
         top: 0,
       }}
-      muted={!primed}
+      // muted={!primed}
       {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
     />
   );
 };
+
+const SinglePlayer = React.forwardRef(
+  ({ media: { id, url, poster, title }, playing, setBuffering, reference, onPlay, onPause, setTime }, ref) => {
+    const [controls, setControls] = useState(false);
+    const config = useMemo(
+      () => ({
+        file: {
+          attributes: {
+            poster,
+            preload: 'none',
+            playsinline: 'true',
+            // muted: 'true',
+          },
+        },
+      }),
+      [poster],
+    );
+
+    const initTime = useMemo(() => Date.now(), []);
+
+    const waitForPlayer = useCallback(() => {
+      // console.log('MUX?');
+      setControls(!ref.current?.getInternalPlayer('hls'));
+      if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
+        console.log('MUX ON');
+        // const initTime = Date.now();
+        mux.monitor(ref.current.getInternalPlayer(), {
+          debug: false,
+          hlsjs: ref.current?.getInternalPlayer('hls'),
+          data: {
+            env_key: global.MUX_KEY,
+            player_name: 'Theatre',
+            player_init_time: initTime,
+            video_id: id,
+            video_title: title,
+          },
+        });
+      } else if (global.MUX_KEY) {
+        setTimeout(() => waitForPlayer(), (1e3 * 1) / 60); // TODO use reqAnimFrame
+      }
+    }, [ref, initTime]);
+
+    useEffect(() => waitForPlayer(), [waitForPlayer]);
+
+    // const onReady = useCallback(() => {
+    //   // players.current[id] = ref.current;
+    //   if (!primed) {
+    //     // setPlaying(id); // TODO make this via ref?
+    //     // setActive(id);
+    //   }
+    // }, [id, primed]);
+
+    // const onPlay = useCallback(() => {
+    //   if (!primed) {
+    //     setPrimed(true);
+    //     // setPlaying(false); // TODO make this via ref?
+    //   }
+    // }, [id, primed]);
+
+    // const onPause = useCallback(() => {
+    //   // setPlaying(false);
+    // }, []);
+
+    // const onSeek = useCallback(() => {
+    //   // console.log('seek', id);
+    //   // setActive(id);
+    // }, [id]);
+
+    // const onProgress = useCallback(
+    //   progress => {
+    //     // console.log(progress);
+    //     // setActive(id);
+    //   },
+    //   [id],
+    // );
+
+    const onBuffer = useCallback(() => {
+      // setBuffering(true);
+    }, [id, setBuffering]);
+
+    const onBufferEnd = useCallback(() => {
+      // setBuffering(false);
+    }, [id, setBuffering]);
+
+    const onProgress = useCallback(
+      ({ playedSeconds }) => {
+        setTime(playedSeconds * 1e3);
+      },
+      [setTime],
+    );
+
+    return (
+      <ReactPlayer
+        // controls={controls}
+        // muted={controls}
+        height="100%"
+        key={id}
+        width="100%"
+        style={{
+          left: 0,
+          position: 'absolute',
+          top: 0,
+        }}
+        ref={ref}
+        {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
+      />
+    );
+  },
+);
 
 const timecode = (seconds, frameRate = 25, dropFrame = false) =>
   TC(seconds * 25, 25, false)
