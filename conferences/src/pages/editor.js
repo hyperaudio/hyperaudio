@@ -39,29 +39,29 @@ import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudi
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
-function CircularProgressWithLabel(props) {
-  return (
-    <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-      <CircularProgress variant="determinate" {...props} />
-      <Box
-        sx={{
-          top: 0,
-          left: 0,
-          bottom: 0,
-          right: 0,
-          position: 'absolute',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <Typography variant="caption" component="div" color="text.secondary">{`${Math.round(
-          props.value,
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
+// function CircularProgressWithLabel(props) {
+//   return (
+//     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+//       <CircularProgress variant="determinate" {...props} />
+//       <Box
+//         sx={{
+//           top: 0,
+//           left: 0,
+//           bottom: 0,
+//           right: 0,
+//           position: 'absolute',
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//         }}
+//       >
+//         <Typography variant="caption" component="div" color="text.secondary">{`${Math.round(
+//           props.value,
+//         )}%`}</Typography>
+//       </Box>
+//     </Box>
+//   );
+// }
 
 function SkeletonLoader({ progress }) {
   const dummytextarr = [...Array(5).keys()];
@@ -110,6 +110,7 @@ function SkeletonLoader({ progress }) {
 const PREFIX = 'EditorPage';
 const classes = {
   root: `${PREFIX}-root`,
+  paneTitle: `${PREFIX}-paneTitle`,
 };
 
 const Root = styled('div', {
@@ -124,6 +125,17 @@ const Root = styled('div', {
   right: 0,
   top: 0,
   width: '100%',
+  [`& .${classes.paneTitle}`]: {
+    background: theme.palette.divider,
+    color: theme.palette.primary.main,
+    fontSize: '10px',
+    fontWeight: '500',
+    padding: theme.spacing(0, 0.5),
+    position: 'absolute',
+    top: 0,
+    transition: `opacity ${theme.transitions.duration.standard}ms`,
+    zIndex: 1,
+  },
 }));
 
 const getMedia = async (setMedia, id) => {
@@ -886,107 +898,90 @@ const EditorPage = ({ organisation, user, groups }) => {
         ------------------------------------
         */}
         <Container maxWidth={originalId ? 'xl' : 'sm'} sx={{ pb: 2 }}>
-          <Grid container spacing={originalId ? 1 : 0} sx={{ height: '100%' }}>
-            <Grid item xs={originalId ? 6 : 12}>
-              {media ? (
-                <Box>
-                  <Box
-                    sx={{
-                      bgcolor: 'text.primary',
-                      borderRadius: 1,
-                      display: pip ? 'none' : 'block',
-                      overflow: 'hidden',
-                    }}
-                  >
-                    <ReactPlayer
-                      config={config}
-                      onBuffer={onBuffer}
-                      onBufferEnd={onBufferEnd}
-                      onDisablePIP={onDisablePIP}
-                      onDuration={onDuration}
-                      onEnablePIP={onEnablePIP}
-                      onPlay={play}
-                      onProgress={onProgress}
-                      playing={playing}
-                      progressInterval={100}
-                      ref={video}
-                      url={media.url}
-                      width="100%"
+          {media ? (
+            <Box>
+              <Box
+                sx={{
+                  bgcolor: 'black',
+                  borderRadius: 1,
+                  display: pip ? 'none' : 'block',
+                  overflow: 'hidden',
+                }}
+              >
+                <ReactPlayer
+                  config={config}
+                  onBuffer={onBuffer}
+                  onBufferEnd={onBufferEnd}
+                  onDisablePIP={onDisablePIP}
+                  onDuration={onDuration}
+                  onEnablePIP={onEnablePIP}
+                  onPlay={play}
+                  onProgress={onProgress}
+                  playing={playing}
+                  progressInterval={100}
+                  ref={video}
+                  url={media.url}
+                  width="100%"
+                />
+              </Box>
+              <Box sx={{ mt: 2 }}>
+                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+                  <Grid item>
+                    {buffering && seekTime !== time ? (
+                      <IconButton onClick={pause} size="small">
+                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                      </IconButton>
+                    ) : playing ? (
+                      <IconButton onClick={pause} size="small">
+                        <PauseIcon />
+                      </IconButton>
+                    ) : (
+                      <IconButton onClick={play} size="small">
+                        <PlayArrowIcon />
+                      </IconButton>
+                    )}
+                  </Grid>
+                  <Grid container item xs>
+                    <Slider
+                      aria-label="timeline"
+                      defaultValue={0}
+                      max={duration}
+                      min={0}
+                      onChange={handleSliderChange}
+                      size="small"
+                      value={time}
+                      valueLabelDisplay="auto"
+                      valueLabelFormat={timecode}
                     />
-                  </Box>
-                  <Box sx={{ mt: 1 }}>
-                    <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                      <Grid item>
-                        {buffering && seekTime !== time ? (
-                          <IconButton onClick={pause} size="small">
-                            {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                          </IconButton>
-                        ) : playing ? (
-                          <IconButton onClick={pause} size="small">
-                            <PauseIcon />
-                          </IconButton>
-                        ) : (
-                          <IconButton onClick={play} size="small">
-                            <PlayArrowIcon />
-                          </IconButton>
-                        )}
-                      </Grid>
-                      <Grid container item xs>
-                        <Slider
-                          aria-label="timeline"
-                          defaultValue={0}
-                          max={duration}
-                          min={0}
-                          onChange={handleSliderChange}
-                          size="small"
-                          value={time}
-                          valueLabelDisplay="auto"
-                          valueLabelFormat={timecode}
-                        />
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Box>
-              ) : (
-                <Box>
-                  <Skeleton
-                    variant="rectangular"
-                    width="100%"
-                    height="360px"
-                    sx={{ lineHeight: 0, mb: 2, borderRadius: 1 }}
-                  />
-                  <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
-                </Box>
-              )}
-            </Grid>
-            {originalId ? (
-              <Grid item xs={6}>
-                <Box>Hello Meta</Box>
-              </Grid>
-            ) : null}
-          </Grid>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+          ) : (
+            <Box>
+              <Skeleton
+                variant="rectangular"
+                width="100%"
+                height="360px"
+                sx={{ lineHeight: 0, mb: 2, borderRadius: { xs: 0, xl: 1 } }}
+              />
+              <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
+            </Box>
+          )}
         </Container>
         <Divider sx={{ width: '100%' }} />
         {/* TRANSCRIPT
         ------------------------------------
         */}
         {originalId ? (
-          <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1 }}>
+          <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1, px: { xs: 0, lg: 3 } }}>
             <Grid container sx={{ height: '100%' }}>
-              <Grid item xs={6} sx={{ position: 'relative' }}>
+              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
                 <Typography
-                  sx={{
-                    background: 'white',
-                    color: 'text.disabled',
-                    left: '50%',
-                    position: 'absolute',
-                    top: 0,
-                    px: 0.5,
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 9999,
-                  }}
-                  variant="overline"
+                  className={`${classes.paneTitle} PaneTitle`}
                   component="h2"
+                  sx={{ left: 0 }}
+                  variant="overline"
                 >
                   Original
                 </Typography>
@@ -995,7 +990,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                   sx={{
                     borderColor: 'divider',
                     borderStyle: 'solid',
-                    borderWidth: { xs: '0 1px 0 0', lg: '0 1px' },
+                    borderWidth: { xs: '0 0 0 1px' },
                     bottom: 0,
                     left: 0,
                     overflow: originalState ? 'auto' : 'hidden',
@@ -1035,21 +1030,12 @@ const EditorPage = ({ organisation, user, groups }) => {
                   </Container>
                 </Box>
               </Grid>
-              <Grid item xs={6} sx={{ position: 'relative' }}>
+              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
                 <Typography
-                  sx={{
-                    background: 'white',
-                    color: 'text.secondary',
-                    left: '50%',
-                    position: 'absolute',
-                    top: 0,
-                    color: 'text.disabled',
-                    transform: 'translate(-50%, -50%)',
-                    px: 0.5,
-                    zIndex: 9999,
-                  }}
-                  variant="overline"
+                  className={`${classes.paneTitle} PaneTitle`}
                   component="h2"
+                  sx={{ right: 0 }}
+                  variant="overline"
                 >
                   Translation
                 </Typography>
@@ -1059,7 +1045,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                     borderColor: 'divider',
                     bgcolor: 'background.default',
                     borderStyle: 'solid',
-                    borderWidth: { xs: '0', lg: '0 1px 0 0' },
+                    borderWidth: { xs: '0 0 0 1px', lg: '0 1px' },
                     bottom: 0,
                     left: 0,
                     overflow: initialState ? 'auto' : 'hidden',
