@@ -21,6 +21,7 @@ import { Typography } from '@mui/material';
 const PREFIX = 'MediaInfoDialog';
 const classes = {
   body: `${PREFIX}-body`,
+  paper: `${PREFIX}-paper`,
   field: `${PREFIX}-field`,
   head: `${PREFIX}-head`,
   headPush: `${PREFIX}-headPush`,
@@ -53,6 +54,9 @@ const Root = styled(Modal, {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'stretch',
+    },
+    [`& .${classes.paper}:focus, & .${classes.paper}:focus-visible`]: {
+      outline: 'none',
     },
     [`& .${classes.head}`]: {
       alignItems: 'center',
