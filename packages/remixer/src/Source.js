@@ -23,7 +23,8 @@ const Source = props => {
 
   const [time, setTime] = useState(0);
   const singlePlayer = useMemo(() => media.length === 1, [media]);
-  const singlePlayerOffset = useMemo(() => blocks?.[0]?.data?.start ?? 0, [blocks]);
+  const singlePlayerOffset = useMemo(() => blocks?.[0]?.start ?? 0, [blocks]);
+  // console.log({ singlePlayerOffset });
 
   // useEffect(() => {
   //   reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));

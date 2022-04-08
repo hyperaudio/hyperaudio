@@ -90,15 +90,16 @@ function createSilence(seconds = 1) {
   return url;
 }
 
-export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer }) => {
+export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer, singlePlayerOffset }) => {
   const [seekTime, setSeekTime] = useState(36 * 1e6); // FIXME why magic number?
   const duration = useMemo(
     () =>
+      (singlePlayer ? singlePlayerOffset : 0) +
       blocks.reduce((acc, { media, duration, gap }, i, arr) => {
         // console.log({ i, duration, gap });
         return acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0);
       }, 0),
-    [blocks],
+    [blocks, singlePlayer, singlePlayerOffset],
   );
 
   // useEffect(() => {
@@ -161,6 +162,8 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
   );
 
   useEffect(() => {
+    if (singlePlayer && time / 1e3 < singlePlayerOffset) return;
+
     const currentIntervalIndex = intervals.findIndex(([start, end]) => start <= time && time < end);
     const currentInterval = intervals[currentIntervalIndex];
 
@@ -190,7 +193,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
         setInsert(lastInterval[2].block);
       }
     }
-  }, [intervals, interval, time]);
+  }, [intervals, interval, time, singlePlayer, singlePlayerOffset]);
 
   const onPlay = useCallback(() => {
     if (buffering) return;
@@ -272,6 +275,7 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                 {...{ buffering, setBuffering, onPlay, onPause, setTime }}
                 playing={referencePlaying}
                 ref={reference}
+                singlePlayerOffset={singlePlayerOffset}
               />
             </div>
           ) : null}
@@ -562,7 +566,19 @@ const Player = ({
 };
 
 const SinglePlayer = React.forwardRef(
-  ({ media: { id, url, poster, title }, playing, setBuffering, reference, onPlay, onPause, setTime }, ref) => {
+  (
+    {
+      media: { id, url, poster, title },
+      playing,
+      setBuffering,
+      reference,
+      onPlay,
+      onPause,
+      setTime,
+      singlePlayerOffset,
+    },
+    ref,
+  ) => {
     const [controls, setControls] = useState(false);
     const config = useMemo(
       () => ({
@@ -646,9 +662,9 @@ const SinglePlayer = React.forwardRef(
 
     const onProgress = useCallback(
       ({ playedSeconds }) => {
-        setTime(playedSeconds * 1e3);
+        setTime(playedSeconds * 1e3 - singlePlayerOffset);
       },
-      [setTime],
+      [setTime, singlePlayerOffset],
     );
 
     return (
