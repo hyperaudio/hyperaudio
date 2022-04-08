@@ -17,47 +17,131 @@ import Queue from 'queue-promise';
 import useInterval from 'use-interval';
 import pako from 'pako';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Fab from '@mui/material/Fab';
+import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import LoadingButton from '@mui/lab/LoadingButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PreviewIcon from '@mui/icons-material/Preview';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
-import PreviewIcon from '@mui/icons-material/Preview';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
-import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import Skeleton from '@mui/material/Skeleton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import { ThemeProvider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
+import { getTheme } from '@hyperaudio/common';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
-const PREFIX = 'MediaPage';
+// function CircularProgressWithLabel(props) {
+//   return (
+//     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
+//       <CircularProgress variant="determinate" {...props} />
+//       <Box
+//         sx={{
+//           top: 0,
+//           left: 0,
+//           bottom: 0,
+//           right: 0,
+//           position: 'absolute',
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//         }}
+//       >
+//         <Typography variant="caption" component="div" color="text.secondary">{`${Math.round(
+//           props.value,
+//         )}%`}</Typography>
+//       </Box>
+//     </Box>
+//   );
+// }
+
+function SkeletonLoader({ progress }) {
+  const dummytextarr = [...Array(5).keys()];
+  return (
+    <>
+      {[...Array(5).keys()].map(key1 => (
+        <>
+          <Grid container spacing={1} key={key1}>
+            <Grid item xs={2}>
+              <Skeleton variation="text" sx={{ width: '100%' }} />
+            </Grid>
+            <Grid item xs={10}>
+              <Skeleton variation="text" sx={{ width: '100%' }} />
+            </Grid>
+          </Grid>
+          {dummytextarr.map((key2, i) => (
+            <Grid container spacing={1} key={key2}>
+              <Grid item xs={2}></Grid>
+              <Grid item xs={10}>
+                <Skeleton variation="text" sx={{ width: i === dummytextarr.length - 1 ? '66%' : '100%' }} />
+              </Grid>
+            </Grid>
+          ))}
+        </>
+      ))}
+      {/* <Box
+        sx={{
+          alignItems: 'center',
+          bgcolor: 'rgba(255,255,255,0.5)',
+          bottom: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          left: 0,
+          position: 'absolute',
+          right: 0,
+          top: 0,
+        }}
+      >
+        <CircularProgressWithLabel color="primary" size={64} thickness={2} value={progress} variant="determinate" />
+      </Box> */}
+    </>
+  );
+}
+
+const PREFIX = 'EditorPage';
 const classes = {
+  paneTitle: `${PREFIX}-paneTitle`,
   root: `${PREFIX}-root`,
-  push: `${PREFIX}-push`,
+  slider: `${PREFIX}-slider`,
 };
 
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
+  alignItems: 'center',
   bottom: 0,
+  display: 'flex',
+  flexDirection: 'column',
   left: 0,
   position: 'fixed',
   right: 0,
   top: 0,
-  [`& .${classes.push}`]: {
-    ...theme.mixins.toolbar,
+  width: '100%',
+  [`& .${classes.slider}`]: {},
+  [`& .${classes.paneTitle}`]: {
+    background: theme.palette.divider,
+    color: theme.palette.text.primary,
+    fontSize: '10px',
+    fontWeight: '500',
+    padding: theme.spacing(0, 0.5),
+    position: 'absolute',
+    top: 0,
+    transition: `opacity ${theme.transitions.duration.standard}ms`,
+    zIndex: 1,
   },
 }));
 
@@ -915,217 +999,277 @@ const EditorPage = ({ organisation, user, groups }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <div className={classes.push} />
-        <Toolbar>
-          <Grid container>
-            <Grid item sx={{ mr: 1 }}>
-              <Button
-                color="primary"
-                startIcon={
-                  saving === 0 ? (
-                    <SaveIcon fontSize="small" />
-                  ) : saving === 3 ? (
-                    <HourglassEmptyIcon fontSize="small" />
-                  ) : saving === 2 ? (
-                    <HourglassTopIcon fontSize="small" />
-                  ) : (
-                    <HourglassBottomIcon fontSize="small" />
-                  )
-                }
-                onClick={handleSave}
-                disabled={
-                  !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
-                }
-              >
-                {saving ? `Saving ${savingProgress}%` : 'Save draft'}
-              </Button>
-            </Grid>
-            <Grid item sx={{ mr: 1 }}>
-              <Button
-                color="primary"
-                startIcon={
-                  previewing === 0 ? (
-                    <PreviewIcon fontSize="small" />
-                  ) : previewing === 3 ? (
-                    <HourglassEmptyIcon fontSize="small" />
-                  ) : previewing === 2 ? (
-                    <HourglassTopIcon fontSize="small" />
-                  ) : (
-                    <HourglassBottomIcon fontSize="small" />
-                  )
-                }
-                onClick={handlePreview}
-                disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-              >
-                {previewing ? `Previewing ${previewingProgress}%` : 'Preview draft'}
-              </Button>
-            </Grid>
-            <Grid item xs>
-              <Container maxWidth="sm"></Container>
-            </Grid>
-            <Grid item sx={{ ml: 1 }}>
-              <Stack direction="row" spacing={1}>
-                <Button
-                  color="primary"
-                  endIcon={
-                    publishing === 0 ? (
-                      <PublishIcon fontSize="small" />
-                    ) : publishing === 3 ? (
-                      <HourglassEmptyIcon fontSize="small" />
-                    ) : publishing === 2 ? (
-                      <HourglassTopIcon fontSize="small" />
-                    ) : (
-                      <HourglassBottomIcon fontSize="small" />
-                    )
-                  }
-                  onClick={handlePublish}
+        <Toolbar />
+        {/* THEATRE
+        ------------------------------------
+        */}
+        <ThemeProvider theme={getTheme({ mode: 'dark' })}>
+          <Box
+            sx={{
+              bgcolor: 'black',
+              color: 'white',
+              width: '100%',
+              '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
+            }}
+          >
+            <Toolbar>
+              <Stack direction="row" spacing={1} sx={{ flexGrow: 1 }}>
+                <LoadingButton
+                  color="inherit"
                   disabled={
-                    !draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')
+                    !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
                   }
+                  loading={saving !== 0}
+                  loadingPosition="start"
+                  onClick={handleSave}
+                  startIcon={<SaveIcon fontSize="small" />}
                 >
-                  {publishing ? `Publishing ${publishingProgress}%` : 'Publish'}
-                </Button>
+                  Save
+                  <Box
+                    component="span"
+                    variant="button"
+                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
+                  >
+                    draft
+                  </Box>
+                </LoadingButton>
+                <LoadingButton
+                  color="inherit"
+                  disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+                  loading={previewing > 0}
+                  loadingPosition="start"
+                  onClick={handlePreview}
+                  startIcon={<PreviewIcon fontSize="small" />}
+                >
+                  Preview
+                  <Box
+                    component="span"
+                    variant="button"
+                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
+                  >
+                    draft
+                  </Box>
+                </LoadingButton>
               </Stack>
-            </Grid>
-          </Grid>
-        </Toolbar>
-        <div
-          style={{ height: '100vh', maxWidth: originalId ? '1200px' : '600px', margin: '0 auto', paddingBottom: 300 }}
-        >
-          {media ? (
-            <div style={{ marginBottom: 40, maxWidth: '600px' }}>
-              <div style={{ display: pip ? 'none' : 'block' }}>
-                <ReactPlayer
-                  width="100%"
-                  ref={video}
-                  config={config}
-                  playing={playing}
-                  url={media.url}
-                  onProgress={onProgress}
-                  onBuffer={onBuffer}
-                  onBufferEnd={onBufferEnd}
-                  onPlay={play}
-                  onDuration={onDuration}
-                  progressInterval={100}
-                  onEnablePIP={onEnablePIP}
-                  onDisablePIP={onDisablePIP}
-                />
-              </div>
-              <div>
-                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                  <Grid item>
+              <LoadingButton
+                color="inherit"
+                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+                endIcon={<PublishIcon fontSize="small" />}
+                loading={publishing !== 0}
+                loadingPosition="end"
+                onClick={handlePublish}
+              >
+                Publish
+              </LoadingButton>
+            </Toolbar>
+            {media ? (
+              <Box sx={{ py: 2, '& .MuiSlider-root': { color: 'white' } }}>
+                <Container maxWidth="xl">
+                  <Box sx={{ mb: 2, display: pip ? 'none' : 'block' }}>
+                    <ReactPlayer
+                      config={config}
+                      onBuffer={onBuffer}
+                      onBufferEnd={onBufferEnd}
+                      onDisablePIP={onDisablePIP}
+                      onDuration={onDuration}
+                      onEnablePIP={onEnablePIP}
+                      onPlay={play}
+                      onProgress={onProgress}
+                      playing={playing}
+                      progressInterval={100}
+                      ref={video}
+                      url={media.url}
+                      width="100%"
+                    />
+                  </Box>
+                  <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
                     {buffering && seekTime !== time ? (
-                      <IconButton onClick={pause} size="small">
+                      <IconButton onClick={pause} color="inherit">
                         {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
                       </IconButton>
                     ) : playing ? (
-                      <IconButton onClick={pause} size="small">
+                      <IconButton onClick={pause} color="inherit">
                         <PauseIcon />
                       </IconButton>
                     ) : (
-                      <IconButton onClick={play} size="small">
+                      <IconButton onClick={play} color="inherit">
                         <PlayArrowIcon />
                       </IconButton>
                     )}
-                  </Grid>
-                  <Grid container item xs>
                     <Slider
+                      className={classes.slider}
                       aria-label="timeline"
                       defaultValue={0}
                       max={duration}
                       min={0}
                       onChange={handleSliderChange}
                       size="small"
+                      // color=""
                       value={time}
                       valueLabelDisplay="auto"
                       valueLabelFormat={timecode}
                     />
-                  </Grid>
-                </Grid>
-              </div>
-            </div>
-          ) : (
-            <p style={{ textAlign: 'center' }}>Loading media…</p>
-          )}
-          {!originalId ? (
-            <div ref={div} style={{ height: `calc(100vh - ${top}px)`, overflow: 'scroll', paddingTop: 20 }}>
+                  </Stack>
+                </Container>
+              </Box>
+            ) : (
+              <Box sx={{ pt: 2, pb: 4 }}>
+                <Container maxWidth="sm">
+                  <Skeleton
+                    height="360px"
+                    sx={{ lineHeight: 0, mb: 2.5, borderRadius: 1 }}
+                    variant="rectangular"
+                    width="100%"
+                  />
+                  <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
+                </Container>
+              </Box>
+            )}
+          </Box>
+        </ThemeProvider>
+        {/* TRANSCRIPT
+        ------------------------------------
+        */}
+        {originalId ? (
+          <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1, px: { xs: 0, lg: 3 } }}>
+            <Grid container sx={{ height: '100%' }}>
+              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
+                <Typography
+                  className={`${classes.paneTitle} PaneTitle`}
+                  component="h2"
+                  sx={{ left: 0 }}
+                  variant="overline"
+                >
+                  Original
+                </Typography>
+                <Box
+                  ref={div}
+                  sx={{
+                    borderColor: 'divider',
+                    borderStyle: 'solid',
+                    borderWidth: { xs: '0 0 0 1px' },
+                    bottom: 0,
+                    left: 0,
+                    overflow: originalState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'absolute',
+                    pt: 2,
+                    right: 0,
+                    top: 0,
+                    width: '100%',
+                    ['& .public-DraftStyleDefault-block span']: {
+                      cursor: 'pointer',
+                    },
+                  }}
+                >
+                  <Container maxWidth="sm">
+                    {originalState ? (
+                      <Editor
+                        time={time}
+                        speakers={originalData.speakers}
+                        initialState={originalState}
+                        onChange={NOOP}
+                        readOnly={true}
+                        autoScroll={true}
+                        seekTo={originalSeekTo}
+                        playheadDecorator={null}
+                        play={play}
+                        playing={playing}
+                        pause={pause}
+                      />
+                    ) : error ? (
+                      <Typography color="error" variant="body2">
+                        Error: {error?.message}
+                      </Typography>
+                    ) : (
+                      <SkeletonLoader progress={originalProgress} />
+                    )}
+                  </Container>
+                </Box>
+              </Grid>
+              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
+                <Typography
+                  className={`${classes.paneTitle} PaneTitle`}
+                  component="h2"
+                  sx={{ right: 0 }}
+                  variant="overline"
+                >
+                  Translation
+                </Typography>
+                <Box
+                  ref={div}
+                  sx={{
+                    borderColor: 'divider',
+                    bgcolor: 'background.default',
+                    borderStyle: 'solid',
+                    borderWidth: { xs: '0 0 0 1px', lg: '0 1px' },
+                    bottom: 0,
+                    left: 0,
+                    overflow: initialState ? 'auto' : 'hidden',
+                    pb: 12,
+                    position: 'absolute',
+                    pt: 2,
+                    right: 0,
+                    top: 0,
+                    width: '100%',
+                  }}
+                >
+                  <Container maxWidth="sm">
+                    {initialState ? (
+                      <Editor
+                        time={time}
+                        speakers={speakers}
+                        initialState={initialState}
+                        onChange={setDraft}
+                        // autoScroll={tempAutoScroll}
+                        autoScroll={true}
+                        seekTo={seekTo}
+                        playheadDecorator={null}
+                        play={play}
+                        playing={playing}
+                        pause={pause}
+                      />
+                    ) : error ? (
+                      <Typography color="error" variant="body2">
+                        Error: {error?.message}
+                      </Typography>
+                    ) : (
+                      <SkeletonLoader progress={progress} />
+                    )}
+                  </Container>
+                </Box>
+              </Grid>
+            </Grid>
+          </Container>
+        ) : (
+          <Box
+            ref={div}
+            sx={{
+              overflow: initialState ? 'auto' : 'hidden',
+              position: 'relative',
+              pb: 12,
+              pt: 2,
+              width: '100%',
+            }}
+          >
+            <Container maxWidth="sm">
               {initialState ? (
                 <Editor
                   {...{ initialState, time, seekTo, speakers, playing, play, pause }}
-                  onChange={setDraft}
                   autoScroll={true}
+                  onChange={setDraft}
                   playheadDecorator={noKaraoke ? null : undefined}
                 />
+              ) : error ? (
+                <Typography color="error" variant="body2">
+                  Error: {error?.message}
+                </Typography>
               ) : (
-                <div style={{ textAlign: 'center' }}>
-                  Loading transcript{' '}
-                  <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-                  {error && <p>Error: {error?.message}</p>}
-                </div>
+                <SkeletonLoader progress={progress} />
               )}
-            </div>
-          ) : true ? (
-            <div ref={div} style={{ height: `calc(100vh - ${top}px)` }}>
-              <div style={{ width: '49%', float: 'left', overflow: 'scroll', paddingTop: 20, height: '100%' }}>
-                {originalState ? (
-                  <Editor
-                    time={time}
-                    speakers={originalData.speakers}
-                    initialState={originalState}
-                    onChange={NOOP}
-                    readOnly={true}
-                    autoScroll={true}
-                    seekTo={originalSeekTo}
-                    playheadDecorator={null}
-                    play={play}
-                    playing={playing}
-                    pause={pause}
-                  />
-                ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    Loading transcript{' '}
-                    <span
-                      style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}
-                    >{`${originalProgress}%`}</span>
-                    {error && <p>Error: {error?.message}</p>}
-                  </div>
-                )}
-              </div>
-              <div
-                style={{
-                  width: '49%',
-                  float: 'left',
-                  marginLeft: '2%',
-                  overflow: 'scroll',
-                  paddingTop: 20,
-                  height: '100%',
-                }}
-              >
-                {initialState ? (
-                  <Editor
-                    time={time}
-                    speakers={speakers}
-                    initialState={initialState}
-                    onChange={setDraft}
-                    // autoScroll={tempAutoScroll}
-                    autoScroll={true}
-                    seekTo={seekTo}
-                    playheadDecorator={null}
-                    play={play}
-                    playing={playing}
-                    pause={pause}
-                  />
-                ) : (
-                  <div style={{ textAlign: 'center' }}>
-                    Loading transcript{' '}
-                    <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
-                    {error && <p>Error: {error?.message}</p>}
-                  </div>
-                )}
-              </div>
-            </div>
-          ) : null}
-        </div>
+            </Container>
+          </Box>
+        )}
       </Root>
     </>
   ) : null;
