@@ -13,6 +13,9 @@ import { useRouter } from 'next/router';
 import mux from 'mux-embed';
 import TC from 'smpte-timecode';
 import bs58 from 'bs58';
+import Queue from 'queue-promise';
+import useInterval from 'use-interval';
+import pako from 'pako';
 
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -142,6 +145,11 @@ const Root = styled('div', {
   },
 }));
 
+const queue = new Queue({
+  concurrent: 1,
+  interval: 10 * 1e3,
+});
+
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
   setMedia(media?.[0]);
@@ -178,6 +186,14 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
   const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
+
+  useEffect(() => {
+    if (originalId || !media || !transcripts || !transcript) return;
+
+    const original = transcripts.find(t => t.language === media.language);
+    if (original.id !== transcriptId)
+      router.push(`/editor?media=${mediaId}&original=${original.id}&transcript=${transcriptId}`);
+  }, [media, transcript, mediaId, transcriptId, originalId, transcripts, router]);
 
   useEffect(() => {
     if (!mediaId) return;
@@ -364,7 +380,10 @@ const EditorPage = ({ organisation, user, groups }) => {
     [blocks],
   );
 
-  useEffect(() => setSaved({ contentState: initialState?.getCurrentContent() }), [initialState]);
+  useEffect(() => {
+    setSaved({ contentState: initialState?.getCurrentContent() });
+    setAutoSaved({ contentState: initialState?.getCurrentContent() });
+  }, [initialState]);
 
   const originalState = useMemo(
     () =>
@@ -469,6 +488,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const [draft, setDraft] = useState();
   const [saved, setSaved] = useState();
+  const [autoSaved, setAutoSaved] = useState();
   const [saving, setSaving] = useState(0);
   const [previewing, setPreviewing] = useState(0);
   const [savingProgress, setSavingProgress] = useState(0);
@@ -528,12 +548,18 @@ const EditorPage = ({ organisation, user, groups }) => {
     const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
     unusedSpeakerIds.forEach(id => delete data.speakers[id]);
 
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify(data),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -560,18 +586,65 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
 
+  global.autoSave = useCallback(async () => {
+    if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
+    console.log('autoSaving!');
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+
+    const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
+    const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
+    const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
+    unusedSpeakerIds.forEach(id => delete data.speakers[id]);
+
+    // https://stackoverflow.com/questions/57225380/browser-javascript-compress-json-to-gzip-and-upload-to-s3-presigned-url
+    // const str = JSON.stringify(data);
+    // const utf8Data = unescape(encodeURIComponent(str));
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
+    const result = await Storage.put(
+      // `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json`,
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
+      {
+        level: 'public',
+        contentType: 'application/json',
+        contentEncoding: 'gzip',
+        metadata: {
+          user: user.id,
+        },
+      },
+    );
+
+    setAutoSaved(draft);
+  }, [draft, media, transcript, user, autoSaved]);
+
+  useInterval(() => {
+    console.log('autoSave?');
+    autoSave();
+  }, 60 * 1e3);
+
   const handlePreview = useCallback(async () => {
     if (!draft || !media || !transcript) return;
     console.log(draft);
     setPreviewingProgress(0);
     setPreviewing(2);
 
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -587,7 +660,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPreviewing(1);
     setTimeout(() => setPreviewing(0), 500);
 
-    window.open(`/media/${media.id}?showPreview=true`, '_blank');
+    window.open(`/media/${media.id}?language=${transcript.language}&showPreview=true`, '_blank');
     plausible('preview');
   }, [draft, media, transcript, user, plausible]);
 
@@ -597,12 +670,19 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishingProgress(0);
     setPublishing(3);
 
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -619,11 +699,13 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     // PUBLISH!
     const result2 = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
+      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -640,7 +722,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
-        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
+        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
         updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
       }),
     );
@@ -654,13 +736,6 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishing(1);
     setTimeout(() => setPublishing(0), 500);
 
-    // const signedURL = await Storage.get(
-    //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
-    //   {
-    //     level: 'public',
-    //   },
-    // );
-    // console.log(signedURL);
     plausible('publish');
     setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
@@ -746,9 +821,34 @@ const EditorPage = ({ organisation, user, groups }) => {
 
       console.log(chunks.length, chunks);
 
-      const translatedChunks = await Promise.all(
-        chunks.map(({ text }) =>
-          Predictions.convert({
+      // const translatedChunks = await Promise.all(
+      //   chunks.map(({ text }) =>
+      //     Predictions.convert({
+      //       translateText: {
+      //         source: {
+      //           text,
+      //           language: transcript.language,
+      //         },
+      //         targetLanguage: language,
+      //       },
+      //     }),
+      //   ),
+      // );
+
+      const title = await Predictions.convert({
+        translateText: {
+          source: {
+            text: transcript.title,
+            language: transcript.language,
+          },
+          targetLanguage: language,
+        },
+      });
+
+      const results = [];
+      chunks.forEach(async ({ text }, index) => {
+        queue.enqueue(async () => {
+          const result = await Predictions.convert({
             translateText: {
               source: {
                 text,
@@ -756,74 +856,131 @@ const EditorPage = ({ organisation, user, groups }) => {
               },
               targetLanguage: language,
             },
-          }),
-        ),
-      );
+          });
 
-      console.log(translatedChunks);
+          results.push({ index, result });
+          return { index, result };
+        });
+      });
 
-      const translatedBlocks = translatedChunks
-        .map(({ text }) => text)
-        .join('\n\n')
-        .split('\n\n§§')
-        .map((line, i) => {
-          const sentences = line.split('\n\n').slice(1);
-          // if (!line.startsWith(`${i}§`)) console.log(`${i}§`, line); // sometimes 299 translates to 29!
-          const block = blocks[i];
+      queue.on('end', async () => {
+        console.log('DONE');
 
-          const newBlock = {
-            ...block,
-            key: `t${nanoid(5)}`,
-            data: {
-              ...block.data,
-              // block,
-              sentences: sentences.map((sentence, j) => {
-                return {
-                  start: block.data.sentences[j].start,
-                  end: block.data.sentences[j].end,
-                  text: sentence,
-                  // original: block.data.sentences[j],
-                };
-              }),
+        const translatedChunks = results.sort((a, b) => a.index - b.index).map(({ result }) => result);
+
+        console.log({ translatedChunks });
+
+        const translatedBlocks = translatedChunks
+          .map(({ text }) => text)
+          .join('\n\n')
+          .split('\n\n§') // was §§
+          .map((line, i) => {
+            const sentences = line.split('\n\n').slice(1);
+            // if (!line.startsWith(`${i}§`)) console.log(`${i}§`, line); // sometimes 299 translates to 29!
+            const block = blocks[i];
+            console.log(i, { sentences, block });
+
+            const newBlock = {
+              ...block,
+              key: `t${nanoid(5)}`,
+              data: {
+                ...block.data,
+                // block,
+                sentences: sentences.map((sentence, j) => {
+                  return {
+                    start: block.data.sentences[j].start,
+                    end: block.data.sentences[j].end,
+                    text: sentence,
+                    // original: block.data.sentences[j],
+                  };
+                }),
+              },
+            };
+
+            newBlock.text = newBlock.data.sentences.map(({ text }) => text).join(' ');
+            newBlock.data.items = newBlock.data.sentences
+              .flatMap(({ text, start, end }) =>
+                text.split(' ').map(text => ({ text, start, end, length: text.length })),
+              )
+              .map((item, j, arr) => ({
+                ...item,
+                offset: arr.slice(0, j).reduce((acc, item) => acc + item.length + 1, 0),
+              }));
+            return newBlock;
+          });
+
+        console.log(translatedBlocks);
+
+        const description = await Predictions.convert({
+          translateText: {
+            source: {
+              text: transcript.description,
+              language: transcript.language,
             },
-          };
-
-          newBlock.text = newBlock.data.sentences.map(({ text }) => text).join(' ');
-          newBlock.data.items = newBlock.data.sentences
-            .flatMap(({ text, start, end }) => text.split(' ').map(text => ({ text, start, end, length: text.length })))
-            .map((item, j, arr) => ({
-              ...item,
-              offset: arr.slice(0, j).reduce((acc, item) => acc + item.length + 1, 0),
-            }));
-          return newBlock;
+            targetLanguage: language,
+          },
         });
 
-      console.log(translatedBlocks);
+        console.log({ title, description });
 
-      const result = await Storage.put(
-        `transcript/${media.playbackId}/it-IT/c1751895-c49a-46f4-85be-8d9127e3da25.json`,
-        JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
-        {
-          level: 'public',
-          contentType: 'application/json',
-          metadata: {
-            user: user.id,
-          },
-          progressCallback(progress) {
-            // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
-            const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
-            setSavingProgress(percentCompleted);
-          },
-        },
-      );
+        const transcript2 = await DataStore.save(
+          new Transcript({
+            title: title.text,
+            description: description.text,
+            language: language,
+            url: transcript.url,
+            media: media.id,
+            status: { label: 'translating' },
+          }),
+        );
 
-      console.log(result);
+        await DataStore.save(
+          Transcript.copyOf(transcript2, updated => {
+            updated.status = { label: 'translated' };
+            updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json`;
+          }),
+        );
+
+        console.log(transcript2);
+
+        const result = await Storage.put(
+          `transcript/${media.playbackId}/${language}/${transcript2.id}.json`,
+          JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
+          {
+            level: 'public',
+            contentType: 'application/json',
+            metadata: {
+              user: user.id,
+            },
+            progressCallback(progress) {
+              // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+              const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
+              setSavingProgress(percentCompleted);
+            },
+          },
+        );
+
+        console.log(result);
+        //
+      });
+
+      queue.on('dequeue', () => console.log('dequeue'));
+      queue.on('resolve', data => {
+        console.log('resolve', data);
+      });
+      queue.on('reject', error => console.log('error', error));
+      queue.on('start', () => console.log('start'));
+      queue.on('stop', () => console.log('stop'));
+
+      queue.start();
     },
     [media, transcripts, transcript, draft, user],
   );
 
   const div = useRef();
   const [top, setTop] = useState(500);
+
+  // console.log({ transcript });
 
   useLayoutEffect(() => {
     // console.log('useLayoutEffect');

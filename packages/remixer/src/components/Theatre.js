@@ -51,15 +51,53 @@ const MATCH_URL_YOUTUBE =
   /(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:embed\/|v\/|watch\/|watch\?v=|watch\?.+&v=))((\w|-){11})|youtube\.com\/playlist\?list=|youtube\.com\/user\//;
 // const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
+// https://gist.github.com/ktcy/1e981cfee7a309beebb33cdab1e29715
+function createSilence(seconds = 1) {
+  const sampleRate = 8000;
+  const numChannels = 1;
+  const bitsPerSample = 8;
+
+  const blockAlign = (numChannels * bitsPerSample) / 8;
+  const byteRate = sampleRate * blockAlign;
+  const dataSize = Math.ceil(seconds * sampleRate) * blockAlign;
+  const chunkSize = 36 + dataSize;
+  const byteLength = 8 + chunkSize;
+
+  const buffer = new ArrayBuffer(byteLength);
+  const view = new DataView(buffer);
+
+  view.setUint32(0, 0x52494646, false); // Chunk ID 'RIFF'
+  view.setUint32(4, chunkSize, true); // File size
+  view.setUint32(8, 0x57415645, false); // Format 'WAVE'
+  view.setUint32(12, 0x666d7420, false); // Sub-chunk 1 ID 'fmt '
+  view.setUint32(16, 16, true); // Sub-chunk 1 size
+  view.setUint16(20, 1, true); // Audio format
+  view.setUint16(22, numChannels, true); // Number of channels
+  view.setUint32(24, sampleRate, true); // Sample rate
+  view.setUint32(28, byteRate, true); // Byte rate
+  view.setUint16(32, blockAlign, true); // Block align
+  view.setUint16(34, bitsPerSample, true); // Bits per sample
+  view.setUint32(36, 0x64617461, false); // Sub-chunk 2 ID 'data'
+  view.setUint32(40, dataSize, true); // Sub-chunk 2 size
+
+  for (let offset = 44; offset < byteLength; offset++) {
+    view.setUint8(offset, 128);
+  }
+
+  const blob = new Blob([view], { type: 'audio/wav' });
+  const url = URL.createObjectURL(blob);
+
+  return url;
+}
+
 export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }) => {
   const [seekTime, setSeekTime] = useState(36 * 1e6);
   const duration = useMemo(
     () =>
-      blocks.reduce(
-        (acc, { media, duration, gap }, i, arr) =>
-          acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0),
-        0,
-      ),
+      blocks.reduce((acc, { media, duration, gap }, i, arr) => {
+        // console.log({ i, duration, gap });
+        return acc + duration + (i < arr.length - 2 && media === arr[i + 1].media ? gap : 0);
+      }, 0),
     [blocks],
   );
 
@@ -69,7 +107,8 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 
   useEffect(() => {
     // @ts-ignore
-    reference.current.src = createSilentAudio(Math.ceil(duration / 1e3), 44100);
+    // reference.current.src = createSilentAudio(duration > 0 ? Math.ceil(duration / 1e3) : 60, 8000); // 44100
+    reference.current.src = createSilence(duration > 0 ? Math.ceil(duration / 1e3) : 60);
     reference.current.addEventListener('timeupdate', () => {
       setTime && setTime(1e3 * (reference.current?.currentTime ?? 0));
     });
@@ -160,6 +199,22 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
 
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
+
+  const [firstPlay, setFirstPlay] = useState(true);
+  const handlePlay = useCallback(async () => {
+    setFirstPlay(false);
+    reference.current?.play();
+
+    // if (players.current[active].getInternalPlayer()) {
+    //   players.current[active].getInternalPlayer().muted = false;
+    //   players.current[active].getInternalPlayer().volume = 1;
+    // }
+  }, [players, active, reference, firstPlay]);
+
+  const handlePause = useCallback(() => {
+    reference.current?.pause();
+    players.current?.[active]?.getInternalPlayer()?.pause();
+  }, []);
 
   const handleSliderChange = (event, value) => {
     // setSeekTime(value * 1e3);
@@ -278,11 +333,11 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
                   {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
                 </IconButton>
               ) : referencePlaying ? (
-                <IconButton onClick={pause} size="small">
+                <IconButton onClick={handlePause} size="small">
                   <PauseIcon />
                 </IconButton>
               ) : (
-                <IconButton onClick={play} size="small">
+                <IconButton onClick={handlePlay} size="small">
                   <PlayArrowIcon />
                 </IconButton>
               )}
@@ -330,6 +385,7 @@ const Player = ({
   // console.log(ref);
   // console.log(ref.current?.getInternalPlayer('hls'));
 
+  const [controls, setControls] = useState(false);
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
   const config = useMemo(
     () => ({
@@ -337,6 +393,8 @@ const Player = ({
         attributes: {
           poster,
           preload: 'none',
+          playsinline: 'true',
+          // muted: 'true',
         },
         // hlsOptions: {
         //   backBufferLength: 30,
@@ -358,6 +416,7 @@ const Player = ({
 
   const waitForPlayer = useCallback(() => {
     // console.log('MUX?');
+    setControls(!ref.current?.getInternalPlayer('hls'));
     if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
       console.log('MUX ON');
       const initTime = Date.now();
@@ -459,6 +518,8 @@ const Player = ({
 
   return (
     <ReactPlayer
+      controls={controls}
+      muted={controls}
       height="100%"
       key={id}
       width="100%"
@@ -467,7 +528,7 @@ const Player = ({
         position: 'absolute',
         top: 0,
       }}
-      muted={!primed}
+      // muted={!primed}
       {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
     />
   );

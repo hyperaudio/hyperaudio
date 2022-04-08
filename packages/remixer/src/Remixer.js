@@ -119,7 +119,7 @@ const Root = styled('div', {
 }));
 
 const Remixer = props => {
-  const { editable, media, isSingleMedia } = props;
+  const { editable, media, isSingleMedia, onSelectTranslation } = props;
 
   const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
     sources: props.sources,
@@ -200,7 +200,17 @@ const Remixer = props => {
             <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
               {showSource && (
                 <Source
-                  {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, onSourceClose, autoScroll }}
+                  {...{
+                    ...props,
+                    sources,
+                    tabs,
+                    source,
+                    onShowLibrary,
+                    onSourceChange,
+                    onSourceClose,
+                    autoScroll,
+                    onSelectTranslation,
+                  }}
                 />
               )}
               {!isSingleMedia && (
@@ -222,7 +232,18 @@ const Remixer = props => {
           ) : (
             <>
               {showSource && (
-                <Source {...{ ...props, sources, tabs, source, onShowLibrary, onSourceChange, autoScroll }} />
+                <Source
+                  {...{
+                    ...props,
+                    sources,
+                    tabs,
+                    source,
+                    onShowLibrary,
+                    onSourceChange,
+                    autoScroll,
+                    onSelectTranslation,
+                  }}
+                />
               )}
               {!isSingleMedia && (
                 <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
