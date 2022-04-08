@@ -127,7 +127,7 @@ const Root = styled('div', {
   width: '100%',
   [`& .${classes.paneTitle}`]: {
     background: theme.palette.divider,
-    color: theme.palette.primary.main,
+    color: theme.palette.text.primary,
     fontSize: '10px',
     fontWeight: '500',
     padding: theme.spacing(0, 0.5),
@@ -897,65 +897,66 @@ const EditorPage = ({ organisation, user, groups }) => {
         {/* THEATRE
         ------------------------------------
         */}
-        <Container maxWidth={originalId ? 'xl' : 'sm'} sx={{ pb: 2 }}>
+        <Container disableGutters maxWidth={originalId ? 'xl' : 'sm'} sx={{ px: { xs: 0, lg: 3 } }}>
           {media ? (
-            <Box>
+            <Box sx={{ pb: 2 }}>
               <Box
                 sx={{
                   bgcolor: 'black',
-                  borderRadius: 1,
+                  borderRadius: { xs: 0, lg: 1 },
                   display: pip ? 'none' : 'block',
-                  overflow: 'hidden',
+                  mb: 2,
                 }}
               >
-                <ReactPlayer
-                  config={config}
-                  onBuffer={onBuffer}
-                  onBufferEnd={onBufferEnd}
-                  onDisablePIP={onDisablePIP}
-                  onDuration={onDuration}
-                  onEnablePIP={onEnablePIP}
-                  onPlay={play}
-                  onProgress={onProgress}
-                  playing={playing}
-                  progressInterval={100}
-                  ref={video}
-                  url={media.url}
-                  width="100%"
-                />
+                <Container maxWidth="sm">
+                  <ReactPlayer
+                    config={config}
+                    onBuffer={onBuffer}
+                    onBufferEnd={onBufferEnd}
+                    onDisablePIP={onDisablePIP}
+                    onDuration={onDuration}
+                    onEnablePIP={onEnablePIP}
+                    onPlay={play}
+                    onProgress={onProgress}
+                    playing={playing}
+                    progressInterval={100}
+                    ref={video}
+                    url={media.url}
+                    width="100%"
+                  />
+                </Container>
               </Box>
-              <Box sx={{ mt: 2 }}>
-                <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                  <Grid item>
-                    {buffering && seekTime !== time ? (
-                      <IconButton onClick={pause} size="small">
-                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                      </IconButton>
-                    ) : playing ? (
-                      <IconButton onClick={pause} size="small">
-                        <PauseIcon />
-                      </IconButton>
-                    ) : (
-                      <IconButton onClick={play} size="small">
-                        <PlayArrowIcon />
-                      </IconButton>
-                    )}
-                  </Grid>
-                  <Grid container item xs>
-                    <Slider
-                      aria-label="timeline"
-                      defaultValue={0}
-                      max={duration}
-                      min={0}
-                      onChange={handleSliderChange}
-                      size="small"
-                      value={time}
-                      valueLabelDisplay="auto"
-                      valueLabelFormat={timecode}
-                    />
-                  </Grid>
+              <Grid container spacing={2} sx={{ alignItems: 'center' }}>
+                <Grid item>
+                  {buffering && seekTime !== time ? (
+                    <IconButton onClick={pause} size="small">
+                      {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                    </IconButton>
+                  ) : playing ? (
+                    <IconButton onClick={pause} size="small">
+                      <PauseIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={play} size="small">
+                      <PlayArrowIcon />
+                    </IconButton>
+                  )}
                 </Grid>
-              </Box>
+                <Grid container item xs>
+                  <Slider
+                    aria-label="timeline"
+                    defaultValue={0}
+                    max={duration}
+                    min={0}
+                    onChange={handleSliderChange}
+                    size="small"
+                    // color=""
+                    value={time}
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={timecode}
+                  />
+                </Grid>
+              </Grid>
             </Box>
           ) : (
             <Box>
