@@ -142,6 +142,7 @@ export const Transcript = props => {
     externalRange,
     onSourceChange,
     autoScroll,
+    singlePlayer,
   } = props;
   const container = useRef();
 
@@ -270,9 +271,12 @@ export const Transcript = props => {
 
         const time = index > 0 ? block.starts2[index] + offset : offset;
         if (reference.current) {
-          console.log('click SEEK from', reference.current.currentTime, time / 1e3);
-          reference.current.currentTime = time / 1e3;
-          console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
+          // console.log('click SEEK from', reference.current.currentTime, time / 1e3);
+          console.log('Tseek', { reference });
+          if (singlePlayer) {
+            reference.current.seekTo(time / 1e3, 'seconds');
+          } else reference.current.currentTime = time / 1e3;
+          // console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
         }
       } else if (!selection.isCollapsed && editable && isSource) {
         const key = anchorNode?.parentNode?.getAttribute('data-key');
@@ -302,7 +306,7 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks, externalRange, reference, sources],
+    [blocks, externalRange, reference, sources, singlePlayer],
   );
 
   useEffect(() => {

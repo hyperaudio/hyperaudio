@@ -21,6 +21,7 @@ const Source = props => {
   const reference = useRef();
   const players = useRef({});
 
+  const singlePlayer = useMemo(() => media.length === 1, [media]);
   const [time, setTime] = useState(0);
 
   // useEffect(() => {
@@ -41,9 +42,9 @@ const Source = props => {
       ) : (
         <SourceTopbar {...props} />
       )}
-      <Theatre {...{ blocks, media, players, reference, time, setTime }} />
+      <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer }} />
       <div className="transcriptWrap">
-        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true, autoScroll }} />
+        <Transcript {...{ id, blocks, players, reference, time, editable, isSource: true, autoScroll, singlePlayer }} />
       </div>
     </Root>
   );
