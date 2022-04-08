@@ -839,28 +839,30 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         console.log({ title, description });
 
-        const transcript2 = await DataStore.save(
-          new Transcript({
-            title: title.text,
-            description: description.text,
-            language: language,
-            url: transcript.url,
-            media: media.id,
-            status: { label: 'translating' },
-          }),
-        );
+        // const transcript2 = await DataStore.save(
+        //   new Transcript({
+        //     title: title.text,
+        //     description: description.text,
+        //     language: language,
+        //     url: transcript.url,
+        //     media: media.id,
+        //     status: { label: 'translating' },
+        //   }),
+        // );
 
-        await DataStore.save(
-          Transcript.copyOf(transcript2, updated => {
-            updated.status = { label: 'translated' };
-            updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json`;
-          }),
-        );
+        // await DataStore.save(
+        //   Transcript.copyOf(transcript2, updated => {
+        //     updated.status = { label: 'translated' };
+        //     updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json`;
+        //   }),
+        // );
 
-        console.log(transcript2);
+        // console.log(transcript2);
 
         const result = await Storage.put(
-          `transcript/${media.playbackId}/${language}/${transcript2.id}.json`,
+          // `transcript/${media.playbackId}/${language}/${transcript2.id}.json`,
+          `transcript/${media.playbackId}/${language}/test.json`,
+
           JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
           {
             level: 'public',
