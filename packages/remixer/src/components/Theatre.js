@@ -200,6 +200,22 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
   const play = useCallback(() => reference.current?.play(), [reference]);
   const pause = useCallback(() => reference.current?.pause(), [reference]);
 
+  const [firstPlay, setFirstPlay] = useState(true);
+  const handlePlay = useCallback(async () => {
+    setFirstPlay(false);
+    reference.current?.play();
+
+    // if (players.current[active].getInternalPlayer()) {
+    //   players.current[active].getInternalPlayer().muted = false;
+    //   players.current[active].getInternalPlayer().volume = 1;
+    // }
+  }, [players, active, reference, firstPlay]);
+
+  const handlePause = useCallback(() => {
+    reference.current?.pause();
+    players.current?.[active]?.getInternalPlayer()?.pause();
+  }, []);
+
   const handleSliderChange = (event, value) => {
     // setSeekTime(value * 1e3);
     reference.current.currentTime = value;
@@ -317,11 +333,11 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime }
                   {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
                 </IconButton>
               ) : referencePlaying ? (
-                <IconButton onClick={pause} size="small">
+                <IconButton onClick={handlePause} size="small">
                   <PauseIcon />
                 </IconButton>
               ) : (
-                <IconButton onClick={play} size="small">
+                <IconButton onClick={handlePlay} size="small">
                   <PlayArrowIcon />
                 </IconButton>
               )}
@@ -369,6 +385,7 @@ const Player = ({
   // console.log(ref);
   // console.log(ref.current?.getInternalPlayer('hls'));
 
+  const [controls, setControls] = useState(false);
   const [primed, setPrimed] = useState(!MATCH_URL_YOUTUBE.test(url));
   const config = useMemo(
     () => ({
@@ -377,6 +394,7 @@ const Player = ({
           poster,
           preload: 'none',
           playsinline: 'true',
+          // muted: 'true',
         },
         // hlsOptions: {
         //   backBufferLength: 30,
@@ -398,6 +416,7 @@ const Player = ({
 
   const waitForPlayer = useCallback(() => {
     // console.log('MUX?');
+    setControls(!ref.current?.getInternalPlayer('hls'));
     if (ref.current?.getInternalPlayer('hls') && global.MUX_KEY) {
       console.log('MUX ON');
       const initTime = Date.now();
@@ -499,7 +518,8 @@ const Player = ({
 
   return (
     <ReactPlayer
-      // controls
+      controls={controls}
+      muted={controls}
       height="100%"
       key={id}
       width="100%"
@@ -508,7 +528,7 @@ const Player = ({
         position: 'absolute',
         top: 0,
       }}
-      muted={!primed}
+      // muted={!primed}
       {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
     />
   );
