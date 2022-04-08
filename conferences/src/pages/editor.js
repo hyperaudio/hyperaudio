@@ -1061,8 +1061,8 @@ const EditorPage = ({ organisation, user, groups }) => {
               </LoadingButton>
             </Toolbar>
             {media ? (
-              <Box sx={{ p: 2, '& .MuiSlider-root': { color: 'white' } }}>
-                <Container disableGutters maxWidth="xl">
+              <Box sx={{ py: 2, '& .MuiSlider-root': { color: 'white' } }}>
+                <Container maxWidth="xl">
                   <Box sx={{ mb: 2, display: pip ? 'none' : 'block' }}>
                     <ReactPlayer
                       config={config}
