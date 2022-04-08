@@ -106,8 +106,8 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               try {
                 const signedURL = await Storage.get(
                   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
-                    showPreview ? '-preview' : ''
-                  }.json`,
+                    showPreview ? '-preview.json.gz' : '.json.gz'
+                  }`,
                   {
                     level: 'public',
                   },

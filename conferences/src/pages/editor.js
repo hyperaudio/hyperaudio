@@ -15,6 +15,7 @@ import TC from 'smpte-timecode';
 import bs58 from 'bs58';
 import Queue from 'queue-promise';
 import useInterval from 'use-interval';
+import pako from 'pako';
 
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
@@ -106,7 +107,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     if (originalId || !media || !transcripts || !transcript) return;
 
     const original = transcripts.find(t => t.language === media.language);
-    router.push(`/editor?media=${mediaId}&original=${original.id}&transcript=${transcriptId}`);
+    if (original.id !== transcriptId)
+      router.push(`/editor?media=${mediaId}&original=${original.id}&transcript=${transcriptId}`);
   }, [media, transcript, mediaId, transcriptId, originalId, transcripts, router]);
 
   useEffect(() => {
@@ -462,12 +464,18 @@ const EditorPage = ({ organisation, user, groups }) => {
     const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
     unusedSpeakerIds.forEach(id => delete data.speakers[id]);
 
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify(data),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -494,7 +502,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSaved(draft);
   }, [draft, media, transcript, user, plausible]);
 
-  const autoSave = useCallback(async () => {
+  global.autoSave = useCallback(async () => {
     if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
     console.log('autoSaving!');
     const data = { speakers: draft.speakers, blocks: draft.blocks };
@@ -504,12 +512,22 @@ const EditorPage = ({ organisation, user, groups }) => {
     const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
     unusedSpeakerIds.forEach(id => delete data.speakers[id]);
 
+    // https://stackoverflow.com/questions/57225380/browser-javascript-compress-json-to-gzip-and-upload-to-s3-presigned-url
+    // const str = JSON.stringify(data);
+    // const utf8Data = unescape(encodeURIComponent(str));
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json`,
-      JSON.stringify(data),
+      // `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json`,
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -530,12 +548,19 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPreviewingProgress(0);
     setPreviewing(2);
 
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json.gz`,
+      // JSON.stringify(data),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -561,12 +586,19 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishingProgress(0);
     setPublishing(3);
 
+    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
+    const jsonGz = pako.gzip(utf8Data);
+    const blobGz = new Blob([jsonGz]);
+
     const result = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -583,11 +615,13 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     // PUBLISH!
     const result2 = await Storage.put(
-      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`,
-      JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
+      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
+      blobGz,
       {
         level: 'public',
         contentType: 'application/json',
+        contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
@@ -604,7 +638,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
-        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`;
+        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
         updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
       }),
     );
