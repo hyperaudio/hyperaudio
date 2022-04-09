@@ -26,8 +26,8 @@ export const darkPalette = {
   mode: 'dark',
   background: {
     ...mui.palette.background,
-    default: '#F5F5F7',
-    paper: '#fff',
+    default: '#1c1c1c',
+    paper: '#363636',
   },
   text: {
     primary: grey[100],
