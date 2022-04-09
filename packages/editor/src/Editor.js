@@ -165,7 +165,7 @@ const Editor = props => {
   const handleClick = useCallback(
     e => {
       if (!editorState) return;
-      console.log(e.target);
+      // console.log(e.target);
 
       const selectionState = editorState.getSelection();
       if (!selectionState.isCollapsed()) return;
@@ -194,7 +194,7 @@ const Editor = props => {
         setCurrentBlock(null);
 
         let key = selectionState.getAnchorKey();
-        if (rest.readOnly) {
+        if (readOnly) {
           key = e.target.parentElement.parentElement.getAttribute('data-offset-key')?.replace('-0-0', '');
         }
 
@@ -202,7 +202,7 @@ const Editor = props => {
         const block = editorState.getCurrentContent().getBlockForKey(key);
 
         let start = selectionState.getStartOffset();
-        if (rest.readOnly) {
+        if (readOnly) {
           start =
             window.getSelection().anchorOffset +
             (e.target.parentElement?.previousSibling?.textContent.length ?? 0) +
@@ -212,10 +212,11 @@ const Editor = props => {
         const items = block.getData().get('items');
         const item = items?.filter(({ offset }) => offset <= start)?.pop();
 
+        console.log('seekTo', item?.start);
         item?.start && seekTo && seekTo(item.start);
       }
     },
-    [seekTo, editorState, rest, playing, pause],
+    [seekTo, editorState, readOnly, playing, pause],
   );
 
   const handleSpeakerSet = useCallback(
@@ -308,8 +309,8 @@ const Editor = props => {
   const wrapper = useRef();
   const scrollTarget = useRef();
   useEffect(() => {
-    if (!autoScroll || focused) return;
-    // console.log({ autoScroll });
+    if (!autoScroll || (focused && !readOnly)) return;
+    console.log({ autoScroll, readOnly, focused });
 
     const blocks = editorState.getCurrentContent().getBlocksAsArray();
     const block = blocks
@@ -319,12 +320,13 @@ const Editor = props => {
     if (!block) return;
 
     const playhead = wrapper.current?.querySelector(`div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]`);
+    console.log({ block, playhead, readOnly, focused });
 
-    if (playhead && playhead !== scrollTarget.current) {
-      scrollTarget.current = playhead;
-      playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, [autoScroll, wrapper, time, focused]);
+    // see https://bugs.chromium.org/p/chromium/issues/detail?id=833617&q=scrollintoview&can=2
+    if (readOnly) {
+      playhead.scrollIntoView();
+    } else playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [autoScroll, wrapper, time, focused, readOnly]);
 
   return (
     <Root className={`${classes.root} focus-${focused}`} onClick={handleClick} ref={wrapper}>
@@ -463,9 +465,17 @@ const BlockStyle = ({ block, speakers, time }) => {
 
   const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? '', [block, speakers]);
   const start = useMemo(() => block.getData().get('start'), [block]);
+  const end = useMemo(() => block.getData().get('end'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
 
-  return <Style {...{ theme, speaker, tc }} played={time < start} blockKey={block.getKey()} />;
+  return (
+    <Style
+      {...{ theme, speaker, tc }}
+      played={time < start}
+      current={start <= time && time < end}
+      blockKey={block.getKey()}
+    />
+  );
 
   // return (
   //   <style scoped>
@@ -484,11 +494,12 @@ const BlockStyle = ({ block, speakers, time }) => {
   // );
 };
 
-const Style = ({ theme, blockKey, speaker, played, tc }) => (
+const Style = ({ theme, blockKey, speaker, played, current, tc }) => (
   <style scoped>
     {`
       div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
         color: ${played ? theme.palette.text.disabled : theme.palette.common.black};
+        outline: 1px solid ${current ? 'red' : 'transparent'};
       }
       div[data-block='true'][data-offset-key="${blockKey}-0-0"]::before {
         content: '${speaker}';
