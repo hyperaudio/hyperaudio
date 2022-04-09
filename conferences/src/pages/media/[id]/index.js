@@ -11,8 +11,8 @@ import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
 
+import MediaTopbar from '../../../components/media/MediaTopbar';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
-import { QueuePlayNext } from '@mui/icons-material';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -305,17 +305,26 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
       </Head>
       <Root className={classes.root}>
         <div className={classes.push} />
+        {data && data.sources && data.sources.length > 0 && (
+          <MediaTopbar
+            canEdit={groups.includes('Editors')}
+            mediaLabel={label}
+            onSelectTranslation={onSelectTranslation}
+            source={data?.sources[0]}
+          />
+        )}
+
         {data && data.sources && data.sources.length > 0 ? (
           <Remixer
+            autoScroll={true}
+            canEdit={groups.includes('Editors')}
             editable={false}
             isSingleMedia={true}
             media={data.sources}
+            mediaLabel={label}
+            onSelectTranslation={onSelectTranslation}
             remix={null}
             sources={data.sources}
-            autoScroll={true}
-            mediaLabel={label}
-            canEdit={groups.includes('Editors')}
-            onSelectTranslation={onSelectTranslation}
           />
         ) : (
           <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>

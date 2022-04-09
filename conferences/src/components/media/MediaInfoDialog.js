@@ -80,7 +80,7 @@ const Root = styled(Modal, {
   };
 });
 
-export const MediaInfoDialog = props => {
+export default function MediaInfoDialog(props) {
   const { open, onClose, source } = props;
 
   // console.log({ source });
@@ -186,4 +186,4 @@ export const MediaInfoDialog = props => {
       </Fade>
     </Draggable>
   );
-};
+}

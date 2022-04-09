@@ -18,10 +18,9 @@ import ShuffleIcon from '@mui/icons-material/Shuffle';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
-
 import { styled } from '@mui/material/styles';
 
-import { MediaInfoDialog } from '../dialogs';
+import MediaInfoDialog from './MediaInfoDialog';
 
 const PREFIX = 'MediaTopbar';
 const classes = {
@@ -82,7 +81,7 @@ const Root = styled('div', {
   };
 });
 
-export const MediaTopbar = ({ source, mediaLabel, canEdit, onSelectTranslation }) => {
+export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTranslation }) {
   const { transcript } = source;
 
   // console.log({ MediaTopbar: source });
@@ -250,7 +249,7 @@ export const MediaTopbar = ({ source, mediaLabel, canEdit, onSelectTranslation }
       </Menu>
     </>
   );
-};
+}
 
 const TranslationMenuItem = ({ t, onSelectTranslation, translation }) => {
   const onClick = useCallback(() => onSelectTranslation(t), [onSelectTranslation, t]);
