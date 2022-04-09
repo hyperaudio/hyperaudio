@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 
 import { styled } from '@mui/material/styles';
 
-import { SourceTopbar, MediaTopbar, Theatre, Transcript } from './components';
+import { SourceTopbar, Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,

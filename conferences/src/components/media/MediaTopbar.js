@@ -3,9 +3,11 @@ import _ from 'lodash';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import EditIcon from '@mui/icons-material/Edit';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
@@ -15,9 +17,12 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
+import Stack from '@mui/material/Stack';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import TextField from '@mui/material/TextField';
+import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import MediaInfoDialog from './MediaInfoDialog';
@@ -35,49 +40,37 @@ const Root = styled('div', {
   // shouldForwardProp: prop => !['comapct'].includes(prop),
 })(({ theme }) => {
   return {
-    paddingTop: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
     position: 'relative',
-    [theme.breakpoints.up('md')]: {
-      paddingTop: theme.spacing(2),
-    },
     [`& .${classes.core}`]: {
       position: 'relative',
       zIndex: 1,
     },
-    [`& .${classes.sides}`]: {
-      [theme.breakpoints.down('lg')]: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-      },
-    },
-    [`& .${classes.side}`]: {
-      [theme.breakpoints.down('md')]: {
-        marginBottom: theme.spacing(1),
-      },
-      [theme.breakpoints.up('md')]: {
-        position: 'absolute',
-        top: '50%',
-        transform: 'translateY(-50%)',
-      },
-    },
-    [`& .${classes.sideL}`]: {
-      [`& > *`]: {
-        marginRight: theme.spacing(1),
-      },
-      [theme.breakpoints.up('md')]: {
-        left: theme.spacing(2),
-      },
-    },
-    [`& .${classes.sideR}`]: {
-      [`& > *`]: {
-        marginLeft: theme.spacing(1),
-      },
-      [theme.breakpoints.up('md')]: {
-        right: theme.spacing(2),
-      },
-    },
+    // [`& .${classes.side}`]: {
+    //   [theme.breakpoints.down('md')]: {
+    //     marginBottom: theme.spacing(1),
+    //   },
+    //   [theme.breakpoints.up('md')]: {
+    //     position: 'absolute',
+    //     top: '50%',
+    //     transform: 'translateY(-50%)',
+    //   },
+    // },
+    // [`& .${classes.sideL}`]: {
+    //   [`& > *`]: {
+    //     marginRight: theme.spacing(1),
+    //   },
+    //   [theme.breakpoints.up('md')]: {
+    //     left: theme.spacing(2),
+    //   },
+    // },
+    // [`& .${classes.sideR}`]: {
+    //   [`& > *`]: {
+    //     marginLeft: theme.spacing(1),
+    //   },
+    //   [theme.breakpoints.up('md')]: {
+    //     right: theme.spacing(2),
+    //   },
+    // },
   };
 });
 
@@ -125,68 +118,76 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
   return (
     <>
       <Root>
-        <Container className={classes.sides} maxWidth="sm">
-          <div className={`${classes.side} ${classes.sideL}`}>
-            <Tooltip title="Edit transcript">
-              <IconButton onClick={onEdit} disabled={!canEdit}>
-                <EditIcon />
-              </IconButton>
+        <Toolbar maxWidth="sm">
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexGrow: 1 }}>
+            <Tooltip title="Choose translation…">
+              <Button
+                color="inherit"
+                endIcon={<ArrowDropDownIcon />}
+                id="translations-button"
+                onClick={onOpenTranslations}
+                size="small"
+                variant="outlined"
+              >
+                {translation?.name}
+              </Button>
             </Tooltip>
+            <Button size="small" startIcon={<EditIcon />} onClick={onEdit} disabled={!canEdit} color="inherit">
+              Edit
+            </Button>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                alignSelf: 'center',
+                borderColor: 'rgba(255,255,255,0.11)',
+                display: { xs: 'none', md: 'unset' },
+                height: '16px',
+              }}
+            />
             <Tooltip title="Create captions">
-              <IconButton onClick={onCaption} disabled={true}>
-                <SubtitlesIcon />
-              </IconButton>
+              <Box sx={{ display: { xs: 'none', md: 'unset' } }}>
+                <IconButton onClick={onCaption} disabled={true} color="inherit" size="small">
+                  <SubtitlesIcon fontSize="small" />
+                </IconButton>
+              </Box>
             </Tooltip>
-            <Tooltip title="Remix media" disabled={true}>
-              <IconButton onClick={onRemix}>
-                <ShuffleIcon />
-              </IconButton>
+            <Tooltip title="Remix media">
+              <Box sx={{ display: { xs: 'none', md: 'unset' } }}>
+                <IconButton onClick={onRemix} disabled={true} size="small" color="inherit">
+                  <ShuffleIcon fontSize="small" />
+                </IconButton>
+              </Box>
             </Tooltip>
-          </div>
-          <div className={`${classes.side} ${classes.sideR}`}>
-            {mediaLabel ? <span style={{ color: 'red', fontWeight: 'bold' }}>{mediaLabel}</span> : null}
+          </Stack>
+          <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
+            {mediaLabel ? (
+              <>
+                <Typography variant="overline" color="error">
+                  {mediaLabel}
+                </Typography>
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.11)' }}
+                />
+              </>
+            ) : null}
             <Tooltip title="Toggle info">
-              <IconButton onClick={isInfoOpen ? onInfoClose : onInfoOpen}>
-                {isInfoOpen ? <InfoIcon /> : <InfoOutlinedIcon />}
+              <IconButton onClick={isInfoOpen ? onInfoClose : onInfoOpen} color="inherit" size="small">
+                {isInfoOpen ? <InfoIcon fontSize="small" /> : <InfoOutlinedIcon fontSize="small" />}
               </IconButton>
             </Tooltip>
-            <Tooltip title="Export…">
-              <IconButton size="small" id="export-button" onClick={onOpenExport}>
-                <IosShareIcon />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </Container>
-        <Container className={classes.core} maxWidth="sm">
-          <TextField
-            fullWidth
-            id="transcript"
-            placeholder="Give your remix a title…"
-            size="small"
-            disabled
-            value={transcript.title}
-            InputProps={{
-              className: 'MediaTitleField',
-              endAdornment: (
-                <InputAdornment position="end">
-                  <Button
-                    endIcon={<ArrowDropDownIcon />}
-                    id="translations-button"
-                    onClick={onOpenTranslations}
-                    size="small"
-                    sx={{ mr: 1 * -1 }}
-                  >
-                    {translation?.name}
-                  </Button>
-                </InputAdornment>
-              ),
-            }}
-            inputProps={{
-              className: 'MediaTitle',
-              minLength: 1,
-            }}
-          ></TextField>
-        </Container>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.11)' }}
+            />
+            <Button size="small" id="export-button" onClick={onOpenExport} color="inherit" endIcon={<IosShareIcon />}>
+              Export
+            </Button>
+          </Stack>
+        </Toolbar>
       </Root>
       <MediaInfoDialog onClose={onInfoClose} open={isInfoOpen} source={source} />
       <Menu
@@ -203,11 +204,15 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
         }}
         PaperProps={{
           style: {
-            maxHeight: '200px',
+            maxHeight: '300px',
             width: '160px',
           },
         }}
       >
+        <MenuItem onClick={onAddTranslation} disabled={true}>
+          <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+        <Divider />
         {transcript.translations.map(t => {
           // return (
           //   <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onSelectTranslation(t)}>
@@ -216,10 +221,6 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
           // );
           return <TranslationMenuItem key={t.id} {...{ translation, t, onSelectTranslation }} />;
         })}
-        <Divider />
-        <MenuItem onClick={onAddTranslation} disabled={true}>
-          <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
       </Menu>
       <Menu
         anchorEl={exportAnchorEl}

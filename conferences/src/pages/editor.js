@@ -18,9 +18,7 @@ import useInterval from 'use-interval';
 import pako from 'pako';
 
 import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
@@ -28,7 +26,6 @@ import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PreviewIcon from '@mui/icons-material/Preview';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
 import Skeleton from '@mui/material/Skeleton';
@@ -36,11 +33,10 @@ import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import { ThemeProvider } from '@mui/material';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
-import { getTheme } from '@hyperaudio/common';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
@@ -116,7 +112,6 @@ const PREFIX = 'EditorPage';
 const classes = {
   paneTitle: `${PREFIX}-paneTitle`,
   root: `${PREFIX}-root`,
-  slider: `${PREFIX}-slider`,
 };
 
 const Root = styled('div', {
@@ -131,7 +126,6 @@ const Root = styled('div', {
   right: 0,
   top: 0,
   width: '100%',
-  [`& .${classes.slider}`]: {},
   [`& .${classes.paneTitle}`]: {
     background: theme.palette.divider,
     color: theme.palette.text.primary,
@@ -1003,130 +997,129 @@ const EditorPage = ({ organisation, user, groups }) => {
         {/* THEATRE
         ------------------------------------
         */}
-        <ThemeProvider theme={getTheme({ mode: 'dark' })}>
-          <Box
-            sx={{
-              bgcolor: 'black',
-              color: 'white',
-              width: '100%',
-              '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
-            }}
-          >
-            <Toolbar>
-              <Stack direction="row" spacing={1} sx={{ flexGrow: 1 }}>
-                <LoadingButton
-                  color="inherit"
-                  disabled={
-                    !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
-                  }
-                  loading={saving !== 0}
-                  loadingPosition="start"
-                  onClick={handleSave}
-                  startIcon={<SaveIcon fontSize="small" />}
-                >
-                  Save
-                  <Box
-                    component="span"
-                    variant="button"
-                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
-                  >
-                    draft
-                  </Box>
-                </LoadingButton>
-                <LoadingButton
-                  color="inherit"
-                  disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-                  loading={previewing > 0}
-                  loadingPosition="start"
-                  onClick={handlePreview}
-                  startIcon={<PreviewIcon fontSize="small" />}
-                >
-                  Preview
-                  <Box
-                    component="span"
-                    variant="button"
-                    sx={{ display: { xs: 'none', md: 'inline-block' }, ml: '0.44em' }}
-                  >
-                    draft
-                  </Box>
-                </LoadingButton>
-              </Stack>
+        <Box
+          sx={{
+            bgcolor: 'black',
+            color: 'white',
+            width: '100%',
+            '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
+          }}
+        >
+          <Toolbar>
+            <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
               <LoadingButton
                 color="inherit"
-                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
-                endIcon={<PublishIcon fontSize="small" />}
-                loading={publishing !== 0}
-                loadingPosition="end"
-                onClick={handlePublish}
+                disabled={
+                  !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
+                }
+                loading={saving !== 0}
+                loadingPosition="start"
+                onClick={handleSave}
+                startIcon={<SaveIcon fontSize="small" />}
+                size="small"
               >
-                Publish
+                Save
               </LoadingButton>
-            </Toolbar>
-            {media ? (
-              <Box sx={{ py: 2, '& .MuiSlider-root': { color: 'white' } }}>
-                <Container maxWidth="xl">
-                  <Box sx={{ mb: 2, display: pip ? 'none' : 'block' }}>
-                    <ReactPlayer
-                      config={config}
-                      onBuffer={onBuffer}
-                      onBufferEnd={onBufferEnd}
-                      onDisablePIP={onDisablePIP}
-                      onDuration={onDuration}
-                      onEnablePIP={onEnablePIP}
-                      onPlay={play}
-                      onProgress={onProgress}
-                      playing={playing}
-                      progressInterval={100}
-                      ref={video}
-                      url={media.url}
-                      width="100%"
-                    />
-                  </Box>
-                  <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
-                    {buffering && seekTime !== time ? (
-                      <IconButton onClick={pause} color="inherit">
-                        {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                      </IconButton>
-                    ) : playing ? (
-                      <IconButton onClick={pause} color="inherit">
-                        <PauseIcon />
-                      </IconButton>
-                    ) : (
-                      <IconButton onClick={play} color="inherit">
-                        <PlayArrowIcon />
-                      </IconButton>
-                    )}
-                    <Slider
-                      className={classes.slider}
-                      aria-label="timeline"
-                      defaultValue={0}
-                      max={duration}
-                      min={0}
-                      onChange={handleSliderChange}
-                      size="small"
-                      // color=""
-                      value={time}
-                      valueLabelDisplay="auto"
-                      valueLabelFormat={timecode}
-                    />
-                  </Stack>
-                </Container>
-              </Box>
-            ) : (
-              <Box sx={{ pt: 2, pb: 4 }}>
-                <Container maxWidth="sm">
-                  <Skeleton
-                    height="360px"
-                    sx={{ lineHeight: 0, mb: 2.5, borderRadius: 1 }}
-                    variant="rectangular"
+              <LoadingButton
+                color="inherit"
+                disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+                loading={previewing > 0}
+                loadingPosition="start"
+                size="small"
+                onClick={handlePreview}
+                startIcon={<VisibilityIcon fontSize="small" />}
+              >
+                Preview
+              </LoadingButton>
+            </Stack>
+            <LoadingButton
+              color="inherit"
+              disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+              endIcon={<PublishIcon fontSize="small" />}
+              loading={publishing !== 0}
+              loadingPosition="end"
+              onClick={handlePublish}
+              size="small"
+              variant="outlined"
+            >
+              Publish
+            </LoadingButton>
+          </Toolbar>
+
+          {media ? (
+            <Box sx={{ pt: 2, pb: 2 }}>
+              <Container maxWidth="sm">
+                <Box
+                  sx={{
+                    mb: 2,
+                    display: pip ? 'none' : 'block',
+                    position: 'relative',
+                    paddingTop: '56.25%',
+                    '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
+                  }}
+                >
+                  <ReactPlayer
+                    className="reactPlayer"
+                    config={config}
+                    height="100%"
+                    onBuffer={onBuffer}
+                    onBufferEnd={onBufferEnd}
+                    onDisablePIP={onDisablePIP}
+                    onDuration={onDuration}
+                    onEnablePIP={onEnablePIP}
+                    onPlay={play}
+                    onProgress={onProgress}
+                    playing={playing}
+                    progressInterval={100}
+                    ref={video}
+                    style={{ lineHeight: 0 }}
+                    url={media.url}
                     width="100%"
                   />
-                  <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
-                </Container>
-              </Box>
-            )}
-          </Box>
-        </ThemeProvider>
+                </Box>
+                <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
+                  {buffering && seekTime !== time ? (
+                    <IconButton onClick={pause} color="inherit">
+                      {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                    </IconButton>
+                  ) : playing ? (
+                    <IconButton onClick={pause} color="inherit">
+                      <PauseIcon />
+                    </IconButton>
+                  ) : (
+                    <IconButton onClick={play} color="inherit">
+                      <PlayArrowIcon />
+                    </IconButton>
+                  )}
+                  <Slider
+                    aria-label="timeline"
+                    defaultValue={0}
+                    max={duration}
+                    min={0}
+                    onChange={handleSliderChange}
+                    size="small"
+                    sx={{ color: 'white' }}
+                    value={time}
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={timecode}
+                  />
+                </Stack>
+              </Container>
+            </Box>
+          ) : (
+            <Box sx={{ pt: 2, pb: 4 }}>
+              <Container maxWidth="sm">
+                <Skeleton
+                  height="360px"
+                  sx={{ lineHeight: 0, mb: 2.5, borderRadius: 1 }}
+                  variant="rectangular"
+                  width="100%"
+                />
+                <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
+              </Container>
+            </Box>
+          )}
+        </Box>
         {/* TRANSCRIPT
         ------------------------------------
         */}

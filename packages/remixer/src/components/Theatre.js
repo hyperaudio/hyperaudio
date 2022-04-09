@@ -4,46 +4,33 @@ import { createSilentAudio } from 'create-silent-audio';
 import TC from 'smpte-timecode';
 import mux from 'mux-embed';
 
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
-import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
+import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
 const classes = {
   controls: `${PREFIX}-controls`,
-  core: `${PREFIX}-core`,
   effect: `${PREFIX}-effect`,
   player: `${PREFIX}-player`,
+  root: `${PREFIX}-root`,
   stage: `${PREFIX}-stage`,
 };
 
-const Root = styled('div')(({ theme }) => ({
-  paddingBottom: theme.spacing(1),
-  [theme.breakpoints.up('xl')]: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
-  },
-  [`& .${classes.core}`]: {},
+const Root = styled(Box)(({ theme }) => ({
+  background: theme.palette.text.primary,
+  color: theme.palette.primary.contrastText,
   [`& .${classes.stage}`]: {
     position: 'relative',
   },
-  [`& .${classes.player}`]: {
-    maxHeight: '260px',
-    paddingTop: '56.25%' /* Player ratio: 100 / (1280 / 720) */,
-    position: 'relative',
-  },
-  // [`& .${classes.effect}`]: {
-  // },
-  [`& .${classes.controls}`]: {
-    marginBottom: theme.spacing(1),
-    marginTop: theme.spacing(1),
-  },
+  [`& .${classes.controls}`]: {},
 }));
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
@@ -249,42 +236,53 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
   }, [buffering, reference, singlePlayer]);
 
   return (
-    <Root>
-      <Container className={classes.core} maxWidth="sm">
-        <div className={classes.stage}>
-          {!singlePlayer
-            ? media?.map(({ id, url, poster, title }) => (
-                <div key={id} className={classes.player} style={{ display: active === id ? 'block' : 'none' }}>
-                  <Player
-                    key={id}
-                    active={active === id}
-                    time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
-                    // time={(time - (interval?.[0] ?? 0)) / 1e3}
-                    playing={referencePlaying && active === id}
-                    media={{ id, url, poster, title }}
-                    {...{ players, setActive, buffering, setBuffering }}
-                  />
+    <Root
+      className={classes.root}
+      sx={{
+        bgcolor: 'black',
+        color: 'white',
+        width: '100%',
+        '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
+      }}
+    >
+      <Box sx={{ py: 2 }}>
+        <Container maxWidth="sm">
+          <Box sx={{ mb: 2 }}>
+            {!singlePlayer
+              ? media?.map(({ id, url, poster, title }) => (
+                  <div key={id} style={{ display: active === id ? 'block' : 'none' }}>
+                    <Player
+                      key={id}
+                      active={active === id}
+                      time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                      // time={(time - (interval?.[0] ?? 0)) / 1e3}
+                      playing={referencePlaying && active === id}
+                      media={{ id, url, poster, title }}
+                      {...{ players, setActive, buffering, setBuffering }}
+                    />
+                  </div>
+                ))
+              : null}
+
+            {singlePlayer ? (
+              <div style={{ display: 'block' }}>
+                <SinglePlayer
+                  media={media[0]}
+                  {...{ buffering, setBuffering, onPlay, onPause, setTime }}
+                  playing={referencePlaying}
+                  ref={reference}
+                  singlePlayerOffset={singlePlayerOffset}
+                />
+              </div>
+            ) : null}
+
+            {insert && insert.type === 'title' && (
+              <>
+                <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>
+                  {insert.text}
                 </div>
-              ))
-            : null}
-
-          {singlePlayer ? (
-            <div className={classes.player} style={{ display: 'block' }}>
-              <SinglePlayer
-                media={media[0]}
-                {...{ buffering, setBuffering, onPlay, onPause, setTime }}
-                playing={referencePlaying}
-                ref={reference}
-                singlePlayerOffset={singlePlayerOffset}
-              />
-            </div>
-          ) : null}
-
-          {insert && insert.type === 'title' && (
-            <>
-              <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
-              <style scoped>
-                {`
+                <style scoped>
+                  {`
                 .insertTitle {
                   pointer-events: none;
                   position: absolute;
@@ -312,15 +310,15 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-              </style>
-            </>
-          )}
+                </style>
+              </>
+            )}
 
-          {insert && insert.type === 'transition' && (
-            <>
-              <div className="insertTransition"></div>
-              <style scoped>
-                {`
+            {insert && insert.type === 'transition' && (
+              <>
+                <div className="insertTransition"></div>
+                <style scoped>
+                  {`
                 .insertTransition {
                   pointer-events: none;
                   position: absolute;
@@ -350,54 +348,50 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-              </style>
-            </>
-          )}
-        </div>
-        <div className={classes.controls}>
-          <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-            <Grid item>
-              {buffering && seekTime !== time ? (
-                <IconButton onClick={handlePause} size="small">
-                  {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                </IconButton>
-              ) : referencePlaying ? (
-                <IconButton onClick={handlePause} size="small">
-                  <PauseIcon />
-                </IconButton>
-              ) : (
-                <IconButton onClick={handlePlay} size="small">
-                  <PlayArrowIcon />
-                </IconButton>
-              )}
-            </Grid>
-            <Grid container item xs>
-              <Slider
-                aria-label="timeline"
-                defaultValue={0}
-                max={duration / 1e3}
-                min={0}
-                onChange={handleSliderChange}
-                size="small"
-                value={time / 1e3}
-                valueLabelDisplay="auto"
-                valueLabelFormat={timecode}
-              />
-            </Grid>
-          </Grid>
-          {!singlePlayer ? (
-            <audio
-              controls
-              muted
-              // @ts-ignore
-              ref={reference}
-              onPlay={onPlay}
-              onPause={onPause}
-              style={{ display: 'none' }}
+                </style>
+              </>
+            )}
+          </Box>
+          <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
+            {buffering && seekTime !== time ? (
+              <IconButton onClick={handlePause} color="inherit">
+                {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+              </IconButton>
+            ) : referencePlaying ? (
+              <IconButton onClick={handlePause} color="inherit">
+                <PauseIcon />
+              </IconButton>
+            ) : (
+              <IconButton onClick={handlePlay} color="inherit">
+                <PlayArrowIcon />
+              </IconButton>
+            )}
+            <Slider
+              aria-label="timeline"
+              defaultValue={0}
+              max={duration / 1e3}
+              min={0}
+              onChange={handleSliderChange}
+              size="small"
+              sx={{ color: 'white' }}
+              value={time / 1e3}
+              valueLabelDisplay="auto"
+              valueLabelFormat={timecode}
             />
-          ) : null}
-        </div>
-      </Container>
+          </Stack>
+        </Container>
+      </Box>
+      {!singlePlayer ? (
+        <audio
+          controls
+          muted
+          // @ts-ignore
+          ref={reference}
+          onPlay={onPlay}
+          onPause={onPause}
+          style={{ display: 'none' }}
+        />
+      ) : null}
     </Root>
   );
 };
@@ -548,20 +542,24 @@ const Player = ({
   }, [id, setBuffering]);
 
   return (
-    <ReactPlayer
-      controls={controls}
-      muted={controls}
-      height="100%"
-      key={id}
-      width="100%"
-      style={{
-        left: 0,
-        position: 'absolute',
-        top: 0,
+    <Box
+      sx={{
+        position: 'relative',
+        paddingTop: '56.25%',
+        '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
       }}
-      // muted={!primed}
-      {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
-    />
+    >
+      <ReactPlayer
+        {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
+        className="reactPlayer"
+        controls={controls}
+        height="100%"
+        key={id}
+        muted={controls}
+        width="100%"
+        // muted={!primed}
+      />
+    </Box>
   );
 };
 
@@ -668,20 +666,24 @@ const SinglePlayer = React.forwardRef(
     );
 
     return (
-      <ReactPlayer
-        // controls={controls}
-        // muted={controls}
-        height="100%"
-        key={id}
-        width="100%"
-        style={{
-          left: 0,
-          position: 'absolute',
-          top: 0,
+      <Box
+        sx={{
+          position: 'relative',
+          paddingTop: '56.25%',
+          '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
         }}
-        ref={ref}
-        {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
-      />
+      >
+        <ReactPlayer
+          {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
+          className="reactPlayer"
+          // controls={controls}
+          // muted={controls}
+          key={id}
+          width="100%"
+          height="100%"
+          ref={ref}
+        />
+      </Box>
     );
   },
 );
