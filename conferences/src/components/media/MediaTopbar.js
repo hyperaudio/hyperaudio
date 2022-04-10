@@ -101,7 +101,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
   const onCaption = () => console.log('onCaption');
   const onEdit = useCallback(
     () => global.router.push(`/editor?media=${source.media[0].mediaId}&transcript=${source.id}`),
-    [],
+    [source],
   );
   const onInfoClose = () => setIsInfoOpen(false);
   const onInfoOpen = () => setIsInfoOpen(true);
