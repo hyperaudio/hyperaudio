@@ -254,23 +254,23 @@ const App = props => {
               </Alert>
             ) : null}
             <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
-            <Tooltip title="Visit Hyperaudio" placement="top">
-              <Fab
-                color="primary"
-                href="https://hyper.audio"
-                sx={{
-                  bottom: { xs: 30, md: 40, lg: 50 },
-                  display: { xs: 'none', md: 'inline-flex' },
-                  position: 'fixed',
-                  right: { xs: 30, md: 40, lg: 50 },
-                }}
-                target="_blank"
-              >
-                <HyperaudioIcon />
-              </Fab>
-            </Tooltip>
             {user === null && (
               <>
+                <Tooltip title="Visit Hyperaudio" placement="top">
+                  <Fab
+                    color="primary"
+                    href="https://hyper.audio"
+                    sx={{
+                      bottom: { xs: 30, md: 40, lg: 50 },
+                      display: { xs: 'none', md: 'inline-flex' },
+                      position: 'fixed',
+                      right: { xs: 30, md: 40, lg: 50 },
+                    }}
+                    target="_blank"
+                  >
+                    <HyperaudioIcon />
+                  </Fab>
+                </Tooltip>
                 <Slide appear={false} direction="up" in={!trigger}>
                   <Box className={classes.foot} sx={{ left: 0, borderWidth: '1px 1px 0 0' }}>
                     <Stack direction="row" spacing={1}>
