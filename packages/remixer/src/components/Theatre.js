@@ -13,6 +13,7 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 const PREFIX = 'Theatre';
@@ -20,6 +21,7 @@ const classes = {
   controls: `${PREFIX}-controls`,
   effect: `${PREFIX}-effect`,
   player: `${PREFIX}-player`,
+  posterTitle: `${PREFIX}-posterTitle`,
   root: `${PREFIX}-root`,
   stage: `${PREFIX}-stage`,
 };
@@ -31,6 +33,25 @@ const Root = styled(Box)(({ theme }) => ({
     position: 'relative',
   },
   [`& .${classes.controls}`]: {},
+  [`& .${classes.posterTitle}`]: {
+    background: `linear-gradient(to bottom, rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.88) 100%)`,
+    bottom: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    left: 0,
+    padding: theme.spacing(2),
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    transition: `opacity ${theme.transitions.duration.standard}ms`,
+    // h2: {
+    //   maxWidth: '66%',
+    // },
+    span: {
+      borderBottom: `2px solid ${theme.palette.primary.main}`,
+    },
+  },
 }));
 
 // https://github.com/cookpete/react-player/blob/master/src/patterns.js
@@ -683,6 +704,13 @@ const SinglePlayer = React.forwardRef(
           height="100%"
           ref={ref}
         />
+        {title && (
+          <Box className={classes.posterTitle} sx={{ opacity: playing ? 0 : 1 }}>
+            <Typography component="h2" variant="h6">
+              <span>{title}</span>
+            </Typography>
+          </Box>
+        )}
       </Box>
     );
   },
