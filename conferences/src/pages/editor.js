@@ -15,8 +15,11 @@ import Queue from 'queue-promise';
 import useInterval from 'use-interval';
 import pako from 'pako';
 
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
@@ -36,6 +39,7 @@ import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 
+import Link from '../components/MuiNextLink';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
 // function CircularProgressWithLabel(props) {
@@ -1003,6 +1007,25 @@ const EditorPage = ({ organisation, user, groups }) => {
         >
           <Toolbar>
             <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
+              <Button
+                color="inherit"
+                component={Link}
+                href={`/media/${media?.id}?language=${transcript?.language}`}
+                size="small"
+                startIcon={<ArrowBackIcon />}
+              >
+                Back
+              </Button>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{
+                  alignSelf: 'center',
+                  borderColor: 'rgba(255,255,255,0.11)',
+                  display: { xs: 'none', md: 'unset' },
+                  height: '16px',
+                }}
+              />
               <LoadingButton
                 color="inherit"
                 disabled={
