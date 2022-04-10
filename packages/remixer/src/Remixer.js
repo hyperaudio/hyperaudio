@@ -43,9 +43,9 @@ const Root = styled('div', {
     justifyContent: 'flex-start',
     maxWidth: isSingleMedia ? 'auto' : '50%',
     position: 'relative',
-    [`&.RemixerPane--Source`]: {
-      borderRight: `1px solid ${theme.palette.divider}`,
-    },
+    // [`&.RemixerPane--Source`]: {
+    //   borderRight: `1px solid ${theme.palette.divider}`,
+    // },
     [`&.RemixerPane--Remix`]: {
       flexBasis: showSource ? '50%' : '100%',
       maxWidth: showSource ? '50%' : 'none',

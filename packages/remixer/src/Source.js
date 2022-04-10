@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react'
 
 import { styled } from '@mui/material/styles';
 
-import { SourceTopbar, MediaTopbar, Theatre, Transcript } from './components';
+import { SourceTopbar, Theatre, Transcript } from './components';
 
 const Root = styled('div')(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -34,16 +34,7 @@ const Source = props => {
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
-      {isSingleMedia ? (
-        <MediaTopbar
-          source={props.source}
-          mediaLabel={props.mediaLabel}
-          canEdit={props.canEdit}
-          onSelectTranslation={onSelectTranslation}
-        />
-      ) : (
-        <SourceTopbar {...props} />
-      )}
+      {/* {!isSingleMedia && <SourceTopbar {...props} />} */}
       <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
       <div className="transcriptWrap">
         <Transcript

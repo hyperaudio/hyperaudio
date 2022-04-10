@@ -7,12 +7,14 @@ import { useRouter } from 'next/router';
 import { diff, addedDiff, deletedDiff, updatedDiff, detailedDiff } from 'deep-object-diff';
 import ISO6391 from 'iso-639-1';
 
+import Toolbar from '@mui/material/Toolbar';
+import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
 
+import MediaTopbar from '../../../components/media/MediaTopbar';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
-import { QueuePlayNext } from '@mui/icons-material';
 
 const PREFIX = 'MediaPage';
 const classes = {
@@ -30,9 +32,6 @@ const Root = styled('div', {
   position: 'fixed',
   right: 0,
   top: 0,
-  [`& .${classes.push}`]: {
-    ...theme.mixins.toolbar,
-  },
 }));
 
 const getMedia = async (setMedia, id) => {
@@ -304,18 +303,35 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <div className={classes.push} />
+        <Toolbar />
+        {data && data.sources && data.sources.length > 0 && (
+          <Box
+            sx={{
+              bgcolor: 'black',
+              color: 'white',
+              width: '100%',
+              '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
+            }}
+          >
+            <MediaTopbar
+              canEdit={groups.includes('Editors')}
+              mediaLabel={label}
+              onSelectTranslation={onSelectTranslation}
+              source={data?.sources[0]}
+            />
+          </Box>
+        )}
         {data && data.sources && data.sources.length > 0 ? (
           <Remixer
+            autoScroll={true}
+            canEdit={groups.includes('Editors')}
             editable={false}
             isSingleMedia={true}
             media={data.sources}
+            mediaLabel={label}
+            onSelectTranslation={onSelectTranslation}
             remix={null}
             sources={data.sources}
-            autoScroll={true}
-            mediaLabel={label}
-            canEdit={groups.includes('Editors')}
-            onSelectTranslation={onSelectTranslation}
           />
         ) : (
           <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
