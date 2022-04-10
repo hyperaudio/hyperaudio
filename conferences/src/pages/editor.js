@@ -44,6 +44,7 @@ import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 
+import NewTranslation from '../components/editor/NewTranslation';
 import Link from '../components/MuiNextLink';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
@@ -176,15 +177,16 @@ const EditorPage = ({ organisation, user, groups }) => {
     }
   }, [user, mediaId, transcriptId, originalId, router]);
 
-  const [time, setTime] = useState(0);
-  const [media, setMedia] = useState();
-  const [transcripts, setTranscripts] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [originalProgress, setOriginalProgress] = useState(0);
   const [data, setData] = useState();
-  const [originalData, setOriginalData] = useState();
   const [error, setError] = useState();
   const [langAnchorEl, setLangAnchorEl] = useState(null);
+  const [langDialog, setLangDialog] = useState(false);
+  const [media, setMedia] = useState();
+  const [originalData, setOriginalData] = useState();
+  const [originalProgress, setOriginalProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [time, setTime] = useState(0);
+  const [transcripts, setTranscripts] = useState([]);
 
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
   const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
@@ -993,6 +995,11 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   console.log('elko', { media, transcript, transcripts });
 
+  const onNewTranslation = () => {
+    setLangDialog(true);
+    setLangAnchorEl(null);
+  };
+
   return user ? (
     <>
       <Head>
@@ -1320,7 +1327,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={() => console.log('hello')}>
+        <MenuItem onClick={onNewTranslation}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
@@ -1345,6 +1352,9 @@ const EditorPage = ({ organisation, user, groups }) => {
           }
         })}
       </Menu>
+      {langDialog && (
+        <NewTranslation onClose={() => setLangDialog(false)} open={langDialog} onSubmit={lang => console.log(lang)} />
+      )}
     </>
   ) : null;
 };
