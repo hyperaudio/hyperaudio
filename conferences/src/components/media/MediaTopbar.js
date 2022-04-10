@@ -126,17 +126,17 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 {translation?.name}
               </Button>
             </Tooltip>
-            <Button
-              size="small"
-              component={Link}
-              startIcon={<EditIcon />}
-              // onClick={onEdit}
-              disabled={!canEdit}
-              color="inherit"
-              href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
-            >
-              Edit
-            </Button>
+            {canEdit && (
+              <Button
+                size="small"
+                component={Link}
+                startIcon={<EditIcon />}
+                color="inherit"
+                href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
+              >
+                Edit
+              </Button>
+            )}
             {/* <Divider
               orientation="vertical"
               flexItem
