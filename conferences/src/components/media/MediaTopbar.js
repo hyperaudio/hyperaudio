@@ -114,10 +114,11 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
       <Root>
         <Toolbar maxWidth="sm">
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexGrow: 1 }}>
-            {transcript?.translations?.length > 1 && (
-              <Tooltip title="Choose translation…">
+            <Tooltip title="Choose translation…">
+              <span>
                 <Button
                   color="inherit"
+                  disabled={transcript?.translations?.length <= 1}
                   endIcon={<ArrowDropDownIcon />}
                   id="translations-button"
                   onClick={onOpenTranslations}
@@ -126,8 +127,8 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 >
                   {translation?.name}
                 </Button>
-              </Tooltip>
-            )}
+              </span>
+            </Tooltip>
             {canEdit && (
               <Button
                 size="small"
