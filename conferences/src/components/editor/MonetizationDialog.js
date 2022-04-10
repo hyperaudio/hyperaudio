@@ -4,14 +4,11 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -23,12 +20,16 @@ const classes = {
   cell: `${PREFIX}-cell`,
   label: `${PREFIX}-label`,
   input: `${PREFIX}-input`,
+  field: `${PREFIX}-field`,
   root: `${PREFIX}-root`,
 };
 
 const Root = styled(Dialog, {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
+  [`& .${classes.field}`]: {
+    '& .MuiFilledInput-root': { borderRadius: '0' },
+  },
   [`& .${classes.input}`]: {
     ...theme.typography.body2,
     padding: theme.spacing(2),
@@ -59,7 +60,7 @@ export default function MonetizationDialog(props) {
   return (
     <Root
       className={classes.root}
-      maxWidth="sm"
+      maxWidth="xs"
       onClose={onClose}
       open={open}
       sx={{ '& .MuiDialog-paper': { width: '80%', height: 435, p: 0 } }}
@@ -74,12 +75,13 @@ export default function MonetizationDialog(props) {
           <TableBody>
             {Object.keys(speakers).map(speaker => (
               <TableRow key={speaker} sx={{ py: 1 }}>
-                <TableCell sx={{ width: 0 }}>
+                <TableCell sx={{ p: 0 }} sx={{ width: 0 }}>
                   <Typography variant="body2">{speakers[speaker]?.name}</Typography>
                 </TableCell>
-                <TableCell>
+                <TableCell sx={{ p: 0 }}>
                   <TextField
                     InputLabelProps={{ className: classes.label }}
+                    className={classes.field}
                     fullWidth
                     inputProps={{ className: classes.input }}
                     onChange={e => onPaymentPointerChange(speaker, e.target.value)}
