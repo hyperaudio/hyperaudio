@@ -1,0 +1,116 @@
+import React from 'react';
+
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Stack from '@mui/material/Stack';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { deepPurple } from '@mui/material/colors';
+import { styled } from '@mui/material/styles';
+
+const PREFIX = 'EditorPage';
+const classes = {
+  cell: `${PREFIX}-cell`,
+  label: `${PREFIX}-label`,
+  input: `${PREFIX}-input`,
+  root: `${PREFIX}-root`,
+};
+
+const Root = styled(Dialog, {
+  // shouldForwardProp: (prop: any) => prop !== 'isActive',
+})(({ theme }) => ({
+  [`& .${classes.input}`]: {
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+  },
+  [`& .${classes.label}`]: {
+    '&.MuiInputLabel-filled': {
+      padding: theme.spacing(0.75, 0),
+    },
+  },
+}));
+
+const filterLanguages = (arr, str) => {
+  // function to filter through arr and return only the languages that match str
+  return arr.filter(lang => lang.name.toLowerCase().includes(str.toLowerCase()));
+};
+
+export default function MonetizationDialog(props) {
+  const { onClose, onSubmit, open, speakers } = props;
+  const [monetization, setMonetization] = React.useState({});
+
+  const onPaymentPointerChange = (speaker, pointer) => {
+    setMonetization(prevState => ({
+      ...prevState,
+      [speaker]: pointer,
+    }));
+  };
+
+  return (
+    <Root
+      className={classes.root}
+      maxWidth="sm"
+      onClose={onClose}
+      open={open}
+      sx={{ '& .MuiDialog-paper': { width: '80%', height: 435, p: 0 } }}
+    >
+      <Box sx={{ p: 3 }}>
+        <Typography variant="h6" component="h2">
+          Assign payment pointers
+        </Typography>
+      </Box>
+      <DialogContent dividers sx={{ p: 0 }}>
+        <Table>
+          <TableBody>
+            {Object.keys(speakers).map(speaker => (
+              <TableRow key={speaker} sx={{ py: 1 }}>
+                <TableCell sx={{ width: 0 }}>
+                  <Typography variant="body2">{speakers[speaker]?.name}</Typography>
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    InputLabelProps={{ className: classes.label }}
+                    fullWidth
+                    inputProps={{ className: classes.input }}
+                    onChange={e => onPaymentPointerChange(speaker, e.target.value)}
+                    placeholder="Add payment pointer…"
+                    size="small"
+                    value={monetization[speaker]}
+                    variant="filled"
+                    sx={
+                      monetization[speaker]?.length > 0
+                        ? { '& .MuiFilledInput-root': { background: deepPurple[50] } }
+                        : null
+                    }
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </DialogContent>
+      <Box sx={{ p: 3 }}>
+        <Stack direction="row">
+          <Box sx={{ flexGrow: 1 }}>
+            <Button size="small" onClick={onClose}>
+              Cancel
+            </Button>
+          </Box>
+          <LoadingButton variant="contained" onClick={() => onSubmit(monetization)}>
+            Save
+          </LoadingButton>
+        </Stack>
+      </Box>
+    </Root>
+  );
+}
