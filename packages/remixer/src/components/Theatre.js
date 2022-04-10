@@ -52,6 +52,11 @@ const MATCH_URL_YOUTUBE =
 // const MATCH_URL_VIMEO = /vimeo\.com\/.+/;
 
 // https://gist.github.com/ktcy/1e981cfee7a309beebb33cdab1e29715
+/**
+ * It creates a WAV file with the given number of seconds of silence
+ * @param [seconds=1] - The length of the silence in seconds.
+ * @returns A URL to a blob of audio data.
+ */
 function createSilence(seconds = 1) {
   const sampleRate = 8000;
   const numChannels = 1;
