@@ -227,7 +227,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
       try {
         const signedURL = await Storage.get(
-          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
           {
             level: 'public',
           },
@@ -306,9 +306,12 @@ const EditorPage = ({ organisation, user, groups }) => {
       let blocks;
 
       try {
-        const signedURL = await Storage.get(`transcript/${media.playbackId}/${original.language}/${original.id}.json`, {
-          level: 'public',
-        });
+        const signedURL = await Storage.get(
+          `transcript/${media.playbackId}/${original.language}/${original.id}.json.gz`,
+          {
+            level: 'public',
+          },
+        );
 
         const result = (
           await axios.get(signedURL, {
@@ -767,7 +770,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       }),
     );
 
-    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`, {
+    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`, {
       level: 'public',
     });
   }, [media, transcript]);
