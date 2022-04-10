@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -41,12 +41,12 @@ const filterLanguages = (arr, str) => {
 };
 
 export default function NewTranslation(props) {
-  const { onClose, onSubmit, open } = props;
-  const [query, setQuery] = React.useState('');
-  const [language, setLanguage] = React.useState();
-  const [languages, setLanguages] = React.useState(allLanguages);
+  const { onClose, onSubmit, open, progress } = props;
+  const [query, setQuery] = useState('');
+  const [language, setLanguage] = useState();
+  const [languages, setLanguages] = useState(allLanguages);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const newLanguages = filterLanguages(allLanguages, query);
     setLanguages(newLanguages);
   }, [query]);
@@ -113,8 +113,12 @@ export default function NewTranslation(props) {
               Cancel
             </Button>
           </Box>
-          <LoadingButton disabled={!language} variant="contained" onClick={() => onSubmit(language)}>
-            Translate
+          <LoadingButton
+            disabled={!language || (progress > 0 && progress < 100)}
+            variant="contained"
+            onClick={() => onSubmit(language)}
+          >
+            Translate {progress}%
           </LoadingButton>
         </Stack>
       </Box>

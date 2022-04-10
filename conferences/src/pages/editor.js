@@ -1001,6 +1001,17 @@ const EditorPage = ({ organisation, user, groups }) => {
     setLangAnchorEl(null);
   };
 
+  const [translationProgress, setTranslationProgress] = useState(0);
+  const createTranslation = useCallback(lang => {
+    console.log(lang);
+    setTranslationProgress(10);
+    setTimeout(() => setTranslationProgress(50), 5000);
+    setTimeout(() => setTranslationProgress(100), 10000);
+  }, []);
+
+  // temporary
+  const showTranslate = useMemo(() => global.location && global.location.hostname === 'localhost', []);
+
   return user ? (
     <>
       <Head>
@@ -1329,7 +1340,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={onNewTranslation} disabled={true}>
+        <MenuItem onClick={onNewTranslation} disabled={!showTranslate}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
@@ -1355,7 +1366,12 @@ const EditorPage = ({ organisation, user, groups }) => {
         })}
       </Menu>
       {langDialog && (
-        <NewTranslation onClose={() => setLangDialog(false)} open={langDialog} onSubmit={lang => console.log(lang)} />
+        <NewTranslation
+          onClose={() => setLangDialog(false)}
+          open={langDialog}
+          onSubmit={createTranslation}
+          progress={translationProgress}
+        />
       )}
     </>
   ) : null;
