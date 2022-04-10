@@ -56,7 +56,9 @@
     "bs58": "5.0.0",
     "draft-js": "0.11.7",
     "immutable": "~3.7.4",
+    "interval-operations": "1.0.7",
     "smpte-timecode": "1.2.3",
+    "ua-parser-js": "1.0.2",
     "use-debounce": "7.0.1"
   }
 }

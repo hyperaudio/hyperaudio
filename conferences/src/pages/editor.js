@@ -5,8 +5,6 @@ import React, { useMemo, useState, useEffect, useCallback, useRef, useLayoutEffe
 import ReactPlayer from 'react-player';
 import axios from 'axios';
 import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
-import { createSilentAudio } from 'create-silent-audio';
-import { isArray } from 'lodash';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
@@ -976,8 +974,6 @@ const EditorPage = ({ organisation, user, groups }) => {
   const div = useRef();
   const [top, setTop] = useState(500);
 
-  // console.log({ transcript });
-
   useLayoutEffect(() => {
     // console.log('useLayoutEffect');
     const value = div.current?.getBoundingClientRect().top ?? 500;
@@ -1155,7 +1151,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                     },
                   }}
                 >
-                  <Container maxWidth="sm">
+                  <Container maxWidth="sm" className="Left">
                     {originalState ? (
                       <Editor
                         time={time}
@@ -1207,7 +1203,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                     width: '100%',
                   }}
                 >
-                  <Container maxWidth="sm">
+                  <Container maxWidth="sm" className="Right">
                     {initialState ? (
                       <Editor
                         time={time}

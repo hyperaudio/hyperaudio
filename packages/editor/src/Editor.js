@@ -4,6 +4,8 @@ import TC from 'smpte-timecode';
 import { alignSTT, alignSTTwithPadding } from '@bbc/stt-align-node';
 import bs58 from 'bs58';
 import { useDebounce } from 'use-debounce';
+import { intersection, arrayIntersection } from 'interval-operations';
+import UAParser from 'ua-parser-js';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
@@ -17,7 +19,6 @@ import { styled, useTheme } from '@mui/material/styles';
 
 import PlayheadDecorator from './PlayheadDecorator';
 import reducer from './reducer';
-import { red } from '@mui/material/colors';
 
 const filter = createFilterOptions();
 
@@ -102,6 +103,8 @@ const Editor = props => {
     playing,
     pause,
     readOnly,
+    // activeInterval,
+    // setActiveInterval,
     ...rest
   } = props;
 
@@ -219,6 +222,24 @@ const Editor = props => {
     [seekTo, editorState, readOnly, playing, pause],
   );
 
+  // const handleMouseMove = useCallback(
+  //   ({ target }) => {
+  //     if (readOnly) return;
+  //     console.log(target);
+  //     let parent = target;
+  //     if (parent.tagName === 'SPAN') parent = parent.parentElement;
+  //     if (parent.tagName === 'SPAN') parent = parent.parentElement;
+  //     if (parent.tagName !== 'DIV') return;
+
+  //     const key = parent.getAttribute('data-offset-key')?.replace('-0-0', '');
+  //     const data = editorState.getCurrentContent().getBlockForKey(key)?.getData().toJS();
+  //     if (!data) return;
+
+  //     setActiveInterval && setActiveInterval([data.start, data.end]);
+  //   },
+  //   [editorState, setActiveInterval, readOnly],
+  // );
+
   const handleSpeakerSet = useCallback(
     (e, newValue) => {
       e.preventDefault();
@@ -306,11 +327,15 @@ const Editor = props => {
     [editorState],
   );
 
+  const engine = useMemo(() => {
+    const parser = new UAParser();
+    parser.setUA(global.navigator?.userAgent);
+    return parser.getResult()?.engine?.name;
+  }, []);
+
   const wrapper = useRef();
-  const scrollTarget = useRef();
   useEffect(() => {
     if (!autoScroll || (focused && !readOnly)) return;
-    console.log({ autoScroll, readOnly, focused });
 
     const blocks = editorState.getCurrentContent().getBlocksAsArray();
     const block = blocks
@@ -320,16 +345,20 @@ const Editor = props => {
     if (!block) return;
 
     const playhead = wrapper.current?.querySelector(`div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]`);
-    console.log({ block, playhead, readOnly, focused });
 
     // see https://bugs.chromium.org/p/chromium/issues/detail?id=833617&q=scrollintoview&can=2
-    if (readOnly) {
+    if (readOnly && engine === 'Blink') {
       playhead.scrollIntoView();
     } else playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, [autoScroll, wrapper, time, focused, readOnly]);
 
   return (
-    <Root className={`${classes.root} focus-${focused}`} onClick={handleClick} ref={wrapper}>
+    <Root
+      className={`${classes.root} focus-${focused}`}
+      onClick={handleClick}
+      // onMouseMove={handleMouseMove}
+      ref={wrapper}
+    >
       <DraftEditor
         {...{ editorState, onChange, onFocus, onBlur, readOnly, ...rest }}
         handleDrop={() => true}
@@ -460,13 +489,14 @@ const Editor = props => {
   );
 };
 
-const BlockStyle = ({ block, speakers, time }) => {
+const BlockStyle = ({ block, speakers, time, activeInterval }) => {
   const theme = useTheme();
 
   const speaker = useMemo(() => speakers?.[block.getData().get('speaker')]?.name ?? '', [block, speakers]);
   const start = useMemo(() => block.getData().get('start'), [block]);
   const end = useMemo(() => block.getData().get('end'), [block]);
   const tc = useMemo(() => timecode(start), [start]);
+  // const intersects = useMemo(() => intersection([start, end], activeInterval), [start, end, activeInterval]);
 
   return (
     <Style
@@ -474,32 +504,23 @@ const BlockStyle = ({ block, speakers, time }) => {
       played={time < start}
       current={start <= time && time < end}
       blockKey={block.getKey()}
+      intersects={false}
     />
   );
-
-  // return (
-  //   <style scoped>
-  //     {`
-  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"] {
-  //         color: ${time < start ? theme.palette.text.disabled : theme.palette.common.black};
-  //       }
-  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::before {
-  //         content: '${speaker}';
-  //       }
-  //       div[data-block='true'][data-offset-key="${block.getKey()}-0-0"]::after {
-  //         content: '${tc}';
-  //       }
-  //     `}
-  //   </style>
-  // );
 };
 
-const Style = ({ theme, blockKey, speaker, played, current, tc }) => (
+const Style = ({ theme, blockKey, speaker, played, current, tc, intersects }) => (
   <style scoped>
     {`
       div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
         color: ${played ? theme.palette.text.disabled : theme.palette.common.black};
-        outline: 1px solid ${current ? 'red' : 'transparent'};
+        border-radius: 10px;
+      }
+      .Right div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
+        background-color: ${current ? 'white' : 'inherit'};
+      }
+      .Left div[data-block='true'][data-offset-key="${blockKey}-0-0"] {
+        background-color: ${current ? '#F5F5F7' : 'inherit'};
       }
       div[data-block='true'][data-offset-key="${blockKey}-0-0"]::before {
         content: '${speaker}';
@@ -541,5 +562,4 @@ const wordAligner = (words, text, start, end, callback) => {
 };
 
 export default Editor;
-
-// TODO, oe-like paste join paras
+//
