@@ -230,7 +230,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
       try {
         const signedURL = await Storage.get(
-          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`,
+          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
           {
             level: 'public',
           },
@@ -309,9 +309,12 @@ const EditorPage = ({ organisation, user, groups }) => {
       let blocks;
 
       try {
-        const signedURL = await Storage.get(`transcript/${media.playbackId}/${original.language}/${original.id}.json`, {
-          level: 'public',
-        });
+        const signedURL = await Storage.get(
+          `transcript/${media.playbackId}/${original.language}/${original.id}.json.gz`,
+          {
+            level: 'public',
+          },
+        );
 
         const result = (
           await axios.get(signedURL, {
@@ -770,7 +773,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       }),
     );
 
-    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json`, {
+    await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`, {
       level: 'public',
     });
   }, [media, transcript]);
@@ -1000,6 +1003,17 @@ const EditorPage = ({ organisation, user, groups }) => {
     setLangDialog(true);
     setLangAnchorEl(null);
   };
+
+  const [translationProgress, setTranslationProgress] = useState(0);
+  const createTranslation = useCallback(lang => {
+    console.log(lang);
+    setTranslationProgress(10);
+    setTimeout(() => setTranslationProgress(50), 5000);
+    setTimeout(() => setTranslationProgress(100), 10000);
+  }, []);
+
+  // temporary
+  const showTranslate = useMemo(() => global.location && global.location.hostname === 'localhost', []);
 
   return user ? (
     <>
@@ -1339,7 +1353,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={onNewTranslation}>
+        <MenuItem onClick={onNewTranslation} disabled={!showTranslate}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
@@ -1365,7 +1379,12 @@ const EditorPage = ({ organisation, user, groups }) => {
         })}
       </Menu>
       {langDialog && (
-        <NewTranslation onClose={() => setLangDialog(false)} open={langDialog} onSubmit={lang => console.log(lang)} />
+        <NewTranslation
+          onClose={() => setLangDialog(false)}
+          open={langDialog}
+          onSubmit={createTranslation}
+          progress={translationProgress}
+        />
       )}
       {monetizationDialog && (
         <MonetizationDialog
