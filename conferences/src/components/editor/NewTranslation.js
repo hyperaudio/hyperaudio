@@ -51,8 +51,6 @@ export default function NewTranslation(props) {
     setLanguages(newLanguages);
   }, [query]);
 
-  console.log('WHOAHD', { query, language });
-
   return (
     <Root
       className={classes.root}

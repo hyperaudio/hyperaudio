@@ -993,8 +993,6 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTop(value);
   }, [div, pip]);
 
-  console.log('elko', { media, transcript, transcripts });
-
   const onNewTranslation = () => {
     setLangDialog(true);
     setLangAnchorEl(null);
