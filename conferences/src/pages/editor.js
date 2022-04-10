@@ -1,24 +1,29 @@
 import * as cldrSegmentation from 'cldr-segmentation';
 import Head from 'next/head';
+import ISO6391 from 'iso-639-1';
 import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
+import Queue from 'queue-promise';
 import React, { useMemo, useState, useEffect, useCallback, useRef, useLayoutEffect } from 'react';
 import ReactPlayer from 'react-player';
+import TC from 'smpte-timecode';
 import axios from 'axios';
+import bs58 from 'bs58';
+import mux from 'mux-embed';
+import pako from 'pako';
+import useInterval from 'use-interval';
 import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import { useRouter } from 'next/router';
-import mux from 'mux-embed';
-import TC from 'smpte-timecode';
-import bs58 from 'bs58';
-import Queue from 'queue-promise';
-import useInterval from 'use-interval';
-import pako from 'pako';
 
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Menu from '@mui/material/Menu';
+import ListItemText from '@mui/material/ListItemText';
+import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
@@ -39,6 +44,7 @@ import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 
+import NewTranslation from '../components/editor/NewTranslation';
 import Link from '../components/MuiNextLink';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
@@ -171,14 +177,16 @@ const EditorPage = ({ organisation, user, groups }) => {
     }
   }, [user, mediaId, transcriptId, originalId, router]);
 
-  const [time, setTime] = useState(0);
-  const [media, setMedia] = useState();
-  const [transcripts, setTranscripts] = useState([]);
-  const [progress, setProgress] = useState(0);
-  const [originalProgress, setOriginalProgress] = useState(0);
   const [data, setData] = useState();
-  const [originalData, setOriginalData] = useState();
   const [error, setError] = useState();
+  const [langAnchorEl, setLangAnchorEl] = useState(null);
+  const [langDialog, setLangDialog] = useState(false);
+  const [media, setMedia] = useState();
+  const [originalData, setOriginalData] = useState();
+  const [originalProgress, setOriginalProgress] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [time, setTime] = useState(0);
+  const [transcripts, setTranscripts] = useState([]);
 
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
   const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
@@ -985,6 +993,11 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTop(value);
   }, [div, pip]);
 
+  const onNewTranslation = () => {
+    setLangDialog(true);
+    setLangAnchorEl(null);
+  };
+
   return user ? (
     <>
       <Head>
@@ -1009,8 +1022,18 @@ const EditorPage = ({ organisation, user, groups }) => {
             <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
               <Button
                 color="inherit"
+                endIcon={<ArrowDropDownIcon />}
+                id="translations-button"
+                size="small"
+                variant="outlined"
+                onClick={e => setLangAnchorEl(e.currentTarget)}
+              >
+                {ISO6391.getName(transcript?.language.split('-')[0])}
+              </Button>
+              <Button
+                color="inherit"
                 component={Link}
-                href={`/media/${media?.id}?language=${transcript?.language}`}
+                href={{ pathname: `/media/${media?.id}`, query: { language: transcript?.language } }}
                 size="small"
                 startIcon={<ArrowBackIcon />}
               >
@@ -1283,8 +1306,65 @@ const EditorPage = ({ organisation, user, groups }) => {
           </Box>
         )}
       </Root>
+      <Menu
+        anchorEl={langAnchorEl}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
+        id="account-menu"
+        onClick={() => setLangAnchorEl(null)}
+        onClose={() => setLangAnchorEl(null)}
+        open={Boolean(langAnchorEl)}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        MenuListProps={{
+          dense: true,
+          'aria-labelledby': 'translations-button',
+        }}
+        PaperProps={{
+          style: {
+            maxHeight: '300px',
+            width: '160px',
+          },
+        }}
+      >
+        <MenuItem onClick={onNewTranslation}>
+          <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
+        </MenuItem>
+        <Divider />
+        {transcripts.map(t => {
+          return (
+            <MenuItem
+              component={Link}
+              href={{ query: { media: t.media, transcript: t.id } }}
+              key={t.id}
+              selected={t.id === transcript?.id}
+            >
+              {ISO6391.getName(t.language.split('-')[0])}
+            </MenuItem>
+          );
+          {
+            /* // return (
+          //   <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onSelectTranslation(t)}>
+          //     {t.name}
+          //   </MenuItem>
+          // );
+          return <TranslationMenuItem key={t.id} {...{ translation, t, onSelectTranslation }} />; */
+          }
+        })}
+      </Menu>
+      {langDialog && (
+        <NewTranslation onClose={() => setLangDialog(false)} open={langDialog} onSubmit={lang => console.log(lang)} />
+      )}
     </>
   ) : null;
+};
+
+const TranslationMenuItem = ({ t, onSelectTranslation, translation }) => {
+  const onClick = useCallback(() => onSelectTranslation(t), [onSelectTranslation, t]);
+
+  return (
+    <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onClick}>
+      {t.name}
+    </MenuItem>
+  );
 };
 
 const NOOP = () => {};
