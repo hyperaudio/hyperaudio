@@ -381,7 +381,7 @@ export function MediaTable(props) {
                           // console.log('hello2', row);
                           onClickMedia(row.id);
                         }}
-                        noWrap
+                        // noWrap
                         color={row.isProcessing ? 'text.disabled' : 'primary'}
                         variant="body2"
                       >
