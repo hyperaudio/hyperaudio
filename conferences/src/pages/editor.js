@@ -1036,6 +1036,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                 href={{ pathname: `/media/${media?.id}`, query: { language: transcript?.language } }}
                 size="small"
                 startIcon={<ArrowBackIcon />}
+                sx={{ display: { xs: 'none', md: 'unset' } }}
               >
                 Back
               </Button>
