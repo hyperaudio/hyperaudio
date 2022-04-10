@@ -2,10 +2,12 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import CloseIcon from '@mui/icons-material/Close';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Divider from '@mui/material/Divider';
+import TranslateIcon from '@mui/icons-material/Translate';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import ListItemText from '@mui/material/ListItemText';
@@ -51,11 +53,13 @@ export default function NewTranslation(props) {
     setLanguages(newLanguages);
   }, [query]);
 
+  const isProgressing = progress > 0 && progress < 100;
+
   return (
     <Root
       className={classes.root}
       maxWidth="xs"
-      onClose={onClose}
+      onClose={!isProgressing ? onClose : null}
       open={open}
       sx={{ '& .MuiDialog-paper': { width: '80%', height: 435, p: 0 } }}
     >
@@ -71,6 +75,7 @@ export default function NewTranslation(props) {
         size="small"
         fullWidth
         value={query}
+        disabled={isProgressing}
         variant="filled"
         InputProps={{
           endAdornment: (
@@ -83,6 +88,7 @@ export default function NewTranslation(props) {
                       setLanguage(null);
                     }}
                     size="small"
+                    disabled={isProgressing}
                     color="inherit"
                   >
                     <CloseIcon fontSize="small" />
@@ -97,7 +103,15 @@ export default function NewTranslation(props) {
       <DialogContent dividers sx={{ p: 0 }}>
         <MenuList>
           {languages.map(l => (
-            <MenuItem key={l.code} selected={language === l.code} onClick={() => setLanguage(l.code)}>
+            <MenuItem
+              disabled={progress && progress > 0 ? true : false}
+              key={l.code}
+              onClick={() => {
+                setLanguage(l.code);
+                setQuery(l.name);
+              }}
+              selected={language === l.code}
+            >
               <ListItemText primary={l.name} primaryTypographyProps={{ variant: 'body2' }} />{' '}
               <Typography variant="caption" color="textSecondary">
                 {l.code}
@@ -109,16 +123,20 @@ export default function NewTranslation(props) {
       <Box sx={{ p: 3 }}>
         <Stack direction="row">
           <Box sx={{ flexGrow: 1 }}>
-            <Button size="small" onClick={onClose}>
+            <Button size="small" onClick={onClose} disabled={isProgressing}>
               Cancel
             </Button>
           </Box>
           <LoadingButton
-            disabled={!language || (progress > 0 && progress < 100)}
-            variant="contained"
+            disabled={!language || isProgressing}
+            loading={isProgressing}
+            loadingIndicator={<CircularProgress color="inherit" size={16} variant="determinate" value={progress} />}
+            loadingPosition="start"
             onClick={() => onSubmit(language)}
+            startIcon={<TranslateIcon />}
+            variant="contained"
           >
-            Translate {progress}%
+            {isProgressing ? <>Translating…</> : <>Translate</>}
           </LoadingButton>
         </Stack>
       </Box>
