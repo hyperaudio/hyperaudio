@@ -214,7 +214,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 {
                   id: media.playbackId,
                   url: media.url,
-                  poster: media.poster,
+                  poster: media.poster.replace('.png', '.jpg'),
                   mediaId: media.id,
                   title: media.title,
                 },
