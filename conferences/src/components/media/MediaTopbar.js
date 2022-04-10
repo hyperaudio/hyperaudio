@@ -140,7 +140,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
               flexItem
               sx={{
                 alignSelf: 'center',
-                borderColor: 'rgba(255,255,255,0.11)',
+                borderColor: 'rgba(255,255,255,0.22)',
                 display: { xs: 'none', md: 'unset' },
                 height: '16px',
               }}
@@ -169,7 +169,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 <Divider
                   orientation="vertical"
                   flexItem
-                  sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.11)' }}
+                  sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.22)' }}
                 />
               </>
             ) : null}
@@ -181,7 +181,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
             <Divider
               orientation="vertical"
               flexItem
-              sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.11)' }}
+              sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.22)' }}
             />
             <Button size="small" id="export-button" onClick={onOpenExport} color="inherit" endIcon={<IosShareIcon />}>
               Export

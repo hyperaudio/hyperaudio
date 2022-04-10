@@ -1021,7 +1021,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                 flexItem
                 sx={{
                   alignSelf: 'center',
-                  borderColor: 'rgba(255,255,255,0.11)',
+                  borderColor: 'rgba(255,255,255,0.22)',
                   display: { xs: 'none', md: 'unset' },
                   height: '16px',
                 }}
