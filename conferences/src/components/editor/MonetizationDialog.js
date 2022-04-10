@@ -60,7 +60,7 @@ export default function MonetizationDialog(props) {
   return (
     <Root
       className={classes.root}
-      maxWidth="xs"
+      maxWidth="sm"
       onClose={onClose}
       open={open}
       sx={{ '& .MuiDialog-paper': { width: '80%', height: 435, p: 0 } }}
@@ -75,8 +75,10 @@ export default function MonetizationDialog(props) {
           <TableBody>
             {Object.keys(speakers).map(speaker => (
               <TableRow key={speaker} sx={{ py: 1 }}>
-                <TableCell sx={{ p: 0 }} sx={{ width: 0 }}>
-                  <Typography variant="body2">{speakers[speaker]?.name}</Typography>
+                <TableCell sx={{ p: 0 }} sx={{ width: '33%' }}>
+                  <Typography variant="body2" noWrap>
+                    {speakers[speaker]?.name}
+                  </Typography>
                 </TableCell>
                 <TableCell sx={{ p: 0 }}>
                   <TextField
