@@ -109,7 +109,9 @@ export default function NewTranslation(props) {
       <Box sx={{ p: 3 }}>
         <Stack direction="row">
           <Box sx={{ flexGrow: 1 }}>
-            <Button onClick={onClose}>Cancel</Button>
+            <Button size="small" onClick={onClose}>
+              Cancel
+            </Button>
           </Box>
           <LoadingButton disabled={!language} variant="contained" onClick={() => onSubmit(language)}>
             Translate
