@@ -357,7 +357,11 @@ export function MediaTable(props) {
                             onClickMedia(row.id);
                           }}
                         >
-                          <CardMedia component="img" height="100%" image={row.poster} />
+                          <CardMedia
+                            component="img"
+                            height="100%"
+                            image={row.poster.replace('poster.png', 'thumb.jpg')}
+                          />
                         </CardActionArea>
                       </Card>
                     </TableCell>

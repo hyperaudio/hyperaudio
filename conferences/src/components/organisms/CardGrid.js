@@ -159,7 +159,7 @@ const MediaCard = ({ item, disableLinks }) => {
           >
             <CardMedia
               component="img"
-              image={item.poster}
+              image={item.poster.replace('poster.png', 'thumb.jpg')}
               alt={item.title}
               sx={{
                 alignContent: 'center',

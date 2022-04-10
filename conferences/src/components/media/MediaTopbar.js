@@ -25,6 +25,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+import Link from '../MuiNextLink';
 import MediaInfoDialog from './MediaInfoDialog';
 
 const PREFIX = 'MediaTopbar';
@@ -95,14 +96,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
   // const onSelectTranslation = id => {
   //   console.log('onSelectTranslation:', id);
   // };
-  const onAddTranslation = e => {
-    console.log('onAddTranslation:', e);
-  };
   const onCaption = () => console.log('onCaption');
-  const onEdit = useCallback(
-    () => global.router.push(`/editor?media=${source.media[0].mediaId}&transcript=${source.id}`),
-    [source],
-  );
   const onInfoClose = () => setIsInfoOpen(false);
   const onInfoOpen = () => setIsInfoOpen(true);
   const onRemix = () => console.log('onRemix');
@@ -132,10 +126,18 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 {translation?.name}
               </Button>
             </Tooltip>
-            <Button size="small" startIcon={<EditIcon />} onClick={onEdit} disabled={!canEdit} color="inherit">
-              Edit
-            </Button>
-            <Divider
+            {canEdit && (
+              <Button
+                size="small"
+                component={Link}
+                startIcon={<EditIcon />}
+                color="inherit"
+                href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
+              >
+                Edit
+              </Button>
+            )}
+            {/* <Divider
               orientation="vertical"
               flexItem
               sx={{
@@ -158,7 +160,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                   <ShuffleIcon fontSize="small" />
                 </IconButton>
               </Box>
-            </Tooltip>
+            </Tooltip> */}
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
             {mediaLabel ? (
@@ -178,14 +180,17 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 {isInfoOpen ? <InfoIcon fontSize="small" /> : <InfoOutlinedIcon fontSize="small" />}
               </IconButton>
             </Tooltip>
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.22)' }}
-            />
-            <Button size="small" id="export-button" onClick={onOpenExport} color="inherit" endIcon={<IosShareIcon />}>
+            {/* <Button
+              color="inherit"
+              disabled
+              endIcon={<IosShareIcon />}
+              id="export-button"
+              onClick={onOpenExport}
+              size="small"
+              variant="outlined"
+            >
               Export
-            </Button>
+            </Button> */}
           </Stack>
         </Toolbar>
       </Root>
@@ -209,16 +214,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
           },
         }}
       >
-        <MenuItem onClick={onAddTranslation} disabled={true}>
-          <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
-        </MenuItem>
-        <Divider />
         {transcript.translations.map(t => {
-          // return (
-          //   <MenuItem selected={t.id === translation?.id} key={t.id} onClick={onSelectTranslation(t)}>
-          //     {t.name}
-          //   </MenuItem>
-          // );
           return <TranslationMenuItem key={t.id} {...{ translation, t, onSelectTranslation }} />;
         })}
       </Menu>
