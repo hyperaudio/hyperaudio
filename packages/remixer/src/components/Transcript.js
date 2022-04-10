@@ -143,6 +143,7 @@ export const Transcript = props => {
     onSourceChange,
     autoScroll,
     singlePlayer,
+    singlePlayerOffset,
   } = props;
   const container = useRef();
 
@@ -274,7 +275,7 @@ export const Transcript = props => {
           // console.log('click SEEK from', reference.current.currentTime, time / 1e3);
           console.log('Tseek', { reference });
           if (singlePlayer) {
-            reference.current.seekTo(time / 1e3, 'seconds');
+            reference.current.seekTo((time + singlePlayerOffset) / 1e3, 'seconds');
           } else reference.current.currentTime = time / 1e3;
           // console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
         }
@@ -306,7 +307,7 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks, externalRange, reference, sources, singlePlayer],
+    [blocks, externalRange, reference, sources, singlePlayer, singlePlayerOffset],
   );
 
   useEffect(() => {
