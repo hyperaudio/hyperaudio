@@ -708,6 +708,7 @@ const SinglePlayer = React.forwardRef(
           width="100%"
           height="100%"
           ref={ref}
+          progressInterval={100}
         />
         {title && (
           <Box className={classes.posterTitle} sx={{ opacity: playing ? 0 : 1 }}>
