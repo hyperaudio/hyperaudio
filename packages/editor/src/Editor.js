@@ -96,7 +96,9 @@ const Editor = props => {
     seekTo,
     showDialog,
     aligner = wordAligner,
-    speakers: initialSpeakers = {},
+    // speakers: initialSpeakers = {},
+    speakers,
+    setSpeakers,
     onChange: onChangeProp,
     autoScroll,
     play,
@@ -111,11 +113,11 @@ const Editor = props => {
   const theme = useTheme();
 
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [speakers, setSpeakers] = useState(
-    Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
-      return { ...acc, [id]: { ...speaker, id } };
-    }, {}),
-  );
+  // const [speakers, setSpeakers] = useState(
+  //   Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
+  //     return { ...acc, [id]: { ...speaker, id } };
+  //   }, {}),
+  // );
 
   const [wasPlaying, setWasPlaying] = useState(false);
   const [currentBlock, setCurrentBlock] = useState(null);

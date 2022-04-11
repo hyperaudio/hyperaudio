@@ -27,6 +27,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -44,8 +45,9 @@ import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 
-import NewTranslation from '../components/editor/NewTranslation';
 import Link from '../components/MuiNextLink';
+import MonetizationDialog from '../components/editor/MonetizationDialog';
+import NewTranslation from '../components/editor/NewTranslation';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
 // function CircularProgressWithLabel(props) {
@@ -182,6 +184,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [langAnchorEl, setLangAnchorEl] = useState(null);
   const [langDialog, setLangDialog] = useState(false);
   const [media, setMedia] = useState();
+  const [monetizationDialog, setMonetizationDialog] = useState(false);
   const [originalData, setOriginalData] = useState();
   const [originalProgress, setOriginalProgress] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -377,9 +380,55 @@ const EditorPage = ({ organisation, user, groups }) => {
     })();
   }, [media, original]);
 
-  const { speakers, blocks } = data ?? {};
+  // const { speakers, blocks } = data ?? {};
+  // const { speakers, blocks } = useMemo(() => {
+  //   if (!data) return {};
 
+  //   return {
+  //     blocks: data.blocks,
+  //     speakers: Object.entries(data.speakers).reduce((acc, [id, entry]) => {
+  //       let name = entry.name;
+  //       if (name.startsWith('spk_')) {
+  //         entry.spk = name;
+  //         const number = parseInt(name.split('_').pop()) + 1;
+  //         name = `Speaker ${number}`;
+  //       }
+
+  //       return { ...acc, [id]: { ...entry, name, id } };
+  //     }, {}),
+  //   };
+  // }, [data]);
+
+  const [speakers, setSpeakers] = useState({});
+  const { blocks } = data ?? {};
+
+  useEffect(() => {
+    if (!data) return;
+
+    setSpeakers(
+      Object.entries(data.speakers).reduce((acc, [id, entry]) => {
+        let name = entry.name;
+        if (name.startsWith('spk_')) {
+          entry.spk = name;
+          const number = parseInt(name.split('_').pop()) + 1;
+          name = `Unknown ${number}`;
+        }
+
+        return { ...acc, [id]: { ...entry, name, id } };
+      }, {}),
+    );
+  }, [data]);
+
+  // const [speakers, setSpeakers] = useState(
+  //   Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
+  //     return { ...acc, [id]: { ...speaker, id } };
+  //   }, {}),
+  // );
+
+  // console.log({ speakers });
   // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
+
+  useEffect(() => console.log({ speakers }), [speakers]);
 
   const initialState = useMemo(
     () =>
@@ -515,6 +564,21 @@ const EditorPage = ({ organisation, user, groups }) => {
   //   };
   // }, []);
 
+  const onSubmitMonetization = useCallback(
+    monetization => {
+      console.log(monetization);
+      setSpeakers(
+        Object.entries(speakers).reduce(
+          (acc, [id, entry]) => ({ ...acc, [id]: { ...entry, monetization: monetization[id] } }),
+          {},
+        ),
+      );
+      setSaved({});
+      setMonetizationDialog(false);
+    },
+    [speakers],
+  );
+
   global.listUnusedSpeakers = useCallback(() => {
     const data = { speakers: draft.speakers, blocks: draft.blocks };
 
@@ -548,7 +612,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSavingProgress(0);
     setSaving(2); // 3
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
 
     const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
     const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
@@ -591,12 +655,12 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTimeout(() => setSaving(0), 500);
     plausible('save');
     setSaved(draft);
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   global.autoSave = useCallback(async () => {
     if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
     console.log('autoSaving!');
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
 
     const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
     const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
@@ -626,7 +690,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     );
 
     setAutoSaved(draft);
-  }, [draft, media, transcript, user, autoSaved]);
+  }, [draft, media, speakers, transcript, user, autoSaved]);
 
   useInterval(() => {
     console.log('autoSave?');
@@ -639,7 +703,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPreviewingProgress(0);
     setPreviewing(2);
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
     const blobGz = new Blob([jsonGz]);
@@ -669,7 +733,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     window.open(`/media/${media.id}?language=${transcript.language}&showPreview=true`, '_blank');
     plausible('preview');
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   const handlePublish = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -677,7 +741,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishingProgress(0);
     setPublishing(3);
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
     const blobGz = new Blob([jsonGz]);
@@ -745,7 +809,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     plausible('publish');
     setSaved(draft);
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   global.resetTranscript = useCallback(async () => {
     await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
@@ -1001,6 +1065,17 @@ const EditorPage = ({ organisation, user, groups }) => {
     setLangAnchorEl(null);
   };
 
+  const [translationProgress, setTranslationProgress] = useState(0);
+  const createTranslation = useCallback(lang => {
+    console.log(lang);
+    setTranslationProgress(10);
+    setTimeout(() => setTranslationProgress(50), 5000);
+    setTimeout(() => setTranslationProgress(100), 10000);
+  }, []);
+
+  // temporary
+  const showTranslate = useMemo(() => global.location && global.location.hostname === 'localhost', []);
+
   return user ? (
     <>
       <Head>
@@ -1078,18 +1153,28 @@ const EditorPage = ({ organisation, user, groups }) => {
                 Preview
               </LoadingButton>
             </Stack>
-            <LoadingButton
-              color="inherit"
-              disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
-              endIcon={<PublishIcon fontSize="small" />}
-              loading={publishing !== 0}
-              loadingPosition="end"
-              onClick={handlePublish}
-              size="small"
-              variant="outlined"
-            >
-              Publish
-            </LoadingButton>
+            <Stack spacing={2} direction="row">
+              <Button
+                color="inherit"
+                onClick={() => setMonetizationDialog(true)}
+                size="small"
+                startIcon={<AttachMoneyIcon />}
+              >
+                Monetize
+              </Button>
+              <LoadingButton
+                color="inherit"
+                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+                endIcon={<PublishIcon fontSize="small" />}
+                loading={publishing !== 0}
+                loadingPosition="end"
+                onClick={handlePublish}
+                size="small"
+                variant="outlined"
+              >
+                Publish
+              </LoadingButton>
+            </Stack>
           </Toolbar>
 
           {media ? (
@@ -1215,6 +1300,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         play={play}
                         playing={playing}
                         pause={pause}
+                        setSpeakers={NOOP}
                       />
                     ) : error ? (
                       <Typography color="error" variant="body2">
@@ -1267,6 +1353,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         play={play}
                         playing={playing}
                         pause={pause}
+                        setSpeakers={setSpeakers}
                       />
                     ) : error ? (
                       <Typography color="error" variant="body2">
@@ -1294,7 +1381,7 @@ const EditorPage = ({ organisation, user, groups }) => {
             <Container maxWidth="sm">
               {initialState ? (
                 <Editor
-                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                  {...{ initialState, time, seekTo, speakers, setSpeakers, playing, play, pause }}
                   autoScroll={true}
                   onChange={setDraft}
                   playheadDecorator={noKaraoke ? null : undefined}
@@ -1329,7 +1416,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={onNewTranslation} disabled={true}>
+        <MenuItem onClick={onNewTranslation} disabled={!showTranslate}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
@@ -1355,7 +1442,20 @@ const EditorPage = ({ organisation, user, groups }) => {
         })}
       </Menu>
       {langDialog && (
-        <NewTranslation onClose={() => setLangDialog(false)} open={langDialog} onSubmit={lang => console.log(lang)} />
+        <NewTranslation
+          onClose={() => setLangDialog(false)}
+          open={langDialog}
+          onSubmit={createTranslation}
+          progress={translationProgress}
+        />
+      )}
+      {monetizationDialog && (
+        <MonetizationDialog
+          onClose={() => setMonetizationDialog(false)}
+          onSubmit={onSubmitMonetization}
+          open={monetizationDialog}
+          speakers={speakers}
+        />
       )}
     </>
   ) : null;
