@@ -79,7 +79,7 @@ export default function MonetizationDialog(props) {
           <TableBody>
             {Object.keys(speakers).map(speaker => (
               <TableRow key={speaker} sx={{ py: 1 }}>
-                <TableCell sx={{ p: 0 }} sx={{ width: '33%' }}>
+                <TableCell _sx={{ p: 0 }} sx={{ width: '33%' }}>
                   <Typography variant="body2" noWrap>
                     {speakers[speaker]?.name}
                   </Typography>
