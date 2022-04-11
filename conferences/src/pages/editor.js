@@ -380,9 +380,55 @@ const EditorPage = ({ organisation, user, groups }) => {
     })();
   }, [media, original]);
 
-  const { speakers, blocks } = data ?? {};
+  // const { speakers, blocks } = data ?? {};
+  // const { speakers, blocks } = useMemo(() => {
+  //   if (!data) return {};
 
+  //   return {
+  //     blocks: data.blocks,
+  //     speakers: Object.entries(data.speakers).reduce((acc, [id, entry]) => {
+  //       let name = entry.name;
+  //       if (name.startsWith('spk_')) {
+  //         entry.spk = name;
+  //         const number = parseInt(name.split('_').pop()) + 1;
+  //         name = `Speaker ${number}`;
+  //       }
+
+  //       return { ...acc, [id]: { ...entry, name, id } };
+  //     }, {}),
+  //   };
+  // }, [data]);
+
+  const [speakers, setSpeakers] = useState({});
+  const { blocks } = data ?? {};
+
+  useEffect(() => {
+    if (!data) return;
+
+    setSpeakers(
+      Object.entries(data.speakers).reduce((acc, [id, entry]) => {
+        let name = entry.name;
+        if (name.startsWith('spk_')) {
+          entry.spk = name;
+          const number = parseInt(name.split('_').pop()) + 1;
+          name = `Unknown ${number}`;
+        }
+
+        return { ...acc, [id]: { ...entry, name, id } };
+      }, {}),
+    );
+  }, [data]);
+
+  // const [speakers, setSpeakers] = useState(
+  //   Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
+  //     return { ...acc, [id]: { ...speaker, id } };
+  //   }, {}),
+  // );
+
+  // console.log({ speakers });
   // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
+
+  useEffect(() => console.log({ speakers }), [speakers]);
 
   const initialState = useMemo(
     () =>
@@ -518,6 +564,21 @@ const EditorPage = ({ organisation, user, groups }) => {
   //   };
   // }, []);
 
+  const onSubmitMonetization = useCallback(
+    monetization => {
+      console.log(monetization);
+      setSpeakers(
+        Object.entries(speakers).reduce(
+          (acc, [id, entry]) => ({ ...acc, [id]: { ...entry, monetization: monetization[id] } }),
+          {},
+        ),
+      );
+      setSaved({});
+      setMonetizationDialog(false);
+    },
+    [speakers],
+  );
+
   global.listUnusedSpeakers = useCallback(() => {
     const data = { speakers: draft.speakers, blocks: draft.blocks };
 
@@ -551,7 +612,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSavingProgress(0);
     setSaving(2); // 3
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
 
     const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
     const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
@@ -594,12 +655,12 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTimeout(() => setSaving(0), 500);
     plausible('save');
     setSaved(draft);
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   global.autoSave = useCallback(async () => {
     if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
     console.log('autoSaving!');
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
 
     const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
     const usedSpeakerIds = [...new Set(data.blocks.map(({ data: { speaker } }) => speaker))];
@@ -629,7 +690,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     );
 
     setAutoSaved(draft);
-  }, [draft, media, transcript, user, autoSaved]);
+  }, [draft, media, speakers, transcript, user, autoSaved]);
 
   useInterval(() => {
     console.log('autoSave?');
@@ -642,7 +703,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPreviewingProgress(0);
     setPreviewing(2);
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
     const blobGz = new Blob([jsonGz]);
@@ -672,7 +733,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     window.open(`/media/${media.id}?language=${transcript.language}&showPreview=true`, '_blank');
     plausible('preview');
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   const handlePublish = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -680,7 +741,7 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishingProgress(0);
     setPublishing(3);
 
-    const data = { speakers: draft.speakers, blocks: draft.blocks };
+    const data = { speakers, blocks: draft.blocks };
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
     const blobGz = new Blob([jsonGz]);
@@ -748,7 +809,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     plausible('publish');
     setSaved(draft);
-  }, [draft, media, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user, plausible]);
 
   global.resetTranscript = useCallback(async () => {
     await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {
@@ -1239,6 +1300,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         play={play}
                         playing={playing}
                         pause={pause}
+                        setSpeakers={NOOP}
                       />
                     ) : error ? (
                       <Typography color="error" variant="body2">
@@ -1291,6 +1353,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         play={play}
                         playing={playing}
                         pause={pause}
+                        setSpeakers={setSpeakers}
                       />
                     ) : error ? (
                       <Typography color="error" variant="body2">
@@ -1318,7 +1381,7 @@ const EditorPage = ({ organisation, user, groups }) => {
             <Container maxWidth="sm">
               {initialState ? (
                 <Editor
-                  {...{ initialState, time, seekTo, speakers, playing, play, pause }}
+                  {...{ initialState, time, seekTo, speakers, setSpeakers, playing, play, pause }}
                   autoScroll={true}
                   onChange={setDraft}
                   playheadDecorator={noKaraoke ? null : undefined}
@@ -1389,7 +1452,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       {monetizationDialog && (
         <MonetizationDialog
           onClose={() => setMonetizationDialog(false)}
-          onSubmit={payload => console.log(payload)}
+          onSubmit={onSubmitMonetization}
           open={monetizationDialog}
           speakers={speakers}
         />

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -48,12 +48,16 @@ const filterLanguages = (arr, str) => {
 
 export default function MonetizationDialog(props) {
   const { onClose, onSubmit, open, speakers } = props;
-  const [monetization, setMonetization] = React.useState({});
+  const [monetization, setMonetization] = useState(
+    Object.entries(speakers).reduce((acc, [id, entry]) => ({ ...acc, [id]: entry.monetization }), {}),
+  );
+  console.log({ monetization });
 
   const onPaymentPointerChange = (speaker, pointer) => {
+    console.log({ speaker, pointer });
     setMonetization(prevState => ({
       ...prevState,
-      [speaker]: pointer,
+      [speaker]: { ...prevState[speaker], paymentPointer: pointer },
     }));
   };
 
@@ -89,7 +93,7 @@ export default function MonetizationDialog(props) {
                     onChange={e => onPaymentPointerChange(speaker, e.target.value)}
                     placeholder="Add payment pointer…"
                     size="small"
-                    value={monetization[speaker]}
+                    value={monetization[speaker]?.paymentPointer ?? ''}
                     variant="filled"
                     sx={
                       monetization[speaker]?.length > 0
