@@ -565,8 +565,8 @@ const EditorPage = ({ organisation, user, groups }) => {
   );
 
   useEffect(() => {
-    const beforeUnloadListener = window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', beforeUnloadListener);
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
   }, [handleBeforeUnload]);
 
   const onSubmitMonetization = useCallback(
