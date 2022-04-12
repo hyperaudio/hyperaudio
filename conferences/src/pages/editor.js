@@ -14,7 +14,7 @@ import useInterval from 'use-interval';
 import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -552,17 +552,52 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
 
-  // useEffect(() => {
-  //   console.log('onbeforeunload');
-  //   window.onbeforeunload = e => {
-  //     if (draft && draft.contentState !== saved?.contentState) {
+  const unsavedChanges = useMemo(() => draft?.contentState !== saved?.contentState, [draft, saved]);
+  // https://github.com/vercel/next.js/issues/2476#issuecomment-563190607
+  useEffect(() => {
+    const routeChangeStart = url => {
+      if (Router.asPath !== url && unsavedChanges && !confirm('You have unsaved changes.')) {
+        Router.events.emit('routeChangeError');
+        Router.replace(Router, Router.asPath);
+        throw 'Abort route change. Please ignore this error.';
+      }
+    };
+
+    const beforeunload = e => {
+      if (unsavedChanges) {
+        e.preventDefault();
+        e.returnValue = 'You have unsaved changes.';
+        return 'You have unsaved changes.';
+      } else {
+        delete e['returnValue'];
+      }
+    };
+
+    window.addEventListener('beforeunload', beforeunload);
+    Router.events.on('routeChangeStart', routeChangeStart);
+
+    return () => {
+      window.removeEventListener('beforeunload', beforeunload);
+      Router.events.off('routeChangeStart', routeChangeStart);
+    };
+  }, [unsavedChanges]);
+
+  // const handleBeforeUnload = useCallback(
+  //   e => {
+  //     if (unsavedChanges) {
   //       e.preventDefault();
   //       e.returnValue = '';
   //     } else {
   //       delete e['returnValue'];
   //     }
-  //   };
-  // }, []);
+  //   },
+  //   [unsavedChanges],
+  // );
+
+  // useEffect(() => {
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
+  //   return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  // }, [handleBeforeUnload]);
 
   const onSubmitMonetization = useCallback(
     monetization => {
