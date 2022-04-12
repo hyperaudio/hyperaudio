@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -14,6 +14,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { deepPurple } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
+import { fabClasses } from '@mui/material';
 
 const PREFIX = 'EditorPage';
 const classes = {
@@ -46,8 +47,9 @@ const filterLanguages = (arr, str) => {
   return arr.filter(lang => lang.name.toLowerCase().includes(str.toLowerCase()));
 };
 
-export default function MonetizationDialog(props) {
+const MonetizationDialog = props => {
   const { onClose, onSubmit, open, speakers } = props;
+  const [hasErrors, setHasErrors] = useState(false);
   const [monetization, setMonetization] = useState(
     Object.entries(speakers).reduce((acc, [id, entry]) => ({ ...acc, [id]: entry.monetization }), {}),
   );
@@ -60,6 +62,14 @@ export default function MonetizationDialog(props) {
       [speaker]: { ...prevState[speaker], paymentPointer: pointer },
     }));
   };
+
+  useEffect(() => {
+    const validation = Object.values(monetization)
+      .filter(value => !!value)
+      .map(({ paymentPointer }) => isValidPaymentPointer(paymentPointer));
+    const invalid = validation.some(valid => !valid);
+    setHasErrors(invalid);
+  }, [monetization]);
 
   return (
     <Root
@@ -78,31 +88,7 @@ export default function MonetizationDialog(props) {
         <Table>
           <TableBody>
             {Object.keys(speakers).map(speaker => (
-              <TableRow key={speaker} sx={{ py: 1 }}>
-                <TableCell _sx={{ p: 0 }} sx={{ width: '33%' }}>
-                  <Typography variant="body2" noWrap>
-                    {speakers[speaker]?.name}
-                  </Typography>
-                </TableCell>
-                <TableCell sx={{ p: 0 }}>
-                  <TextField
-                    InputLabelProps={{ className: classes.label }}
-                    className={classes.field}
-                    fullWidth
-                    inputProps={{ className: classes.input }}
-                    onChange={e => onPaymentPointerChange(speaker, e.target.value)}
-                    placeholder="Add payment pointer…"
-                    size="small"
-                    value={monetization[speaker]?.paymentPointer ?? ''}
-                    variant="filled"
-                    sx={
-                      monetization[speaker]?.length > 0
-                        ? { '& .MuiFilledInput-root': { background: deepPurple[50] } }
-                        : null
-                    }
-                  />
-                </TableCell>
-              </TableRow>
+              <MonetizationRow key={speaker} {...{ speaker, speakers, monetization, onPaymentPointerChange }} />
             ))}
           </TableBody>
         </Table>
@@ -114,11 +100,63 @@ export default function MonetizationDialog(props) {
               Cancel
             </Button>
           </Box>
-          <LoadingButton variant="contained" onClick={() => onSubmit(monetization)}>
+          <LoadingButton variant="contained" onClick={() => onSubmit(monetization)} disabled={hasErrors}>
             Save
           </LoadingButton>
         </Stack>
       </Box>
     </Root>
   );
-}
+};
+
+const MonetizationRow = ({ speaker, speakers, monetization, onPaymentPointerChange }) => {
+  const [error, setError] = useState(false);
+
+  const onChange = useCallback(
+    ({ target: { value } }) => {
+      setError(!isValidPaymentPointer(value));
+      onPaymentPointerChange(speaker, value);
+    },
+    [speaker, onPaymentPointerChange],
+  );
+
+  return (
+    <TableRow key={speaker} sx={{ py: 1 }}>
+      <TableCell _sx={{ p: 0 }} sx={{ width: '33%' }}>
+        <Typography variant="body2" noWrap>
+          {speakers[speaker]?.name}
+        </Typography>
+      </TableCell>
+      <TableCell sx={{ p: 0 }}>
+        <TextField
+          error={error}
+          helperText={error ? 'Invalid payment pointer' : null}
+          InputLabelProps={{ className: classes.label }}
+          className={classes.field}
+          fullWidth
+          inputProps={{ className: classes.input }}
+          onChange={onChange}
+          placeholder="Add payment pointer…"
+          size="small"
+          autoComplete="off"
+          value={monetization[speaker]?.paymentPointer ?? ''}
+          variant="filled"
+          sx={monetization[speaker]?.length > 0 ? { '& .MuiFilledInput-root': { background: deepPurple[50] } } : null}
+        />
+      </TableCell>
+    </TableRow>
+  );
+};
+
+const isValidPaymentPointer = paymentPointer => {
+  if (paymentPointer.trim().length === 0) return true;
+  try {
+    const url = new URL(paymentPointer.startsWith('$') ? paymentPointer.replace('$', 'https://') : paymentPointer);
+    // console.log({ url });
+  } catch (err) {
+    return false;
+  }
+  return true;
+};
+
+export default MonetizationDialog;
