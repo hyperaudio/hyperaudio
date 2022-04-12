@@ -59,7 +59,7 @@ const MonetizationDialog = props => {
     console.log({ speaker, pointer });
     setMonetization(prevState => ({
       ...prevState,
-      [speaker]: { ...prevState[speaker], paymentPointer: pointer },
+      [speaker]: { ...prevState[speaker], paymentPointer: pointer && pointer.trim() !== '' ? pointer : null },
     }));
   };
 
@@ -67,6 +67,7 @@ const MonetizationDialog = props => {
     const validation = Object.values(monetization)
       .filter(value => !!value)
       .map(({ paymentPointer }) => isValidPaymentPointer(paymentPointer));
+    // console.log({ validation });
     const invalid = validation.some(valid => !valid);
     setHasErrors(invalid);
   }, [monetization]);
@@ -148,12 +149,13 @@ const MonetizationRow = ({ speaker, speakers, monetization, onPaymentPointerChan
   );
 };
 
+// null or '' is valid too
 const isValidPaymentPointer = paymentPointer => {
-  if (paymentPointer.trim().length === 0) return true;
+  if (!paymentPointer || paymentPointer.trim().length === 0) return true;
   try {
     const url = new URL(paymentPointer.startsWith('$') ? paymentPointer.replace('$', 'https://') : paymentPointer);
-    // console.log({ url });
-    if (url.protocol !== 'https') return false;
+    console.log({ url });
+    if (url.protocol !== 'https:') return false;
   } catch (err) {
     return false;
   }
