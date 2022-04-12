@@ -552,17 +552,22 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
 
-  // useEffect(() => {
-  //   console.log('onbeforeunload');
-  //   window.onbeforeunload = e => {
-  //     if (draft && draft.contentState !== saved?.contentState) {
-  //       e.preventDefault();
-  //       e.returnValue = '';
-  //     } else {
-  //       delete e['returnValue'];
-  //     }
-  //   };
-  // }, []);
+  const handleBeforeUnload = useCallback(
+    e => {
+      if (draft && draft.contentState !== saved?.contentState) {
+        e.preventDefault();
+        e.returnValue = '';
+      } else {
+        delete e['returnValue'];
+      }
+    },
+    [draft, saved],
+  );
+
+  useEffect(() => {
+    const beforeUnloadListener = window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', beforeUnloadListener);
+  }, [handleBeforeUnload]);
 
   const onSubmitMonetization = useCallback(
     monetization => {
