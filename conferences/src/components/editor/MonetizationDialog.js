@@ -153,6 +153,7 @@ const isValidPaymentPointer = paymentPointer => {
   try {
     const url = new URL(paymentPointer.startsWith('$') ? paymentPointer.replace('$', 'https://') : paymentPointer);
     // console.log({ url });
+    if (url.protocol !== 'https') return false;
   } catch (err) {
     return false;
   }
