@@ -44,20 +44,25 @@ const Redirect = ({ user }) => {
     query: { redirect = '/' },
   } = router;
 
-  console.log(user);
+  console.log({ user });
 
   useEffect(() => {
     (async () => {
-      const {
-        attributes: { sub: identityId, email },
+      let {
+        attributes: { sub: identityId, email } = {},
         signInUserSession: {
           idToken: { payload },
         },
       } = user;
 
+      if (!identityId) identityId = payload.sub;
+      if (!email) email = payload.email;
+
       await getUser(async user => {
-        console.log('existing user', user);
+        let newUser = false;
+
         if (!user) {
+          newUser = true;
           console.log(
             'new user',
             await DataStore.save(
@@ -65,6 +70,7 @@ const Redirect = ({ user }) => {
             ),
           );
         } else {
+          console.log('existing user', user);
           await DataStore.save(
             User.copyOf(user, updated => {
               updated.metadata = { ...(user.metadata ?? {}), lastLogin: new Date() };
@@ -74,8 +80,11 @@ const Redirect = ({ user }) => {
 
         setTimeout(() => {
           console.log('redirect', redirect);
-          router.push(redirect);
-          // window.location.href = redirect;
+          if (newUser) {
+            window.location.href = redirect;
+          } else {
+            router.push(redirect);
+          }
         }, 0);
       }, identityId);
     })();

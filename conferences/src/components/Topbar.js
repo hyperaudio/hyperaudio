@@ -120,8 +120,15 @@ const Topbar = props => {
     sx: { display: { xs: 'none', md: 'inline-block' }, mx: 1 },
   };
 
-  // temporary
-  const showSignIn = useMemo(() => global.location && global.location.hostname === 'localhost', []);
+  // const [authLink, setAuthLink] = useState('/auth');
+  // useEffect(
+  //   () => setAuthLink(`/auth?redirect=${encodeURIComponent(global.location.pathname + global.location.search)}`),
+  //   [],
+  // );
+  const signIn = useCallback(
+    () => router.push(`/auth?redirect=${encodeURIComponent(global.location.pathname + global.location.search)}`),
+    [router],
+  );
 
   return (
     <NoSsr>
@@ -322,13 +329,14 @@ const Topbar = props => {
                     </MenuItem>
                   </Menu>
                 </>
-              ) : showSignIn ? (
+              ) : (
                 <Fab
                   aria-label="Authenticate"
                   className={classes.fab}
                   component={Link}
-                  href={`/auth?redirect=${encodeURIComponent(global.location.pathname + global.location.search)}`}
+                  href="/auth"
                   variant="extended"
+                  onClick={signIn}
                 >
                   <Avatar className={classes.avatar}>
                     <PersonIcon fontSize="small" />
@@ -336,7 +344,7 @@ const Topbar = props => {
                   <Box {...buttonLabelProps}>Sign in</Box>
                   <LoginIcon fontSize="small" sx={{ mx: 0.5 }} />
                 </Fab>
-              ) : null}
+              )}
             </Grid>
           </Grid>
         </Toolbar>
