@@ -21,6 +21,7 @@
     "@mui/lab": "5.0.0-alpha.76",
     "@mui/material": "5.5.3",
     "@sentry/nextjs": "6.19.3",
+    "@sentry/react": "6.19.6",
     "@welldone-software/why-did-you-render": "7.0.0",
     "aws-amplify": "4.3.18",
     "axios": "0.26.1",

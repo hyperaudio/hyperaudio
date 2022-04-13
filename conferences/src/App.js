@@ -5,6 +5,7 @@ import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictio
 import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
+import * as Sentry from '@sentry/react';
 
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
@@ -175,6 +176,8 @@ const App = props => {
 
   useEffect(() => {
     if (!user) return;
+
+    Sentry?.setUser({ id: user.identityId, username: user.name });
 
     const subscription = DataStore.observe(User).subscribe(() => getUser(setUser, user.identityId));
     return () => subscription.unsubscribe();
