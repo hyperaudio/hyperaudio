@@ -43,7 +43,7 @@ const filterLanguages = (arr, str) => {
 };
 
 export default function NewTranslation(props) {
-  const { onClose, onSubmit, open, progress } = props;
+  const { onClose, onSubmit, open, progress, translatedLanguages = [], originalLanguage } = props;
   const [query, setQuery] = useState('');
   const [language, setLanguage] = useState();
   const [languages, setLanguages] = useState(allLanguages);
@@ -104,7 +104,7 @@ export default function NewTranslation(props) {
         <MenuList>
           {languages.map(l => (
             <MenuItem
-              disabled={progress && progress > 0 ? true : false}
+              disabled={(progress && progress > 0 ? true : false) || translatedLanguages.includes(l.code)}
               key={l.code}
               onClick={() => {
                 setLanguage(l.code);

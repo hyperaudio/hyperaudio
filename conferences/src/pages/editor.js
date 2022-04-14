@@ -11,7 +11,7 @@ import bs58 from 'bs58';
 import mux from 'mux-embed';
 import pako from 'pako';
 import useInterval from 'use-interval';
-import { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
+import Amplify, { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
 import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import Router, { useRouter } from 'next/router';
@@ -49,6 +49,12 @@ import Link from '../components/MuiNextLink';
 import MonetizationDialog from '../components/editor/MonetizationDialog';
 import NewTranslation from '../components/editor/NewTranslation';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
+
+try {
+  Amplify.addPluggable(new AmazonAIPredictionsProvider());
+} catch (ignored) {
+  console.log('AmazonAIPredictionsProvider already added', ignored);
+}
 
 // function CircularProgressWithLabel(props) {
 //   return (
@@ -1046,7 +1052,8 @@ const EditorPage = ({ organisation, user, groups }) => {
       queue.on('dequeue', () => console.log('dequeue'));
       queue.on('resolve', data => {
         console.log('resolve', data);
-        setTranslationProgress(Math.floor((data.index * 100) / chunks.length));
+        const progress = Math.floor((data.index * 100) / chunks.length);
+        setTranslationProgress(progress === 0 ? 2 : progress);
       });
       queue.on('reject', error => console.log('error', error));
       queue.on('start', () => console.log('start'));
@@ -1077,6 +1084,12 @@ const EditorPage = ({ organisation, user, groups }) => {
     console.log(lang);
     global.newTranslation(lang);
   }, []); // newTranslation
+
+  const originalLanguage = useMemo(() => media?.language, [media]);
+  const translatedLanguages = useMemo(
+    () => transcripts?.map(({ language }) => language)?.filter(language => language !== originalLanguage),
+    [transcripts, originalLanguage],
+  );
 
   return user ? (
     <>
@@ -1450,6 +1463,8 @@ const EditorPage = ({ organisation, user, groups }) => {
           open={langDialog}
           onSubmit={createTranslation}
           progress={translationProgress}
+          translatedLanguages={translatedLanguages}
+          originalLanguage={originalLanguage}
         />
       )}
       {monetizationDialog && (

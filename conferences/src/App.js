@@ -41,7 +41,9 @@ const amplifyConfig = { ...awsexports, ...awsconfig };
 Amplify.configure(amplifyConfig);
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
-} catch (ignored) {}
+} catch (ignored) {
+  console.log('AmazonAIPredictionsProvider already added', ignored);
+}
 
 Analytics.autoTrack('session', {
   enable: true,
