@@ -1078,9 +1078,6 @@ const EditorPage = ({ organisation, user, groups }) => {
     global.newTranslation(lang);
   }, []); // newTranslation
 
-  // temporary
-  const showTranslate = useMemo(() => global.location && global.location.hostname === 'localhost', []);
-
   return user ? (
     <>
       <Head>
@@ -1421,7 +1418,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={onNewTranslation} disabled={!showTranslate || originalId}>
+        <MenuItem onClick={onNewTranslation} disabled={originalId}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
