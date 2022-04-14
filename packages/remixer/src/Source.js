@@ -34,7 +34,7 @@ const Source = props => {
 
   return (
     <Root className={`RemixerPane RemixerPane--Source`}>
-      {/* {!isSingleMedia && <SourceTopbar {...props} />} */}
+      {!isSingleMedia && <SourceTopbar {...props} />}
       <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
       <div className="transcriptWrap">
         <Transcript
