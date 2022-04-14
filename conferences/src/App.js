@@ -34,27 +34,31 @@ import { User } from './models';
 global.Auth = Auth;
 global.DataStore = DataStore;
 
-Amplify.configure({ ...awsexports, ...awsconfig });
+const amplifyConfig = { ...awsexports, ...awsconfig };
+delete amplifyConfig.aws_mobile_analytics_app_id;
+delete amplifyConfig.aws_mobile_analytics_app_region;
+
+Amplify.configure(amplifyConfig);
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
 } catch (ignored) {}
 
-Analytics.autoTrack('session', {
-  enable: true,
-  provider: 'AWSPinpoint',
-});
+// Analytics.autoTrack('session', {
+//   enable: true,
+//   provider: 'AWSPinpoint',
+// });
 
-Analytics.autoTrack('pageView', {
-  enable: true,
-  eventName: 'pageView',
-  // OPTIONAL, by default is 'multiPageApp'
-  // you need to change it to 'SPA' if your app is a single-page app like React
-  type: 'SPA',
-  provider: 'AWSPinpoint',
-  getUrl: () => {
-    return window.location.origin + window.location.pathname;
-  },
-});
+// Analytics.autoTrack('pageView', {
+//   enable: true,
+//   eventName: 'pageView',
+//   // OPTIONAL, by default is 'multiPageApp'
+//   // you need to change it to 'SPA' if your app is a single-page app like React
+//   type: 'SPA',
+//   provider: 'AWSPinpoint',
+//   getUrl: () => {
+//     return window.location.origin + window.location.pathname;
+//   },
+// });
 
 Storage.configure({ track: true });
 
