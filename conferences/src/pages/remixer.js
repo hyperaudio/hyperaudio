@@ -158,7 +158,14 @@ const RemixerPage = ({ organisation }) => {
       <Root className={classes.root}>
         <div className={classes.push} />
         {data && data.sources && data.sources.length > 0 ? (
-          <Remixer editable={true} remix={data.remix} sources={data.sources} media={[]} />
+          <Remixer
+            editable={true}
+            remix={data.remix}
+            sources={data.sources}
+            tabs={data.sources}
+            media={[]}
+            isSingleMedia={false}
+          />
         ) : null}
       </Root>
     </>

@@ -128,7 +128,7 @@ const Remixer = props => {
     source: props.sources[0],
   });
 
-  // console.log('REMIX', remix);
+  console.log('REMIX DATA', { props, sources, tabs, remix, source });
 
   useEffect(() => {
     dispatch({

@@ -22,7 +22,7 @@ const Source = props => {
   const players = useRef({});
 
   const [time, setTime] = useState(0);
-  const singlePlayer = useMemo(() => media.length === 1, [media]);
+  const singlePlayer = useMemo(() => !editable && media.length === 1, [media, editable]);
   const singlePlayerOffset = useMemo(() => blocks?.[0]?.start ?? 0, [blocks]);
   // console.log({ singlePlayerOffset });
 
