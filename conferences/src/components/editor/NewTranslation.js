@@ -136,7 +136,7 @@ export default function NewTranslation(props) {
             startIcon={<TranslateIcon />}
             variant="contained"
           >
-            {isProgressing ? <>Translating…</> : <>Translate</>}
+            {isProgressing ? <>Translating… {progress}%</> : <>Translate</>}
           </LoadingButton>
         </Stack>
       </Box>

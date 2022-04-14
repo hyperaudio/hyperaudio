@@ -103,14 +103,16 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             if (showDraft || showPreview || transcriptUrl) {
               setLabel(showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null);
               try {
-                const signedURL = await Storage.get(
-                  `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
-                    showPreview ? '-preview.json.gz' : '.json.gz'
-                  }`,
-                  {
-                    level: 'public',
-                  },
-                );
+                let key = `transcript/${media.playbackId}/${transcript.language}/${transcript.id}${
+                  showPreview ? '-preview.json.gz' : '.json.gz'
+                }`;
+
+                if (language !== media.language)
+                  key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
+
+                const signedURL = await Storage.get(key, {
+                  level: 'public',
+                });
 
                 const result = (
                   await axios.get(transcriptUrl ? transcriptUrl : signedURL, {
@@ -216,7 +218,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                   url: media.url,
                   poster: media.poster.replace('.png', '.jpg'),
                   mediaId: media.id,
-                  title: media.title,
+                  title: transcript.title,
                 },
               ],
               channel: media.channel,
