@@ -60,7 +60,7 @@ try {
 //   },
 // });
 
-Storage.configure({ track: true });
+// Storage.configure({ track: true });
 
 // Hub.listen('auth', async data => {
 //   if (data.payload.event === 'signOut') {
