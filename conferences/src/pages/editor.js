@@ -380,25 +380,6 @@ const EditorPage = ({ organisation, user, groups }) => {
     })();
   }, [media, original]);
 
-  // const { speakers, blocks } = data ?? {};
-  // const { speakers, blocks } = useMemo(() => {
-  //   if (!data) return {};
-
-  //   return {
-  //     blocks: data.blocks,
-  //     speakers: Object.entries(data.speakers).reduce((acc, [id, entry]) => {
-  //       let name = entry.name;
-  //       if (name.startsWith('spk_')) {
-  //         entry.spk = name;
-  //         const number = parseInt(name.split('_').pop()) + 1;
-  //         name = `Speaker ${number}`;
-  //       }
-
-  //       return { ...acc, [id]: { ...entry, name, id } };
-  //     }, {}),
-  //   };
-  // }, [data]);
-
   const [speakers, setSpeakers] = useState({});
   const { blocks } = data ?? {};
 
@@ -418,12 +399,6 @@ const EditorPage = ({ organisation, user, groups }) => {
       }, {}),
     );
   }, [data]);
-
-  // const [speakers, setSpeakers] = useState(
-  //   Object.entries(initialSpeakers).reduce((acc, [id, speaker]) => {
-  //     return { ...acc, [id]: { ...speaker, id } };
-  //   }, {}),
-  // );
 
   // console.log({ speakers });
   // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
@@ -552,8 +527,8 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
 
-  const unsavedChanges = useMemo(() => draft?.contentState !== saved?.contentState, [draft, saved]);
   // https://github.com/vercel/next.js/issues/2476#issuecomment-563190607
+  const unsavedChanges = useMemo(() => draft?.contentState !== saved?.contentState, [draft, saved]);
   useEffect(() => {
     const routeChangeStart = url => {
       if (Router.asPath !== url && unsavedChanges && !confirm('You have unsaved changes.')) {
@@ -581,23 +556,6 @@ const EditorPage = ({ organisation, user, groups }) => {
       Router.events.off('routeChangeStart', routeChangeStart);
     };
   }, [unsavedChanges]);
-
-  // const handleBeforeUnload = useCallback(
-  //   e => {
-  //     if (unsavedChanges) {
-  //       e.preventDefault();
-  //       e.returnValue = '';
-  //     } else {
-  //       delete e['returnValue'];
-  //     }
-  //   },
-  //   [unsavedChanges],
-  // );
-
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', handleBeforeUnload);
-  //   return () => window.removeEventListener('beforeunload', handleBeforeUnload);
-  // }, [handleBeforeUnload]);
 
   const onSubmitMonetization = useCallback(
     monetization => {
@@ -702,17 +660,12 @@ const EditorPage = ({ organisation, user, groups }) => {
     const unusedSpeakerIds = allSpeakerIds.filter(id => !usedSpeakerIds.includes(id));
     unusedSpeakerIds.forEach(id => delete data.speakers[id]);
 
-    // https://stackoverflow.com/questions/57225380/browser-javascript-compress-json-to-gzip-and-upload-to-s3-presigned-url
-    // const str = JSON.stringify(data);
-    // const utf8Data = unescape(encodeURIComponent(str));
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
     const blobGz = new Blob([jsonGz]);
 
     const result = await Storage.put(
-      // `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json`,
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-autosave.json.gz`,
-      // JSON.stringify(data),
       blobGz,
       {
         level: 'public',
@@ -874,8 +827,10 @@ const EditorPage = ({ organisation, user, groups }) => {
     });
   }, [media, transcript]);
 
+  const [translationProgress, setTranslationProgress] = useState(0);
   global.newTranslation = useCallback(
     async (language = 'it-IT') => {
+      setTranslationProgress(1);
       const suppressions = cldrSegmentation.suppressions.all;
 
       const blocks = draft.blocks.map(block => {
@@ -927,20 +882,6 @@ const EditorPage = ({ organisation, user, groups }) => {
 
       console.log(chunks.length, chunks);
 
-      // const translatedChunks = await Promise.all(
-      //   chunks.map(({ text }) =>
-      //     Predictions.convert({
-      //       translateText: {
-      //         source: {
-      //           text,
-      //           language: transcript.language,
-      //         },
-      //         targetLanguage: language,
-      //       },
-      //     }),
-      //   ),
-      // );
-
       const title = await Predictions.convert({
         translateText: {
           source: {
@@ -976,6 +917,33 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         console.log({ translatedChunks });
 
+        const description = await Predictions.convert({
+          translateText: {
+            source: {
+              text: transcript.description,
+              language: transcript.language,
+            },
+            targetLanguage: language,
+          },
+        });
+
+        console.log({ title, description });
+
+        const utf8Data = new TextEncoder('utf-8').encode(
+          JSON.stringify({ title, description, chunks, translatedChunks, blocks }),
+        );
+        const jsonGz = pako.gzip(utf8Data);
+        const blobGz = new Blob([jsonGz]);
+
+        await Storage.put(`transcript/${media.playbackId}/${language}/translationData.json.gz`, blobGz, {
+          level: 'public',
+          contentType: 'application/json',
+          contentEncoding: 'gzip',
+          metadata: {
+            user: user.id,
+          },
+        });
+
         const translatedBlocks = translatedChunks
           .map(({ text }) => text)
           .join('\n\n')
@@ -993,9 +961,17 @@ const EditorPage = ({ organisation, user, groups }) => {
                 ...block.data,
                 // block,
                 sentences: sentences.map((sentence, j) => {
+                  const start =
+                    block.data.sentences[j]?.start ??
+                    (block.data.sentences.length > 0 ? block.data.sentences[j - 1]?.start : null) ??
+                    block.data.start;
+                  const end =
+                    block.data.sentences[j]?.end ??
+                    (j < block.data.sentences.length - 1 ? block.data.sentences[j + 1]?.start : null) ??
+                    start;
                   return {
-                    start: block.data.sentences[j].start,
-                    end: block.data.sentences[j].end,
+                    start,
+                    end,
                     text: sentence,
                     // original: block.data.sentences[j],
                   };
@@ -1017,64 +993,60 @@ const EditorPage = ({ organisation, user, groups }) => {
 
         console.log(translatedBlocks);
 
-        const description = await Predictions.convert({
-          translateText: {
-            source: {
-              text: transcript.description,
-              language: transcript.language,
-            },
-            targetLanguage: language,
+        let transcript2 = transcripts.find(t => t.language === language);
+        if (!transcript2) {
+          console.log('creating new transcript');
+          transcript2 = await DataStore.save(
+            new Transcript({
+              title: title.text,
+              description: description.text,
+              language: language,
+              url: `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/translation.json.gz`,
+              media: media.id,
+              status: { label: 'translated' },
+            }),
+          );
+        } else {
+          console.log('existing transcript');
+          const updated = await DataStore.save(
+            Transcript.copyOf(transcript2, updated => {
+              updated.status = { label: 'translated' };
+              updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/translation.json.gz`;
+              updated.title = title.text;
+              updated.description = description.text;
+            }),
+          );
+          console.log({ updated });
+        }
+
+        console.log(transcript2);
+        setTranslationProgress(100);
+
+        const utf8Data2 = new TextEncoder('utf-8').encode(
+          JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
+        );
+        const jsonGz2 = pako.gzip(utf8Data2);
+        const blobGz2 = new Blob([jsonGz2]);
+
+        const result = await Storage.put(`transcript/${media.playbackId}/${language}/translation.json.gz`, blobGz2, {
+          level: 'public',
+          contentType: 'application/json',
+          contentEncoding: 'gzip',
+          metadata: {
+            user: user.id,
+            transcript: transcript2.id,
           },
         });
 
-        console.log({ title, description });
-
-        // const transcript2 = await DataStore.save(
-        //   new Transcript({
-        //     title: title.text,
-        //     description: description.text,
-        //     language: language,
-        //     url: transcript.url,
-        //     media: media.id,
-        //     status: { label: 'translating' },
-        //   }),
-        // );
-
-        // await DataStore.save(
-        //   Transcript.copyOf(transcript2, updated => {
-        //     updated.status = { label: 'translated' };
-        //     updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json`;
-        //   }),
-        // );
-
-        // console.log(transcript2);
-
-        const result = await Storage.put(
-          // `transcript/${media.playbackId}/${language}/${transcript2.id}.json`,
-          `transcript/${media.playbackId}/${language}/test.json`,
-
-          JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
-          {
-            level: 'public',
-            contentType: 'application/json',
-            metadata: {
-              user: user.id,
-            },
-            progressCallback(progress) {
-              // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
-              const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
-              setSavingProgress(percentCompleted);
-            },
-          },
-        );
-
         console.log(result);
         //
+        window.location.href = `/editor?media=${media.id}&original=${transcript.id}&transcript=${transcript2.id}`;
       });
 
       queue.on('dequeue', () => console.log('dequeue'));
       queue.on('resolve', data => {
         console.log('resolve', data);
+        setTranslationProgress(Math.floor((data.index * 100) / chunks.length));
       });
       queue.on('reject', error => console.log('error', error));
       queue.on('start', () => console.log('start'));
@@ -1100,13 +1072,11 @@ const EditorPage = ({ organisation, user, groups }) => {
     setLangAnchorEl(null);
   };
 
-  const [translationProgress, setTranslationProgress] = useState(0);
   const createTranslation = useCallback(lang => {
+    setTranslationProgress(0);
     console.log(lang);
-    setTranslationProgress(10);
-    setTimeout(() => setTranslationProgress(50), 5000);
-    setTimeout(() => setTranslationProgress(100), 10000);
-  }, []);
+    global.newTranslation(lang);
+  }, []); // newTranslation
 
   // temporary
   const showTranslate = useMemo(() => global.location && global.location.hostname === 'localhost', []);
@@ -1451,15 +1421,16 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         }}
       >
-        <MenuItem onClick={onNewTranslation} disabled={!showTranslate}>
+        <MenuItem onClick={onNewTranslation} disabled={!showTranslate || originalId}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
         </MenuItem>
         <Divider />
         {transcripts.map(t => {
           return (
             <MenuItem
-              component={Link}
-              href={{ query: { media: t.media, transcript: t.id } }}
+              // component={Link}
+              // href={{ query: { media: t.media, transcript: t.id } }}
+              onClick={() => (window.location.href = `/editor?media=${t.media}&transcript=${t.id}`)}
               key={t.id}
               selected={t.id === transcript?.id}
             >
