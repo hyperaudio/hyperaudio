@@ -41,7 +41,13 @@ const Root = styled('div', {
   // shouldForwardProp: prop => !['comapct'].includes(prop),
 })(({ theme }) => {
   return {
-    position: 'relative',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    pointerEvents: 'none',
+    zIndex: 1,
+    background: `linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
     [`& .${classes.core}`]: {
       position: 'relative',
       zIndex: 1,
@@ -112,6 +118,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
   return (
     <>
       <Root>
+        <Toolbar />
         <Toolbar maxWidth="sm">
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center', flexGrow: 1 }}>
             <Tooltip title="Choose translation…">
@@ -123,6 +130,7 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                   id="translations-button"
                   onClick={onOpenTranslations}
                   size="small"
+                  sx={{ pointerEvents: 'all' }}
                   variant="outlined"
                 >
                   {translation?.name}
@@ -131,11 +139,12 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
             </Tooltip>
             {canEdit && (
               <Button
-                size="small"
-                component={Link}
-                startIcon={<EditIcon />}
                 color="inherit"
+                component={Link}
                 href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
+                size="small"
+                startIcon={<EditIcon />}
+                sx={{ pointerEvents: 'all' }}
               >
                 Edit
               </Button>
@@ -179,7 +188,12 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
               </>
             ) : null}
             <Tooltip title="Toggle info">
-              <IconButton onClick={isInfoOpen ? onInfoClose : onInfoOpen} color="inherit" size="small">
+              <IconButton
+                color="inherit"
+                onClick={isInfoOpen ? onInfoClose : onInfoOpen}
+                size="small"
+                sx={{ pointerEvents: 'all' }}
+              >
                 {isInfoOpen ? <InfoIcon fontSize="small" /> : <InfoOutlinedIcon fontSize="small" />}
               </IconButton>
             </Tooltip>

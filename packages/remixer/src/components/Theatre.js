@@ -5,6 +5,7 @@ import TC from 'smpte-timecode';
 import mux from 'mux-embed';
 
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
@@ -16,40 +17,77 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
+const CONTROLS_HEIGHT = 80;
+
 const PREFIX = 'Theatre';
 const classes = {
-  controls: `${PREFIX}-controls`,
-  effect: `${PREFIX}-effect`,
-  player: `${PREFIX}-player`,
-  posterTitle: `${PREFIX}-posterTitle`,
   root: `${PREFIX}-root`,
+  playerWrap: `${PREFIX}-playerWrap`,
+  player: `${PREFIX}-player`,
+  titles: `${PREFIX}-titles`,
+  controls: `${PREFIX}-controls`,
+  //
+  effect: `${PREFIX}-effect`,
   stage: `${PREFIX}-stage`,
 };
 
 const Root = styled(Box)(({ theme }) => ({
-  background: theme.palette.text.primary,
+  background: 'black',
   color: theme.palette.primary.contrastText,
+  display: 'flex',
+  flexBasis: '33%',
+  flexDirection: 'column',
+  flexGrow: 2,
+  justifyContent: 'center',
+  padding: theme.spacing(2, 0),
+  width: '100%',
+  '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   [`& .${classes.stage}`]: {
+    lineHeight: 0,
     position: 'relative',
   },
-  [`& .${classes.controls}`]: {},
-  [`& .${classes.posterTitle}`]: {
-    background: `linear-gradient(to bottom, rgba(0,0,0,0.44) 0%, rgba(0,0,0,0.88) 100%)`,
+  [`& .${classes.player}`]: {
+    cursor: 'pointer',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '100%',
+  },
+  [`& .${classes.controls}`]: {
+    alignItems: 'center',
+    background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
+    bottom: 0,
+    display: 'flex',
+    height: `${CONTROLS_HEIGHT}px`,
+    left: 0,
+    padding: theme.spacing(1),
+    position: 'absolute',
+    right: 0,
+    transition: `opacity ${theme.transitions.duration.short}ms`,
+  },
+  [`& .${classes.titles}`]: {
+    background: `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,1) 100%)`,
     bottom: 0,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
     left: 0,
-    padding: theme.spacing(2),
+    padding: theme.spacing(4, 4, `${CONTROLS_HEIGHT}px`, 4),
+    pointerEvents: 'none',
     position: 'absolute',
     right: 0,
+    span: { borderBottom: `2px solid ${theme.palette.primary.main}` },
     top: 0,
     transition: `opacity ${theme.transitions.duration.standard}ms`,
-    // h2: {
-    //   maxWidth: '66%',
-    // },
-    span: {
-      borderBottom: `2px solid ${theme.palette.primary.main}`,
+  },
+
+  //
+
+  [`&:hover .${classes.stage} .${classes.controls}`]: {
+    [theme.breakpoints.up('md')]: {
+      opacity: '1 !important',
+      pointerEvents: 'all !important',
     },
   },
 }));
@@ -140,6 +178,10 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
   const [insert, setInsert] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
+
+  // console.group('HELLO');
+  // console.log('———————————————————————————————————————', referencePlaying);
+  // console.groupEnd();
 
   const intervals = useMemo(
     () =>
@@ -262,53 +304,41 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
   }, [buffering, reference, singlePlayer]);
 
   return (
-    <Root
-      className={classes.root}
-      sx={{
-        bgcolor: 'black',
-        color: 'white',
-        width: '100%',
-        '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
-      }}
-    >
-      <Box sx={{ py: 2 }}>
-        <Container maxWidth="sm">
-          <Box sx={{ mb: 2 }}>
-            {!singlePlayer
-              ? media?.map(({ id, url, poster, title }) => (
-                  <div key={id} style={{ display: active === id ? 'block' : 'none' }}>
-                    <Player
-                      key={id}
-                      active={active === id}
-                      time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
-                      // time={(time - (interval?.[0] ?? 0)) / 1e3}
-                      playing={referencePlaying && active === id}
-                      media={{ id, url, poster, title }}
-                      {...{ players, setActive, buffering, setBuffering }}
-                    />
-                  </div>
-                ))
-              : null}
-
-            {singlePlayer ? (
-              <div style={{ display: 'block' }}>
-                <SinglePlayer
-                  media={media[0]}
-                  {...{ buffering, setBuffering, onPlay, onPause, setTime }}
-                  playing={referencePlaying}
-                  ref={reference}
-                  singlePlayerOffset={singlePlayerOffset}
-                />
-              </div>
-            ) : null}
-
-            {insert && insert.type === 'title' && (
-              <>
-                <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>
-                  {insert.text}
-                </div>
-                <style scoped>
-                  {`
+    <Root className={classes.root}>
+      <Container maxWidth="sm">
+        <Box className={classes.stage} onClick={referencePlaying === true ? onPause : onPlay}>
+          <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width={16} height={9} />
+          </svg>
+          {!singlePlayer
+            ? media?.map(({ id, url, poster, title }) => (
+                <Box key={id} sx={{ display: active === id ? 'block' : 'none' }}>
+                  <Player
+                    // time={(time - (interval?.[0] ?? 0)) / 1e3}
+                    active={active === id}
+                    key={id}
+                    media={{ id, url, poster, title }}
+                    playing={referencePlaying && active === id}
+                    time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                    {...{ players, setActive, buffering, setBuffering }}
+                  />
+                </Box>
+              ))
+            : null}
+          {singlePlayer ? (
+            <SinglePlayer
+              media={media[0]}
+              playing={referencePlaying}
+              ref={reference}
+              singlePlayerOffset={singlePlayerOffset}
+              {...{ buffering, setBuffering, onPlay, onPause, setTime }}
+            />
+          ) : null}
+          {insert && insert.type === 'title' && (
+            <>
+              <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
+              <style scoped>
+                {`
                 .insertTitle {
                   pointer-events: none;
                   position: absolute;
@@ -336,15 +366,14 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-                </style>
-              </>
-            )}
-
-            {insert && insert.type === 'transition' && (
-              <>
-                <div className="insertTransition"></div>
-                <style scoped>
-                  {`
+              </style>
+            </>
+          )}
+          {insert && insert.type === 'transition' && (
+            <>
+              <div className="insertTransition"></div>
+              <style scoped>
+                {`
                 .insertTransition {
                   pointer-events: none;
                   position: absolute;
@@ -374,39 +403,47 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-                </style>
-              </>
-            )}
+              </style>
+            </>
+          )}
+          <Box
+            className={classes.controls}
+            sx={{
+              opacity: { md: referencePlaying ? 0 : 1 },
+              pointerEvents: { md: referencePlaying ? 'none' : 'all' },
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <Stack spacing={2} direction="row" sx={{ alignItems: 'center', width: '100%' }}>
+              {buffering && seekTime !== time ? (
+                <IconButton onClick={handlePause} color="inherit">
+                  {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                </IconButton>
+              ) : referencePlaying ? (
+                <IconButton onClick={handlePause} color="inherit">
+                  <PauseIcon />
+                </IconButton>
+              ) : (
+                <IconButton onClick={handlePlay} color="inherit">
+                  <PlayArrowIcon />
+                </IconButton>
+              )}
+              <Slider
+                aria-label="timeline"
+                defaultValue={0}
+                max={duration / 1e3}
+                min={0}
+                onChange={handleSliderChange}
+                size="small"
+                sx={{ color: 'white' }}
+                value={time / 1e3}
+                valueLabelDisplay="auto"
+                valueLabelFormat={timecode}
+              />
+            </Stack>
           </Box>
-          <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
-            {buffering && seekTime !== time ? (
-              <IconButton onClick={handlePause} color="inherit">
-                {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-              </IconButton>
-            ) : referencePlaying ? (
-              <IconButton onClick={handlePause} color="inherit">
-                <PauseIcon />
-              </IconButton>
-            ) : (
-              <IconButton onClick={handlePlay} color="inherit">
-                <PlayArrowIcon />
-              </IconButton>
-            )}
-            <Slider
-              aria-label="timeline"
-              defaultValue={0}
-              max={duration / 1e3}
-              min={0}
-              onChange={handleSliderChange}
-              size="small"
-              sx={{ color: 'white' }}
-              value={time / 1e3}
-              valueLabelDisplay="auto"
-              valueLabelFormat={timecode}
-            />
-          </Stack>
-        </Container>
-      </Box>
+        </Box>
+      </Container>
       {!singlePlayer ? (
         <audio
           controls
@@ -568,24 +605,18 @@ const Player = ({
   }, [id, setBuffering]);
 
   return (
-    <Box
-      sx={{
-        position: 'relative',
-        paddingTop: '56.25%',
-        '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
-      }}
-    >
-      <ReactPlayer
-        {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
-        className="reactPlayer"
-        controls={controls}
-        height="100%"
-        key={id}
-        muted={controls}
-        width="100%"
-        // muted={!primed}
-      />
-    </Box>
+    <ReactPlayer
+      {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
+      className={classes.player}
+      controls={controls}
+      height="100%"
+      key={id}
+      muted={controls}
+      width="100%"
+      // onClick={playing ? onPause : onPlay}
+      onClick={() => alert('wow')}
+      // muted={!primed}
+    />
   );
 };
 
@@ -692,32 +723,26 @@ const SinglePlayer = React.forwardRef(
     );
 
     return (
-      <Box
-        sx={{
-          position: 'relative',
-          paddingTop: '56.25%',
-          '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
-        }}
-      >
+      <>
         <ReactPlayer
           {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
-          className="reactPlayer"
           // controls={controls}
           // muted={controls}
-          key={id}
-          width="100%"
+          className={classes.player}
           height="100%"
-          ref={ref}
+          key={id}
           progressInterval={100}
+          ref={ref}
+          width="100%"
         />
         {title && (
-          <Box className={classes.posterTitle} sx={{ opacity: playing ? 0 : 1 }}>
+          <Box className={classes.titles} sx={{ opacity: playing ? 0 : 1 }}>
             <Typography component="h2" variant="h6">
               <span>{title}</span>
             </Typography>
           </Box>
         )}
-      </Box>
+      </>
     );
   },
 );
