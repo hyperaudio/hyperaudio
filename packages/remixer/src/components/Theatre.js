@@ -17,7 +17,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-const CONTROLS_HEIGHT = 80;
+const CONTROLS_HEIGHT = 60;
 
 const PREFIX = 'Theatre';
 const classes = {
