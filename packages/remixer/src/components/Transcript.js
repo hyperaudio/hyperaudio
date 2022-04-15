@@ -643,7 +643,7 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       data-key={key}
       data-offset={offset}
       data-text-offset={0}
-      data-speaker={`${speaker}:`}
+      data-speaker={`${speaker}`}
       className={`${speaker ? 'showSpeaker' : ''} ${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
