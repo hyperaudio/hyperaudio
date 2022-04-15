@@ -33,7 +33,10 @@ const getTranscripts = async setAllTranscripts => setAllTranscripts(await DataSt
 
 const RemixerPage = ({ organisation }) => {
   const router = useRouter();
-  // const id = useMemo(() => router.query.id, [router.query]);
+  const {
+    query: { transcripts: transcriptIds },
+  } = router;
+
   const [allMedia, setAllMedia] = useState([]);
   const [allTranscripts, setAllTranscripts] = useState([]);
   const [media, setMedia] = useState();
@@ -61,19 +64,71 @@ const RemixerPage = ({ organisation }) => {
   }, []);
 
   useEffect(() => {
-    if (allTranscripts.length === 0 || allMedia.length === 0) return;
+    if (allTranscripts.length === 0 || allMedia.length === 0 || !transcriptIds) return;
 
     (async () => {
       const transcripts = await Promise.all(
-        allTranscripts.map(async t => ({ ...t, blocks: await (await fetch(t.url)).json() })),
+        allTranscripts
+          .filter(({ id }) => transcriptIds.split(',').includes(id))
+          .map(async t => ({ ...t, blocks: await (await fetch(t.url)).json() })),
       );
 
       console.log({ transcripts });
 
       const sources = transcripts.map(t => {
         const media = allMedia.find(m => m.id === t.media);
+        const { speakers, blocks } = t.blocks;
+        const blocks2 = blocks
+          .map(({ key, text, data: { start: _start, end: _end, speaker, items: _items } }, i, arr) => {
+            const prev = i > 0 ? arr[i - 1] : null;
+            const next = i < arr.length - 1 ? arr[i + 1] : null;
+
+            const start = (_items[0].start ?? _start ?? prev?.data?.end ?? 0) * 1e3;
+            const end = (_items[_items.length - 1].end ?? _end ?? next?.data?.start ?? start) * 1e3;
+
+            const items = _items.map((item, j) => {
+              const pitem = j > 0 ? _items[j - 1] : null;
+              const nitem = j < _items.length - 1 ? _items[j + 1] : null;
+
+              return {
+                text: item.text,
+                start: (item.start ?? pitem?.end ?? start / 1e3) * 1e3,
+                end: (item.end ?? nitem?.start ?? item.start ?? end / 1e3) * 1e3,
+              };
+            });
+
+            return {
+              text,
+              type: 'block',
+              key: key ?? nanoid(5),
+              media: media.playbackId,
+              speaker: speakers?.[speaker]?.name ?? speaker,
+              start,
+              end,
+              starts: items.map(({ start }) => start),
+              duration: end - start,
+              ends: items.map(({ end }) => end),
+              durations: items.map(({ start, end }) => end - start),
+              starts2: items.map(({ start }) => start - items[0].start),
+              ends2: items.map(({ end }) => end - items[0].start),
+              offsets: items.map(({ text }, i, arr) => {
+                if (i === 0) return 0;
+                return arr.slice(0, i).reduce((acc, item) => acc + item.text.length + 1, 0);
+              }),
+              lengths: items.map(({ text }) => text.length),
+              gap: 0,
+            };
+          })
+          .reduce((acc, block, i) => {
+            if (i === 0) return [block];
+            const p = acc.pop();
+            p.gap = p.end ? block.start - p.end : 0;
+            return [...acc, p, block];
+          }, []);
+
         return {
           ...t,
+          blocks: blocks2,
           // blocks2: t.blocks.map(b => ({ ...b, media: t.media })),
           media: [{ id: media.playbackId, url: media.url, poster: media.poster }],
         };
@@ -89,7 +144,7 @@ const RemixerPage = ({ organisation }) => {
         },
       });
     })();
-  }, [allMedia, allTranscripts]);
+  }, [allMedia, allTranscripts, transcriptIds]);
 
   // console.log({ media, data });
 
@@ -103,7 +158,14 @@ const RemixerPage = ({ organisation }) => {
       <Root className={classes.root}>
         <div className={classes.push} />
         {data && data.sources && data.sources.length > 0 ? (
-          <Remixer editable={true} remix={data.remix} sources={data.sources} media={[]} />
+          <Remixer
+            editable={true}
+            remix={data.remix}
+            sources={data.sources}
+            tabs={data.sources}
+            media={[]}
+            isSingleMedia={false}
+          />
         ) : null}
       </Root>
     </>

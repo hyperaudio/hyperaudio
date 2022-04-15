@@ -1034,17 +1034,26 @@ const EditorPage = ({ organisation, user, groups }) => {
         const jsonGz2 = pako.gzip(utf8Data2);
         const blobGz2 = new Blob([jsonGz2]);
 
-        const result = await Storage.put(`transcript/${media.playbackId}/${language}/translation.json.gz`, blobGz2, {
-          level: 'public',
-          contentType: 'application/json',
-          contentEncoding: 'gzip',
-          metadata: {
-            user: user.id,
-            transcript: transcript2.id,
+        const result = await Storage.put(
+          `transcript/${media.playbackId}/${language}/${transcript2.id}.json.gz`,
+          blobGz2,
+          {
+            level: 'public',
+            contentType: 'application/json',
+            contentEncoding: 'gzip',
+            metadata: {
+              user: user.id,
+              transcript: transcript2.id,
+            },
           },
-        });
+        );
 
         console.log(result);
+        await DataStore.save(
+          Transcript.copyOf(transcript2, updated => {
+            updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json.gz`;
+          }),
+        );
         //
         window.location.href = `/editor?media=${media.id}&original=${transcript.id}&transcript=${transcript2.id}`;
       });
