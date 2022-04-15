@@ -43,7 +43,10 @@ const Root = styled(Box)(({ theme }) => ({
   width: '100%',
   '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   [`& .${classes.stage}`]: {
+    border: `1px solid rgba(255,255,255,0.22)`,
+    borderRadius: theme.shape.borderRadius * 2,
     lineHeight: 0,
+    overflow: 'hidden',
     position: 'relative',
   },
   [`& .${classes.player}`]: {
