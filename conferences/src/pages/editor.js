@@ -1017,7 +1017,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           const updated = await DataStore.save(
             Transcript.copyOf(transcript2, updated => {
               updated.status = { label: 'translated' };
-              updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/translation.json.gz`;
+              updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json.gz`;
               updated.title = title.text;
               updated.description = description.text;
             }),
@@ -1026,7 +1026,6 @@ const EditorPage = ({ organisation, user, groups }) => {
         }
 
         console.log(transcript2);
-        setTranslationProgress(100);
 
         const utf8Data2 = new TextEncoder('utf-8').encode(
           JSON.stringify({ speakers: draft.speakers, blocks: translatedBlocks }),
@@ -1054,6 +1053,7 @@ const EditorPage = ({ organisation, user, groups }) => {
             updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${language}/${transcript2.id}.json.gz`;
           }),
         );
+        setTranslationProgress(100);
         //
         window.location.href = `/editor?media=${media.id}&original=${transcript.id}&transcript=${transcript2.id}`;
       });
