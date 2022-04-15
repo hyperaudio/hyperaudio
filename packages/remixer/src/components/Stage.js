@@ -5,8 +5,6 @@ import TC from 'smpte-timecode';
 import mux from 'mux-embed';
 
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import IconButton from '@mui/material/IconButton';
@@ -19,36 +17,21 @@ import { styled } from '@mui/material/styles';
 
 const CONTROLS_HEIGHT = 60;
 
-const PREFIX = 'Theatre';
+const PREFIX = 'Stage';
 const classes = {
   root: `${PREFIX}-root`,
   playerWrap: `${PREFIX}-playerWrap`,
   player: `${PREFIX}-player`,
   titles: `${PREFIX}-titles`,
   controls: `${PREFIX}-controls`,
-  //
-  effect: `${PREFIX}-effect`,
-  stage: `${PREFIX}-stage`,
 };
 
 const Root = styled(Box)(({ theme }) => ({
-  background: 'black',
-  color: theme.palette.primary.contrastText,
-  display: 'flex',
-  flexBasis: '33%',
-  flexDirection: 'column',
-  flexGrow: 2,
-  justifyContent: 'center',
-  padding: theme.spacing(2, 0),
-  width: '100%',
-  '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
-  [`& .${classes.stage}`]: {
-    border: `1px solid rgba(255,255,255,0.22)`,
-    borderRadius: theme.shape.borderRadius * 2,
-    lineHeight: 0,
-    overflow: 'hidden',
-    position: 'relative',
-  },
+  border: `1px solid rgba(255,255,255,0.22)`,
+  borderRadius: theme.shape.borderRadius * 2,
+  lineHeight: 0,
+  overflow: 'hidden',
+  position: 'relative',
   [`& .${classes.player}`]: {
     cursor: 'pointer',
     left: 0,
@@ -87,7 +70,7 @@ const Root = styled(Box)(({ theme }) => ({
 
   //
 
-  [`&:hover .${classes.stage} .${classes.controls}`]: {
+  [`&:hover .${classes.controls}`]: {
     [theme.breakpoints.up('md')]: {
       opacity: '1 !important',
       pointerEvents: 'all !important',
@@ -144,7 +127,7 @@ function createSilence(seconds = 1) {
   return url;
 }
 
-export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer, singlePlayerOffset }) => {
+export const Stage = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer, singlePlayerOffset }) => {
   const [seekTime, setSeekTime] = useState(36 * 1e6); // FIXME why magic number?
   const duration = useMemo(
     () =>
@@ -307,41 +290,39 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
   }, [buffering, reference, singlePlayer]);
 
   return (
-    <Root className={classes.root}>
-      <Container maxWidth="sm">
-        <Box className={classes.stage} onClick={referencePlaying === true ? onPause : onPlay}>
-          <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width={16} height={9} />
-          </svg>
-          {!singlePlayer
-            ? media?.map(({ id, url, poster, title }) => (
-                <Box key={id} sx={{ display: active === id ? 'block' : 'none' }}>
-                  <Player
-                    // time={(time - (interval?.[0] ?? 0)) / 1e3}
-                    active={active === id}
-                    key={id}
-                    media={{ id, url, poster, title }}
-                    playing={referencePlaying && active === id}
-                    time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
-                    {...{ players, setActive, buffering, setBuffering }}
-                  />
-                </Box>
-              ))
-            : null}
-          {singlePlayer ? (
-            <SinglePlayer
-              media={media[0]}
-              playing={referencePlaying}
-              ref={reference}
-              singlePlayerOffset={singlePlayerOffset}
-              {...{ buffering, setBuffering, onPlay, onPause, setTime }}
-            />
-          ) : null}
-          {insert && insert.type === 'title' && (
-            <>
-              <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
-              <style scoped>
-                {`
+    <Root className={classes.root} onClick={referencePlaying === true ? onPause : onPlay}>
+      <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width={16} height={9} />
+      </svg>
+      {!singlePlayer
+        ? media?.map(({ id, url, poster, title }) => (
+            <Box key={id} sx={{ display: active === id ? 'block' : 'none' }}>
+              <Player
+                // time={(time - (interval?.[0] ?? 0)) / 1e3}
+                active={active === id}
+                key={id}
+                media={{ id, url, poster, title }}
+                playing={referencePlaying && active === id}
+                time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                {...{ players, setActive, buffering, setBuffering }}
+              />
+            </Box>
+          ))
+        : null}
+      {singlePlayer ? (
+        <SinglePlayer
+          media={media[0]}
+          playing={referencePlaying}
+          ref={reference}
+          singlePlayerOffset={singlePlayerOffset}
+          {...{ buffering, setBuffering, onPlay, onPause, setTime }}
+        />
+      ) : null}
+      {insert && insert.type === 'title' && (
+        <>
+          <div className={insert.fullSize ? 'insertTitle fullSize' : 'insertTitle lowerThirds'}>{insert.text}</div>
+          <style scoped>
+            {`
                 .insertTitle {
                   pointer-events: none;
                   position: absolute;
@@ -369,14 +350,14 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-              </style>
-            </>
-          )}
-          {insert && insert.type === 'transition' && (
-            <>
-              <div className="insertTransition"></div>
-              <style scoped>
-                {`
+          </style>
+        </>
+      )}
+      {insert && insert.type === 'transition' && (
+        <>
+          <div className="insertTransition"></div>
+          <style scoped>
+            {`
                 .insertTransition {
                   pointer-events: none;
                   position: absolute;
@@ -406,47 +387,45 @@ export const Theatre = ({ blocks, media, players, reference, time = 0, setTime, 
                   }
                 }
               `}
-              </style>
-            </>
+          </style>
+        </>
+      )}
+      <Box
+        className={classes.controls}
+        sx={{
+          opacity: { md: referencePlaying ? 0 : 1 },
+          pointerEvents: { md: referencePlaying ? 'none' : 'all' },
+        }}
+        onClick={e => e.stopPropagation()}
+      >
+        <Stack spacing={2} direction="row" sx={{ alignItems: 'center', width: '100%' }}>
+          {buffering && seekTime !== time ? (
+            <IconButton onClick={handlePause} color="inherit">
+              {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+            </IconButton>
+          ) : referencePlaying ? (
+            <IconButton onClick={handlePause} color="inherit">
+              <PauseIcon />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handlePlay} color="inherit">
+              <PlayArrowIcon />
+            </IconButton>
           )}
-          <Box
-            className={classes.controls}
-            sx={{
-              opacity: { md: referencePlaying ? 0 : 1 },
-              pointerEvents: { md: referencePlaying ? 'none' : 'all' },
-            }}
-            onClick={e => e.stopPropagation()}
-          >
-            <Stack spacing={2} direction="row" sx={{ alignItems: 'center', width: '100%' }}>
-              {buffering && seekTime !== time ? (
-                <IconButton onClick={handlePause} color="inherit">
-                  {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                </IconButton>
-              ) : referencePlaying ? (
-                <IconButton onClick={handlePause} color="inherit">
-                  <PauseIcon />
-                </IconButton>
-              ) : (
-                <IconButton onClick={handlePlay} color="inherit">
-                  <PlayArrowIcon />
-                </IconButton>
-              )}
-              <Slider
-                aria-label="timeline"
-                defaultValue={0}
-                max={duration / 1e3}
-                min={0}
-                onChange={handleSliderChange}
-                size="small"
-                sx={{ color: 'white' }}
-                value={time / 1e3}
-                valueLabelDisplay="auto"
-                valueLabelFormat={timecode}
-              />
-            </Stack>
-          </Box>
-        </Box>
-      </Container>
+          <Slider
+            aria-label="timeline"
+            defaultValue={0}
+            max={duration / 1e3}
+            min={0}
+            onChange={handleSliderChange}
+            size="small"
+            sx={{ color: 'white' }}
+            value={time / 1e3}
+            valueLabelDisplay="auto"
+            valueLabelFormat={timecode}
+          />
+        </Stack>
+      </Box>
       {!singlePlayer ? (
         <audio
           controls
@@ -516,7 +495,7 @@ const Player = ({
         hlsjs: ref.current?.getInternalPlayer('hls'),
         data: {
           env_key: global.MUX_KEY,
-          player_name: 'Theatre',
+          player_name: 'Stage',
           player_init_time: initTime,
           video_id: id,
           video_title: title,
@@ -543,7 +522,7 @@ const Player = ({
     //   debug: false,
     //   data: {
     //     env_key: global.MUX_KEY,
-    //     player_name: 'Theatre',
+    //     player_name: 'Stage',
     //     player_init_time: initTime,
     //     video_id: id,
     //   },
@@ -554,7 +533,7 @@ const Player = ({
     //   hlsjs: ref.current?.getInternalPlayer('hls'),
     //   data: {
     //     env_key: global.MUX_KEY,
-    //     player_name: 'Theatre',
+    //     player_name: 'Stage',
     //     player_init_time: initTime,
     //     video_id: id,
     //     video_title: title,
@@ -562,7 +541,7 @@ const Player = ({
     // });
     // console.log({
     //   // env_key: global.MUX_KEY,
-    //   player_name: 'Theatre',
+    //   player_name: 'Stage',
     //   player_init_time: initTime,
     //   video_id: id,
     //   video_title: title,
@@ -665,7 +644,7 @@ const SinglePlayer = React.forwardRef(
           hlsjs: ref.current?.getInternalPlayer('hls'),
           data: {
             env_key: global.MUX_KEY,
-            player_name: 'Theatre',
+            player_name: 'Stage',
             player_init_time: initTime,
             video_id: id,
             video_title: title,

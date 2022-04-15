@@ -1,11 +1,42 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
 
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 import { styled } from '@mui/material/styles';
 
-import { SourceTopbar, Theatre, Transcript } from './components';
+import { Stage, Transcript } from './components';
+
+const PREFIX = 'Source';
+const classes = {
+  root: `${PREFIX}-root`,
+  theatre: `${PREFIX}-theatre`,
+  transcript: `${PREFIX}-transcript`,
+};
 
 const Root = styled('div')(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  justifyContent: 'space-between',
+  position: 'relative',
+  [`& .${classes.theatre}`]: {
+    aligenItems: 'center',
+    backgroundColor: 'black',
+    color: theme.palette.primary.contrastText,
+    display: 'flex',
+    flexBasis: '40%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: theme.spacing(2, 0),
+    width: '100%',
+  },
+  [`& .${classes.transcript}`]: {
+    flexBasis: '60%',
+    overflow: 'auto',
+    padding: theme.spacing(2, 0),
+    width: '100%',
+  },
 }));
 
 const Source = props => {
@@ -33,25 +64,30 @@ const Source = props => {
   // useEffect(() => console.log({ time }), [time]);
 
   return (
-    <Root className={`RemixerPane RemixerPane--Source`}>
-      {!isSingleMedia && <SourceTopbar {...props} />}
-      <Theatre {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
-      <div className="transcriptWrap">
-        <Transcript
-          {...{
-            id,
-            blocks,
-            players,
-            reference,
-            time,
-            editable,
-            isSource: true,
-            autoScroll,
-            singlePlayer,
-            singlePlayerOffset,
-          }}
-        />
-      </div>
+    <Root className={classes.root}>
+      <Box className={classes.theatre}>
+        <Container maxWidth="sm">
+          <Stage {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
+        </Container>
+      </Box>
+      <Box className={classes.transcript}>
+        <Container maxWidth="sm">
+          <Transcript
+            {...{
+              id,
+              blocks,
+              players,
+              reference,
+              time,
+              editable,
+              isSource: true,
+              autoScroll,
+              singlePlayer,
+              singlePlayerOffset,
+            }}
+          />
+        </Container>
+      </Box>
     </Root>
   );
 };

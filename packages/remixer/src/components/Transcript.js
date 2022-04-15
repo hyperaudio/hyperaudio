@@ -30,7 +30,6 @@ const classes = {
 };
 
 const Root = styled('div')(({ theme }) => ({
-  width: '100%',
   [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
     borderRadius: theme.shape.borderRadius,
     [`&:hover`]: {
@@ -145,7 +144,7 @@ export const Transcript = props => {
     singlePlayer,
     singlePlayerOffset,
   } = props;
-  const container = useRef();
+  const root = useRef();
 
   const [range, setRange] = useState(externalRange);
 
@@ -312,206 +311,204 @@ export const Transcript = props => {
 
   useEffect(() => {
     if (externalRange) {
-      container.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      root.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, [externalRange, container]);
+  }, [externalRange, root]);
 
   // useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
-    <Root>
-      <Container ref={container} maxWidth="sm" onClick={handleClick}>
-        {editable && !isSource ? (
-          <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks.map((block, i) => (
-                  <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
-                    {(provided, snapshot) => (
-                      <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                        <DragHandle
-                          {...provided.dragHandleProps}
-                          color="default"
-                          size="small"
-                          className={classes.dragHandle}
-                        >
-                          <DragIndicatorIcon fontSize="small" />
-                        </DragHandle>
-                        {block.type === 'block' ? (
-                          context === block.key ? (
-                            <ContextFrame title={contextData.title}>
-                              <Transcript
-                                {...{
-                                  ...props,
-                                  editable: false,
-                                  isSource: false,
-                                  noMenu: true,
-                                  ...contextData,
-                                }}
-                              />
-                            </ContextFrame>
-                          ) : (
-                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
-                          )
-                        ) : block.type === 'title' && editable ? (
-                          <div className={classes.insertWrap}>
-                            <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-                          </div>
-                        ) : block.type === 'slides' ? (
-                          <div className={classes.insertWrap}>
-                            <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
-                          </div>
-                        ) : block.type === 'transition' && editable ? (
-                          <div className={classes.insertWrap}>
-                            <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-                          </div>
-                        ) : null}
-                        <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                          <MoreHorizIcon fontSize="small" />
-                        </BlockMenu>
-                      </DragBlock>
-                    )}
-                  </Draggable>
-                ))}
-              </div>
-            )}
-          </Droppable>
-        ) : editable && isSource && range ? (
-          <Droppable droppableId={`droppable:${id}`} type="BLOCK">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks
-                  ?.filter(({ type }) => type === 'block')
-                  .map((block, i) => (
-                    <Block
-                      key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range, autoScroll }}
-                      rangeMode="before-range"
-                    />
-                  ))}
-
-                <Draggable draggableId={`draggable:${id}::${range[0]}-${range[1]}`} index={0}>
+    <Root ref={root} onClick={handleClick}>
+      {editable && !isSource ? (
+        <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {blocks.map((block, i) => (
+                <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
                   {(provided, snapshot) => (
-                    <>
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        {blocks
-                          ?.filter(({ type }) => type === 'block')
-                          .map((block, i) => (
-                            <Block
-                              key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range, autoScroll }}
-                              rangeMode="in-range"
-                              onlyRange={snapshot.isDragging}
+                    <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
+                      <DragHandle
+                        {...provided.dragHandleProps}
+                        color="default"
+                        size="small"
+                        className={classes.dragHandle}
+                      >
+                        <DragIndicatorIcon fontSize="small" />
+                      </DragHandle>
+                      {block.type === 'block' ? (
+                        context === block.key ? (
+                          <ContextFrame title={contextData.title}>
+                            <Transcript
+                              {...{
+                                ...props,
+                                editable: false,
+                                isSource: false,
+                                noMenu: true,
+                                ...contextData,
+                              }}
                             />
-                          ))}
-                      </div>
-                      {snapshot.isDragging &&
-                        blocks
-                          ?.filter(({ type }) => type === 'block')
-                          .map((block, i) => (
-                            <Block
-                              key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range, autoScroll }}
-                              rangeMode="in-range"
-                            />
-                          ))}
-                    </>
+                          </ContextFrame>
+                        ) : (
+                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
+                        )
+                      ) : block.type === 'title' && editable ? (
+                        <div className={classes.insertWrap}>
+                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                        </div>
+                      ) : block.type === 'slides' ? (
+                        <div className={classes.insertWrap}>
+                          <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
+                        </div>
+                      ) : block.type === 'transition' && editable ? (
+                        <div className={classes.insertWrap}>
+                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                        </div>
+                      ) : null}
+                      <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                        <MoreHorizIcon fontSize="small" />
+                      </BlockMenu>
+                    </DragBlock>
                   )}
                 </Draggable>
-
-                {blocks
-                  ?.filter(({ type }) => type === 'block')
-                  .map((block, i) => (
-                    <Block
-                      key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range, autoScroll }}
-                      rangeMode="after-range"
-                    />
-                  ))}
-              </div>
-            )}
-          </Droppable>
-        ) : range ? (
-          <>
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block
-                  key={`${id}:${block.key}:${i}`}
-                  {...{ blocks, block, time, range, autoScroll }}
-                  rangeMode="before-range"
-                />
               ))}
-
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block
-                  key={`${id}:${block.key}:${i}`}
-                  {...{ blocks, block, time, range, autoScroll }}
-                  rangeMode="in-range"
-                />
-              ))}
-
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block
-                  key={`${id}:${block.key}:${i}`}
-                  {...{ blocks, block, time, range, autoScroll }}
-                  rangeMode="after-range"
-                />
-              ))}
-          </>
-        ) : (
-          blocks?.map((block, i) =>
-            block.type === 'block' ? (
-              <DragBlock key={`${id}:${block.key}:${i}`}>
-                {context === block.key ? (
-                  <ContextFrame title={contextData.title}>
-                    <Transcript
-                      {...{
-                        ...props,
-                        editable: false,
-                        isSource: false,
-                        noMenu: true,
-                        ...contextData,
-                      }}
-                    />
-                  </ContextFrame>
-                ) : (
+            </div>
+          )}
+        </Droppable>
+      ) : editable && isSource && range ? (
+        <Droppable droppableId={`droppable:${id}`} type="BLOCK">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {blocks
+                ?.filter(({ type }) => type === 'block')
+                .map((block, i) => (
                   <Block
                     key={`${id}:${block.key}:${i}`}
                     {...{ blocks, block, time, range, autoScroll }}
-                    // offset={contextData && contextData.index > i ? contextData.offset : 0}
+                    rangeMode="before-range"
                   />
+                ))}
+
+              <Draggable draggableId={`draggable:${id}::${range[0]}-${range[1]}`} index={0}>
+                {(provided, snapshot) => (
+                  <>
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                      {blocks
+                        ?.filter(({ type }) => type === 'block')
+                        .map((block, i) => (
+                          <Block
+                            key={`${id}:${block.key}:${i}`}
+                            {...{ blocks, block, time, range, autoScroll }}
+                            rangeMode="in-range"
+                            onlyRange={snapshot.isDragging}
+                          />
+                        ))}
+                    </div>
+                    {snapshot.isDragging &&
+                      blocks
+                        ?.filter(({ type }) => type === 'block')
+                        .map((block, i) => (
+                          <Block
+                            key={`${id}:${block.key}:${i}`}
+                            {...{ blocks, block, time, range, autoScroll }}
+                            rangeMode="in-range"
+                          />
+                        ))}
+                  </>
                 )}
-                {!isSource && !noMenu ? (
-                  <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                    <MoreHorizIcon fontSize="small" />
-                  </BlockMenu>
-                ) : null}
-              </DragBlock>
-            ) : block.type === 'title' && editable ? (
-              <div className={classes.insertWrap}>
-                <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-              </div>
-            ) : block.type === 'slides' ? (
-              <div className={classes.insertWrap}>
-                <InsertSlide
+              </Draggable>
+
+              {blocks
+                ?.filter(({ type }) => type === 'block')
+                .map((block, i) => (
+                  <Block
+                    key={`${id}:${block.key}:${i}`}
+                    {...{ blocks, block, time, range, autoScroll }}
+                    rangeMode="after-range"
+                  />
+                ))}
+            </div>
+          )}
+        </Droppable>
+      ) : range ? (
+        <>
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="before-range"
+              />
+            ))}
+
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="in-range"
+              />
+            ))}
+
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="after-range"
+              />
+            ))}
+        </>
+      ) : (
+        blocks?.map((block, i) =>
+          block.type === 'block' ? (
+            <DragBlock key={`${id}:${block.key}:${i}`}>
+              {context === block.key ? (
+                <ContextFrame title={contextData.title}>
+                  <Transcript
+                    {...{
+                      ...props,
+                      editable: false,
+                      isSource: false,
+                      noMenu: true,
+                      ...contextData,
+                    }}
+                  />
+                </ContextFrame>
+              ) : (
+                <Block
                   key={`${id}:${block.key}:${i}`}
-                  onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
-                  {...{ sources, block, dispatch, editable }}
+                  {...{ blocks, block, time, range, autoScroll }}
+                  // offset={contextData && contextData.index > i ? contextData.offset : 0}
                 />
-              </div>
-            ) : block.type === 'transition' && editable ? (
-              <div className={classes.insertWrap}>
-                <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-              </div>
-            ) : null,
-          )
-        )}
-      </Container>
+              )}
+              {!isSource && !noMenu ? (
+                <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                  <MoreHorizIcon fontSize="small" />
+                </BlockMenu>
+              ) : null}
+            </DragBlock>
+          ) : block.type === 'title' && editable ? (
+            <div className={classes.insertWrap}>
+              <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+            </div>
+          ) : block.type === 'slides' ? (
+            <div className={classes.insertWrap}>
+              <InsertSlide
+                key={`${id}:${block.key}:${i}`}
+                onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
+                {...{ sources, block, dispatch, editable }}
+              />
+            </div>
+          ) : block.type === 'transition' && editable ? (
+            <div className={classes.insertWrap}>
+              <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+            </div>
+          ) : null,
+        )
+      )}
       <Menu
         anchorEl={anchorEl}
         open={open}

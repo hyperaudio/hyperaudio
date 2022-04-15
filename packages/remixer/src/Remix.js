@@ -4,7 +4,7 @@ import { Droppable } from 'react-beautiful-dnd';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
-import { RemixTopbar, Theatre, Transcript, InsertsBar } from './components';
+import { RemixTopbar, Stage, Transcript, InsertsBar } from './components';
 import { StartDropIcon } from '@hyperaudio/common';
 
 const PREFIX = 'Remix';
@@ -70,7 +70,7 @@ const Remix = props => {
         <RemixTopbar {...props} />
         {blocks?.length > 0 ? (
           <>
-            <Theatre {...{ media, players, reference, time, setTime }} blocks={blocksOverride ?? blocks} />
+            <Stage {...{ media, players, reference, time, setTime }} blocks={blocksOverride ?? blocks} />
             <div className="transcriptWrap">
               <Transcript
                 {...{
