@@ -107,8 +107,8 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                   showPreview ? '-preview.json.gz' : '.json.gz'
                 }`;
 
-                if (language !== media.language)
-                  key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
+                // if (language !== media.language)
+                //   key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
 
                 const signedURL = await Storage.get(key, {
                   level: 'public',
