@@ -16,21 +16,22 @@ import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import Router, { useRouter } from 'next/router';
 
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import Container from '@mui/material/Container';
-import Menu from '@mui/material/Menu';
-import ListItemText from '@mui/material/ListItemText';
-import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
+import ListItemText from '@mui/material/ListItemText';
 import LoadingButton from '@mui/lab/LoadingButton';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PublishIcon from '@mui/icons-material/Publish';
@@ -39,6 +40,7 @@ import Skeleton from '@mui/material/Skeleton';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
@@ -117,7 +119,6 @@ const Root = styled('div', {
   [`& .${classes.toolbar}`]: {
     background: 'black',
     color: theme.palette.primary.contrastText,
-    pointerEvents: 'none',
     zIndex: 1,
     '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   },
@@ -1144,70 +1145,94 @@ const EditorPage = ({ organisation, user, groups }) => {
       <Root className={classes.root}>
         <Toolbar ref={ref} />
         <Toolbar className={classes.toolbar}>
-          <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
-            <Button
-              color="inherit"
-              endIcon={<ArrowDropDownIcon />}
-              id="translations-button"
-              size="small"
-              variant="outlined"
-              onClick={e => setLangAnchorEl(e.currentTarget)}
-            >
-              {ISO6391.getName(transcript?.language.split('-')[0])}
-            </Button>
-            <Button
-              color="inherit"
-              component={Link}
-              href={{ pathname: `/media/${media?.id}`, query: { language: transcript?.language } }}
-              size="small"
-              startIcon={<ArrowBackIcon />}
-              sx={{ display: { xs: 'none', md: 'inline-flex' } }}
-            >
-              Back
-            </Button>
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{
-                alignSelf: 'center',
-                borderColor: 'rgba(255,255,255,0.22)',
-                display: { xs: 'none', md: 'unset' },
-                height: '16px',
-              }}
-            />
+          <Stack direction="row" spacing={{ xs: 1, md: 2 }} sx={{ flexGrow: 1 }}>
+            <Tooltip title="Choose translation…">
+              <Button
+                color="inherit"
+                endIcon={<ArrowDropDownIcon />}
+                id="translations-button"
+                onClick={e => setLangAnchorEl(e.currentTarget)}
+                size="small"
+                variant="outlined"
+              >
+                {ISO6391.getName(transcript?.language.split('-')[0])}
+              </Button>
+            </Tooltip>
+            <Tooltip title="Save">
+              <Box sx={{ display: { xs: 'inline', md: 'none' } }}>
+                <IconButton
+                  disabled={
+                    !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
+                  }
+                  onClick={handleSave}
+                  color="inherit"
+                >
+                  {saving !== 0 ? <CircularProgress color="inherit" size={20} /> : <SaveIcon fontSize="small" />}
+                </IconButton>
+              </Box>
+            </Tooltip>
             <LoadingButton
               color="inherit"
               disabled={
                 !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
               }
-              loading={saving !== 0}
-              loadingPosition="start"
-              onClick={handleSave}
               startIcon={<SaveIcon fontSize="small" />}
+              loadingPosition="left"
+              loading={saving !== 0}
+              onClick={handleSave}
               size="small"
+              sx={{ display: { xs: 'none', md: 'inline-flex' } }}
             >
               Save
             </LoadingButton>
-            <LoadingButton
-              color="inherit"
-              disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-              loading={previewing > 0}
-              loadingPosition="start"
-              size="small"
-              onClick={handlePreview}
-              startIcon={<VisibilityIcon fontSize="small" />}
-            >
-              Preview
-            </LoadingButton>
           </Stack>
-          <Stack spacing={2} direction="row">
+          <Stack spacing={{ xs: 1, md: 2 }} direction="row">
             <Button
               color="inherit"
               onClick={() => setMonetizationDialog(true)}
               size="small"
               startIcon={<AttachMoneyIcon />}
+              sx={{ display: { xs: 'none', md: 'inline-flex' } }}
             >
               Monetize
+            </Button>
+            <Tooltip title="Monetize">
+              <Box sx={{ display: { xs: 'inline', md: 'none' } }}>
+                <IconButton onClick={() => setMonetizationDialog(true)} color="inherit">
+                  <AttachMoneyIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Tooltip>
+
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ height: '16px', alignSelf: 'center', borderColor: 'rgba(255,255,255,0.22)' }}
+            />
+            <Tooltip title="Preview">
+              <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>
+                <IconButton
+                  disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+                  onClick={handlePreview}
+                  color="inherit"
+                >
+                  {previewing > 0 ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    <VisibilityIcon fontSize="small" />
+                  )}
+                </IconButton>
+              </Box>
+            </Tooltip>
+            <Button
+              color="inherit"
+              disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+              endIcon={<VisibilityIcon fontSize="small" />}
+              onClick={handlePreview}
+              size="small"
+              sx={{ display: { xs: 'none', sm: 'inline-flex' } }}
+            >
+              Preview
             </Button>
             <Button
               color="inherit"

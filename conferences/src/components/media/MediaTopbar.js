@@ -30,7 +30,6 @@ const Root = styled(Toolbar, {
   return {
     background: 'black',
     color: theme.palette.primary.contrastText,
-    pointerEvents: 'none',
     zIndex: 1,
   };
 });
@@ -76,25 +75,12 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
                 id="translations-button"
                 onClick={onOpenTranslations}
                 size="small"
-                sx={{ pointerEvents: 'all' }}
                 variant="outlined"
               >
                 {translation?.name}
               </Button>
             </span>
           </Tooltip>
-          {canEdit && (
-            <Button
-              color="inherit"
-              component={Link}
-              href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
-              size="small"
-              startIcon={<EditIcon />}
-              sx={{ pointerEvents: 'all' }}
-            >
-              Edit
-            </Button>
-          )}
           {/* <Divider
               orientation="vertical"
               flexItem
@@ -134,15 +120,22 @@ export default function MediaTopbar({ source, mediaLabel, canEdit, onSelectTrans
             </>
           ) : null}
           <Tooltip title="Toggle info">
-            <IconButton
-              color="inherit"
-              onClick={isInfoOpen ? onInfoClose : onInfoOpen}
-              size="small"
-              sx={{ pointerEvents: 'all' }}
-            >
+            <IconButton color="inherit" onClick={isInfoOpen ? onInfoClose : onInfoOpen} size="small">
               {isInfoOpen ? <InfoIcon fontSize="small" /> : <InfoOutlinedIcon fontSize="small" />}
             </IconButton>
           </Tooltip>
+          {canEdit && (
+            <Button
+              color="inherit"
+              component={Link}
+              href={{ pathname: '/editor', query: { media: source.media[0].mediaId, transcript: source.id } }}
+              size="small"
+              startIcon={<EditIcon />}
+              variant="outlined"
+            >
+              Edit
+            </Button>
+          )}
           {/* <Button
               color="inherit"
               disabled
