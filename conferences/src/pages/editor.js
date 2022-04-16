@@ -48,6 +48,7 @@ import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudi
 import Link from '../components/MuiNextLink';
 import MonetizationDialog from '../components/editor/MonetizationDialog';
 import NewTranslation from '../components/editor/NewTranslation';
+import PublishDialog from '../components/editor/PublishDialog';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
 try {
@@ -56,31 +57,7 @@ try {
   console.log('AmazonAIPredictionsProvider already added', ignored);
 }
 
-// function CircularProgressWithLabel(props) {
-//   return (
-//     <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-//       <CircularProgress variant="determinate" {...props} />
-//       <Box
-//         sx={{
-//           top: 0,
-//           left: 0,
-//           bottom: 0,
-//           right: 0,
-//           position: 'absolute',
-//           display: 'flex',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}
-//       >
-//         <Typography variant="caption" component="div" color="text.secondary">{`${Math.round(
-//           props.value,
-//         )}%`}</Typography>
-//       </Box>
-//     </Box>
-//   );
-// }
-
-function SkeletonLoader({ progress }) {
+function SkeletonLoader() {
   const dummytextarr = [...Array(5).keys()];
   return (
     <>
@@ -104,22 +81,6 @@ function SkeletonLoader({ progress }) {
           ))}
         </>
       ))}
-      {/* <Box
-        sx={{
-          alignItems: 'center',
-          bgcolor: 'rgba(255,255,255,0.5)',
-          bottom: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          left: 0,
-          position: 'absolute',
-          right: 0,
-          top: 0,
-        }}
-      >
-        <CircularProgressWithLabel color="primary" size={64} thickness={2} value={progress} variant="determinate" />
-      </Box> */}
     </>
   );
 }
@@ -532,6 +493,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [previewingProgress, setPreviewingProgress] = useState(0);
   const [publishingProgress, setPublishingProgress] = useState(0);
   const [publishing, setPublishing] = useState(0);
+  const [publishDialog, setPublishDialog] = useState(false);
 
   // https://github.com/vercel/next.js/issues/2476#issuecomment-563190607
   const unsavedChanges = useMemo(() => draft?.contentState !== saved?.contentState, [draft, saved]);
@@ -803,6 +765,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     plausible('publish');
     setSaved(draft);
+    setPublishDialog(false);
   }, [draft, media, speakers, transcript, user, plausible]);
 
   global.resetTranscript = useCallback(async () => {
@@ -1186,18 +1149,16 @@ const EditorPage = ({ organisation, user, groups }) => {
               >
                 Monetize
               </Button>
-              <LoadingButton
+              <Button
                 color="inherit"
                 disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
                 endIcon={<PublishIcon fontSize="small" />}
-                loading={publishing !== 0}
-                loadingPosition="end"
-                onClick={handlePublish}
+                onClick={() => setPublishDialog(true)}
                 size="small"
                 variant="outlined"
               >
                 Publish
-              </LoadingButton>
+              </Button>
             </Stack>
           </Toolbar>
 
@@ -1331,7 +1292,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         Error: {error?.message}
                       </Typography>
                     ) : (
-                      <SkeletonLoader progress={originalProgress} />
+                      <SkeletonLoader />
                     )}
                   </Container>
                 </Box>
@@ -1384,7 +1345,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                         Error: {error?.message}
                       </Typography>
                     ) : (
-                      <SkeletonLoader progress={progress} />
+                      <SkeletonLoader />
                     )}
                   </Container>
                 </Box>
@@ -1415,13 +1376,15 @@ const EditorPage = ({ organisation, user, groups }) => {
                   Error: {error?.message}
                 </Typography>
               ) : (
-                <SkeletonLoader progress={progress} />
+                <SkeletonLoader />
               )}
             </Container>
           </Box>
         )}
       </Root>
       <Menu
+        MenuListProps={{ dense: true, 'aria-labelledby': 'translations-button' }}
+        PaperProps={{ style: { maxHeight: '300px', width: '160px' } }}
         anchorEl={langAnchorEl}
         anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
         id="account-menu"
@@ -1429,16 +1392,6 @@ const EditorPage = ({ organisation, user, groups }) => {
         onClose={() => setLangAnchorEl(null)}
         open={Boolean(langAnchorEl)}
         transformOrigin={{ horizontal: 'left', vertical: 'top' }}
-        MenuListProps={{
-          dense: true,
-          'aria-labelledby': 'translations-button',
-        }}
-        PaperProps={{
-          style: {
-            maxHeight: '300px',
-            width: '160px',
-          },
-        }}
       >
         <MenuItem onClick={onNewTranslation} disabled={originalId}>
           <ListItemText primary="New translation…" primaryTypographyProps={{ color: 'primary' }} />
@@ -1482,6 +1435,14 @@ const EditorPage = ({ organisation, user, groups }) => {
           onSubmit={onSubmitMonetization}
           open={monetizationDialog}
           speakers={speakers}
+        />
+      )}
+      {publishDialog && (
+        <PublishDialog
+          loading={publishing}
+          onClose={() => setPublishDialog(false)}
+          onSubmit={handlePublish}
+          open={publishDialog}
         />
       )}
     </>
