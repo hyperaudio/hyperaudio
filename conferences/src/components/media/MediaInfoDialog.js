@@ -86,7 +86,7 @@ export default function MediaInfoDialog(props) {
   // console.log({ source });
 
   return (
-    <Draggable handle="#media-detail-dialog" bounds="#Remixer-root">
+    <Draggable handle="#media-detail-dialog" bounds=".MediaPage-root">
       <Fade in={open}>
         <Root
           BackdropComponent={null}
