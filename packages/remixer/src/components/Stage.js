@@ -19,19 +19,21 @@ const CONTROLS_HEIGHT = 60;
 
 const PREFIX = 'Stage';
 const classes = {
-  root: `${PREFIX}-root`,
-  playerWrap: `${PREFIX}-playerWrap`,
-  player: `${PREFIX}-player`,
-  titles: `${PREFIX}-titles`,
   controls: `${PREFIX}-controls`,
+  player: `${PREFIX}-player`,
+  playerWrap: `${PREFIX}-playerWrap`,
+  root: `${PREFIX}-root`,
+  titles: `${PREFIX}-titles`,
 };
 
 const Root = styled(Box)(({ theme }) => ({
-  border: `1px solid rgba(255,255,255,0.22)`,
-  borderRadius: theme.shape.borderRadius * 2,
   lineHeight: 0,
   overflow: 'hidden',
   position: 'relative',
+  borderRadius: theme.shape.borderRadius * 2,
+  [theme.breakpoints.up('sm')]: {
+    border: `1px solid rgba(255,255,255,0.22)`,
+  },
   [`& .${classes.player}`]: {
     cursor: 'pointer',
     left: 0,
@@ -67,9 +69,6 @@ const Root = styled(Box)(({ theme }) => ({
     top: 0,
     transition: `opacity ${theme.transitions.duration.standard}ms`,
   },
-
-  //
-
   [`&:hover .${classes.controls}`]: {
     [theme.breakpoints.up('md')]: {
       opacity: '1 !important',

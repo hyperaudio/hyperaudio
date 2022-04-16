@@ -28,8 +28,10 @@ const Root = styled('div')(({ theme }) => ({
     flexBasis: '40%',
     flexDirection: 'column',
     justifyContent: 'center',
-    padding: theme.spacing(2, 0),
     width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(0, 0, 2),
+    },
   },
   [`& .${classes.transcript}`]: {
     flexBasis: '60%',
@@ -66,7 +68,7 @@ const Source = props => {
   return (
     <Root className={classes.root}>
       <Box className={classes.theatre}>
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
           <Stage {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
         </Container>
       </Box>
