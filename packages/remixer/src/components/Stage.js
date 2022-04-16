@@ -49,7 +49,7 @@ const Root = styled(Box)(({ theme }) => ({
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 3, 1, 1),
     position: 'absolute',
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,

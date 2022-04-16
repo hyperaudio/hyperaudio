@@ -29,16 +29,9 @@ const Root = styled(Toolbar, {
 })(({ theme }) => {
   return {
     background: 'black',
-    // background: `linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
     color: theme.palette.primary.contrastText,
     pointerEvents: 'none',
     zIndex: 1,
-    // [theme.breakpoints.up('md')]: {
-    //   left: 0,
-    //   position: 'absolute',
-    //   right: 0,
-    //   top: 0,
-    // },
   };
 });
 

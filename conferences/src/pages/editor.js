@@ -44,12 +44,15 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
+import { useThrottledResizeObserver } from '@hyperaudio/common';
 
 import Link from '../components/MuiNextLink';
 import MonetizationDialog from '../components/editor/MonetizationDialog';
 import NewTranslation from '../components/editor/NewTranslation';
 import PublishDialog from '../components/editor/PublishDialog';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
+
+const CONTROLS_HEIGHT = 60;
 
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
@@ -87,22 +90,89 @@ function SkeletonLoader() {
 
 const PREFIX = 'EditorPage';
 const classes = {
+  controls: `${PREFIX}-controls`,
+  editor: `${PREFIX}-editor`,
   paneTitle: `${PREFIX}-paneTitle`,
+  player: `${PREFIX}-player`,
   root: `${PREFIX}-root`,
+  stage: `${PREFIX}-stage`,
+  theatre: `${PREFIX}-theatre`,
+  toolbar: `${PREFIX}-toolbar`,
+  transcript: `${PREFIX}-transcript`,
 };
 
 const Root = styled('div', {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
-  alignItems: 'center',
   bottom: 0,
-  display: 'flex',
-  flexDirection: 'column',
   left: 0,
   position: 'fixed',
   right: 0,
   top: 0,
-  width: '100%',
+  [`& .${classes.editor}`]: {
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  [`& .${classes.toolbar}`]: {
+    background: 'black',
+    color: theme.palette.primary.contrastText,
+    pointerEvents: 'none',
+    zIndex: 1,
+    '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
+  },
+  [`& .${classes.theatre}`]: {
+    aligenItems: 'center',
+    backgroundColor: 'black',
+    color: theme.palette.primary.contrastText,
+    display: 'flex',
+    flexBasis: '40%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: '100%',
+    [theme.breakpoints.up('sm')]: {
+      padding: theme.spacing(0, 0, 2),
+    },
+  },
+  [`& .${classes.stage}`]: {
+    lineHeight: 0,
+    overflow: 'hidden',
+    position: 'relative',
+    borderRadius: theme.shape.borderRadius * 2,
+    [theme.breakpoints.up('sm')]: {
+      border: `1px solid rgba(255,255,255,0.22)`,
+    },
+  },
+  [`& .${classes.player}`]: {
+    cursor: 'pointer',
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    width: '100%',
+  },
+  [`& .${classes.controls}`]: {
+    alignItems: 'center',
+    background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
+    bottom: 0,
+    display: 'flex',
+    height: `${CONTROLS_HEIGHT}px`,
+    left: 0,
+    padding: theme.spacing(1, 3, 1, 1),
+    position: 'absolute',
+    right: 0,
+    transition: `opacity ${theme.transitions.duration.short}ms`,
+  },
+  [`& .${classes.stage}:hover .${classes.controls}`]: {
+    [theme.breakpoints.up('md')]: {
+      opacity: '1 !important',
+      pointerEvents: 'all !important',
+    },
+  },
+  [`& .${classes.transcript}`]: {
+    flexBasis: '60%',
+    width: '100%',
+  },
   [`& .${classes.paneTitle}`]: {
     background: theme.palette.divider,
     color: theme.palette.text.primary,
@@ -130,6 +200,7 @@ const getTranscripts = async (setTranscripts, id) =>
   setTranscripts((await DataStore.query(Transcript)).filter(t => t.media === id));
 
 const EditorPage = ({ organisation, user, groups }) => {
+  const { ref, height = 0 } = useThrottledResizeObserver(0);
   const plausible = usePlausible();
   const router = useRouter();
   const {
@@ -1071,111 +1142,105 @@ const EditorPage = ({ organisation, user, groups }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <Toolbar />
-        {/* THEATRE
+        <Toolbar ref={ref} />
+        <Toolbar className={classes.toolbar}>
+          <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
+            <Button
+              color="inherit"
+              endIcon={<ArrowDropDownIcon />}
+              id="translations-button"
+              size="small"
+              variant="outlined"
+              onClick={e => setLangAnchorEl(e.currentTarget)}
+            >
+              {ISO6391.getName(transcript?.language.split('-')[0])}
+            </Button>
+            <Button
+              color="inherit"
+              component={Link}
+              href={{ pathname: `/media/${media?.id}`, query: { language: transcript?.language } }}
+              size="small"
+              startIcon={<ArrowBackIcon />}
+              sx={{ display: { xs: 'none', md: 'inline-flex' } }}
+            >
+              Back
+            </Button>
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{
+                alignSelf: 'center',
+                borderColor: 'rgba(255,255,255,0.22)',
+                display: { xs: 'none', md: 'unset' },
+                height: '16px',
+              }}
+            />
+            <LoadingButton
+              color="inherit"
+              disabled={
+                !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
+              }
+              loading={saving !== 0}
+              loadingPosition="start"
+              onClick={handleSave}
+              startIcon={<SaveIcon fontSize="small" />}
+              size="small"
+            >
+              Save
+            </LoadingButton>
+            <LoadingButton
+              color="inherit"
+              disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
+              loading={previewing > 0}
+              loadingPosition="start"
+              size="small"
+              onClick={handlePreview}
+              startIcon={<VisibilityIcon fontSize="small" />}
+            >
+              Preview
+            </LoadingButton>
+          </Stack>
+          <Stack spacing={2} direction="row">
+            <Button
+              color="inherit"
+              onClick={() => setMonetizationDialog(true)}
+              size="small"
+              startIcon={<AttachMoneyIcon />}
+            >
+              Monetize
+            </Button>
+            <Button
+              color="inherit"
+              disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
+              endIcon={<PublishIcon fontSize="small" />}
+              onClick={() => setPublishDialog(true)}
+              size="small"
+              variant="outlined"
+            >
+              Publish
+            </Button>
+          </Stack>
+        </Toolbar>
+        <Box
+          className={classes.editor}
+          sx={{ top: `${height * 2}px`, left: 0, bottom: 0, right: 0, position: 'absolute' }}
+        >
+          {/* THEATRE
         ------------------------------------
         */}
-        <Box
-          sx={{
-            bgcolor: 'black',
-            color: 'white',
-            width: '100%',
-            '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
-          }}
-        >
-          <Toolbar>
-            <Stack direction="row" spacing={2} sx={{ flexGrow: 1 }}>
-              <Button
-                color="inherit"
-                endIcon={<ArrowDropDownIcon />}
-                id="translations-button"
-                size="small"
-                variant="outlined"
-                onClick={e => setLangAnchorEl(e.currentTarget)}
-              >
-                {ISO6391.getName(transcript?.language.split('-')[0])}
-              </Button>
-              <Button
-                color="inherit"
-                component={Link}
-                href={{ pathname: `/media/${media?.id}`, query: { language: transcript?.language } }}
-                size="small"
-                startIcon={<ArrowBackIcon />}
-                sx={{ display: { xs: 'none', md: 'inline-flex' } }}
-              >
-                Back
-              </Button>
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{
-                  alignSelf: 'center',
-                  borderColor: 'rgba(255,255,255,0.22)',
-                  display: { xs: 'none', md: 'unset' },
-                  height: '16px',
-                }}
-              />
-              <LoadingButton
-                color="inherit"
-                disabled={
-                  !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
-                }
-                loading={saving !== 0}
-                loadingPosition="start"
-                onClick={handleSave}
-                startIcon={<SaveIcon fontSize="small" />}
-                size="small"
-              >
-                Save
-              </LoadingButton>
-              <LoadingButton
-                color="inherit"
-                disabled={!draft || previewing !== 0 || !groups.includes('Editors')}
-                loading={previewing > 0}
-                loadingPosition="start"
-                size="small"
-                onClick={handlePreview}
-                startIcon={<VisibilityIcon fontSize="small" />}
-              >
-                Preview
-              </LoadingButton>
-            </Stack>
-            <Stack spacing={2} direction="row">
-              <Button
-                color="inherit"
-                onClick={() => setMonetizationDialog(true)}
-                size="small"
-                startIcon={<AttachMoneyIcon />}
-              >
-                Monetize
-              </Button>
-              <Button
-                color="inherit"
-                disabled={!draft || saving !== 0 || publishing !== 0 || previewing !== 0 || !groups.includes('Editors')}
-                endIcon={<PublishIcon fontSize="small" />}
-                onClick={() => setPublishDialog(true)}
-                size="small"
-                variant="outlined"
-              >
-                Publish
-              </Button>
-            </Stack>
-          </Toolbar>
-
-          {media ? (
-            <Box sx={{ pt: 2, pb: 2 }}>
-              <Container maxWidth="sm">
+          <Box className={classes.theatre}>
+            <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
+              {media ? (
                 <Box
-                  sx={{
-                    mb: 2,
-                    display: pip ? 'none' : 'block',
-                    position: 'relative',
-                    paddingTop: '56.25%',
-                    '& .reactPlayer': { position: 'absolute', top: 0, left: 0 },
-                  }}
+                  className={classes.stage}
+                  onClick={playing === true ? pause : play}
+                  sx={{ display: pip ? 'none' : 'block' }}
                 >
+                  <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width={16} height={9} />
+                  </svg>
                   <ReactPlayer
-                    className="reactPlayer"
+                    className={classes.player}
                     config={config}
                     height="100%"
                     onBuffer={onBuffer}
@@ -1192,195 +1257,201 @@ const EditorPage = ({ organisation, user, groups }) => {
                     url={media.url}
                     width="100%"
                   />
-                </Box>
-                <Stack spacing={2} direction="row" sx={{ alignItems: 'center', pr: { lg: 2 } }}>
-                  {buffering && seekTime !== time ? (
-                    <IconButton onClick={pause} color="inherit">
-                      {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
-                    </IconButton>
-                  ) : playing ? (
-                    <IconButton onClick={pause} color="inherit">
-                      <PauseIcon />
-                    </IconButton>
-                  ) : (
-                    <IconButton onClick={play} color="inherit">
-                      <PlayArrowIcon />
-                    </IconButton>
-                  )}
-                  <Slider
-                    aria-label="timeline"
-                    defaultValue={0}
-                    max={duration}
-                    min={0}
-                    onChange={handleSliderChange}
-                    size="small"
-                    sx={{ color: 'white' }}
-                    value={time}
-                    valueLabelDisplay="auto"
-                    valueLabelFormat={timecode}
-                  />
-                </Stack>
-              </Container>
-            </Box>
-          ) : (
-            <Box sx={{ pt: 2, pb: 4 }}>
-              <Container maxWidth="sm">
-                <Skeleton
-                  height="360px"
-                  sx={{ lineHeight: 0, mb: 2.5, borderRadius: 1 }}
-                  variant="rectangular"
-                  width="100%"
-                />
-                <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
-              </Container>
-            </Box>
-          )}
-        </Box>
-        {/* TRANSCRIPT
-        ------------------------------------
-        */}
-        {originalId ? (
-          <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1, px: { xs: 0, lg: 3 } }}>
-            <Grid container sx={{ height: '100%' }}>
-              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
-                <Typography
-                  className={`${classes.paneTitle} PaneTitle`}
-                  component="h2"
-                  sx={{ left: 0 }}
-                  variant="overline"
-                >
-                  Original
-                </Typography>
-                <Box
-                  ref={div}
-                  sx={{
-                    borderColor: 'divider',
-                    borderStyle: 'solid',
-                    borderWidth: { xs: '0 0 0 1px' },
-                    bottom: 0,
-                    left: 0,
-                    overflow: originalState ? 'auto' : 'hidden',
-                    pb: 12,
-                    position: 'absolute',
-                    pt: 2,
-                    right: 0,
-                    top: 0,
-                    width: '100%',
-                    ['& .public-DraftStyleDefault-block span']: {
-                      cursor: 'pointer',
-                    },
-                  }}
-                >
-                  <Container maxWidth="sm" className="Left">
-                    {originalState ? (
-                      <Editor
-                        time={time}
-                        speakers={originalData.speakers}
-                        initialState={originalState}
-                        onChange={NOOP}
-                        readOnly={true}
-                        autoScroll={true}
-                        seekTo={originalSeekTo}
-                        playheadDecorator={null}
-                        play={play}
-                        playing={playing}
-                        pause={pause}
-                        setSpeakers={NOOP}
+                  <Box
+                    className={classes.controls}
+                    sx={{
+                      opacity: { md: playing ? 0 : 1 },
+                      pointerEvents: { md: playing ? 'none' : 'all' },
+                    }}
+                    onClick={e => e.stopPropagation()}
+                  >
+                    <Stack spacing={2} direction="row" sx={{ alignItems: 'center', width: '100%' }}>
+                      {buffering && seekTime !== time ? (
+                        <IconButton onClick={pause} color="inherit">
+                          {seekTime - time > 0 ? <FastForwardIcon /> : <FastRewindIcon />}
+                        </IconButton>
+                      ) : playing ? (
+                        <IconButton onClick={pause} color="inherit">
+                          <PauseIcon />
+                        </IconButton>
+                      ) : (
+                        <IconButton onClick={play} color="inherit">
+                          <PlayArrowIcon />
+                        </IconButton>
+                      )}
+                      <Slider
+                        aria-label="timeline"
+                        defaultValue={0}
+                        max={duration}
+                        min={0}
+                        onChange={handleSliderChange}
+                        size="small"
+                        sx={{ color: 'white' }}
+                        value={time}
+                        valueLabelDisplay="auto"
+                        valueLabelFormat={timecode}
                       />
-                    ) : error ? (
-                      <Typography color="error" variant="body2">
-                        Error: {error?.message}
-                      </Typography>
-                    ) : (
-                      <SkeletonLoader />
-                    )}
-                  </Container>
+                    </Stack>
+                  </Box>
                 </Box>
-              </Grid>
-              <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
-                <Typography
-                  className={`${classes.paneTitle} PaneTitle`}
-                  component="h2"
-                  sx={{ right: 0 }}
-                  variant="overline"
-                >
-                  Translation
-                </Typography>
-                <Box
-                  ref={div}
-                  sx={{
-                    borderColor: 'divider',
-                    bgcolor: 'background.default',
-                    borderStyle: 'solid',
-                    borderWidth: { xs: '0 0 0 1px', lg: '0 1px' },
-                    bottom: 0,
-                    left: 0,
-                    overflow: initialState ? 'auto' : 'hidden',
-                    pb: 12,
-                    position: 'absolute',
-                    pt: 2,
-                    right: 0,
-                    top: 0,
-                    width: '100%',
-                  }}
-                >
-                  <Container maxWidth="sm" className="Right">
-                    {initialState ? (
-                      <Editor
-                        time={time}
-                        speakers={speakers}
-                        initialState={initialState}
-                        onChange={setDraft}
-                        // autoScroll={tempAutoScroll}
-                        autoScroll={true}
-                        seekTo={seekTo}
-                        playheadDecorator={null}
-                        play={play}
-                        playing={playing}
-                        pause={pause}
-                        setSpeakers={setSpeakers}
-                      />
-                    ) : error ? (
-                      <Typography color="error" variant="body2">
-                        Error: {error?.message}
-                      </Typography>
-                    ) : (
-                      <SkeletonLoader />
-                    )}
-                  </Container>
-                </Box>
-              </Grid>
-            </Grid>
-          </Container>
-        ) : (
-          <Box
-            ref={div}
-            sx={{
-              overflow: initialState ? 'auto' : 'hidden',
-              position: 'relative',
-              pb: 12,
-              pt: 2,
-              width: '100%',
-            }}
-          >
-            <Container maxWidth="sm">
-              {initialState ? (
-                <Editor
-                  {...{ initialState, time, seekTo, speakers, setSpeakers, playing, play, pause }}
-                  autoScroll={true}
-                  onChange={setDraft}
-                  playheadDecorator={noKaraoke ? null : undefined}
-                />
-              ) : error ? (
-                <Typography color="error" variant="body2">
-                  Error: {error?.message}
-                </Typography>
               ) : (
-                <SkeletonLoader />
+                <Box className={classes.stage}>
+                  <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width={16} height={9} />
+                  </svg>
+                  <Skeleton
+                    height="360px"
+                    sx={{ lineHeight: 0, mb: 2.5, borderRadius: 1 }}
+                    variant="rectangular"
+                    width="100%"
+                  />
+                  <Skeleton variant="rectangular" width="100%" height="20px" sx={{ borderRadius: 1 }} />
+                </Box>
               )}
             </Container>
           </Box>
-        )}
+          {/* TRANSCRIPT
+        ------------------------------------
+        */}
+          <Box
+            className={classes.transcript}
+            sx={{
+              overflow: originalId ? 'hidden' : 'auto',
+              py: originalId ? 0 : 2,
+              display: originalId ? 'flex' : 'block',
+            }}
+          >
+            {originalId ? (
+              <Container disableGutters maxWidth="xl" ref={div} sx={{ flexGrow: 1, px: { xs: 0, lg: 3 } }}>
+                <Grid container sx={{ height: '100%' }}>
+                  <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
+                    <Typography
+                      className={`${classes.paneTitle} PaneTitle`}
+                      component="h2"
+                      sx={{ left: 0 }}
+                      variant="overline"
+                    >
+                      Original
+                    </Typography>
+                    <Box
+                      ref={div}
+                      sx={{
+                        borderColor: 'divider',
+                        borderStyle: 'solid',
+                        borderWidth: { xs: '0 0 0 1px' },
+                        bottom: 0,
+                        left: 0,
+                        overflow: originalState ? 'auto' : 'hidden',
+                        position: 'absolute',
+                        py: 2,
+                        right: 0,
+                        top: 0,
+                        width: '100%',
+                        ['& .public-DraftStyleDefault-block span']: {
+                          cursor: 'pointer',
+                        },
+                      }}
+                    >
+                      <Container maxWidth="sm" className="Left">
+                        {originalState ? (
+                          <Editor
+                            time={time}
+                            speakers={originalData.speakers}
+                            initialState={originalState}
+                            onChange={NOOP}
+                            readOnly={true}
+                            autoScroll={true}
+                            seekTo={originalSeekTo}
+                            playheadDecorator={null}
+                            play={play}
+                            playing={playing}
+                            pause={pause}
+                            setSpeakers={NOOP}
+                          />
+                        ) : error ? (
+                          <Typography color="error" variant="body2">
+                            Error: {error?.message}
+                          </Typography>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </Container>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={6} sx={{ position: 'relative', '&:hover .PaneTitle': { opacity: 0 } }}>
+                    <Typography
+                      className={`${classes.paneTitle} PaneTitle`}
+                      component="h2"
+                      sx={{ right: 0 }}
+                      variant="overline"
+                    >
+                      Translation
+                    </Typography>
+                    <Box
+                      ref={div}
+                      sx={{
+                        borderColor: 'divider',
+                        bgcolor: 'background.default',
+                        borderStyle: 'solid',
+                        borderWidth: { xs: '0 0 0 1px', lg: '0 1px' },
+                        bottom: 0,
+                        left: 0,
+                        overflow: initialState ? 'auto' : 'hidden',
+                        position: 'absolute',
+                        py: 2,
+                        right: 0,
+                        top: 0,
+                        width: '100%',
+                      }}
+                    >
+                      <Container maxWidth="sm" className="Right">
+                        {initialState ? (
+                          <Editor
+                            time={time}
+                            speakers={speakers}
+                            initialState={initialState}
+                            onChange={setDraft}
+                            // autoScroll={tempAutoScroll}
+                            autoScroll={true}
+                            seekTo={seekTo}
+                            playheadDecorator={null}
+                            play={play}
+                            playing={playing}
+                            pause={pause}
+                            setSpeakers={setSpeakers}
+                          />
+                        ) : error ? (
+                          <Typography color="error" variant="body2">
+                            Error: {error?.message}
+                          </Typography>
+                        ) : (
+                          <SkeletonLoader />
+                        )}
+                      </Container>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Container>
+            ) : (
+              <Container ref={div} maxWidth="sm">
+                {initialState ? (
+                  <Editor
+                    {...{ initialState, time, seekTo, speakers, setSpeakers, playing, play, pause }}
+                    autoScroll={true}
+                    onChange={setDraft}
+                    playheadDecorator={noKaraoke ? null : undefined}
+                  />
+                ) : error ? (
+                  <Typography color="error" variant="body2">
+                    Error: {error?.message}
+                  </Typography>
+                ) : (
+                  <SkeletonLoader />
+                )}
+              </Container>
+            )}
+          </Box>
+        </Box>
       </Root>
       <Menu
         MenuListProps={{ dense: true, 'aria-labelledby': 'translations-button' }}
