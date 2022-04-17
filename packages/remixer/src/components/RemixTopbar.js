@@ -23,6 +23,7 @@ import PublicIcon from '@mui/icons-material/Public';
 import RedoIcon from '@mui/icons-material/Redo';
 import TextField from '@mui/material/TextField';
 import Tooltip from '@mui/material/Tooltip';
+import Toolbar from '@mui/material/Toolbar';
 import UndoIcon from '@mui/icons-material/Undo';
 import { styled } from '@mui/material/styles';
 
@@ -39,11 +40,11 @@ const classes = {
   titleField: `${PREFIX}-titleField`,
 };
 
-const Root = styled(Container, {
+const Root = styled(Toolbar, {
   // shouldForwardProp: prop => !['maxWidth'].includes(prop),
 })(({ theme }) => {
   return {
-    ...theme.mixins.toolbar,
+    borderLeft: `1px solid rgba(255,255,255,0.22)`,
     alignItems: 'center',
     display: 'flex',
     left: 0,
@@ -113,7 +114,7 @@ export const RemixTopbar = props => {
           <Grid item className={`${classes.side} ${classes.sideL}`}>
             {!editable && !hideToggleSource && (
               <Tooltip title={`Toggle source panel`}>
-                <IconButton onClick={onToggleSource}>
+                <IconButton color="inherit" onClick={onToggleSource}>
                   {!showSource ? (
                     <ChromeReaderModeOutlinedIcon fontSize="small" />
                   ) : (
@@ -125,12 +126,12 @@ export const RemixTopbar = props => {
             {editable && (
               <>
                 <Tooltip title="Undo">
-                  <IconButton size="small">
+                  <IconButton color="inherit" size="small">
                     <UndoIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Redo">
-                  <IconButton size="small">
+                  <IconButton color="inherit" size="small">
                     <RedoIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -165,7 +166,7 @@ export const RemixTopbar = props => {
             {editable && (
               <>
                 <Tooltip title="More remix options…">
-                  <IconButton size="small" onClick={onMoreOpen}>
+                  <IconButton color="inherit" size="small" onClick={onMoreOpen}>
                     <MoreHorizIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -242,14 +243,13 @@ export const RemixTopbar = props => {
               </>
             )}
             <Tooltip title="Share remix">
-              <IconButton onClick={onShareOpen} size="small">
+              <IconButton color="inherit" onClick={onShareOpen} size="small">
                 <ShareIcon fontSize="small" />
               </IconButton>
             </Tooltip>
           </Grid>
         </Grid>
       </Root>
-      <div className="topbarPush" />
       <ShareDialog isOpen={shareDialog} onClose={onShareClose} />
       <VisibilityDialog isOpen={visibilityDialog} onClose={onVisibilityClose} secret={remix.secret} />
       <ClearDialog isOpen={clearDialog} onClose={onClearClose} />

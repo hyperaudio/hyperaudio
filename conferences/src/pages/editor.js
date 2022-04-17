@@ -16,7 +16,6 @@ import { nanoid } from 'nanoid';
 import { usePlausible } from 'next-plausible';
 import Router, { useRouter } from 'next/router';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Box from '@mui/material/Box';
@@ -48,7 +47,6 @@ import { styled } from '@mui/material/styles';
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 import { useThrottledResizeObserver } from '@hyperaudio/common';
 
-import Link from '../components/MuiNextLink';
 import MonetizationDialog from '../components/editor/MonetizationDialog';
 import NewTranslation from '../components/editor/NewTranslation';
 import PublishDialog from '../components/editor/PublishDialog';

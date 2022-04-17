@@ -3,19 +3,23 @@ import React, { useMemo, useState, useEffect } from 'react';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { useRouter } from 'next/router';
 
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
+import { useThrottledResizeObserver } from '@hyperaudio/common';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
 
-const PREFIX = 'MediaPage';
+const PREFIX = 'RemixerPage';
 const classes = {
   root: `${PREFIX}-root`,
-  push: `${PREFIX}-push`,
+  toolbar: `${PREFIX}-toolbar`,
 };
 
-const Root = styled('div', {
+const Root = styled(Box, {
   // shouldForwardProp: (prop: any) => prop !== 'isActive',
 })(({ theme }) => ({
   bottom: 0,
@@ -23,8 +27,11 @@ const Root = styled('div', {
   position: 'fixed',
   right: 0,
   top: 0,
-  [`& .${classes.push}`]: {
-    ...theme.mixins.toolbar,
+  [`& .${classes.toolbar}`]: {
+    background: 'black',
+    color: theme.palette.primary.contrastText,
+    zIndex: 1,
+    '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   },
 }));
 
@@ -32,6 +39,7 @@ const getMedia = async setAllMedia => setAllMedia(await DataStore.query(Media));
 const getTranscripts = async setAllTranscripts => setAllTranscripts(await DataStore.query(Transcript)); // .filter(t => t.media === id)
 
 const RemixerPage = ({ organisation }) => {
+  const { ref, height = 0 } = useThrottledResizeObserver(0);
   const router = useRouter();
   const {
     query: { transcripts: transcriptIds },
@@ -156,17 +164,29 @@ const RemixerPage = ({ organisation }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <div className={classes.push} />
-        {data && data.sources && data.sources.length > 0 ? (
-          <Remixer
-            editable={true}
-            remix={data.remix}
-            sources={data.sources}
-            tabs={data.sources}
-            media={[]}
-            isSingleMedia={false}
-          />
-        ) : null}
+        {data && data.sources && data.sources.length > 0 && (
+          <>
+            <Toolbar ref={ref} />
+            <Remixer
+              editable={true}
+              remix={data.remix}
+              sources={data.sources}
+              tabs={data.sources}
+              media={[]}
+              isSingleMedia={false}
+              sx={{
+                '& > *': { flex: '0 0 50%' },
+                bottom: 0,
+                display: 'flex',
+                left: 0,
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                top: `${height}px`,
+              }}
+            />
+          </>
+        )}
       </Root>
     </>
   );
