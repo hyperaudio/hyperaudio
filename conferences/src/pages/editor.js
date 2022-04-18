@@ -624,17 +624,16 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
-      // JSON.stringify(data),
       blobGz,
       {
         level: 'public',
+        // acl: 'public-read',
         contentType: 'application/json',
         contentEncoding: 'gzip',
         metadata: {
           user: user.id,
         },
         progressCallback(progress) {
-          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
           const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
           setSavingProgress(percentCompleted);
         },
@@ -647,7 +646,15 @@ const EditorPage = ({ organisation, user, groups }) => {
     // touch transcript
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
-        updated.metadata = { ...(transcript.metadata ?? {}), lastEdit: new Date() };
+        updated.metadata = {
+          ...(transcript.metadata ?? {}),
+          draft: {
+            key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+            identityId: user.identityId,
+            level: 'public',
+            date: new Date(),
+          },
+        };
       }),
     );
 
@@ -704,7 +711,6 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-preview.json.gz`,
-      // JSON.stringify(data),
       blobGz,
       {
         level: 'public',
@@ -714,7 +720,6 @@ const EditorPage = ({ organisation, user, groups }) => {
           user: user.id,
         },
         progressCallback(progress) {
-          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
           const percentCompleted = Math.round((progress.loaded * 100) / progress.total);
           setPreviewingProgress(percentCompleted);
         },
@@ -742,7 +747,6 @@ const EditorPage = ({ organisation, user, groups }) => {
 
     const result = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
-      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       blobGz,
       {
         level: 'public',
@@ -752,7 +756,6 @@ const EditorPage = ({ organisation, user, groups }) => {
           user: user.id,
         },
         progressCallback(progress) {
-          // console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
           const percentCompleted = Math.round((progress.loaded * 50) / progress.total);
           setPublishingProgress(percentCompleted);
         },
@@ -765,7 +768,6 @@ const EditorPage = ({ organisation, user, groups }) => {
     // PUBLISH!
     const result2 = await Storage.put(
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
-      // JSON.stringify({ speakers: draft.speakers, blocks: draft.blocks }),
       blobGz,
       {
         level: 'public',
@@ -788,7 +790,17 @@ const EditorPage = ({ organisation, user, groups }) => {
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
         updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
-        updated.metadata = { original: transcript.url, ...(transcript.metadata ?? {}) };
+        updated.metadata = {
+          original: transcript.url,
+          ...(transcript?.metadata ?? {}),
+          published: {
+            key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
+            level: 'public',
+            identityId: user.identityId,
+            url: `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
+            date: new Date(),
+          },
+        };
       }),
     );
 
