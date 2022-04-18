@@ -235,12 +235,26 @@ const EditorPage = ({ organisation, user, groups }) => {
       let blocks;
 
       try {
-        const signedURL = await Storage.get(
-          `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
-          {
-            level: 'public',
-          },
-        );
+        // const signedURL = await Storage.get(
+        //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+        //   {
+        //     level: 'public',
+        //   },
+        // );
+        let signedURL;
+        if (transcript?.metadata?.draft) {
+          signedURL = await Storage.get(transcript.metadata.draft.key, {
+            level: transcript.metadata.draft.level,
+            identityId: transcript.metadata.draft.identityId,
+          });
+        } else {
+          signedURL = await Storage.get(
+            `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
+            {
+              level: 'public',
+            },
+          );
+        }
 
         const result = (
           await axios.get(signedURL, {
@@ -611,6 +625,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSavingProgress(0);
     setSaving(2); // 3
 
+    const identityId = (await Auth.currentCredentials()).identityId;
+
     const data = { speakers, blocks: draft.blocks };
 
     const allSpeakerIds = [...new Set(Object.keys(data.speakers))];
@@ -626,8 +642,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
       blobGz,
       {
-        level: 'public',
-        // acl: 'public-read',
+        level: 'protected',
         contentType: 'application/json',
         contentEncoding: 'gzip',
         metadata: {
@@ -650,8 +665,8 @@ const EditorPage = ({ organisation, user, groups }) => {
           ...(transcript.metadata ?? {}),
           draft: {
             key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
-            identityId: user.identityId,
-            level: 'public',
+            identityId,
+            level: 'protected',
             date: new Date(),
           },
         };
@@ -740,6 +755,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishingProgress(0);
     setPublishing(3);
 
+    const identityId = (await Auth.currentCredentials()).identityId;
+
     const data = { speakers, blocks: draft.blocks };
     const utf8Data = new TextEncoder('utf-8').encode(JSON.stringify(data));
     const jsonGz = pako.gzip(utf8Data);
@@ -749,7 +766,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
       blobGz,
       {
-        level: 'public',
+        level: 'protected',
         contentType: 'application/json',
         contentEncoding: 'gzip',
         metadata: {
@@ -770,7 +787,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
       blobGz,
       {
-        level: 'public',
+        level: 'protected',
         contentType: 'application/json',
         contentEncoding: 'gzip',
         metadata: {
@@ -789,15 +806,15 @@ const EditorPage = ({ organisation, user, groups }) => {
     await DataStore.save(
       Transcript.copyOf(transcript, updated => {
         updated.status = { label: 'published' };
-        updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
+        // updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
         updated.metadata = {
           original: transcript.url,
           ...(transcript?.metadata ?? {}),
           published: {
             key: `transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
-            level: 'public',
-            identityId: user.identityId,
-            url: `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
+            level: 'protected',
+            identityId,
+            // url: `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`,
             date: new Date(),
           },
         };

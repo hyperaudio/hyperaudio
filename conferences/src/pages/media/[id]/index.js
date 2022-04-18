@@ -112,17 +112,16 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 //   key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
 
                 let signedURL;
-                // FIXME
-                // if (showDraft && transcript.metadata.draft) {
-                //   signedURL = await Storage.get(transcript.metadata.draft.key, {
-                //     level: transcript.metadata.draft.level,
-                //     identityId: transcript.metadata.draft.identityId,
-                //   });
-                // } else {
-                signedURL = await Storage.get(key, {
-                  level: 'public',
-                });
-                // }
+                if (showDraft && transcript.metadata.draft) {
+                  signedURL = await Storage.get(transcript.metadata.draft.key, {
+                    level: transcript.metadata.draft.level,
+                    identityId: transcript.metadata.draft.identityId,
+                  });
+                } else {
+                  signedURL = await Storage.get(key, {
+                    level: 'public',
+                  });
+                }
 
                 const result = (
                   await axios.get(transcriptUrl ? transcriptUrl : signedURL, {
@@ -150,7 +149,16 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               setLabel(null);
               try {
                 let url = transcript.url;
-                if (transcript?.status?.label === 'published') url = transcript?.metadata?.published?.url ?? url;
+                if (transcript?.status?.label === 'published') {
+                  if (transcript?.metadata?.published?.url) {
+                    url = transcript?.metadata?.published?.url ?? url;
+                  } else {
+                    url = await Storage.get(transcript.metadata.published.key, {
+                      level: transcript.metadata.published.level,
+                      identityId: transcript.metadata.published.identityId,
+                    });
+                  }
+                }
 
                 const result = (
                   await axios.get(url, {

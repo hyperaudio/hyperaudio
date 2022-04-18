@@ -55,7 +55,7 @@ const Redirect = ({ user }) => {
         },
       } = user;
 
-      if (!identityId) identityId = payload.sub;
+      if (!identityId) identityId = payload.sub; // FIXME this is not the actual identityId
       if (!email) email = payload.email;
 
       await getUser(async user => {
