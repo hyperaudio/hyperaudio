@@ -105,12 +105,12 @@ const Root = styled(Box, {
     },
   },
   [`& .transcriptSnapshotDropArea`]: {
-    boxShadow: `0 0 2px 0 ${theme.palette.primary.light} inset`,
-    outline: `3px solid ${theme.palette.primary.main}`,
+    background: theme.palette.action.hover,
+    boxShadow: `0 0 0 ${theme.spacing(0.5)} ${theme.palette.primary.dark} inset`,
+    color: `${theme.palette.primary.main} !important`,
     overflow: 'scroll',
   },
   [`& .transcriptDropArea`]: {
-    borderRadius: theme.shape.borderRadius,
     height: '100%',
   },
 }));

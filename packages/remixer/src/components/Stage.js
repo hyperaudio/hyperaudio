@@ -27,10 +27,11 @@ const classes = {
 };
 
 const Root = styled(Box)(({ theme }) => ({
+  borderRadius: theme.shape.borderRadius * 2,
+  color: theme.palette.primary.contrastText,
   lineHeight: 0,
   overflow: 'hidden',
   position: 'relative',
-  borderRadius: theme.shape.borderRadius * 2,
   [theme.breakpoints.up('sm')]: {
     border: `1px solid rgba(255,255,255,0.22)`,
   },

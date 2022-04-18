@@ -43,21 +43,23 @@ const Root = styled('div')(({ theme }) => {
     },
     [`& .${classes.intro}`]: {
       alignItems: 'center',
+      bottom: 0,
       display: 'flex',
-      flex: '1 1 100%',
       flexDirection: 'column',
       justifyContent: 'center',
-      margin: theme.spacing(0, 2, 12),
+      left: 0,
+      color: theme.palette.text.secondary,
+      position: 'absolute',
+      right: 0,
       textAlign: 'center',
+      top: 0,
       [`& *`]: {
         margin: theme.spacing(1),
-        color: theme.palette.text.disabled,
       },
     },
     [`& .${classes.theatre}`]: {
       backgroundColor: 'black',
       borderLeft: `1px solid rgba(255,255,255,0.22)`,
-      color: theme.palette.primary.contrastText,
       display: 'flex',
       flexBasis: '40%',
       flexDirection: 'column',
@@ -102,10 +104,14 @@ const Remix = props => {
   return (
     <>
       <Root className="RemixerPane RemixerPane--Remix">
-        <Toolbar sx={{ bgcolor: 'black', width: '100%' }} />
-        <Box className={classes.toolbar}>
-          <RemixTopbar {...props} />
-        </Box>
+        {blocks.length > 0 ? (
+          <>
+            <Toolbar sx={{ bgcolor: 'black', width: '100%' }} />
+            <Box className={classes.toolbar}>
+              <RemixTopbar {...props} />
+            </Box>
+          </>
+        ) : null}
         {blocks?.length > 0 ? (
           <>
             <Box className={classes.theatre}>
@@ -135,32 +141,32 @@ const Remix = props => {
           </>
         ) : (
           <>
-            <Box className={classes.theatre}>
-              <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}></Container>
-            </Box>
-            <Box className={classes.transcript}>
-              <Container maxWidth="sm">
-                <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>
-                  {(provided, snapshot) => (
-                    <div
-                      className={`${classes.intro} transcriptDropArea ${
-                        snapshot.isDraggingOver && 'transcriptSnapshotDropArea'
-                      }`}
-                      ref={provided.innerRef}
-                      {...provided.droppableProps}
-                    >
-                      <StartDropIcon />
-                      <Typography variant="body2">
-                        Start by dropping an effect or a section from the source transcript
+            <Box
+              className={classes.transcript}
+              sx={{ flexBasis: blocks?.length > 0 ? '60% !important' : '100% !important' }}
+            >
+              <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable}>
+                {(provided, snapshot) => (
+                  <div
+                    className={`${classes.intro} transcriptDropArea ${
+                      snapshot.isDraggingOver && 'transcriptSnapshotDropArea'
+                    }`}
+                    ref={provided.innerRef}
+                    {...provided.droppableProps}
+                  >
+                    <Container maxWidth="sm">
+                      <StartDropIcon color="inherit" />
+                      <Typography color="inherit" variant="body2">
+                        Start by dropping a section from the source transcript
                       </Typography>
-                    </div>
-                  )}
-                </Droppable>
-              </Container>
+                    </Container>
+                  </div>
+                )}
+              </Droppable>
             </Box>
           </>
         )}
-        {editable && <InsertsBar />}
+        {editable && blocks.length > 0 && <InsertsBar />}
       </Root>
     </>
   );
