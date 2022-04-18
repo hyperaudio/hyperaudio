@@ -48,6 +48,7 @@ const getRemixes = async (setRemixes, id) =>
 const MediaPage = ({ organisation, user, groups = [] }) => {
   const router = useRouter();
   global.router = router; // FIXME
+  // console.log({ user });
 
   const {
     query: { language, showPreview, transcriptUrl, transcript: transcriptId },
@@ -110,9 +111,18 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 // if (language !== media.language)
                 //   key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
 
-                const signedURL = await Storage.get(key, {
+                let signedURL;
+                // FIXME
+                // if (showDraft && transcript.metadata.draft) {
+                //   signedURL = await Storage.get(transcript.metadata.draft.key, {
+                //     level: transcript.metadata.draft.level,
+                //     identityId: transcript.metadata.draft.identityId,
+                //   });
+                // } else {
+                signedURL = await Storage.get(key, {
                   level: 'public',
                 });
+                // }
 
                 const result = (
                   await axios.get(transcriptUrl ? transcriptUrl : signedURL, {
@@ -139,8 +149,11 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             if (!speakers || !blocks) {
               setLabel(null);
               try {
+                let url = transcript.url;
+                if (transcript?.status?.label === 'published') url = transcript?.metadata?.published?.url ?? url;
+
                 const result = (
-                  await axios.get(transcript.url, {
+                  await axios.get(url, {
                     // TODO use original url as fallback
                     onDownloadProgress: progressEvent => {
                       const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);

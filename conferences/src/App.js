@@ -165,12 +165,14 @@ const App = props => {
     () =>
       (async () => {
         try {
+          const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
+          // console.log({ currentAuthenticatedUser });
           const {
             attributes: { sub: identityId },
             signInUserSession: {
               idToken: { payload },
             },
-          } = await Auth.currentAuthenticatedUser();
+          } = currentAuthenticatedUser;
           getUser(setUser, identityId);
           setGroups(payload?.['cognito:groups'] ?? []);
         } catch (ignored) {
