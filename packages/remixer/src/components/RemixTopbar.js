@@ -69,9 +69,13 @@ const Root = styled(Toolbar, {
     },
     [`& .${classes.titleField}`]: {
       ...theme.typography.body1,
+      color: theme.palette.primary.contrastText,
       fontWeight: '500',
       padding: theme.spacing(1, 1),
       textAlign: 'center',
+      ['&:hover, &:focus']: {
+        background: 'rgba(255,255,255,0.1)',
+      },
     },
   };
 });
