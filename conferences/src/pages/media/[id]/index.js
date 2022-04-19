@@ -152,7 +152,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 if (transcript?.status?.label === 'published') {
                   if (transcript?.metadata?.published?.url) {
                     url = transcript?.metadata?.published?.url ?? url;
-                  } else {
+                  } else if (transcript?.metadata?.published?.key) {
                     url = await Storage.get(transcript.metadata.published.key, {
                       level: transcript.metadata.published.level,
                       identityId: transcript.metadata.published.identityId,
