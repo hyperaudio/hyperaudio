@@ -36,9 +36,7 @@ const amplifyConfig = { ...awsexports, ...awsconfig };
 Amplify.configure(amplifyConfig);
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
-} catch (ignored) {
-  console.log('AmazonAIPredictionsProvider already added', ignored);
-}
+} catch (ignored) {}
 
 Analytics.autoTrack('session', {
   enable: true,
@@ -146,7 +144,7 @@ const App = props => {
   const [domain, setDomain] = useState(global?.location?.hostname);
   const [supportsIndexedDB, setSupportsIndexedDB] = useState(true);
 
-  console.log({ user });
+  // console.log({ user });
 
   useEffect(
     () =>
@@ -180,7 +178,7 @@ const App = props => {
 
   useEffect(() => {
     Hub.listen('auth', async data => {
-      console.log({ data });
+      // console.log({ data });
       if (data.payload.event === 'signOut') {
         // await DataStore.clear();
         setUser(null);
