@@ -111,7 +111,7 @@ const Root = styled(Box, {
     overflow: 'scroll',
   },
   [`& .transcriptDropArea`]: {
-    height: '100%',
+    minHeight: '100%',
   },
 }));
 

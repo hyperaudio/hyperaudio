@@ -2,11 +2,10 @@ import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 import _ from 'lodash';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
-import SlideshowIcon from '@mui/icons-material/Slideshow';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -14,7 +13,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MovieFilterIcon from '@mui/icons-material/MovieFilter';
+import SlideshowIcon from '@mui/icons-material/Slideshow';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
 import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '@hyperaudio/common';
@@ -25,6 +27,7 @@ import { ContextFrame } from './ContextFrame';
 
 const PREFIX = 'Transcript';
 const classes = {
+  root: `${PREFIX}-root`,
   insertWrap: `${PREFIX}-insertWrap`,
   dragHandle: `${PREFIX}-dragHandle`,
 };
@@ -318,60 +321,75 @@ export const Transcript = props => {
   // useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
-    <Root ref={root} onClick={handleClick}>
+    <Root className={classes.root} ref={root} onClick={handleClick}>
       {editable && !isSource ? (
         <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
           {(provided, snapshot) => (
-            <div ref={provided.innerRef} {...provided.droppableProps}>
+            <Box
+              sx={{
+                bottom: 0,
+                left: 0,
+                py: 2,
+                position: 'absolute',
+                right: 0,
+                top: 0,
+              }}
+              ref={provided.innerRef}
+              className={`droparea ${snapshot.isDraggingOver && 'transcriptSnapshotDropArea'}`}
+              {...provided.droppableProps}
+            >
               {blocks.map((block, i) => (
-                <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
-                  {(provided, snapshot) => (
-                    <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                      <DragHandle
-                        {...provided.dragHandleProps}
-                        color="default"
-                        size="small"
-                        className={classes.dragHandle}
-                      >
-                        <DragIndicatorIcon fontSize="small" />
-                      </DragHandle>
-                      {block.type === 'block' ? (
-                        context === block.key ? (
-                          <ContextFrame title={contextData.title}>
-                            <Transcript
-                              {...{
-                                ...props,
-                                editable: false,
-                                isSource: false,
-                                noMenu: true,
-                                ...contextData,
-                              }}
-                            />
-                          </ContextFrame>
-                        ) : (
-                          <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
-                        )
-                      ) : block.type === 'title' && editable ? (
-                        <div className={classes.insertWrap}>
-                          <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-                        </div>
-                      ) : block.type === 'slides' ? (
-                        <div className={classes.insertWrap}>
-                          <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
-                        </div>
-                      ) : block.type === 'transition' && editable ? (
-                        <div className={classes.insertWrap}>
-                          <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-                        </div>
-                      ) : null}
-                      <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                        <MoreHorizIcon fontSize="small" />
-                      </BlockMenu>
-                    </DragBlock>
-                  )}
-                </Draggable>
+                <Container maxWidth="sm">
+                  <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
+                    {(provided, snapshot) => (
+                      <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
+                        <DragHandle
+                          {...provided.dragHandleProps}
+                          color="default"
+                          size="small"
+                          className={classes.dragHandle}
+                        >
+                          <DragIndicatorIcon fontSize="small" />
+                        </DragHandle>
+                        {block.type === 'block' ? (
+                          context === block.key ? (
+                            <ContextFrame title={contextData.title}>
+                              <Transcript
+                                {...{
+                                  ...props,
+                                  editable: false,
+                                  isSource: false,
+                                  noMenu: true,
+                                  ...contextData,
+                                }}
+                              />
+                            </ContextFrame>
+                          ) : (
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
+                          )
+                        ) : block.type === 'title' && editable ? (
+                          <div className={classes.insertWrap}>
+                            <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          </div>
+                        ) : block.type === 'slides' ? (
+                          <div className={classes.insertWrap}>
+                            <InsertSlide key={`${id}:${block.key}:${i}`} {...{ sources, block, dispatch, editable }} />
+                          </div>
+                        ) : block.type === 'transition' && editable ? (
+                          <div className={classes.insertWrap}>
+                            <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+                          </div>
+                        ) : null}
+                        <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                          <MoreHorizIcon fontSize="small" />
+                        </BlockMenu>
+                      </DragBlock>
+                    )}
+                  </Draggable>
+                </Container>
               ))}
-            </div>
+              <Toolbar sx={{ mt: 6 }} />
+            </Box>
           )}
         </Droppable>
       ) : editable && isSource && range ? (

@@ -74,6 +74,7 @@ const Root = styled('div')(({ theme }) => {
       flexBasis: '60%',
       overflow: 'auto',
       padding: theme.spacing(2, 0),
+      position: 'relative',
       width: '100%',
     },
   };
@@ -120,7 +121,7 @@ const Remix = props => {
               </Container>
             </Box>
             <Box className={classes.transcript}>
-              <Container maxWidth="sm">
+              <Container maxWidth={false}>
                 <Transcript
                   {...{
                     id,
