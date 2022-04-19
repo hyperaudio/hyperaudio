@@ -414,8 +414,8 @@ export const Stage = ({
       <Box
         className={classes.controls}
         sx={{
-          opacity: { md: referencePlaying ? 0 : 1 },
-          pointerEvents: { md: referencePlaying ? 'none' : 'all' },
+          opacity: { md: referencePlaying ? (hideVideo ? 1 : 0) : 1 },
+          pointerEvents: { md: referencePlaying ? (hideVideo ? 'all' : 'none') : 'all' },
         }}
         onClick={e => e.stopPropagation()}
       >

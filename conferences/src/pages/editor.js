@@ -36,6 +36,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
 import Skeleton from '@mui/material/Skeleton';
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
@@ -125,7 +127,6 @@ const Root = styled('div', {
     backgroundColor: 'black',
     color: theme.palette.primary.contrastText,
     display: 'flex',
-    flexBasis: '40%',
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
@@ -157,7 +158,7 @@ const Root = styled('div', {
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
-    padding: theme.spacing(1, 3, 1, 1),
+    padding: theme.spacing(1),
     position: 'absolute',
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,
@@ -170,6 +171,7 @@ const Root = styled('div', {
   },
   [`& .${classes.transcript}`]: {
     flexBasis: '60%',
+    flexGrow: 1,
     width: '100%',
   },
   [`& .${classes.paneTitle}`]: {
@@ -219,6 +221,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [langAnchorEl, setLangAnchorEl] = useState(null);
+  const [hideVideo, setHideVideo] = useState(false);
   const [langDialog, setLangDialog] = useState(false);
   const [media, setMedia] = useState();
   const [monetizationDialog, setMonetizationDialog] = useState(false);
@@ -1251,7 +1254,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           {/* THEATRE
         ------------------------------------
         */}
-          <Box className={classes.theatre}>
+          <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
             <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
               {media ? (
                 <Box
@@ -1259,13 +1262,17 @@ const EditorPage = ({ organisation, user, groups }) => {
                   onClick={playing === true ? pause : play}
                   sx={{ display: pip ? 'none' : 'block' }}
                 >
-                  <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width={16} height={9} />
-                  </svg>
+                  {hideVideo ? (
+                    <Toolbar />
+                  ) : (
+                    <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width={16} height={9} />
+                    </svg>
+                  )}
                   <ReactPlayer
                     className={classes.player}
                     config={config}
-                    height="100%"
+                    height={hideVideo ? 0 : '100%'}
                     onBuffer={onBuffer}
                     onBufferEnd={onBufferEnd}
                     onDisablePIP={onDisablePIP}
@@ -1283,8 +1290,8 @@ const EditorPage = ({ organisation, user, groups }) => {
                   <Box
                     className={classes.controls}
                     sx={{
-                      opacity: { md: playing ? 0 : 1 },
-                      pointerEvents: { md: playing ? 'none' : 'all' },
+                      opacity: { md: playing ? (hideVideo ? 1 : 0) : 1 },
+                      pointerEvents: { md: playing ? (hideVideo ? 'all' : 'none') : 'all' },
                     }}
                     onClick={e => e.stopPropagation()}
                   >
@@ -1314,6 +1321,11 @@ const EditorPage = ({ organisation, user, groups }) => {
                         valueLabelDisplay="auto"
                         valueLabelFormat={timecode}
                       />
+                      <Tooltip title={hideVideo ? 'Show video' : 'Minimize video'}>
+                        <IconButton onClick={() => setHideVideo(prevState => !prevState)} color="inherit">
+                          {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
+                        </IconButton>
+                      </Tooltip>
                     </Stack>
                   </Box>
                 </Box>
