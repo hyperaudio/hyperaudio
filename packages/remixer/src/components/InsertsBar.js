@@ -20,14 +20,18 @@ const Root = styled('div')(({ theme }) => ({
   left: '50%',
   position: 'fixed',
   right: 0,
+  [theme.breakpoints.up('md')]: {
+    bottom: theme.spacing(3),
+  },
 }));
 
 const Effect = styled('div')(({ theme }) => ({
+  boxShadow: theme.shadows[2],
   alignContent: 'center',
   alignItems: 'center',
-  background: theme.palette.background.default,
-  borderRadius: theme.shape.borderRadius,
-  border: `1px solid transparent`,
+  background: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius * 2,
+  border: `1px solid ${theme.palette.divider}`,
   color: theme.palette.text.secondary,
   cursor: 'move',
   cursor: '-webkit-grab',
@@ -35,7 +39,7 @@ const Effect = styled('div')(({ theme }) => ({
   cursor: 'grab',
   display: 'flex',
   justifyContent: 'center',
-  padding: theme.spacing(1),
+  padding: theme.spacing(2, 1),
   textAlign: 'center',
   transition: `border ${theme.transitions.duration.standard}`,
   [`& .${classes.effectIcon}`]: {
@@ -54,11 +58,11 @@ export const InsertsBar = props => {
   return (
     <Root>
       <Container maxWidth="md">
-        <Paper elevation={6} sx={{ p: { xs: 1, xl: 2 } }}>
+        <Paper elevation={0} sx={{ p: { xs: 1, xl: 2 } }} sx={{ bgcolor: 'transparent' }}>
           <Droppable droppableId={`droppable:$toolbar`} type="BLOCK" isDropDisabled={true}>
             {(provided, snapshot) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
-                <Grid container columnSpacing={{ xs: 1, xl: 2 }}>
+                <Grid container spacing={{ xs: 1, md: 3 }}>
                   <Grid item xs={4}>
                     <DraggableItem draggableId="draggable:$slides" index={0}>
                       {(provided, snapshot) => (

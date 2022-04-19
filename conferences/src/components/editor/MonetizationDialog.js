@@ -16,7 +16,7 @@ import { deepPurple } from '@mui/material/colors';
 import { styled } from '@mui/material/styles';
 import { fabClasses } from '@mui/material';
 
-const PREFIX = 'EditorPage';
+const PREFIX = 'MonetizationDialog';
 const classes = {
   cell: `${PREFIX}-cell`,
   label: `${PREFIX}-label`,

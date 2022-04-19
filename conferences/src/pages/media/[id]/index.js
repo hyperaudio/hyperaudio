@@ -12,6 +12,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 
 import Remixer from '@hyperaudio/remixer';
+import { useThrottledResizeObserver } from '@hyperaudio/common';
 
 import MediaTopbar from '../../../components/media/MediaTopbar';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
@@ -46,6 +47,7 @@ const getRemixes = async (setRemixes, id) =>
   setRemixes((await DataStore.query(RemixMedia)).filter(r => r.media.id === id).map(r => r.remix));
 
 const MediaPage = ({ organisation, user, groups = [] }) => {
+  const { ref, height = 0 } = useThrottledResizeObserver(0);
   const router = useRouter();
   global.router = router; // FIXME
   // console.log({ user });
@@ -330,23 +332,14 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
         </title>
       </Head>
       <Root className={classes.root}>
-        <Toolbar />
+        <Toolbar ref={ref} />
         {data && data.sources && data.sources.length > 0 && (
-          <Box
-            sx={{
-              bgcolor: 'black',
-              color: 'white',
-              width: '100%',
-              '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
-            }}
-          >
-            <MediaTopbar
-              canEdit={groups.includes('Editors')}
-              mediaLabel={label}
-              onSelectTranslation={onSelectTranslation}
-              source={data?.sources[0]}
-            />
-          </Box>
+          <MediaTopbar
+            canEdit={groups.includes('Editors')}
+            mediaLabel={label}
+            onSelectTranslation={onSelectTranslation}
+            source={data?.sources[0]}
+          />
         )}
         {data && data.sources && data.sources.length > 0 ? (
           <Remixer
@@ -359,6 +352,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             onSelectTranslation={onSelectTranslation}
             remix={null}
             sources={data.sources}
+            sx={{ top: `${height * 2}px`, left: 0, bottom: 0, right: 0, position: 'absolute' }}
           />
         ) : (
           <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
