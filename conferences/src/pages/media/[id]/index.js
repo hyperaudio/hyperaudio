@@ -150,13 +150,17 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
               try {
                 let url = transcript.url;
                 if (transcript?.status?.label === 'published') {
-                  if (transcript?.metadata?.published?.url) {
-                    url = transcript?.metadata?.published?.url ?? url;
-                  } else if (transcript?.metadata?.published?.key) {
+                  if (
+                    transcript?.metadata?.published?.key &&
+                    transcript?.metadata?.published?.level &&
+                    transcript?.metadata?.published?.identityId
+                  ) {
                     url = await Storage.get(transcript.metadata.published.key, {
                       level: transcript.metadata.published.level,
                       identityId: transcript.metadata.published.identityId,
                     });
+                  } else if (transcript?.metadata?.published?.url) {
+                    url = transcript?.metadata?.published?.url ?? url;
                   }
                 }
 
