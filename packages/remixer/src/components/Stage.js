@@ -12,7 +12,10 @@ import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
+import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import { styled } from '@mui/material/styles';
 
 const CONTROLS_HEIGHT = 60;
@@ -50,7 +53,7 @@ const Root = styled(Box)(({ theme }) => ({
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
-    padding: theme.spacing(1, 3, 1, 1),
+    padding: theme.spacing(1, 1, 1, 1),
     position: 'absolute',
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,
@@ -127,7 +130,18 @@ function createSilence(seconds = 1) {
   return url;
 }
 
-export const Stage = ({ blocks, media, players, reference, time = 0, setTime, singlePlayer, singlePlayerOffset }) => {
+export const Stage = ({
+  blocks,
+  handleHideVideo,
+  hideVideo,
+  media,
+  players,
+  reference,
+  setTime,
+  singlePlayer,
+  singlePlayerOffset,
+  time = 0,
+}) => {
   const [seekTime, setSeekTime] = useState(36 * 1e6); // FIXME why magic number?
   const duration = useMemo(
     () =>
@@ -158,10 +172,10 @@ export const Stage = ({ blocks, media, players, reference, time = 0, setTime, si
   }, [reference, duration, setTime, singlePlayer]);
 
   const [active, setActive] = useState();
-  const [interval, setInterval] = useState();
-  const [referencePlaying, setReferencePlaying] = useState();
   const [buffering, setBuffering] = useState(false);
   const [insert, setInsert] = useState();
+  const [interval, setInterval] = useState();
+  const [referencePlaying, setReferencePlaying] = useState();
 
   useEffect(() => setActive(media?.[0]?.id), [media]);
 
@@ -291,9 +305,13 @@ export const Stage = ({ blocks, media, players, reference, time = 0, setTime, si
 
   return (
     <Root className={classes.root} onClick={referencePlaying === true ? onPause : onPlay}>
-      <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width={16} height={9} />
-      </svg>
+      {hideVideo ? (
+        <Toolbar />
+      ) : (
+        <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width={16} height={9} />
+        </svg>
+      )}
       {!singlePlayer
         ? media?.map(({ id, url, poster, title }) => (
             <Box key={id} sx={{ display: active === id ? 'block' : 'none' }}>
@@ -304,6 +322,7 @@ export const Stage = ({ blocks, media, players, reference, time = 0, setTime, si
                 media={{ id, url, poster, title }}
                 playing={referencePlaying && active === id}
                 time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
+                hideVideo={hideVideo}
                 {...{ players, setActive, buffering, setBuffering }}
               />
             </Box>
@@ -315,6 +334,7 @@ export const Stage = ({ blocks, media, players, reference, time = 0, setTime, si
           playing={referencePlaying}
           ref={reference}
           singlePlayerOffset={singlePlayerOffset}
+          hideVideo={hideVideo}
           {...{ buffering, setBuffering, onPlay, onPause, setTime }}
         />
       ) : null}
@@ -424,6 +444,9 @@ export const Stage = ({ blocks, media, players, reference, time = 0, setTime, si
             valueLabelDisplay="auto"
             valueLabelFormat={timecode}
           />
+          <IconButton onClick={handleHideVideo} color="inherit">
+            {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
+          </IconButton>
         </Stack>
       </Box>
       {!singlePlayer ? (
@@ -446,6 +469,7 @@ const Player = ({
   players,
   active,
   setActive,
+  hideVideo,
   playing,
   setPlaying,
   time = 0,
@@ -591,7 +615,7 @@ const Player = ({
       {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
       className={classes.player}
       controls={controls}
-      height="100%"
+      height={hideVideo ? 0 : '100%'}
       key={id}
       muted={controls}
       width="100%"
@@ -610,6 +634,7 @@ const SinglePlayer = React.forwardRef(
       setBuffering,
       reference,
       onPlay,
+      hideVideo,
       onPause,
       setTime,
       singlePlayerOffset,
@@ -711,13 +736,13 @@ const SinglePlayer = React.forwardRef(
           // controls={controls}
           // muted={controls}
           className={classes.player}
-          height="100%"
+          height={hideVideo ? 0 : '100%'}
           key={id}
           progressInterval={100}
           ref={ref}
           width="100%"
         />
-        {title && (
+        {!hideVideo && title && (
           <Box className={classes.titles} sx={{ opacity: playing ? 0 : 1 }}>
             <Typography component="h2" variant="h6">
               <span>{title}</span>

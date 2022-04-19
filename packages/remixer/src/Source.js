@@ -36,7 +36,6 @@ const Root = styled('div')(({ theme }) => ({
     backgroundColor: 'black',
     color: theme.palette.primary.contrastText,
     display: 'flex',
-    flexBasis: '40%',
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
@@ -47,6 +46,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.transcript}`]: {
     flexBasis: '60%',
     overflow: 'auto',
+    flexGrow: 1,
     padding: theme.spacing(2, 0),
     width: '100%',
   },
@@ -65,6 +65,7 @@ const Source = props => {
   const reference = useRef();
   const players = useRef({});
 
+  const [hideVideo, setHideVideo] = useState(false);
   const [time, setTime] = useState(0);
   const singlePlayer = useMemo(() => !editable && media.length === 1, [media, editable]);
   const singlePlayerOffset = useMemo(() => blocks?.[0]?.start ?? 0, [blocks]);
@@ -86,9 +87,13 @@ const Source = props => {
           </Box>
         </>
       )}
-      <Box className={classes.theatre}>
+      <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
         <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
-          <Stage {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }} />
+          <Stage
+            {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }}
+            hideVideo={hideVideo}
+            handleHideVideo={() => setHideVideo(prevState => !prevState)}
+          />
         </Container>
       </Box>
       <Box className={classes.transcript}>

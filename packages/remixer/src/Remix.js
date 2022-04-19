@@ -61,7 +61,6 @@ const Root = styled('div')(({ theme }) => {
       backgroundColor: 'black',
       borderLeft: `1px solid rgba(255,255,255,0.22)`,
       display: 'flex',
-      flexBasis: '40%',
       flexDirection: 'column',
       justifyContent: 'center',
       width: '100%',
@@ -72,6 +71,7 @@ const Root = styled('div')(({ theme }) => {
     [`& .${classes.transcript}`]: {
       borderLeft: `1px solid ${theme.palette.divider}`,
       flexBasis: '60%',
+      flexGrow: 1,
       overflow: 'auto',
       padding: theme.spacing(2, 0),
       position: 'relative',
@@ -94,6 +94,7 @@ const Remix = props => {
   const players = useRef({});
 
   const [time, setTime] = useState(0);
+  const [hideVideo, setHideVideo] = useState(false);
 
   // useEffect(() => {
   //   if (reference.current)
@@ -115,9 +116,14 @@ const Remix = props => {
         ) : null}
         {blocks?.length > 0 ? (
           <>
-            <Box className={classes.theatre}>
+            <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
               <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
-                <Stage {...{ media, players, reference, time, setTime }} blocks={blocksOverride ?? blocks} />
+                <Stage
+                  {...{ media, players, reference, time, setTime }}
+                  blocks={blocksOverride ?? blocks}
+                  hideVideo={hideVideo}
+                  handleHideVideo={() => setHideVideo(prevState => !prevState)}
+                />
               </Container>
             </Box>
             <Box className={classes.transcript}>
