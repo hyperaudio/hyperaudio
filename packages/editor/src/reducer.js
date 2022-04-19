@@ -184,53 +184,62 @@ const deferAlignment = (editorState, changedEditorState, aligner, dispatch) => {
     items.length > 2 && // TBD use 1?
     text.split(' ').length > 2
   ) {
-    blockAligners.current[blockKey] &&
-      window.cancelIdleCallback(blockAligners.current[blockKey]) &&
-      delete blockAligners.current[blockKey];
+    if (window.cancelIdleCallback) {
+      blockAligners.current[blockKey] &&
+        window.cancelIdleCallback(blockAligners.current[blockKey]) &&
+        delete blockAligners.current[blockKey];
+    } else {
+      blockAligners.current[blockKey] &&
+        clearTimeout(blockAligners.current[blockKey]) &&
+        delete blockAligners.current[blockKey];
+    }
 
-    blockAligners.current[blockKey] = window.requestIdleCallback(
-      () =>
-        aligner(items, text, start, end, alignedItems => {
-          const textStart = alignedItems?.[0]?.start ?? start;
-          const textEnd = alignedItems?.[alignedItems.length - 1]?.end ?? end;
+    const callback = () =>
+      aligner(items, text, start, end, alignedItems => {
+        const textStart = alignedItems?.[0]?.start ?? start;
+        const textEnd = alignedItems?.[alignedItems.length - 1]?.end ?? end;
 
-          const data = {
-            // block: block.getData().get('block'), // TBD: do we need this?
-            speaker: block.getData().get('speaker'),
-            items: alignedItems,
-            stt,
-            start: textStart,
-            end: textEnd,
-            minStart: Math.min(textStart, start, minStart),
-            maxEnd: Math.max(textEnd, end, maxEnd),
-            // prealign: { items, start, end },
-          };
+        const data = {
+          // block: block.getData().get('block'), // TBD: do we need this?
+          speaker: block.getData().get('speaker'),
+          items: alignedItems,
+          stt,
+          start: textStart,
+          end: textEnd,
+          minStart: Math.min(textStart, start, minStart),
+          maxEnd: Math.max(textEnd, end, maxEnd),
+          // prealign: { items, start, end },
+        };
 
-          console.log('aligner', { prealign: { items, start, end } }, data);
+        console.log('aligner', { prealign: { items, start, end } }, data);
 
-          const contentStateWithBlockData = Modifier.setBlockData(
-            changedContentState,
-            SelectionState.createEmpty(blockKey),
-            Map(data),
-          );
+        const contentStateWithBlockData = Modifier.setBlockData(
+          changedContentState,
+          SelectionState.createEmpty(blockKey),
+          Map(data),
+        );
 
-          const editorStateWithBlockData = EditorState.forceSelection(
-            EditorState.push(changedEditorState, contentStateWithBlockData, 'change-block-data'),
-            changedEditorState.getSelection(),
-          );
+        const editorStateWithBlockData = EditorState.forceSelection(
+          EditorState.push(changedEditorState, contentStateWithBlockData, 'change-block-data'),
+          changedEditorState.getSelection(),
+        );
 
-          dispatch({
-            type: 'change-block-data',
-            editorState: EditorState.create({
-              currentContent: editorStateWithBlockData.getCurrentContent(),
-              undoStack: changedEditorState.getUndoStack(),
-              redoStack: changedEditorState.getRedoStack(),
-              selection: changedEditorState.getSelection(),
-            }),
-          });
-        }),
-      { timeout: 250 },
-    );
+        dispatch({
+          type: 'change-block-data',
+          editorState: EditorState.create({
+            currentContent: editorStateWithBlockData.getCurrentContent(),
+            undoStack: changedEditorState.getUndoStack(),
+            redoStack: changedEditorState.getRedoStack(),
+            selection: changedEditorState.getSelection(),
+          }),
+        });
+      });
+
+    if (window.requestIdleCallback) {
+      blockAligners.current[blockKey] = window.requestIdleCallback(callback, { timeout: 250 });
+    } else {
+      blockAligners.current[blockKey] = window.setTimeout(callback, 100);
+    }
   }
 };
 
