@@ -31,6 +31,7 @@ const Root = styled(Toolbar, {
     background: 'black',
     color: theme.palette.primary.contrastText,
     zIndex: 1,
+    '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   };
 });
 
