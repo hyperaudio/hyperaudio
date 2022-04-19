@@ -266,6 +266,13 @@ const EditorPage = ({ organisation, user, groups }) => {
       let speakers;
       let blocks;
 
+      let t = transcript;
+      try {
+        t = (await axios.get(await Storage.get(`data/${transcript.id}.json.gz`, { level: 'public' }))).data;
+      } catch (ignored) {}
+
+      // console.log({ transcript, t });
+
       try {
         // const signedURL = await Storage.get(
         //   `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
@@ -274,10 +281,10 @@ const EditorPage = ({ organisation, user, groups }) => {
         //   },
         // );
         let signedURL;
-        if (transcript?.metadata?.draft) {
-          signedURL = await Storage.get(transcript.metadata.draft.key, {
-            level: transcript.metadata.draft.level,
-            identityId: transcript.metadata.draft.identityId,
+        if (t?.metadata?.draft) {
+          signedURL = await Storage.get(t.metadata.draft.key, {
+            level: t.metadata.draft.level,
+            identityId: t.metadata.draft.identityId,
           });
         } else {
           signedURL = await Storage.get(
@@ -688,7 +695,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       },
     );
 
-    console.log(result);
+    // console.log(result);
     setSaving(1);
 
     // touch transcript

@@ -103,6 +103,11 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             let speakers;
             let blocks;
 
+            let t = transcript;
+            try {
+              t = (await axios.get(await Storage.get(`data/${transcript.id}.json.gz`, { level: 'public' }))).data;
+            } catch (ignored) {}
+
             if (showDraft || showPreview || transcriptUrl) {
               setLabel(showDraft ? 'DRAFT' : showPreview ? 'PREVIEW' : null);
               try {
@@ -114,10 +119,10 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 //   key = `transcript/${media.playbackId}/${transcript.language}/translation.json.gz`;
 
                 let signedURL;
-                if (showDraft && transcript.metadata.draft) {
-                  signedURL = await Storage.get(transcript.metadata.draft.key, {
-                    level: transcript.metadata.draft.level,
-                    identityId: transcript.metadata.draft.identityId,
+                if (showDraft && t.metadata.draft) {
+                  signedURL = await Storage.get(t.metadata.draft.key, {
+                    level: t.metadata.draft.level,
+                    identityId: t.metadata.draft.identityId,
                   });
                 } else {
                   signedURL = await Storage.get(key, {
@@ -150,19 +155,19 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             if (!speakers || !blocks) {
               setLabel(null);
               try {
-                let url = transcript.url;
-                if (transcript?.status?.label === 'published') {
+                let url = t.url;
+                if (t?.status?.label === 'published') {
                   if (
-                    transcript?.metadata?.published?.key &&
-                    transcript?.metadata?.published?.level &&
-                    transcript?.metadata?.published?.identityId
+                    t?.metadata?.published?.key &&
+                    t?.metadata?.published?.level &&
+                    t?.metadata?.published?.identityId
                   ) {
-                    url = await Storage.get(transcript.metadata.published.key, {
-                      level: transcript.metadata.published.level,
-                      identityId: transcript.metadata.published.identityId,
+                    url = await Storage.get(t.metadata.published.key, {
+                      level: t.metadata.published.level,
+                      identityId: t.metadata.published.identityId,
                     });
-                  } else if (transcript?.metadata?.published?.url) {
-                    url = transcript?.metadata?.published?.url ?? url;
+                  } else if (t?.metadata?.published?.url) {
+                    url = t?.metadata?.published?.url ?? url;
                   }
                 }
 
