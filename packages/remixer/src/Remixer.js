@@ -2,6 +2,7 @@ import React, { useReducer, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 
+import Box from '@mui/material/Box';
 import { styled, ThemeProvider } from '@mui/material/styles';
 
 import { getTheme } from '@hyperaudio/common';
@@ -17,13 +18,9 @@ const classes = {
   root: `${PREFIX}-root`,
 };
 
-const Root = styled('div', {
+const Root = styled(Box, {
   shouldForwardProp: prop => !['showSource', 'isSingleMedia'].includes(prop),
 })(({ theme, showSource, isSingleMedia }) => ({
-  height: '100%',
-  position: 'relative',
-
-  // layout
   [`& .${classes.root}`]: {
     alignContent: 'flex-start',
     alignItems: 'stretch',
@@ -108,13 +105,13 @@ const Root = styled('div', {
     },
   },
   [`& .transcriptSnapshotDropArea`]: {
-    boxShadow: `0 0 2px 0 ${theme.palette.primary.light} inset`,
-    outline: `3px solid ${theme.palette.primary.main}`,
+    background: theme.palette.action.hover,
+    boxShadow: `0 0 0 ${theme.spacing(0.5)} ${theme.palette.primary.dark} inset`,
+    color: `${theme.palette.primary.main} !important`,
     overflow: 'scroll',
   },
   [`& .transcriptDropArea`]: {
-    borderRadius: theme.shape.borderRadius,
-    height: '100%',
+    minHeight: '100%',
   },
 }));
 
@@ -191,66 +188,67 @@ const Remixer = props => {
 
   return (
     <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
-      <Root showSource={showSource} isSingleMedia={isSingleMedia}>
-        <div
-          className={classes.root}
-          id={classes.root} // used as Dragbar’s bounds
-        >
-          {editable ? (
-            <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
-              {showSource && (
-                <Source
-                  {...{
-                    ...props,
-                    sources,
-                    tabs,
-                    source,
-                    onShowLibrary,
-                    onSourceChange,
-                    onSourceClose,
-                    autoScroll,
-                    onSelectTranslation,
-                  }}
-                />
-              )}
-              {!isSingleMedia && (
-                <Remix
-                  {...{
-                    ...props,
-                    remix,
-                    sources,
-                    tabs,
-                    showSource,
-                    setShowSource,
-                    onSourceChange,
-                    dispatch,
-                    autoScroll,
-                  }}
-                />
-              )}
-            </DragDropContext>
-          ) : (
-            <>
-              {showSource && (
-                <Source
-                  {...{
-                    ...props,
-                    sources,
-                    tabs,
-                    source,
-                    onShowLibrary,
-                    onSourceChange,
-                    autoScroll,
-                    onSelectTranslation,
-                  }}
-                />
-              )}
-              {!isSingleMedia && (
-                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
-              )}
-            </>
-          )}
-        </div>
+      <Root
+        className={classes.root}
+        id={classes.root} // used as Dragbar’s bounds
+        isSingleMedia={isSingleMedia}
+        showSource={showSource}
+        sx={props.sx}
+      >
+        {editable ? (
+          <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
+            {showSource && (
+              <Source
+                {...{
+                  ...props,
+                  sources,
+                  tabs,
+                  source,
+                  onShowLibrary,
+                  onSourceChange,
+                  onSourceClose,
+                  autoScroll,
+                  onSelectTranslation,
+                }}
+              />
+            )}
+            {!isSingleMedia && (
+              <Remix
+                {...{
+                  ...props,
+                  remix,
+                  sources,
+                  tabs,
+                  showSource,
+                  setShowSource,
+                  onSourceChange,
+                  dispatch,
+                  autoScroll,
+                }}
+              />
+            )}
+          </DragDropContext>
+        ) : (
+          <>
+            {showSource && (
+              <Source
+                {...{
+                  ...props,
+                  sources,
+                  tabs,
+                  source,
+                  onShowLibrary,
+                  onSourceChange,
+                  autoScroll,
+                  onSelectTranslation,
+                }}
+              />
+            )}
+            {!isSingleMedia && (
+              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
+            )}
+          </>
+        )}
         {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
       </Root>
     </ThemeProvider>

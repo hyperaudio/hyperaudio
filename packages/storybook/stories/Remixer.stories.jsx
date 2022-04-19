@@ -15,6 +15,15 @@ const Template = (args) => (
       remix={remixData.remix}
       sources={remixData.sources}
       media={[]}
+      sx={{
+        "& > *": { flex: "0 0 50%" },
+        bottom: 0,
+        display: "flex",
+        left: 0,
+        position: "absolute",
+        right: 0,
+        top: 0,
+      }}
       {...args}
     />
   </div>

@@ -5,6 +5,5 @@ export * from './InsertTransition';
 export * from './InsertsBar';
 export * from './LibraryTopbar';
 export * from './RemixTopbar';
-export * from './SourceTopbar';
-export * from './Theatre';
+export * from './Stage';
 export * from './Transcript';

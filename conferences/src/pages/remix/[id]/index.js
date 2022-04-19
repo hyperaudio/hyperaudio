@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import { styled } from '@mui/material/styles';
 
+// import SourceTopbar from 'src/components/remix/SourceTopbar';
 import Remixer from '@hyperaudio/remixer';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../../../models';
@@ -83,6 +84,7 @@ const RemixPage = ({ user, groups: [], organisation }) => {
       </Head>
       <Root className={classes.root}>
         <div className={classes.push} />
+        {/* {!isSingleMedia && <SourceTopbar {...props} />} */}
         {data && data.sources && data.sources.length > 0 ? (
           <Remixer
             editable={false}

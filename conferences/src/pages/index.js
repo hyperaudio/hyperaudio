@@ -87,7 +87,7 @@ const HomePage = props => {
   const [allMedia, setAllMedia] = useState([]);
   const [allChannels, setAllChannels] = useState([]);
 
-  console.log({ allMedia, allChannels });
+  // console.log({ allMedia, allChannels });
 
   useEffect(() => {
     getMedia(setAllMedia);
