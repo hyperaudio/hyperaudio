@@ -58,9 +58,7 @@ const CONTROLS_HEIGHT = 60;
 
 try {
   Amplify.addPluggable(new AmazonAIPredictionsProvider());
-} catch (ignored) {
-  console.log('AmazonAIPredictionsProvider already added', ignored);
-}
+} catch (ignored) {}
 
 function SkeletonLoader() {
   const dummytextarr = [...Array(5).keys()];
@@ -262,7 +260,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   useEffect(() => {
     if (!transcript || !media) return;
-    console.log('LOADING', { media, transcript });
+    // console.log('LOADING', { media, transcript });
 
     (async () => {
       let speakers;
@@ -349,7 +347,7 @@ const EditorPage = ({ organisation, user, groups }) => {
         }
       }
 
-      console.log({ speakers, blocks });
+      // console.log({ speakers, blocks });
       setData({ speakers, blocks });
     })();
   }, [media, transcript]);
@@ -457,7 +455,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   // console.log({ speakers });
   // console.log({ user, groups, mediaId, transcriptId, media, transcripts, transcript, data });
 
-  useEffect(() => console.log({ speakers }), [speakers]);
+  // useEffect(() => console.log({ speakers }), [speakers]);
 
   const initialState = useMemo(
     () =>
@@ -479,18 +477,18 @@ const EditorPage = ({ organisation, user, groups }) => {
     [originalData],
   );
 
-  useEffect(() => console.log({ initialState }), [initialState]);
-  useEffect(() => console.log({ originalState }), [originalState]);
+  // useEffect(() => console.log({ initialState }), [initialState]);
+  // useEffect(() => console.log({ originalState }), [originalState]);
 
   const video = useRef();
 
   const waitForPlayer = useCallback(() => {
-    console.log('waitForPlayer');
+    // console.log('waitForPlayer');
     if (!media) return;
 
-    console.log('MUX?');
+    // console.log('MUX?');
     if (video.current?.getInternalPlayer('hls') && global.MUX_KEY) {
-      console.log('MUX ON');
+      // console.log('MUX ON');
       const initTime = Date.now();
       mux.monitor(video.current.getInternalPlayer(), {
         debug: false,
@@ -614,7 +612,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const onSubmitMonetization = useCallback(
     monetization => {
-      console.log(monetization);
+      // console.log(monetization);
       setSpeakers(
         Object.entries(speakers).reduce(
           (acc, [id, entry]) => ({ ...acc, [id]: { ...entry, monetization: monetization[id] } }),
@@ -656,7 +654,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const handleSave = useCallback(async () => {
     if (!draft || !media || !transcript) return;
-    console.log(draft);
+    // console.log(draft);
     setSavingProgress(0);
     setSaving(2); // 3
 
@@ -694,8 +692,9 @@ const EditorPage = ({ organisation, user, groups }) => {
     setSaving(1);
 
     // touch transcript
-    await DataStore.save(
-      Transcript.copyOf(transcript, updated => {
+    const t = (await DataStore.query(Transcript)).filter(t => t.id === transcript.id)[0];
+    const t2 = await DataStore.save(
+      Transcript.copyOf(t, updated => {
         updated.metadata = {
           ...(transcript.metadata ?? {}),
           draft: {
@@ -706,6 +705,17 @@ const EditorPage = ({ organisation, user, groups }) => {
           },
         };
       }),
+    );
+
+    // console.log({ transcript, t, t2 });
+    await Storage.put(
+      `data/${transcript.id}.json.gz`,
+      new Blob([pako.gzip(new TextEncoder('utf-8').encode(JSON.stringify(t2)))]),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        contentEncoding: 'gzip',
+      },
     );
 
     setTimeout(() => setSaving(0), 500);
@@ -750,7 +760,7 @@ const EditorPage = ({ organisation, user, groups }) => {
 
   const handlePreview = useCallback(async () => {
     if (!draft || !media || !transcript) return;
-    console.log(draft);
+    // console.log(draft);
     setPreviewingProgress(0);
     setPreviewing(2);
 
@@ -814,7 +824,7 @@ const EditorPage = ({ organisation, user, groups }) => {
       },
     );
 
-    console.log(result);
+    // console.log(result);
     setPublishing(2);
 
     // PUBLISH!
@@ -836,10 +846,11 @@ const EditorPage = ({ organisation, user, groups }) => {
       },
     );
 
-    console.log(result2);
+    // console.log(result2);
 
-    await DataStore.save(
-      Transcript.copyOf(transcript, updated => {
+    const t = (await DataStore.query(Transcript)).filter(t => t.id === transcript.id)[0];
+    const t2 = await DataStore.save(
+      Transcript.copyOf(t, updated => {
         updated.status = { label: 'published' };
         // updated.url = `https://mozfest.hyper.audio/public/transcript/${media.playbackId}/${transcript.language}/${transcript.id}-published.json.gz`;
         updated.metadata = {
@@ -856,10 +867,31 @@ const EditorPage = ({ organisation, user, groups }) => {
       }),
     );
 
-    await DataStore.save(
-      Media.copyOf(media, updated => {
+    await Storage.put(
+      `data/${transcript.id}.json.gz`,
+      new Blob([pako.gzip(new TextEncoder('utf-8').encode(JSON.stringify(t2)))]),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        contentEncoding: 'gzip',
+      },
+    );
+
+    const m = (await DataStore.query(Media)).filter(m => m.id === media.id)[0];
+    const m2 = await DataStore.save(
+      Media.copyOf(m, updated => {
         updated.status = { label: 'published' };
       }),
+    );
+
+    await Storage.put(
+      `data/${media.id}.json.gz`,
+      new Blob([pako.gzip(new TextEncoder('utf-8').encode(JSON.stringify(m2)))]),
+      {
+        level: 'public',
+        contentType: 'application/json',
+        contentEncoding: 'gzip',
+      },
     );
 
     setPublishing(1);
