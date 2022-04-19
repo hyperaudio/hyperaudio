@@ -444,9 +444,11 @@ export const Stage = ({
             valueLabelDisplay="auto"
             valueLabelFormat={timecode}
           />
-          <IconButton onClick={handleHideVideo} color="inherit">
-            {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
-          </IconButton>
+          <Tooltip title={hideVideo ? 'Show video' : 'Minimize video'}>
+            <IconButton onClick={handleHideVideo} color="inherit">
+              {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
+            </IconButton>
+          </Tooltip>
         </Stack>
       </Box>
       {!singlePlayer ? (
