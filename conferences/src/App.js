@@ -6,6 +6,7 @@ import { CacheProvider } from '@emotion/react';
 import PlausibleProvider from 'next-plausible';
 import { usePlausible } from 'next-plausible';
 import * as Sentry from '@sentry/react';
+import Head from 'next/head';
 
 import Alert from '@mui/material/Alert';
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -231,6 +232,14 @@ const App = props => {
       <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
         <PlausibleProvider domain={domain}>
           <Root className={classes.root}>
+            <Head>
+              <link rel="preconnect" href={awsexports.aws_appsync_graphqlEndpoint} />
+              <link rel="preconnect" href={`https://cognito-identity.${awsexports.aws_cognito_region}.amazonaws.com`} />
+              <link
+                rel="preconnect"
+                href={`https://${awsexports.aws_user_files_s3_bucket}.s3.${awsexports.aws_user_files_s3_bucket_region}.amazonaws.com`}
+              />
+            </Head>
             {inputGlobalStyles}
             <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
             {!supportsIndexedDB ? (
