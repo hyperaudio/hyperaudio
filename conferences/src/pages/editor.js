@@ -26,6 +26,7 @@ import Divider from '@mui/material/Divider';
 import FastForwardIcon from '@mui/icons-material/FastForward';
 import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
+import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -36,13 +37,13 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PublishIcon from '@mui/icons-material/Publish';
 import SaveIcon from '@mui/icons-material/Save';
 import Skeleton from '@mui/material/Skeleton';
-import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
-import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import Slider from '@mui/material/Slider';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import UnfoldLessIcon from '@mui/icons-material/UnfoldLess';
+import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { styled } from '@mui/material/styles';
 
@@ -113,6 +114,7 @@ const Root = styled('div', {
     alignItems: 'center',
     display: 'flex',
     flexDirection: 'column',
+    zIndex: 1,
   },
   [`& .${classes.toolbar}`]: {
     background: 'black',
@@ -122,42 +124,49 @@ const Root = styled('div', {
   },
   [`& .${classes.theatre}`]: {
     aligenItems: 'center',
+    transition: `flex-basis ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut}`,
     backgroundColor: 'black',
     color: theme.palette.primary.contrastText,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
+    '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
     [theme.breakpoints.up('sm')]: {
       padding: theme.spacing(0, 0, 2),
     },
   },
   [`& .${classes.stage}`]: {
-    lineHeight: 0,
-    overflow: 'hidden',
-    position: 'relative',
     borderRadius: theme.shape.borderRadius * 2,
+    lineHeight: 0,
+    position: 'relative',
     [theme.breakpoints.up('sm')]: {
       border: `1px solid rgba(255,255,255,0.22)`,
     },
   },
-  [`& .${classes.player}`]: {
-    cursor: 'pointer',
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
+  [`& .${classes.playerWrapper}`]: {
+    height: '100%',
+    paddingTop: '56.25%',
+    position: 'relative',
     width: '100%',
+  },
+  [`& .${classes.player}`]: {
+    borderRadius: theme.shape.borderRadius * 2,
+    cursor: 'pointer',
+    left: '0',
+    overflow: 'hidden',
+    position: 'absolute',
+    top: '0',
   },
   [`& .${classes.controls}`]: {
     alignItems: 'center',
     background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
+    borderRadius: theme.shape.borderRadius * 2,
     bottom: 0,
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
     padding: theme.spacing(1),
-    position: 'absolute',
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,
   },
@@ -1327,44 +1336,43 @@ const EditorPage = ({ organisation, user, groups }) => {
           {/* THEATRE
         ------------------------------------
         */}
-          <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
+          <Box className={classes.theatre} sx={{ flexBasis: hideVideo || pip ? '80px' : '40%' }}>
             <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
               {media ? (
-                <Box
-                  className={classes.stage}
-                  onClick={playing === true ? pause : play}
-                  sx={{ display: pip ? 'none' : 'block' }}
-                >
-                  {hideVideo ? (
-                    <Toolbar />
-                  ) : (
+                <Box className={classes.stage} onClick={playing === true ? pause : play}>
+                  {!hideVideo && !pip && (
                     <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
                       <rect width={16} height={9} />
                     </svg>
                   )}
-                  <ReactPlayer
-                    className={classes.player}
-                    config={config}
-                    height={hideVideo ? 0 : '100%'}
-                    onBuffer={onBuffer}
-                    onBufferEnd={onBufferEnd}
-                    onDisablePIP={onDisablePIP}
-                    onDuration={onDuration}
-                    onEnablePIP={onEnablePIP}
-                    onPlay={play}
-                    onProgress={onProgress}
-                    playing={playing}
-                    progressInterval={100}
-                    ref={video}
-                    style={{ lineHeight: 0 }}
-                    url={media.url}
-                    width="100%"
-                  />
+                  <Grow in={!hideVideo || pip}>
+                    <Box className={classes.playerWrapper}>
+                      <ReactPlayer
+                        className={classes.player}
+                        config={config}
+                        height="100%"
+                        onBuffer={onBuffer}
+                        onBufferEnd={onBufferEnd}
+                        onDisablePIP={onDisablePIP}
+                        onDuration={onDuration}
+                        onEnablePIP={onEnablePIP}
+                        onPlay={play}
+                        onProgress={onProgress}
+                        playing={playing}
+                        progressInterval={100}
+                        ref={video}
+                        style={{ lineHeight: 0, visibility: hideVideo || pip ? 'hidden' : 'visible' }}
+                        url={media.url}
+                        width="100%"
+                      />
+                    </Box>
+                  </Grow>
                   <Box
                     className={classes.controls}
                     sx={{
-                      opacity: { md: playing ? (hideVideo ? 1 : 0) : 1 },
-                      pointerEvents: { md: playing ? (hideVideo ? 'all' : 'none') : 'all' },
+                      opacity: { md: playing ? (hideVideo || pip ? 1 : 0) : 1 },
+                      pointerEvents: { md: playing ? (hideVideo || pip ? 'all' : 'none') : 'all' },
+                      position: hideVideo || pip ? 'static' : 'absolute',
                     }}
                     onClick={e => e.stopPropagation()}
                   >
@@ -1394,10 +1402,16 @@ const EditorPage = ({ organisation, user, groups }) => {
                         valueLabelDisplay="auto"
                         valueLabelFormat={timecode}
                       />
-                      <Tooltip title={hideVideo ? 'Show video' : 'Minimize video'}>
-                        <IconButton onClick={() => setHideVideo(prevState => !prevState)} color="inherit">
-                          {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
-                        </IconButton>
+                      <Tooltip title={`${hideVideo ? 'Show' : 'Hide'} video`}>
+                        <span>
+                          <IconButton
+                            disabled={pip}
+                            onClick={() => setHideVideo(prevState => !prevState)}
+                            color="inherit"
+                          >
+                            {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
+                          </IconButton>
+                        </span>
                       </Tooltip>
                     </Stack>
                   </Box>
