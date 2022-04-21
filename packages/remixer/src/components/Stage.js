@@ -62,13 +62,14 @@ const Root = styled(Box)(({ theme }) => ({
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
-    padding: theme.spacing(1, 1, 1, 1),
+    padding: theme.spacing(1),
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,
   },
   [`& .${classes.titles}`]: {
     background: `linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,1) 100%)`,
     bottom: 0,
+    borderRadius: theme.shape.borderRadius * 2,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-end',
@@ -430,6 +431,7 @@ export const Stage = ({
         sx={{
           opacity: { md: referencePlaying ? (hideVideo || pip ? 1 : 0) : 1 },
           pointerEvents: { md: referencePlaying ? (hideVideo || pip ? 'all' : 'none') : 'all' },
+          position: hideVideo || pip ? 'static' : 'absolute',
         }}
         onClick={e => e.stopPropagation()}
       >
