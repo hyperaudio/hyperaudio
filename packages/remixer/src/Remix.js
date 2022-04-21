@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
 
 import Box from '@mui/material/Box';
@@ -63,6 +63,7 @@ const Root = styled('div')(({ theme }) => {
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
+      transition: `flex-basis ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut}`,
       width: '100%',
       [theme.breakpoints.up('sm')]: {
         padding: theme.spacing(0, 0, 2),
@@ -95,11 +96,15 @@ const Remix = props => {
 
   const [time, setTime] = useState(0);
   const [hideVideo, setHideVideo] = useState(false);
+  const [pip, setPip] = useState(false);
 
   // useEffect(() => {
   //   if (reference.current)
   //     reference.current.addEventListener('timeupdate', () => setTime(1e3 * (reference.current?.currentTime ?? 0)));
   // }, [reference]);
+
+  const onEnablePIP = useCallback(() => setPip(true), []);
+  const onDisablePIP = useCallback(() => setPip(false), []);
 
   const [blocksOverride, setBlockOverride] = useState();
 
@@ -116,13 +121,16 @@ const Remix = props => {
         ) : null}
         {blocks?.length > 0 ? (
           <>
-            <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
+            <Box className={classes.theatre} sx={{ flexBasis: hideVideo || pip ? '80px' : '40%' }}>
               <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
                 <Stage
                   {...{ media, players, reference, time, setTime }}
                   blocks={blocksOverride ?? blocks}
                   hideVideo={hideVideo}
+                  pip={pip}
                   handleHideVideo={() => setHideVideo(prevState => !prevState)}
+                  onDisablePIP={onDisablePIP}
+                  onEnablePIP={onEnablePIP}
                 />
               </Container>
             </Box>

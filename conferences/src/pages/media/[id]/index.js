@@ -390,7 +390,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             onSelectTranslation={onSelectTranslation}
             remix={null}
             sources={data.sources}
-            sx={{ top: `${height * 2}px`, left: 0, bottom: 0, right: 0, position: 'absolute' }}
+            sx={{ top: `${height * 2}px`, left: 0, bottom: 0, right: 0, position: 'absolute', zIndex: 1 }}
           />
         ) : (
           <div style={{ width: '550px', height: '100%', textAlign: 'center', paddingTop: 50, margin: 'auto' }}>

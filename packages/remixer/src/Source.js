@@ -38,7 +38,10 @@ const Root = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
+    transition: `flex-basis ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut}`,
+    transition: `flex-basis ${theme.transitions.duration.standard}ms ${theme.transitions.easing.easeInOut}`,
     width: '100%',
+    '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
     [theme.breakpoints.up('sm')]: {
       padding: theme.spacing(0, 0, 2),
     },
@@ -66,6 +69,7 @@ const Source = props => {
   const players = useRef({});
 
   const [hideVideo, setHideVideo] = useState(false);
+  const [pip, setPip] = useState(false);
   const [time, setTime] = useState(0);
   const singlePlayer = useMemo(() => !editable && media.length === 1, [media, editable]);
   const singlePlayerOffset = useMemo(() => blocks?.[0]?.start ?? 0, [blocks]);
@@ -77,6 +81,9 @@ const Source = props => {
 
   // useEffect(() => console.log({ time }), [time]);
 
+  const onEnablePIP = useCallback(() => setPip(true), []);
+  const onDisablePIP = useCallback(() => setPip(false), []);
+
   return (
     <Root className={classes.root}>
       {!isSingleMedia && (
@@ -87,11 +94,14 @@ const Source = props => {
           </Box>
         </>
       )}
-      <Box className={classes.theatre} sx={{ flexBasis: hideVideo ? '80px' : '40%' }}>
+      <Box className={classes.theatre} sx={{ flexBasis: hideVideo || pip ? '80px' : '40%' }}>
         <Container maxWidth="sm" sx={{ px: { xs: 0, sm: 3 } }}>
           <Stage
             {...{ blocks, media, players, reference, time, setTime, singlePlayer, singlePlayerOffset }}
             hideVideo={hideVideo}
+            pip={pip}
+            onDisablePIP={onDisablePIP}
+            onEnablePIP={onEnablePIP}
             handleHideVideo={() => setHideVideo(prevState => !prevState)}
           />
         </Container>

@@ -11,6 +11,7 @@ import IconButton from '@mui/material/IconButton';
 import PauseIcon from '@mui/icons-material/Pause';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Slider from '@mui/material/Slider';
+import Grow from '@mui/material/Grow';
 import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
@@ -31,31 +32,37 @@ const classes = {
 };
 
 const Root = styled(Box)(({ theme }) => ({
+  '& .Mui-disabled': { color: 'rgba(255,255,255,0.5) !important' },
   borderRadius: theme.shape.borderRadius * 2,
   color: theme.palette.primary.contrastText,
   lineHeight: 0,
-  overflow: 'hidden',
   position: 'relative',
   [theme.breakpoints.up('sm')]: {
     border: `1px solid rgba(255,255,255,0.22)`,
   },
-  [`& .${classes.player}`]: {
-    cursor: 'pointer',
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
+  [`& .${classes.playerWrapper}`]: {
+    height: '100%',
+    paddingTop: '56.25%',
+    position: 'relative',
     width: '100%',
+  },
+  [`& .${classes.player}`]: {
+    borderRadius: theme.shape.borderRadius * 2,
+    cursor: 'pointer',
+    left: '0',
+    overflow: 'hidden',
+    position: 'absolute',
+    top: '0',
   },
   [`& .${classes.controls}`]: {
     alignItems: 'center',
     background: `linear-gradient(to top, rgba(0,0,0,1), rgba(0,0,0,0.0))`,
+    borderRadius: theme.shape.borderRadius * 2,
     bottom: 0,
     display: 'flex',
     height: `${CONTROLS_HEIGHT}px`,
     left: 0,
     padding: theme.spacing(1, 1, 1, 1),
-    position: 'absolute',
     right: 0,
     transition: `opacity ${theme.transitions.duration.short}ms`,
   },
@@ -135,6 +142,9 @@ export const Stage = ({
   blocks,
   handleHideVideo,
   hideVideo,
+  onDisablePIP,
+  onEnablePIP,
+  pip,
   media,
   players,
   reference,
@@ -306,9 +316,7 @@ export const Stage = ({
 
   return (
     <Root className={classes.root} onClick={referencePlaying === true ? onPause : onPlay}>
-      {hideVideo ? (
-        <Toolbar />
-      ) : (
+      {!hideVideo && !pip && (
         <svg width="100%" viewBox={`0 0 16 9`} fill="none" xmlns="http://www.w3.org/2000/svg">
           <rect width={16} height={9} />
         </svg>
@@ -321,9 +329,12 @@ export const Stage = ({
                 active={active === id}
                 key={id}
                 media={{ id, url, poster, title }}
+                onDisablePIP={onDisablePIP}
+                onEnablePIP={onEnablePIP}
                 playing={referencePlaying && active === id}
                 time={time - (interval?.[0] ?? 0) + (interval?.[2]?.start ?? 0)}
                 hideVideo={hideVideo}
+                pip={pip}
                 {...{ players, setActive, buffering, setBuffering }}
               />
             </Box>
@@ -333,9 +344,12 @@ export const Stage = ({
         <SinglePlayer
           media={media[0]}
           playing={referencePlaying}
+          onDisablePIP={onDisablePIP}
+          onEnablePIP={onEnablePIP}
           ref={reference}
           singlePlayerOffset={singlePlayerOffset}
           hideVideo={hideVideo}
+          pip={pip}
           {...{ buffering, setBuffering, onPlay, onPause, setTime }}
         />
       ) : null}
@@ -414,8 +428,8 @@ export const Stage = ({
       <Box
         className={classes.controls}
         sx={{
-          opacity: { md: referencePlaying ? (hideVideo ? 1 : 0) : 1 },
-          pointerEvents: { md: referencePlaying ? (hideVideo ? 'all' : 'none') : 'all' },
+          opacity: { md: referencePlaying ? (hideVideo || pip ? 1 : 0) : 1 },
+          pointerEvents: { md: referencePlaying ? (hideVideo || pip ? 'all' : 'none') : 'all' },
         }}
         onClick={e => e.stopPropagation()}
       >
@@ -445,10 +459,12 @@ export const Stage = ({
             valueLabelDisplay="auto"
             valueLabelFormat={timecode}
           />
-          <Tooltip title={hideVideo ? 'Show video' : 'Minimize video'}>
-            <IconButton onClick={handleHideVideo} color="inherit">
-              {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
-            </IconButton>
+          <Tooltip title={`${hideVideo ? 'Show' : 'Hide'} video`}>
+            <span>
+              <IconButton disabled={pip} onClick={handleHideVideo} color="inherit">
+                {hideVideo ? <UnfoldMoreIcon /> : <UnfoldLessIcon />}
+              </IconButton>
+            </span>
           </Tooltip>
         </Stack>
       </Box>
@@ -468,15 +484,19 @@ export const Stage = ({
 };
 
 const Player = ({
-  media: { id, url, poster, title },
-  players,
   active,
-  setActive,
   hideVideo,
+  media: { id, url, poster, title },
+  onDisablePIP,
+  onEnablePIP,
+  onPause,
+  pip,
+  players,
   playing,
+  setActive,
+  setBuffering,
   setPlaying,
   time = 0,
-  setBuffering,
 }) => {
   const ref = useRef();
   // console.log(ref);
@@ -614,31 +634,40 @@ const Player = ({
   }, [id, setBuffering]);
 
   return (
-    <ReactPlayer
-      {...{ ref, config, url, playing, onReady, onPlay, onBuffer, onBufferEnd }}
-      className={classes.player}
-      controls={controls}
-      height={hideVideo ? 0 : '100%'}
-      key={id}
-      muted={controls}
-      width="100%"
-      // onClick={playing ? onPause : onPlay}
-      onClick={() => alert('wow')}
-      // muted={!primed}
-    />
+    <Grow in={!hideVideo || pip}>
+      <Box className={classes.playerWrapper}>
+        <ReactPlayer
+          {...{ ref, config, url, playing, onReady, onPause, onPlay, onBuffer, onBufferEnd }}
+          // muted={!primed}
+          className={classes.player}
+          controls={controls}
+          height={hideVideo ? 0 : '100%'}
+          key={id}
+          muted={controls}
+          onClick={playing ? onPause : onPlay}
+          onDisablePIP={onDisablePIP}
+          onEnablePIP={onEnablePIP}
+          style={{ lineHeight: 0, visibility: hideVideo || pip ? 'hidden' : 'visible' }}
+          width="100%"
+        />
+      </Box>
+    </Grow>
   );
 };
 
 const SinglePlayer = React.forwardRef(
   (
     {
-      media: { id, url, poster, title },
-      playing,
-      setBuffering,
-      reference,
-      onPlay,
       hideVideo,
+      media: { id, url, poster, title },
+      onDisablePIP,
+      onEnablePIP,
       onPause,
+      onPlay,
+      pip,
+      playing,
+      reference,
+      setBuffering,
       setTime,
       singlePlayerOffset,
     },
@@ -733,26 +762,31 @@ const SinglePlayer = React.forwardRef(
     );
 
     return (
-      <>
-        <ReactPlayer
-          {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
-          // controls={controls}
-          // muted={controls}
-          className={classes.player}
-          height={hideVideo ? 0 : '100%'}
-          key={id}
-          progressInterval={100}
-          ref={ref}
-          width="100%"
-        />
-        {!hideVideo && title && (
-          <Box className={classes.titles} sx={{ opacity: playing ? 0 : 1 }}>
-            <Typography component="h2" variant="h6">
-              <span>{title}</span>
-            </Typography>
-          </Box>
-        )}
-      </>
+      <Grow in={!hideVideo || pip}>
+        <Box className={classes.playerWrapper}>
+          <ReactPlayer
+            {...{ config, url, playing, onPlay, onPause, onBuffer, onBufferEnd, onProgress }}
+            // controls={controls}
+            // muted={controls}
+            className={classes.player}
+            height={hideVideo ? 0 : '100%'}
+            key={id}
+            onDisablePIP={onDisablePIP}
+            onEnablePIP={onEnablePIP}
+            progressInterval={100}
+            ref={ref}
+            style={{ lineHeight: 0, visibility: hideVideo || pip ? 'hidden' : 'visible' }}
+            width="100%"
+          />
+          {!hideVideo && title && (
+            <Box className={classes.titles} sx={{ opacity: playing ? 0 : 1 }}>
+              <Typography component="h2" variant="h6">
+                <span>{title}</span>
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </Grow>
     );
   },
 );
