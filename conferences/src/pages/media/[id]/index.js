@@ -10,6 +10,8 @@ import ISO6391 from 'iso-639-1';
 import Toolbar from '@mui/material/Toolbar';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
+import Skeleton from '@mui/material/Skeleton';
+import Grid from '@mui/material/Grid';
 
 import Remixer from '@hyperaudio/remixer';
 import { useThrottledResizeObserver } from '@hyperaudio/common';
@@ -34,6 +36,35 @@ const Root = styled('div', {
   right: 0,
   top: 0,
 }));
+
+function SkeletonLoader() {
+  const dummytextarr = [...Array(5).keys()];
+  return (
+    <>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Skeleton variant="rectangular" width={550} height={(550 * 9) / 16} />
+        </Grid>
+      </Grid>
+      {[...Array(5).keys()].map(key1 => (
+        <>
+          <Grid container spacing={1} key={key1}>
+            <Grid item xs={12}>
+              <Skeleton variation="text" sx={{ width: '100%' }} />
+            </Grid>
+          </Grid>
+          {dummytextarr.map((key2, i) => (
+            <Grid container spacing={1} key={key2}>
+              <Grid item xs={12}>
+                <Skeleton variation="text" sx={{ width: i === dummytextarr.length - 1 ? '66%' : '100%' }} />
+              </Grid>
+            </Grid>
+          ))}
+        </>
+      ))}
+    </>
+  );
+}
 
 const getMedia = async (setMedia, id) => {
   const media = await DataStore.query(Media, m => m.id('eq', id));
@@ -329,12 +360,14 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
     [router, media],
   );
 
+  // FIXME title and desc should be transcript not media
   return (
     <>
       <Head>
         <title>
           Media: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
         </title>
+        {media && <meta name="description" content={media.description} />}
       </Head>
       <Root className={classes.root}>
         <Toolbar ref={ref} />
@@ -360,9 +393,10 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             sx={{ top: `${height * 2}px`, left: 0, bottom: 0, right: 0, position: 'absolute' }}
           />
         ) : (
-          <div style={{ width: '100%', height: '100%', textAlign: 'center', paddingTop: 200 }}>
-            Loading <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span>
+          <div style={{ width: '550px', height: '100%', textAlign: 'center', paddingTop: 50, margin: 'auto' }}>
+            {/* Loading <span style={{ width: '3em', display: 'inline-block', textAlign: 'right' }}>{`${progress}%`}</span> */}
             {error && <p>Error: {error?.message}</p>}
+            <SkeletonLoader />
           </div>
         )}
       </Root>
