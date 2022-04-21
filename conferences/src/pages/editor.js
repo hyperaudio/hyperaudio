@@ -1251,7 +1251,7 @@ const EditorPage = ({ organisation, user, groups }) => {
                 !draft || saving !== 0 || !groups.includes('Editors') || draft.contentState === saved?.contentState
               }
               startIcon={<SaveIcon fontSize="small" />}
-              loadingPosition="left"
+              loadingPosition="start"
               loading={saving !== 0}
               onClick={handleSave}
               size="small"
