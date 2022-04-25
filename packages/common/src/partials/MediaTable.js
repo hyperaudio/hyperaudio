@@ -20,6 +20,8 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import PublicIcon from '@mui/icons-material/Public';
+import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -56,6 +58,7 @@ const Root = styled(
 
 function Status(props) {
   const { status, description, isPublic } = props;
+  console.log({ status });
   if (status === 'uploading') {
     return (
       <Tooltip title="Uploading… Keep the tab browser open for now…">
@@ -70,9 +73,14 @@ function Status(props) {
     );
   } else if (status === 'transcribed') {
     return (
-      <Tooltip title="Ready to edit">
-        {/* <SpellcheckIcon fontSize="small" color="primary" /> */}
-        <CheckCircleIcon fontSize="small" color="primary" />
+      <Tooltip title="Transcribed">
+        <SpellcheckIcon fontSize="small" color="primary" />
+      </Tooltip>
+    );
+  } else if (status === 'published') {
+    return (
+      <Tooltip title="Published">
+        <PublicIcon fontSize="small" color="primary" />
       </Tooltip>
     );
   }
@@ -419,7 +427,7 @@ export function MediaTable(props) {
                         {row.channel?.name ?? '—'}
                       </Typography>
                     </TableCell>
-                    <TableCell>
+                    <TableCell align="center">
                       <Status
                         status={row.status?.label}
                         description={row.status?.description}
