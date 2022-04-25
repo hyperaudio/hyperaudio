@@ -3,7 +3,9 @@ import _ from 'lodash';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
+import CheckIcon from '@mui/icons-material/Check';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardMedia from '@mui/material/CardMedia';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -57,8 +59,7 @@ const Root = styled(
 }));
 
 function Status(props) {
-  const { status, description, isPublic } = props;
-  console.log({ status });
+  const { status, description } = props;
   if (status === 'uploading') {
     return (
       <Tooltip title="Uploading… Keep the tab browser open for now…">
@@ -71,13 +72,15 @@ function Status(props) {
         <CircularProgress color="primary" size={16} />
       </Tooltip>
     );
-  } else if (status === 'transcribed') {
-    return (
-      <Tooltip title="Transcribed">
-        <SpellcheckIcon fontSize="small" color="primary" />
-      </Tooltip>
-    );
-  } else if (status === 'published') {
+  }
+  //  else if (status === 'transcribed') {
+  //   return (
+  //     <Tooltip title="Transcribed">
+  //       <CheckIcon fontSize="small" color="primary" />
+  //     </Tooltip>
+  //   );
+  // }
+  else if (status === 'published') {
     return (
       <Tooltip title="Published">
         <PublicIcon fontSize="small" color="primary" />
@@ -227,10 +230,6 @@ export function MediaTable(props) {
       id: 'channelId',
       label: 'Channel',
     },
-    {
-      id: 'status',
-      label: 'Status',
-    },
   ];
 
   return (
@@ -313,7 +312,8 @@ export function MediaTable(props) {
                   )}
                 </TableCell>
               ))}
-              <TableCell></TableCell>
+              <TableCell padding="checkbox"></TableCell>
+              <TableCell padding="checkbox"></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -338,6 +338,7 @@ export function MediaTable(props) {
                     key={row.id}
                     onClick={() => console.log('open')}
                     selected={isItemSelected}
+                    sx={row.isProcessing && { opacity: 0.5 }}
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
@@ -427,12 +428,8 @@ export function MediaTable(props) {
                         {row.channel?.name ?? '—'}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Status
-                        status={row.status?.label}
-                        description={row.status?.description}
-                        isPublic={!row.private}
-                      />
+                    <TableCell padding="checkbox">
+                      <Status status={row.status?.label} description={row.status?.description} />
                     </TableCell>
                     <TableCell padding="checkbox">
                       <IconButton
