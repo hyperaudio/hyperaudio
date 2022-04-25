@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Badge from '@mui/material/Badge';
 import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
 import CheckIcon from '@mui/icons-material/Check';
@@ -23,7 +24,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import PublicIcon from '@mui/icons-material/Public';
-import SpellcheckIcon from '@mui/icons-material/Spellcheck';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -51,7 +51,13 @@ const Root = styled(
   {},
 )(({ theme }) => ({
   [`& .${classes.thumbCell}`]: {
+    // paddingBottom: theme.spacing(4),
+    // paddingTop: theme.spacing(4),
     width: '0',
+    [theme.breakpoints.up('md')]: {
+      // paddingBottom: theme.spacing(2),
+      // paddingTop: theme.spacing(2),
+    },
   },
   [`& .MuiCard-root`]: {
     display: 'inline-block',
@@ -82,8 +88,12 @@ function Status(props) {
   // }
   else if (status === 'published') {
     return (
-      <Tooltip title="Published">
-        <PublicIcon fontSize="small" color="primary" />
+      <Tooltip title="This media has been published">
+        <span>
+          <IconButton disabled>
+            <PublicIcon fontSize="small" sx={{ color: 'primary.light' }} />
+          </IconButton>
+        </span>
       </Tooltip>
     );
   }
@@ -237,7 +247,7 @@ export function MediaTable(props) {
       <Toolbar disableGutters>
         {selected.length > 0 ? (
           <Box sx={{ flex: '1 1 auto', display: 'flex', alignItems: 'center' }}>
-            <Typography color="inherit" component="div" display="inline-block" sx={{ mr: 2 }} variant="h3">
+            <Typography color="inherit" component="div" display="inline-block" sx={{ mr: 2 }} variant="h6" noWrap>
               {selected.length} selected:
             </Typography>
             <Button
@@ -252,13 +262,12 @@ export function MediaTable(props) {
           </Box>
         ) : (
           <Box sx={{ flex: '1 1 auto', display: 'flex', alignItems: 'center' }}>
-            <Typography component="div" id="tableTitle" variant="h3">
+            <Typography component="div" id="tableTitle" variant="h6">
               All media
             </Typography>
           </Box>
         )}
         <TablePagination
-          className={classes.pagination}
           component="div"
           count={media?.length || 0}
           labelRowsPerPage="Rows:"
@@ -275,13 +284,12 @@ export function MediaTable(props) {
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
+                  checked={media?.length > 0 && selected.length === media.length}
                   color="primary"
                   indeterminate={selected.length > 0 && selected.length < media.length}
-                  checked={media?.length > 0 && selected.length === media.length}
+                  inputProps={{ 'aria-label': 'select all media' }}
                   onChange={handleSelectAllClick}
-                  inputProps={{
-                    'aria-label': 'select all desserts',
-                  }}
+                  size="small"
                 />
               </TableCell>
               {headCells.map(headCell => (
@@ -323,7 +331,7 @@ export function MediaTable(props) {
                 const isItemSelected = selected.indexOf(row.id) !== -1;
                 const labelId = `enhanced-table-checkbox-${index}`;
 
-                // console.log({ row });
+                console.log({ row });
 
                 const dateFormat = { day: 'numeric', month: 'short', year: 'numeric' };
                 const cDate = new Date(row.createdAt);
@@ -342,27 +350,20 @@ export function MediaTable(props) {
                   >
                     <TableCell padding="checkbox">
                       <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        role="checkbox"
                         aria-checked={isItemSelected}
+                        checked={isItemSelected}
+                        color="primary"
+                        inputProps={{ 'aria-labelledby': labelId }}
                         onClick={handleSelectClick(row.id)}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
+                        role="checkbox"
+                        size="small"
                       />
                     </TableCell>
                     <TableCell id={labelId} className={classes.thumbCell} sx={{ lineHeight: 0 }}>
-                      <Card
-                        sx={{
-                          width: { xs: 82, lg: 82 },
-                          height: { xs: 47, lg: 47 },
-                        }}
-                      >
+                      <Card sx={{ width: { xs: 64, lg: 82 } }}>
                         <CardActionArea
                           onClick={e => {
                             e.stopPropagation();
-                            // console.log('hello', row);
                             onClickMedia(row.id);
                           }}
                         >
@@ -379,16 +380,7 @@ export function MediaTable(props) {
                         disabled={row.isProcessing}
                         underline={row.isProcessing ? 'none' : 'hover'}
                         display="block"
-                        sx={{
-                          cursor: 'pointer',
-                          fontWeight: 500,
-                          maxWidth: {
-                            xs: '180px',
-                            sm: '320px',
-                            md: '460px',
-                            lg: '400px',
-                          },
-                        }}
+                        sx={{ cursor: 'pointer', fontWeight: 500, py: { xs: 1, md: 2 } }}
                         onClick={e => {
                           e.stopPropagation();
                           // console.log('hello2', row);
@@ -428,7 +420,7 @@ export function MediaTable(props) {
                         {row.channel?.name ?? '—'}
                       </Typography>
                     </TableCell>
-                    <TableCell padding="checkbox">
+                    <TableCell padding="checkbox" align="center">
                       <Status status={row.status?.label} description={row.status?.description} />
                     </TableCell>
                     <TableCell padding="checkbox">
