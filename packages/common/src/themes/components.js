@@ -85,6 +85,13 @@ const components = {
       },
     },
   },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        ...getTypography().body2,
+      },
+    },
+  },
   MuiFilledInput: {
     defaultProps: {
       disableUnderline: true,

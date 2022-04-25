@@ -17,7 +17,6 @@ import { usePlausible } from 'next-plausible';
 import Router, { useRouter } from 'next/router';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -28,6 +27,8 @@ import FastRewindIcon from '@mui/icons-material/FastRewind';
 import Grid from '@mui/material/Grid';
 import Grow from '@mui/material/Grow';
 import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 import ListItemText from '@mui/material/ListItemText';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Menu from '@mui/material/Menu';
@@ -50,7 +51,7 @@ import { styled } from '@mui/material/styles';
 import { Editor, EditorState, convertFromRaw, createEntityMap } from '@hyperaudio/editor';
 import { useThrottledResizeObserver } from '@hyperaudio/common';
 
-import MonetizationDialog from '../components/editor/MonetizationDialog';
+import DetailsDialog from '../components/editor/DetailsDialog';
 import NewTranslation from '../components/editor/NewTranslation';
 import PublishDialog from '../components/editor/PublishDialog';
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';
@@ -231,7 +232,7 @@ const EditorPage = ({ organisation, user, groups }) => {
   const [hideVideo, setHideVideo] = useState(false);
   const [langDialog, setLangDialog] = useState(false);
   const [media, setMedia] = useState();
-  const [monetizationDialog, setMonetizationDialog] = useState(false);
+  const [detailsDialog, setDetailsDialog] = useState(false);
   const [originalData, setOriginalData] = useState();
   const [originalProgress, setOriginalProgress] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -636,7 +637,7 @@ const EditorPage = ({ organisation, user, groups }) => {
         ),
       );
       setSaved({});
-      setMonetizationDialog(false);
+      setDetailsDialog(false);
     },
     [speakers],
   );
@@ -1272,17 +1273,17 @@ const EditorPage = ({ organisation, user, groups }) => {
           <Stack spacing={{ xs: 1, md: 2 }} direction="row">
             <Button
               color="inherit"
-              onClick={() => setMonetizationDialog(true)}
+              onClick={() => setDetailsDialog(true)}
               size="small"
-              startIcon={<AttachMoneyIcon />}
+              startIcon={detailsDialog ? <InfoIcon /> : <InfoOutlinedIcon />}
               sx={{ display: { xs: 'none', md: 'inline-flex' } }}
             >
-              Monetize
+              Edit info
             </Button>
-            <Tooltip title="Monetize">
+            <Tooltip title="Edit info">
               <Box sx={{ display: { xs: 'inline', md: 'none' } }}>
-                <IconButton onClick={() => setMonetizationDialog(true)} color="inherit">
-                  <AttachMoneyIcon fontSize="small" />
+                <IconButton onClick={() => setDetailsDialog(true)} color="inherit">
+                  {detailsDialog ? <InfoIcon fontSize="small" /> : <InfoOutlinedIcon fontSize="small" />}
                 </IconButton>
               </Box>
             </Tooltip>
@@ -1622,12 +1623,13 @@ const EditorPage = ({ organisation, user, groups }) => {
           originalLanguage={originalLanguage}
         />
       )}
-      {monetizationDialog && (
-        <MonetizationDialog
-          onClose={() => setMonetizationDialog(false)}
+      {detailsDialog && (
+        <DetailsDialog
+          onClose={() => setDetailsDialog(false)}
           onSubmit={onSubmitMonetization}
-          open={monetizationDialog}
+          open={detailsDialog}
           speakers={speakers}
+          media={media}
         />
       )}
       {publishDialog && (
