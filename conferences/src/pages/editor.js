@@ -1277,6 +1277,7 @@ const EditorPage = ({ organisation, user, groups }) => {
               size="small"
               startIcon={detailsDialog ? <InfoIcon /> : <InfoOutlinedIcon />}
               sx={{ display: { xs: 'none', md: 'inline-flex' } }}
+              disabled={true}
             >
               Edit info
             </Button>
