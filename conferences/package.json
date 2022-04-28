@@ -35,7 +35,6 @@
     "mux-embed": "4.7.0",
     "nanoid": "3.3.2",
     "next": "12.1.5",
-    "next-plausible": "3.1.9",
     "pako": "2.0.4",
     "prop-types": "15.8.1",
     "queue-promise": "2.2.1",
