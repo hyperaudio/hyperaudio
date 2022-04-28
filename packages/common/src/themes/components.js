@@ -85,16 +85,23 @@ const components = {
       },
     },
   },
+  MuiInputBase: {
+    styleOverrides: {
+      root: {
+        ...getTypography().body2,
+      },
+    },
+  },
   MuiFilledInput: {
     defaultProps: {
       disableUnderline: true,
     },
     styleOverrides: {
       root: {
-        backgroundColor: 'rgba(0,0,0,0.022)',
+        backgroundColor: 'rgba(0,0,0,0.033)',
         borderRadius: mui.shape.borderRadius,
         '&.Mui-disabled': {
-          backgroundColor: 'rgba(0,0,0,0.044)',
+          backgroundColor: 'rgba(0,0,0,0.022)',
         },
       },
       input: {

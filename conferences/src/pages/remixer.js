@@ -183,6 +183,7 @@ const RemixerPage = ({ organisation }) => {
                 right: 0,
                 top: 0,
                 top: `${height}px`,
+                zIndex: 1,
               }}
             />
           </>

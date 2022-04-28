@@ -169,6 +169,9 @@ const Editor = props => {
 
   const handleClick = useCallback(
     e => {
+      setFocused(true);
+      setTimeout(() => setFocused(true), 200);
+
       if (!editorState) return;
       // console.log(e.target);
 
@@ -337,7 +340,7 @@ const Editor = props => {
 
   const wrapper = useRef();
   useEffect(() => {
-    if (!autoScroll || (focused && !readOnly)) return;
+    if (!autoScroll || (focused && !readOnly) || speakerAnchor) return;
 
     const blocks = editorState.getCurrentContent().getBlocksAsArray();
     const block = blocks
@@ -352,7 +355,7 @@ const Editor = props => {
     if (readOnly && engine === 'Blink') {
       playhead.scrollIntoView();
     } else playhead.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [autoScroll, wrapper, time, focused, readOnly]);
+  }, [autoScroll, wrapper, time, focused, speakerAnchor, readOnly]);
 
   return (
     <Root
