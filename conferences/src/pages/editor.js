@@ -13,7 +13,6 @@ import pako from 'pako';
 import useInterval from 'use-interval';
 import Amplify, { DataStore, loadingSceneName, Predicates, SortDirection, Storage } from 'aws-amplify';
 import { nanoid } from 'nanoid';
-import { usePlausible } from 'next-plausible';
 import Router, { useRouter } from 'next/router';
 
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
@@ -210,7 +209,6 @@ const getTranscripts = async (setTranscripts, id) =>
 
 const EditorPage = ({ organisation, user, groups }) => {
   const { ref, height = 0 } = useThrottledResizeObserver(0);
-  const plausible = usePlausible();
   const router = useRouter();
   const {
     query: { media: mediaId, transcript: transcriptId, original: originalId, noKaraoke = false },
@@ -736,9 +734,9 @@ const EditorPage = ({ organisation, user, groups }) => {
     );
 
     setTimeout(() => setSaving(0), 500);
-    plausible('save');
+    // plausible('save');
     setSaved(draft);
-  }, [draft, media, speakers, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user]);
 
   global.autoSave = useCallback(async () => {
     if (!draft || !media || !transcript || autoSaved.contentState === draft.contentState) return;
@@ -808,8 +806,8 @@ const EditorPage = ({ organisation, user, groups }) => {
     setTimeout(() => setPreviewing(0), 500);
 
     window.open(`/media/${media.id}?language=${transcript.language}&showPreview=true`, '_blank');
-    plausible('preview');
-  }, [draft, media, speakers, transcript, user, plausible]);
+    // plausible('preview');
+  }, [draft, media, speakers, transcript, user]);
 
   const handlePublish = useCallback(async () => {
     if (!draft || !media || !transcript) return;
@@ -914,10 +912,10 @@ const EditorPage = ({ organisation, user, groups }) => {
     setPublishing(1);
     setTimeout(() => setPublishing(0), 500);
 
-    plausible('publish');
+    // plausible('publish');
     setSaved(draft);
     setPublishDialog(false);
-  }, [draft, media, speakers, transcript, user, plausible]);
+  }, [draft, media, speakers, transcript, user]);
 
   global.resetTranscript = useCallback(async () => {
     await Storage.remove(`transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json`, {

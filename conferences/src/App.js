@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
 import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import { CacheProvider } from '@emotion/react';
-import PlausibleProvider from 'next-plausible';
-import { usePlausible } from 'next-plausible';
 import * as Sentry from '@sentry/react';
 import Head from 'next/head';
 
@@ -139,7 +137,6 @@ const App = props => {
   const trigger = useScrollTrigger();
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const plausible = usePlausible();
   const [user, setUser] = useState();
   const [groups, setGroups] = useState([]);
   const [domain, setDomain] = useState(global?.location?.hostname);
@@ -183,7 +180,7 @@ const App = props => {
       if (data.payload.event === 'signOut') {
         // await DataStore.clear();
         setUser(null);
-        plausible('signOut');
+        // plausible('signOut');
       }
 
       if (data.payload.event === 'signIn') {
@@ -199,10 +196,10 @@ const App = props => {
         } catch (ignored) {
           setUser(null);
         }
-        plausible('signIn');
+        // plausible('signIn');
       }
     });
-  }, [plausible]);
+  }, []);
 
   useEffect(() => setDomain(window.location.hostname), []);
 
@@ -230,31 +227,36 @@ const App = props => {
     <CacheProvider value={emotionCache}>
       <CssBaseline />
       <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
-        <PlausibleProvider domain={domain}>
-          <Root className={classes.root}>
-            <Head>
-              <link rel="preconnect" href={awsexports.aws_appsync_graphqlEndpoint} />
-              <link rel="preconnect" href={`https://cognito-identity.${awsexports.aws_cognito_region}.amazonaws.com`} />
-              <link
-                rel="preconnect"
-                href={`https://${awsexports.aws_user_files_s3_bucket}.s3.${awsexports.aws_user_files_s3_bucket_region}.amazonaws.com`}
-              />
-            </Head>
-            {inputGlobalStyles}
-            <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
-            {!supportsIndexedDB ? (
-              <Alert severity="error">
-                <Link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
-                  Firefox does not yet support a technology called IndexDB in Private Mode.
-                </Link>
-                Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox&apos;s
-                private mode at this time.
-              </Alert>
-            ) : null}
-            <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
-            {user === null && <Footer />}
-          </Root>
-        </PlausibleProvider>
+        <Root className={classes.root}>
+          <Head>
+            <link rel="preconnect" href={awsexports.aws_appsync_graphqlEndpoint} />
+            <link rel="preconnect" href={`https://cognito-identity.${awsexports.aws_cognito_region}.amazonaws.com`} />
+            <link
+              rel="preconnect"
+              href={`https://${awsexports.aws_user_files_s3_bucket}.s3.${awsexports.aws_user_files_s3_bucket_region}.amazonaws.com`}
+            />
+            <script
+              async
+              defer
+              fetchpriority="low"
+              data-domain={domain}
+              src="https://plausible.io/js/plausible.js"
+            ></script>
+          </Head>
+          {inputGlobalStyles}
+          <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
+          {!supportsIndexedDB ? (
+            <Alert severity="error">
+              <Link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
+                Firefox does not yet support a technology called IndexDB in Private Mode.
+              </Link>
+              Since Hyperaudio relies on IndexDB, we are unfortunately unable to support Hyperaudio in Firefox&apos;s
+              private mode at this time.
+            </Alert>
+          ) : null}
+          <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
+          {user === null && <Footer />}
+        </Root>
       </ThemeProvider>
     </CacheProvider>
   );
