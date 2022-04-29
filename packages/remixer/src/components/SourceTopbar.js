@@ -125,7 +125,7 @@ export default function SourceTopbar(props) {
                     {tabs.length > 1 && (
                       <Tooltip title="Close">
                         <IconButton color="inherit" edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
-                          <CloseIcon sx={{ fontSize: '16px' }} />
+                          <CloseIcon sx={fontSize16px} />
                         </IconButton>
                       </Tooltip>
                     )}
@@ -217,7 +217,7 @@ export default function SourceTopbar(props) {
                       size="small"
                       sx={{ ml: 3 }}
                     >
-                      <CloseIcon sx={{ fontSize: '16px' }} />
+                      <CloseIcon sx={fontSize16px} />
                     </IconButton>
                   </Tooltip>
                 )}
@@ -233,3 +233,5 @@ export default function SourceTopbar(props) {
     </Root>
   );
 }
+
+const fontSize16px = { fontSize: '16px' };
