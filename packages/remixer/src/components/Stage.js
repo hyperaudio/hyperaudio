@@ -255,8 +255,8 @@ export const Stage = ({
       setInterval(currentInterval);
     } else {
       setReferencePlaying(false);
-      const lastInterval = intervals[intervals.length - 1];
-      if (lastInterval[2].block.type === 'transition') {
+      const lastInterval = intervals?.[intervals.length - 1];
+      if (lastInterval?.[2]?.block.type === 'transition') {
         setInsert(lastInterval[2].block);
       }
     }

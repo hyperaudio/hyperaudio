@@ -86,7 +86,7 @@ const Tab = styled(Button, {
 }));
 
 export default function SourceTopbar(props) {
-  const { editable, media, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
+  const { editable, media, sources, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -108,7 +108,7 @@ export default function SourceTopbar(props) {
       {editable && (
         <div className="topbarSide topbarSide--left">
           <Tooltip title="Add source transcript…">
-            <IconButton color="inherit" onClick={onShowLibrary} size="small" disabled={media?.length === 0}>
+            <IconButton color="inherit" onClick={onShowLibrary} size="small" disabled={sources?.length < 2}>
               <AddCircleOutlineIcon fontSize="small" />
             </IconButton>
           </Tooltip>

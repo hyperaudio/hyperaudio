@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
@@ -55,7 +55,7 @@ export const LibraryTopbar = props => {
   const theme = useTheme();
   const { onHideLibrary, setSearchKey } = props;
 
-  const [keyword, setKeyword] = React.useState('');
+  const [keyword, setKeyword] = useState('');
 
   const onSearchClear = () => {
     setKeyword('');

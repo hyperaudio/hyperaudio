@@ -12,8 +12,10 @@ const remixReducer = (state, action) => {
       // TODO deal with sources/library via API
       let sources = state.sources;
       let tabs = state.tabs;
+      console.log('action.source', action.source);
       if (!sources.find(s => s.id === action.source.id)) sources = [...state.sources, action.source];
       if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
+      console.log(state.source, action.source);
       return { ...state, sources, tabs, source: action.source };
     case 'sourceClose':
       return {
