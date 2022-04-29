@@ -175,7 +175,9 @@ const RemixerPage = ({ organisation }) => {
     if (source.blocks.length > 0) return source;
 
     const { speakers, blocks } = await (await fetch(source.url)).json();
-    const { media } = source;
+    const {
+      media: [media],
+    } = source;
 
     const blocks2 = blocks
       .map(({ key, text, data: { start: _start, end: _end, speaker, items: _items } }, i, arr) => {
@@ -200,7 +202,7 @@ const RemixerPage = ({ organisation }) => {
           text,
           type: 'block',
           key: key ?? nanoid(5),
-          media: media.playbackId,
+          media: media.id,
           speaker: speakers?.[speaker]?.name ?? speaker,
           start,
           end,
@@ -225,7 +227,7 @@ const RemixerPage = ({ organisation }) => {
         return [...acc, p, block];
       }, []);
 
-    console.log('getFullSource:', { ...source, blocks: blocks2 });
+    console.log('getFullSource:', source, { ...source, blocks: blocks2 });
 
     return { ...source, blocks: blocks2 };
   }, []);
