@@ -7,7 +7,7 @@
     "@babel/core": "7.17.8",
     "@storybook/addon-actions": "6.4.19",
     "@storybook/addon-essentials": "6.4.19",
-    "@storybook/addon-a11y": "6.4.19",
+    "@storybook/addon-a11y": "6.4.22",
     "@storybook/addon-links": "6.4.19",
     "@storybook/react": "6.4.19",
     "babel-loader": "8.2.4",
