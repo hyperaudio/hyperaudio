@@ -1,11 +1,13 @@
 import React, { useRef, useState, useEffect, useCallback, useMemo } from 'react';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
-import { Stage, Transcript } from './components';
+import Stage from './components/Stage';
+import Transcript from './components/Transcript';
 import SourceTopbar from './components/SourceTopbar';
 
 const PREFIX = 'Source';
@@ -128,4 +130,4 @@ const Source = props => {
   );
 };
 
-export default Source;
+export default React.memo(Source, isEqual);

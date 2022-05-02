@@ -1,5 +1,6 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
 import { Droppable } from 'react-beautiful-dnd';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -7,7 +8,9 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
-import { RemixTopbar, Stage, Transcript, InsertsBar } from './components';
+import { RemixTopbar, InsertsBar } from './components';
+import Stage from './components/Stage';
+import Transcript from './components/Transcript';
 import { StartDropIcon } from '@hyperaudio/common';
 
 const PREFIX = 'Remix';
@@ -187,4 +190,4 @@ const Remix = props => {
   );
 };
 
-export default Remix;
+export default React.memo(Remix, isEqual);

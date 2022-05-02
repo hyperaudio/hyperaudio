@@ -2,6 +2,7 @@ import Head from 'next/head';
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import { DataStore, Predicates, SortDirection } from 'aws-amplify';
 import { useRouter } from 'next/router';
+import isEqual from 'react-fast-compare';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';

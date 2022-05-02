@@ -1,6 +1,7 @@
 import React, { useReducer, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import { styled, ThemeProvider } from '@mui/material/styles';
@@ -170,24 +171,8 @@ const Remixer = props => {
     [media],
   );
 
-  const onBeforeCapture = useCallback(e => {
-    // console.log({ onBeforeCapture: e });
-  }, []);
-
-  const onBeforeDragStart = useCallback(e => {
-    // console.log({ onBeforeDragStart: e });
-  }, []);
-
-  const onDragStart = useCallback(e => {
-    // console.log({ onDragStart: e });
-  }, []);
-
-  const onDragUpdate = useCallback(e => {
-    // console.log({ onDragUpdate: e });
-  }, []);
-
   const onDragEnd = useCallback(event => {
-    // console.log({ onDragEnd: event });
+    console.log({ onDragEnd: event });
     event.destination && dispatch({ type: 'dragEnd', event });
   }, []);
 
@@ -201,7 +186,7 @@ const Remixer = props => {
         sx={props.sx}
       >
         {editable ? (
-          <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
+          <DragDropContext onDragEnd={onDragEnd}>
             {showSource && (
               <Source
                 {...{
@@ -270,4 +255,4 @@ Remixer.defaultProps = {
   isSingleMedia: false,
 };
 
-export default Remixer;
+export default React.memo(Remixer, isEqual);
