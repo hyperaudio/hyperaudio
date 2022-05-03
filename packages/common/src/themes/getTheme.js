@@ -13,3 +13,5 @@ export const getTheme = options => {
     typography: getTypography(options?.typography),
   });
 };
+
+export default getTheme;
