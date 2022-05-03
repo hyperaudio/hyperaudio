@@ -41,7 +41,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-fast-compare": "3.2.0",
-    "react-markdown": "8.0.2",
+    "react-markdown": "8.0.3",
     "react-player": "2.10.0",
     "react-text-truncate": "0.18.0",
     "smpte-timecode": "1.2.3",
