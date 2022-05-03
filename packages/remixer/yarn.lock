@@ -3543,10 +3543,10 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==
 
-mux-embed@4.7.0:
-  version "4.7.0"
-  resolved "https://registry.yarnpkg.com/mux-embed/-/mux-embed-4.7.0.tgz#7719b5fa83cb4d285228627b9ed1fdd0a8ff7344"
-  integrity sha512-L2XtgWPiowHO5pgKapv5HWhThjnzZta2+Wm3nB+aqUbqTN8yFBQX1lorHsD46Afg4h4wyjl6OacLXFMkh2oepA==
+mux-embed@4.8.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/mux-embed/-/mux-embed-4.8.0.tgz#ddc45a2e4835b32ea076f0ad28e13204aa221479"
+  integrity sha512-8uFfGlY14Hpi6mTRTry6KmEV/SNUt3rSeCIayopPa9hv0V1IhPqMl0tMiwMt+Z7BW3pFfsbeqvyQqLqSGh+PBg==
 
 natural-compare@^1.4.0:
   version "1.4.0"
