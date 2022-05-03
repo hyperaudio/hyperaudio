@@ -48,15 +48,14 @@ const Root = styled(Box)(({ theme }) => ({
     },
   },
   [`& .${classes.coverContent}`]: {
+    '&::-webkit-scrollbar': { display: 'none' },
+    '&:hover': { overflowY: 'auto' },
+    '-ms-overflow-style': 'none',
+    'scrollbar-width': 'none',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    overflow: 'auto',
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
-    '-ms-overflow-style': 'none',
-    'scrollbar-width': 'none',
+    overflow: 'hidden',
     [theme.breakpoints.up('md')]: {
       bottom: 0,
       justifyContent: 'flex-start',
@@ -180,18 +179,17 @@ const MediaCard = ({ item, disableLinks }) => {
         </Box>
         <CardContent
           sx={{
-            flex: '0 0 100%',
-            maxHeight: '260px',
-            overflow: 'auto',
-            '&::-webkit-scrollbar': {
-              display: 'none',
-            },
+            '&::-webkit-scrollbar': { display: 'none' },
+            '&:hover': { overflowY: 'auto' },
+            '&:last-child': { pb: { xs: 2, lg: 4 } },
             '-ms-overflow-style': 'none',
             'scrollbar-width': 'none',
+            flex: '0 0 100%',
+            maxHeight: '260px',
+            overflow: 'hidden',
             pb: { xs: 1, lg: 0 },
             pt: { xs: 1, sm: 0, lg: 4 },
             px: { xs: 2, lg: 4 },
-            '&:last-child': { pb: { xs: 2, lg: 4 } },
           }}
         >
           {disableLink ? (

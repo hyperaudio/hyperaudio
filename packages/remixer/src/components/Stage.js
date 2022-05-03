@@ -3,6 +3,7 @@ import ReactPlayer from 'react-player';
 import { createSilentAudio } from 'create-silent-audio';
 import TC from 'smpte-timecode';
 import mux from 'mux-embed';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import FastForwardIcon from '@mui/icons-material/FastForward';
@@ -139,7 +140,7 @@ function createSilence(seconds = 1) {
   return url;
 }
 
-export const Stage = ({
+const Stage = ({
   blocks,
   handleHideVideo,
   hideVideo,
@@ -255,8 +256,8 @@ export const Stage = ({
       setInterval(currentInterval);
     } else {
       setReferencePlaying(false);
-      const lastInterval = intervals[intervals.length - 1];
-      if (lastInterval[2].block.type === 'transition') {
+      const lastInterval = intervals?.[intervals.length - 1];
+      if (lastInterval?.[2]?.block.type === 'transition') {
         setInsert(lastInterval[2].block);
       }
     }
@@ -799,3 +800,5 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
     .split(':')
     .slice(0, 3)
     .join(':');
+
+export default React.memo(Stage, isEqual);

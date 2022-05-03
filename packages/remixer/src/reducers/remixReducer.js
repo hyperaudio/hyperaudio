@@ -12,8 +12,10 @@ const remixReducer = (state, action) => {
       // TODO deal with sources/library via API
       let sources = state.sources;
       let tabs = state.tabs;
+      console.log('action.source', action.source);
       if (!sources.find(s => s.id === action.source.id)) sources = [...state.sources, action.source];
       if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
+      console.log(state.source, action.source);
       return { ...state, sources, tabs, source: action.source };
     case 'sourceClose':
       return {
@@ -132,8 +134,13 @@ const remixReducer = (state, action) => {
     case 'dragEnd': {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
+
+      console.log({ sourceId, remixId });
+
       if (destination && draggableId.indexOf(`draggable:${remixId}`) === 0) {
         const blocks = arrayMoveImmutable(state.remix.blocks, source.index, destination.index);
+        console.log({ blocks });
+
         return { ...state, remix: { ...state.remix, blocks } };
       } else if (sourceId === '$toolbar') {
         const type = draggableId.split(':').pop().substring(1);
@@ -161,9 +168,9 @@ const remixReducer = (state, action) => {
           .split('-')
           .map(v => parseInt(v, 10));
 
-        console.log(range);
+        console.log({ sourceId, range });
 
-        const sourceBlocks = state.sources.find(({ id }) => id === sourceId).blocks;
+        const sourceBlocks = state.tabs.find(({ id }) => id === sourceId).blocks;
 
         const sourceSelectedBlocks = sourceBlocks
           .filter((block, i, arr) => {
@@ -231,10 +238,14 @@ const remixReducer = (state, action) => {
             };
           });
 
+        console.log({ sourceBlocks, sourceSelectedBlocks });
+
         const sourceMedia = sourceSelectedBlocks.map(block => block.media);
         const newMedia = [...new Set(sourceMedia.filter(media => !state.remix.media.find(m => m.id === media)))].map(
-          media => state.sources.find(m => m.media[0].id === media).media[0],
+          media => state.tabs.find(m => m.media[0].id === media).media[0],
         ); // FIXME look for more than [0]
+
+        console.log({ sourceMedia, newMedia });
 
         return {
           ...state,

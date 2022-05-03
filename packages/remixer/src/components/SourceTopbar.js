@@ -86,7 +86,7 @@ const Tab = styled(Button, {
 }));
 
 export default function SourceTopbar(props) {
-  const { editable, media, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
+  const { editable, media, sources, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -108,7 +108,7 @@ export default function SourceTopbar(props) {
       {editable && (
         <div className="topbarSide topbarSide--left">
           <Tooltip title="Add source transcript…">
-            <IconButton color="inherit" onClick={onShowLibrary} size="small" disabled={media?.length === 0}>
+            <IconButton color="inherit" onClick={onShowLibrary} size="small" disabled={sources?.length < 2}>
               <AddCircleOutlineIcon fontSize="small" />
             </IconButton>
           </Tooltip>
@@ -125,7 +125,7 @@ export default function SourceTopbar(props) {
                     {tabs.length > 1 && (
                       <Tooltip title="Close">
                         <IconButton color="inherit" edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
-                          <CloseIcon sx={{ fontSize: '16px' }} />
+                          <CloseIcon sx={fontSize16px} />
                         </IconButton>
                       </Tooltip>
                     )}
@@ -217,7 +217,7 @@ export default function SourceTopbar(props) {
                       size="small"
                       sx={{ ml: 3 }}
                     >
-                      <CloseIcon sx={{ fontSize: '16px' }} />
+                      <CloseIcon sx={fontSize16px} />
                     </IconButton>
                   </Tooltip>
                 )}
@@ -233,3 +233,5 @@ export default function SourceTopbar(props) {
     </Root>
   );
 }
+
+const fontSize16px = { fontSize: '16px' };

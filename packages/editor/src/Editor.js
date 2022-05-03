@@ -9,9 +9,9 @@ import UAParser from 'ua-parser-js';
 
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
-import Fade from '@mui/material/Fade';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
+import Popover from '@mui/material/Popover';
 import Popper from '@mui/material/Popper';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -378,110 +378,100 @@ const Editor = props => {
           <BlockStyle key={block.getKey()} {...{ block, speakers, time }} />
         ))}
       {Boolean(speakerAnchor) && (
-        <Popper
+        <Popover
           anchorEl={speakerAnchor}
           open={true}
           placement="top-start"
+          PaperProps={{
+            sx: {
+              overflow: 'visible',
+              position: 'relative',
+              transform: 'translate(-12px, -4px) !important',
+              width: SPEAKER_AREA_WIDTH,
+            },
+            elevation: 6,
+          }}
           transition
-          modifiers={[
-            { name: 'preventOverflow', enabled: true },
-            { name: 'arrow', enabled: true },
-          ]}
         >
-          {({ TransitionProps }) => (
-            <Fade {...TransitionProps} timeout={350}>
-              <Paper
-                sx={{
-                  left: '-11px',
-                  position: 'relative',
-                  top: '-2px',
-                  transform: 'translate(0, 100%) !important',
-                  width: SPEAKER_AREA_WIDTH,
-                }}
-                elevation={6}
-              >
-                <ClickAwayListener onClickAway={handleClickAway}>
-                  <Autocomplete
-                    blurOnSelect
-                    clearOnEscape
-                    clearOnBlur
-                    disableClearable
-                    disablePortal
-                    PopperComponent={props => <Popper {...props} sx={{ transform: 'translateX(0)' }} />}
-                    PaperComponent={props => (
-                      <Paper
-                        {...props}
-                        elevation={6}
-                        sx={{ width: 'fit-content', transform: 'translateX(none) !important' }}
-                      />
-                    )}
-                    filterOptions={(options, params) => {
-                      const filtered = filter(options, params);
-                      const { inputValue } = params;
-                      // Suggest the creation of a new value
-                      const isExisting = options.some(option => inputValue === option.name);
-                      if (inputValue !== '' && !isExisting) {
-                        filtered.push({
-                          inputValue,
-                          name: `Add "${inputValue}"`,
-                        });
-                      }
-                      return filtered;
-                    }}
-                    freeSolo
-                    handleHomeEndKeys
-                    id="speaker-popover"
-                    getOptionLabel={option => {
-                      // Value selected with enter, right from the input
-                      if (typeof option === 'string') {
-                        return option;
-                      }
-                      // Add "xxx" option created dynamically
-                      if (option.inputValue) {
-                        return option.inputValue;
-                      }
-                      // Regular option
-                      return option.name;
-                    }}
-                    inputValue={speakerQuery}
-                    onChange={handleSpeakerSet}
-                    onInputChange={(e, newInputValue) => setSpeakerQuery(newInputValue)}
-                    openOnFocus
-                    options={Object.keys(speakers).map(key => ({ name: speakers[key]?.name, id: speakers[key]?.id }))}
-                    renderOption={(props, option) => (
-                      <li {...props}>
-                        <Typography variant="body2" noWrap>
-                          {option?.name}
-                        </Typography>
-                      </li>
-                    )}
-                    selectOnFocus
-                    value={speaker}
-                    renderInput={params => (
-                      <TextField
-                        {...params}
-                        autoFocus
-                        inputProps={{
-                          ...params.inputProps,
-                          sx: {
-                            ...theme.typography.caption,
-                            fontWeight: '600',
-                            p: '0 5px',
-                            mt: '-2px',
-                            ml: '-1px',
-                          },
-                        }}
-                        onClick={e => e.stopPropagation()}
-                        value={speakers[speaker]?.id}
-                      />
-                    )}
-                    size="small"
-                  />
-                </ClickAwayListener>
-              </Paper>
-            </Fade>
-          )}
-        </Popper>
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Autocomplete
+              blurOnSelect
+              clearOnEscape
+              clearOnBlur
+              disableClearable
+              disablePortal
+              PopperComponent={props => <Popper {...props} sx={{ transform: 'translateX(0)' }} />}
+              PaperComponent={props => (
+                <Paper
+                  {...props}
+                  elevation={6}
+                  sx={{ width: 'fit-content', transform: 'translateX(none) !important' }}
+                />
+              )}
+              filterOptions={(options, params) => {
+                const filtered = filter(options, params);
+                const { inputValue } = params;
+                // Suggest the creation of a new value
+                const isExisting = options.some(option => inputValue === option.name);
+                if (inputValue !== '' && !isExisting) {
+                  filtered.push({
+                    inputValue,
+                    name: `Add "${inputValue}"`,
+                  });
+                }
+                return filtered;
+              }}
+              freeSolo
+              handleHomeEndKeys
+              id="speaker-popover"
+              getOptionLabel={option => {
+                // Value selected with enter, right from the input
+                if (typeof option === 'string') {
+                  return option;
+                }
+                // Add "xxx" option created dynamically
+                if (option.inputValue) {
+                  return option.inputValue;
+                }
+                // Regular option
+                return option.name;
+              }}
+              inputValue={speakerQuery}
+              onChange={handleSpeakerSet}
+              onInputChange={(e, newInputValue) => setSpeakerQuery(newInputValue)}
+              openOnFocus
+              options={Object.keys(speakers).map(key => ({ name: speakers[key]?.name, id: speakers[key]?.id }))}
+              renderOption={(props, option) => (
+                <li {...props}>
+                  <Typography variant="body2" noWrap>
+                    {option?.name}
+                  </Typography>
+                </li>
+              )}
+              selectOnFocus
+              value={speaker}
+              renderInput={params => (
+                <TextField
+                  {...params}
+                  autoFocus
+                  inputProps={{
+                    ...params.inputProps,
+                    sx: {
+                      ...theme.typography.caption,
+                      fontWeight: '600',
+                      p: '0 5px',
+                      mt: '-2px',
+                      ml: '-1px',
+                    },
+                  }}
+                  onClick={e => e.stopPropagation()}
+                  value={speakers[speaker]?.id}
+                />
+              )}
+              size="small"
+            />
+          </ClickAwayListener>
+        </Popover>
       )}
       <style scoped>
         {`

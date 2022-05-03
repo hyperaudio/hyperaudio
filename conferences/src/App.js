@@ -1,6 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import Amplify, { Auth, Hub, Storage, DataStore, Analytics, syncExpression, AuthModeStrategyType } from 'aws-amplify';
+import Amplify, {
+  Auth,
+  Hub,
+  Storage,
+  DataStore,
+  Analytics,
+  syncExpression,
+  AuthModeStrategyType,
+  API,
+  graphqlOperation,
+} from 'aws-amplify';
 import Predictions, { AmazonAIPredictionsProvider } from '@aws-amplify/predictions';
 import { CacheProvider } from '@emotion/react';
 import * as Sentry from '@sentry/react';
@@ -131,6 +141,26 @@ const getUser = async (setUser, identityId) => {
 
   const user = await DataStore.query(User, user => user.identityId('eq', identityId), { limit: 1 });
   setUser(Array.isArray(user) ? user[0] : user ?? null);
+
+  // const user2 = await API.graphql(
+  //   graphqlOperation(`query getUser {
+  //   listUsers(filter: {identityId: {eq: "4fa64901-8a41-404c-86b7-7744ba6087c6"}}) {
+  //     nextToken
+  //     startedAt
+  //     items {
+  //       bio
+  //       createdAt
+  //       id
+  //       identityId
+  //       metadata
+  //       name
+  //       owner
+  //       updatedAt
+  //     }
+  //   }
+  // }`),
+  // );
+  // console.log('user2', user2);
 };
 
 const App = props => {
@@ -142,7 +172,7 @@ const App = props => {
   const [domain, setDomain] = useState(global?.location?.hostname);
   const [supportsIndexedDB, setSupportsIndexedDB] = useState(true);
 
-  // console.log({ user });
+  console.log({ user });
 
   useEffect(
     () =>

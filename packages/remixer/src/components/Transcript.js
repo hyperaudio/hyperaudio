@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -129,7 +130,7 @@ const Section = styled('p')(({ theme }) => ({
   },
 }));
 
-export const Transcript = props => {
+const Transcript = props => {
   const {
     id,
     blocks,
@@ -749,3 +750,5 @@ const Range = ({ block, offset, range, onlyRange }) => {
     </>
   );
 };
+
+export default React.memo(Transcript, isEqual);

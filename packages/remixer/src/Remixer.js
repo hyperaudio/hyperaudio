@@ -1,6 +1,7 @@
 import React, { useReducer, useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
+import isEqual from 'react-fast-compare';
 
 import Box from '@mui/material/Box';
 import { styled, ThemeProvider } from '@mui/material/styles';
@@ -116,36 +117,39 @@ const Root = styled(Box, {
 }));
 
 const Remixer = props => {
-  const { editable, media, isSingleMedia, onSelectTranslation } = props;
+  const { editable, media, isSingleMedia, onSelectTranslation, getFullSource } = props;
 
   const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
     sources: props.sources,
-    tabs: props.sources,
+    tabs: props.tabs ?? props.sources,
     remix: props.remix,
-    source: props.sources[0],
+    source: props.tabs?.[0] ?? props.sources[0],
   });
 
   console.log('REMIX DATA', { props, sources, tabs, remix, source });
 
-  useEffect(() => {
-    dispatch({
-      type: 'reset',
-      state: {
-        sources: props.sources,
-        tabs: props.sources,
-        remix: props.remix,
-        source: props.sources[0],
-      },
-    });
-  }, [props.sources, props.remix]);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: 'reset',
+  //     state: {
+  //       sources: props.sources,
+  //       tabs: props.tabs ?? props.sources,
+  //       remix: props.remix,
+  //       source: props.tabs?.[0] ?? props.sources[0],
+  //     },
+  //   });
+  // }, [props.sources, props.remix]);
 
   const [showSource, setShowSource] = useState(props.showSource === undefined ? true : props.showSource);
   const [showLibrary, setShowLibrary] = useState(false);
   const [autoScroll, setAutoScroll] = useState(props.autoScroll);
 
   const onSourceChange = useCallback(
-    id => dispatch({ type: 'sourceOpen', source: props.sources.find(m => m.id === id) }),
-    [props],
+    async id => {
+      const source = await getFullSource(tabs.find(s => s.id === id) ?? sources.find(s => s.id === id));
+      dispatch({ type: 'sourceOpen', source });
+    },
+    [sources, tabs, getFullSource],
   );
 
   const onShowLibrary = useCallback(() => setShowLibrary(true), []);
@@ -153,10 +157,12 @@ const Remixer = props => {
 
   const onSearch = useCallback(string => console.log('onSearch', string), []);
   const onSourceOpen = useCallback(
-    id => {
-      dispatch({ type: 'sourceOpen', source: media.find(m => m.id === id) });
+    async id => {
+      console.log('onSourceOpen');
+      const source = await getFullSource(tabs.find(s => s.id === id) ?? sources.find(s => s.id === id));
+      dispatch({ type: 'sourceOpen', source });
     },
-    [media],
+    [sources, tabs, getFullSource],
   );
   const onSourceClose = useCallback(
     id => {
@@ -165,24 +171,8 @@ const Remixer = props => {
     [media],
   );
 
-  const onBeforeCapture = useCallback(e => {
-    // console.log({ onBeforeCapture: e });
-  }, []);
-
-  const onBeforeDragStart = useCallback(e => {
-    // console.log({ onBeforeDragStart: e });
-  }, []);
-
-  const onDragStart = useCallback(e => {
-    // console.log({ onDragStart: e });
-  }, []);
-
-  const onDragUpdate = useCallback(e => {
-    // console.log({ onDragUpdate: e });
-  }, []);
-
   const onDragEnd = useCallback(event => {
-    // console.log({ onDragEnd: event });
+    console.log({ onDragEnd: event });
     event.destination && dispatch({ type: 'dragEnd', event });
   }, []);
 
@@ -196,7 +186,7 @@ const Remixer = props => {
         sx={props.sx}
       >
         {editable ? (
-          <DragDropContext {...{ onBeforeCapture, onBeforeDragStart, onDragStart, onDragUpdate, onDragEnd }}>
+          <DragDropContext onDragEnd={onDragEnd}>
             {showSource && (
               <Source
                 {...{
@@ -265,4 +255,4 @@ Remixer.defaultProps = {
   isSingleMedia: false,
 };
 
-export default Remixer;
+export default React.memo(Remixer, isEqual);
