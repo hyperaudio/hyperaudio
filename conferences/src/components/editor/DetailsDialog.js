@@ -62,8 +62,8 @@ const DetailsDialog = props => {
   const { onClose, onSubmit, open, speakers } = props;
   const [hasErrors, setHasErrors] = useState(false);
   const [tab, setTab] = useState(props.tab || 0);
-  const [title, setTitle] = useState(props.media.title || '');
-  const [description, setDescription] = useState(props.media.description || '');
+  const [title, setTitle] = useState(props.transcript.title || '');
+  const [description, setDescription] = useState(props.transcript.description || '');
   const [licensing, setLicensing] = useState(
     props.licensing || { allowAdaptations: 'true', allowCommercialUse: 'true' },
   );
@@ -271,7 +271,11 @@ const DetailsDialog = props => {
               Close
             </Button>
           </Box>
-          <LoadingButton variant="contained" onClick={() => onSubmit(monetization)} disabled={hasErrors}>
+          <LoadingButton
+            variant="contained"
+            onClick={() => onSubmit({ monetization, licensing, details: { title, description } })}
+            disabled={hasErrors}
+          >
             Save
           </LoadingButton>
         </Stack>
