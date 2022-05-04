@@ -1658,6 +1658,7 @@ const EditorPage = ({ organisation, user, groups }) => {
           speakers={speakers}
           media={media}
           transcript={transcriptCopy ?? transcript}
+          licensing={transcriptCopy?.metadata?.licensing ?? transcript?.metadata?.licensing}
         />
       )}
       {publishDialog && (
