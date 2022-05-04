@@ -240,6 +240,8 @@ const EditorPage = ({ organisation, user, groups }) => {
   const transcript = useMemo(() => transcripts.filter(t => t.id === transcriptId)?.[0], [transcriptId, transcripts]);
   const original = useMemo(() => transcripts.filter(t => t.id === originalId)?.[0], [originalId, transcripts]);
 
+  useEffect(() => console.log({ transcript }), [transcript]);
+
   useEffect(() => {
     if (originalId || !media || !transcripts || !transcript) return;
 
@@ -625,19 +627,46 @@ const EditorPage = ({ organisation, user, groups }) => {
     };
   }, [unsavedChanges]);
 
-  const onSubmitMonetization = useCallback(
-    monetization => {
-      // console.log(monetization);
+  const [transcriptCopy, setTranscriptCopy] = useState();
+
+  const onSubmitDetails = useCallback(
+    async ({ monetization, licensing, details: { title, description } }) => {
+      console.log(monetization);
       setSpeakers(
         Object.entries(speakers).reduce(
           (acc, [id, entry]) => ({ ...acc, [id]: { ...entry, monetization: monetization[id] } }),
           {},
         ),
       );
+
+      const t = (await DataStore.query(Transcript)).filter(t => t.id === transcript.id)[0];
+      const t2 = await DataStore.save(
+        Transcript.copyOf(t, updated => {
+          updated.title = title;
+          updated.description = description;
+          updated.metadata = {
+            ...(t.metadata ?? {}),
+            licensing,
+            monetization: { ...t.metadata?.monetization, speakers: monetization },
+          };
+        }),
+      );
+      setTranscriptCopy(t2);
+
+      if (media.language === transcript.language) {
+        const m = (await DataStore.query(Media)).filter(m => m.id === media.id)[0];
+        const m2 = await DataStore.save(
+          Media.copyOf(m, updated => {
+            updated.title = title;
+            updated.description = description;
+          }),
+        );
+      }
+
       setSaved({});
       setDetailsDialog(false);
     },
-    [speakers],
+    [speakers, transcript, media],
   );
 
   global.listUnusedSpeakers = useCallback(() => {
@@ -1275,7 +1304,6 @@ const EditorPage = ({ organisation, user, groups }) => {
               size="small"
               startIcon={detailsDialog ? <InfoIcon /> : <InfoOutlinedIcon />}
               sx={{ display: { xs: 'none', md: 'inline-flex' } }}
-              disabled={true}
             >
               Edit info
             </Button>
@@ -1625,10 +1653,11 @@ const EditorPage = ({ organisation, user, groups }) => {
       {detailsDialog && (
         <DetailsDialog
           onClose={() => setDetailsDialog(false)}
-          onSubmit={onSubmitMonetization}
+          onSubmit={onSubmitDetails}
           open={detailsDialog}
           speakers={speakers}
           media={media}
+          transcript={transcriptCopy ?? transcript}
         />
       )}
       {publishDialog && (
