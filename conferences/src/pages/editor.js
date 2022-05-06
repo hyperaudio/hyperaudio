@@ -377,13 +377,30 @@ const EditorPage = ({ organisation, user, groups }) => {
       let speakers;
       let blocks;
 
+      let t = original;
       try {
-        const signedURL = await Storage.get(
-          `transcript/${media.playbackId}/${original.language}/${original.id}.json.gz`,
-          {
+        t = (await axios.get(await Storage.get(`data/${original.id}.json.gz`, { level: 'public' }))).data;
+      } catch (ignored) {}
+
+      try {
+        // const signedURL = await Storage.get(
+        //   `transcript/${media.playbackId}/${original.language}/${original.id}.json.gz`,
+        //   {
+        //     level: 'public',
+        //   },
+        // );
+
+        let signedURL;
+        if (t?.metadata?.draft) {
+          signedURL = await Storage.get(t.metadata.draft.key, {
+            level: t.metadata.draft.level,
+            identityId: t.metadata.draft.identityId,
+          });
+        } else {
+          signedURL = await Storage.get(`transcript/${media.playbackId}/${original.language}/${original.id}.json.gz`, {
             level: 'public',
-          },
-        );
+          });
+        }
 
         const result = (
           await axios.get(signedURL, {
