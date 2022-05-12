@@ -291,7 +291,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                 // translations: [{ id: transcript.id, lang: 'en-US', name: 'English', default: true }],
                 translations: [
                   ...transcripts
-                    // .filter(t => showDraft || t.status?.label === 'published')
+                    .filter(t => showDraft || t.status?.label === 'published')
                     .filter(t => t.language === (language ?? media.language))
                     .map(({ id, language: lang, title }) => ({
                       id,
@@ -317,34 +317,6 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
             };
           }),
       );
-      // setData({
-      //   sources:
-      //     sources.length > 0
-      //       ? sources
-      //       : [
-      //           {
-      //             id: media.id,
-      //             title: media.title,
-      //             language: media.language,
-      //             channel: media.channel,
-      //             media: [
-      //               {
-      //                 id: media.playbackId,
-      //                 url: media.url,
-      //                 poster: media.poster,
-      //               },
-      //             ],
-      //             channel: media.channel,
-      //             tags: media.tags ?? [],
-      //             transcript: {
-      //               title: media.title,
-      //               translations: [{ id: media.id, lang: 'en-US', name: 'English', default: true }],
-      //             },
-      //             remixes: [],
-      //             blocks: [],
-      //           },
-      //         ],
-      // });
       setData({ sources });
     })();
   }, [media, transcripts, remixes, language, showDraft, showPreview, transcriptUrl]);
@@ -355,7 +327,8 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
   const onSelectTranslation = useCallback(
     t => {
       // console.log('onSelectTranslation:', t);
-      router.push(`/media/${media.id}?language=${t.lang}`, undefined, { shallow: true });
+      // router.push(`/media/${media.id}?language=${t.lang}`, undefined, { shallow: false });
+      document.location.href = `/media/${media.id}?language=${t.lang}`;
     },
     [router, media],
   );
