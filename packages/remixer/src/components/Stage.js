@@ -229,6 +229,8 @@ const Stage = ({
     [blocks],
   );
 
+  useEffect(() => console.log({ intervals }), [intervals]);
+
   useEffect(() => {
     if (singlePlayer && time / 1e3 < singlePlayerOffset) return;
 
@@ -658,6 +660,7 @@ const Player = ({
   );
 };
 
+// eslint-disable-next-line react/display-name
 const SinglePlayer = React.forwardRef(
   (
     {
@@ -801,4 +804,5 @@ const timecode = (seconds, frameRate = 25, dropFrame = false) =>
     .slice(0, 3)
     .join(':');
 
-export default React.memo(Stage, isEqual);
+// export default React.memo(Stage, isEqual);
+export default Stage;
