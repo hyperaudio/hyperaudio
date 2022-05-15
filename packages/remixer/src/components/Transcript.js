@@ -340,8 +340,8 @@ const Transcript = props => {
               {...provided.droppableProps}
             >
               {blocks.map((block, i) => (
-                <Container maxWidth="sm">
-                  <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
+                <Container maxWidth="sm" key={`${id}:${block.key}:${i}`}>
+                  <Draggable draggableId={`draggable:${id}:${block.key}`} index={i}>
                     {(provided, snapshot) => (
                       <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
                         <DragHandle
@@ -660,6 +660,8 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       data-offset={offset}
       data-text-offset={0}
       data-speaker={`${speaker}`}
+      data-range-mode={rangeMode}
+      data-block={JSON.stringify(block)}
       className={`${speaker ? 'showSpeaker' : ''} ${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
@@ -751,4 +753,5 @@ const Range = ({ block, offset, range, onlyRange }) => {
   );
 };
 
-export default React.memo(Transcript, isEqual);
+// export default React.memo(Transcript, isEqual);
+export default Transcript;

@@ -130,4 +130,5 @@ const Source = props => {
   );
 };
 
-export default React.memo(Source, isEqual);
+// export default React.memo(Source, isEqual);
+export default Source;

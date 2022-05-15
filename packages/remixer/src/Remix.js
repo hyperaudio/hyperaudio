@@ -190,4 +190,5 @@ const Remix = props => {
   );
 };
 
-export default React.memo(Remix, isEqual);
+// export default React.memo(Remix, isEqual);
+export default Remix;
