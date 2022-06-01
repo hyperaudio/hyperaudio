@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@aws-amplify/predictions": "4.0.38",
-    "@aws-amplify/ui-react": "2.15.8",
+    "@aws-amplify/ui-react": "2.18.3",
     "@emotion/cache": "11.7.1",
     "@emotion/react": "11.9.0",
     "@emotion/server": "11.4.0",
