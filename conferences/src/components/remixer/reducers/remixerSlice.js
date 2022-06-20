@@ -1,13 +1,23 @@
-/* eslint-disable no-case-declarations */
-import { arrayMoveImmutable } from 'array-move';
+import { createSlice } from '@reduxjs/toolkit';
 
-const remixReducer = (state, action) => {
-  const { type, event: { draggableId, source, destination } = {} } = action;
+export const initialState = {
+  sources: [],
+  tabs: [],
+  remix: null,
+  source: null,
+};
 
-  console.log({ action });
-
-  switch (type) {
-    case 'sourceOpen':
+export const remixerSlice = createSlice({
+  name: 'remixer',
+  initialState,
+  reducers: {
+    reset() {
+      return initialState;
+    },
+    set(state, action) {
+      return { ...state, ...action.payload };
+    },
+    sourceOpen(state, action) {
       // TODO deal with sources/library via API
       let sources = state.sources;
       let tabs = state.tabs;
@@ -16,13 +26,15 @@ const remixReducer = (state, action) => {
       if (!tabs.find(s => s.id === action.source.id)) tabs = [...state.tabs, action.source];
       console.log(state.source, action.source);
       return { ...state, sources, tabs, source: action.source };
-    case 'sourceClose':
+    },
+    sourceClose(state, action) {
       return {
         ...state,
         source: state.tabs.filter(source => source.id !== action.id)[0],
         tabs: state.tabs.filter(source => source.id !== action.id),
       };
-    case 'removeBlock':
+    },
+    removeBlock(state, action) {
       const usedMedia = [...new Set(state.remix.blocks.map(block => block.media))];
       return {
         ...state,
@@ -32,21 +44,22 @@ const remixReducer = (state, action) => {
           blocks: state.remix.blocks.filter(b => b.key !== action.key),
         },
       };
-    case 'moveUpBlock': {
+    },
+    moveUpBlock(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       return {
         ...state,
         remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index - 1) },
       };
-    }
-    case 'moveDownBlock': {
+    },
+    moveDownBlock(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       return {
         ...state,
         remix: { ...state.remix, blocks: arrayMoveImmutable(state.remix.blocks, index, index + 1) },
       };
-    }
-    case 'titleSetFullSize': {
+    },
+    titleSetFullSize(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       const block = state.remix.blocks[index];
       console.log(index, block);
@@ -61,8 +74,8 @@ const remixReducer = (state, action) => {
           ],
         },
       };
-    }
-    case 'titleTextChange': {
+    },
+    titleTextChange(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       const block = state.remix.blocks[index];
       console.log(index, block);
@@ -77,8 +90,8 @@ const remixReducer = (state, action) => {
           ],
         },
       };
-    }
-    case 'transitionDurationChange': {
+    },
+    transitionDurationChange(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       const block = state.remix.blocks[index];
       console.log(index, block);
@@ -93,8 +106,8 @@ const remixReducer = (state, action) => {
           ],
         },
       };
-    }
-    case 'slidesChange': {
+    },
+    slidesChange(state, action) {
       const index = state.remix.blocks.findIndex(b => b.key === action.key);
       const block = state.remix.blocks[index];
       console.log(index, block);
@@ -109,8 +122,8 @@ const remixReducer = (state, action) => {
           ],
         },
       };
-    }
-    case 'appendInsert': {
+    },
+    appendInsert(state, action) {
       const { insert } = action;
       const index = state.remix.blocks.findIndex(b => b.key === action.key) + 1;
       return {
@@ -129,8 +142,8 @@ const remixReducer = (state, action) => {
           ],
         },
       };
-    }
-    case 'dragEnd': {
+    },
+    dragEnd(state, action) {
       const sourceId = source?.droppableId?.split(':').pop();
       const remixId = destination?.droppableId?.split(':').pop();
 
@@ -264,14 +277,23 @@ const remixReducer = (state, action) => {
         };
       }
       return state;
-    }
-    case 'reset': {
-      console.log('RESET');
-      return action.state;
-    }
-    default:
-      throw new Error(`unhandled action ${type}`, action);
-  }
-};
+    },
+  },
+});
 
-export default remixReducer;
+const { actions, reducer } = remixerSlice;
+export const {
+  set,
+  reset,
+  sourceOpen,
+  sourceClose,
+  removeBlock,
+  moveUpBlock,
+  moveDownBlock,
+  titleSetFullSize,
+  titleTextChange,
+  transitionDurationChange,
+  slidesChange,
+  dragEnd,
+} = actions;
+export default reducer;

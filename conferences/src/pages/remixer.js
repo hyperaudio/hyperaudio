@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
-import Remixer from '@hyperaudio/remixer';
+import Remixer from '../components/remixer';
 import { useThrottledResizeObserver } from '@hyperaudio/common';
 
 import { Media, Channel, Transcript, Remix, RemixMedia } from '../models';

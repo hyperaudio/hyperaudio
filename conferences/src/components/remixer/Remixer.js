@@ -2,7 +2,8 @@ import React, { useState, useReducer, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { DragDropContext } from 'react-beautiful-dnd';
 import isEqual from 'react-fast-compare';
-import logger from 'use-reducer-logger';
+// import logger from 'use-reducer-logger';
+import { useSelector, useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import { styled, ThemeProvider } from '@mui/material/styles';
@@ -14,6 +15,21 @@ import Remix from './Remix';
 import Source from './Source';
 
 import remixReducer from './reducers/remixReducer';
+import {
+  initialState,
+  set,
+  reset,
+  sourceOpen,
+  sourceClose,
+  removeBlock,
+  moveUpBlock,
+  moveDownBlock,
+  titleSetFullSize,
+  titleTextChange,
+  transitionDurationChange,
+  slidesChange,
+  dragEnd,
+} from './reducers/remixerSlice';
 
 const PREFIX = 'Remixer';
 const classes = {
@@ -119,27 +135,30 @@ const Root = styled(Box, {
 
 const Remixer = props => {
   const { editable, media, isSingleMedia, onSelectTranslation, getFullSource } = props;
+  const dispatch2 = useDispatch();
+  const { sources, tabs, remix, source } = useSelector(state => state.remixer);
 
-  const [{ sources, tabs, remix, source }, dispatch] = useReducer(logger(remixReducer), {
-    sources: props.sources,
-    tabs: props.tabs ?? props.sources,
-    remix: props.remix,
-    source: props.tabs?.[0] ?? props.sources[0],
-  });
+  // const [{ sources, tabs, remix, source }, dispatch] = useReducer(remixReducer, {
+  //   sources: props.sources,
+  //   tabs: props.tabs ?? props.sources,
+  //   remix: props.remix,
+  //   source: props.tabs?.[0] ?? props.sources[0],
+  // });
+
+  const dispatch = useCallback(({ type, ...payload }) => console.log({ type, ...payload }), [dispatch2]);
 
   console.log('REMIX DATA', { props, sources, tabs, remix, source });
 
-  // useEffect(() => {
-  //   dispatch({
-  //     type: 'reset',
-  //     state: {
-  //       sources: props.sources,
-  //       tabs: props.tabs ?? props.sources,
-  //       remix: props.remix,
-  //       source: props.tabs?.[0] ?? props.sources[0],
-  //     },
-  //   });
-  // }, [props.sources, props.remix]);
+  useEffect(() => {
+    dispatch2(
+      set({
+        sources: props.sources,
+        tabs: props.tabs ?? props.sources,
+        remix: props.remix,
+        source: props.tabs?.[0] ?? props.sources[0],
+      }),
+    );
+  }, [props.sources, props.remix, props.tabs, dispatch2]);
 
   const [showSource, setShowSource] = useState(props.showSource === undefined ? true : props.showSource);
   const [showLibrary, setShowLibrary] = useState(false);
@@ -178,71 +197,73 @@ const Remixer = props => {
   }, []);
 
   return (
-    <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
-      <Root
-        className={classes.root}
-        id={classes.root} // used as Dragbar’s bounds
-        isSingleMedia={isSingleMedia}
-        showSource={showSource}
-        sx={props.sx}
-      >
-        {editable ? (
-          <DragDropContext onDragEnd={onDragEnd}>
-            {showSource && (
-              <Source
-                {...{
-                  ...props,
-                  sources,
-                  tabs,
-                  source,
-                  onShowLibrary,
-                  onSourceChange,
-                  onSourceClose,
-                  autoScroll,
-                  onSelectTranslation,
-                }}
-              />
-            )}
-            {!isSingleMedia && (
-              <Remix
-                {...{
-                  ...props,
-                  remix,
-                  sources,
-                  tabs,
-                  showSource,
-                  setShowSource,
-                  onSourceChange,
-                  dispatch,
-                  autoScroll,
-                }}
-              />
-            )}
-          </DragDropContext>
-        ) : (
-          <>
-            {showSource && (
-              <Source
-                {...{
-                  ...props,
-                  sources,
-                  tabs,
-                  source,
-                  onShowLibrary,
-                  onSourceChange,
-                  autoScroll,
-                  onSelectTranslation,
-                }}
-              />
-            )}
-            {!isSingleMedia && (
-              <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
-            )}
-          </>
-        )}
-        {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
-      </Root>
-    </ThemeProvider>
+    remix && (
+      <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
+        <Root
+          className={classes.root}
+          id={classes.root} // used as Dragbar’s bounds
+          isSingleMedia={isSingleMedia}
+          showSource={showSource}
+          sx={props.sx}
+        >
+          {editable ? (
+            <DragDropContext onDragEnd={onDragEnd}>
+              {showSource && (
+                <Source
+                  {...{
+                    ...props,
+                    sources,
+                    tabs,
+                    source,
+                    onShowLibrary,
+                    onSourceChange,
+                    onSourceClose,
+                    autoScroll,
+                    onSelectTranslation,
+                  }}
+                />
+              )}
+              {!isSingleMedia && (
+                <Remix
+                  {...{
+                    ...props,
+                    remix,
+                    sources,
+                    tabs,
+                    showSource,
+                    setShowSource,
+                    onSourceChange,
+                    dispatch,
+                    autoScroll,
+                  }}
+                />
+              )}
+            </DragDropContext>
+          ) : (
+            <>
+              {showSource && (
+                <Source
+                  {...{
+                    ...props,
+                    sources,
+                    tabs,
+                    source,
+                    onShowLibrary,
+                    onSourceChange,
+                    autoScroll,
+                    onSelectTranslation,
+                  }}
+                />
+              )}
+              {!isSingleMedia && (
+                <Remix {...{ ...props, remix, sources, tabs, showSource, setShowSource, onSourceChange, autoScroll }} />
+              )}
+            </>
+          )}
+          {showLibrary && <Library {...{ ...props, sources, tabs, onHideLibrary, onSearch, onSourceOpen }} />}
+        </Root>
+      </ThemeProvider>
+    )
   );
 };
 

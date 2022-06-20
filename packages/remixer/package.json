@@ -52,12 +52,16 @@
   "dependencies": {
     "array-move": "4.0.0",
     "create-silent-audio": "0.1.1",
+    "jsondiffpatch": "0.4.1",
     "lodash": "4.17.21",
     "mux-embed": "4.8.0",
     "react-beautiful-dnd": "^13.1.0",
+    "react-context-devtool": "2.0.3",
     "react-draggable": "4.4.5",
     "react-fast-compare": "3.2.0",
     "react-player": "2.10.0",
-    "smpte-timecode": "1.2.3"
+    "reinspect": "1.1.0",
+    "smpte-timecode": "1.2.3",
+    "use-reducer-logger": "1.0.2"
   }
 }
