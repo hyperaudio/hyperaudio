@@ -11,7 +11,7 @@
     "____surge": "yarn build && mkdir -p ./build-surge && cp -r ./out/* ./build-surge && cp ./out/index.html ./build-surge/200.html && surge build-surge test2-hyperaudio.surge.sh"
   },
   "dependencies": {
-    "@aws-amplify/predictions": "4.0.38",
+    "@aws-amplify/predictions": "4.0.44",
     "@aws-amplify/ui-react": "2.18.3",
     "@emotion/cache": "11.9.3",
     "@emotion/react": "11.9.3",
