@@ -2,7 +2,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider as EmotionThemeProvider } from "emotion-theming";
 import { ThemeProvider } from "@mui/material/styles";
 
-import { defaultTheme } from "@hyperaudio/common";
+import { getTheme } from "@hyperaudio/common";
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -19,9 +19,9 @@ export const decorators = [
   (story) => (
     <EmotionThemeProvider
       // because https://github.com/mui-org/material-ui/issues/24282#issuecomment-859393395
-      theme={defaultTheme}
+      theme={getTheme()}
     >
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={getTheme()}>
         <CssBaseline />
         {story()}
       </ThemeProvider>

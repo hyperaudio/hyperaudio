@@ -1,6 +1,8 @@
-import React from 'react';
+// eslint-disable-next-line @next/next/no-document-import-in-page
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import React from 'react';
 import createEmotionServer from '@emotion/server/create-instance';
+
 import createEmotionCache from './util/createEmotionCache';
 
 export default class MyDocument extends Document {
@@ -8,7 +10,13 @@ export default class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
-          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Bold.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Medium.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-Regular.woff2" rel="preload" type="font/woff2" />
+          <link as="font" crossOrigin="" href="/fonts/inter/Inter-SemiBold.woff2" rel="preload" type="font/woff2" />
+
+          <link rel="icon" href="/favicon.ico" sizes="any" />
+          <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         </Head>
         <body>
           <Main />

@@ -9,9 +9,11 @@ import { FullSizeIcon, LowerThirdsIcon } from '@hyperaudio/common';
 
 const PREFIX = 'InsertTitle';
 const classes = {
+  root: `${PREFIX}-root`,
   canvas: `${PREFIX}-canvas`,
   controls: `${PREFIX}-controls`,
   field: `${PREFIX}-field`,
+  head: `${PREFIX}-head`,
   icon: `${PREFIX}-icon`,
   title: `${PREFIX}-title`,
 };
@@ -19,11 +21,16 @@ const classes = {
 const Root = styled('div', {
   shouldForwardProp: prop => prop !== 'fullSize',
 })(({ theme, fullSize }) => ({
-  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1],
-  [`& .${classes.title}`]: {
+  boxShadow: theme.shadows[3],
+  padding: theme.spacing(1),
+  [`& .${classes.head}`]: {
     marginBottom: theme.spacing(1),
+  },
+  [`& .${classes.title}`]: {
+    display: 'flex',
+    marginBottom: theme.spacing(1),
+    alignItems: 'center',
   },
   [`& .${classes.canvas}`]: {
     background: theme.palette.text.primary,
@@ -82,11 +89,20 @@ export const InsertTitle = ({
   const onUnsetFullSize = useCallback(() => dispatch({ type: 'titleSetFullSize', key, fullSize: false }), [dispatch]);
 
   return (
-    <Root fullSize={fullSize}>
-      <Typography className={classes.title} variant="subtitle2" component="h2" color="primary">
-        <TextFieldsIcon fontSize="small" sx={{ marginRight: '6px' }} />
-        <span id="insert-title">Title</span>
-      </Typography>
+    <Root className={classes.root} fullSize={fullSize}>
+      <div className={classes.head}>
+        <Typography
+          className={classes.title}
+          color="primary"
+          component="h2"
+          id="insert-title"
+          variant="body2"
+          sx={{ fontWeight: 500 }}
+        >
+          <TextFieldsIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
+          Title
+        </Typography>
+      </div>
       <div className={classes.canvas}>
         <TextField className={classes.field} onBlur={onTextChange} onChange={onTextChange} size="small" value={text} />
       </div>

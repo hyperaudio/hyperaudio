@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,7 +15,8 @@ import { styled, useTheme } from '@mui/material/styles';
 const PREFIX = 'LibraryTopbar';
 const classes = {
   adornment: `${PREFIX}-adornment`,
-  field: `${PREFIX}-field`,
+  search: `${PREFIX}-search`,
+  searchField: `${PREFIX}-searchField`,
 };
 const Root = styled('div')(({ theme }) => {
   return {
@@ -32,8 +33,12 @@ const Root = styled('div')(({ theme }) => {
         marginRight: theme.spacing(1),
       },
     },
-    [`& .${classes.field}`]: {
+    [`& .${classes.search}`]: {
       paddingRight: theme.spacing(1),
+    },
+    [`& .${classes.searchField}`]: {
+      fontWeight: '500',
+      padding: theme.spacing(1, 1),
     },
     [`& .${classes.adornment}`]: {
       alignContent: 'center',
@@ -50,7 +55,7 @@ export const LibraryTopbar = props => {
   const theme = useTheme();
   const { onHideLibrary, setSearchKey } = props;
 
-  const [keyword, setKeyword] = React.useState('');
+  const [keyword, setKeyword] = useState('');
 
   const onSearchClear = () => {
     setKeyword('');
@@ -76,8 +81,9 @@ export const LibraryTopbar = props => {
             size="small"
             type="text"
             value={keyword}
+            variant="filled"
             InputProps={{
-              className: classes.field,
+              className: classes.search,
               endAdornment: (
                 <InputAdornment position="end">
                   <div className={classes.adornment}>
@@ -111,7 +117,7 @@ export const LibraryTopbar = props => {
               ),
             }}
             inputProps={{
-              className: 'LibrarySearch',
+              className: classes.searchField,
               minLength: 1,
               onChange: e => setKeyword(e.target.value),
               onKeyPress: e => {

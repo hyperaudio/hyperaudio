@@ -1,7 +1,8 @@
 import React from "react";
 
-import { Remixer } from "../../remixer/src/index.js";
-import { data } from "./data/remixer-data";
+import Remixer from "@hyperaudio/remixer";
+
+import { remixData } from "./data";
 
 export default {
   title: "Packages/Remixer",
@@ -10,7 +11,21 @@ export default {
 
 const Template = (args) => (
   <div style={{ height: "100vh" }}>
-    <Remixer remix={data.remix} sources={data.sources} media={[]} {...args} />
+    <Remixer
+      remix={remixData.remix}
+      sources={remixData.sources}
+      media={[]}
+      sx={{
+        "& > *": { flex: "0 0 50%" },
+        bottom: 0,
+        display: "flex",
+        left: 0,
+        position: "absolute",
+        right: 0,
+        top: 0,
+      }}
+      {...args}
+    />
   </div>
 );
 
@@ -22,63 +37,74 @@ ReadMode.args = {
 export const ReadModeOneSource = Template.bind({});
 ReadModeOneSource.args = {
   editable: false,
-  sources: [data.sources[0]],
+  sources: [remixData.sources[0]],
 };
 
 export const EmptyRemix = Template.bind({});
 EmptyRemix.args = {
   editable: true,
-  remix: { ...data.remix, secret: false, title: "", blocks: [] },
+  remix: { ...remixData.remix, secret: false, title: "", blocks: [] },
 };
 
 export const RichRemix = Template.bind({});
 RichRemix.args = {
   editable: true,
-  remix: { ...data.remix, secret: false, title: "" },
+  remix: { ...remixData.remix, secret: false, title: "" },
 };
 
 export const OneSource = Template.bind({});
 OneSource.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
-  sources: [data.sources[0]],
+  remix: { ...remixData.remix, title: "" },
+  sources: [remixData.sources[0]],
+  autoScroll: true,
 };
 
 export const LibraryEmpty = Template.bind({});
 LibraryEmpty.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
+  remix: { ...remixData.remix, title: "" },
   media: [],
 };
 
 export const RichLibrary = Template.bind({});
 RichLibrary.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
-  sources: [data.sources[0]],
-  media: [...data.sources],
+  remix: { ...remixData.remix, title: "" },
+  sources: [remixData.sources[0]],
+  media: [...remixData.sources],
 };
 
 export const SearchResults = Template.bind({});
 SearchResults.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
-  media: [...data.sources],
-  matches: { transcripts: [...data.sources], titles: [...data.sources] },
+  remix: { ...remixData.remix, title: "" },
+  media: [...remixData.sources],
+  matches: {
+    transcripts: [...remixData.sources],
+    titles: [...remixData.sources],
+  },
 };
 
 export const SearchSome = Template.bind({});
 SearchSome.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
-  media: [...data.sources],
-  matches: { transcripts: [...data.sources], titles: null },
+  remix: { ...remixData.remix, title: "" },
+  media: [...remixData.sources],
+  matches: { transcripts: [...remixData.sources], titles: null },
 };
 
 export const SearchNull = Template.bind({});
 SearchNull.args = {
   editable: true,
-  remix: { ...data.remix, title: "" },
-  media: [...data.sources],
+  remix: { ...remixData.remix, title: "" },
+  media: [...remixData.sources],
   matches: { transcripts: null, titles: null },
+};
+
+export const SingleMedia = Template.bind({});
+SingleMedia.args = {
+  editable: false,
+  isSingleMedia: true,
+  media: [...remixData.sources],
 };

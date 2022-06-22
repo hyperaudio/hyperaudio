@@ -1,3 +1,2 @@
-import '../styles/globals.css';
-
+import '../util/wdyr';
 export { default } from '../App';

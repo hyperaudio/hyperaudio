@@ -4,21 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.16.12",
-    "@storybook/addon-actions": "6.4.14",
-    "@storybook/addon-essentials": "6.4.14",
-    "@storybook/addon-a11y": "6.4.14",
-    "@storybook/addon-links": "6.4.14",
-    "@storybook/react": "6.4.14",
-    "babel-loader": "8.2.3",
-    "storybook-dark-mode": "1.0.8"
+    "@babel/core": "7.17.10",
+    "@storybook/addon-actions": "6.4.22",
+    "@storybook/addon-essentials": "6.4.22",
+    "@storybook/addon-a11y": "6.4.22",
+    "@storybook/addon-links": "6.4.22",
+    "@storybook/react": "6.4.22",
+    "babel-loader": "8.2.5",
+    "storybook-dark-mode": "1.1.0"
   },
   "dependencies": {
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "scripts": {
-    "start": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "start": "start-storybook -p 6006 --no-open",
+    "build": "build-storybook"
   }
 }

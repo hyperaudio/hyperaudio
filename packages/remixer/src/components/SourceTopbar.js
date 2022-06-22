@@ -1,23 +1,51 @@
 import React from 'react';
 
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { ThemeProvider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
-const Root = styled(Toolbar)(({ theme }) => ({
+import { getTheme } from '@hyperaudio/common';
+
+const PREFIX = 'SourceTopbar';
+const classes = {
+  root: `${PREFIX}-root`,
+};
+
+const Root = styled(Box)(({ theme }) => ({
+  // backgroundColor: theme.palette.background.default,
   alignItems: 'stretch !important',
-  backgroundColor: theme.palette.background.default,
+  alignItems: 'stretch',
+  borderBottom: `1px solid rgba(255,255,255,0.22)`,
+  display: 'flex',
+  minHeight: 'auto',
+  position: 'absolute',
+  width: '100%',
+  [`& .topbarSide`]: {
+    alignItems: 'center',
+    display: 'flex',
+    flexBasis: 'auto',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    padding: theme.spacing(0, 0.5),
+    [`&.topbarSide--left`]: {
+      borderRight: `1px solid rgba(255,255,255,0.22)`,
+    },
+    [`&.topbarSide--right`]: {
+      borderLeft: `1px solid rgba(255,255,255,0.22)`,
+      // marginLeft: `-1px`,
+    },
+  },
   [`.topbarCore`]: {
     overflowX: 'auto !important',
     overflow: 'visible',
@@ -36,9 +64,9 @@ const Tabs = styled('div')(({ theme }) => ({
 const Tab = styled(Button, {
   shouldForwardProp: prop => prop !== 'isActive' && prop !== 'isSingle',
 })(({ theme, isActive, isSingle }) => ({
-  background: isActive ? theme.palette.background.paper : 'transparent',
+  background: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
   borderRadius: 0,
-  color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
+  color: isActive ? 'white' : 'rgba(255,255,255,0.66)',
   flexBasis: 'auto',
   flexGrow: 1,
   flexShrink: 0,
@@ -46,28 +74,19 @@ const Tab = styled(Button, {
   minHeight: theme.spacing(5),
   textTransform: 'none',
   [`&:not(:last-child)`]: {
-    borderRight: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid rgba(255,255,255,0.22)`,
   },
   [`&:hover`]: {
-    background: isActive ? theme.palette.background.paper : 'transparent',
-    color: theme.palette.primary.dark,
+    background: 'rgba(255,255,255,0.1)',
+    color: 'white',
   },
   [`& .MuiButton-endIcon > span`]: {
     lineHeight: 0,
   },
 }));
 
-const TabClose = styled(IconButton, {
-  shouldForwardProp: prop => prop !== 'isActive',
-})(({ theme, isActive }) => ({
-  background: theme.palette.background.default,
-  [`&, & *`]: {
-    color: isActive ? theme.palette.primary.dark : theme.palette.primary.light,
-  },
-}));
-
-export const SourceTopbar = props => {
-  const { editable, media, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
+export default function SourceTopbar(props) {
+  const { editable, media, sources, tabs, source, onSourceChange, onSourceClose, onShowLibrary } = props;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -85,127 +104,134 @@ export const SourceTopbar = props => {
   // console.groupEnd();
 
   return (
-    <>
-      <Root className="topbar" disableGutters>
-        {editable && (
-          <div className="topbarSide topbarSide--left">
-            <Tooltip title="Add source transcript…">
-              <IconButton onClick={onShowLibrary} size="small" disabled={media?.length === 0}>
-                <AddCircleOutlineIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          </div>
-        )}
-        <div className="topbarCore">
-          <Tabs className="SourceTopbar">
-            {tabs.map(o => (
-              <Tab
-                color="inherit"
-                component="a"
-                endIcon={
-                  editable && (
-                    <span>
-                      {tabs.length > 1 && (
-                        <Tooltip title="Close">
-                          <TabClose edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
-                            <CloseIcon sx={{ fontSize: '16px' }} />
-                          </TabClose>
-                        </Tooltip>
-                      )}
-                    </span>
-                  )
-                }
-                isActive={o.id === source?.id}
-                isSingle={tabs.length < 2}
-                key={o.id}
-                onClick={() => onSourceChange(o.id)}
-                size="small"
-                variant="contained"
-              >
-                <Typography noWrap sx={{ maxWidth: '150px' }} variant="caption" title={o.title}>
-                  {o.title}
-                </Typography>
-              </Tab>
-            ))}
-          </Tabs>
-        </div>
-        <div className="topbarSide topbarSide--right">
-          <Tooltip title="All source transcripts…">
-            <span>
-              <IconButton size="small" onClick={onTranscriptsOpen} disabled={tabs.length < 2}>
-                <MoreVertIcon fontSize="small" />
-              </IconButton>
-            </span>
+    <Root className={classes.root} disableGutters>
+      {editable && (
+        <div className="topbarSide topbarSide--left">
+          <Tooltip title="Add source transcript…">
+            <IconButton color="inherit" onClick={onShowLibrary} size="small" disabled={sources?.length < 2}>
+              <AddCircleOutlineIcon fontSize="small" />
+            </IconButton>
           </Tooltip>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={onTranscriptsClose}
-            onClick={onTranscriptsClose}
-            MenuListProps={{
-              dense: true,
-            }}
-            PaperProps={{
-              elevation: 0,
-              sx: {
-                overflow: 'visible',
-                filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                mt: 1.5,
-                '&:before': {
-                  content: '""',
-                  display: 'block',
-                  position: 'absolute',
-                  top: 0,
-                  right: 14,
-                  width: 10,
-                  height: 10,
-                  bgcolor: 'background.paper',
-                  transform: 'translateY(-50%) rotate(45deg)',
-                  zIndex: 0,
-                },
-              },
-            }}
-            variant="selectedMenu"
-            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-          >
-            {tabs.map((o, i) => (
-              <MenuItem key={o.id} onClick={() => onSourceChange(o.id)} selected={o.id === source.id}>
-                <ListItemText
-                  primaryTypographyProps={{ noWrap: true, variant: 'body2' }}
-                  sx={{ maxWidth: '200px' }}
-                  title={o.title}
-                >
-                  {o.title}
-                </ListItemText>
-                <span>
-                  {editable && (
-                    <Tooltip enterDelay={1500} title="Close">
-                      <IconButton
-                        color="default"
-                        edge="end"
-                        onClick={e => onTabClose(e, o.id)}
-                        size="small"
-                        sx={{ ml: 3 }}
-                      >
-                        <CloseIcon sx={{ fontSize: '16px' }} />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </span>
-              </MenuItem>
-            ))}
-            <Divider />
-            <MenuItem disabled={media?.length === 0} onClick={onShowLibrary}>
-              <ListItemIcon>
-                <AddCircleOutlineIcon color="primary" fontSize="small" />
-              </ListItemIcon>
-              <ListItemText primary="Add source transcript…" primaryTypographyProps={{ color: 'primary' }} />
-            </MenuItem>
-          </Menu>
         </div>
-      </Root>
-      <div className="topbarPush" />
-    </>
+      )}
+      <div className="topbarCore">
+        <Tabs className="SourceTopbar">
+          {tabs.map(o => (
+            <Tab
+              component="a"
+              endIcon={
+                editable && (
+                  <span>
+                    {tabs.length > 1 && (
+                      <Tooltip title="Close">
+                        <IconButton color="inherit" edge="end" size="small" onClick={e => onTabClose(e, o.id)}>
+                          <CloseIcon sx={fontSize16px} />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                  </span>
+                )
+              }
+              isActive={o.id === source?.id}
+              isSingle={tabs.length < 2}
+              key={o.id}
+              onClick={() => onSourceChange(o.id)}
+              size="small"
+              variant="contained"
+              sx={o.id === source?.id && tabs.length < 2 ? { background: 'transparent !important' } : {}}
+            >
+              <Typography
+                color="inherit"
+                noWrap
+                sx={{ maxWidth: tabs.length < 2 ? 'auto' : '150px' }}
+                title={o.title}
+                variant="caption"
+              >
+                {o.title}
+              </Typography>
+            </Tab>
+          ))}
+        </Tabs>
+      </div>
+      <div className="topbarSide topbarSide--right">
+        <Tooltip title="All sources">
+          <span>
+            <IconButton color="inherit" size="small" onClick={onTranscriptsOpen}>
+              <MoreVertIcon fontSize="small" />
+            </IconButton>
+          </span>
+        </Tooltip>
+        <Menu
+          anchorEl={anchorEl}
+          open={open}
+          onClose={onTranscriptsClose}
+          onClick={onTranscriptsClose}
+          MenuListProps={{
+            dense: true,
+          }}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
+            },
+          }}
+          variant="selectedMenu"
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          {tabs.map((o, i) => (
+            <MenuItem
+              disabled={tabs.length === 1}
+              key={o.id}
+              onClick={() => onSourceChange(o.id)}
+              selected={o.id === source.id}
+            >
+              <ListItemText
+                primaryTypographyProps={{ noWrap: true, variant: 'body2' }}
+                sx={{ maxWidth: '200px' }}
+                title={o.title}
+              >
+                {o.title}
+              </ListItemText>
+              <span>
+                {editable && (
+                  <Tooltip enterDelay={1500} title="Close">
+                    <IconButton
+                      color="inherit"
+                      edge="end"
+                      onClick={e => onTabClose(e, o.id)}
+                      size="small"
+                      sx={{ ml: 3 }}
+                    >
+                      <CloseIcon sx={fontSize16px} />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </span>
+            </MenuItem>
+          ))}
+          <Divider />
+          <MenuItem disabled={media?.length === 0} onClick={onShowLibrary}>
+            <ListItemText primary="Add source…" primaryTypographyProps={{ color: 'primary' }} />
+          </MenuItem>
+        </Menu>
+      </div>
+    </Root>
   );
-};
+}
+
+const fontSize16px = { fontSize: '16px' };

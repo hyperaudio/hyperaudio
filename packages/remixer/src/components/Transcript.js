@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import _ from 'lodash';
-import { lighten } from 'polished';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import isEqual from 'react-fast-compare';
 
+import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import MovieFilterIcon from '@mui/icons-material/MovieFilter';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Divider from '@mui/material/Divider';
-import SlideshowIcon from '@mui/icons-material/Slideshow';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -15,7 +14,10 @@ import ListItemText from '@mui/material/ListItemText';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import MovieFilterIcon from '@mui/icons-material/MovieFilter';
+import SlideshowIcon from '@mui/icons-material/Slideshow';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import Toolbar from '@mui/material/Toolbar';
 import { styled } from '@mui/material/styles';
 
 import { MoveUpIcon, MoveDownIcon, ShowContextIcon } from '@hyperaudio/common';
@@ -26,11 +28,12 @@ import { ContextFrame } from './ContextFrame';
 
 const PREFIX = 'Transcript';
 const classes = {
+  root: `${PREFIX}-root`,
   insertWrap: `${PREFIX}-insertWrap`,
+  dragHandle: `${PREFIX}-dragHandle`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  width: '100%',
   [`.RemixerPane--Source & [data-rbd-draggable-id]`]: {
     borderRadius: theme.shape.borderRadius,
     [`&:hover`]: {
@@ -51,6 +54,7 @@ const DragBlock = styled('div', {
   outline: isFocused ? `1px solid ${theme.palette.divider}` : 'none',
   position: 'relative',
   [`&:hover`]: {
+    color: theme.palette.text.primary,
     backgroundColor: theme.palette.background.paper,
     outline: `1px solid ${theme.palette.divider}`,
   },
@@ -82,14 +86,23 @@ const Section = styled('p')(({ theme }) => ({
   // transitionDuration: `${theme.transitions.duration.short}s`, // TODO: figure out why transitions have no effect
   // transitionProperty: 'background-color',
   // transitionTimingFunction: 'ease-in',
+  ...theme.typography.body2,
   borderRadius: theme.shape.borderRadius,
   color: theme.palette.text.secondary,
   margin: theme.spacing(0),
   padding: theme.spacing(1),
-  [`& span.playhead`]: {
-    color: theme.palette.primary.main,
+  [`&:hover`]: {
+    color: theme.palette.text.primary,
   },
-  [`&:before`]: {
+  [`& span.playhead `]: {
+    color: theme.palette.text.primary,
+  },
+  [`& span.playhead span`]: {
+    color: theme.palette.primary.dark,
+    textShadow: `-0.03ex 0 0 currentColor, 0.03ex 0 0 currentColor, 0 -0.02ex 0 currentColor, 0 0.02ex 0 currentColor`,
+    transition: `all ${theme.transitions.duration.standard}`,
+  },
+  [`&.showSpeaker:before`]: {
     ...theme.typography.overline,
     backgroundColor: theme.palette.divider,
     borderRadius: theme.shape.borderRadius,
@@ -109,15 +122,15 @@ const Section = styled('p')(({ theme }) => ({
     color: theme.palette.text.disabled,
   },
   [`&.in-range`]: {
-    // backgroundColor: 'lightyellow',
+    backgroundColor: 'lightyellow',
   },
   [`& span.range`]: {
-    backgroundColor: lighten(0.3, theme.palette.secondary.main),
+    backgroundColor: theme.palette.primary.light,
     padding: theme.spacing(0.3, 0),
   },
 }));
 
-export const Transcript = props => {
+const Transcript = props => {
   const {
     id,
     blocks,
@@ -131,8 +144,11 @@ export const Transcript = props => {
     setBlockOverride,
     externalRange,
     onSourceChange,
+    autoScroll,
+    singlePlayer,
+    singlePlayerOffset,
   } = props;
-  const container = useRef();
+  const root = useRef();
 
   const [range, setRange] = useState(externalRange);
 
@@ -186,7 +202,9 @@ export const Transcript = props => {
     const blockIndex = blocks.findIndex(b => b.key === focus);
     const block = blocks[blockIndex];
     const offset = blocks.slice(0, blockIndex).reduce((acc, b) => acc + b.duration + b.gap, 0);
-    const source = sources.find(source => source.id === block.media);
+    const source =
+      sources.find(source => source.id === block.media) ??
+      sources.find(source => source.media.find(m => m.id === block.media));
 
     if (!editable) {
       if (block.type === 'block') {
@@ -210,7 +228,7 @@ export const Transcript = props => {
         setContextData({});
       }
     } else {
-      console.log({ type: 'sourceOpen', source });
+      // console.log({ type: 'sourceOpen', source });
       onSourceChange(source.id);
       dispatch({ type: 'sourceOpen', source });
     }
@@ -219,7 +237,7 @@ export const Transcript = props => {
   const hideBlockContext = useCallback(() => {
     setContext(null);
     setContextData({});
-    setBlockOverride(null);
+    setBlockOverride && setBlockOverride(null);
   }, [focus, blocks, setBlockOverride]);
 
   const handleClick = useCallback(
@@ -235,10 +253,12 @@ export const Transcript = props => {
       if (selection.isCollapsed && target.getAttribute('data-key')) {
         setRange(null);
 
+        console.log('click', target.getAttribute('data-key'));
+
         if (!externalRange) {
           setContext(null);
           setContextData({});
-          setBlockOverride(null);
+          setBlockOverride && setBlockOverride(null);
         }
 
         const key = target.getAttribute('data-key');
@@ -246,12 +266,22 @@ export const Transcript = props => {
         const offset = parseInt(target.getAttribute('data-offset') ?? 0);
 
         const block = blocks.find(block => block.key === key);
+
+        console.log('click', block, reference.current, sources);
+
         const index = block.offsets.findIndex(
           (offset, i) => offset <= anchorOffset + textOffset && anchorOffset + textOffset <= offset + block.lengths[i],
         );
 
         const time = index > 0 ? block.starts2[index] + offset : offset;
-        if (reference.current) reference.current.currentTime = time / 1e3;
+        if (reference.current) {
+          // console.log('click SEEK from', reference.current.currentTime, time / 1e3);
+          console.log('Tseek', { reference });
+          if (singlePlayer) {
+            reference.current.seekTo((time + singlePlayerOffset) / 1e3, 'seconds');
+          } else reference.current.currentTime = time / 1e3;
+          // console.log('click SEEK2 should be eq', reference.current.currentTime, time / 1e3);
+        }
       } else if (!selection.isCollapsed && editable && isSource) {
         const key = anchorNode?.parentNode?.getAttribute('data-key');
         const textOffset = parseInt(anchorNode?.parentNode?.getAttribute('data-text-offset') ?? 0);
@@ -280,29 +310,46 @@ export const Transcript = props => {
         setRange([Math.min(time, time2), Math.max(time, time2)]);
       } else setRange(null);
     },
-    [blocks, externalRange],
+    [blocks, externalRange, reference, sources, singlePlayer, singlePlayerOffset],
   );
 
   useEffect(() => {
     if (externalRange) {
-      container.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      root.current?.querySelector('.in-range')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, [externalRange, container]);
+  }, [externalRange, root]);
 
-  useEffect(() => console.log({ blocks }), [blocks]);
+  // useEffect(() => console.log({ blocks }), [blocks]);
 
   return (
-    <Root>
-      <Container ref={container} maxWidth="sm" onClick={handleClick}>
-        {editable && !isSource ? (
-          <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks.map((block, i) => (
-                  <Draggable key={`${id}:${block.key}:${i}`} draggableId={`draggable:${id}:${block.key}`} index={i}>
+    <Root className={classes.root} ref={root} onClick={handleClick}>
+      {editable && !isSource ? (
+        <Droppable droppableId={`droppable:${id}`} type="BLOCK" isDropDisabled={!editable || isSource}>
+          {(provided, snapshot) => (
+            <Box
+              sx={{
+                bottom: 0,
+                left: 0,
+                py: 2,
+                position: 'absolute',
+                right: 0,
+                top: 0,
+              }}
+              ref={provided.innerRef}
+              className={`droparea ${snapshot.isDraggingOver && 'transcriptSnapshotDropArea'}`}
+              {...provided.droppableProps}
+            >
+              {blocks.map((block, i) => (
+                <Container maxWidth="sm" key={`${id}:${block.key}:${i}`}>
+                  <Draggable draggableId={`draggable:${id}:${block.key}`} index={i}>
                     {(provided, snapshot) => (
                       <DragBlock ref={provided.innerRef} {...provided.draggableProps} isFocused={focus === block.key}>
-                        <DragHandle {...provided.dragHandleProps} color="default" size="small">
+                        <DragHandle
+                          {...provided.dragHandleProps}
+                          color="default"
+                          size="small"
+                          className={classes.dragHandle}
+                        >
                           <DragIndicatorIcon fontSize="small" />
                         </DragHandle>
                         {block.type === 'block' ? (
@@ -319,7 +366,7 @@ export const Transcript = props => {
                               />
                             </ContextFrame>
                           ) : (
-                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time }} />
+                            <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, autoScroll }} />
                           )
                         ) : block.type === 'title' && editable ? (
                           <div className={classes.insertWrap}>
@@ -340,134 +387,147 @@ export const Transcript = props => {
                       </DragBlock>
                     )}
                   </Draggable>
-                ))}
-              </div>
-            )}
-          </Droppable>
-        ) : editable && isSource && range ? (
-          <Droppable droppableId={`droppable:${id}`} type="BLOCK">
-            {(provided, snapshot) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
-                {blocks
-                  ?.filter(({ type }) => type === 'block')
-                  .map((block, i) => (
-                    <Block
-                      key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range }}
-                      rangeMode="before-range"
-                    />
-                  ))}
-
-                <Draggable draggableId={`draggable:${id}::${range[0]}-${range[1]}`} index={0}>
-                  {(provided, snapshot) => (
-                    <>
-                      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        {blocks
-                          ?.filter(({ type }) => type === 'block')
-                          .map((block, i) => (
-                            <Block
-                              key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range }}
-                              rangeMode="in-range"
-                              onlyRange={snapshot.isDragging}
-                            />
-                          ))}
-                      </div>
-                      {snapshot.isDragging &&
-                        blocks
-                          ?.filter(({ type }) => type === 'block')
-                          .map((block, i) => (
-                            <Block
-                              key={`${id}:${block.key}:${i}`}
-                              {...{ blocks, block, time, range }}
-                              rangeMode="in-range"
-                            />
-                          ))}
-                    </>
-                  )}
-                </Draggable>
-
-                {blocks
-                  ?.filter(({ type }) => type === 'block')
-                  .map((block, i) => (
-                    <Block
-                      key={`${id}:${block.key}:${i}`}
-                      {...{ blocks, block, time, range }}
-                      rangeMode="after-range"
-                    />
-                  ))}
-              </div>
-            )}
-          </Droppable>
-        ) : range ? (
-          <>
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="before-range" />
+                </Container>
               ))}
-
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="in-range" />
-              ))}
-
-            {blocks
-              ?.filter(({ type }) => type === 'block')
-              .map((block, i) => (
-                <Block key={`${id}:${block.key}:${i}`} {...{ blocks, block, time, range }} rangeMode="after-range" />
-              ))}
-          </>
-        ) : (
-          blocks?.map((block, i) =>
-            block.type === 'block' ? (
-              <DragBlock key={`${id}:${block.key}:${i}`}>
-                {context === block.key ? (
-                  <ContextFrame title={contextData.title}>
-                    <Transcript
-                      {...{
-                        ...props,
-                        editable: false,
-                        isSource: false,
-                        noMenu: true,
-                        ...contextData,
-                      }}
-                    />
-                  </ContextFrame>
-                ) : (
+              <Toolbar sx={{ mt: 6 }} />
+            </Box>
+          )}
+        </Droppable>
+      ) : editable && isSource && range ? (
+        <Droppable droppableId={`droppable:${id}`} type="BLOCK">
+          {(provided, snapshot) => (
+            <div ref={provided.innerRef} {...provided.droppableProps}>
+              {blocks
+                ?.filter(({ type }) => type === 'block')
+                .map((block, i) => (
                   <Block
                     key={`${id}:${block.key}:${i}`}
-                    {...{ blocks, block, time, range }}
-                    // offset={contextData && contextData.index > i ? contextData.offset : 0}
+                    {...{ blocks, block, time, range, autoScroll }}
+                    rangeMode="before-range"
                   />
+                ))}
+
+              <Draggable draggableId={`draggable:${id}::${range[0]}-${range[1]}`} index={0}>
+                {(provided, snapshot) => (
+                  <>
+                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                      {blocks
+                        ?.filter(({ type }) => type === 'block')
+                        .map((block, i) => (
+                          <Block
+                            key={`${id}:${block.key}:${i}`}
+                            {...{ blocks, block, time, range, autoScroll }}
+                            rangeMode="in-range"
+                            onlyRange={snapshot.isDragging}
+                          />
+                        ))}
+                    </div>
+                    {snapshot.isDragging &&
+                      blocks
+                        ?.filter(({ type }) => type === 'block')
+                        .map((block, i) => (
+                          <Block
+                            key={`${id}:${block.key}:${i}`}
+                            {...{ blocks, block, time, range, autoScroll }}
+                            rangeMode="in-range"
+                          />
+                        ))}
+                  </>
                 )}
-                {!isSource && !noMenu ? (
-                  <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
-                    <MoreHorizIcon fontSize="small" />
-                  </BlockMenu>
-                ) : null}
-              </DragBlock>
-            ) : block.type === 'title' && editable ? (
-              <div className={classes.insertWrap}>
-                <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-              </div>
-            ) : block.type === 'slides' ? (
-              <div className={classes.insertWrap}>
-                <InsertSlide
+              </Draggable>
+
+              {blocks
+                ?.filter(({ type }) => type === 'block')
+                .map((block, i) => (
+                  <Block
+                    key={`${id}:${block.key}:${i}`}
+                    {...{ blocks, block, time, range, autoScroll }}
+                    rangeMode="after-range"
+                  />
+                ))}
+            </div>
+          )}
+        </Droppable>
+      ) : range ? (
+        <>
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="before-range"
+              />
+            ))}
+
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="in-range"
+              />
+            ))}
+
+          {blocks
+            ?.filter(({ type }) => type === 'block')
+            .map((block, i) => (
+              <Block
+                key={`${id}:${block.key}:${i}`}
+                {...{ blocks, block, time, range, autoScroll }}
+                rangeMode="after-range"
+              />
+            ))}
+        </>
+      ) : (
+        blocks?.map((block, i) =>
+          block.type === 'block' ? (
+            <DragBlock key={`${id}:${block.key}:${i}`}>
+              {context === block.key ? (
+                <ContextFrame title={contextData.title}>
+                  <Transcript
+                    {...{
+                      ...props,
+                      editable: false,
+                      isSource: false,
+                      noMenu: true,
+                      ...contextData,
+                    }}
+                  />
+                </ContextFrame>
+              ) : (
+                <Block
                   key={`${id}:${block.key}:${i}`}
-                  onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
-                  {...{ sources, block, dispatch, editable }}
+                  {...{ blocks, block, time, range, autoScroll }}
+                  // offset={contextData && contextData.index > i ? contextData.offset : 0}
                 />
-              </div>
-            ) : block.type === 'transition' && editable ? (
-              <div className={classes.insertWrap}>
-                <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
-              </div>
-            ) : null,
-          )
-        )}
-      </Container>
+              )}
+              {!isSource && !noMenu ? (
+                <BlockMenu color="default" size="small" onClick={e => onMoreOpen(e, block.key)}>
+                  <MoreHorizIcon fontSize="small" />
+                </BlockMenu>
+              ) : null}
+            </DragBlock>
+          ) : block.type === 'title' && editable ? (
+            <div className={classes.insertWrap}>
+              <InsertTitle key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+            </div>
+          ) : block.type === 'slides' ? (
+            <div className={classes.insertWrap}>
+              <InsertSlide
+                key={`${id}:${block.key}:${i}`}
+                onChooseSlide={({ deck, slide }) => console.log('onChooseSlide:', { deck, slide })}
+                {...{ sources, block, dispatch, editable }}
+              />
+            </div>
+          ) : block.type === 'transition' && editable ? (
+            <div className={classes.insertWrap}>
+              <InsertTransition key={`${id}:${block.key}:${i}`} {...{ block, dispatch, editable }} />
+            </div>
+          ) : null,
+        )
+      )}
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -566,7 +626,7 @@ export const Transcript = props => {
   );
 };
 
-const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false }) => {
+const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange = false, autoScroll }) => {
   const { key, pk, speaker, text, duration, offset: _offset = 0 } = block;
 
   const offset = useMemo(() => {
@@ -599,15 +659,17 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
       data-key={key}
       data-offset={offset}
       data-text-offset={0}
-      data-speaker={`${speaker}:`}
-      className={`${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
+      data-speaker={`${speaker}`}
+      data-range-mode={rangeMode}
+      data-block={JSON.stringify(block)}
+      className={`${speaker ? 'showSpeaker' : ''} ${rangeMode} ${time >= offset + duration ? 'past' : 'future'} ${
         time >= offset && time < offset + duration ? 'present' : ''
       }`}
     >
       {range && rangeMode === 'in-range' ? (
         <Range {...{ block, offset, range, onlyRange }} />
       ) : time >= offset && time < offset + duration ? (
-        <Playhead {...{ block, offset, time }} />
+        <Playhead {...{ block, offset, time, autoScroll }} />
       ) : (
         text
       )}
@@ -615,17 +677,45 @@ const Block = ({ blocks, block, time, range, rangeMode = 'no-range', onlyRange =
   ) : null;
 };
 
-const Playhead = ({ block, offset, time }) => {
+const Playhead = ({ block, offset, time, autoScroll, allWords = true }) => {
+  const playhead = useRef();
+  const scrollTarget = useRef();
+
   const [start, end] = useMemo(() => {
     const index = block.starts2.findIndex((s, i) => offset + s + block.durations[i] > time);
     if (index === -1) return [block.text.length - 1, block.text.length - 1];
 
+    if (allWords) {
+      const index2 = block.starts2
+        .map((s, i) => ({ s, i }))
+        .slice(index)
+        .filter(({ s }) => s === block.starts2[index])
+        ?.pop()?.i;
+
+      if (index2 && index2 > index) return [block.offsets[index], block.offsets[index2] + block.lengths[index2]];
+    }
+
     return [block.offsets[index], block.offsets[index] + block.lengths[index]];
-  }, [block, offset, time]);
+  }, [block, offset, time, allWords]);
+
+  useEffect(() => {
+    if (!autoScroll) return;
+    if (playhead.current?.parentElement !== scrollTarget.current) {
+      scrollTarget.current = playhead.current.parentElement;
+      playhead.current.parentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [autoScroll, playhead, start, end, scrollTarget]);
 
   return (
     <>
-      <span className="playhead" data-media={block.pk} data-key={block.key} data-text-offset={0} data-offset={offset}>
+      <span
+        ref={playhead}
+        className="playhead"
+        data-media={block.pk}
+        data-key={block.key}
+        data-text-offset={0}
+        data-offset={offset}
+      >
         {block.text.substring(0, start)}
         <span>{block.text.substring(start, end)}</span>
       </span>
@@ -662,3 +752,6 @@ const Range = ({ block, offset, range, onlyRange }) => {
     </>
   );
 };
+
+// export default React.memo(Transcript, isEqual);
+export default Transcript;

@@ -1,6 +1,6 @@
 {
   "auth": {
-    "Hyperaudio": {
+    "HyperaudioforConferences": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -28,36 +28,54 @@
     }
   },
   "api": {
-    "Hyperaudio": {
+    "HyperaudioforConferences": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
         "authConfig": {
           "defaultAuthentication": {
-            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-            "userPoolConfig": {
-              "userPoolId": "authHyperaudio"
+            "authenticationType": "API_KEY",
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 365,
+              "apiKeyExpirationDate": "2023-03-28T11:52:29.596Z",
+              "description": "APIKey"
             }
           },
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "API_KEY",
-              "apiKeyConfig": {
-                "apiKeyExpirationDays": 365,
-                "apiKeyExpirationDate": "2023-01-17T14:19:55.912Z",
-                "description": "PublicAccess"
-              }
+              "authenticationType": "AWS_IAM"
             },
             {
-              "authenticationType": "AWS_IAM"
+              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+              "userPoolConfig": {
+                "userPoolId": "authHyperaudioforConferences"
+              }
             }
           ]
         }
       }
     }
   },
+  "analytics": {
+    "ha4conferences": {
+      "service": "Pinpoint",
+      "providerPlugin": "awscloudformation"
+    }
+  },
+  "predictions": {
+    "translateText7839f237": {
+      "providerPlugin": "awscloudformation",
+      "service": "Translate",
+      "convertType": "translateText"
+    },
+    "transcription2d7be2e3": {
+      "providerPlugin": "awscloudformation",
+      "service": "Transcribe",
+      "convertType": "transcription"
+    }
+  },
   "storage": {
-    "s3hyperaudiostoraged2q2ymru5i14e8": {
+    "s3hyperaudioconferencesstoragestaging": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": []

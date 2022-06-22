@@ -7,19 +7,24 @@ import { styled } from '@mui/material/styles';
 
 const PREFIX = 'InsertTransition';
 const classes = {
+  root: `${PREFIX}-root`,
   controls: `${PREFIX}-controls`,
   slider: `${PREFIX}-slider`,
   title: `${PREFIX}-title`,
 };
 
 const Root = styled('div')(({ theme }) => ({
-  padding: theme.spacing(1.35, 1),
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[1],
-  [`& .${classes.title}`]: {
+  boxShadow: theme.shadows[3],
+  padding: theme.spacing(1),
+  [`& .${classes.head}`]: {
     marginBottom: theme.spacing(1),
   },
-
+  [`& .${classes.title}`]: {
+    display: 'flex',
+    marginBottom: theme.spacing(1),
+    alignItems: 'center',
+  },
   [`& .${classes.controls}`]: {
     padding: theme.spacing(0, 0.5),
     lineHeight: 0,
@@ -47,11 +52,13 @@ export const InsertTransition = ({ editable = false, block: { key, transition: d
   const labelFormat = useCallback(val => `${(val / 1000).toFixed(1)} s`, []);
 
   return (
-    <Root>
-      <Typography variant="subtitle2" component="h2" color="primary" className={classes.title}>
-        <MovieFilterIcon fontSize="small" sx={{ marginRight: '6px' }} />
-        <span id="insert-slide-title">Transition</span>
-      </Typography>
+    <Root className={classes.root}>
+      <div className={classes.head}>
+        <Typography className={classes.title} color="primary" component="h2" variant="body2" sx={{ fontWeight: 500 }}>
+          <MovieFilterIcon fontSize="small" sx={{ mr: 0.5 }} color="primary" />
+          <span id="insert-slide-title">Transition</span>
+        </Typography>
+      </div>
       <div className={classes.controls}>
         <Slider
           aria-labelledby="insert-slide-title"

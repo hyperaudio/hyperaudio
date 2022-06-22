@@ -1,0 +1,21 @@
+{
+    "appName": "ha4conferences",
+    "roleName": "pinpointLambdaRoled7edd2c5",
+    "cloudformationPolicyName": "cloudformationPolicyd7edd2c5",
+    "cloudWatchPolicyName": "cloudWatchPolicyd7edd2c5",
+    "pinpointPolicyName": "pinpointPolicyd7edd2c5",
+    "authPolicyName": "pinpoint_amplify_d7edd2c5",
+    "unauthPolicyName": "pinpoint_amplify_d7edd2c5",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

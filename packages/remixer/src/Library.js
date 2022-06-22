@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 
 import Alert from '@mui/material/Alert';
 import Container from '@mui/material/Container';
@@ -46,7 +46,7 @@ const GridBlock = props => {
             return (
               <Grid item xs={12} md={6} lg={4} key={o.id}>
                 <Thumb
-                  img="https://picsum.photos/400/300"
+                  img={o.media?.[0]?.poster}
                   isActive={isActive}
                   onClick={!isActive ? () => onThumbClick(o.id) : null}
                   title={o.title}
@@ -61,11 +61,16 @@ const GridBlock = props => {
 };
 
 export default function Library(props) {
-  const { media, matches, sources, onSourceOpen, onHideLibrary } = props;
+  const { media, sources, tabs, onSourceOpen, onHideLibrary } = props;
 
-  const [searchKey, setSearchKey] = React.useState(null);
+  const [searchKey, setSearchKey] = useState(null);
 
-  const sourcesIds = sources.map(o => o.id);
+  const sourcesIds = tabs.map(o => o.id);
+
+  const matches = useMemo(() => {
+    if (!searchKey) return { titles: [] };
+    return { titles: sources.filter(o => o.title.toLowerCase().includes(searchKey.toLowerCase())) };
+  }, [searchKey]);
 
   // console.group('Library.js');
   // console.log({ media, matches });
@@ -89,7 +94,9 @@ export default function Library(props) {
                     items={matches.titles}
                     onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
-                    title={`${matches?.titles?.length} titles matching: ${searchKey}`}
+                    title={`${matches?.titles?.length} title${
+                      matches?.titles?.length > 1 ? 's' : ''
+                    } matching: ${searchKey}`}
                   />
                 )}
                 {matches?.transcripts?.length > 0 && (
@@ -97,7 +104,7 @@ export default function Library(props) {
                     items={matches.transcripts}
                     onThumbClick={onThumbClick}
                     selectedItems={sourcesIds}
-                    title={`${matches?.transcripts?.length} transcript occurances matching: ${searchKey}`}
+                    title={`${matches?.transcripts?.length} transcript occurrences matching: ${searchKey}`}
                   />
                 )}
               </>
@@ -109,8 +116,8 @@ export default function Library(props) {
             <Divider />
           </>
         )}
-        {media?.length > 0 && (
-          <GridBlock items={media} title={`All media`} onThumbClick={onThumbClick} selectedItems={sourcesIds} />
+        {sources?.length > 0 && (
+          <GridBlock items={sources} title={`All media`} onThumbClick={onThumbClick} selectedItems={sourcesIds} />
         )}
       </Media>
     </Root>

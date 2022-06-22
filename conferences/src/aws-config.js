@@ -1,7 +1,7 @@
 import { AuthModeStrategyType } from 'aws-amplify';
 
 const awsconfig = {
-  ssr: true,
+  ssr: false,
   DataStore: {
     authModeStrategyType: AuthModeStrategyType.MULTI_AUTH,
   },

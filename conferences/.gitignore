@@ -44,6 +44,7 @@ build/
 dist/
 node_modules/
 aws-exports.js
+aws-exports-copy.js
 awsconfiguration.json
 amplifyconfiguration.json
 amplifyconfiguration.dart
@@ -53,3 +54,9 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+src/pages/media-test
+build-surge
+
+# Sentry
+.sentryclirc
