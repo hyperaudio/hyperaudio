@@ -23,7 +23,7 @@
     "@sentry/nextjs": "6.19.7",
     "@sentry/react": "6.19.7",
     "@welldone-software/why-did-you-render": "7.0.1",
-    "aws-amplify": "4.3.24",
+    "aws-amplify": "4.3.26",
     "axios": "0.27.2",
     "bs58": "5.0.0",
     "cldr-segmentation": "2.2.0",
