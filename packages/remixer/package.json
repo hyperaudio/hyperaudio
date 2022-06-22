@@ -27,7 +27,7 @@
   "devDependencies": {
     "@babel/core": "7.17.10",
     "@babel/eslint-parser": "7.17.0",
-    "@babel/preset-react": "7.16.7",
+    "@babel/preset-react": "7.17.12",
     "cross-env": "7.0.3",
     "eslint": "8.14.0",
     "eslint-config-prettier": "8.5.0",
