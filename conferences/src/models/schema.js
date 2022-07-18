@@ -776,6 +776,24 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byMedia",
+                        "fields": [
+                            "mediaID"
+                        ]
+                    }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "byRemix",
+                        "fields": [
+                            "remixID"
+                        ]
+                    }
                 }
             ]
         }

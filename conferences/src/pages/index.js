@@ -111,9 +111,13 @@ const HomePage = props => {
   const displayChannels = useMemo(() => {
     const channelsWithMediaArrays = allChannels.map(channel => {
       // add all but private media to appropriate channels
-      const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private);
+      const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private).sort((a, b) => {
+        if (a?.metadata?.index && b?.metadata?.index) return a.metadata.index - b.metadata.index;
+        return 0;
+      });
       return { ...channel, media };
     });
+
     const onlyChannelsWithAvailableMedia = _.filter(channelsWithMediaArrays, a => a.media.length > 0);
     return onlyChannelsWithAvailableMedia;
   }, [allChannels, allMedia]);

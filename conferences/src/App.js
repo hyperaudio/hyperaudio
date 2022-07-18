@@ -248,7 +248,7 @@ const App = props => {
 
   const organisation = useMemo(
     () => ({
-      name: 'MozFest 2022',
+      name: 'No Minor Futures',
     }),
     [],
   );
@@ -259,7 +259,6 @@ const App = props => {
       <ThemeProvider theme={getTheme({ typography: 'fixed' })}>
         <Root className={classes.root}>
           <Head>
-            <meta name="monetization" content="$ilp.uphold.com/3h66mKZLrgQZ" />
             <link rel="preconnect" href={awsexports.aws_appsync_graphqlEndpoint} />
             <link rel="preconnect" href={`https://cognito-identity.${awsexports.aws_cognito_region}.amazonaws.com`} />
             <link
