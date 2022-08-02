@@ -103,17 +103,17 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
   useEffect(() => {
     getMedia(setMedia, id);
 
-    // const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
+    const subscription = DataStore.observe(Media).subscribe(msg => getMedia(setMedia, id));
     // window.addEventListener('online', () => navigator.onLine && getMedia(setMedia, id));
-    // return () => subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [id]);
 
   useEffect(() => {
     getTranscripts(setTranscripts, id);
 
-    // const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, id));
+    const subscription = DataStore.observe(Transcript).subscribe(msg => getTranscripts(setTranscripts, id));
     // window.addEventListener('online', () => navigator.onLine && getTranscripts(setTranscripts, id));
-    // return () => subscription.unsubscribe();
+    return () => subscription.unsubscribe();
   }, [id]);
 
   useEffect(() => {
@@ -123,6 +123,17 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
     // window.addEventListener('online', () => navigator.onLine && getRemixes(setRemixes, id));
     // return () => subscription.unsubscribe();
   }, [id]);
+
+  // useEffect(() => {
+  //   let reload;
+  //   if (!media || !transcripts || transcripts.length === 0) {
+  //     reload = setTimeout(() => {
+  //       document.location.reload();
+  //     }, 3000);
+  //   } else {
+  //     clearTimeout(reload);
+  //   }
+  // }, [media, transcripts]);
 
   useEffect(() => {
     if (!media || transcripts.length === 0) return;

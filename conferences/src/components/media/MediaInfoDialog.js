@@ -86,104 +86,107 @@ export default function MediaInfoDialog(props) {
   // console.log({ source });
 
   return (
-    <Draggable handle="#media-detail-dialog" bounds=".MediaPage-root">
-      <Fade in={open}>
-        <Root
-          BackdropComponent={null}
-          aria-labelledby="media-detail-title"
-          className={classes.root}
-          elevation={2}
-          open={true}
-          sx={{ display: open ? 'block' : 'none' }}
-        >
-          <Paper className={classes.paper}>
-            <Box className={classes.head} id="media-detail-dialog">
-              <Typography id="media-detail-title" sx={{ flexGrow: 1, fontWeight: 500 }} variant="body2">
-                Media details
-              </Typography>
-              <IconButton edge="end" aria-label="close" size="small" onClick={onClose} color="inherit">
-                <CloseIcon fontSize="small" />
-              </IconButton>
-            </Box>
-            <Box className={classes.body}>
-              <Box>
-                <Typography display="block" gutterBottom variant="overline" color="textSecondary">
-                  Title
+    source &&
+    source.channel && (
+      <Draggable handle="#media-detail-dialog" bounds=".MediaPage-root">
+        <Fade in={open}>
+          <Root
+            BackdropComponent={null}
+            aria-labelledby="media-detail-title"
+            className={classes.root}
+            elevation={2}
+            open={true}
+            sx={{ display: open ? 'block' : 'none' }}
+          >
+            <Paper className={classes.paper}>
+              <Box className={classes.head} id="media-detail-dialog">
+                <Typography id="media-detail-title" sx={{ flexGrow: 1, fontWeight: 500 }} variant="body2">
+                  Media details
                 </Typography>
-                <TextField
-                  aria-labelledby="title-label"
-                  disabled
-                  fullWidth
-                  id="title"
-                  placeholder="Give your media a title…"
-                  required
-                  size="small"
-                  value={source.title}
-                  variant="filled"
-                  inputProps={{
-                    className: classes.field,
-                  }}
-                />
+                <IconButton edge="end" aria-label="close" size="small" onClick={onClose} color="inherit">
+                  <CloseIcon fontSize="small" />
+                </IconButton>
               </Box>
-              <Box sx={{ mt: 3 }}>
-                <Typography display="block" gutterBottom variant="overline" color="textSecondary">
-                  Channel
-                </Typography>
-                <TextField
-                  aria-labelledby="channel-label"
-                  disabled
-                  fullWidth
-                  id="channel"
-                  placeholder="Give your remix a title…"
-                  select
-                  size="small"
-                  value={source.channel.id}
-                  variant="filled"
-                  inputProps={{
-                    className: classes.field,
-                  }}
-                >
-                  {[source.channel].map(channel => (
-                    <MenuItem dense key={channel.id} value={channel.id}>
-                      {channel.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Box>
-              <Box sx={{ mt: 3 }}>
-                <Typography display="block" gutterBottom variant="overline" color="textSecondary">
-                  Tags
-                </Typography>
-                {source.tags.length > 0 ? (
-                  <Stack direction="row" spacing={1}>
-                    {source.tags.map(t => (
-                      <Chip key={t} size="small" label={t} />
+              <Box className={classes.body}>
+                <Box>
+                  <Typography display="block" gutterBottom variant="overline" color="textSecondary">
+                    Title
+                  </Typography>
+                  <TextField
+                    aria-labelledby="title-label"
+                    disabled
+                    fullWidth
+                    id="title"
+                    placeholder="Give your media a title…"
+                    required
+                    size="small"
+                    value={source.title}
+                    variant="filled"
+                    inputProps={{
+                      className: classes.field,
+                    }}
+                  />
+                </Box>
+                <Box sx={{ mt: 3 }}>
+                  <Typography display="block" gutterBottom variant="overline" color="textSecondary">
+                    Channel
+                  </Typography>
+                  <TextField
+                    aria-labelledby="channel-label"
+                    disabled
+                    fullWidth
+                    id="channel"
+                    placeholder="Give your remix a title…"
+                    select
+                    size="small"
+                    value={source?.channel?.id}
+                    variant="filled"
+                    inputProps={{
+                      className: classes.field,
+                    }}
+                  >
+                    {[source.channel].map(channel => (
+                      <MenuItem dense key={channel.id} value={channel.id}>
+                        {channel.name}
+                      </MenuItem>
                     ))}
-                  </Stack>
-                ) : (
-                  '—'
-                )}
+                  </TextField>
+                </Box>
+                <Box sx={{ mt: 3 }}>
+                  <Typography display="block" gutterBottom variant="overline" color="textSecondary">
+                    Tags
+                  </Typography>
+                  {source.tags.length > 0 ? (
+                    <Stack direction="row" spacing={1}>
+                      {source.tags.map(t => (
+                        <Chip key={t} size="small" label={t} />
+                      ))}
+                    </Stack>
+                  ) : (
+                    '—'
+                  )}
+                </Box>
+                <Box sx={{ mt: 3 }}>
+                  <Typography display="block" gutterBottom variant="overline" color="textSecondary">
+                    Linked remixes
+                  </Typography>
+                  {source.remixes.length > 0 ? (
+                    <List dense>
+                      {source.remixes.map(r => (
+                        <ListItem key={r.id} disableGutters>
+                          <Link variant="caption">{r.title}</Link>
+                        </ListItem>
+                      ))}
+                    </List>
+                  ) : (
+                    '—'
+                  )}
+                </Box>
               </Box>
-              <Box sx={{ mt: 3 }}>
-                <Typography display="block" gutterBottom variant="overline" color="textSecondary">
-                  Linked remixes
-                </Typography>
-                {source.remixes.length > 0 ? (
-                  <List dense>
-                    {source.remixes.map(r => (
-                      <ListItem key={r.id} disableGutters>
-                        <Link variant="caption">{r.title}</Link>
-                      </ListItem>
-                    ))}
-                  </List>
-                ) : (
-                  '—'
-                )}
-              </Box>
-            </Box>
-          </Paper>
-        </Root>
-      </Fade>
-    </Draggable>
+            </Paper>
+          </Root>
+        </Fade>
+      </Draggable>
+    )
   );
 }
