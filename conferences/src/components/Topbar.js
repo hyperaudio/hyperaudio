@@ -43,24 +43,25 @@ const classes = {
 const Root = styled(AppBar, {
   shouldForwardProp: prop => prop !== 'user',
 })(({ theme, user }) => ({
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette.primary.dark,
+  borderBottom: `1px solid ${theme.palette.primary.dark}`,
   color: theme.palette.primary.contrastText,
   [`.${classes.fab}`]: {
-    backgroundColor: deepPurple[user ? 400 : 500],
-    border: `1px solid ${deepPurple[user ? 300 : 400]}`,
+    backgroundColor: user ? theme.palette.primary.main : theme.palette.primary.dark,
+    border: `1px solid ${user ? theme.palette.primary.main : theme.palette.primary.main}`,
     borderRadius: theme.shape.borderRadius * 6,
     color: theme.palette.primary.contrastText,
     height: 'auto',
     padding: theme.spacing(0.75),
     transition: `all ${theme.transitions.duration.standard}`,
     '&:hover': {
-      backgroundColor: deepPurple[user ? 300 : 400],
+      backgroundColor: user ? theme.palette.primary.main : theme.palette.primary.dark,
     },
   },
   [`.${classes.avatar}`]: {
     ...theme.typography.caption,
-    backgroundColor: deepPurple[user ? 500 : 400],
-    color: deepPurple[100],
+    backgroundColor: user ? theme.palette.primary.main : theme.palette.primary.dark,
+    color: theme.palette.primary.contrastText,
     fontWeight: 500,
     height: '30px',
     width: '30px',
