@@ -491,7 +491,7 @@ const Stage = ({
 const Player = ({
   active,
   hideVideo,
-  media: { id, url, poster, title },
+  media: { id, url, poster, title, tracks = [] },
   onDisablePIP,
   onEnablePIP,
   onPause,
@@ -517,7 +517,9 @@ const Player = ({
           preload: 'none',
           playsinline: 'true',
           // muted: 'true',
+          crossorigin: 'true',
         },
+        tracks,
         // hlsOptions: {
         //   backBufferLength: 30,
         //   maxMaxBufferLength: 30,
@@ -665,7 +667,7 @@ const SinglePlayer = React.forwardRef(
   (
     {
       hideVideo,
-      media: { id, url, poster, title },
+      media: { id, url, poster, title, tracks = [] },
       onDisablePIP,
       onEnablePIP,
       onPause,
@@ -688,7 +690,9 @@ const SinglePlayer = React.forwardRef(
             preload: 'none',
             playsinline: 'true',
             // muted: 'true',
+            crossorigin: 'true',
           },
+          tracks,
         },
       }),
       [poster],

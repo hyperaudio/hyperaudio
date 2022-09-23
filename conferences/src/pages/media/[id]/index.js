@@ -293,6 +293,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
                   poster: media.poster.replace('.png', '.jpg'),
                   mediaId: media.id,
                   title: transcript.title,
+                  tracks: transcript?.metadata?.tracks ?? [],
                 },
               ],
               channel: media.channel,
