@@ -19,7 +19,7 @@
     "@emotion/styled": "11.9.3",
     "@mui/icons-material": "5.6.2",
     "@mui/lab": "5.0.0-alpha.80",
-    "@mui/material": "5.6.4",
+    "@mui/material": "5.10.7",
     "@sentry/nextjs": "6.19.7",
     "@sentry/react": "6.19.7",
     "@welldone-software/why-did-you-render": "7.0.1",
