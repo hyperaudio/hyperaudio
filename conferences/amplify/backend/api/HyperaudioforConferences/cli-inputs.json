@@ -3,12 +3,10 @@
   "serviceConfiguration": {
     "apiName": "HyperaudioforConferences",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/Users/laurian/Projects/Hyperaudio/conference-mozfest/conferences/amplify/backend/api/HyperaudioforConferences/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2023-04-21T11:29:17.097Z",
-      "keyDescription": "APIKEY"
+      "keyDescription": "APIKEY",
+      "expirationTime": 365
     },
     "additionalAuthTypes": [
       {
