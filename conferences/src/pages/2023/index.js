@@ -11,8 +11,8 @@ import { styled } from '@mui/material/styles';
 
 import { HyperaudioIcon } from '@hyperaudio/common';
 
-import CardGrid from '../components/organisms/CardGrid';
-import { Media, Channel } from '../models';
+import CardGrid from '../../components/organisms/CardGrid';
+import { Media, Channel } from '../../models';
 
 const PREFIX = `HomePage`;
 const classes = {
@@ -109,14 +109,55 @@ const HomePage = props => {
   }, []);
 
   const displayChannels = useMemo(() => {
-    const channelsWithMediaArrays = allChannels.map(channel => {
-      // add all but private media to appropriate channels
-      const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private);
-      return { ...channel, media };
-    });
+    const channelsWithMediaArrays = allChannels
+      .map(channel => {
+        // add all but private media to appropriate channels
+        const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private);
+        return { ...channel, media };
+      })
+      .map(channel => {
+        channel.media.push({
+          id: 'TEST',
+          playbackId: 'TEST',
+          url: '',
+          poster: 'https://picsum.photos/seed/picsum/720/360',
+          title: 'Lorem Ipsum',
+          description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus aliquet dolor gravida leo placerat, a sollicitudin felis imperdiet. Fusce molestie neque ante, sit amet dictum dolor ultricies vitae. Vestibulum vitae eros in risus viverra consectetur molestie quis neque. Nullam aliquam rutrum vulputate.',
+          language: 'en-GB',
+          tags: [],
+          private: false,
+          status: {
+            label: 'transcribed',
+          },
+          metadata: null,
+          createdAt: '2022-04-04T16:32:29.067Z',
+          updatedAt: '2022-04-04T16:32:29.067Z',
+          mediaChannelId: '9de00246-5a4e-4986-81b6-109e1e22c5a3',
+          owner: null,
+          _version: 1,
+          _lastChangedAt: 1649089949070,
+          _deleted: null,
+          channel: {
+            id: '9de00246-5a4e-4986-81b6-109e1e22c5a3',
+            name: 'Emergent Sessions',
+            description:
+              "Sometimes you come up with a great idea for a session during the festival. Here's your chance to connect with others based on a spontaneous thought, a shared interest, a creative spark, a question or whatever else that inspires you!",
+            tags: [],
+            metadata: null,
+            createdAt: '2022-03-25T11:11:48.854Z',
+            updatedAt: '2022-03-28T10:52:53.354Z',
+            owner: null,
+            _version: 2,
+            _lastChangedAt: 1648464773395,
+            _deleted: null,
+          },
+        });
+        return channel;
+      });
 
     const onlyChannelsWithAvailableMedia = _.filter(channelsWithMediaArrays, a => a.media.length > 0);
-    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2022-'));
+    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2023-'));
   }, [allChannels, allMedia]);
 
   console.group('Home');

@@ -11,8 +11,8 @@ import { styled } from '@mui/material/styles';
 
 import { HyperaudioIcon } from '@hyperaudio/common';
 
-import CardGrid from '../components/organisms/CardGrid';
-import { Media, Channel } from '../models';
+import CardGrid from '../../components/organisms/CardGrid';
+import { Media, Channel } from '../../models';
 
 const PREFIX = `HomePage`;
 const classes = {
@@ -114,9 +114,8 @@ const HomePage = props => {
       const media = _.filter(allMedia, o => o.channel?.id === channel.id && !o.private);
       return { ...channel, media };
     });
-
     const onlyChannelsWithAvailableMedia = _.filter(channelsWithMediaArrays, a => a.media.length > 0);
-    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2022-'));
+    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2022-')); // TODO this should be a path variable?
   }, [allChannels, allMedia]);
 
   console.group('Home');
