@@ -253,6 +253,9 @@ const App = props => {
     [],
   );
 
+  const [framed, setFramed] = useState(false);
+  useEffect(() => setFramed(window.parent !== window), []);
+
   return (
     <CacheProvider value={emotionCache}>
       <CssBaseline />
@@ -273,6 +276,16 @@ const App = props => {
               data-domain={domain}
               src="https://plausible.io/js/plausible.js"
             ></script>
+            {framed ? (
+              <style>{`
+              .App-root > header {
+                display: none;
+              }
+              .App-root > .MuiToolbar-root {
+                display: none;
+              }
+            `}</style>
+            ) : null}
           </Head>
           {inputGlobalStyles}
           <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
