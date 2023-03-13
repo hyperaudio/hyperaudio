@@ -248,7 +248,7 @@ const App = props => {
 
   const organisation = useMemo(
     () => ({
-      name: 'MozFest 2022',
+      name: 'MozFest',
     }),
     [],
   );

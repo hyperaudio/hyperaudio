@@ -161,7 +161,7 @@ const HomePage = props => {
   }, [allChannels, allMedia]);
 
   console.group('Home');
-  console.log({ allChannels, displayChannels });
+  console.log({ allChannels, displayChannels, organisation });
   console.groupEnd();
 
   return (
@@ -173,7 +173,7 @@ const HomePage = props => {
         <Box className={classes.hero}>
           <Container maxWidth="xl">
             <Typography variant="h1" className={classes.heroTitle}>
-              {organisation.name}
+              {organisation.name} 2023
             </Typography>
           </Container>
           <HyperaudioIcon className={classes.heroOrnament} />

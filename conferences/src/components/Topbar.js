@@ -10,15 +10,18 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Fab from '@mui/material/Fab';
+import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import HomeIcon from '@mui/icons-material/Home';
 import IconButton from '@mui/material/IconButton';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import ListSubheader from '@mui/material/ListSubheader';
 import ListItemText from '@mui/material/ListItemText';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import Menu from '@mui/material/Menu';
+import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import NoSsr from '@mui/material/NoSsr';
 import PersonIcon from '@mui/icons-material/Person';
@@ -109,7 +112,7 @@ const Topbar = props => {
   const primaryTypographyProps = {
     color: 'primary',
     gutterBottom: true,
-    sx: { fontWeight: '600' },
+    sx: { fontWeight: '500' },
   };
 
   const secondaryTypographyProps = {
@@ -179,17 +182,23 @@ const Topbar = props => {
                       href="/"
                       onClick={() => setOrgMenuAnchor(null)}
                     >
-                      <ListItemIcon>
+                      {/* <ListItemIcon>
                         <HomeIcon sx={{ color: 'primary.light' }} />
-                      </ListItemIcon>
+                      </ListItemIcon> */}
                       <ListItemText
-                        primary="Home page"
-                        primaryTypographyProps={primaryTypographyProps}
-                        secondary="Preview your event home page"
-                        secondaryTypographyProps={secondaryTypographyProps}
+                        primary="Mozfest 2023"
+                        primaryTypographyProps={{ ...primaryTypographyProps, gutterBottom: false }}
+                        // secondary="Preview your event home page"
+                        // secondaryTypographyProps={secondaryTypographyProps}
                       />
+                      <Chip
+                        label="NEW"
+                        size="small"
+                        color="primary"
+                        sx={theme => ({ ...theme.typography.caption, ml: 2, p: 0 })}
+                      ></Chip>
                     </MenuItem>
-                    <Divider />
+                    {/* <Divider />
                     <MenuItem
                       className={classes.menuItem}
                       component={Link}
@@ -205,6 +214,26 @@ const Topbar = props => {
                         primaryTypographyProps={primaryTypographyProps}
                         secondary="Edit event details, members & more…"
                         secondaryTypographyProps={secondaryTypographyProps}
+                      />
+                    </MenuItem> */}
+                    <Divider />
+                    {/* <ListSubheader>
+                      <Typography variant="caption">Previous editions</Typography>
+                    </ListSubheader> */}
+                    <MenuItem
+                      className={classes.menuItem}
+                      component={Link}
+                      href="/2022"
+                      onClick={() => setOrgMenuAnchor(null)}
+                    >
+                      {/* <ListItemIcon>
+                        <SettingsIcon sx={{ color: 'primary.light' }} />
+                      </ListItemIcon> */}
+                      <ListItemText
+                        primary="Mozfest 2022"
+                        primaryTypographyProps={{ ...primaryTypographyProps, color: 'text.secondary' }}
+                        // secondary="Mozfest 2022"
+                        // secondaryTypographyProps={secondaryTypographyProps}
                       />
                     </MenuItem>
                   </Menu>

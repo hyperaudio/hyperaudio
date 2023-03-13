@@ -131,7 +131,7 @@ const HomePage = props => {
         <Box className={classes.hero}>
           <Container maxWidth="xl">
             <Typography variant="h1" className={classes.heroTitle}>
-              {organisation.name}
+              {organisation.name} 2022
             </Typography>
           </Container>
           <HyperaudioIcon className={classes.heroOrnament} />
