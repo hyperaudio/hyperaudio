@@ -276,19 +276,9 @@ const App = props => {
               data-domain={domain}
               src="https://plausible.io/js/plausible.js"
             ></script>
-            {framed ? (
-              <style>{`
-              .App-root > header {
-                display: none;
-              }
-              .App-root > .MuiToolbar-root {
-                display: none;
-              }
-            `}</style>
-            ) : null}
           </Head>
           {inputGlobalStyles}
-          <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />
+          {!framed && <Topbar {...pageProps} user={user} groups={groups} organisation={organisation} />}
           {!supportsIndexedDB ? (
             <Alert severity="error">
               <Link href="https://bugzilla.mozilla.org/show_bug.cgi?id=1639542">
@@ -298,8 +288,8 @@ const App = props => {
               private mode at this time.
             </Alert>
           ) : null}
-          <Component {...pageProps} user={user} groups={groups} organisation={organisation} />
-          {user === null && <Footer />}
+          <Component {...pageProps} user={user} groups={groups} organisation={organisation} framed={framed} />
+          {user === null && !framed && <Footer />}
         </Root>
       </ThemeProvider>
     </CacheProvider>

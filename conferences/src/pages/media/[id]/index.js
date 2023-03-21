@@ -77,7 +77,7 @@ const getTranscripts = async (setTranscripts, id) =>
 const getRemixes = async (setRemixes, id) =>
   setRemixes((await DataStore.query(RemixMedia)).filter(r => r.media.id === id).map(r => r.remix));
 
-const MediaPage = ({ organisation, user, groups = [] }) => {
+const MediaPage = ({ organisation, user, framed, groups = [] }) => {
   const { ref, height = 0 } = useThrottledResizeObserver(0);
   const router = useRouter();
   global.router = router; // FIXME
@@ -343,7 +343,7 @@ const MediaPage = ({ organisation, user, groups = [] }) => {
         {media && <meta name="description" content={media.description} />}
       </Head>
       <Root className={classes.root}>
-        <Toolbar ref={ref} />
+        {!framed && <Toolbar ref={ref} />}
         {data && data.sources && data.sources.length > 0 && (
           <MediaTopbar
             canEdit={groups.includes('Editors')}

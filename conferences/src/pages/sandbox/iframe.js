@@ -3,19 +3,15 @@ const EmbedTest = props => {
 
   return (
     <div style={{ height: '100vh' }}>
-      Lorem ipsum page content
-      <div style={{ height: '100%' }}>
-        <iframe
-          width="600px"
-          height="1000px"
-          src={url}
-          title="YouTube video player"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
-      </div>
-      Dolor sit amet page footer
+      <iframe
+        width="600px"
+        height="1000px"
+        src={url}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
     </div>
   );
 };
