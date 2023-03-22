@@ -116,7 +116,7 @@ const HomePage = props => {
     });
 
     const onlyChannelsWithAvailableMedia = _.filter(channelsWithMediaArrays, a => a.media.length > 0);
-    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2022-'));
+    return onlyChannelsWithAvailableMedia.filter(({ createdAt }) => createdAt.startsWith('2023-'));
   }, [allChannels, allMedia]);
 
   console.group('Home');
@@ -132,7 +132,7 @@ const HomePage = props => {
         <Box className={classes.hero}>
           <Container maxWidth="xl">
             <Typography variant="h1" className={classes.heroTitle}>
-              {organisation.name} 2022
+              {organisation.name} 2023
             </Typography>
           </Container>
           <HyperaudioIcon className={classes.heroOrnament} />
