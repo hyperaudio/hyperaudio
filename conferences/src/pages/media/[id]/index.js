@@ -225,9 +225,12 @@ const MediaPage = ({ organisation, user, framed, groups = [] }) => {
             // if (blocks.blocks) {
             // const speakers = blocks.speakers;
             blocks = blocks
+              .filter(block => block.text.trim().length > 0)
               .map(({ key, text, data: { start: _start, end: _end, speaker, items: _items } }, i, arr) => {
                 const prev = i > 0 ? arr[i - 1] : null;
                 const next = i < arr.length - 1 ? arr[i + 1] : null;
+
+                // console.log({ key, text, _start, _end, speaker, _items, i, blocks });
 
                 const start = (_items[0].start ?? _start ?? prev?.data?.end ?? 0) * 1e3;
                 const end = (_items[_items.length - 1].end ?? _end ?? next?.data?.start ?? start) * 1e3;
@@ -338,7 +341,7 @@ const MediaPage = ({ organisation, user, framed, groups = [] }) => {
     <>
       <Head>
         <title>
-          Media: {media?.title ? `“${media.title}”` : 'Untitled'} • {organisation.name} @ hyper.audio
+          {media?.title ? `“${media.title}” • ` : ''} {organisation.name} @ hyper.audio
         </title>
         {media && <meta name="description" content={media.description} />}
       </Head>
@@ -354,7 +357,7 @@ const MediaPage = ({ organisation, user, framed, groups = [] }) => {
         )}
         {data && data.sources && data.sources.length > 0 ? (
           <Remixer
-            autoScroll={true}
+            autoScroll={true && !framed}
             canEdit={groups.includes('Editors')}
             editable={false}
             isSingleMedia={true}
