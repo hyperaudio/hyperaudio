@@ -281,7 +281,7 @@ const EditorPage = ({ organisation, user, groups }) => {
         t = (await axios.get(await Storage.get(`data/${transcript.id}.json.gz`, { level: 'public' }))).data;
       } catch (ignored) {}
 
-      // console.log({ transcript, t });
+      console.log('default', { transcript, t });
 
       try {
         // const signedURL = await Storage.get(
@@ -291,11 +291,12 @@ const EditorPage = ({ organisation, user, groups }) => {
         //   },
         // );
         let signedURL;
-        if (t?.metadata?.draft) {
-          signedURL = await Storage.get(t.metadata.draft.key, {
-            level: t.metadata.draft.level,
-            identityId: t.metadata.draft.identityId,
+        if (transcript?.metadata?.draft) {
+          signedURL = await Storage.get(transcript.metadata.draft.key, {
+            level: transcript.metadata.draft.level,
+            identityId: transcript.metadata.draft.identityId,
           });
+          console.log('draft signed private', { signedURL });
         } else {
           signedURL = await Storage.get(
             `transcript/${media.playbackId}/${transcript.language}/${transcript.id}.json.gz`,
@@ -303,7 +304,10 @@ const EditorPage = ({ organisation, user, groups }) => {
               level: 'public',
             },
           );
+          console.log('draft signed PUBLIC', { signedURL });
         }
+
+        console.log('draft', { transcript, signedURL });
 
         const result = (
           await axios.get(signedURL, {
@@ -319,6 +323,8 @@ const EditorPage = ({ organisation, user, groups }) => {
       } catch (error) {
         // setError(error);
 
+        console.log('draft error', { error });
+
         // FIXME use transcript original url
         // use transcript's url
         try {
@@ -333,6 +339,8 @@ const EditorPage = ({ organisation, user, groups }) => {
               },
             })
           ).data;
+
+          console.log('loading original');
 
           speakers = result.speakers;
           blocks = result.blocks;
